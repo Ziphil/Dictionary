@@ -1,0 +1,10 @@
+binary
+build
+distribution
+library
+source/scenicView.properties
+*.sublime-project
+*.sublime-workspace
+.git-ignore
+.git-attribute
+desktop.ini

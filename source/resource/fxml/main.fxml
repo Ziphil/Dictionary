@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <URL value="@../css/main.css"/>
+  </stylesheets>
+  <top>
+    <MenuBar>
+      <Menu text="ファイル">
+      </Menu>
+      <Menu text="検索">
+      </Menu>
+      <Menu text="ツール">
+      </Menu>
+      <Menu text="デバッグ">
+      </Menu>
+      <Menu text="ヘルプ">
+        <MenuItem text="ヘルプ" accelerator="H1"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="公式サイト"/>
+        <MenuItem text="人工言語辞典について"/>
+      </Menu>
+    </MenuBar>
+  </top>
+  <center>
+    <VBox alignment="center" spacing="10">
+      <padding><Insets top="10" bottom="0" left="10" right="10"/></padding>
+      <HBox spacing="5">
+        <TextField fx:id="$searchText" onKeyReleased="#search" HBox.hgrow="always"/>
+        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode" prefWidth="70" minWidth="70">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="単語"/>
+              <String fx:value="訳語"/>
+              <String fx:value="全文"/>
+            </FXCollections>
+          </items>
+          <value><String fx:value="単語"/></value>
+        </ComboBox>
+        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true" prefWidth="70" minWidth="70"/>
+      </HBox>
+      <ListView fx:id="$list" prefHeight="65536"/>
+    </VBox>
+  </center>
+  <bottom>
+    <HBox fx:id="$footer" spacing="5">
+      <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
+      <Label fx:id="$dictionaryName"/>
+      <HBox HBox.hgrow="always"/>
+      <Label fx:id="$hitWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Label text="/"/>
+      <Label fx:id="$totalWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Separator orientation="vertical"/>
+      <Label fx:id="$elapsedTime" text="0" minWidth="30" prefWidth="30"/>
+    </HBox>
+  </bottom>
+  <fx:define>
+    <ContextMenu fx:id="$editMenu">
+      <items>
+        <MenuItem fx:id="$modifyMenuItem" text="編集"/>
+        <MenuItem fx:id="$removeMenuItem" text="削除"/>
+        <SeparatorMenuItem/>
+        <MenuItem fx:id="$addMenuItem" text="新規作成"/>
+        <MenuItem fx:id="$addInheritMenuItem" text="この単語から新規作成"/>
+      </items>
+    </ContextMenu>
+  </fx:define>
+</BorderPane>
+
