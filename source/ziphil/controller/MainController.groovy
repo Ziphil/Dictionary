@@ -70,10 +70,8 @@ public class MainController implements Initializable {
   }
 
   public void initialize(URL location, ResourceBundle resources) {
-    setupDictionary()
     setupList()
     setupFooter()
-    changeSearchMode()
   }
 
   private void loadResource() {
@@ -117,10 +115,12 @@ public class MainController implements Initializable {
   }
 
   private void setupDictionary() {
-    $dictionary = PersonalDictionary.new()
     $totalWordSize.setText($dictionary.getRawWords().size().toString())
     $dictionaryName.setText($dictionary.getName())
     $list.setItems($dictionary.getWords())
+    $searchText.setText("")
+    $searchText.requestFocus()
+    search()
   }
 
   private void setupFooter() {
@@ -134,25 +134,27 @@ public class MainController implements Initializable {
 
   @FXML
   private void search() {
-    Long beforeTime = System.nanoTime()
-    String search = $searchText.getText()
-    String searchMode = $searchMode.getValue()
-    Boolean isStrict = $searchType.getText() == "完全一致"
-    if (searchMode == "単語") {
-      $dictionary.searchByName(search, isStrict)
-    } else if (searchMode == "訳語") {
-      $dictionary.searchByEquivalent(search, isStrict)
-    } else if (searchMode == "全文") {
-      $dictionary.searchByContent(search)
+    if ($dictionary != null) {
+      Long beforeTime = System.nanoTime()
+      String search = $searchText.getText()
+      String searchMode = $searchMode.getValue()
+      Boolean isStrict = $searchType.getText() == "完全一致"
+      if (searchMode == "単語") {
+        $dictionary.searchByName(search, isStrict)
+      } else if (searchMode == "訳語") {
+        $dictionary.searchByEquivalent(search, isStrict)
+      } else if (searchMode == "全文") {
+        $dictionary.searchByContent(search)
+      }
+      Long afterTime = System.nanoTime()
+      Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
+      Integer hitWordSize = $dictionary.getWords().size()
+      Integer totalWordSize = $dictionary.getRawWords().size()
+      $elapsedTime.setText(elapsedTime.toString())
+      $hitWordSize.setText(hitWordSize.toString())
+      $totalWordSize.setText(totalWordSize.toString())
+      $list.scrollTo(0)
     }
-    Long afterTime = System.nanoTime()
-    Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-    Integer hitWordSize = $dictionary.getWords().size()
-    Integer totalWordSize = $dictionary.getRawWords().size()
-    $elapsedTime.setText(elapsedTime.toString())
-    $hitWordSize.setText(hitWordSize.toString())
-    $totalWordSize.setText(totalWordSize.toString())
-    $list.scrollTo(0)
   }
 
   @FXML
@@ -233,11 +235,15 @@ public class MainController implements Initializable {
   }
 
   @FXML
-  private void showDictionaryList() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
-    stage.initOwner($stage)
+  private void showDictionaryTable() {
+    UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryTableController controller = DictionaryTableController.new(stage)
-    stage.show()
+    stage.initOwner($stage)
+    stage.showAndWait()
+    if (stage.getResult() != null) {
+      $dictionary = stage.getResult()
+      setupDictionary()
+    }
   }
 
   public Scene getScene() {

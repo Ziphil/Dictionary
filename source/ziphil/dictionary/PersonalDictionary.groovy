@@ -13,14 +13,15 @@ import javafx.collections.transformation.SortedList
 @CompileStatic @Newify
 public class PersonalDictionary extends Dictionary {
 
-  private static final String DATA_PATH = "C:/Apache Software Foundation/Apache2.2/htdocs/xk/page/nagili/raw_words.csv"
-
-  private String $name = "凪霧"
+  private String $name = ""
+  private String $path = ""
   private ObservableList<PersonalWord> $words = FXCollections.observableArrayList()
   private FilteredList<PersonalWord> $filteredWords
   private SortedList<PersonalWord> $sortedWords
 
-  public PersonalDictionary() {
+  public PersonalDictionary(String name, String path) {
+    $name = name
+    $path = path
     load()
     setupWords()
   }
@@ -55,7 +56,7 @@ public class PersonalDictionary extends Dictionary {
   }
 
   private void load() {
-    File file = File.new(DATA_PATH)
+    File file = File.new($path)
     String data = file.getText()
     Matcher matcher = data =~ /(?s)"(.*?)","(.*?)","(.*?)",(.*?),(.*?),(.*?),"(.*?)"/
     matcher.each() { List<String> matches ->

@@ -13,14 +13,15 @@ import javafx.collections.transformation.SortedList
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary {
 
-  private static final String DATA_PATH = "C:/Apache Software Foundation/Apache2.2/htdocs/lbs/file/dictionary/dictionary/1.txt"
-
-  private String $name = "シャレイア語"
+  private String $name = ""
+  private String $path = ""
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private FilteredList<ShaleiaWord> $filteredWords
   private SortedList<ShaleiaWord> $sortedWords
 
-  public ShaleiaDictionary() {
+  public ShaleiaDictionary(String name, String path) {
+    $name = name
+    $path = path
     load()
     setupWords()
   }
@@ -71,7 +72,7 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   private void load() {
-    File file = File.new(DATA_PATH)
+    File file = File.new($path)
     StringBuilder currentContent = StringBuilder.new()
     file.eachLine() { String line ->
       Matcher matcher = line =~ /^\*\s*(.+)\s*$/
@@ -92,7 +93,7 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   public void save() {
-    File file = File.new(DATA_PATH)
+    File file = File.new($path)
     StringBuilder wholeData = StringBuilder.new()
     $words.each() { ShaleiaWord word ->
       String data = word.getData().trim() + "\n\n"

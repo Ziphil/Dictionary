@@ -10,14 +10,17 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TableView
-import javafx.stage.Stage
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.ShaleiaDictionary
+import ziphil.dictionary.PersonalDictionary
 import ziphil.node.DictionaryTableModel
+import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify
 public class DictionaryTableController implements Initializable {
 
-  private static final String RESOURCE_PATH = "resource/fxml/dictionary_list.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/dictionary_table.fxml"
   private static final String DATA_PATH = "data/dictionaries.txt"
   private static final String TITLE = "登録辞書一覧"
   private static Integer DEFAULT_WIDTH = 640
@@ -27,10 +30,10 @@ public class DictionaryTableController implements Initializable {
 
   public ObservableList<DictionaryTableModel> $dictionaries = FXCollections.observableArrayList()
   
-  private Stage $stage
+  private UtilityStage<Dictionary> $stage
   private Scene $scene
 
-  public DictionaryTableController(Stage stage) {
+  public DictionaryTableController(UtilityStage<Dictionary> stage) {
     $stage = stage
     loadResource()
   }
@@ -65,6 +68,24 @@ public class DictionaryTableController implements Initializable {
     $stage.setScene($scene)
     $stage.setTitle(TITLE)
     $stage.sizeToScene()
+  }
+
+  @FXML
+  private void commitShow() {
+    DictionaryTableModel selectedModel = $table.getSelectionModel().getSelectedItem()
+    String type = selectedModel.getType()
+    Dictionary dictionary
+    if (type == "shaleia") {
+      dictionary = ShaleiaDictionary.new(selectedModel.getName(), selectedModel.getPath())
+    } else if (type == "personal") {
+      dictionary = PersonalDictionary.new(selectedModel.getName(), selectedModel.getPath())
+    }
+    $stage.close(dictionary)
+  }
+
+  @FXML
+  private void cancelShow() {
+    $stage.close()
   }
 
 }

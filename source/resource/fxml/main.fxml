@@ -30,7 +30,7 @@
   <top>
     <MenuBar>
       <Menu text="辞書">
-        <MenuItem text="登録辞書一覧" onAction="#showDictionaryList" accelerator="H3"/>
+        <MenuItem text="登録辞書一覧" onAction="#showDictionaryTable" accelerator="H3"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了"/>
       </Menu>

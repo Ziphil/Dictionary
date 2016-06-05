@@ -42,8 +42,11 @@
   <bottom>
     <AnchorPane>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="新規辞書" minWidth="80" prefWidth="80"/>
-        <Button text="閉じる" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelShow" cancelButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="表示" onAction="#commitShow" defaultButton="true" minWidth="80" prefWidth="80"/>
+      </HBox>
+      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10">
+        <Button text="辞書の追加" cancelButton="true" minWidth="80" prefWidth="80"/>
       </HBox>
     </AnchorPane>
   </bottom>
