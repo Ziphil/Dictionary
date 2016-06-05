@@ -26,6 +26,7 @@ import ziphil.control.ShaleiaEditorController
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.ShaleiaDictionary
+import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
 
 
@@ -115,7 +116,7 @@ public class MainController implements Initializable {
   }
 
   private void setupDictionary() {
-    $dictionary = ShaleiaDictionary.new()
+    $dictionary = PersonalDictionary.new()
     $totalWordSize.setText($dictionary.getRawWords().size().toString())
     $dictionaryName.setText($dictionary.getName())
     $list.setItems($dictionary.getWords())
