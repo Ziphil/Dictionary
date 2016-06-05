@@ -1,4 +1,4 @@
-package ziphil.control
+package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.Initializable
@@ -9,6 +9,7 @@ import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.dictionary.ShaleiaWord
+import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify

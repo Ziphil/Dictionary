@@ -1,4 +1,4 @@
-package ziphil.control
+package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
@@ -11,6 +11,7 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TableView
 import javafx.stage.Stage
+import ziphil.node.DictionaryTableModel
 
 
 @CompileStatic @Newify

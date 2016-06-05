@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import javafx.application.Application
 import javafx.stage.Stage
 import ziphil.Launcher
-import ziphil.control.MainController
+import ziphil.controller.MainController
 
 
 @CompileStatic @Newify

@@ -1,4 +1,4 @@
-package ziphil.control
+package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.Initializable
@@ -22,12 +22,13 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import ziphil.control.ShaleiaEditorController
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
+import ziphil.node.UtilityStage
+import ziphil.node.WordCell
 
 
 @CompileStatic @Newify

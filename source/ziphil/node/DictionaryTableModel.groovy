@@ -1,4 +1,4 @@
-package ziphil.control
+package ziphil.node
 
 import groovy.transform.CompileStatic
 import javafx.beans.property.IntegerProperty
