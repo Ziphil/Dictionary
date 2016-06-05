@@ -231,6 +231,14 @@ public class MainController implements Initializable {
     }
   }
 
+  @FXML
+  private void showDictionaryList() {
+    Stage stage = Stage.new(StageStyle.UTILITY)
+    stage.initOwner($stage)
+    DictionaryTableController controller = DictionaryTableController.new(stage)
+    stage.show()
+  }
+
   public Scene getScene() {
     return $scene
   }

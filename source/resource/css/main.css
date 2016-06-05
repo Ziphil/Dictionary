@@ -38,3 +38,7 @@
   -fx-font-size: 90%;
   -fx-alignment: center-right;
 }
+
+.column-header .text {
+  -fx-font-weight: normal;
+}

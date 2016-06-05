@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <URL value="@../css/main.css"/>
+  </stylesheets>
+  <center>
+    <VBox>
+      <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+      <TableView fx:id="$table">
+        <columns>
+          <TableColumn text="名前" prefWidth="150">
+            <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
+          </TableColumn>
+          <TableColumn text="単語数" prefWidth="90">
+            <cellValueFactory><PropertyValueFactory property="wordSize"/></cellValueFactory>
+          </TableColumn>
+          <TableColumn text="容量" sortable="false" prefWidth="90">
+            <cellValueFactory><PropertyValueFactory property="fileSize"/></cellValueFactory>
+          </TableColumn>
+          <TableColumn text="パス" sortable="false" prefWidth="250">
+            <cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
+          </TableColumn>
+        </columns>
+      </TableView>
+    </VBox>
+  </center>
+  <bottom>
+    <AnchorPane>
+      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
+        <Button text="新規辞書" minWidth="80" prefWidth="80"/>
+        <Button text="閉じる" defaultButton="true" minWidth="80" prefWidth="80"/>
+      </HBox>
+    </AnchorPane>
+  </bottom>
+</BorderPane>
+

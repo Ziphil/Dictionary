@@ -29,13 +29,14 @@
   </stylesheets>
   <top>
     <MenuBar>
-      <Menu text="ファイル">
+      <Menu text="辞書">
+        <MenuItem text="登録辞書一覧" onAction="#showDictionaryList" accelerator="H3"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="終了"/>
       </Menu>
       <Menu text="検索">
       </Menu>
       <Menu text="ツール">
-      </Menu>
-      <Menu text="デバッグ">
       </Menu>
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" accelerator="H1"/>
