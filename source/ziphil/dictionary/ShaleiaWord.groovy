@@ -25,28 +25,26 @@ public class ShaleiaWord extends Word {
   private String $name = ""
   private String $uniqueName = ""
   private List<String> $equivalents = ArrayList.new()
+  private String $data = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
 
-  public ShaleiaWord(String data) {
-    createContentPane(data)
+  public ShaleiaWord(String name, String data) {
+    update(name, data)
   }
 
-  public void update(String data) {
-    createContentPane(data)
-  }
-
-  private void createContentPane(String data) {
+  public void update(String name, String data) {
     HBox headBox = HBox.new()
     VBox equivalentBox = VBox.new()
-    headBox.setAlignment(Pos.CENTER_LEFT)
+    $name = name.replaceAll(/\+|~/, "")
+    $uniqueName = name
+    $data = data
+    $content = name + "\n" + data
     $contentPane.getChildren().clear()
     $contentPane.getChildren().add(headBox)
     $contentPane.getChildren().add(equivalentBox)
     $contentPane.setMargin(equivalentBox, Insets.new(0, 0, 5, 0))
-    $content = data
     data.eachLine() { String line ->
-      Matcher nameMatcher = line =~ /^\*\s*(.*)$/
       Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
       Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
@@ -56,13 +54,12 @@ public class ShaleiaWord extends Word {
       Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
       Matcher noteMatcher = line =~ /^N>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
-      if (nameMatcher.matches()) {
-        Label nameText = Label.new(nameMatcher.group(1).replaceAll(/\+|~/, ""))
+      if (headBox.getChildren().isEmpty()) {
+        Label nameText = Label.new(name.replaceAll(/\+|~/, ""))
         nameText.getStyleClass().addAll("content-text", "head-name", "shaleia-head-name")
         headBox.getChildren().add(nameText)
         headBox.setMargin(nameText, Insets.new(0, 10, 0, 0))
-        $name = nameMatcher.group(1).replaceAll(/\+|~/, "")
-        $uniqueName = nameMatcher.group(1)
+        headBox.setAlignment(Pos.CENTER_LEFT)
       }
       if (creationDateMatcher.matches()) {
         Label wholeClassText = Label.new(creationDateMatcher.group(2))
@@ -157,11 +154,11 @@ public class ShaleiaWord extends Word {
     return $equivalents
   }
 
-  public String getContent() {
-    return $content
+  public String getData() {
+    return $data
   }
 
-  public String getData() {
+  public String getContent() {
     return $content
   }
 

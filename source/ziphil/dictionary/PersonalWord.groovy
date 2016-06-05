@@ -13,6 +13,7 @@ import javafx.scene.text.TextFlow
 public class PersonalWord extends Word {
 
   private String $name = ""
+  private List<String> $equivalents = ArrayList.new()
   private String $translation = ""
   private String $usage = ""
   private Integer $level = 0
@@ -20,8 +21,6 @@ public class PersonalWord extends Word {
   private Integer $modification = 0
   private String $pronunciation = ""
   private String $content = ""
-  private String $data = ""
-  private List<String> $equivalents = ArrayList.new()
   private VBox $contentPane = VBox.new()
 
   public PersonalWord(String name, String translation, String usage, Integer level, Integer memory, Integer modification, String pronunciation) {
@@ -59,10 +58,6 @@ public class PersonalWord extends Word {
 
   public String getContent() {
     return $content
-  }
-
-  public String getData() {
-    return $data
   }
 
   public Pane getContentPane() {

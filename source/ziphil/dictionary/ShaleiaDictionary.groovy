@@ -73,21 +73,24 @@ public class ShaleiaDictionary extends Dictionary {
 
   private void load() {
     File file = File.new($path)
-    StringBuilder currentContent = StringBuilder.new()
+    String currentName = null
+    StringBuilder currentData = StringBuilder.new()
     file.eachLine() { String line ->
       Matcher matcher = line =~ /^\*\s*(.+)\s*$/
       if (matcher.matches()) {
-        if (currentContent.length() > 0) {
-          ShaleiaWord word = ShaleiaWord.new(currentContent.toString())
+        if (currentName != null) {
+          ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
           $words.add(word)
         }
-        currentContent.setLength(0)
+        currentName = matcher.group(1)
+        currentData.setLength(0)
+      } else {
+        currentData.append(line)
+        currentData.append("\n")
       }
-      currentContent.append(line)
-      currentContent.append("\n")
     }
-    if (currentContent.length() > 0) {
-      ShaleiaWord word = ShaleiaWord.new(currentContent.toString())
+    if (currentName != null) {
+      ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
       $words.add(word)
     }
   }
@@ -96,8 +99,10 @@ public class ShaleiaDictionary extends Dictionary {
     File file = File.new($path)
     StringBuilder wholeData = StringBuilder.new()
     $words.each() { ShaleiaWord word ->
-      String data = word.getData().trim() + "\n\n"
-      wholeData.append(data)
+      wholeData.append("* " + word.getUniqueName())
+      wholeData.append("\n")
+      wholeData.append(word.getData().trim())
+      wholeData.append("\n\n")
     }
     file.setText(wholeData.toString(), "UTF-8")
   }

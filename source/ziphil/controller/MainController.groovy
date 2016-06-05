@@ -46,21 +46,17 @@ public class MainController implements Initializable {
   @FXML private TextField $searchText
   @FXML private ComboBox $searchMode
   @FXML private ToggleButton $searchType
-
   @FXML private ContextMenu $editMenu
-  @FXML private MenuItem $modifyMenuItem
-  @FXML private MenuItem $removeMenuItem
-  @FXML private MenuItem $addMenuItem
-  @FXML private MenuItem $addInheritMenuItem
-
+  @FXML private MenuItem $modifyWordItem
+  @FXML private MenuItem $removeWordItem
+  @FXML private MenuItem $addWordItem
+  @FXML private MenuItem $addInheritedWordItem
   @FXML private HBox $footer
   @FXML private Label $dictionaryName
   @FXML private Label $hitWordSize
   @FXML private Label $totalWordSize
   @FXML private Label $elapsedTime
-
   private Dictionary $dictionary
-
   private Stage $stage
   private Scene $scene
 
@@ -72,64 +68,6 @@ public class MainController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     setupList()
     setupFooter()
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle("${TITLE} (ver ${VERSION})")
-    $stage.setMinWidth(MIN_WIDTH)
-    $stage.setMinHeight(MIN_HEIGHT)
-    $stage.sizeToScene()
-  }
-
-  private void setupList() {
-    $list.setCellFactory() { ListView<Word> list ->
-      WordCell cell = WordCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
-        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-          modifyWord(cell.getItem())
-        }
-        if (event.getButton() == MouseButton.SECONDARY) {
-          $editMenu.show(cell, event.getScreenX(), event.getScreenY())
-          $modifyMenuItem.setOnAction() {
-            modifyWord(cell.getItem())
-          }
-          $removeMenuItem.setOnAction() {
-            removeWord(cell.getItem())
-          }
-          $addMenuItem.setOnAction() {
-            addWord()
-          }
-          $addInheritMenuItem.setOnAction() {
-            addInheritWord(cell.getItem())
-          }
-        }
-      }
-      return cell
-    }
-    $list.setId("dictionary-list")
-  }
-
-  private void setupDictionary() {
-    $totalWordSize.setText($dictionary.getRawWords().size().toString())
-    $dictionaryName.setText($dictionary.getName())
-    $list.setItems($dictionary.getWords())
-    $searchText.setText("")
-    $searchText.requestFocus()
-    search()
-  }
-
-  private void setupFooter() {
-    $footer.getChildren().each() { Node node ->
-      if (node instanceof Label) {
-        Label label = (Label)node
-        label.getStyleClass().add("footer")
-      }
-    }
   }
 
   @FXML
@@ -207,7 +145,7 @@ public class MainController implements Initializable {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     stage.initOwner($stage)
     if ($dictionary.getRawWords()[0] instanceof ShaleiaWord) {
-      newWord = ShaleiaWord.new("* \n")
+      newWord = ShaleiaWord.new("", "")
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     }
@@ -218,12 +156,12 @@ public class MainController implements Initializable {
     }
   }
 
-  private void addInheritWord(Word word) {
+  private void addInheritedWord(Word word) {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     stage.initOwner($stage)
     if (word instanceof ShaleiaWord) {
-      newWord = ShaleiaWord.new(word.getData())
+      newWord = ShaleiaWord.new("", "")
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     }
@@ -241,9 +179,67 @@ public class MainController implements Initializable {
     stage.initOwner($stage)
     stage.showAndWait()
     if (stage.getResult() != null) {
-      $dictionary = stage.getResult()
-      setupDictionary()
+      updateDictionary(stage.getResult())
     }
+  }
+
+  private void updateDictionary(Dictionary dictionary) {
+    $dictionary = dictionary
+    $totalWordSize.setText($dictionary.getRawWords().size().toString())
+    $dictionaryName.setText($dictionary.getName())
+    $list.setItems($dictionary.getWords())
+    $searchText.setText("")
+    $searchText.requestFocus()
+    search()
+  }
+
+  private void setupList() {
+    $list.setCellFactory() { ListView<Word> list ->
+      WordCell cell = WordCell.new()
+      cell.setOnMouseClicked() { MouseEvent event ->
+        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+          modifyWord(cell.getItem())
+        }
+        if (event.getButton() == MouseButton.SECONDARY) {
+          $editMenu.show(cell, event.getScreenX(), event.getScreenY())
+          $modifyWordItem.setOnAction() {
+            modifyWord(cell.getItem())
+          }
+          $removeWordItem.setOnAction() {
+            removeWord(cell.getItem())
+          }
+          $addWordItem.setOnAction() {
+            addWord()
+          }
+          $addInheritedWordItem.setOnAction() {
+            addInheritedWord(cell.getItem())
+          }
+        }
+      }
+      return cell
+    }
+    $list.setId("dictionary-list")
+  }
+
+  private void setupFooter() {
+    $footer.getChildren().each() { Node node ->
+      if (node instanceof Label) {
+        Label label = (Label)node
+        label.getStyleClass().add("footer")
+      }
+    }
+  }
+
+  private void loadResource() {
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    loader.setController(this)
+    Parent root = (Parent)loader.load()
+    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
+    $stage.setScene($scene)
+    $stage.setTitle("${TITLE} (ver ${VERSION})")
+    $stage.setMinWidth(MIN_WIDTH)
+    $stage.setMinHeight(MIN_HEIGHT)
+    $stage.sizeToScene()
   }
 
   public Scene getScene() {
