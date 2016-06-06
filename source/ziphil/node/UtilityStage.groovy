@@ -18,6 +18,11 @@ public class UtilityStage<T> extends Stage {
     super(style)
   }
 
+  public T showAndWaitResult() {
+    showAndWait()
+    return $result
+  }
+
   public void close(T result) {
     $result = result
     close()

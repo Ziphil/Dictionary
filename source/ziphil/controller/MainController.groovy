@@ -129,8 +129,8 @@ public class MainController implements Initializable {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(word)
     }
-    stage.showAndWait()
-    if (stage.getResult() != null && stage.getResult()) {
+    Boolean isDone = stage.showAndWaitResult()
+    if (isDone != null && isDone) {
       $dictionary.save()
     }
   }
@@ -149,8 +149,8 @@ public class MainController implements Initializable {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     }
-    stage.showAndWait()
-    if (stage.getResult() != null && stage.getResult()) {
+    Boolean isDone = stage.showAndWaitResult()
+    if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
       $dictionary.save()
     }
@@ -165,8 +165,8 @@ public class MainController implements Initializable {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     }
-    stage.showAndWait()
-    if (stage.getResult() != null && stage.getResult()) {
+    Boolean isDone = stage.showAndWaitResult()
+    if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
       $dictionary.save()
     }
@@ -177,9 +177,9 @@ public class MainController implements Initializable {
     UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryTableController controller = DictionaryTableController.new(stage)
     stage.initOwner($stage)
-    stage.showAndWait()
-    if (stage.getResult() != null) {
-      updateDictionary(stage.getResult())
+    Dictionary dictionary = stage.showAndWaitResult()
+    if (dictionary != null) {
+      updateDictionary(dictionary)
     }
   }
 
