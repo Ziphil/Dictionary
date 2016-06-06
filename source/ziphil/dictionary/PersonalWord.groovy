@@ -14,20 +14,20 @@ public class PersonalWord extends Word {
 
   private String $name = ""
   private List<String> $equivalents = ArrayList.new()
+  private String $pronunciation = ""
   private String $translation = ""
   private String $usage = ""
   private Integer $level = 0
   private Integer $memory = 0
   private Integer $modification = 0
-  private String $pronunciation = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
 
-  public PersonalWord(String name, String translation, String usage, Integer level, Integer memory, Integer modification, String pronunciation) {
-    update(name, translation, usage, level, memory, modification, pronunciation)
+  public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
+    update(name, pronunciation, translation, usage, level, memory, modification)
   }
 
-  public void update(String name, String translation, String usage, Integer level, Integer memory, Integer modification, String pronunciation) {
+  public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     $name = name
     $translation = translation
     $usage = usage
@@ -56,6 +56,10 @@ public class PersonalWord extends Word {
     return null
   }
 
+  public String getPronunciation() {
+    return $pronunciation
+  }
+
   public String getTranslation() {
     return $translation
   }
@@ -74,10 +78,6 @@ public class PersonalWord extends Word {
 
   public Integer getModification() {
     return $modification
-  }
-
-  public String getPronunciation() {
-    return $pronunciation
   }
 
   public String getContent() {

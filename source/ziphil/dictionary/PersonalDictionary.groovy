@@ -60,7 +60,7 @@ public class PersonalDictionary extends Dictionary {
     String data = file.getText()
     Matcher matcher = data =~ /(?s)"(.*?)","(.*?)","(.*?)",(.*?),(.*?),(.*?),"(.*?)"/
     matcher.each() { List<String> matches ->
-      PersonalWord word = PersonalWord.new(matches[1], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger(), matches[7])
+      PersonalWord word = PersonalWord.new(matches[1], matches[7], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger())
       $words.add(word)
     }
   }
