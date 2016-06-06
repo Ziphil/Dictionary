@@ -149,11 +149,11 @@ public class MainController implements Initializable {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     stage.initOwner($stage)
     if ($dictionary.getRawWords()[0] instanceof ShaleiaWord) {
-      newWord = ShaleiaWord.new("", "")
+      newWord = ShaleiaWord.emptyWord()
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     } else if ($dictionary.getRawWords()[0] instanceof PersonalWord) {
-      newWord = PersonalWord.new("", "", "", "", 0, 0, 0)
+      newWord = PersonalWord.emptyWord()
       PersonalEditorController controller = PersonalEditorController.new(stage)
       controller.prepare(newWord)
     }
@@ -169,11 +169,11 @@ public class MainController implements Initializable {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     stage.initOwner($stage)
     if (word instanceof ShaleiaWord) {
-      newWord = ShaleiaWord.new("", "")
+      newWord = ShaleiaWord.copyFrom(word)
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
     } else if (word instanceof PersonalWord) {
-      newWord = PersonalWord.new("", "", "", "", 0, 0, 0)
+      newWord = PersonalWord.copyFrom(word)
       PersonalEditorController controller = PersonalEditorController.new(stage)
       controller.prepare(newWord)
     }

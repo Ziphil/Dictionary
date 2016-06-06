@@ -48,6 +48,21 @@ public class PersonalWord extends Word {
     $content = name + "\n" + translation + "\n" + usage
   }
 
+  public static PersonalWord emptyWord() {
+    return PersonalWord.new("", "", "", "", 0, 0, 0)
+  }
+
+  public static PersonalWord copyFrom(PersonalWord oldWord) {
+    String name = oldWord.getName()
+    String pronunciation = oldWord.getPronunciation()
+    String translation = oldWord.getTranslation()
+    String usage = oldWord.getUsage()
+    Integer level = oldWord.getLevel()
+    Integer memory = oldWord.getMemory()
+    Integer modification = oldWord.getModification()
+    return PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+  }
+
   public String getName() {
     return $name
   }

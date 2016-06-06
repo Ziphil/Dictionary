@@ -142,6 +142,16 @@ public class ShaleiaWord extends Word {
     return convertedString
   }
 
+  public static ShaleiaWord emptyWord() {
+    return ShaleiaWord.new("", "")
+  }
+
+  public static ShaleiaWord copyFrom(ShaleiaWord oldWord) {
+    String name = oldWord.getName()
+    String data = oldWord.getData()
+    return ShaleiaWord.new(name, data)
+  }
+
   public String getName() {
     return $name
   }
