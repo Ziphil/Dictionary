@@ -29,12 +29,12 @@ public class PersonalWord extends Word {
 
   public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     $name = name
+    $pronunciation = pronunciation
     $translation = translation
     $usage = usage
     $level = level
     $memory = memory
     $modification = modification
-    $pronunciation = pronunciation
     Label nameText = Label.new(name)
     Text translationText = Text.new(translation)
     Text usageText = Text.new(usage)
