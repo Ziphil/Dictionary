@@ -23,6 +23,7 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import ziphil.dictionary.ShaleiaWord
+import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
@@ -128,6 +129,9 @@ public class MainController implements Initializable {
     if (word instanceof ShaleiaWord) {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(word)
+    } else if (word instanceof PersonalWord) {
+      PersonalEditorController controller = PersonalEditorController.new(stage)
+      controller.prepare(word)
     }
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
@@ -148,6 +152,10 @@ public class MainController implements Initializable {
       newWord = ShaleiaWord.new("", "")
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
+    } else if ($dictionary.getRawWords()[0] instanceof PersonalWord) {
+      newWord = PersonalWord.new("", "", "", 0, 0, 0, "")
+      PersonalEditorController controller = PersonalEditorController.new(stage)
+      controller.prepare(newWord)
     }
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
@@ -163,6 +171,10 @@ public class MainController implements Initializable {
     if (word instanceof ShaleiaWord) {
       newWord = ShaleiaWord.new("", "")
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+      controller.prepare(newWord)
+    } else if (word instanceof PersonalWord) {
+      newWord = PersonalWord.new("", "", "", 0, 0, 0, "")
+      PersonalEditorController controller = PersonalEditorController.new(stage)
       controller.prepare(newWord)
     }
     Boolean isDone = stage.showAndWaitResult()

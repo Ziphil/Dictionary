@@ -56,6 +56,30 @@ public class PersonalWord extends Word {
     return null
   }
 
+  public String getTranslation() {
+    return $translation
+  }
+
+  public String getUsage() {
+    return $usage
+  }
+
+  public Integer getLevel() {
+    return $level
+  }
+
+  public Integer getMemory() {
+    return $memory
+  }
+
+  public Integer getModification() {
+    return $modification
+  }
+
+  public String getPronunciation() {
+    return $pronunciation
+  }
+
   public String getContent() {
     return $content
   }
