@@ -25,6 +25,7 @@ import javafx.stage.Modality
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
@@ -125,13 +126,14 @@ public class MainController implements Initializable {
 
   private void modifyWord(Word word) {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryType dictionaryType = $dictionary.getType()
     stage.initOwner($stage)
-    if (word instanceof ShaleiaWord) {
+    if (dictionaryType == DictionaryType.SHALEIA) {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-      controller.prepare(word)
-    } else if (word instanceof PersonalWord) {
+      controller.prepare((ShaleiaWord)word)
+    } else if (dictionaryType == DictionaryType.PERSONAL) {
       PersonalEditorController controller = PersonalEditorController.new(stage)
-      controller.prepare(word)
+      controller.prepare((PersonalWord)word)
     }
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
@@ -147,12 +149,13 @@ public class MainController implements Initializable {
   private void addWord() {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryType dictionaryType = $dictionary.getType()
     stage.initOwner($stage)
-    if ($dictionary.getRawWords()[0] instanceof ShaleiaWord) {
+    if (dictionaryType == DictionaryType.SHALEIA) {
       newWord = ShaleiaWord.emptyWord()
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
-    } else if ($dictionary.getRawWords()[0] instanceof PersonalWord) {
+    } else if (dictionaryType == DictionaryType.PERSONAL) {
       newWord = PersonalWord.emptyWord()
       PersonalEditorController controller = PersonalEditorController.new(stage)
       controller.prepare(newWord)
@@ -167,13 +170,14 @@ public class MainController implements Initializable {
   private void addInheritedWord(Word word) {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryType dictionaryType = $dictionary.getType()
     stage.initOwner($stage)
-    if (word instanceof ShaleiaWord) {
-      newWord = ShaleiaWord.copyFrom(word)
+    if (dictionaryType == DictionaryType.SHALEIA) {
+      newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
       controller.prepare(newWord)
-    } else if (word instanceof PersonalWord) {
-      newWord = PersonalWord.copyFrom(word)
+    } else if (dictionaryType == DictionaryType.PERSONAL) {
+      newWord = PersonalWord.copyFrom((PersonalWord)word)
       PersonalEditorController controller = PersonalEditorController.new(stage)
       controller.prepare(newWord)
     }

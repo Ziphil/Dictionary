@@ -125,8 +125,16 @@ public class ShaleiaDictionary extends Dictionary {
     }
   }
 
+  public Boolean supportsEquivalent() {
+    return true
+  }
+
   public String getName() {
     return $name
+  }
+
+  public DictionaryType getType() {
+    return DictionaryType.SHALEIA
   }
 
   public ObservableList<? extends Word> getWords() {

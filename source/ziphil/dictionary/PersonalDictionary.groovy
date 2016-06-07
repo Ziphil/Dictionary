@@ -76,8 +76,16 @@ public class PersonalDictionary extends Dictionary {
     }
   }
 
+  public Boolean supportsEquivalent() {
+    return false
+  }
+
   public String getName() {
     return $name
+  }
+
+  public DictionaryType getType() {
+    return DictionaryType.PERSONAL
   }
 
   public ObservableList<? extends Word> getWords() {
