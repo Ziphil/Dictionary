@@ -10,6 +10,9 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TableView
+import javafx.scene.control.TextField
+import javafx.stage.Modality
+import javafx.stage.StageStyle
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
@@ -27,6 +30,7 @@ public class DictionaryTableController implements Initializable {
   private static Integer DEFAULT_HEIGHT = 320
 
   @FXML private TableView<DictionaryTableModel> $table
+  @FXML private TextField $fileName
   public ObservableList<DictionaryTableModel> $dictionaries = FXCollections.observableArrayList()
   private UtilityStage<Dictionary> $stage
   private Scene $scene
@@ -39,6 +43,18 @@ public class DictionaryTableController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     loadDictionaryData()
     setupTable()
+  }
+
+  @FXML
+  private void browseFiles() {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    FileChooserController controller = FileChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    File file = stage.showAndWaitResult()
+    if (file != null) {
+      $fileName.setText(file.toString())
+    }
   }
 
   @FXML
