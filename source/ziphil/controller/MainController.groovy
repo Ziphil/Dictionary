@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
-import javafx.stage.Stage
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
@@ -22,6 +21,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import javafx.stage.Modality
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
@@ -188,6 +188,7 @@ public class MainController implements Initializable {
   private void showDictionaryTable() {
     UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryTableController controller = DictionaryTableController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
     Dictionary dictionary = stage.showAndWaitResult()
     if (dictionary != null) {
