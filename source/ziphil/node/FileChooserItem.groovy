@@ -5,10 +5,16 @@ import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 
 
 @CompileStatic @Newify
 public class FileChooserItem extends TreeItem<String> {
+
+  private static final String FILE_ICON_PATH = "resource/icon/file.png"
+  private static final String DIRECTORY_ICON_PATH = "resource/icon/directory.png"
+  private static final String DRIVE_ICON_PATH = "resource/icon/drive.png"
 
   private File $file 
 
@@ -35,6 +41,20 @@ public class FileChooserItem extends TreeItem<String> {
   }
 
   private void setupGraphic() {
+    Image icon
+    if ($file != null) {
+      if ($file.isDirectory()) {
+        String name = $file.getName()
+        if (name == "") {
+          icon = Image.new(getClass().getClassLoader().getResourceAsStream(DRIVE_ICON_PATH))
+        } else {
+          icon = Image.new(getClass().getClassLoader().getResourceAsStream(DIRECTORY_ICON_PATH))
+        }
+      } else {
+        icon = Image.new(getClass().getClassLoader().getResourceAsStream(FILE_ICON_PATH))
+      }
+    }
+    setGraphic(ImageView.new(icon))
   }
 
   public boolean isLeaf(){
