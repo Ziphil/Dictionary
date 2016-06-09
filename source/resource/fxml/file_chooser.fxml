@@ -15,6 +15,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <URL value="@../css/main.css"/>
+    <URL value="@../css/modification.css"/>
   </stylesheets>
   <center>
     <VBox>

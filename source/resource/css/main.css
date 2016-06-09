@@ -38,15 +38,3 @@
   -fx-font-size: 90%;
   -fx-alignment: center-right;
 }
-
-.column-header .text {
-  -fx-font-weight: normal;
-}
-
-.text-input.left-pill {
-  -fx-background-radius: 3 0 0 3, 2 0 0 2;
-}
-
-.text-input.left-pill:focused {
-  -fx-background-radius: 3 0 0 3, 2 0 0 2, 4 0 0 4, 0;
-}
