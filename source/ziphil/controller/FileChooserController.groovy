@@ -8,9 +8,9 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import ziphil.custom.FileChooser
+import ziphil.custom.FileChooserItem
 import ziphil.dictionary.ShaleiaWord
-import ziphil.node.FileChooser
-import ziphil.node.FileChooserItem
 import ziphil.node.UtilityStage
 
 
