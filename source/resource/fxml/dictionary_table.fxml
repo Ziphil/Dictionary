@@ -32,10 +32,10 @@
           <TableColumn text="単語数" prefWidth="90">
             <cellValueFactory><PropertyValueFactory property="wordSize"/></cellValueFactory>
           </TableColumn>
-          <TableColumn text="容量" sortable="false" prefWidth="90">
+          <TableColumn text="サイズ" sortable="false" prefWidth="90">
             <cellValueFactory><PropertyValueFactory property="fileSize"/></cellValueFactory>
           </TableColumn>
-          <TableColumn text="パス" sortable="false" prefWidth="250">
+          <TableColumn text="ファイル名" sortable="false" prefWidth="250">
             <cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
           </TableColumn>
         </columns>
