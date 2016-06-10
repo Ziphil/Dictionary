@@ -10,58 +10,58 @@ import javafx.beans.property.StringProperty
 @CompileStatic @Newify
 public class DictionaryTableModel {
 
-  private StringProperty $nameProperty = SimpleStringProperty.new()
-  private StringProperty $typeProperty = SimpleStringProperty.new()
-  private IntegerProperty $wordSizeProperty = SimpleIntegerProperty.new()
-  private IntegerProperty $fileSizeProperty = SimpleIntegerProperty.new()
-  private StringProperty $pathProperty = SimpleStringProperty.new()
+  private StringProperty $name = SimpleStringProperty.new()
+  private StringProperty $type = SimpleStringProperty.new()
+  private IntegerProperty $wordSize = SimpleIntegerProperty.new()
+  private IntegerProperty $fileSize = SimpleIntegerProperty.new()
+  private StringProperty $path = SimpleStringProperty.new()
 
   public DictionaryTableModel(String name, String type, String path) {
-    $nameProperty.set(name)
-    $typeProperty.set(type)
-    $wordSizeProperty.set(0)
-    $fileSizeProperty.set(0)
-    $pathProperty.set(path)
+    $name.set(name)
+    $type.set(type)
+    $wordSize.set(0)
+    $fileSize.set(0)
+    $path.set(path)
   }
 
   public String getName() {
-    return $nameProperty.get()
+    return $name.get()
   }
 
   public StringProperty nameProperty() {
-    return $nameProperty
+    return $name
   }
 
   public String getType() {
-    return $typeProperty.get()
+    return $type.get()
   }
 
   public StringProperty typeProperty() {
-    return $typeProperty
+    return $type
   }
 
   public Integer getWordSize() {
-    return $wordSizeProperty.get()
+    return $wordSize.get()
   }
 
   public IntegerProperty wordSizeProperty() {
-    return $wordSizeProperty
+    return $wordSize
   }
 
   public Integer getFileSize() {
-    return $fileSizeProperty.get()
+    return $fileSize.get()
   }
 
   public IntegerProperty fileSizeProperty() {
-    return $fileSizeProperty
+    return $fileSize
   }
 
   public String getPath() {
-    return $pathProperty.get()
+    return $path.get()
   }
 
   public StringProperty pathProperty() {
-    return $pathProperty
+    return $path
   }
 
 }
