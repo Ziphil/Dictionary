@@ -17,10 +17,10 @@ import ziphil.node.UtilityStage
 @CompileStatic @Newify
 public class FileChooserController {
 
-  private static String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
   private static final String TITLE = "参照"
-  private static Integer DEFAULT_WIDTH = 640
-  private static Integer DEFAULT_HEIGHT = 480
+  private static final Integer DEFAULT_WIDTH = 640
+  private static final Integer DEFAULT_HEIGHT = 480
 
   @FXML private FileChooser $chooser
   private UtilityStage<File> $stage

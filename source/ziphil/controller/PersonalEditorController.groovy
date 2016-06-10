@@ -15,10 +15,10 @@ import ziphil.node.UtilityStage
 @CompileStatic @Newify
 public class PersonalEditorController {
 
-  private static String RESOURCE_PATH = "resource/fxml/personal_editor.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/personal_editor.fxml"
   private static final String TITLE = "単語編集"
-  private static Integer DEFAULT_WIDTH = 640
-  private static Integer DEFAULT_HEIGHT = 480
+  private static final Integer DEFAULT_WIDTH = 640
+  private static final Integer DEFAULT_HEIGHT = 480
 
   @FXML private TextField $name
   @FXML private TextField $pronunciation
