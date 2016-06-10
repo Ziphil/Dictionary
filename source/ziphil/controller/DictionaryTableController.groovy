@@ -23,7 +23,7 @@ import ziphil.node.UtilityStage
 public class DictionaryTableController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_table.fxml"
-  private static final String DATA_PATH = "data/dictionaries.txt"
+  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.txt"
   private static final String TITLE = "登録辞書一覧"
   private static Integer DEFAULT_WIDTH = 640
   private static Integer DEFAULT_HEIGHT = 320
@@ -75,7 +75,7 @@ public class DictionaryTableController {
   }
 
   private void loadDictionaryData() {
-    File file = File.new(DATA_PATH)
+    File file = File.new(DICTIONARY_DATA_PATH)
     $dictionaries.clear()
     if (file.exists()) {
       file.eachLine() { String line ->
