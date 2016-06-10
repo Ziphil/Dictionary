@@ -44,7 +44,7 @@
         <MenuItem text="ヘルプ" accelerator="F1"/>
         <SeparatorMenuItem/>
         <MenuItem text="公式サイト"/>
-        <MenuItem text="人工言語辞典について"/>
+        <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
   </top>

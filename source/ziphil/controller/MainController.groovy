@@ -208,6 +208,15 @@ public class MainController {
     stage.showAndWait()
   }
 
+  @FXML
+  private void showApplicationInformation() {
+    Stage stage = Stage.new(StageStyle.UTILITY)
+    ApplicationInformationController controller = ApplicationInformationController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait()
+  }
+
   private void updateDictionary(Dictionary dictionary) {
     $dictionary = dictionary
     $totalWordSize.setText($dictionary.getRawWords().size().toString())

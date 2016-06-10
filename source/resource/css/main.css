@@ -38,3 +38,13 @@
   -fx-font-size: 90%;
   -fx-alignment: center-right;
 }
+
+.application-name {
+  -fx-font-size: 200%;
+  -fx-font-weight: bold;
+}
+
+.application-version {
+  -fx-font-size: 120%;
+  -fx-font-weight: bold;
+}
