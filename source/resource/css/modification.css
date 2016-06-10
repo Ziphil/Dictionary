@@ -12,3 +12,32 @@
 .text-input.left-pill:focused {
   -fx-background-radius: 3 0 0 3, 2 0 0 2, 4 0 0 4, 0;
 }
+
+.tree-cell:odd {
+  -fx-background: -fx-control-inner-background-alt;
+}
+
+.split-pane {
+  -fx-background-color: -fx-control-inner-background;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+.split-pane > .split-pane-divider {
+  -fx-background-color: -fx-background;
+  -fx-background-insets: 0;
+  -fx-padding: 0 3 0 2;
+}
+
+.split-pane > * > .list-view,
+.split-pane > * > .table-view,
+.split-pane > * > .tree-view {
+  -fx-background-insets: 0, 1;
+  -fx-padding: 1;
+}
+
+.split-pane > * > .list-view:focused,
+.split-pane > * > .table-view:focused,
+.split-pane > * > .tree-view:focused {
+  -fx-background-insets: -1.4, -0.3, 1;
+}
