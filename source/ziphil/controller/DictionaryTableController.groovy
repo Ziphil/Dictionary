@@ -88,6 +88,10 @@ public class DictionaryTableController {
     }
   }
 
+  private void setupTable() {
+    $table.setItems($dictionaries)
+  }
+
   private void loadResource() {
     FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
     loader.setController(this)
@@ -96,10 +100,6 @@ public class DictionaryTableController {
     $stage.setScene($scene)
     $stage.setTitle(TITLE)
     $stage.sizeToScene()
-  }
-
-  private void setupTable() {
-    $table.setItems($dictionaries)
   }
 
 }
