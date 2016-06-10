@@ -59,14 +59,18 @@ public class DictionaryTableController {
   @FXML
   private void commitShow() {
     DictionaryTableModel selectedModel = $table.getSelectionModel().getSelectedItem()
-    String type = selectedModel.getType()
-    Dictionary dictionary
-    if (type == "shaleia") {
-      dictionary = ShaleiaDictionary.new(selectedModel.getName(), selectedModel.getPath())
-    } else if (type == "personal") {
-      dictionary = PersonalDictionary.new(selectedModel.getName(), selectedModel.getPath())
+    if (selectedModel != null) {
+      String type = selectedModel.getType()
+      Dictionary dictionary
+      if (type == "shaleia") {
+        dictionary = ShaleiaDictionary.new(selectedModel.getName(), selectedModel.getPath())
+      } else if (type == "personal") {
+        dictionary = PersonalDictionary.new(selectedModel.getName(), selectedModel.getPath())
+      }
+      $stage.close(dictionary)
+    } else {
+      $stage.close()
     }
-    $stage.close(dictionary)
   }
 
   @FXML
