@@ -30,8 +30,9 @@
   </stylesheets>
   <top>
     <MenuBar>
-      <Menu text="辞書">
+      <Menu text="ファイル">
         <MenuItem text="登録辞書一覧" onAction="#showDictionaryTable" accelerator="F3"/>
+        <MenuItem text="新規辞書の追加"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了"/>
       </Menu>
