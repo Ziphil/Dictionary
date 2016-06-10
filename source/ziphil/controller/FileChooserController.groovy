@@ -9,7 +9,7 @@ import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.custom.FileChooser
-import ziphil.custom.FileChooserItem
+import ziphil.custom.DirectoryItem
 import ziphil.dictionary.ShaleiaWord
 import ziphil.node.UtilityStage
 
@@ -33,8 +33,8 @@ public class FileChooserController {
 
   @FXML
   private void commitChoose() {
-    FileChooserItem item = (FileChooserItem)$chooser.getSelectionModel().getSelectedItems()[0]
-    $stage.close(item.getFile())
+    File file = $chooser.getSelectedFile()
+    $stage.close(file)
   }
 
   @FXML
