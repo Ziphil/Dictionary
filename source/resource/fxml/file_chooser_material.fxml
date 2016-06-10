@@ -23,8 +23,15 @@
     <TextField fx:id="$directory" HBox.hgrow="always"/>
   </HBox>
   <SplitPane fx:id="$splitPane" VBox.vgrow="always">
-    <TreeView fx:id="$directoryTree"/>
-    <ListView fx:id="$fileList"/>
+    <VBox.margin><Insets top="-5" bottom="-5" left="-5" right="-5" /></VBox.margin>
+    <VBox>
+      <padding><Insets top="5" bottom="5" left="5" right="2"/></padding>
+      <TreeView fx:id="$directoryTree"/>
+    </VBox>
+    <VBox>
+      <padding><Insets top="5" bottom="5" left="3" right="5"/></padding>
+      <ListView fx:id="$fileList"/>
+    </VBox>
   </SplitPane>
   <HBox spacing="5" alignment="center">
     <Label text="ファイル:"/>

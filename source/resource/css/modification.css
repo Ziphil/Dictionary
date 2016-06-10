@@ -18,7 +18,7 @@
 }
 
 .split-pane {
-  -fx-background-color: -fx-control-inner-background;
+  -fx-background-color: -fx-background;
   -fx-background-insets: 0;
   -fx-padding: 0;
 }
@@ -26,7 +26,7 @@
 .split-pane > .split-pane-divider {
   -fx-background-color: -fx-background;
   -fx-background-insets: 0;
-  -fx-padding: 0 3 0 2;
+  -fx-padding: 0;
 }
 
 .split-pane > * > .list-view,
