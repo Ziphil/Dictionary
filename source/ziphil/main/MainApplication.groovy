@@ -1,6 +1,5 @@
 package ziphil.main
 
-import org.scenicview.ScenicView
 import groovy.transform.CompileStatic
 import javafx.application.Application
 import javafx.stage.Stage
@@ -19,9 +18,6 @@ public class MainApplication extends Application {
   private void load(Stage stage) {
     MainController controller = MainController.new(stage)
     stage.show()
-    if (Launcher.DEBUG) {
-      ScenicView.show(controller.getScene())
-    }
   }
 
   private void setupStylesheet() {
