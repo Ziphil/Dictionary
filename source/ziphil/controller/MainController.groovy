@@ -200,6 +200,15 @@ public class MainController {
     }
   }
 
+  @FXML
+  private void loadNewDictionary() {
+    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryLoaderController controller = DictionaryLoaderController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait()
+  }
+
   private void updateDictionary(Dictionary dictionary) {
     $dictionary = dictionary
     $totalWordSize.setText($dictionary.getRawWords().size().toString())

@@ -29,8 +29,7 @@ public class DictionaryTableController {
   private static Integer DEFAULT_HEIGHT = 320
 
   @FXML private TableView<DictionaryTableModel> $table
-  @FXML private TextField $fileName
-  public ObservableList<DictionaryTableModel> $dictionaries = FXCollections.observableArrayList()
+  private ObservableList<DictionaryTableModel> $dictionaries = FXCollections.observableArrayList()
   private UtilityStage<Dictionary> $stage
   private Scene $scene
 
@@ -46,14 +45,14 @@ public class DictionaryTableController {
   }
 
   @FXML
-  private void browseFiles() {
-    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    FileChooserController controller = FileChooserController.new(stage)
+  private void loadNewDictionary() {
+    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryLoaderController controller = DictionaryLoaderController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
-    File file = stage.showAndWaitResult()
-    if (file != null) {
-      $fileName.setText(file.toString())
+    Boolean isDone = stage.showAndWaitResult()
+    if (isDone != null && isDone) {
+      loadDictionaryData()
     }
   }
 
@@ -77,6 +76,7 @@ public class DictionaryTableController {
 
   private void loadDictionaryData() {
     File file = File.new(DATA_PATH)
+    $dictionaries.clear()
     if (file.exists()) {
       file.eachLine() { String line ->
         Matcher matcher = line =~ /^"(.*)",\s*"(.*)",\s*"(.*)"$/

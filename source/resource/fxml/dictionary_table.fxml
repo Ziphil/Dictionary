@@ -40,18 +40,11 @@
           </TableColumn>
         </columns>
       </TableView>
-      <HBox spacing="5" alignment="center">
-        <Label text="新規辞書の追加:" minWidth="-Infinity"/>
-        <HBox HBox.hgrow="always">
-          <TextField fx:id="$fileName" HBox.hgrow="always" styleClass="left-pill"/>
-          <Button text="参照" onAction="#browseFiles" minWidth="60" prefWidth="60" styleClass="right-pill"/>
-        </HBox>
-        <Button text="追加" minWidth="80" prefWidth="80"/>
-      </HBox>
     </VBox>
   </center>
   <bottom>
     <AnchorPane>
+      <Button text="辞書の追加" onAction="#loadNewDictionary" minWidth="80" prefWidth="80" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
         <Button text="キャンセル" onAction="#cancelShow" cancelButton="true" minWidth="80" prefWidth="80"/>
         <Button text="表示" onAction="#commitShow" defaultButton="true" minWidth="80" prefWidth="80"/>
