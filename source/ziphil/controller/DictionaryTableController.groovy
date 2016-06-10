@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.fxml.Initializable
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -21,7 +20,7 @@ import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify
-public class DictionaryTableController implements Initializable {
+public class DictionaryTableController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_table.fxml"
   private static final String DATA_PATH = "data/dictionaries.txt"
@@ -40,7 +39,8 @@ public class DictionaryTableController implements Initializable {
     loadResource()
   }
 
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  public void initialize() {
     loadDictionaryData()
     setupTable()
   }

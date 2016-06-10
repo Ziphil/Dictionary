@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.fxml.Initializable
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -34,7 +33,7 @@ import ziphil.node.WordCell
 
 
 @CompileStatic @Newify
-public class MainController implements Initializable {
+public class MainController {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
   private static final String TITLE = "ZpDIC alpha"
@@ -67,7 +66,8 @@ public class MainController implements Initializable {
     loadResource()
   }
 
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  public void initialize() {
     setupList()
     setupFooter()
   }

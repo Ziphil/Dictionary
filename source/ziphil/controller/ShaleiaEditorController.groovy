@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.fxml.Initializable
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
