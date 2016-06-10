@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import ziphil.Launcher
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
@@ -36,8 +37,6 @@ import ziphil.node.WordCell
 public class MainController {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
-  private static final String TITLE = "ZpDIC alpha"
-  private static final String VERSION = "0.0.0α"
   private static final Integer DEFAULT_WIDTH = 720
   private static final Integer DEFAULT_HEIGHT = 720
   private static final Integer MIN_WIDTH = 360
@@ -262,7 +261,7 @@ public class MainController {
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     $stage.setScene($scene)
-    $stage.setTitle("${TITLE} (ver ${VERSION})")
+    $stage.setTitle("${Launcher.TITLE} (ver ${Launcher.VERSION})")
     $stage.setMinWidth(MIN_WIDTH)
     $stage.setMinHeight(MIN_HEIGHT)
     $stage.sizeToScene()
