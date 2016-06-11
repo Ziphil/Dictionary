@@ -26,22 +26,25 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <URL value="@../css/main.css"/>
+    <URL value="@../css/modification.css"/>
   </stylesheets>
   <top>
     <MenuBar>
       <Menu text="ファイル">
+        <MenuItem text="登録辞書一覧" onAction="#showDictionaryTable" accelerator="F3"/>
+        <MenuItem text="新規辞書の追加" onAction="#loadNewDictionary"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="終了" onAction="#exit"/>
       </Menu>
       <Menu text="検索">
       </Menu>
       <Menu text="ツール">
       </Menu>
-      <Menu text="デバッグ">
-      </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" accelerator="H1"/>
+        <MenuItem text="ヘルプ" accelerator="F1"/>
         <SeparatorMenuItem/>
         <MenuItem text="公式サイト"/>
-        <MenuItem text="人工言語辞典について"/>
+        <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
   </top>
@@ -80,11 +83,11 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$modifyMenuItem" text="編集"/>
-        <MenuItem fx:id="$removeMenuItem" text="削除"/>
+        <MenuItem fx:id="$modifyWordItem" text="編集"/>
+        <MenuItem fx:id="$removeWordItem" text="削除"/>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$addMenuItem" text="新規作成"/>
-        <MenuItem fx:id="$addInheritMenuItem" text="この単語から新規作成"/>
+        <MenuItem fx:id="$addWordItem" text="新規作成"/>
+        <MenuItem fx:id="$addInheritedWordItem" text="この単語から新規作成"/>
       </items>
     </ContextMenu>
   </fx:define>

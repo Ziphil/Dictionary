@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.FileChooser?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <URL value="@../css/main.css"/>
+    <URL value="@../css/modification.css"/>
+  </stylesheets>
+  <center>
+    <VBox spacing="15" alignment="center">
+      <padding><Insets top="20" bottom="20" left="30" right="30"/></padding>
+      <VBox alignment="center"> 
+        <Label text="ZpDIC" styleClass="application-name"/>
+        <Label fx:id="$version" styleClass="application-version"/>
+      </VBox>
+      <HBox spacing="10">
+        <Label text="Copyright © 2016"/>
+        <Label text="Ziphil Aleshlas"/>
+      </HBox>
+    </VBox>
+  </center>
+</BorderPane>
+

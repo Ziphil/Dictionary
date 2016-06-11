@@ -1,4 +1,4 @@
-package ziphil.control
+package ziphil.node
 
 import groovy.transform.CompileStatic
 import javafx.stage.Stage
@@ -16,6 +16,11 @@ public class UtilityStage<T> extends Stage {
 
   public UtilityStage(StageStyle style) {
     super(style)
+  }
+
+  public T showAndWaitResult() {
+    showAndWait()
+    return $result
   }
 
   public void close(T result) {

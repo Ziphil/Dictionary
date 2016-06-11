@@ -15,7 +15,11 @@ public abstract class Dictionary {
 
   public abstract void save()
 
+  public abstract Boolean supportsEquivalent()
+
   public abstract String getName()
+
+  public abstract DictionaryType getType()
 
   public abstract ObservableList<? extends Word> getWords()
 

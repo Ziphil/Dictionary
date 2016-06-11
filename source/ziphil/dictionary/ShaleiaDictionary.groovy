@@ -13,14 +13,15 @@ import javafx.collections.transformation.SortedList
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary {
 
-  private static final String DATA_PATH = "C:/Apache Software Foundation/Apache2.2/htdocs/lbs/file/dictionary/dictionary/1.txt"
-
-  private String $name = "シャレイア語"
+  private String $name = ""
+  private String $path = ""
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private FilteredList<ShaleiaWord> $filteredWords
   private SortedList<ShaleiaWord> $sortedWords
 
-  public ShaleiaDictionary() {
+  public ShaleiaDictionary(String name, String path) {
+    $name = name
+    $path = path
     load()
     setupWords()
   }
@@ -71,34 +72,39 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   private void load() {
-    File file = File.new(DATA_PATH)
-    StringBuilder currentContent = StringBuilder.new()
+    File file = File.new($path)
+    String currentName = null
+    StringBuilder currentData = StringBuilder.new()
     file.eachLine() { String line ->
       Matcher matcher = line =~ /^\*\s*(.+)\s*$/
       if (matcher.matches()) {
-        if (currentContent.length() > 0) {
-          ShaleiaWord word = ShaleiaWord.new(currentContent.toString())
+        if (currentName != null) {
+          ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
           $words.add(word)
         }
-        currentContent.setLength(0)
+        currentName = matcher.group(1)
+        currentData.setLength(0)
+      } else {
+        currentData.append(line)
+        currentData.append("\n")
       }
-      currentContent.append(line)
-      currentContent.append("\n")
     }
-    if (currentContent.length() > 0) {
-      ShaleiaWord word = ShaleiaWord.new(currentContent.toString())
+    if (currentName != null) {
+      ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
       $words.add(word)
     }
   }
 
   public void save() {
-    File file = File.new(DATA_PATH)
-    StringBuilder wholeData = StringBuilder.new()
+    File file = File.new($path)
+    StringBuilder output = StringBuilder.new()
     $words.each() { ShaleiaWord word ->
-      String data = word.getData().trim() + "\n\n"
-      wholeData.append(data)
+      output.append("* " + word.getUniqueName())
+      output.append("\n")
+      output.append(word.getData().trim())
+      output.append("\n\n")
     }
-    file.setText(wholeData.toString(), "UTF-8")
+    file.setText(output.toString(), "UTF-8")
   }
 
   private void setupWords() {
@@ -119,8 +125,16 @@ public class ShaleiaDictionary extends Dictionary {
     }
   }
 
+  public Boolean supportsEquivalent() {
+    return true
+  }
+
   public String getName() {
     return $name
+  }
+
+  public DictionaryType getType() {
+    return DictionaryType.SHALEIA
   }
 
   public ObservableList<? extends Word> getWords() {

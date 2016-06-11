@@ -1,0 +1,55 @@
+// @charset "utf-8";
+
+
+.column-header .text {
+  -fx-font-weight: normal;
+}
+
+.text-input.left-pill {
+  -fx-background-radius: 3 0 0 3, 2 0 0 2;
+}
+
+.text-input.left-pill:focused {
+  -fx-background-radius: 3 0 0 3, 2 0 0 2, 4 0 0 4, 0;
+}
+
+.tree-cell:odd {
+  -fx-background: -fx-control-inner-background-alt;
+}
+
+.tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
+  -fx-background: -fx-selection-bar;
+}
+
+.tree-cell:filled:selected {
+  -fx-background: -fx-selection-bar-non-focused;
+}
+
+.tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:focused {
+  -fx-background-color: -fx-background, -fx-cell-focus-inner-border, -fx-background;
+}
+
+.split-pane {
+  -fx-background-color: -fx-background;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+.split-pane > .split-pane-divider {
+  -fx-background-color: -fx-background;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+.split-pane > * > .list-view,
+.split-pane > * > .table-view,
+.split-pane > * > .tree-view {
+  -fx-background-insets: 0, 1;
+  -fx-padding: 1;
+}
+
+.split-pane > * > .list-view:focused,
+.split-pane > * > .table-view:focused,
+.split-pane > * > .tree-view:focused {
+  -fx-background-insets: -1.4, -0.3, 1;
+}
