@@ -29,7 +29,7 @@ import javafx.scene.layout.VBox
 @CompileStatic @Newify
 public class FileChooser extends VBox {
 
-  private static final String RESOURCE_PATH = "resource/fxml/file_chooser_material.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
   private static final Comparator<File> FILE_COMPARATOR = createFileComparator()
 
   @FXML private TreeView<File> $directoryTree

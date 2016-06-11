@@ -14,9 +14,9 @@ import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify
-public class FileChooserController {
+public class DictionaryChooserController {
 
-  private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/dictionary_chooser.fxml"
   private static final String TITLE = "参照"
   private static final Integer DEFAULT_WIDTH = 640
   private static final Integer DEFAULT_HEIGHT = 480
@@ -25,7 +25,7 @@ public class FileChooserController {
   private UtilityStage<File> $stage
   private Scene $scene
 
-  public FileChooserController(UtilityStage<File> stage) {
+  public DictionaryChooserController(UtilityStage<File> stage) {
     $stage = stage
     loadResource()
   }

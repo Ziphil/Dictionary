@@ -36,7 +36,7 @@ public class DictionaryLoaderController {
   @FXML
   private void browseFiles() {
     UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    FileChooserController controller = FileChooserController.new(stage)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
     File file = stage.showAndWaitResult()
