@@ -17,6 +17,18 @@
   -fx-background: -fx-control-inner-background-alt;
 }
 
+.tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
+  -fx-background: -fx-selection-bar;
+}
+
+.tree-cell:filled:selected {
+  -fx-background: -fx-selection-bar-non-focused;
+}
+
+.tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:focused {
+  -fx-background-color: -fx-background, -fx-cell-focus-inner-border, -fx-background;
+}
+
 .split-pane {
   -fx-background-color: -fx-background;
   -fx-background-insets: 0;
