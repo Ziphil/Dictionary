@@ -9,7 +9,7 @@ public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
   public static final String VERSION = "0.0.0α"
-  public static final String DATE = "1601"
+  public static final String DATE = "1602"
   public static final Boolean DEBUG = false
 
   public static void main(String... args) {
