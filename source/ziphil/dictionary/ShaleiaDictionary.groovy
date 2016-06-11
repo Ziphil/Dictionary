@@ -97,14 +97,14 @@ public class ShaleiaDictionary extends Dictionary {
 
   public void save() {
     File file = File.new($path)
-    StringBuilder wholeData = StringBuilder.new()
+    StringBuilder output = StringBuilder.new()
     $words.each() { ShaleiaWord word ->
-      wholeData.append("* " + word.getUniqueName())
-      wholeData.append("\n")
-      wholeData.append(word.getData().trim())
-      wholeData.append("\n\n")
+      output.append("* " + word.getUniqueName())
+      output.append("\n")
+      output.append(word.getData().trim())
+      output.append("\n\n")
     }
-    file.setText(wholeData.toString(), "UTF-8")
+    file.setText(output.toString(), "UTF-8")
   }
 
   private void setupWords() {
