@@ -50,7 +50,15 @@ public class PersonalEditorController {
 
   @FXML
   private void commitEdit() {
-    $stage.close(false)
+    String name = $name.getText()
+    String pronunciation = $pronunciation.getText()
+    String translation = $translation.getText()
+    String usage = $usage.getText()
+    Integer level = $level.getValue()
+    Integer memory = $memory.getValue()
+    Integer modification = $modification.getValue()
+    $word.update(name, pronunciation, translation, usage, level, memory, modification)
+    $stage.close(true)
   }
 
   @FXML
