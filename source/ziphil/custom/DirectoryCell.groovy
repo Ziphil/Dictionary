@@ -5,6 +5,7 @@ import java.util.regex.Matcher
 import javafx.scene.control.TreeCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import ziphilib.transform.ConvertPrimitive
 
 
 @CompileStatic @Newify
@@ -17,7 +18,8 @@ public class DirectoryCell extends TreeCell<File> {
     super()
   }
 
-  protected void updateItem(File file, boolean isEmpty) {
+  @ConvertPrimitive
+  protected void updateItem(File file, Boolean isEmpty) {
     super.updateItem(file, isEmpty)
     if (isEmpty || file == null) {
       setText(null)

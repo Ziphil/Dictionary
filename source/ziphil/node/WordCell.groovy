@@ -3,6 +3,7 @@ package ziphil.node
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
 import ziphil.dictionary.Word
+import ziphilib.transform.ConvertPrimitive
 
 
 @CompileStatic @Newify
@@ -12,7 +13,8 @@ public class WordCell extends ListCell<Word> {
     super()
   }
 
-  protected void updateItem(Word word, boolean isEmpty) {
+  @ConvertPrimitive
+  protected void updateItem(Word word, Boolean isEmpty) {
     super.updateItem(word, isEmpty)
     if (isEmpty || word == null) {
       setText(null)
