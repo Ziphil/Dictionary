@@ -42,6 +42,9 @@ public class PersonalEditorController {
     $pronunciation.setText(word.getPronunciation())
     $translation.setText(word.getTranslation())
     $usage.setText(word.getUsage())
+    $level.getValueFactory().setValue(word.getLevel())
+    $memory.getValueFactory().setValue(word.getMemory())
+    $modification.getValueFactory().setValue(word.getModification())
     $translation.requestFocus()
   }
 
