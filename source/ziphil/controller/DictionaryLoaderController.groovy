@@ -16,7 +16,7 @@ import ziphil.node.UtilityStage
 public class DictionaryLoaderController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_loader.fxml"
-  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.txt"
+  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.zpdt"
   private static final Map<String, String> TYPES = [("PDIC-CSV形式"): "personal", ("シャレイア語辞典形式"): "shaleia"]
   private static final String TITLE = "新規辞書の追加"
   private static final Integer DEFAULT_WIDTH = 480

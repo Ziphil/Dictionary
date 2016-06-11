@@ -23,7 +23,7 @@ import ziphil.node.UtilityStage
 public class DictionaryTableController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_table.fxml"
-  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.txt"
+  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.zpdt"
   private static final String TITLE = "登録辞書一覧"
   private static final Integer DEFAULT_WIDTH = 640
   private static final Integer DEFAULT_HEIGHT = 320
