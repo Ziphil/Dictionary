@@ -6,9 +6,11 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.binding.StringBinding
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -37,6 +39,7 @@ public class FileChooser extends VBox {
   @FXML private SplitPane $splitPane
   @FXML private TextField $directory
   @FXML private TextField $file
+  private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
   private ObjectProperty<ObservableList<File>> $currentFiles = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentDirectory = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentFile = SimpleObjectProperty.new()
@@ -121,13 +124,17 @@ public class FileChooser extends VBox {
       if (directory != null) {
         File[] innerFiles = $currentDirectory.get().listFiles()
         if (innerFiles != null) {
-          files.addAll(innerFiles.toList())
+          innerFiles.each() { File innerFile ->
+            if ($showsHidden.get() || !innerFile.isHidden()) {
+              files.add(innerFile)
+            }
+          }
         }
       }
       SortedList sortedFiles = SortedList.new(files, FILE_COMPARATOR)
       return sortedFiles
     }
-    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory)
+    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden)
     $fileList.itemsProperty().bind(binding)
   }
 
@@ -187,6 +194,18 @@ public class FileChooser extends VBox {
       }
     }
     return comparator
+  }
+
+  public Boolean showsHidden() {
+    return $showsHidden.get()
+  }
+
+  public void setShowsHidden(Boolean showsHidden) {
+    $showsHidden.set(showsHidden)
+  }
+
+  public BooleanProperty showsHiddenProperty() {
+    return $showsHidden
   }
 
   public File getCurrentDirectory() {
