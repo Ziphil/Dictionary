@@ -66,6 +66,19 @@ public class PersonalDictionary extends Dictionary {
   }
 
   public void save() {
+    File file = File.new($path)
+    StringBuilder output = StringBuilder.new()
+    output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
+    $words.each() { PersonalWord word ->
+      output.append("\"" + word.getName() + "\",")
+      output.append("\"" + word.getTranslation() + "\",")
+      output.append("\"" + word.getUsage() + "\",")
+      output.append(word.getLevel().toString() + ",")
+      output.append(word.getMemory().toString() + ",")
+      output.append(word.getModification().toString() + ",")
+      output.append("\"" + word.getPronunciation() + "\"\n")
+    }
+    file.setText(output.toString(), "UTF-8")
   }
 
   private void setupWords() {
