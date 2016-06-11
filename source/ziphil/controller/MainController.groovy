@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -225,6 +226,11 @@ public class MainController {
     $searchText.setText("")
     $searchText.requestFocus()
     search()
+  }
+
+  @FXML
+  private void exit() {
+    Platform.exit()
   }
 
   private void setupList() {
