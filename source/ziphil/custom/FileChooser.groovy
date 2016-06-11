@@ -76,6 +76,7 @@ public class FileChooser extends VBox {
         $file.setText(file.getName())
         $currentFile.set(file)
       }
+      $fileList.scrollTo(0)
     }
   }
 
@@ -86,6 +87,7 @@ public class FileChooser extends VBox {
       $directory.setText(home.toString())
       $currentDirectory.set(home)
     }
+    $fileList.scrollTo(0)
   }
 
   private void setupDirectoryTree() {
