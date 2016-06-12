@@ -17,6 +17,7 @@ public class Setting {
   private Integer $contentFontSize
   private String $editorFontFamily
   private Integer $editorFontSize
+  private Integer $fontRenderingType
 
   private Setting() {
     loadDictionarySettings()
@@ -65,6 +66,8 @@ public class Setting {
             $editorFontFamily = data
           } else if (type == "editor-font-size") {
             $editorFontSize = data.toInteger()
+          } else if (type == "font-rendering-type") {
+            $fontRenderingType = data.toInteger()
           }
         }
       }
@@ -88,6 +91,9 @@ public class Setting {
     }
     if ($editorFontSize != null) {
       output.append("editor-font-size: \"" + $editorFontSize.toString() + "\"\n")
+    }
+    if ($fontRenderingType != null) {
+      output.append("font-rendering-type: \"" + $fontRenderingType.toString() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
   }
@@ -143,6 +149,14 @@ public class Setting {
 
   public void setEditorFontSize(Integer editorFontSize) {
     $editorFontSize = editorFontSize
+  }
+
+  public Integer getFontRenderingType() {
+    return $fontRenderingType
+  }
+
+  public void setFontRenderingType(Integer fontRenderingType) {
+    $fontRenderingType = fontRenderingType
   }
 
 }

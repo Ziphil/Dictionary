@@ -11,6 +11,7 @@ import ziphil.module.Setting
 public class MainApplication extends Application {
 
   public void start(Stage stage) {
+    setupFontRendering()
     load(stage)
     setupStylesheet()
   }
@@ -22,6 +23,17 @@ public class MainApplication extends Application {
 
   public void stop() {
     Setting.getInstance().save()
+  }
+
+  private void setupFontRendering() {
+    Setting setting = Setting.getInstance()
+    if (setting.getFontRenderingType() == 1) {
+      System.setProperty("prism.lcdtext", "true")
+      System.setProperty("prism.text", "t2k")
+    } else if (setting.getFontRenderingType() == 2) {
+      System.setProperty("prism.lcdtext", "false")
+      System.setProperty("prism.text", "t2k")
+    }
   }
 
   private void setupStylesheet() {
