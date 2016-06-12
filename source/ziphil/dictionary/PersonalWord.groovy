@@ -30,6 +30,9 @@ public class PersonalWord extends Word {
   }
 
   public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
+    HBox headBox = HBox.new()
+    VBox translationBox = VBox.new()
+    VBox usageBox = VBox.new()
     $name = name
     $pronunciation = pronunciation
     $translation = translation
@@ -37,17 +40,26 @@ public class PersonalWord extends Word {
     $level = level
     $memory = memory
     $modification = modification
-    Label nameText = Label.new(name)
-    Text translationText = Text.new(translation)
-    Text usageText = Text.new(usage)
-    TextFlow translationTextFlow = TextFlow.new(translationText)
-    TextFlow usageTextFlow = TextFlow.new(usageText)
-    nameText.getStyleClass().addAll("content-text", "head-name")
-    translationText.getStyleClass().add("content-text")
-    usageText.getStyleClass().add("content-text")
-    $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(nameText, translationTextFlow, usageTextFlow)
     $content = name + "\n" + translation + "\n" + usage
+    $contentPane.getChildren().clear()
+    $contentPane.getChildren().addAll(headBox, translationBox, usageBox)
+    addNameNode(headBox, name)
+    addOtherNode(translationBox, translation)
+    addOtherNode(usageBox, usage)
+  }
+
+  private void addNameNode(HBox box, String name) {
+    Label nameText = Label.new(name)
+    nameText.getStyleClass().addAll("content-text", "head-name")
+    box.getChildren().add(nameText)
+  }
+
+  private void addOtherNode(VBox box, String other) {
+    TextFlow textFlow = TextFlow.new()
+    Text otherText = Text.new(other)
+    otherText.getStyleClass().add("content-text")
+    textFlow.getChildren().add(otherText)
+    box.getChildren().add(textFlow)
   }
 
   private void setupContentPane() {
