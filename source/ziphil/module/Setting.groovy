@@ -13,9 +13,9 @@ public class Setting {
 
   private List<DictionarySetting> $dictionarySettings = ArrayList.new()
   private String $defaultDictionaryName
-  private String $contentFontName
+  private String $contentFontFamily
   private Integer $contentFontSize
-  private String $editorFontName
+  private String $editorFontFamily
   private Integer $editorFontSize
 
   private Setting() {
@@ -57,12 +57,12 @@ public class Setting {
           String data = matcher.group(2)
           if (type == "default-dictionary-name") {
             $defaultDictionaryName = data
-          } else if (type == "content-font-name") {
-            $contentFontName = data
+          } else if (type == "content-font-family") {
+            $contentFontFamily = data
           } else if (type == "content-font-size") {
             $contentFontSize = data.toInteger()
-          } else if (type == "editor-font-name") {
-            $editorFontName = data
+          } else if (type == "editor-font-family") {
+            $editorFontFamily = data
           } else if (type == "editor-font-size") {
             $editorFontSize = data.toInteger()
           }
@@ -77,14 +77,14 @@ public class Setting {
     if ($defaultDictionaryName != null) {
       output.append("default-dictionary-name: " + $defaultDictionaryName + "\n")
     }
-    if ($contentFontName != null) {
-      output.append("content-font-name: " + $contentFontName + "\n")
+    if ($contentFontFamily != null) {
+      output.append("content-font-family: " + $contentFontFamily + "\n")
     }
     if ($contentFontSize != null) {
       output.append("content-font-size: " + $contentFontSize.toString() + "\n")
     }
-    if ($editorFontName != null) {
-      output.append("editor-font-name: " + $editorFontName + "\n")
+    if ($editorFontFamily != null) {
+      output.append("editor-font-family: " + $editorFontFamily + "\n")
     }
     if ($editorFontSize != null) {
       output.append("editor-font-size: " + $editorFontSize.toString() + "\n")
@@ -113,12 +113,12 @@ public class Setting {
     $defaultDictionaryName = defaultDictionaryName
   }
 
-  public String getContentFontName() {
-    return $contentFontName
+  public String getContentFontFamily() {
+    return $contentFontFamily
   }
 
-  public void setContentFontName(String contentFontName) {
-    $contentFontName = contentFontName
+  public void setContentFontFamily(String contentFontFamily) {
+    $contentFontFamily = contentFontFamily
   }
 
   public Integer getContentFontSize() {
@@ -129,12 +129,12 @@ public class Setting {
     $contentFontSize = contentFontSize
   }
 
-  public String getEditorFontName() {
-    return $editorFontName
+  public String getEditorFontFamily() {
+    return $editorFontFamily
   }
 
-  public void setEditorFontName(String editorFontName) {
-    $editorFontName = editorFontName
+  public void setEditorFontFamily(String editorFontFamily) {
+    $editorFontFamily = editorFontFamily
   }
 
   public Integer getEditorFontSize() {
