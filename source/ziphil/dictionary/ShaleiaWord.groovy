@@ -144,10 +144,13 @@ public class ShaleiaWord extends Word {
   private void addEquivalentNode(VBox box, String localClass, String equivalent) {
     TextFlow textFlow = TextFlow.new()
     Label localClassText = Label.new(localClass)
-    Text equivalentText = Text.new(" " + equivalent)
+    List<Text> equivalentTexts = createRichTexts(" " + equivalent)
     localClassText.getStyleClass().addAll("content-text", "shaleia-local-class")
-    equivalentText.getStyleClass().addAll("content-text", "shaleia-equivalent")
-    textFlow.getChildren().addAll(localClassText, equivalentText)
+    equivalentTexts.each() { Text equivalentText ->
+      equivalentText.getStyleClass().addAll("content-text", "shaleia-equivalent")
+    }
+    textFlow.getChildren().add(localClassText)
+    textFlow.getChildren().addAll(equivalentTexts)
     box.getChildren().add(textFlow)
   }
 
@@ -155,21 +158,33 @@ public class ShaleiaWord extends Word {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
     Label itemText = Label.new("【${item}】")
-    Text otherText = Text.new(newOther)
+    List<Text> otherTexts = createRichTexts(newOther)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
-    otherText.getStyleClass().addAll("content-text")
-    textFlow.getChildren().add(otherText)
+    otherTexts.each() { Text otherText ->
+      otherText.getStyleClass().addAll("content-text")
+    }
+    textFlow.getChildren().addAll(otherTexts)
     box.getChildren().addAll(itemText, textFlow)
   }
 
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
     Label itemText = Label.new("cf: ")
-    Text synonymText = Text.new(synonym)
+    List<Text> synonymTexts = createRichTexts(synonym)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
-    synonymText.getStyleClass().addAll("content-text")
-    textFlow.getChildren().addAll(itemText, synonymText)
+    synonymTexts.each() { Text synonymText ->
+      synonymText.getStyleClass().addAll("content-text")
+    }
+    textFlow.getChildren().add(itemText)
+    textFlow.getChildren().addAll(synonymTexts)
     box.getChildren().add(textFlow)
+  }
+
+  private List<Text> createRichTexts(String string) {
+    List<Text> texts = ArrayList.new()
+    Text text = Text.new(string.replaceAll(/\{|\}|\[|\]|\//, ""))
+    texts.add(text)
+    return texts
   }
 
   public List<Integer> listForComparison() {
