@@ -38,14 +38,16 @@ public class ShaleiaWord extends Word {
   public void update(String name, String data) {
     HBox headBox = HBox.new()
     VBox equivalentBox = VBox.new()
+    VBox otherBox = VBox.new()
+    VBox synonymBox = VBox.new()
+    Boolean hasOther = false
+    Boolean hasSynonym = false
     $name = name.replaceAll(/\+|~/, "")
     $uniqueName = name
     $data = data
     $content = name + "\n" + data
     $contentPane.getChildren().clear()
-    $contentPane.getChildren().add(headBox)
-    $contentPane.getChildren().add(equivalentBox)
-    $contentPane.setMargin(equivalentBox, Insets.new(0, 0, 5, 0))
+    $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
     data.eachLine() { String line ->
       Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
@@ -55,6 +57,7 @@ public class ShaleiaWord extends Word {
       Matcher usageMatcher = line =~ /^U>\s*(.+)$/
       Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
       Matcher noteMatcher = line =~ /^N>\s*(.+)$/
+      Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
       if (headBox.getChildren().isEmpty()) {
         Label nameText = Label.new(name.replaceAll(/\+|~/, ""))
@@ -91,7 +94,8 @@ public class ShaleiaWord extends Word {
         meaningItemText.getStyleClass().addAll("content-text", "shaleia-item")
         meaningText.getStyleClass().addAll("content-text")
         textFlow.getChildren().add(meaningText)
-        $contentPane.getChildren().addAll(meaningItemText, textFlow)
+        otherBox.getChildren().addAll(meaningItemText, textFlow)
+        hasOther = true
       }
       if (ethymologyMatcher.matches()) {
         TextFlow textFlow = TextFlow.new()
@@ -100,7 +104,8 @@ public class ShaleiaWord extends Word {
         ethymologyItemText.getStyleClass().addAll("content-text", "shaleia-item")
         ethymologyText.getStyleClass().addAll("content-text")
         textFlow.getChildren().add(ethymologyText)
-        $contentPane.getChildren().addAll(ethymologyItemText, textFlow)
+        otherBox.getChildren().addAll(ethymologyItemText, textFlow)
+        hasOther = true
       }
       if (usageMatcher.matches()) {
         TextFlow textFlow = TextFlow.new()
@@ -109,7 +114,8 @@ public class ShaleiaWord extends Word {
         usageItemText.getStyleClass().addAll("content-text", "shaleia-item")
         usageText.getStyleClass().addAll("content-text")
         textFlow.getChildren().add(usageText)
-        $contentPane.getChildren().addAll(usageItemText, textFlow)
+        otherBox.getChildren().addAll(usageItemText, textFlow)
+        hasOther = true
       }
       if (phraseMatcher.matches()) {
         TextFlow textFlow = TextFlow.new()
@@ -118,7 +124,8 @@ public class ShaleiaWord extends Word {
         phraseItemText.getStyleClass().addAll("content-text", "shaleia-item")
         phraseText.getStyleClass().addAll("content-text")
         textFlow.getChildren().add(phraseText)
-        $contentPane.getChildren().addAll(phraseItemText, textFlow)
+        otherBox.getChildren().addAll(phraseItemText, textFlow)
+        hasOther = true
       }
       if (noteMatcher.matches()) {
         TextFlow textFlow = TextFlow.new()
@@ -127,10 +134,35 @@ public class ShaleiaWord extends Word {
         noteItemText.getStyleClass().addAll("content-text", "shaleia-item")
         noteText.getStyleClass().addAll("content-text")
         textFlow.getChildren().add(noteText)
-        $contentPane.getChildren().addAll(noteItemText, textFlow)
+        otherBox.getChildren().addAll(noteItemText, textFlow)
+        hasOther = true
+      }
+      if (exampleMatcher.matches()) {
+        TextFlow textFlow = TextFlow.new()
+        Label exampleItemText = Label.new("【例文】")
+        Text exampleText = Text.new(exampleMatcher.group(1))
+        exampleItemText.getStyleClass().addAll("content-text", "shaleia-item")
+        exampleText.getStyleClass().addAll("content-text")
+        textFlow.getChildren().add(exampleText)
+        otherBox.getChildren().addAll(exampleItemText, textFlow)
+        hasOther = true
       }
       if (synonymMatcher.matches()) {
+        TextFlow textFlow = TextFlow.new()
+        Label synonymItemText = Label.new("cf: ")
+        Text synonymText = Text.new(synonymMatcher.group(1))
+        synonymItemText.getStyleClass().addAll("content-text", "shaleia-item")
+        synonymText.getStyleClass().addAll("content-text")
+        textFlow.getChildren().addAll(synonymItemText, synonymText)
+        synonymBox.getChildren().addAll(textFlow)
+        hasSynonym = true
       }
+    }
+    if (hasOther) {
+      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, 5, 0))
+    }
+    if (hasSynonym) {
+      $contentPane.setMargin(otherBox, Insets.new(0, 0, 5, 0))
     }
   }
 
