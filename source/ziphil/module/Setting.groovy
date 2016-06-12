@@ -18,6 +18,7 @@ public class Setting {
   private String $editorFontFamily
   private Integer $editorFontSize
   private Integer $fontRenderingType
+  private Boolean $modifiesPunctuation
 
   private Setting() {
     loadDictionarySettings()
@@ -68,6 +69,8 @@ public class Setting {
             $editorFontSize = data.toInteger()
           } else if (type == "font-rendering-type") {
             $fontRenderingType = data.toInteger()
+          } else if (type == "modifies-punctuation") {
+            $modifiesPunctuation = data.toBoolean()
           }
         }
       }
@@ -94,6 +97,9 @@ public class Setting {
     }
     if ($fontRenderingType != null) {
       output.append("font-rendering-type: \"" + $fontRenderingType.toString() + "\"\n")
+    }
+    if ($modifiesPunctuation != null) {
+      output.append("modifies-punctuation: \"" + $modifiesPunctuation.toString() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
   }
@@ -157,6 +163,14 @@ public class Setting {
 
   public void setFontRenderingType(Integer fontRenderingType) {
     $fontRenderingType = fontRenderingType
+  }
+
+  public Boolean modifiesPunctuation() {
+    return $modifiesPunctuation
+  }
+
+  public void setModifiesPunctuation(Boolean modifiesPunctuation) {
+    $modifiesPunctuation = modifiesPunctuation
   }
 
 }

@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -33,6 +34,7 @@ public class PersonalWord extends Word {
     HBox headBox = HBox.new()
     VBox translationBox = VBox.new()
     VBox usageBox = VBox.new()
+    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $name = name
     $pronunciation = pronunciation
     $translation = translation
@@ -44,8 +46,8 @@ public class PersonalWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, translationBox, usageBox)
     addNameNode(headBox, name)
-    addOtherNode(translationBox, translation)
-    addOtherNode(usageBox, usage)
+    addOtherNode(translationBox, translation, modifiesPunctuation)
+    addOtherNode(usageBox, usage, modifiesPunctuation)
   }
 
   private void addNameNode(HBox box, String name) {
@@ -54,9 +56,10 @@ public class PersonalWord extends Word {
     box.getChildren().add(nameText)
   }
 
-  private void addOtherNode(VBox box, String other) {
+  private void addOtherNode(VBox box, String other, Boolean modifiesPunctuation) {
+    String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
-    Text otherText = Text.new(other)
+    Text otherText = Text.new(newOther)
     otherText.getStyleClass().add("content-text")
     textFlow.getChildren().add(otherText)
     box.getChildren().add(textFlow)

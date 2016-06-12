@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -41,6 +42,7 @@ public class ShaleiaWord extends Word {
     VBox synonymBox = VBox.new()
     Boolean hasOther = false
     Boolean hasSynonym = false
+    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $name = uniqueName.replaceAll(/\+|~/, "")
     $uniqueName = uniqueName
     $data = data
@@ -59,46 +61,59 @@ public class ShaleiaWord extends Word {
       Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
       if (headBox.getChildren().isEmpty()) {
-        addNameNode(headBox, uniqueName.replaceAll(/\+|~/, ""))
+        String name = uniqueName.replaceAll(/\+|~/, "")
+        addNameNode(headBox, name)
       }
       if (creationDateMatcher.matches()) {
-        addCreationDateNode(headBox, creationDateMatcher.group(2), creationDateMatcher.group(1))
+        String creationDate = creationDateMatcher.group(1)
+        String wholeClass = creationDateMatcher.group(2)
+        addCreationDateNode(headBox, wholeClass, creationDate)
       }
       if (equivalentMatcher.matches()) {
-        addEquivalentNode(equivalentBox, equivalentMatcher.group(1), equivalentMatcher.group(2))
-        List<String> equivalents = equivalentMatcher.group(2).replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+        String localClass = equivalentMatcher.group(1)
+        String equivalent = equivalentMatcher.group(2)
+        addEquivalentNode(equivalentBox, localClass, equivalent)
+        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
         $equivalents.addAll(equivalents)
       }
       if (hiddenEquivalentMatcher.matches()) {
-        List<String> equivalents = hiddenEquivalentMatcher.group(1).replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+        String equivalent = hiddenEquivalentMatcher.group(1)
+        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
         $equivalents.addAll(equivalents)
       }
       if (meaningMatcher.matches()) {
-        addOtherNode(otherBox, "備考", meaningMatcher.group(1))
+        String meaning = meaningMatcher.group(1)
+        addOtherNode(otherBox, "語義", meaning, modifiesPunctuation)
         hasOther = true
       }
       if (ethymologyMatcher.matches()) {
-        addOtherNode(otherBox, "語源", ethymologyMatcher.group(1))
+        String ethymology = ethymologyMatcher.group(1)
+        addOtherNode(otherBox, "語源", ethymology, modifiesPunctuation)
         hasOther = true
       }
       if (usageMatcher.matches()) {
-        addOtherNode(otherBox, "語法", usageMatcher.group(1))
+        String usage = usageMatcher.group(1)
+        addOtherNode(otherBox, "語法", usage, modifiesPunctuation)
         hasOther = true
       }
       if (phraseMatcher.matches()) {
-        addOtherNode(otherBox, "成句", phraseMatcher.group(1))
+        String phrase = phraseMatcher.group(1)
+        addOtherNode(otherBox, "成句", phrase, modifiesPunctuation)
         hasOther = true
       }
       if (noteMatcher.matches()) {
-        addOtherNode(otherBox, "備考", noteMatcher.group(1))
+        String note = noteMatcher.group(1)
+        addOtherNode(otherBox, "備考", note, modifiesPunctuation)
         hasOther = true
       }
       if (exampleMatcher.matches()) {
-        addOtherNode(otherBox, "例文", exampleMatcher.group(1))
+        String example = exampleMatcher.group(1)
+        addOtherNode(otherBox, "例文", example, modifiesPunctuation)
         hasOther = true
       }
       if (synonymMatcher.matches()) {
-        addSynonymNode(synonymBox, synonymMatcher.group(1))
+        String synonym = synonymMatcher.group(1)
+        addSynonymNode(synonymBox, synonym)
         hasSynonym = true
       }
     }
@@ -136,10 +151,11 @@ public class ShaleiaWord extends Word {
     box.getChildren().add(textFlow)
   }
 
-  private void addOtherNode(VBox box, String item, String other) {
+  private void addOtherNode(VBox box, String item, String other, Boolean modifiesPunctuation) {
+    String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
     Label itemText = Label.new("【${item}】")
-    Text otherText = Text.new(other)
+    Text otherText = Text.new(newOther)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     otherText.getStyleClass().addAll("content-text")
     textFlow.getChildren().add(otherText)
