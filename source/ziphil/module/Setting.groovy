@@ -75,19 +75,19 @@ public class Setting {
     File file = File.new(SETTINGS_PATH)
     StringBuilder output = StringBuilder.new()
     if ($defaultDictionaryName != null) {
-      output.append("default-dictionary-name: " + $defaultDictionaryName + "\n")
+      output.append("default-dictionary-name: \"" + $defaultDictionaryName + "\"\n")
     }
     if ($contentFontFamily != null) {
-      output.append("content-font-family: " + $contentFontFamily + "\n")
+      output.append("content-font-family: \"" + $contentFontFamily + "\"\n")
     }
     if ($contentFontSize != null) {
-      output.append("content-font-size: " + $contentFontSize.toString() + "\n")
+      output.append("content-font-size: \"" + $contentFontSize.toString() + "\"\n")
     }
     if ($editorFontFamily != null) {
-      output.append("editor-font-family: " + $editorFontFamily + "\n")
+      output.append("editor-font-family: \"" + $editorFontFamily + "\"\n")
     }
     if ($editorFontSize != null) {
-      output.append("editor-font-size: " + $editorFontSize.toString() + "\n")
+      output.append("editor-font-size: \"" + $editorFontSize.toString() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
   }
