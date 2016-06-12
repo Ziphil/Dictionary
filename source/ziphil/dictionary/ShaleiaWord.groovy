@@ -12,6 +12,7 @@ import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.module.Setting
 
 
 @CompileStatic @Newify
@@ -31,6 +32,7 @@ public class ShaleiaWord extends Word {
 
   public ShaleiaWord(String name, String data) {
     update(name, data)
+    setupContentPane()
   }
 
   public void update(String name, String data) {
@@ -140,6 +142,15 @@ public class ShaleiaWord extends Word {
       convertedString.add(-2)
     }
     return convertedString
+  }
+
+  private void setupContentPane() {
+    Setting setting = Setting.getInstance()
+    String fontFamily = setting.getContentFontFamily()
+    Integer fontSize = setting.getContentFontSize()
+    if (fontFamily != null && fontSize != null) {
+      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+    }
   }
 
   public static ShaleiaWord emptyWord() {

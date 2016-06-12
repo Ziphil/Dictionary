@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.module.Setting
 
 
 @CompileStatic @Newify
@@ -25,6 +26,7 @@ public class PersonalWord extends Word {
 
   public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     update(name, pronunciation, translation, usage, level, memory, modification)
+    setupContentPane()
   }
 
   public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
@@ -46,6 +48,15 @@ public class PersonalWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(nameText, translationTextFlow, usageTextFlow)
     $content = name + "\n" + translation + "\n" + usage
+  }
+
+  private void setupContentPane() {
+    Setting setting = Setting.getInstance()
+    String fontFamily = setting.getContentFontFamily()
+    Integer fontSize = setting.getContentFontSize()
+    if (fontFamily != null && fontSize != null) {
+      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+    }
   }
 
   public static PersonalWord emptyWord() {
