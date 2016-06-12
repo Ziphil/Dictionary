@@ -3,7 +3,6 @@ package ziphil.main
 import groovy.transform.CompileStatic
 import javafx.application.Application
 import javafx.stage.Stage
-import ziphil.Launcher
 import ziphil.controller.MainController
 import ziphil.module.Setting
 
