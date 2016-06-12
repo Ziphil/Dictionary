@@ -30,6 +30,8 @@ import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
+import ziphil.module.DictionarySetting
+import ziphil.module.Setting
 import ziphil.node.UtilityStage
 import ziphil.node.WordCell
 
@@ -70,6 +72,7 @@ public class MainController {
   public void initialize() {
     setupList()
     setupFooter()
+    updateDictionaryToDefault()
   }
 
   @FXML
@@ -226,6 +229,27 @@ public class MainController {
     $searchText.setText("")
     $searchText.requestFocus()
     search()
+  }
+
+  private void updateDictionaryToDefault() {
+    Setting setting = Setting.getInstance()
+    String name = setting.getDefaultDictionaryName()
+    if (name != null) {
+      Dictionary dictionary
+      setting.getDictionarySettings().each() { DictionarySetting dictionarySetting ->
+        if (name == dictionarySetting.getName()) {
+          DictionaryType type = dictionarySetting.getType()
+          if (type == DictionaryType.SHALEIA) {
+            dictionary = ShaleiaDictionary.new(name, dictionarySetting.getPath())
+          } else if (type == DictionaryType.PERSONAL) {
+            dictionary = PersonalDictionary.new(name, dictionarySetting.getPath())
+          }
+        }
+      }
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+      }
+    }
   }
 
   @FXML
