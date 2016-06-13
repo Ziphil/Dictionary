@@ -240,6 +240,11 @@ public class MainController {
   }
 
   @FXML
+  private void saveDictionary() {
+    $dictionary.save()
+  }
+
+  @FXML
   private void showApplicationInformation() {
     Stage stage = Stage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)
