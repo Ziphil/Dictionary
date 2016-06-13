@@ -259,20 +259,10 @@ public class MainController {
   }
 
   private void updateDictionaryToDefault() {
-    Setting setting = Setting.getInstance()
-    String name = setting.getDefaultDictionaryName()
-    if (name != null) {
-      Dictionary dictionary
-      setting.getDictionarySettings().each() { DictionarySetting dictionarySetting ->
-        if (name == dictionarySetting.getName()) {
-          DictionaryType type = dictionarySetting.getType()
-          if (type == DictionaryType.SHALEIA) {
-            dictionary = ShaleiaDictionary.new(name, dictionarySetting.getPath())
-          } else if (type == DictionaryType.PERSONAL) {
-            dictionary = PersonalDictionary.new(name, dictionarySetting.getPath())
-          }
-        }
-      }
+    String filePath = Setting.getInstance().getDefaultDictionaryPath()
+    File file = File.new(filePath)
+    if (file.exists() && file.isFile()) {
+      Dictionary dictionary = createDictionary(file)
       if (dictionary != null) {
         updateDictionary(dictionary)
       }

@@ -12,7 +12,7 @@ public class Setting {
   private static final String DICTIONARY_SETTINGS_PATH = "data/dictionaries.zpdt"
 
   private List<DictionarySetting> $dictionarySettings = ArrayList.new()
-  private String $defaultDictionaryName
+  private String $defaultDictionaryPath
   private String $contentFontFamily
   private Integer $contentFontSize
   private String $editorFontFamily
@@ -58,8 +58,8 @@ public class Setting {
         if (matcher.matches()) {
           String type = matcher.group(1)
           String data = matcher.group(2)
-          if (type == "default-dictionary-name") {
-            $defaultDictionaryName = data
+          if (type == "default-dictionary-path") {
+            $defaultDictionaryPath = data
           } else if (type == "content-font-family") {
             $contentFontFamily = data
           } else if (type == "content-font-size") {
@@ -83,8 +83,8 @@ public class Setting {
   private void saveSettings() {
     File file = File.new(SETTINGS_PATH)
     StringBuilder output = StringBuilder.new()
-    if ($defaultDictionaryName != null) {
-      output.append("default-dictionary-name: \"" + $defaultDictionaryName + "\"\n")
+    if ($defaultDictionaryPath != null) {
+      output.append("default-dictionary-path: \"" + $defaultDictionaryPath + "\"\n")
     }
     if ($contentFontFamily != null) {
       output.append("content-font-family: \"" + $contentFontFamily + "\"\n")
@@ -123,12 +123,12 @@ public class Setting {
     $dictionarySettings = dictionarySettings
   }
 
-  public String getDefaultDictionaryName() {
-    return $defaultDictionaryName
+  public String getDefaultDictionaryPath() {
+    return $defaultDictionaryPath
   }
 
-  public void setDefaultDictionaryName(String defaultDictionaryName) {
-    $defaultDictionaryName = defaultDictionaryName
+  public void setDefaultDictionaryPath(String defaultDictionaryPath) {
+    $defaultDictionaryPath = defaultDictionaryPath
   }
 
   public String getContentFontFamily() {
