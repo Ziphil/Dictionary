@@ -204,7 +204,7 @@ public class MainController {
   }
 
   @FXML
-  private void showDictionaryTable() {
+  private void listDictionaries() {
     UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryTableController controller = DictionaryTableController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
