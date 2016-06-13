@@ -72,11 +72,11 @@ public class FileChooser extends VBox {
       if (file.isDirectory()) {
         $directory.setText(file.toString())
         $currentDirectory.set(file)
+        $fileList.scrollTo(0)
       } else if (file.isFile()) {
         $file.setText(file.getName())
         $currentFile.set(file)
       }
-      $fileList.scrollTo(0)
     }
   }
 
