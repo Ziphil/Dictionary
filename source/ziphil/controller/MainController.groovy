@@ -278,9 +278,10 @@ public class MainController {
     Dictionary dictionary
     String fileName = file.getName()
     String filePath = file.getPath()
-    if (filePath.endsWith(".xdc")) {
+    DictionaryType type = DictionaryType.valueOfPath(filePath)
+    if (type == DictionaryType.SHALEIA) {
       dictionary = ShaleiaDictionary.new(fileName, filePath)
-    } else if (filePath.endsWith(".csv")) {
+    } else if (type == DictionaryType.PERSONAL) {
       dictionary = PersonalDictionary.new(fileName, filePath)
     }
     return dictionary
