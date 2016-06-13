@@ -19,6 +19,7 @@ public class Setting {
   private Integer $editorFontSize
   private Integer $fontRenderingType
   private Boolean $modifiesPunctuation
+  private Boolean $savesAutomatically
 
   private Setting() {
     loadDictionarySettings()
@@ -71,6 +72,8 @@ public class Setting {
             $fontRenderingType = data.toInteger()
           } else if (type == "modifies-punctuation") {
             $modifiesPunctuation = data.toBoolean()
+          } else if (type == "saves-automatically") {
+            $savesAutomatically = data.toBoolean()
           }
         }
       }
@@ -100,6 +103,9 @@ public class Setting {
     }
     if ($modifiesPunctuation != null) {
       output.append("modifies-punctuation: \"" + $modifiesPunctuation.toString() + "\"\n")
+    }
+    if ($savesAutomatically != null) {
+      output.append("saves-automatically: \"" + $savesAutomatically.toString() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
   }
@@ -171,6 +177,14 @@ public class Setting {
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
     $modifiesPunctuation = modifiesPunctuation
+  }
+
+  public Boolean savesAutomatically() {
+    return $savesAutomatically
+  }
+
+  public void setSavesAutomatically(Boolean savesAutomatically) {
+    $savesAutomatically = savesAutomatically
   }
 
 }

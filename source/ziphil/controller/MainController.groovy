@@ -130,6 +130,7 @@ public class MainController {
   private void modifyWord(Word word) {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
@@ -140,19 +141,25 @@ public class MainController {
     }
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
   private void removeWord(Word word) {
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     $dictionary.getRawWords().remove(word)
-    $dictionary.save()
+    if (savesAutomatically) {
+      $dictionary.save()
+    }
   }
 
   private void addWord() {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       newWord = ShaleiaWord.emptyWord()
@@ -166,7 +173,9 @@ public class MainController {
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
@@ -174,6 +183,7 @@ public class MainController {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
@@ -187,7 +197,9 @@ public class MainController {
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
