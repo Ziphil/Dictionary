@@ -31,10 +31,10 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="新規作成" accelerator="Shortcut+N"/>
+        <MenuItem text="新規作成" disable="true" accelerator="Shortcut+N"/>
         <MenuItem text="開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
         <MenuItem text="上書き保存" accelerator="Shortcut+S"/>
-        <MenuItem text="名前をつけて保存" accelerator="Shortcut+Shift+S"/>
+        <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
@@ -43,9 +43,9 @@
       <Menu text="ツール">
       </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" accelerator="F1"/>
+        <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
         <SeparatorMenuItem/>
-        <MenuItem text="公式サイト"/>
+        <MenuItem text="公式サイト" disable="true"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
