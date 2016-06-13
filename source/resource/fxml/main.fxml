@@ -75,11 +75,11 @@
       <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
       <Label fx:id="$dictionaryName"/>
       <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$hitWordSize" text="0" minWidth="35" prefWidth="35"/>
       <Label text="/"/>
-      <Label fx:id="$totalWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$totalWordSize" text="0" minWidth="35" prefWidth="35"/>
       <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTime" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$elapsedTime" text="0" minWidth="35" prefWidth="35"/>
     </HBox>
   </bottom>
   <fx:define>
