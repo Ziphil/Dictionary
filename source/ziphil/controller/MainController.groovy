@@ -225,6 +225,21 @@ public class MainController {
   }
 
   @FXML
+  private void openDictionary() {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    File file = stage.showAndWaitResult()
+    if (file != null && file.isFile()) {
+      Dictionary dictionary = createDictionary(file)
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+      }
+    }
+  }
+
+  @FXML
   private void showApplicationInformation() {
     Stage stage = Stage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)
@@ -267,6 +282,18 @@ public class MainController {
   @FXML
   private void exit() {
     Platform.exit()
+  }
+
+  private Dictionary createDictionary(File file) {
+    Dictionary dictionary
+    String fileName = file.getName()
+    String filePath = file.getPath()
+    if (filePath.endsWith(".xdc")) {
+      dictionary = ShaleiaDictionary.new(fileName, filePath)
+    } else if (filePath.endsWith(".csv")) {
+      dictionary = PersonalDictionary.new(fileName, filePath)
+    }
+    return dictionary
   }
 
   private void setupList() {
