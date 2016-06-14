@@ -70,7 +70,7 @@ public class FileChooser extends VBox {
   private void changeCurrentDirectory(File file) {
     if (file != null) {
       if (file.isDirectory()) {
-        $directory.setText(file.toString())
+        $directory.setText(file.getAbsolutePath())
         $currentDirectory.set(file)
         $fileList.scrollTo(0)
       } else if (file.isFile()) {
@@ -84,7 +84,7 @@ public class FileChooser extends VBox {
     String homePath = System.getProperty("user.home")
     File home = File.new(homePath)
     if (home.isDirectory()) {
-      $directory.setText(home.toString())
+      $directory.setText(home.getAbsolutePath())
       $currentDirectory.set(home)
     }
     $fileList.scrollTo(0)
@@ -161,7 +161,7 @@ public class FileChooser extends VBox {
     Callable<File> function = (Callable){
       File directory = $currentDirectory.get()
       if (directory != null) {
-        String filePath = directory.toString() + File.separator + $file.getText()
+        String filePath = directory.getAbsolutePath() + File.separator + $file.getText()
         File file = File.new(filePath)
         return file
       } else {
