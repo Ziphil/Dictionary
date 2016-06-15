@@ -39,9 +39,22 @@
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
       <Menu text="検索">
+        <Menu text="検索範囲" disable="true">
+          <MenuItem text="単語" disable="true" accelerator="F6"/>
+          <MenuItem text="訳語" disable="true" accelerator="F7"/>
+          <MenuItem text="全文" disable="true" accelerator="F8"/>
+        </Menu>
+        <Menu text="検索方式" disable="true">
+          <MenuItem text="完全一致" disable="true"/>
+          <MenuItem text="部分一致" disable="true"/>
+        </Menu>
+        <SeparatorMenuItem/>
+        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
       </Menu>
       <Menu text="ツール">
-        <MenuItem text="設定" onAction="#showSetting" accelerator="F12"/>
+        <MenuItem text="常に手前に表示" disable="true"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+E"/>
       </Menu>
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
