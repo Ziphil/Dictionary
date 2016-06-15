@@ -253,6 +253,15 @@ public class MainController {
     stage.showAndWait()
   }
 
+  @FXML
+  private void showSetting() {
+    Stage stage = Stage.new(StageStyle.UTILITY)
+    SettingController controller = SettingController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait() 
+  }
+
   private void updateDictionary(Dictionary dictionary) {
     $dictionary = dictionary
     $totalWordSize.setText($dictionary.getRawWords().size().toString())

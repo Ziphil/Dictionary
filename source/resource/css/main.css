@@ -34,6 +34,10 @@
   -fx-font-size: 90%;
 }
 
+.setting-pane Text {
+  -fx-fill: -fx-text-base-color;
+}
+
 .footer {
   -fx-font-size: 90%;
   -fx-alignment: center-right;

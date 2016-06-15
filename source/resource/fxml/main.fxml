@@ -41,6 +41,7 @@
       <Menu text="検索">
       </Menu>
       <Menu text="ツール">
+        <MenuItem text="設定" onAction="#showSetting" accelerator="F12"/>
       </Menu>
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
