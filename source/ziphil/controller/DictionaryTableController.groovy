@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
@@ -13,8 +12,11 @@ import javafx.scene.control.TextField
 import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
+import ziphil.module.DictionarySetting
+import ziphil.module.Setting
 import ziphil.node.DictionaryTableModel
 import ziphil.node.UtilityStage
 
@@ -23,7 +25,6 @@ import ziphil.node.UtilityStage
 public class DictionaryTableController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_table.fxml"
-  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.zpdt"
   private static final String TITLE = "登録辞書一覧"
   private static final Integer DEFAULT_WIDTH = 640
   private static final Integer DEFAULT_HEIGHT = 320
@@ -40,7 +41,7 @@ public class DictionaryTableController {
 
   @FXML
   public void initialize() {
-    loadDictionaryData()
+    createModels()
     setupTable()
   }
 
@@ -52,7 +53,7 @@ public class DictionaryTableController {
     stage.initOwner($stage)
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
-      loadDictionaryData()
+      createModels()
     }
   }
 
@@ -60,11 +61,11 @@ public class DictionaryTableController {
   private void commitShow() {
     DictionaryTableModel selectedModel = $table.getSelectionModel().getSelectedItem()
     if (selectedModel != null) {
-      String type = selectedModel.getType()
+      DictionaryType type = selectedModel.getType()
       Dictionary dictionary
-      if (type == "shaleia") {
+      if (type == DictionaryType.SHALEIA) {
         dictionary = ShaleiaDictionary.new(selectedModel.getName(), selectedModel.getPath())
-      } else if (type == "personal") {
+      } else if (type == DictionaryType.PERSONAL) {
         dictionary = PersonalDictionary.new(selectedModel.getName(), selectedModel.getPath())
       }
       $stage.close(dictionary)
@@ -78,17 +79,11 @@ public class DictionaryTableController {
     $stage.close()
   }
 
-  private void loadDictionaryData() {
-    File file = File.new(DICTIONARY_DATA_PATH)
+  private void createModels() {
     $dictionaries.clear()
-    if (file.exists()) {
-      file.eachLine() { String line ->
-        Matcher matcher = line =~ /^"(.*)",\s*"(.*)",\s*"(.*)"$/
-        if (matcher.matches()) {
-          DictionaryTableModel model = DictionaryTableModel.new(matcher.group(1), matcher.group(2), matcher.group(3))
-          $dictionaries.add(model)
-        }
-      }
+    Setting.getInstance().getDictionarySettings().each() { DictionarySetting setting ->
+      DictionaryTableModel model = DictionaryTableModel.new(setting.getName(), setting.getType(), setting.getPath())
+      $dictionaries.add(model)
     }
   }
 

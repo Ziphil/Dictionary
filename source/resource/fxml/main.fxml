@@ -31,19 +31,35 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="登録辞書一覧" onAction="#showDictionaryTable" accelerator="F3"/>
-        <MenuItem text="新規辞書の追加" onAction="#loadNewDictionary"/>
+        <MenuItem text="新規作成" disable="true" accelerator="Shortcut+N"/>
+        <MenuItem text="開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
+        <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
       <Menu text="検索">
+        <Menu text="検索範囲" disable="true">
+          <MenuItem text="単語" disable="true" accelerator="F6"/>
+          <MenuItem text="訳語" disable="true" accelerator="F7"/>
+          <MenuItem text="全文" disable="true" accelerator="F8"/>
+        </Menu>
+        <Menu text="検索方式" disable="true">
+          <MenuItem text="完全一致" disable="true"/>
+          <MenuItem text="部分一致" disable="true"/>
+        </Menu>
+        <SeparatorMenuItem/>
+        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
       </Menu>
       <Menu text="ツール">
+        <MenuItem text="常に手前に表示" disable="true"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+E"/>
       </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" accelerator="F1"/>
+        <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
         <SeparatorMenuItem/>
-        <MenuItem text="公式サイト"/>
+        <MenuItem text="公式サイト" disable="true"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
@@ -73,11 +89,11 @@
       <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
       <Label fx:id="$dictionaryName"/>
       <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$hitWordSize" text="0" minWidth="35" prefWidth="35"/>
       <Label text="/"/>
-      <Label fx:id="$totalWordSize" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$totalWordSize" text="0" minWidth="35" prefWidth="35"/>
       <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTime" text="0" minWidth="30" prefWidth="30"/>
+      <Label fx:id="$elapsedTime" text="0" minWidth="35" prefWidth="35"/>
     </HBox>
   </bottom>
   <fx:define>

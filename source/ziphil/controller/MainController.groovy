@@ -30,6 +30,8 @@ import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
+import ziphil.module.DictionarySetting
+import ziphil.module.Setting
 import ziphil.node.UtilityStage
 import ziphil.node.WordCell
 
@@ -70,6 +72,7 @@ public class MainController {
   public void initialize() {
     setupList()
     setupFooter()
+    updateDictionaryToDefault()
   }
 
   @FXML
@@ -127,6 +130,7 @@ public class MainController {
   private void modifyWord(Word word) {
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
@@ -137,19 +141,25 @@ public class MainController {
     }
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
   private void removeWord(Word word) {
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     $dictionary.getRawWords().remove(word)
-    $dictionary.save()
+    if (savesAutomatically) {
+      $dictionary.save()
+    }
   }
 
   private void addWord() {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       newWord = ShaleiaWord.emptyWord()
@@ -163,7 +173,9 @@ public class MainController {
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
@@ -171,6 +183,7 @@ public class MainController {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryType dictionaryType = $dictionary.getType()
+    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
     stage.initOwner($stage)
     if (dictionaryType == DictionaryType.SHALEIA) {
       newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
@@ -184,12 +197,14 @@ public class MainController {
     Boolean isDone = stage.showAndWaitResult()
     if (isDone != null && isDone) {
       $dictionary.getRawWords().add(newWord)
-      $dictionary.save()
+      if (savesAutomatically) {
+        $dictionary.save()
+      }
     }
   }
 
   @FXML
-  private void showDictionaryTable() {
+  private void listDictionaries() {
     UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryTableController controller = DictionaryTableController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
@@ -210,12 +225,41 @@ public class MainController {
   }
 
   @FXML
+  private void openDictionary() {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    File file = stage.showAndWaitResult()
+    if (file != null && file.isFile()) {
+      Dictionary dictionary = createDictionary(file)
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+      }
+    }
+  }
+
+  @FXML
+  private void saveDictionary() {
+    $dictionary.save()
+  }
+
+  @FXML
   private void showApplicationInformation() {
     Stage stage = Stage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
     stage.showAndWait()
+  }
+
+  @FXML
+  private void showSetting() {
+    Stage stage = Stage.new(StageStyle.UTILITY)
+    SettingController controller = SettingController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait() 
   }
 
   private void updateDictionary(Dictionary dictionary) {
@@ -228,9 +272,33 @@ public class MainController {
     search()
   }
 
+  private void updateDictionaryToDefault() {
+    String filePath = Setting.getInstance().getDefaultDictionaryPath()
+    File file = File.new(filePath)
+    if (file.exists() && file.isFile()) {
+      Dictionary dictionary = createDictionary(file)
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+      }
+    }
+  }
+
   @FXML
   private void exit() {
     Platform.exit()
+  }
+
+  private Dictionary createDictionary(File file) {
+    Dictionary dictionary
+    String fileName = file.getName()
+    String filePath = file.getPath()
+    DictionaryType type = DictionaryType.valueOfPath(filePath)
+    if (type == DictionaryType.SHALEIA) {
+      dictionary = ShaleiaDictionary.new(fileName, filePath)
+    } else if (type == DictionaryType.PERSONAL) {
+      dictionary = PersonalDictionary.new(fileName, filePath)
+    }
+    return dictionary
   }
 
   private void setupList() {

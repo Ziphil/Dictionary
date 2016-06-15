@@ -7,6 +7,8 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -25,9 +27,14 @@ public class PersonalWord extends Word {
 
   public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     update(name, pronunciation, translation, usage, level, memory, modification)
+    setupContentPane()
   }
 
   public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
+    HBox headBox = HBox.new()
+    VBox translationBox = VBox.new()
+    VBox usageBox = VBox.new()
+    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $name = name
     $pronunciation = pronunciation
     $translation = translation
@@ -35,17 +42,36 @@ public class PersonalWord extends Word {
     $level = level
     $memory = memory
     $modification = modification
-    Label nameText = Label.new(name)
-    Text translationText = Text.new(translation)
-    Text usageText = Text.new(usage)
-    TextFlow translationTextFlow = TextFlow.new(translationText)
-    TextFlow usageTextFlow = TextFlow.new(usageText)
-    nameText.getStyleClass().addAll("content-text", "head-name")
-    translationText.getStyleClass().add("content-text")
-    usageText.getStyleClass().add("content-text")
-    $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(nameText, translationTextFlow, usageTextFlow)
     $content = name + "\n" + translation + "\n" + usage
+    $contentPane.getChildren().clear()
+    $contentPane.getChildren().addAll(headBox, translationBox, usageBox)
+    addNameNode(headBox, name)
+    addOtherNode(translationBox, translation, modifiesPunctuation)
+    addOtherNode(usageBox, usage, modifiesPunctuation)
+  }
+
+  private void addNameNode(HBox box, String name) {
+    Label nameText = Label.new(name)
+    nameText.getStyleClass().addAll("content-text", "head-name")
+    box.getChildren().add(nameText)
+  }
+
+  private void addOtherNode(VBox box, String other, Boolean modifiesPunctuation) {
+    String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    TextFlow textFlow = TextFlow.new()
+    Text otherText = Text.new(newOther)
+    otherText.getStyleClass().add("content-text")
+    textFlow.getChildren().add(otherText)
+    box.getChildren().add(textFlow)
+  }
+
+  private void setupContentPane() {
+    Setting setting = Setting.getInstance()
+    String fontFamily = setting.getContentFontFamily()
+    Integer fontSize = setting.getContentFontSize()
+    if (fontFamily != null && fontSize != null) {
+      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+    }
   }
 
   public static PersonalWord emptyWord() {

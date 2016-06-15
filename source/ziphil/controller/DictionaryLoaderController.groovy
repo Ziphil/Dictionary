@@ -9,6 +9,8 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import javafx.stage.Modality
 import javafx.stage.StageStyle
+import ziphil.module.DictionarySetting
+import ziphil.module.Setting
 import ziphil.node.UtilityStage
 
 
@@ -16,8 +18,7 @@ import ziphil.node.UtilityStage
 public class DictionaryLoaderController {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_loader.fxml"
-  private static final String DICTIONARY_DATA_PATH = "data/dictionaries.zpdt"
-  private static final Map<String, String> TYPES = [("PDIC-CSV形式"): "personal", ("シャレイア語辞典形式"): "shaleia"]
+  private static final Map<String, String> TYPE_NAMES = [("PDIC-CSV形式"): "PERSONAL", ("シャレイア語辞典形式"): "SHALEIA"]
   private static final String TITLE = "新規辞書の追加"
   private static final Integer DEFAULT_WIDTH = 480
   private static final Integer DEFAULT_HEIGHT = -1
@@ -47,21 +48,17 @@ public class DictionaryLoaderController {
 
   @FXML
   private void commitLoad() {
-    saveDictionary()
+    String name = $name.getText()
+    String typeName = TYPE_NAMES[$type.getValue()]
+    String path = $path.getText()
+    DictionarySetting setting = DictionarySetting.new(name, typeName, path)
+    Setting.getInstance().getDictionarySettings().add(setting)
     $stage.close(true)
   }
 
   @FXML
   private void cancelLoad() {
     $stage.close(false)
-  }
-
-  private void saveDictionary() {
-    String name = $name.getText()
-    String typeText = $type.getValue()
-    String path = $path.getText()
-    File file = File.new(DICTIONARY_DATA_PATH)
-    file.append("\"${name}\", \"${TYPES[typeText]}\", \"${path}\"\n", "UTF-8")
   }
 
   private void loadResource() {
