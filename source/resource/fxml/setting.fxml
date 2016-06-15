@@ -36,14 +36,14 @@
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <ComboBox fx:id="$contentFontNames" minWidth="300" prefWidth="300"/>
+            <ComboBox fx:id="$contentFontNames" editable="true" minWidth="300" prefWidth="300"/>
             <Spinner fx:id="$contentFontSize" prefWidth="70" minWidth="70" editable="true">
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
           <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <ComboBox fx:id="$editorFontNames" disable="true" minWidth="300" prefWidth="300"/>
+            <ComboBox fx:id="$editorFontNames" editable="true" disable="true" minWidth="300" prefWidth="300"/>
             <Spinner fx:id="$editorFontSize" disable="true" prefWidth="70" minWidth="70" editable="true">
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
