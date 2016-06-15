@@ -53,3 +53,7 @@
 .split-pane > * > .tree-view:focused {
   -fx-background-insets: -1.4, -0.3, 1;
 }
+
+Text {
+  -fx-font-smoothing-type: lcd;
+}
