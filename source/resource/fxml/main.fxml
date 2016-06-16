@@ -30,37 +30,37 @@
   </stylesheets>
   <top>
     <MenuBar>
-      <Menu text="ファイル (_F)">
-        <MenuItem text="新規作成 (_N)" disable="true" accelerator="Shortcut+Shift+N"/>
-        <MenuItem text="開く (_O)" onAction="#openDictionary" accelerator="Shortcut+O"/>
-        <MenuItem text="上書き保存 (_S)" onAction="#saveDictionary" accelerator="Shortcut+S"/>
-        <MenuItem text="名前をつけて保存 (_A)" disable="true" accelerator="Shortcut+Shift+S"/>
+      <Menu text="ファイル">
+        <MenuItem text="新規作成" disable="true" accelerator="Shortcut+Shift+N"/>
+        <MenuItem text="開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
+        <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
-        <MenuItem text="終了 (_Q)" onAction="#exit"/>
+        <MenuItem text="終了" onAction="#exit"/>
       </Menu>
-      <Menu text="検索 (_S)">
-        <Menu text="検索範囲 (_M)">
-          <MenuItem text="単語 (_W)" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
-          <MenuItem text="訳語 (_E)" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
-          <MenuItem text="全文 (_Q)" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
+      <Menu text="検索">
+        <Menu text="検索範囲">
+          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
+          <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
+          <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
-        <Menu text="検索方式 (_T)" disable="true">
-          <MenuItem text="完全一致 (_S)" disable="true"/>
-          <MenuItem text="部分一致 (_L)" disable="true"/>
+        <Menu text="検索方式" disable="true">
+          <MenuItem text="完全一致" disable="true"/>
+          <MenuItem text="部分一致" disable="true"/>
         </Menu>
         <SeparatorMenuItem/>
-        <MenuItem text="ランダム検索 (_R)" disable="true" accelerator="Shortcut+R"/>
+        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
       </Menu>
-      <Menu text="ツール (_T)">
-        <MenuItem text="常に手前に表示 (_F)" disable="true"/>
+      <Menu text="ツール">
+        <MenuItem text="常に手前に表示" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem text="環境設定 (_E)" onAction="#showSetting" accelerator="Shortcut+Shift+E"/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E"/>
       </Menu>
-      <Menu text="ヘルプ (_H)">
+      <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
         <SeparatorMenuItem/>
         <MenuItem text="公式サイト" disable="true"/>
-        <MenuItem text="ZpDICについて (_I)" onAction="#showApplicationInformation"/>
+        <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
   </top>
