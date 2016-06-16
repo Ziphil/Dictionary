@@ -49,7 +49,7 @@
             </Spinner>
           </HBox>
           <CheckBox fx:id="$usesSystemEditorFont" text="システムフォントを用いる" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$modifiesPunctuation" onAction="#toggleModifiesPunctuation" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+          <ToggleButton fx:id="$modifiesPunctuation" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
             <Text text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
             <GridPane.margin><Insets left="10" bottom="5"/></GridPane.margin>
@@ -68,7 +68,7 @@
         <GridPane vgap="5" hgap="5">
           <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <ToggleButton fx:id="$savesAutomatically" onAction="#toggleSavesAutomatically" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+          <ToggleButton fx:id="$savesAutomatically" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
             <GridPane.margin><Insets left="10"/></GridPane.margin>

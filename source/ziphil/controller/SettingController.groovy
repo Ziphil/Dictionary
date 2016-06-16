@@ -1,6 +1,9 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -41,6 +44,7 @@ public class SettingController {
   @FXML
   private void initialize() {
     setupContentFontNames()
+    setupTextBindings()
     applySetting()
   }
 
@@ -60,11 +64,9 @@ public class SettingController {
     }
     if (modifiesPunctuation) {
       $modifiesPunctuation.setSelected(true)
-      $modifiesPunctuation.setText("有効")
     }
     if (savesAutomatically) {
       $savesAutomatically.setSelected(true)
-      $savesAutomatically.setText("有効")
     }
   }
 
@@ -98,27 +100,22 @@ public class SettingController {
     $stage.close()
   }
 
-  @FXML
-  private void toggleModifiesPunctuation() {
-    if ($modifiesPunctuation.isSelected()) {
-      $modifiesPunctuation.setText("有効")
-    } else {
-      $modifiesPunctuation.setText("無効")
-    }
-  }
-
-  @FXML
-  private void toggleSavesAutomatically() {
-    if ($savesAutomatically.isSelected()) {
-      $savesAutomatically.setText("有効")
-    } else {
-      $savesAutomatically.setText("無効")
-    }
-  }
-
   private void setupContentFontNames() {
     List<String> fontNames = Font.getFontNames()
     $contentFontNames.getItems().addAll(fontNames)
+  }
+
+  private void setupTextBindings() {
+    Callable<String> modifiesPunctuationFunction = (Callable){
+      return ($modifiesPunctuation.selectedProperty().get()) ? "有効" : "無効"
+    }
+    Callable<String> savesAutomaticallyFunction = (Callable){
+      return ($savesAutomatically.selectedProperty().get()) ? "有効" : "無効"
+    }
+    StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
+    StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
+    $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
+    $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
   }
 
   private void loadResource() {

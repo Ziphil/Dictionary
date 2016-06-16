@@ -1,7 +1,10 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
 import javafx.application.Platform
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -71,6 +74,7 @@ public class MainController {
   @FXML
   public void initialize() {
     setupList()
+    setupSearchType()
     setupFooter()
     updateDictionaryToDefault()
   }
@@ -118,11 +122,6 @@ public class MainController {
 
   @FXML
   private void toggleSearchType() {
-    if ($searchType.isSelected()) {
-      $searchType.setText("完全一致")
-    } else {
-      $searchType.setText("部分一致")
-    }
     $searchText.requestFocus()
     search()
   }
@@ -327,6 +326,14 @@ public class MainController {
       return cell
     }
     $list.setId("dictionary-list")
+  }
+
+  private void setupSearchType() {
+    Callable<String> function = (Callable){
+      return ($searchType.selectedProperty().get()) ? "完全一致" : "部分一致"
+    }
+    StringBinding binding = Bindings.createStringBinding(function, $searchType.selectedProperty())
+    $searchType.textProperty().bind(binding)
   }
 
   private void setupFooter() {
