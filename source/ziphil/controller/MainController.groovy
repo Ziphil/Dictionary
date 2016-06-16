@@ -234,6 +234,7 @@ public class MainController {
       Dictionary dictionary = createDictionary(file)
       if (dictionary != null) {
         updateDictionary(dictionary)
+        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
     }
   }
