@@ -273,11 +273,13 @@ public class MainController {
 
   private void updateDictionaryToDefault() {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
-    File file = File.new(filePath)
-    if (file.exists() && file.isFile()) {
-      Dictionary dictionary = createDictionary(file)
-      if (dictionary != null) {
-        updateDictionary(dictionary)
+    if (filePath != null) {
+      File file = File.new(filePath)
+      if (file.exists() && file.isFile()) {
+        Dictionary dictionary = createDictionary(file)
+        if (dictionary != null) {
+          updateDictionary(dictionary)
+        }
       }
     }
   }
