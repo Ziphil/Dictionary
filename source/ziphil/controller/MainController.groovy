@@ -121,6 +121,24 @@ public class MainController {
   }
 
   @FXML
+  private void changeSearchModeToWord() {
+    $searchMode.setValue("単語")
+    changeSearchMode()
+  }
+
+  @FXML
+  private void changeSearchModeToEquivalent() {
+    $searchMode.setValue("訳語")
+    changeSearchMode()
+  }
+
+  @FXML
+  private void changeSearchModeToContent() {
+    $searchMode.setValue("全文")
+    changeSearchMode()
+  }
+
+  @FXML
   private void toggleSearchType() {
     $searchText.requestFocus()
     search()

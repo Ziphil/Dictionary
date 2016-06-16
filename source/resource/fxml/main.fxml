@@ -39,10 +39,10 @@
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
       <Menu text="検索">
-        <Menu text="検索範囲" disable="true">
-          <MenuItem text="単語" disable="true" accelerator="F6"/>
-          <MenuItem text="訳語" disable="true" accelerator="F7"/>
-          <MenuItem text="全文" disable="true" accelerator="F8"/>
+        <Menu text="検索範囲">
+          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="F6"/>
+          <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="F7"/>
+          <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="F8"/>
         </Menu>
         <Menu text="検索方式" disable="true">
           <MenuItem text="完全一致" disable="true"/>
