@@ -38,7 +38,7 @@
   -fx-fill: -fx-text-base-color;
 }
 
-.footer {
+.footer .label {
   -fx-font-size: 90%;
   -fx-alignment: center-right;
 }

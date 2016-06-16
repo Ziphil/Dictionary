@@ -81,11 +81,11 @@
         </ComboBox>
         <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true" prefWidth="70" minWidth="70"/>
       </HBox>
-      <ListView fx:id="$list" prefHeight="65536"/>
+      <ListView fx:id="$list" id="dictionary-list" prefHeight="65536"/>
     </VBox>
   </center>
   <bottom>
-    <HBox fx:id="$footer" spacing="5">
+    <HBox fx:id="$footer" spacing="5" styleClass="footer">
       <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
       <Label fx:id="$dictionaryName"/>
       <HBox HBox.hgrow="always"/>

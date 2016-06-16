@@ -75,7 +75,6 @@ public class MainController {
   public void initialize() {
     setupList()
     setupSearchType()
-    setupFooter()
     updateDictionaryToDefault()
   }
 
@@ -346,7 +345,6 @@ public class MainController {
       }
       return cell
     }
-    $list.setId("dictionary-list")
   }
 
   private void setupSearchType() {
@@ -355,15 +353,6 @@ public class MainController {
     }
     StringBinding binding = Bindings.createStringBinding(function, $searchType.selectedProperty())
     $searchType.textProperty().bind(binding)
-  }
-
-  private void setupFooter() {
-    $footer.getChildren().each() { Node node ->
-      if (node instanceof Label) {
-        Label label = (Label)node
-        label.getStyleClass().add("footer")
-      }
-    }
   }
 
   private void loadResource() {
