@@ -52,13 +52,13 @@
       <TextField fx:id="$pronunciation" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <TextArea fx:id="$translation" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       <TextArea fx:id="$usage" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-      <Spinner fx:id="$level" prefWidth="70" minWidth="70" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Spinner fx:id="$level" prefWidth="80" minWidth="80" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="15" amountToStepBy="1"/></valueFactory>
       </Spinner>
-      <Spinner fx:id="$memory" prefWidth="70" minWidth="70"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Spinner fx:id="$memory" prefWidth="80" minWidth="80"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
       </Spinner>
-      <Spinner fx:id="$modification" prefWidth="70" minWidth="70"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <Spinner fx:id="$modification" prefWidth="80" minWidth="80"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
       </Spinner>
     </GridPane>
@@ -66,8 +66,8 @@
   <bottom>
     <AnchorPane>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="90" prefWidth="90"/>
+        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="90" prefWidth="90"/>
       </HBox>
     </AnchorPane>
   </bottom>

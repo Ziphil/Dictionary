@@ -34,7 +34,7 @@
       <Label text="種類:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <TextField fx:id="$path" HBox.hgrow="always" styleClass="left-pill"/>
-        <Button text="参照" onAction="#browseFiles" minWidth="60" prefWidth="60" styleClass="right-pill"/>
+        <Button text="参照" onAction="#browseFiles" minWidth="70" prefWidth="70" styleClass="right-pill"/>
       </HBox>
       <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <ComboBox fx:id="$type" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -51,8 +51,8 @@
   <bottom>
     <AnchorPane>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelLoad" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="OK" onAction="#commitLoad" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelLoad" cancelButton="true" minWidth="90" prefWidth="90"/>
+        <Button text="OK" onAction="#commitLoad" defaultButton="true" minWidth="90" prefWidth="90"/>
       </HBox>
     </AnchorPane>
   </bottom>

@@ -44,10 +44,10 @@
   </center>
   <bottom>
     <AnchorPane>
-      <Button text="辞書の追加" onAction="#loadNewDictionary" minWidth="80" prefWidth="80" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
+      <Button text="辞書の追加" onAction="#loadNewDictionary" minWidth="90" prefWidth="90" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelShow" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="表示" onAction="#commitShow" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelShow" cancelButton="true" minWidth="90" prefWidth="90"/>
+        <Button text="表示" onAction="#commitShow" defaultButton="true" minWidth="90" prefWidth="90"/>
       </HBox>
     </AnchorPane>
   </bottom>

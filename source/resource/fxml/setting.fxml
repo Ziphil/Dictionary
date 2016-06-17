@@ -36,20 +36,20 @@
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <ComboBox fx:id="$contentFontNames" editable="true" minWidth="300" prefWidth="300"/>
-            <Spinner fx:id="$contentFontSize" prefWidth="70" minWidth="70" editable="true">
+            <ComboBox fx:id="$contentFontNames" editable="true" minWidth="350" prefWidth="350"/>
+            <Spinner fx:id="$contentFontSize" prefWidth="80" minWidth="80" editable="true">
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
           <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <ComboBox fx:id="$editorFontNames" editable="true" disable="true" minWidth="300" prefWidth="300"/>
-            <Spinner fx:id="$editorFontSize" disable="true" prefWidth="70" minWidth="70" editable="true">
+            <ComboBox fx:id="$editorFontNames" editable="true" disable="true" minWidth="350" prefWidth="350"/>
+            <Spinner fx:id="$editorFontSize" disable="true" prefWidth="80" minWidth="80" editable="true">
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
           <CheckBox fx:id="$usesSystemEditorFont" text="システムフォントを用いる" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$modifiesPunctuation" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+          <ToggleButton fx:id="$modifiesPunctuation" text="無効" minWidth="80" prefWidth="80" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
             <Text text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
             <GridPane.margin><Insets left="10" bottom="5"/></GridPane.margin>
@@ -68,7 +68,7 @@
         <GridPane vgap="5" hgap="5">
           <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <ToggleButton fx:id="$savesAutomatically" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+          <ToggleButton fx:id="$savesAutomatically" text="無効" minWidth="80" prefWidth="80" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
             <GridPane.margin><Insets left="10"/></GridPane.margin>
@@ -80,8 +80,8 @@
   <bottom>
     <AnchorPane>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelChange" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="OK" onAction="#commitChange" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelChange" cancelButton="true" minWidth="90" prefWidth="90"/>
+        <Button text="OK" onAction="#commitChange" defaultButton="true" minWidth="90" prefWidth="90"/>
       </HBox>
     </AnchorPane>
   </bottom>

@@ -43,8 +43,8 @@
   <bottom>
     <AnchorPane>
       <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="80" prefWidth="80"/>
+        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="90" prefWidth="90"/>
+        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="90" prefWidth="90"/>
       </HBox>
     </AnchorPane>
   </bottom>
