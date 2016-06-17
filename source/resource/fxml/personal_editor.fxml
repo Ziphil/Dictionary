@@ -26,8 +26,17 @@
     <URL value="@../css/modification.css"/>
   </stylesheets>
   <center>
-    <GridPane vgap="5" hgap="5">
-      <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+    <GridPane>
+      <vgap><Double rpx="5"/></vgap>
+      <hgap><Double rpx="5"/></hgap>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
       <columnConstraints>
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
@@ -52,22 +61,37 @@
       <TextField fx:id="$pronunciation" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <TextArea fx:id="$translation" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       <TextArea fx:id="$usage" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-      <Spinner fx:id="$level" prefWidth="80" minWidth="80" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Spinner fx:id="$level" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="15" amountToStepBy="1"/></valueFactory>
       </Spinner>
-      <Spinner fx:id="$memory" prefWidth="80" minWidth="80"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Spinner fx:id="$memory" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
       </Spinner>
-      <Spinner fx:id="$modification" prefWidth="80" minWidth="80"  editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <Spinner fx:id="$modification" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
       </Spinner>
     </GridPane>
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="90" prefWidth="90"/>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="90" prefWidth="90"/>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commitEdit" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
       </HBox>
     </AnchorPane>
   </bottom>

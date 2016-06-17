@@ -65,11 +65,21 @@
     </MenuBar>
   </top>
   <center>
-    <VBox alignment="center" spacing="10">
-      <padding><Insets top="10" bottom="0" left="10" right="10"/></padding>
-      <HBox spacing="5">
+    <VBox alignment="center">
+      <spacing><Double rpx="10"/></spacing>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$searchText" onKeyReleased="#search" HBox.hgrow="always"/>
-        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode" prefWidth="80" minWidth="80">
+        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="単語"/>
@@ -79,21 +89,39 @@
           </items>
           <value><String fx:value="単語"/></value>
         </ComboBox>
-        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true" prefWidth="80" minWidth="80"/>
+        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+        </ToggleButton>
       </HBox>
       <ListView fx:id="$list" id="dictionary-list" prefHeight="65536"/>
     </VBox>
   </center>
   <bottom>
-    <HBox fx:id="$footer" spacing="5" styleClass="footer">
-      <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
+    <HBox fx:id="$footer" styleClass="footer">
+      <spacing><Double rpx="5"/></spacing>
+      <padding>
+        <Insets>
+          <left><Double rpx="10"/></left>
+          <right><Double rpx="10"/></right>
+        </Insets>
+      </padding>
       <Label fx:id="$dictionaryName"/>
       <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSize" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$hitWordSize" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
       <Label text="/"/>
-      <Label fx:id="$totalWordSize" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$totalWordSize" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
       <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTime" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$elapsedTime" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
     </HBox>
   </bottom>
   <fx:define>

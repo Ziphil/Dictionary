@@ -9,6 +9,8 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import javafx.stage.Modality
 import javafx.stage.StageStyle
+import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Measurement
 import ziphil.module.DictionarySetting
 import ziphil.module.Setting
 import ziphil.node.UtilityStage
@@ -20,8 +22,8 @@ public class DictionaryLoaderController {
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_loader.fxml"
   private static final Map<String, String> TYPE_NAMES = [("PDIC-CSV形式"): "PERSONAL", ("シャレイア語辞典形式"): "SHALEIA"]
   private static final String TITLE = "新規辞書の追加"
-  private static final Integer DEFAULT_WIDTH = 480
-  private static final Integer DEFAULT_HEIGHT = -1
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
+  private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $path
   @FXML private TextField $name
@@ -62,7 +64,7 @@ public class DictionaryLoaderController {
   }
 
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)

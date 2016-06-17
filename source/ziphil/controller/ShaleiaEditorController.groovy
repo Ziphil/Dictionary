@@ -7,6 +7,8 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Measurement
 import ziphil.dictionary.ShaleiaWord
 import ziphil.node.UtilityStage
 
@@ -16,8 +18,8 @@ public class ShaleiaEditorController {
 
   private static final String RESOURCE_PATH = "resource/fxml/shaleia_editor.fxml"
   private static final String TITLE = "単語編集"
-  private static final Integer DEFAULT_WIDTH = 640
-  private static final Integer DEFAULT_HEIGHT = 320
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $name
   @FXML private TextArea $data
@@ -51,7 +53,7 @@ public class ShaleiaEditorController {
   }
 
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)

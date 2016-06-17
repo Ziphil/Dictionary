@@ -24,8 +24,17 @@
     <URL value="@../css/modification.css"/>
   </stylesheets>
   <center>
-    <GridPane vgap="5" hgap="5">
-      <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+    <GridPane>
+      <vgap><Double rpx="5"/></vgap>
+      <hgap><Double rpx="5"/></hgap>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
       <columnConstraints>
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
@@ -42,9 +51,18 @@
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true" minWidth="90" prefWidth="90"/>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true" minWidth="90" prefWidth="90"/>
+      <HBox spacing="5">
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commitEdit" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
       </HBox>
     </AnchorPane>
   </bottom>

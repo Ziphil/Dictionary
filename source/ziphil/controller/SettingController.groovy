@@ -14,6 +14,7 @@ import javafx.scene.control.Spinner
 import javafx.scene.control.ToggleButton
 import javafx.scene.text.Font
 import javafx.stage.Stage
+import ziphil.custom.CustomBuilderFactory
 import ziphil.module.Setting
 
 
@@ -22,8 +23,8 @@ public class SettingController {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
   private static final String TITLE = "設定"
-  private static final Integer DEFAULT_WIDTH = -1
-  private static final Integer DEFAULT_HEIGHT = -1
+  private static final Double DEFAULT_WIDTH = -1
+  private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontNames
   @FXML private Spinner $contentFontSize
@@ -119,7 +120,7 @@ public class SettingController {
   }
 
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)

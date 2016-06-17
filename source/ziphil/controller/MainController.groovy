@@ -26,6 +26,8 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.Launcher
+import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Measurement
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
@@ -43,10 +45,10 @@ import ziphil.node.WordCell
 public class MainController {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
-  private static final Integer DEFAULT_WIDTH = 720
-  private static final Integer DEFAULT_HEIGHT = 720
-  private static final Integer MIN_WIDTH = 360
-  private static final Integer MIN_HEIGHT = 240
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
+  private static final Double MIN_WIDTH = Measurement.rpx(360)
+  private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
   @FXML private ListView<Word> $list
   @FXML private TextField $searchText
@@ -356,7 +358,7 @@ public class MainController {
   }
 
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)

@@ -22,20 +22,32 @@
     <URL value="@../css/modification.css"/>
   </stylesheets>
   <center>
-    <VBox spacing="5">
-      <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+    <VBox>
+      <spacing><Double rpx="5"/></spacing>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
       <TableView fx:id="$table">
         <columns>
-          <TableColumn text="名前" prefWidth="150">
+          <TableColumn text="名前">
+            <prefWidth><Double rpx="150"/></prefWidth>
             <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
           </TableColumn>
-          <TableColumn text="単語数" prefWidth="90">
+          <TableColumn text="単語数">
+            <prefWidth><Double rpx="70"/></prefWidth>
             <cellValueFactory><PropertyValueFactory property="wordSize"/></cellValueFactory>
           </TableColumn>
-          <TableColumn text="サイズ" sortable="false" prefWidth="90">
+          <TableColumn text="サイズ" sortable="false">
+            <prefWidth><Double rpx="70"/></prefWidth>
             <cellValueFactory><PropertyValueFactory property="fileSize"/></cellValueFactory>
           </TableColumn>
-          <TableColumn text="ファイル名" sortable="false" prefWidth="250">
+          <TableColumn text="ファイル名" sortable="false">
+            <prefWidth><Double rpx="250"/></prefWidth>
             <cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
           </TableColumn>
         </columns>
@@ -44,10 +56,24 @@
   </center>
   <bottom>
     <AnchorPane>
-      <Button text="辞書の追加" onAction="#loadNewDictionary" minWidth="90" prefWidth="90" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
-      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelShow" cancelButton="true" minWidth="90" prefWidth="90"/>
-        <Button text="表示" onAction="#commitShow" defaultButton="true" minWidth="90" prefWidth="90"/>
+      <Button text="辞書の追加" onAction="#loadNewDictionary">
+        <prefWidth><Double rpx="80"/></prefWidth>
+        <minWidth><Double rpx="80"/></minWidth>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.leftAnchor><Double rpx="10"/></AnchorPane.leftAnchor>
+      </Button>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelShow" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="表示" onAction="#commitShow" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
       </HBox>
     </AnchorPane>
   </bottom>

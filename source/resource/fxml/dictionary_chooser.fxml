@@ -19,15 +19,31 @@
   </stylesheets>
   <center>
     <VBox>
-      <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
       <FileChooser fx:id="$chooser" VBox.vgrow="always"/>
     </VBox>
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelChoose" cancelButton="true" minWidth="90" prefWidth="90"/>
-        <Button text="OK" onAction="#commitChoose" defaultButton="true" minWidth="90" prefWidth="90"/>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelChoose" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commitChoose" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
       </HBox>
     </AnchorPane>
   </bottom>

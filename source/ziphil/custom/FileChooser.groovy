@@ -173,7 +173,7 @@ public class FileChooser extends VBox {
   }
 
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setRoot(this)
     loader.setController(this)
     loader.load()
