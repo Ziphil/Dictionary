@@ -6,11 +6,11 @@
 }
 
 .text-input.left-pill {
-  -fx-background-radius: 3 0 0 3, 2 0 0 2;
+  -fx-background-radius: 3px 0px 0px 3px, 2px 0px 0px 2px;
 }
 
 .text-input.left-pill:focused {
-  -fx-background-radius: 3 0 0 3, 2 0 0 2, 4 0 0 4, 0;
+  -fx-background-radius: 3px 0px 0px 3px, 2px 0px 0px 2px, 4px 0px 0px 4px, 0px;
 }
 
 .tree-cell:odd {
@@ -31,27 +31,27 @@
 
 .split-pane {
   -fx-background-color: -fx-background;
-  -fx-background-insets: 0;
-  -fx-padding: 0;
+  -fx-background-insets: 0px;
+  -fx-padding: 0px;
 }
 
 .split-pane > .split-pane-divider {
   -fx-background-color: -fx-background;
-  -fx-background-insets: 0;
-  -fx-padding: 0;
+  -fx-background-insets: 0px;
+  -fx-padding: 0px;
 }
 
 .split-pane > * > .list-view,
 .split-pane > * > .table-view,
 .split-pane > * > .tree-view {
-  -fx-background-insets: 0, 1;
-  -fx-padding: 1;
+  -fx-background-insets: 0px, 1px;
+  -fx-padding: 1px;
 }
 
 .split-pane > * > .list-view:focused,
 .split-pane > * > .table-view:focused,
 .split-pane > * > .tree-view:focused {
-  -fx-background-insets: -1.4, -0.3, 1;
+  -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
 Text {
