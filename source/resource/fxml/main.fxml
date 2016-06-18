@@ -31,9 +31,10 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="新規作成" disable="true" accelerator="Shortcut+Shift+N"/>
-        <MenuItem text="開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <MenuItem text="辞書の新規作成" disable="true" accelerator="Shortcut+Shift+N"/>
+        <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録した辞書を開く"/>
+        <SeparatorMenuItem/>
         <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
         <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
