@@ -278,6 +278,7 @@ public class MainController {
       if (file != null) {
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
+        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
     }
   }
