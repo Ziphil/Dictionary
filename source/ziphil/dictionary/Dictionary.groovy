@@ -25,4 +25,17 @@ public abstract class Dictionary {
 
   public abstract ObservableList<? extends Word> getRawWords()
 
+  public static Dictionary create(File file) {
+    Dictionary dictionary
+    String fileName = file.getName()
+    String filePath = file.getPath()
+    DictionaryType type = DictionaryType.valueOfPath(filePath)
+    if (type == DictionaryType.SHALEIA) {
+      dictionary = ShaleiaDictionary.new(fileName, filePath)
+    } else if (type == DictionaryType.PERSONAL) {
+      dictionary = PersonalDictionary.new(fileName, filePath)
+    }
+    return dictionary
+  }
+
 }

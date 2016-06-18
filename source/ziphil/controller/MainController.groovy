@@ -226,7 +226,7 @@ public class MainController {
     stage.initOwner($stage)
     File file = stage.showAndWaitResult()
     if (file != null && file.isFile()) {
-      Dictionary dictionary = createDictionary(file)
+      Dictionary dictionary = Dictionary.create(file)
       if (dictionary != null) {
         updateDictionary(dictionary)
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -272,7 +272,7 @@ public class MainController {
     if (filePath != null) {
       File file = File.new(filePath)
       if (file.exists() && file.isFile()) {
-        Dictionary dictionary = createDictionary(file)
+        Dictionary dictionary = Dictionary.create(file)
         if (dictionary != null) {
           updateDictionary(dictionary)
         }
@@ -283,19 +283,6 @@ public class MainController {
   @FXML
   private void exit() {
     Platform.exit()
-  }
-
-  private Dictionary createDictionary(File file) {
-    Dictionary dictionary
-    String fileName = file.getName()
-    String filePath = file.getPath()
-    DictionaryType type = DictionaryType.valueOfPath(filePath)
-    if (type == DictionaryType.SHALEIA) {
-      dictionary = ShaleiaDictionary.new(fileName, filePath)
-    } else if (type == DictionaryType.PERSONAL) {
-      dictionary = PersonalDictionary.new(fileName, filePath)
-    }
-    return dictionary
   }
 
   private void setupList() {
@@ -356,7 +343,7 @@ public class MainController {
         File file = File.new(dictionaryPath)
         item.setText(file.getName())
         item.setOnAction() {
-          Dictionary dictionary = createDictionary(file)
+          Dictionary dictionary = Dictionary.create(file)
           updateDictionary(dictionary)
         }
       } else {
