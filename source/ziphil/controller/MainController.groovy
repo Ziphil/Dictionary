@@ -240,6 +240,7 @@ public class MainController {
     DictionaryChooserController controller = DictionaryChooserController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
+    controller.prepare(true)
     File file = stage.showAndWaitResult()
     if (file != null) {
       Dictionary dictionary = Dictionary.loadEmptyDictionary(file)

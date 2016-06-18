@@ -7,16 +7,19 @@ import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.BooleanProperty
+import javafx.beans.property.ListProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.SplitPane
@@ -33,17 +36,21 @@ public class FileChooser extends VBox {
 
   private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
   private static final Comparator<File> FILE_COMPARATOR = createFileComparator()
+  private static final ExtensionFilter DEFAULT_EXTENSION_FILTER = ExtensionFilter.new("全てのファイル", null)
 
   @FXML private TreeView<File> $directoryTree
   @FXML private ListView<File> $fileList
   @FXML private SplitPane $splitPane
   @FXML private TextField $directory
   @FXML private TextField $file
+  @FXML private ComboBox<ExtensionFilter> $fileTypes
   private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
+  private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
   private ObjectProperty<ObservableList<File>> $currentFiles = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentDirectory = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentFile = SimpleObjectProperty.new()
   private ReadOnlyObjectWrapper<File> $selectedFile = ReadOnlyObjectWrapper.new()
+  private ListProperty<ExtensionFilter> $extensionFilters = SimpleListProperty.new(FXCollections.observableArrayList())
 
   public FileChooser() {
     loadResource()
@@ -57,6 +64,7 @@ public class FileChooser extends VBox {
     setupDirectory()
     setupFile()
     setupSplitPane()
+    setupFileTypes()
     bindSelectedFile()
   }
 
@@ -128,7 +136,9 @@ public class FileChooser extends VBox {
         if (innerFiles != null) {
           innerFiles.each() { File innerFile ->
             if ($showsHidden.get() || !innerFile.isHidden()) {
-              files.add(innerFile)
+              if (innerFile.isDirectory() || $fileTypes.getValue().accepts(innerFile)) {
+                files.add(innerFile)
+              }
             }
           }
         }
@@ -136,7 +146,7 @@ public class FileChooser extends VBox {
       SortedList sortedFiles = SortedList.new(files, FILE_COMPARATOR)
       return sortedFiles
     }
-    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden)
+    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden, $fileTypes.valueProperty())
     $fileList.itemsProperty().bind(binding)
   }
 
@@ -157,18 +167,42 @@ public class FileChooser extends VBox {
     }
   }
 
+  private void setupFileTypes() {
+    Callable<ObservableList<ExtensionFilter>> function = (Callable){
+      ObservableList<ExtensionFilter> items = FXCollections.observableArrayList()
+      items.add(DEFAULT_EXTENSION_FILTER)
+      items.addAll($extensionFilters.getValue())
+      return items
+    }
+    ObjectBinding<ObservableList<ExtensionFilter>> binding = Bindings.createObjectBinding(function, $extensionFilters)
+    $fileTypes.itemsProperty().bind(binding)
+    $fileTypes.getSelectionModel().selectFirst()
+  }
+
   private void bindSelectedFile() {
     Callable<File> function = (Callable){
       File directory = $currentDirectory.get()
       if (directory != null) {
         String filePath = directory.getAbsolutePath() + File.separator + $file.getText()
+        if ($adjustsExtension.get()) {
+          if (!(filePath ==~ /^.*\.[\w\d]+$/)) {
+            String additionalExtension = $fileTypes.getValue().getExtension()
+            if (additionalExtension != null) {
+              if (filePath.endsWith(".")) {
+                filePath = filePath + additionalExtension
+              } else {
+                filePath = filePath + "." + additionalExtension
+              }
+            }
+          }
+        }
         File file = File.new(filePath)
         return file
       } else {
         return null
       }
     }
-    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $file.textProperty())
+    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $file.textProperty(), $adjustsExtension, $fileTypes.valueProperty())
     $selectedFile.bind(binding)
   }
 
@@ -210,6 +244,18 @@ public class FileChooser extends VBox {
     return $showsHidden
   }
 
+  public Boolean adjustsExtension() {
+    return $adjustsExtension.get()
+  }
+
+  public void setAdjustsExtension(Boolean adjustsExtension) {
+    $adjustsExtension.set(adjustsExtension)
+  }
+
+  public BooleanProperty adjustsExtensionProperty() {
+    return $adjustsExtension
+  }
+
   public File getCurrentDirectory() {
     return $currentDirectory.get()
   }
@@ -240,6 +286,18 @@ public class FileChooser extends VBox {
 
   public ReadOnlyObjectProperty<File> selectedFileProperty() {
     return $selectedFile.getReadOnlyProperty()
-  }  
+  }
+
+  public ObservableList<ExtensionFilter> getExtensionFilters() {
+    return $extensionFilters.getValue()
+  }
+
+  public void setExtensionFilters(ObservableList<ExtensionFilter> extensionFilters) {
+    $extensionFilters.setValue(extensionFilters)
+  }
+
+  public ListProperty<ExtensionFilter> extensionFiltersProperty() {
+    return $extensionFilters
+  }
 
 }

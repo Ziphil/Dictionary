@@ -8,6 +8,7 @@ import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.DirectoryItem
 import ziphil.custom.Measurement
@@ -30,6 +31,17 @@ public class DictionaryChooserController {
   public DictionaryChooserController(UtilityStage<File> stage) {
     $stage = stage
     loadResource()
+  }
+
+  @FXML
+  private void initialize() {
+    ExtensionFilter shaleiaFilter = ExtensionFilter.new("シャレイア語辞典形式", "xdc")
+    ExtensionFilter personalFilter = ExtensionFilter.new("PDIC-CSV形式", "csv")
+    $chooser.getExtensionFilters().addAll(shaleiaFilter, personalFilter)
+  }
+
+  public void prepare(Boolean adjustsExtension) {
+    $chooser.setAdjustsExtension(adjustsExtension)
   }
 
   @FXML
