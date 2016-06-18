@@ -226,7 +226,7 @@ public class MainController {
     stage.initOwner($stage)
     File file = stage.showAndWaitResult()
     if (file != null && file.isFile()) {
-      Dictionary dictionary = Dictionary.create(file)
+      Dictionary dictionary = Dictionary.loadDictionary(file)
       if (dictionary != null) {
         updateDictionary(dictionary)
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -242,7 +242,7 @@ public class MainController {
     stage.initOwner($stage)
     File file = stage.showAndWaitResult()
     if (file != null) {
-      Dictionary dictionary = Dictionary.createEmptyDictionary(file)
+      Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
       if (dictionary != null) {
         updateDictionary(dictionary)
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -288,7 +288,7 @@ public class MainController {
     if (filePath != null) {
       File file = File.new(filePath)
       if (file.exists() && file.isFile()) {
-        Dictionary dictionary = Dictionary.create(file)
+        Dictionary dictionary = Dictionary.loadDictionary(file)
         if (dictionary != null) {
           updateDictionary(dictionary)
         }
@@ -359,7 +359,7 @@ public class MainController {
         File file = File.new(dictionaryPath)
         item.setText(file.getName())
         item.setOnAction() {
-          Dictionary dictionary = Dictionary.create(file)
+          Dictionary dictionary = Dictionary.loadDictionary(file)
           updateDictionary(dictionary)
         }
       } else {

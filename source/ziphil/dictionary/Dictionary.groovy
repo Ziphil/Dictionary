@@ -31,7 +31,7 @@ public abstract class Dictionary {
 
   public abstract ObservableList<? extends Word> getRawWords()
 
-  public static Dictionary create(File file) {
+  public static Dictionary loadDictionary(File file) {
     Dictionary dictionary
     String fileName = file.getName()
     String filePath = file.getPath()
@@ -44,7 +44,7 @@ public abstract class Dictionary {
     return dictionary
   }
 
-  public static Dictionary createEmptyDictionary(File file) {
+  public static Dictionary loadEmptyDictionary(File file) {
     Dictionary dictionary
     String fileName = file.getName()
     String filePath = file.getPath()
