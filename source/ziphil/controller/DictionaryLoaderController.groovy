@@ -54,7 +54,6 @@ public class DictionaryLoaderController {
     String typeName = TYPE_NAMES[$type.getValue()]
     String path = $path.getText()
     DictionarySetting setting = DictionarySetting.new(name, typeName, path)
-    Setting.getInstance().getDictionarySettings().add(setting)
     $stage.close(true)
   }
 

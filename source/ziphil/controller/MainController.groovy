@@ -15,10 +15,12 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
@@ -60,6 +62,7 @@ public class MainController {
   @FXML private MenuItem $removeWordItem
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
+  @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private HBox $footer
   @FXML private Label $dictionaryName
   @FXML private Label $hitWordSize
@@ -78,6 +81,7 @@ public class MainController {
   public void initialize() {
     setupList()
     setupSearchType()
+    setupOpenRegisteredDictionaryMenu()
     updateDictionaryToDefault()
   }
 
@@ -362,6 +366,29 @@ public class MainController {
     BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchMode.valueProperty())    
     $searchType.textProperty().bind(textBinding)
     $searchType.disableProperty().bind(disableBinding)
+  }
+
+  private void setupOpenRegisteredDictionaryMenu() {
+    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
+    (0 ..< dictionaryPaths.size()).each() { Integer i ->
+      String dictionaryPath = dictionaryPaths[i]
+      MenuItem item = MenuItem.new()
+      if (dictionaryPath != null) {
+        File file = File.new(dictionaryPath)
+        item.setText(file.getName())
+        item.setOnAction() {
+          Dictionary dictionary = createDictionary(file)
+          updateDictionary(dictionary)
+        }
+      } else {
+        item.setText("")
+        item.setDisable(true)
+      }
+      if (i < 10) {
+        item.setAccelerator(KeyCombination.valueOf("Shortcut+${i}"))
+      }
+      $openRegisteredDictionaryMenu.getItems().add(item)
+    }
   }
 
   private void loadResource() {

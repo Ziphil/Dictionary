@@ -83,10 +83,6 @@ public class DictionaryTableController {
 
   private void createModels() {
     $dictionaries.clear()
-    Setting.getInstance().getDictionarySettings().each() { DictionarySetting setting ->
-      DictionaryTableModel model = DictionaryTableModel.new(setting.getName(), setting.getType(), setting.getPath())
-      $dictionaries.add(model)
-    }
   }
 
   private void setupTable() {

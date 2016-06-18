@@ -9,9 +9,9 @@ import java.util.regex.Matcher
 public class Setting {
 
   private static final String SETTINGS_PATH = "data/setting/settings.zpdt"
-  private static final String DICTIONARY_SETTINGS_PATH = "data/setting/dictionaries.zpdt"
+  private static final String REGISTERED_DICTIONARY_SETTINGS_PATH = "data/setting/dictionaries.zpdt"
 
-  private List<DictionarySetting> $dictionarySettings = ArrayList.new()
+  private List<String> $registeredDictionaryPaths = [null] * 10
   private String $defaultDictionaryPath
   private String $contentFontFamily
   private Integer $contentFontSize
@@ -22,30 +22,34 @@ public class Setting {
   private Boolean $savesAutomatically
 
   private Setting() {
-    loadDictionarySettings()
+    loadRegisteredDictionarySettings()
     loadSettings()
   }
 
-  private void loadDictionarySettings() {
-    File file = File.new(DICTIONARY_SETTINGS_PATH)
+  private void loadRegisteredDictionarySettings() {
+    File file = File.new(REGISTERED_DICTIONARY_SETTINGS_PATH) 
     if (file.exists()) {
+      Integer i = 0
       file.eachLine() { String line ->
-        Matcher matcher = line =~ /^"(.*)",\s*"(.*)",\s*"(.*)"$/
-        if (matcher.matches()) {
-          DictionarySetting data = DictionarySetting.new(matcher.group(1), matcher.group(2), matcher.group(3))
-          $dictionarySettings.add(data)
+        Matcher matcher = line =~ /^"(.*)"$/
+        if (matcher.matches() && i < 10) {
+          String path = matcher.group(1)
+          $registeredDictionaryPaths[i] = (path != "") ? path : null
+          i += 1
         }
       }
     }
   }
 
-  private void saveDictionarySettings() {
-    File file = File.new(DICTIONARY_SETTINGS_PATH)
+  private void saveRegisteredDictionarySettings() {
+    File file = File.new(REGISTERED_DICTIONARY_SETTINGS_PATH)
     StringBuilder output = StringBuilder.new()
-    $dictionarySettings.each() { DictionarySetting dictionarySetting ->
-      output.append("\"" + dictionarySetting.getName() + "\", ")
-      output.append("\"" + dictionarySetting.getTypeName() + "\", ")
-      output.append("\"" + dictionarySetting.getPath() + "\"\n")
+    $registeredDictionaryPaths.each() { String path ->
+      if (path != null) {
+        output.append("\"" + path + "\"\n")
+      } else {
+        output.append("\"\"\n")
+      }
     }
     file.setText(output.toString(), "UTF-8")
   }
@@ -111,16 +115,16 @@ public class Setting {
   }
 
   public void save() {
-    saveDictionarySettings()
+    saveRegisteredDictionarySettings()
     saveSettings()
   }
 
-  public List<DictionarySetting> getDictionarySettings() {
-    return $dictionarySettings
+  public List<String> getRegisteredDictionaryPaths() {
+    return $registeredDictionaryPaths
   }
 
-  public void setDictionarySettings(List<DictionarySetting> dictionarySettings) {
-    $dictionarySettings = dictionarySettings
+  public void setRegisteredDictionaryPaths(List<String> registeredDictionaryPaths) {
+    $registeredDictionaryPaths = registeredDictionaryPaths
   }
 
   public String getDefaultDictionaryPath() {
