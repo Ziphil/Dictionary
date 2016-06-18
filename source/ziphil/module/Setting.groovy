@@ -8,8 +8,8 @@ import java.util.regex.Matcher
 @CompileStatic @Newify 
 public class Setting {
 
-  private static final String SETTINGS_PATH = "data/settings.zpdt"
-  private static final String DICTIONARY_SETTINGS_PATH = "data/dictionaries.zpdt"
+  private static final String SETTINGS_PATH = "data/setting/settings.zpdt"
+  private static final String DICTIONARY_SETTINGS_PATH = "data/setting/dictionaries.zpdt"
 
   private List<DictionarySetting> $dictionarySettings = ArrayList.new()
   private String $defaultDictionaryPath
