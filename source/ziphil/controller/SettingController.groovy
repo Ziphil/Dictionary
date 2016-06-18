@@ -8,14 +8,23 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.CheckBox
+import javafx.scene.control.Label
 import javafx.scene.control.Spinner
+import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.HBox
 import javafx.scene.text.Font
 import javafx.stage.Stage
+import javafx.stage.StageStyle
+import javafx.stage.Modality
 import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Measurement
 import ziphil.module.Setting
+import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify
@@ -33,6 +42,8 @@ public class SettingController {
   @FXML private Spinner $editorFontSize
   @FXML private CheckBox $usesSystemEditorFont
   @FXML private ToggleButton $modifiesPunctuation
+  @FXML private GridPane $registeredDictionaryPane
+  @FXML private List<TextField> $registeredDictionaryPaths = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomatically
   private Stage $stage
   private Scene $scene
@@ -44,6 +55,7 @@ public class SettingController {
 
   @FXML
   private void initialize() {
+    setupRegisteredDictionaryPane()
     setupContentFontNames()
     setupTextBindings()
     applySetting()
@@ -55,6 +67,7 @@ public class SettingController {
     Integer contentFontSize = setting.getContentFontSize()
     Boolean modifiesPunctuation = setting.modifiesPunctuation()
     Boolean savesAutomatically = setting.savesAutomatically()
+    List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontNames.getSelectionModel().select(contentFontFamily)
     } else {
@@ -68,6 +81,9 @@ public class SettingController {
     }
     if (savesAutomatically) {
       $savesAutomatically.setSelected(true)
+    }
+    (0 ..< registeredDictionaryPaths.size()).each() { Integer i ->
+      $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
   }
 
@@ -87,7 +103,22 @@ public class SettingController {
     }
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
+    (0 ..< 10).each() { Integer i ->
+      String path = $registeredDictionaryPaths[i].getText()
+      setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
+    }
     setting.save()
+  }
+
+  private void browseDictionary(Integer i) {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    File file = stage.showAndWaitResult()
+    if (file != null) {
+      $registeredDictionaryPaths[i].setText(file.getAbsolutePath())
+    }
   }
 
   @FXML
@@ -99,6 +130,28 @@ public class SettingController {
   @FXML
   private void cancelChange() {
     $stage.close()
+  }
+
+  private void setupRegisteredDictionaryPane() {
+    (0 ..< 10).each() { Integer i ->
+      Label number = Label.new("登録辞書${(i + 1) % 10}:")
+      HBox box = HBox.new()
+      TextField dictionaryPath = TextField.new()
+      Button browse = Button.new("参照")
+      dictionaryPath.setPrefWidth(Measurement.rpx(400))
+      dictionaryPath.setMinWidth(Measurement.rpx(400))
+      dictionaryPath.getStyleClass().add("left-pill")
+      browse.setPrefWidth(Measurement.rpx(60))
+      browse.setMinWidth(Measurement.rpx(60))
+      browse.getStyleClass().add("right-pill")
+      browse.setOnAction() {
+        browseDictionary(i)
+      }
+      box.getChildren().addAll(dictionaryPath, browse)
+      $registeredDictionaryPaths[i] = dictionaryPath
+      $registeredDictionaryPane.add(number, 0, i)
+      $registeredDictionaryPane.add(box, 1, i)
+    }
   }
 
   private void setupContentFontNames() {
