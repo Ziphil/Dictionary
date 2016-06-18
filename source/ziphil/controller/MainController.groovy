@@ -138,7 +138,9 @@ public class MainController {
 
   @FXML
   private void changeSearchType() {
-    $searchType.setSelected(!$searchType.isSelected())
+    if (!$searchType.isDisable()) {
+      $searchType.setSelected(!$searchType.isSelected())
+    }
   }
 
   @FXML
