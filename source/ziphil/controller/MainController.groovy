@@ -261,20 +261,24 @@ public class MainController {
 
   @FXML
   private void saveDictionary() {
-    $dictionary.save()
+    if ($dictionary != null) {
+      $dictionary.save()
+    }
   }
 
   @FXML
   private void saveAndRenameDictionary() {
-    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    controller.prepare(true)
-    File file = stage.showAndWaitResult()
-    if (file != null) {
-      $dictionary.setPath(file.getAbsolutePath())
-      $dictionary.save()
+    if ($dictionary != null)
+      UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryChooserController controller = DictionaryChooserController.new(stage)
+      stage.initModality(Modality.WINDOW_MODAL)
+      stage.initOwner($stage)
+      controller.prepare(true)
+      File file = stage.showAndWaitResult()
+      if (file != null) {
+        $dictionary.setPath(file.getAbsolutePath())
+        $dictionary.save()
+      }
     }
   }
 
