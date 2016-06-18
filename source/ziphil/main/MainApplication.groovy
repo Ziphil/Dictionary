@@ -12,6 +12,7 @@ import ziphil.module.Setting
 public class MainApplication extends Application {
 
   public void start(Stage stage) {
+    createDataDirectory()
     setupFontRendering()
     load(stage)
     setupExceptionHandler()
@@ -25,6 +26,10 @@ public class MainApplication extends Application {
 
   public void stop() {
     Setting.getInstance().save()
+  }
+
+  private void createDataDirectory() {
+    File.new("data/setting").mkdirs()
   }
 
   private void setupFontRendering() {
