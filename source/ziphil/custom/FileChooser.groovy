@@ -106,6 +106,7 @@ public class FileChooser extends VBox {
       $directory.setText(parent.getAbsolutePath())
       $currentDirectory.set(parent)
     }
+    $fileList.scrollTo(0)
   }
 
   private void setupDirectoryTree() {
