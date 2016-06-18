@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -107,14 +108,6 @@ public class MainController {
 
   @FXML
   private void changeSearchMode() {
-    String searchMode = $searchMode.getValue()
-    if (searchMode == "単語") {
-      $searchType.setDisable(false)
-    } else if (searchMode == "訳語") {
-      $searchType.setDisable(false)
-    } else if (searchMode == "全文") {
-      $searchType.setDisable(true)
-    }
     $hitWordSize.setText($totalWordSize.getText())
     $searchText.setText("")
     $searchText.requestFocus()
@@ -350,11 +343,25 @@ public class MainController {
   }
 
   private void setupSearchType() {
-    Callable<String> function = (Callable){
+    Callable<String> textFunction = (Callable){
       return ($searchType.selectedProperty().get()) ? "完全一致" : "部分一致"
     }
-    StringBinding binding = Bindings.createStringBinding(function, $searchType.selectedProperty())
-    $searchType.textProperty().bind(binding)
+    Callable<Boolean> disableFunction = (Callable){
+      String searchMode = $searchMode.getValue()
+      if (searchMode == "単語") {
+        return false
+      } else if (searchMode == "訳語") {
+        return false
+      } else if (searchMode == "全文") {
+        return true
+      } else {
+        return true
+      }
+    }
+    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchType.selectedProperty())
+    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchMode.valueProperty())    
+    $searchType.textProperty().bind(textBinding)
+    $searchType.disableProperty().bind(disableBinding)
   }
 
   private void loadResource() {
