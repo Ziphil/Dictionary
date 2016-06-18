@@ -219,27 +219,6 @@ public class MainController {
   }
 
   @FXML
-  private void listDictionaries() {
-    UtilityStage<Dictionary> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryTableController controller = DictionaryTableController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    Dictionary dictionary = stage.showAndWaitResult()
-    if (dictionary != null) {
-      updateDictionary(dictionary)
-    }
-  }
-
-  @FXML
-  private void loadNewDictionary() {
-    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryLoaderController controller = DictionaryLoaderController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    stage.showAndWait()
-  }
-
-  @FXML
   private void openDictionary() {
     UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(stage)
