@@ -368,6 +368,7 @@ public class MainController {
         item.setOnAction() {
           Dictionary dictionary = Dictionary.loadDictionary(file)
           updateDictionary(dictionary)
+          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         }
       } else {
         item.setText("")
