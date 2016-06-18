@@ -57,6 +57,7 @@ public class SettingController {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupContentFontNames()
+    setupFontDisableBindings()
     setupTextBindings()
     applySetting()
   }
@@ -157,6 +158,11 @@ public class SettingController {
   private void setupContentFontNames() {
     List<String> fontNames = Font.getFontNames()
     $contentFontNames.getItems().addAll(fontNames)
+  }
+
+  private void setupFontDisableBindings() {
+    $contentFontNames.disableProperty().bind($usesSystemContentFont.selectedProperty())
+    $contentFontSize.disableProperty().bind($usesSystemContentFont.selectedProperty())
   }
 
   private void setupTextBindings() {
