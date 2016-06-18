@@ -56,7 +56,7 @@ public class SettingController {
   @FXML
   private void initialize() {
     setupRegisteredDictionaryPane()
-    setupContentFontNames()
+    setupFontNames()
     setupFontDisableBindings()
     setupTextBindings()
     applySetting()
@@ -66,6 +66,8 @@ public class SettingController {
     Setting setting = Setting.getInstance()
     String contentFontFamily = setting.getContentFontFamily()
     Integer contentFontSize = setting.getContentFontSize()
+    String editorFontFamily = setting.getEditorFontFamily()
+    Integer editorFontSize = setting.getEditorFontSize()
     Boolean modifiesPunctuation = setting.modifiesPunctuation()
     Boolean savesAutomatically = setting.savesAutomatically()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
@@ -76,6 +78,14 @@ public class SettingController {
     }
     if (contentFontSize != null) {
       $contentFontSize.getValueFactory().setValue(contentFontSize)
+    }
+    if (editorFontFamily != null) {
+      $editorFontNames.getSelectionModel().select(editorFontFamily)
+    } else {
+      $usesSystemEditorFont.setSelected(true)
+    }
+    if (editorFontSize != null) {
+      $editorFontSize.getValueFactory().setValue(editorFontSize)
     }
     if (modifiesPunctuation) {
       $modifiesPunctuation.setSelected(true)
@@ -93,6 +103,9 @@ public class SettingController {
     String contentFontFamily = $contentFontNames.getSelectionModel().getSelectedItem()
     Integer contentFontSize = $contentFontSize.getValue()
     Boolean usesSystemContentFont = $usesSystemContentFont.isSelected()
+    String editorFontFamily = $editorFontNames.getSelectionModel().getSelectedItem()
+    Integer editorFontSize = $editorFontSize.getValue()
+    Boolean usesSystemEditorFont = $usesSystemEditorFont.isSelected()
     Boolean modifiesPunctuation = $modifiesPunctuation.isSelected()
     Boolean savesAutomatically = $savesAutomatically.isSelected()
     if (!usesSystemContentFont && contentFontFamily != null) {
@@ -101,6 +114,13 @@ public class SettingController {
     } else {
       setting.setContentFontFamily(null)
       setting.setContentFontSize(null)
+    }
+    if (!usesSystemEditorFont && editorFontFamily != null) {
+      setting.setEditorFontFamily(editorFontFamily)
+      setting.setEditorFontSize(editorFontSize)
+    } else {
+      setting.setEditorFontFamily(null)
+      setting.setEditorFontSize(null)
     }
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
@@ -155,14 +175,17 @@ public class SettingController {
     }
   }
 
-  private void setupContentFontNames() {
+  private void setupFontNames() {
     List<String> fontNames = Font.getFontNames()
     $contentFontNames.getItems().addAll(fontNames)
+    $editorFontNames.getItems().addAll(fontNames)
   }
 
   private void setupFontDisableBindings() {
     $contentFontNames.disableProperty().bind($usesSystemContentFont.selectedProperty())
     $contentFontSize.disableProperty().bind($usesSystemContentFont.selectedProperty())
+    $editorFontNames.disableProperty().bind($usesSystemEditorFont.selectedProperty())
+    $editorFontSize.disableProperty().bind($usesSystemEditorFont.selectedProperty())
   }
 
   private void setupTextBindings() {
