@@ -95,8 +95,8 @@ public class FileChooser extends VBox {
     if (home.isDirectory()) {
       $directory.setText(home.getAbsolutePath())
       $currentDirectory.set(home)
+      $fileList.scrollTo(0)
     }
-    $fileList.scrollTo(0)
   }
 
   @FXML
@@ -105,8 +105,8 @@ public class FileChooser extends VBox {
     if (parent != null) {
       $directory.setText(parent.getAbsolutePath())
       $currentDirectory.set(parent)
+      $fileList.scrollTo(0)
     }
-    $fileList.scrollTo(0)
   }
 
   private void setupDirectoryTree() {
