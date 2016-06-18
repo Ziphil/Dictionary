@@ -268,7 +268,7 @@ public class MainController {
 
   @FXML
   private void saveAndRenameDictionary() {
-    if ($dictionary != null)
+    if ($dictionary != null) {
       UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(stage)
       stage.initModality(Modality.WINDOW_MODAL)
