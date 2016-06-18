@@ -72,26 +72,28 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   private void load() {
-    File file = File.new($path)
-    String currentName = null
-    StringBuilder currentData = StringBuilder.new()
-    file.eachLine() { String line ->
-      Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-      if (matcher.matches()) {
-        if (currentName != null) {
-          ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-          $words.add(word)
+    if ($path != null) {
+      File file = File.new($path)
+      String currentName = null
+      StringBuilder currentData = StringBuilder.new()
+      file.eachLine() { String line ->
+        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+        if (matcher.matches()) {
+          if (currentName != null) {
+            ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+            $words.add(word)
+          }
+          currentName = matcher.group(1)
+          currentData.setLength(0)
+        } else {
+          currentData.append(line)
+          currentData.append("\n")
         }
-        currentName = matcher.group(1)
-        currentData.setLength(0)
-      } else {
-        currentData.append(line)
-        currentData.append("\n")
       }
-    }
-    if (currentName != null) {
-      ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-      $words.add(word)
+      if (currentName != null) {
+        ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+        $words.add(word)
+      }
     }
   }
 
@@ -131,6 +133,18 @@ public class ShaleiaDictionary extends Dictionary {
 
   public String getName() {
     return $name
+  }
+
+  public void setName(String name) {
+    $name = name
+  }
+
+  public String getPath() {
+    return $path
+  }
+
+  public void setPath(String path) {
+    $path = path
   }
 
   public DictionaryType getType() {

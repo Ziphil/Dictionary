@@ -235,6 +235,22 @@ public class MainController {
   }
 
   @FXML
+  private void createDictionary() {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    File file = stage.showAndWaitResult()
+    if (file != null) {
+      Dictionary dictionary = Dictionary.createEmptyDictionary(file)
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      }
+    }
+  }
+
+  @FXML
   private void saveDictionary() {
     $dictionary.save()
   }

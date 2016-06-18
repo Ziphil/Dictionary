@@ -19,6 +19,12 @@ public abstract class Dictionary {
 
   public abstract String getName()
 
+  public abstract void setName(String name)
+
+  public abstract String getPath()
+
+  public abstract void setPath(String path)
+
   public abstract DictionaryType getType()
 
   public abstract ObservableList<? extends Word> getWords()
@@ -34,6 +40,21 @@ public abstract class Dictionary {
       dictionary = ShaleiaDictionary.new(fileName, filePath)
     } else if (type == DictionaryType.PERSONAL) {
       dictionary = PersonalDictionary.new(fileName, filePath)
+    }
+    return dictionary
+  }
+
+  public static Dictionary createEmptyDictionary(File file) {
+    Dictionary dictionary
+    String fileName = file.getName()
+    String filePath = file.getPath()
+    DictionaryType type = DictionaryType.valueOfPath(filePath)
+    if (type == DictionaryType.SHALEIA) {
+      dictionary = ShaleiaDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
+    } else if (type == DictionaryType.PERSONAL) {
+      dictionary = PersonalDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
     }
     return dictionary
   }
