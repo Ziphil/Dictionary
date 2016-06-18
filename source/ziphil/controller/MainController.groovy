@@ -150,78 +150,86 @@ public class MainController {
   }
 
   private void modifyWord(Word word) {
-    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryType dictionaryType = $dictionary.getType()
-    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
-    stage.initOwner($stage)
-    if (dictionaryType == DictionaryType.SHALEIA) {
-      ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-      controller.prepare((ShaleiaWord)word)
-    } else if (dictionaryType == DictionaryType.PERSONAL) {
-      PersonalEditorController controller = PersonalEditorController.new(stage)
-      controller.prepare((PersonalWord)word)
-    }
-    Boolean isDone = stage.showAndWaitResult()
-    if (isDone != null && isDone) {
-      if (savesAutomatically) {
-        $dictionary.save()
+    if ($dictionary != null) {
+      UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryType dictionaryType = $dictionary.getType()
+      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      stage.initOwner($stage)
+      if (dictionaryType == DictionaryType.SHALEIA) {
+        ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+        controller.prepare((ShaleiaWord)word)
+      } else if (dictionaryType == DictionaryType.PERSONAL) {
+        PersonalEditorController controller = PersonalEditorController.new(stage)
+        controller.prepare((PersonalWord)word)
+      }
+      Boolean isDone = stage.showAndWaitResult()
+      if (isDone != null && isDone) {
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
       }
     }
   }
 
   private void removeWord(Word word) {
-    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
-    $dictionary.getRawWords().remove(word)
-    if (savesAutomatically) {
-      $dictionary.save()
-    }
-  }
-
-  @FXML
-  private void addWord() {
-    Word newWord
-    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryType dictionaryType = $dictionary.getType()
-    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
-    stage.initOwner($stage)
-    if (dictionaryType == DictionaryType.SHALEIA) {
-      newWord = ShaleiaWord.emptyWord()
-      ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-      controller.prepare(newWord)
-    } else if (dictionaryType == DictionaryType.PERSONAL) {
-      newWord = PersonalWord.emptyWord()
-      PersonalEditorController controller = PersonalEditorController.new(stage)
-      controller.prepare(newWord)
-    }
-    Boolean isDone = stage.showAndWaitResult()
-    if (isDone != null && isDone) {
-      $dictionary.getRawWords().add(newWord)
+    if ($dictionary != null) {
+      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      $dictionary.getRawWords().remove(word)
       if (savesAutomatically) {
         $dictionary.save()
       }
     }
   }
 
-  private void addInheritedWord(Word word) {
-    Word newWord
-    UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryType dictionaryType = $dictionary.getType()
-    Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
-    stage.initOwner($stage)
-    if (dictionaryType == DictionaryType.SHALEIA) {
-      newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
-      ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-      controller.prepare(newWord)
-    } else if (dictionaryType == DictionaryType.PERSONAL) {
-      newWord = PersonalWord.copyFrom((PersonalWord)word)
-      PersonalEditorController controller = PersonalEditorController.new(stage)
-      controller.prepare(newWord)
+  @FXML
+  private void addWord() {
+    if ($dictionary != null) {
+      Word newWord
+      UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryType dictionaryType = $dictionary.getType()
+      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      stage.initOwner($stage)
+      if (dictionaryType == DictionaryType.SHALEIA) {
+        newWord = ShaleiaWord.emptyWord()
+        ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+        controller.prepare(newWord)
+      } else if (dictionaryType == DictionaryType.PERSONAL) {
+        newWord = PersonalWord.emptyWord()
+        PersonalEditorController controller = PersonalEditorController.new(stage)
+        controller.prepare(newWord)
+      }
+      Boolean isDone = stage.showAndWaitResult()
+      if (isDone != null && isDone) {
+        $dictionary.getRawWords().add(newWord)
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
+      }
     }
-    Boolean isDone = stage.showAndWaitResult()
-    if (isDone != null && isDone) {
-      $dictionary.getRawWords().add(newWord)
-      if (savesAutomatically) {
-        $dictionary.save()
+  }
+
+  private void addInheritedWord(Word word) {
+    if ($dictionary != null) {
+      Word newWord
+      UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryType dictionaryType = $dictionary.getType()
+      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      stage.initOwner($stage)
+      if (dictionaryType == DictionaryType.SHALEIA) {
+        newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
+        ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+        controller.prepare(newWord)
+      } else if (dictionaryType == DictionaryType.PERSONAL) {
+        newWord = PersonalWord.copyFrom((PersonalWord)word)
+        PersonalEditorController controller = PersonalEditorController.new(stage)
+        controller.prepare(newWord)
+      }
+      Boolean isDone = stage.showAndWaitResult()
+      if (isDone != null && isDone) {
+        $dictionary.getRawWords().add(newWord)
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
       }
     }
   }
