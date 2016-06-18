@@ -51,6 +51,8 @@
         <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
       </Menu>
       <Menu text="ツール">
+        <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
+        <SeparatorMenuItem/>
         <MenuItem text="常に手前に表示" disable="true"/>
         <SeparatorMenuItem/>
         <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E"/>

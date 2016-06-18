@@ -175,6 +175,7 @@ public class MainController {
     }
   }
 
+  @FXML
   private void addWord() {
     Word newWord
     UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
