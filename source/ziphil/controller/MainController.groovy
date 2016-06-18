@@ -364,7 +364,7 @@ public class MainController {
         item.setDisable(true)
       }
       if (i < 10) {
-        item.setAccelerator(KeyCombination.valueOf("Shortcut+${i}"))
+        item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       }
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
