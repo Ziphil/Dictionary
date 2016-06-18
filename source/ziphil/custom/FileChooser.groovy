@@ -88,6 +88,7 @@ public class FileChooser extends VBox {
     }
   }
 
+  @FXML
   private void changeCurrentDirectoryToHome() {
     String homePath = System.getProperty("user.home")
     File home = File.new(homePath)
@@ -96,6 +97,15 @@ public class FileChooser extends VBox {
       $currentDirectory.set(home)
     }
     $fileList.scrollTo(0)
+  }
+
+  @FXML
+  private void changeCurrentDirectoryToParent() {
+    File parent = $currentDirectory.get().getParentFile()
+    if (parent != null) {
+      $directory.setText(parent.getAbsolutePath())
+      $currentDirectory.set(parent)
+    }
   }
 
   private void setupDirectoryTree() {
