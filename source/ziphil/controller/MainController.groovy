@@ -265,6 +265,20 @@ public class MainController {
   }
 
   @FXML
+  private void saveAndRenameDictionary() {
+    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    controller.prepare(true)
+    File file = stage.showAndWaitResult()
+    if (file != null) {
+      $dictionary.setPath(file.getAbsolutePath())
+      $dictionary.save()
+    }
+  }
+
+  @FXML
   private void showApplicationInformation() {
     Stage stage = Stage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)

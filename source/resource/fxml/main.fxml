@@ -36,7 +36,7 @@
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
         <SeparatorMenuItem/>
         <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
-        <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
+        <MenuItem text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
