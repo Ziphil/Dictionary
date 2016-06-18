@@ -82,7 +82,7 @@ public class SettingController {
     if (savesAutomatically) {
       $savesAutomatically.setSelected(true)
     }
-    (0 ..< registeredDictionaryPaths.size()).each() { Integer i ->
+    (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
   }

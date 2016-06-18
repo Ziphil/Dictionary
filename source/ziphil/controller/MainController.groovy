@@ -353,7 +353,7 @@ public class MainController {
 
   private void setupOpenRegisteredDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
-    (0 ..< dictionaryPaths.size()).each() { Integer i ->
+    (0 ..< 10).each() { Integer i ->
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath != null) {
@@ -367,9 +367,7 @@ public class MainController {
         item.setText("")
         item.setDisable(true)
       }
-      if (i < 10) {
-        item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
-      }
+      item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
   }
