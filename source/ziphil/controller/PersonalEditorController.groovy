@@ -8,7 +8,10 @@ import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.Spinner
+import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Measurement
 import ziphil.dictionary.PersonalWord
+import ziphil.module.Setting
 import ziphil.node.UtilityStage
 
 
@@ -17,8 +20,8 @@ public class PersonalEditorController {
 
   private static final String RESOURCE_PATH = "resource/fxml/personal_editor.fxml"
   private static final String TITLE = "単語編集"
-  private static final Integer DEFAULT_WIDTH = 640
-  private static final Integer DEFAULT_HEIGHT = 480
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private TextField $name
   @FXML private TextField $pronunciation
@@ -34,6 +37,7 @@ public class PersonalEditorController {
   public PersonalEditorController(UtilityStage<Boolean> stage) {
     $stage = stage
     loadResource()
+    setupEditor()
   }
 
   public void prepare(PersonalWord word) {
@@ -66,8 +70,18 @@ public class PersonalEditorController {
     $stage.close(false)
   }
 
+  private void setupEditor() {
+    Setting setting = Setting.getInstance()
+    String fontFamily = setting.getEditorFontFamily()
+    Integer fontSize = setting.getEditorFontSize()
+    if (fontFamily != null && fontSize != null) {
+      $translation.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+      $usage.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+    }
+  }
+
   private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH))
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)

@@ -18,12 +18,20 @@
   </stylesheets>
   <center>
     <VBox spacing="15" alignment="center">
-      <padding><Insets top="20" bottom="20" left="30" right="30"/></padding>
+      <padding>
+        <Insets>
+          <top><Double rpx="20"/></top>
+          <right><Double rpx="30"/></right>
+          <bottom><Double rpx="20"/></bottom>
+          <left><Double rpx="30"/></left>
+        </Insets>
+      </padding>
       <VBox alignment="center"> 
         <Label text="ZpDIC" styleClass="application-name"/>
         <Label fx:id="$version" styleClass="application-version"/>
       </VBox>
-      <HBox spacing="10">
+      <HBox>
+        <spacing><Double rpx="10"/></spacing>
         <Label text="Copyright © 2016"/>
         <Label text="Ziphil Aleshlas"/>
       </HBox>

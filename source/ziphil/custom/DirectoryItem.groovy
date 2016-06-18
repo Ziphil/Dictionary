@@ -3,6 +3,7 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
+import ziphilib.transform.ConvertPrimitive
 
 
 @CompileStatic @Newify
@@ -12,13 +13,9 @@ public class DirectoryItem extends TreeItem<File> {
     super(file)
   }
 
-  public boolean isLeaf() {
-    File file = getValue()
-    if (file != null) {
-      return getChildren().isEmpty()
-    } else {
-      return false
-    }
+  @ConvertPrimitive
+  public Boolean isLeaf() {
+    return false
   }
 
   public ObservableList<TreeItem<File>> getChildren() {

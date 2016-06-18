@@ -5,36 +5,80 @@
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 
-<fx:root type="VBox" spacing="5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <URL value="@../css/modification.css"/>
   </stylesheets>
-  <HBox spacing="5" alignment="center">
+  <spacing><Double rpx="5"/></spacing>
+  <HBox alignment="center">
+    <spacing><Double rpx="5"/></spacing>
     <Label text="ディレクトリ:"/>
     <TextField fx:id="$directory" HBox.hgrow="always"/>
+    <Button onAction="#changeCurrentDirectoryToParent">
+      <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
+      <graphic>
+        <ImageView><Image url="@../icon/parent_directory.png"/></ImageView>
+      </graphic>
+    </Button>
+    <Button onAction="#changeCurrentDirectoryToHome">
+      <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
+      <graphic>
+        <ImageView><Image url="@../icon/home.png"/></ImageView>
+      </graphic>
+    </Button>
   </HBox>
   <SplitPane fx:id="$splitPane" VBox.vgrow="always">
-    <VBox.margin><Insets top="-5" bottom="-5" left="-5" right="-5" /></VBox.margin>
+    <VBox.margin>
+      <Insets> 
+        <top><Double rpx="-5"/></top>
+        <right><Double rpx="-5"/></right>
+        <bottom><Double rpx="-5"/></bottom>
+        <left><Double rpx="-5"/></left>
+      </Insets>
+    </VBox.margin>
     <VBox>
-      <padding><Insets top="5" bottom="5" left="5" right="2"/></padding>
+      <padding>
+        <Insets> 
+          <top><Double rpx="5"/></top>
+          <right><Double rpx="2"/></right>
+          <bottom><Double rpx="5"/></bottom>
+          <left><Double rpx="5"/></left>
+        </Insets>
+      </padding>
       <TreeView fx:id="$directoryTree"/>
     </VBox>
     <VBox>
-      <padding><Insets top="5" bottom="5" left="3" right="5"/></padding>
+      <padding>
+        <Insets> 
+          <top><Double rpx="5"/></top>
+          <right><Double rpx="5"/></right>
+          <bottom><Double rpx="5"/></bottom>
+          <left><Double rpx="3"/></left>
+        </Insets>
+      </padding>
       <ListView fx:id="$fileList"/>
     </VBox>
   </SplitPane>
-  <HBox spacing="5" alignment="center">
+  <HBox alignment="center">
+    <spacing><Double rpx="5"/></spacing>
     <Label text="ファイル:"/>
     <TextField fx:id="$file" HBox.hgrow="always"/>
+    <ComboBox fx:id="$fileTypes">
+      <prefWidth><Double rpx="200"/></prefWidth>
+      <minWidth><Double rpx="200"/></minWidth>
+    </ComboBox>
   </HBox>
 </fx:root>

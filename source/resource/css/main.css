@@ -10,18 +10,18 @@
 }
 
 #dictionary-list .head-name {
-  -fx-font-size: 120%;
+  -fx-font-size: 1.2em;
   -fx-font-weight: bold;
 }
 
 #dictionary-list .shaleia-whole-class,
 #dictionary-list .shaleia-local-class {
-  -fx-font-size: 80%;
+  -fx-font-size: 0.8em;
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
-  -fx-border-radius: 3;
-  -fx-padding: 0 2 0 2;
-  -fx-margin: 0 5 0 0;
+  -fx-border-radius: 3px;
+  -fx-padding: 0px 2px 0px 2px;
+  -fx-margin: 0px 5px 0px 0px;
 }
 
 #dictionary-list:focused .list-cell:filled:selected .shaleia-whole-class,
@@ -31,24 +31,24 @@
 
 #dictionary-list .shaleia-creation-date,
 #dictionary-list .shaleia-item {
-  -fx-font-size: 90%;
+  -fx-font-size: 0.9em;
 }
 
 .setting-pane Text {
   -fx-fill: -fx-text-base-color;
 }
 
-.footer {
-  -fx-font-size: 90%;
+.footer .label {
+  -fx-font-size: 0.9em;
   -fx-alignment: center-right;
 }
 
 .application-name {
-  -fx-font-size: 200%;
+  -fx-font-size: 2em;
   -fx-font-weight: bold;
 }
 
 .application-version {
-  -fx-font-size: 120%;
+  -fx-font-size: 1.2em;
   -fx-font-weight: bold;
 }

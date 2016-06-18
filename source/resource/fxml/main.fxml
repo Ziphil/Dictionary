@@ -31,30 +31,31 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="新規作成" disable="true" accelerator="Shortcut+N"/>
-        <MenuItem text="開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <MenuItem text="辞書の新規作成" onAction="#createDictionary" accelerator="Shortcut+Shift+N"/>
+        <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
+        <SeparatorMenuItem/>
         <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
-        <MenuItem text="名前をつけて保存" disable="true" accelerator="Shortcut+Shift+S"/>
+        <MenuItem text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
       <Menu text="検索">
-        <Menu text="検索範囲" disable="true">
-          <MenuItem text="単語" disable="true" accelerator="F6"/>
-          <MenuItem text="訳語" disable="true" accelerator="F7"/>
-          <MenuItem text="全文" disable="true" accelerator="F8"/>
+        <Menu text="検索範囲の変更">
+          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
+          <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
+          <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
-        <Menu text="検索方式" disable="true">
-          <MenuItem text="完全一致" disable="true"/>
-          <MenuItem text="部分一致" disable="true"/>
-        </Menu>
+        <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
         <SeparatorMenuItem/>
         <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
       </Menu>
       <Menu text="ツール">
+        <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
+        <SeparatorMenuItem/>
         <MenuItem text="常に手前に表示" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+E"/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E"/>
       </Menu>
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
@@ -65,11 +66,21 @@
     </MenuBar>
   </top>
   <center>
-    <VBox alignment="center" spacing="10">
-      <padding><Insets top="10" bottom="0" left="10" right="10"/></padding>
-      <HBox spacing="5">
+    <VBox alignment="center">
+      <spacing><Double rpx="10"/></spacing>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$searchText" onKeyReleased="#search" HBox.hgrow="always"/>
-        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode" prefWidth="70" minWidth="70">
+        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="単語"/>
@@ -79,21 +90,39 @@
           </items>
           <value><String fx:value="単語"/></value>
         </ComboBox>
-        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true" prefWidth="70" minWidth="70"/>
+        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+        </ToggleButton>
       </HBox>
-      <ListView fx:id="$list" prefHeight="65536"/>
+      <ListView fx:id="$list" id="dictionary-list" prefHeight="65536"/>
     </VBox>
   </center>
   <bottom>
-    <HBox fx:id="$footer" spacing="5">
-      <padding><Insets top="0" bottom="0" left="10" right="10"/></padding>
+    <HBox fx:id="$footer" styleClass="footer">
+      <spacing><Double rpx="5"/></spacing>
+      <padding>
+        <Insets>
+          <left><Double rpx="10"/></left>
+          <right><Double rpx="10"/></right>
+        </Insets>
+      </padding>
       <Label fx:id="$dictionaryName"/>
       <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSize" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$hitWordSize" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
       <Label text="/"/>
-      <Label fx:id="$totalWordSize" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$totalWordSize" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
       <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTime" text="0" minWidth="35" prefWidth="35"/>
+      <Label fx:id="$elapsedTime" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
     </HBox>
   </bottom>
   <fx:define>

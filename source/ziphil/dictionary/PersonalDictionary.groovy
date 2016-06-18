@@ -56,12 +56,14 @@ public class PersonalDictionary extends Dictionary {
   }
 
   private void load() {
-    File file = File.new($path)
-    String input = file.getText()
-    Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
-    matcher.each() { List<String> matches ->
-      PersonalWord word = PersonalWord.new(matches[1], matches[7], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger())
-      $words.add(word)
+    if ($path != null) {
+      File file = File.new($path)
+      String input = file.getText()
+      Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
+      matcher.each() { List<String> matches ->
+        PersonalWord word = PersonalWord.new(matches[1], matches[7], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger())
+        $words.add(word)
+      }
     }
   }
 
@@ -95,6 +97,18 @@ public class PersonalDictionary extends Dictionary {
 
   public String getName() {
     return $name
+  }
+
+  public void setName(String name) {
+    $name = name
+  }
+
+  public String getPath() {
+    return $path
+  }
+
+  public void setPath(String path) {
+    $path = path
   }
 
   public DictionaryType getType() {

@@ -30,48 +30,116 @@
   <center>
     <TabPane styleClass="setting-pane">
       <Tab text="表示" closable="false">
-        <GridPane vgap="5" hgap="5">
-          <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-          <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <ComboBox fx:id="$contentFontNames" minWidth="300" prefWidth="300"/>
-            <Spinner fx:id="$contentFontSize" prefWidth="70" minWidth="70" editable="true">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$contentFontNames" editable="true">
+              <prefWidth><Double rpx="350"/></prefWidth>
+              <minWidth><Double rpx="350"/></minWidth>
+            </ComboBox>
+            <Spinner fx:id="$contentFontSize" editable="true">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
           <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-          <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <ComboBox fx:id="$editorFontNames" disable="true" minWidth="300" prefWidth="300"/>
-            <Spinner fx:id="$editorFontSize" disable="true" prefWidth="70" minWidth="70" editable="true">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$editorFontNames" editable="true">
+              <prefWidth><Double rpx="350"/></prefWidth>
+              <minWidth><Double rpx="350"/></minWidth>
+            </ComboBox>
+            <Spinner fx:id="$editorFontSize" editable="true">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemEditorFont" text="システムフォントを用いる" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$modifiesPunctuation" onAction="#toggleModifiesPunctuation" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+          <CheckBox fx:id="$usesSystemEditorFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+          <ToggleButton fx:id="$modifiesPunctuation" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
             <Text text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
-            <GridPane.margin><Insets left="10" bottom="5"/></GridPane.margin>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
             <Text text="このフォントは単語データの編集時のテキストエリアで用いられます。"/>
-            <GridPane.margin><Insets left="10" bottom="5"/></GridPane.margin>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
             <Text text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
-            <GridPane.margin><Insets left="10"/></GridPane.margin>
           </TextFlow>
         </GridPane>
       </Tab>
+      <Tab text="登録辞書" closable="false">
+        <GridPane fx:id="$registeredDictionaryPane">
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+        </GridPane>
+      </Tab>
       <Tab text="その他" closable="false">
-        <GridPane vgap="5" hgap="5">
-          <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <ToggleButton fx:id="$savesAutomatically" onAction="#toggleSavesAutomatically" text="無効" minWidth="70" prefWidth="70" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+          <ToggleButton fx:id="$savesAutomatically" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
             <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
-            <GridPane.margin><Insets left="10"/></GridPane.margin>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -79,9 +147,18 @@
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
-        <Button text="キャンセル" onAction="#cancelChange" cancelButton="true" minWidth="80" prefWidth="80"/>
-        <Button text="OK" onAction="#commitChange" defaultButton="true" minWidth="80" prefWidth="80"/>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelChange" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commitChange" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
       </HBox>
     </AnchorPane>
   </bottom>
