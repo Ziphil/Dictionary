@@ -11,7 +11,6 @@ public class CustomBuilderFactory implements BuilderFactory {
 
   private BuilderFactory $baseFactory = JavaFXBuilderFactory.new()
 
-  @Override
   public Builder getBuilder(Class clazz) {
     if (clazz == Double) {
       return Measurement.new()
