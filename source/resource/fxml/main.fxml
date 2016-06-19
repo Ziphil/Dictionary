@@ -80,7 +80,11 @@
         </MenuItem>
       </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
+        <MenuItem text="ヘルプ" disable="true" accelerator="F1">
+          <graphic>
+            <ImageView><Image url="@../icon/empty.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem text="公式サイト" disable="true"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
