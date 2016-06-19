@@ -129,17 +129,31 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <ToggleButton fx:id="$savesAutomatically" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$ignoresAccent" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
+                <bottom><Double rpx="10"/></bottom>
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
             <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="辞書の単語検索の際に単語名のアクセント記号の有無を無視します。&#10;訳語検索や全文検索では、この項目の設定に関わらずアクセント記号を厳密に扱います。"/>
           </TextFlow>
         </GridPane>
       </Tab>

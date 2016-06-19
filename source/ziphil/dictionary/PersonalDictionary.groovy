@@ -8,6 +8,8 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -27,13 +29,15 @@ public class PersonalDictionary extends Dictionary {
   }
 
   public void searchByName(String search, Boolean isStrict) {
+    Boolean ignoresAccent = Setting.getInstance().ignoresAccent()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { PersonalWord word ->
+        String name = (ignoresAccent) ? Strings.unaccent(word.getName()) : word.getName()
         if (isStrict) {
-          return word.getName().startsWith(search)
+          return name.startsWith(search)
         } else {
-          Matcher matcher = pattern.matcher(word.getName())
+          Matcher matcher = pattern.matcher(name)
           return matcher.find()
         }
       }

@@ -45,6 +45,7 @@ public class SettingController {
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPaths = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomatically
+  @FXML private ToggleButton $ignoresAccent
   private Stage $stage
   private Scene $scene
 
@@ -70,6 +71,7 @@ public class SettingController {
     Integer editorFontSize = setting.getEditorFontSize()
     Boolean modifiesPunctuation = setting.modifiesPunctuation()
     Boolean savesAutomatically = setting.savesAutomatically()
+    Boolean ignoresAccent = setting.ignoresAccent()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontNames.getSelectionModel().select(contentFontFamily)
@@ -93,6 +95,9 @@ public class SettingController {
     if (savesAutomatically) {
       $savesAutomatically.setSelected(true)
     }
+    if (ignoresAccent) {
+      $ignoresAccent.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
@@ -108,6 +113,7 @@ public class SettingController {
     Boolean usesSystemEditorFont = $usesSystemEditorFont.isSelected()
     Boolean modifiesPunctuation = $modifiesPunctuation.isSelected()
     Boolean savesAutomatically = $savesAutomatically.isSelected()
+    Boolean ignoresAccent = $ignoresAccent.isSelected()
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
       setting.setContentFontSize(contentFontSize)
@@ -124,6 +130,7 @@ public class SettingController {
     }
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
+    setting.setIgnoresAccent(ignoresAccent)
     (0 ..< 10).each() { Integer i ->
       String path = $registeredDictionaryPaths[i].getText()
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -207,10 +214,15 @@ public class SettingController {
     Callable<String> savesAutomaticallyFunction = (Callable){
       return ($savesAutomatically.selectedProperty().get()) ? "有効" : "無効"
     }
+    Callable<String> ignoresAccentFunction = (Callable){
+      return ($ignoresAccent.selectedProperty().get()) ? "有効" : "無効"
+    }
     StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
     StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
+    StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
     $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
     $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
+    $ignoresAccent.textProperty().bind(ignoresAccentBinding)
   }
 
   private void loadResource() {

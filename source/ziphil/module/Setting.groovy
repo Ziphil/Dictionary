@@ -20,6 +20,7 @@ public class Setting {
   private Integer $fontRenderingType
   private Boolean $modifiesPunctuation
   private Boolean $savesAutomatically
+  private Boolean $ignoresAccent
 
   private Setting() {
     loadRegisteredDictionarySettings()
@@ -78,6 +79,8 @@ public class Setting {
             $modifiesPunctuation = data.toBoolean()
           } else if (type == "saves-automatically") {
             $savesAutomatically = data.toBoolean()
+          } else if (type == "ignores-accent") {
+            $ignoresAccent = data.toBoolean()
           }
         }
       }
@@ -110,6 +113,9 @@ public class Setting {
     }
     if ($savesAutomatically != null) {
       output.append("saves-automatically: \"" + $savesAutomatically.toString() + "\"\n")
+    }
+    if ($ignoresAccent != null) {
+      output.append("ignores-accent: \"" + $ignoresAccent.toString() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
   }
@@ -189,6 +195,14 @@ public class Setting {
 
   public void setSavesAutomatically(Boolean savesAutomatically) {
     $savesAutomatically = savesAutomatically
+  }
+
+  public Boolean ignoresAccent() {
+    return $ignoresAccent
+  }
+
+  public void setIgnoresAccent(Boolean ignoresAccent) {
+    $ignoresAccent = ignoresAccent
   }
 
 }
