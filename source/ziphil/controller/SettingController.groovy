@@ -142,6 +142,10 @@ public class SettingController {
     }
   }
 
+  private void deregisterDictionary(Integer i) {
+    $registeredDictionaryPaths[i].setText("")
+  }
+
   @FXML
   private void commitChange() {
     saveSetting()
@@ -156,19 +160,27 @@ public class SettingController {
   private void setupRegisteredDictionaryPane() {
     (0 ..< 10).each() { Integer i ->
       Label number = Label.new("登録辞書${(i + 1) % 10}:")
-      HBox box = HBox.new()
+      HBox box = HBox.new(Measurement.rpx(5))
+      HBox innerBox = HBox.new()
       TextField dictionaryPath = TextField.new()
       Button browse = Button.new("参照")
+      Button deregister = Button.new("解除")
       dictionaryPath.setPrefWidth(Measurement.rpx(400))
       dictionaryPath.setMinWidth(Measurement.rpx(400))
       dictionaryPath.getStyleClass().add("left-pill")
       browse.setPrefWidth(Measurement.rpx(60))
       browse.setMinWidth(Measurement.rpx(60))
       browse.getStyleClass().add("right-pill")
+      deregister.setPrefWidth(Measurement.rpx(70))
+      deregister.setPrefWidth(Measurement.rpx(70))
       browse.setOnAction() {
         browseDictionary(i)
       }
-      box.getChildren().addAll(dictionaryPath, browse)
+      deregister.setOnAction() {
+        deregisterDictionary(i)
+      }
+      innerBox.getChildren().addAll(dictionaryPath, browse)
+      box.getChildren().addAll(innerBox, deregister)
       $registeredDictionaryPaths[i] = dictionaryPath
       $registeredDictionaryPane.add(number, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
