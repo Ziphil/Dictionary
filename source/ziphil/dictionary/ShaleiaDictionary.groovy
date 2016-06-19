@@ -33,11 +33,11 @@ public class ShaleiaDictionary extends Dictionary {
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { ShaleiaWord word ->
-        String name = (ignoresAccent) ? Strings.unaccent(word.getName()) : word.getName()
         if (isStrict) {
+          String name = (ignoresAccent) ? Strings.unaccent(word.getName()) : word.getName()
           return name.startsWith(search)
         } else {
-          Matcher matcher = pattern.matcher(name)
+          Matcher matcher = pattern.matcher(word.getName())
           return matcher.find()
         }
       }
