@@ -41,6 +41,14 @@ public class ShaleiaWord extends Word {
     $uniqueName = uniqueName
     $data = data
     $content = uniqueName + "\n" + data
+    data.eachLine() { String line ->
+      Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
+      if (matcher.matches()) {
+        String equivalent = matcher.group(2)
+        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+        $equivalents.addAll(equivalents)
+      }
+    }
     $isChanged = true
   }
 
@@ -54,7 +62,7 @@ public class ShaleiaWord extends Word {
     Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
-    data.eachLine() { String line ->
+    $data.eachLine() { String line ->
       Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
       Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
