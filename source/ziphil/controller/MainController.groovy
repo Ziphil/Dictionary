@@ -164,6 +164,7 @@ public class MainController {
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
+        word.createContentPane()
         if (savesAutomatically) {
           $dictionary.save()
         }

@@ -24,6 +24,7 @@ public class PersonalWord extends Word {
   private Integer $modification = 0
   private String $content = ""
   private VBox $contentPane = VBox.new()
+  private Boolean $isChanged = true
 
   public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     update(name, pronunciation, translation, usage, level, memory, modification)
@@ -31,10 +32,6 @@ public class PersonalWord extends Word {
   }
 
   public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
-    HBox headBox = HBox.new()
-    VBox translationBox = VBox.new()
-    VBox usageBox = VBox.new()
-    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $name = name
     $pronunciation = pronunciation
     $translation = translation
@@ -43,11 +40,20 @@ public class PersonalWord extends Word {
     $memory = memory
     $modification = modification
     $content = name + "\n" + translation + "\n" + usage
+    $isChanged = true
+  }
+
+  public void createContentPane() {
+    HBox headBox = HBox.new()
+    VBox translationBox = VBox.new()
+    VBox usageBox = VBox.new()
+    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, translationBox, usageBox)
-    addNameNode(headBox, name)
-    addOtherNode(translationBox, translation, modifiesPunctuation)
-    addOtherNode(usageBox, usage, modifiesPunctuation)
+    addNameNode(headBox, $name)
+    addOtherNode(translationBox, $translation, modifiesPunctuation)
+    addOtherNode(usageBox, $usage, modifiesPunctuation)
+    $isChanged = false
   }
 
   private void addNameNode(HBox box, String name) {
@@ -87,6 +93,10 @@ public class PersonalWord extends Word {
     Integer memory = oldWord.getMemory()
     Integer modification = oldWord.getModification()
     return PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+  }
+
+  public Boolean isChanged() {
+    return $isChanged
   }
 
   public String getName() {

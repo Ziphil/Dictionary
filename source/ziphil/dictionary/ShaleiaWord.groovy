@@ -29,6 +29,7 @@ public class ShaleiaWord extends Word {
   private String $data = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
+  private Boolean $isChanged = true
 
   public ShaleiaWord(String uniqueName, String data) {
     update(uniqueName, data)
@@ -36,6 +37,14 @@ public class ShaleiaWord extends Word {
   }
 
   public void update(String uniqueName, String data) {
+    $name = uniqueName.replaceAll(/\+|~/, "")
+    $uniqueName = uniqueName
+    $data = data
+    $content = uniqueName + "\n" + data
+    $isChanged = true
+  }
+
+  public void createContentPane() {
     HBox headBox = HBox.new()
     VBox equivalentBox = VBox.new()
     VBox otherBox = VBox.new()
@@ -43,10 +52,6 @@ public class ShaleiaWord extends Word {
     Boolean hasOther = false
     Boolean hasSynonym = false
     Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
-    $name = uniqueName.replaceAll(/\+|~/, "")
-    $uniqueName = uniqueName
-    $data = data
-    $content = uniqueName + "\n" + data
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
     data.eachLine() { String line ->
@@ -61,7 +66,7 @@ public class ShaleiaWord extends Word {
       Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
       if (headBox.getChildren().isEmpty()) {
-        String name = uniqueName.replaceAll(/\+|~/, "")
+        String name = $uniqueName.replaceAll(/\+|~/, "")
         addNameNode(headBox, name)
       }
       if (creationDateMatcher.matches()) {
@@ -123,6 +128,7 @@ public class ShaleiaWord extends Word {
     if (hasSynonym) {
       $contentPane.setMargin(otherBox, Insets.new(0, 0, 5, 0))
     }
+    $isChanged = false
   }
 
   private void addNameNode(HBox box, String name) {
@@ -214,6 +220,10 @@ public class ShaleiaWord extends Word {
     String name = oldWord.getName()
     String data = oldWord.getData()
     return ShaleiaWord.new(name, data)
+  }
+
+  public Boolean isChanged() {
+    return $isChanged
   }
 
   public String getName() {
