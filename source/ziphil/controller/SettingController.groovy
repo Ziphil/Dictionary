@@ -195,7 +195,7 @@ public class SettingController {
   }
 
   private void setupFontNames() {
-    List<String> fontNames = Font.getFontNames()
+    List<String> fontNames = Font.getFamilies()
     $contentFontNames.getItems().addAll(fontNames)
     $editorFontNames.getItems().addAll(fontNames)
   }
