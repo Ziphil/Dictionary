@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import java.util.regex.Matcher
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -29,6 +30,7 @@ public class ShaleiaWord extends Word {
   private String $data = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
+  private Consumer<String> $onLinkClicked
   private Boolean $isChanged = true
 
   public ShaleiaWord(String uniqueName, String data) {
@@ -183,8 +185,8 @@ public class ShaleiaWord extends Word {
 
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
-    Label itemText = Label.new("cf: ")
-    List<Text> synonymTexts = createRichTexts(synonym)
+    Label itemText = Label.new("cf:")
+    List<Text> synonymTexts = createRichTexts(" " + synonym)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     synonymTexts.each() { Text synonymText ->
       synonymText.getStyleClass().addAll("content-text")
@@ -196,7 +198,146 @@ public class ShaleiaWord extends Word {
 
   private List<Text> createRichTexts(String string) {
     List<Text> texts = ArrayList.new()
-    Text text = Text.new(string.replaceAll(/\{|\}|\[|\]|\//, ""))
+    List<Text> unnamedTexts = ArrayList.new()
+    StringBuilder currentString = StringBuilder.new()
+    StringBuilder currentName = StringBuilder.new()
+    Integer currentMode = 0
+    string.each() { String character ->
+      if (currentMode == 0 && character == "{") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 1
+      } else if ((currentMode == 1 || currentMode == 11) && character == "}") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        if (currentName.length() > 0) {
+          String name = currentName.toString()
+          unnamedTexts.each() { Text unnamedText ->
+            unnamedText.setOnMouseClicked() {
+              if ($onLinkClicked != null) {
+                $onLinkClicked.accept(name)
+              }
+            }
+          }
+          currentName.setLength(0)
+          unnamedTexts.clear()
+        }
+        currentMode = 0
+      } else if (currentMode == 1 && (character == " " || character == "." || character == "," || character == "?" || character == "-")) {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        if (currentName.length() > 0) {
+          String name = currentName.toString()
+          unnamedTexts.each() { Text unnamedText ->
+            unnamedText.setOnMouseClicked() {
+              if ($onLinkClicked != null) {
+                $onLinkClicked.accept(name)
+              }
+            }
+          }
+          currentName.setLength(0)
+          unnamedTexts.clear()
+        }
+        Text characterText = Text.new(character)
+        characterText.getStyleClass().add("shaleia-word")
+        texts.add(characterText)    
+      } else if (currentMode == 1 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        currentMode = 11
+      } else if (currentMode == 11 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          String name = currentName.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link", "shaleia-italic")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        currentMode = 1
+      } else if (currentMode == 0 && character == "[") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }      
+        currentMode = 2
+      } else if ((currentMode == 2 || currentName == 12) && character == "]") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          text.getStyleClass().add("shaleia-word")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 0
+      } else if (currentMode == 2 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().add("shaleia-word")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 12
+      } else if (currentMode == 12 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-italic")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }      
+        currentMode = 2
+      } else if (currentMode == 0 && character == "/") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 3
+      } else if (currentMode == 3 && character == "/") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          text.getStyleClass().add("shaleia-italic")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 0
+      } else {
+        currentString.append(character)
+        currentName.append(character)
+      }
+    }
+    Text text = Text.new(currentString.toString())
     texts.add(text)
     return texts
   }
@@ -256,6 +397,14 @@ public class ShaleiaWord extends Word {
 
   public Pane getContentPane() {
     return $contentPane
+  }
+
+  public Consumer<String> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
 }

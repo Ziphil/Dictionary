@@ -317,6 +317,15 @@ public class MainController {
     $list.setItems($dictionary.getWords())
     $searchText.setText("")
     $searchText.requestFocus()
+    if ($dictionary instanceof ShaleiaDictionary) {
+      $dictionary.setOnLinkClicked() { String name ->
+        $searchText.setText(name)
+        $searchMode.setValue("単語")
+        $searchType.setSelected(true)
+        $searchText.requestFocus()
+        search()
+      }
+    }
     search()
   }
 

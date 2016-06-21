@@ -34,6 +34,14 @@
   -fx-font-size: 0.9em;
 }
 
+#dictionary-list .shaleia-link {
+  -fx-underline: true;
+}
+
+#dictionary-list .shaleia-italic {
+  -fx-font-style: italic;
+}
+
 .setting-pane Text {
   -fx-fill: -fx-text-base-color;
 }

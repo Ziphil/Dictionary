@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -20,6 +21,7 @@ public class ShaleiaDictionary extends Dictionary {
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private FilteredList<ShaleiaWord> $filteredWords
   private SortedList<ShaleiaWord> $sortedWords
+  private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
     $name = name
@@ -161,6 +163,17 @@ public class ShaleiaDictionary extends Dictionary {
 
   public ObservableList<? extends Word> getRawWords() {
     return $words
+  }
+
+  public Consumer<String> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
+    $words.each() { ShaleiaWord word ->
+      word.setOnLinkClicked(onLinkClicked)
+    }
   }
 
 }
