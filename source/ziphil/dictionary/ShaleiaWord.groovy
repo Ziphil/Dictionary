@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.Measurement
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -129,25 +130,24 @@ public class ShaleiaWord extends Word {
       }
     }
     if (hasOther) {
-      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, 5, 0))
+      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, Measurement.rpx(3), 0))
     }
     if (hasSynonym) {
-      $contentPane.setMargin(otherBox, Insets.new(0, 0, 5, 0))
+      $contentPane.setMargin(otherBox, Insets.new(0, 0, Measurement.rpx(3), 0))
     }
     $isChanged = false
   }
 
   private void addNameNode(HBox box, String name) {
-    Label nameText = Label.new(name)
+    Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll("content-text", "head-name", "shaleia-head-name")
     box.getChildren().add(nameText)
-    box.setMargin(nameText, Insets.new(0, 10, 0, 0))
     box.setAlignment(Pos.CENTER_LEFT)
   }
  
   private void addCreationDateNode(HBox box, String wholeClass, String creationDate) {
     Label wholeClassText = Label.new(wholeClass)
-    Label creationDateText = Label.new(" " + creationDate)
+    Text creationDateText = Text.new(" " + creationDate)
     wholeClassText.getStyleClass().addAll("content-text", "shaleia-whole-class")
     creationDateText.getStyleClass().addAll("content-text", "shaleia-creation-date")
     box.getChildren().addAll(wholeClassText, creationDateText)
@@ -168,20 +168,23 @@ public class ShaleiaWord extends Word {
 
   private void addOtherNode(VBox box, String item, String other, Boolean modifiesPunctuation) {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    TextFlow itemTextFlow = TextFlow.new()
     TextFlow textFlow = TextFlow.new()
-    Label itemText = Label.new("【${item}】")
+    Text itemText = Text.new("【${item}】")
+    Text dammyText = Text.new(" ")
     List<Text> otherTexts = createRichTexts(newOther)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     otherTexts.each() { Text otherText ->
       otherText.getStyleClass().addAll("content-text")
     }
+    itemTextFlow.getChildren().addAll(itemText, dammyText)
     textFlow.getChildren().addAll(otherTexts)
-    box.getChildren().addAll(itemText, textFlow)
+    box.getChildren().addAll(itemTextFlow, textFlow)
   }
 
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
-    Label itemText = Label.new("cf:")
+    Text itemText = Text.new("cf:")
     List<Text> synonymTexts = createRichTexts(" " + synonym)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     synonymTexts.each() { Text synonymText ->
