@@ -88,13 +88,9 @@ public class ShaleiaWord extends Word {
         String localClass = equivalentMatcher.group(1)
         String equivalent = equivalentMatcher.group(2)
         addEquivalentNode(equivalentBox, localClass, equivalent)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
       }
       if (hiddenEquivalentMatcher.matches()) {
         String equivalent = hiddenEquivalentMatcher.group(1)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
       }
       if (meaningMatcher.matches()) {
         String meaning = meaningMatcher.group(1)
