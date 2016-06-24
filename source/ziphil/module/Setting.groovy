@@ -3,6 +3,7 @@ package ziphil.module
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import net.arnx.jsonic.JSON
+import net.arnx.jsonic.JSONException
 
 
 @CompileStatic @Newify 
@@ -36,11 +37,15 @@ public class Setting {
   public static Setting createInstance() {
     File file = File.new(SETTINGS_PATH)
     if (file.exists()) {
-      FileInputStream stream = FileInputStream.new(SETTINGS_PATH)
-      JSON json = JSON.new()
-      Setting instance = json.parse(stream, Setting)
-      stream.close()
-      return instance
+      try {
+        FileInputStream stream = FileInputStream.new(SETTINGS_PATH)
+        JSON json = JSON.new()
+        Setting instance = json.parse(stream, Setting)
+        stream.close()
+        return instance
+      } catch (JSONException exception) {
+        return Setting.new()
+      }
     } else {
       return Setting.new()
     }
