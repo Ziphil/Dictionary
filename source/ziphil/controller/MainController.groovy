@@ -19,6 +19,8 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
@@ -413,6 +415,8 @@ public class MainController {
         item.setText("")
         item.setDisable(true)
       }
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
+      item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
