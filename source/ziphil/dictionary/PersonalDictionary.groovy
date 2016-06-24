@@ -29,13 +29,23 @@ public class PersonalDictionary extends Dictionary {
   }
 
   public void searchByName(String search, Boolean isStrict) {
-    Boolean ignoresAccent = Setting.getInstance().getIgnoresAccent()
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { PersonalWord word ->
         if (isStrict) {
-          String newName = (ignoresAccent) ? Strings.unaccent(word.getName()) : word.getName()
-          String newSearch = (ignoresAccent) ? Strings.unaccent(search): search
+          String newName = word.getName()
+          String newSearch = search
+          if (ignoresAccent) {
+            newName = Strings.unaccent(newName)
+            newSearch = Strings.unaccent(newSearch)
+          }
+          if (ignoresCase) {
+            newName = Strings.toLowerCase(newName)
+            newSearch = Strings.toLowerCase(newSearch)
+          }
           return newName.startsWith(newSearch)
         } else {
           Matcher matcher = pattern.matcher(word.getName())

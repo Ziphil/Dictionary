@@ -46,6 +46,7 @@ public class SettingController {
   @FXML private List<TextField> $registeredDictionaryPaths = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomatically
   @FXML private ToggleButton $ignoresAccent
+  @FXML private ToggleButton $ignoresCase
   private Stage $stage
   private Scene $scene
 
@@ -72,6 +73,7 @@ public class SettingController {
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontNames.getSelectionModel().select(contentFontFamily)
@@ -98,6 +100,9 @@ public class SettingController {
     if (ignoresAccent) {
       $ignoresAccent.setSelected(true)
     }
+    if (ignoresCase) {
+      $ignoresCase.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
@@ -114,6 +119,7 @@ public class SettingController {
     Boolean modifiesPunctuation = $modifiesPunctuation.isSelected()
     Boolean savesAutomatically = $savesAutomatically.isSelected()
     Boolean ignoresAccent = $ignoresAccent.isSelected()
+    Boolean ignoresCase = $ignoresCase.isSelected()
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
       setting.setContentFontSize(contentFontSize)
@@ -131,6 +137,7 @@ public class SettingController {
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
+    setting.setIgnoresCase(ignoresCase)
     (0 ..< 10).each() { Integer i ->
       String path = $registeredDictionaryPaths[i].getText()
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -215,12 +222,17 @@ public class SettingController {
     Callable<String> ignoresAccentFunction = (Callable){
       return ($ignoresAccent.selectedProperty().get()) ? "有効" : "無効"
     }
+    Callable<String> ignoresCaseFunction = (Callable){
+      return ($ignoresCase.selectedProperty().get()) ? "有効" : "無効"
+    }
     StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
     StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
     StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
+    StringBinding ignoresCaseBinding = Bindings.createStringBinding(ignoresCaseFunction, $ignoresCase.selectedProperty())
     $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
     $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
     $ignoresAccent.textProperty().bind(ignoresAccentBinding)
+    $ignoresCase.textProperty().bind(ignoresCaseBinding)
   }
 
   private void loadResource() {

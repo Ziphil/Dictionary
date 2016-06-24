@@ -25,4 +25,9 @@ public class Strings {
     return result
   }
 
+  public static String toLowerCase(String string) {
+    String result = string.toLowerCase()
+    return result
+  }
+
 }

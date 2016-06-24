@@ -22,6 +22,7 @@ public class Setting {
   private Boolean $modifiesPunctuation
   private Boolean $savesAutomatically
   private Boolean $ignoresAccent
+  private Boolean $ignoresCase
 
   public void save() {
     FileOutputStream stream = FileOutputStream.new(SETTINGS_PATH)
@@ -127,6 +128,14 @@ public class Setting {
 
   public void setIgnoresAccent(Boolean ignoresAccent) {
     $ignoresAccent = ignoresAccent
+  }
+
+  public Boolean getIgnoresCase() {
+    return $ignoresCase
+  }
+
+  public void setIgnoresCase(Boolean ignoresCase) {
+    $ignoresCase = ignoresCase
   }
 
 }
