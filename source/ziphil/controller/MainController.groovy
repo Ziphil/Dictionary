@@ -40,7 +40,6 @@ import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.Word
-import ziphil.module.DictionarySetting
 import ziphil.module.Setting
 import ziphil.node.UtilityStage
 import ziphil.node.WordCell
