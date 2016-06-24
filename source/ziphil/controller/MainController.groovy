@@ -321,9 +321,9 @@ public class MainController {
     $searchText.requestFocus()
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
-        $searchText.setText(name)
         $searchMode.setValue("単語")
         $searchType.setSelected(true)
+        $searchText.setText(name)
         $searchText.requestFocus()
         search()
       }

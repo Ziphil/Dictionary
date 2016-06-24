@@ -232,7 +232,7 @@ public class ShaleiaWord extends Word {
           unnamedTexts.clear()
         }
         currentMode = 0
-      } else if (currentMode == 1 && (character == " " || character == "." || character == "," || character == "?" || character == "-")) {
+      } else if ((currentMode == 1 || currentMode == 11) && (character == " " || character == "." || character == "," || character == "?" || character == "-")) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -269,7 +269,6 @@ public class ShaleiaWord extends Word {
       } else if (currentMode == 11 && character == "/") {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
-          String name = currentName.toString()
           Text text = Text.new(partName)
           text.getStyleClass().addAll("shaleia-word", "shaleia-link", "shaleia-italic")
           unnamedTexts.add(text)
