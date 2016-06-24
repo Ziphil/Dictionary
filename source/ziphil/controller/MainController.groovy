@@ -153,7 +153,7 @@ public class MainController {
     if ($dictionary != null) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
@@ -174,7 +174,7 @@ public class MainController {
 
   private void removeWord(Word word) {
     if ($dictionary != null) {
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       $dictionary.getRawWords().remove(word)
       if (savesAutomatically) {
         $dictionary.save()
@@ -188,7 +188,7 @@ public class MainController {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         newWord = ShaleiaWord.emptyWord()
@@ -214,7 +214,7 @@ public class MainController {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)

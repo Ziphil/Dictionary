@@ -47,7 +47,7 @@ public class PersonalWord extends Word {
     HBox headBox = HBox.new()
     VBox translationBox = VBox.new()
     VBox usageBox = VBox.new()
-    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation() ?: false
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, translationBox, usageBox)
     addNameNode(headBox, $name)

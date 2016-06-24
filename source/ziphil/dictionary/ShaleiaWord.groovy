@@ -62,7 +62,7 @@ public class ShaleiaWord extends Word {
     VBox synonymBox = VBox.new()
     Boolean hasOther = false
     Boolean hasSynonym = false
-    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation() ?: false
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
     $data.eachLine() { String line ->

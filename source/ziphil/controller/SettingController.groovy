@@ -69,9 +69,9 @@ public class SettingController {
     Integer contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
-    Boolean modifiesPunctuation = setting.modifiesPunctuation()
-    Boolean savesAutomatically = setting.savesAutomatically()
-    Boolean ignoresAccent = setting.ignoresAccent()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    Boolean savesAutomatically = setting.getSavesAutomatically()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontNames.getSelectionModel().select(contentFontFamily)

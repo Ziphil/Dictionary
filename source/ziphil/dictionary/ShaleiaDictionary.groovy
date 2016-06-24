@@ -31,7 +31,7 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   public void searchByName(String search, Boolean isStrict) {
-    Boolean ignoresAccent = Setting.getInstance().ignoresAccent()
+    Boolean ignoresAccent = Setting.getInstance().getIgnoresAccent()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { ShaleiaWord word ->
