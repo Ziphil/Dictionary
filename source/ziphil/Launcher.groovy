@@ -8,8 +8,8 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
-  public static final String VERSION = "0.2.0α"
-  public static final String DATE = "1609"
+  public static final String VERSION = "0.3.0α"
+  public static final String DATE = "1615"
   public static final Boolean DEBUG = false
 
   public static void main(String... args) {
@@ -24,6 +24,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  0. 3. 0 | アクセント記号の有無や大文字小文字の違いなどを無視するオプションを追加。
+//          | シャレイア語辞典形式のテキスト装飾に対応。
 //  0. 2. 0 | メニューからすぐに開けるように辞書を登録する機能を追加。
 //          | 辞書を新規作成する機能を追加。
 //          | 単語データの編集画面でのテキストエリアのフォントを設定する機能を追加。

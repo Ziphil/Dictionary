@@ -36,7 +36,7 @@
     <Button onAction="#changeCurrentDirectoryToHome">
       <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
       <graphic>
-        <ImageView><Image url="@../icon/home.png"/></ImageView>
+        <ImageView><Image url="@../icon/home_directory.png"/></ImageView>
       </graphic>
     </Button>
   </HBox>

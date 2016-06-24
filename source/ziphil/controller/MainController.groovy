@@ -19,6 +19,8 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
@@ -153,7 +155,7 @@ public class MainController {
     if ($dictionary != null) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
@@ -164,6 +166,7 @@ public class MainController {
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
+        word.createContentPane()
         if (savesAutomatically) {
           $dictionary.save()
         }
@@ -173,7 +176,7 @@ public class MainController {
 
   private void removeWord(Word word) {
     if ($dictionary != null) {
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       $dictionary.getRawWords().remove(word)
       if (savesAutomatically) {
         $dictionary.save()
@@ -187,7 +190,7 @@ public class MainController {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         newWord = ShaleiaWord.emptyWord()
@@ -213,7 +216,7 @@ public class MainController {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryType dictionaryType = $dictionary.getType()
-      Boolean savesAutomatically = Setting.getInstance().savesAutomatically()
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if (dictionaryType == DictionaryType.SHALEIA) {
         newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
@@ -316,6 +319,15 @@ public class MainController {
     $list.setItems($dictionary.getWords())
     $searchText.setText("")
     $searchText.requestFocus()
+    if ($dictionary instanceof ShaleiaDictionary) {
+      $dictionary.setOnLinkClicked() { String name ->
+        $searchMode.setValue("単語")
+        $searchType.setSelected(true)
+        $searchText.setText(name)
+        $searchText.requestFocus()
+        search()
+      }
+    }
     search()
   }
 
@@ -403,6 +415,8 @@ public class MainController {
         item.setText("")
         item.setDisable(true)
       }
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
+      item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       $openRegisteredDictionaryMenu.getItems().add(item)
     }

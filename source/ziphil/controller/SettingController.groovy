@@ -35,16 +35,18 @@ public class SettingController {
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private ComboBox<String> $contentFontNames
+  @FXML private ComboBox<String> $contentFontFamilies
   @FXML private Spinner $contentFontSize
   @FXML private CheckBox $usesSystemContentFont
-  @FXML private ComboBox<String> $editorFontNames
+  @FXML private ComboBox<String> $editorFontFamilies
   @FXML private Spinner $editorFontSize
   @FXML private CheckBox $usesSystemEditorFont
   @FXML private ToggleButton $modifiesPunctuation
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPaths = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomatically
+  @FXML private ToggleButton $ignoresAccent
+  @FXML private ToggleButton $ignoresCase
   private Stage $stage
   private Scene $scene
 
@@ -56,23 +58,25 @@ public class SettingController {
   @FXML
   private void initialize() {
     setupRegisteredDictionaryPane()
-    setupFontNames()
+    setupFontFamilies()
     setupFontDisableBindings()
     setupTextBindings()
-    applySetting()
+    applySettings()
   }
 
-  private void applySetting() {
+  private void applySettings() {
     Setting setting = Setting.getInstance()
     String contentFontFamily = setting.getContentFontFamily()
     Integer contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
-    Boolean modifiesPunctuation = setting.modifiesPunctuation()
-    Boolean savesAutomatically = setting.savesAutomatically()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    Boolean savesAutomatically = setting.getSavesAutomatically()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
-      $contentFontNames.getSelectionModel().select(contentFontFamily)
+      $contentFontFamilies.getSelectionModel().select(contentFontFamily)
     } else {
       $usesSystemContentFont.setSelected(true)
     }
@@ -80,7 +84,7 @@ public class SettingController {
       $contentFontSize.getValueFactory().setValue(contentFontSize)
     }
     if (editorFontFamily != null) {
-      $editorFontNames.getSelectionModel().select(editorFontFamily)
+      $editorFontFamilies.getSelectionModel().select(editorFontFamily)
     } else {
       $usesSystemEditorFont.setSelected(true)
     }
@@ -93,21 +97,30 @@ public class SettingController {
     if (savesAutomatically) {
       $savesAutomatically.setSelected(true)
     }
+    if (ignoresAccent) {
+      $ignoresAccent.setSelected(true)
+    }
+    if (ignoresCase) {
+      $ignoresCase.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
   }
 
-  private void saveSetting() {
+  private void saveSettings() {
     Setting setting = Setting.getInstance()
-    String contentFontFamily = $contentFontNames.getSelectionModel().getSelectedItem()
+    String contentFontFamily = $contentFontFamilies.getSelectionModel().getSelectedItem()
     Integer contentFontSize = $contentFontSize.getValue()
     Boolean usesSystemContentFont = $usesSystemContentFont.isSelected()
-    String editorFontFamily = $editorFontNames.getSelectionModel().getSelectedItem()
+    String editorFontFamily = $editorFontFamilies.getSelectionModel().getSelectedItem()
     Integer editorFontSize = $editorFontSize.getValue()
     Boolean usesSystemEditorFont = $usesSystemEditorFont.isSelected()
     Boolean modifiesPunctuation = $modifiesPunctuation.isSelected()
     Boolean savesAutomatically = $savesAutomatically.isSelected()
+    Boolean ignoresAccent = $ignoresAccent.isSelected()
+    Boolean ignoresCase = $ignoresCase.isSelected()
+    List<String> registeredDictionaryPaths = $registeredDictionaryPaths.collect{path -> path.getText()}
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
       setting.setContentFontSize(contentFontSize)
@@ -124,8 +137,10 @@ public class SettingController {
     }
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
+    setting.setIgnoresAccent(ignoresAccent)
+    setting.setIgnoresCase(ignoresCase)
     (0 ..< 10).each() { Integer i ->
-      String path = $registeredDictionaryPaths[i].getText()
+      String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
     }
     setting.save()
@@ -142,9 +157,13 @@ public class SettingController {
     }
   }
 
+  private void deregisterDictionary(Integer i) {
+    $registeredDictionaryPaths[i].setText("")
+  }
+
   @FXML
   private void commitChange() {
-    saveSetting()
+    saveSettings()
     $stage.close()
   }
 
@@ -156,35 +175,41 @@ public class SettingController {
   private void setupRegisteredDictionaryPane() {
     (0 ..< 10).each() { Integer i ->
       Label number = Label.new("登録辞書${(i + 1) % 10}:")
-      HBox box = HBox.new()
+      HBox box = HBox.new(Measurement.rpx(5))
+      HBox innerBox = HBox.new()
       TextField dictionaryPath = TextField.new()
-      Button browse = Button.new("参照")
+      Button browse = Button.new("…")
+      Button deregister = Button.new("解除")
       dictionaryPath.setPrefWidth(Measurement.rpx(400))
       dictionaryPath.setMinWidth(Measurement.rpx(400))
       dictionaryPath.getStyleClass().add("left-pill")
-      browse.setPrefWidth(Measurement.rpx(60))
-      browse.setMinWidth(Measurement.rpx(60))
       browse.getStyleClass().add("right-pill")
+      deregister.setPrefWidth(Measurement.rpx(70))
+      deregister.setPrefWidth(Measurement.rpx(70))
       browse.setOnAction() {
         browseDictionary(i)
       }
-      box.getChildren().addAll(dictionaryPath, browse)
+      deregister.setOnAction() {
+        deregisterDictionary(i)
+      }
+      innerBox.getChildren().addAll(dictionaryPath, browse)
+      box.getChildren().addAll(innerBox, deregister)
       $registeredDictionaryPaths[i] = dictionaryPath
       $registeredDictionaryPane.add(number, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }
   }
 
-  private void setupFontNames() {
-    List<String> fontNames = Font.getFontNames()
-    $contentFontNames.getItems().addAll(fontNames)
-    $editorFontNames.getItems().addAll(fontNames)
+  private void setupFontFamilies() {
+    List<String> fontFamilies = Font.getFamilies()
+    $contentFontFamilies.getItems().addAll(fontFamilies)
+    $editorFontFamilies.getItems().addAll(fontFamilies)
   }
 
   private void setupFontDisableBindings() {
-    $contentFontNames.disableProperty().bind($usesSystemContentFont.selectedProperty())
+    $contentFontFamilies.disableProperty().bind($usesSystemContentFont.selectedProperty())
     $contentFontSize.disableProperty().bind($usesSystemContentFont.selectedProperty())
-    $editorFontNames.disableProperty().bind($usesSystemEditorFont.selectedProperty())
+    $editorFontFamilies.disableProperty().bind($usesSystemEditorFont.selectedProperty())
     $editorFontSize.disableProperty().bind($usesSystemEditorFont.selectedProperty())
   }
 
@@ -195,10 +220,20 @@ public class SettingController {
     Callable<String> savesAutomaticallyFunction = (Callable){
       return ($savesAutomatically.selectedProperty().get()) ? "有効" : "無効"
     }
+    Callable<String> ignoresAccentFunction = (Callable){
+      return ($ignoresAccent.selectedProperty().get()) ? "有効" : "無効"
+    }
+    Callable<String> ignoresCaseFunction = (Callable){
+      return ($ignoresCase.selectedProperty().get()) ? "有効" : "無効"
+    }
     StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
     StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
+    StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
+    StringBinding ignoresCaseBinding = Bindings.createStringBinding(ignoresCaseFunction, $ignoresCase.selectedProperty())
     $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
     $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
+    $ignoresAccent.textProperty().bind(ignoresAccentBinding)
+    $ignoresCase.textProperty().bind(ignoresCaseBinding)
   }
 
   private void loadResource() {

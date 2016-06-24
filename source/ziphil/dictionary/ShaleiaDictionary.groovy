@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -8,6 +9,8 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -18,6 +21,7 @@ public class ShaleiaDictionary extends Dictionary {
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private FilteredList<ShaleiaWord> $filteredWords
   private SortedList<ShaleiaWord> $sortedWords
+  private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
     $name = name
@@ -27,11 +31,24 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   public void searchByName(String search, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { ShaleiaWord word ->
         if (isStrict) {
-          return word.getName().startsWith(search)
+          String newName = word.getName()
+          String newSearch = search
+          if (ignoresAccent) {
+            newName = Strings.unaccent(newName)
+            newSearch = Strings.unaccent(newSearch)
+          }
+          if (ignoresCase) {
+            newName = Strings.toLowerCase(newName)
+            newSearch = Strings.toLowerCase(newSearch)
+          }
+          return newName.startsWith(newSearch)
         } else {
           Matcher matcher = pattern.matcher(word.getName())
           return matcher.find()
@@ -157,6 +174,17 @@ public class ShaleiaDictionary extends Dictionary {
 
   public ObservableList<? extends Word> getRawWords() {
     return $words
+  }
+
+  public Consumer<String> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
+    $words.each() { ShaleiaWord word ->
+      word.setOnLinkClicked(onLinkClicked)
+    }
   }
 
 }

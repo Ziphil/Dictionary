@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import java.util.regex.Matcher
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -11,6 +12,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.Measurement
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -29,6 +31,8 @@ public class ShaleiaWord extends Word {
   private String $data = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
+  private Consumer<String> $onLinkClicked
+  private Boolean $isChanged = true
 
   public ShaleiaWord(String uniqueName, String data) {
     update(uniqueName, data)
@@ -36,20 +40,32 @@ public class ShaleiaWord extends Word {
   }
 
   public void update(String uniqueName, String data) {
+    $name = uniqueName.replaceAll(/\+|~/, "")
+    $uniqueName = uniqueName
+    $data = data
+    $content = uniqueName + "\n" + data
+    data.eachLine() { String line ->
+      Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
+      if (matcher.matches()) {
+        String equivalent = matcher.group(2)
+        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+        $equivalents.addAll(equivalents)
+      }
+    }
+    $isChanged = true
+  }
+
+  public void createContentPane() {
     HBox headBox = HBox.new()
     VBox equivalentBox = VBox.new()
     VBox otherBox = VBox.new()
     VBox synonymBox = VBox.new()
     Boolean hasOther = false
     Boolean hasSynonym = false
-    Boolean modifiesPunctuation = Setting.getInstance().modifiesPunctuation() ?: false
-    $name = uniqueName.replaceAll(/\+|~/, "")
-    $uniqueName = uniqueName
-    $data = data
-    $content = uniqueName + "\n" + data
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation() ?: false
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
-    data.eachLine() { String line ->
+    $data.eachLine() { String line ->
       Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
       Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
@@ -61,7 +77,7 @@ public class ShaleiaWord extends Word {
       Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
       if (headBox.getChildren().isEmpty()) {
-        String name = uniqueName.replaceAll(/\+|~/, "")
+        String name = $uniqueName.replaceAll(/\+|~/, "")
         addNameNode(headBox, name)
       }
       if (creationDateMatcher.matches()) {
@@ -73,13 +89,9 @@ public class ShaleiaWord extends Word {
         String localClass = equivalentMatcher.group(1)
         String equivalent = equivalentMatcher.group(2)
         addEquivalentNode(equivalentBox, localClass, equivalent)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
       }
       if (hiddenEquivalentMatcher.matches()) {
         String equivalent = hiddenEquivalentMatcher.group(1)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
       }
       if (meaningMatcher.matches()) {
         String meaning = meaningMatcher.group(1)
@@ -118,24 +130,24 @@ public class ShaleiaWord extends Word {
       }
     }
     if (hasOther) {
-      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, 5, 0))
+      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, Measurement.rpx(3), 0))
     }
     if (hasSynonym) {
-      $contentPane.setMargin(otherBox, Insets.new(0, 0, 5, 0))
+      $contentPane.setMargin(otherBox, Insets.new(0, 0, Measurement.rpx(3), 0))
     }
+    $isChanged = false
   }
 
   private void addNameNode(HBox box, String name) {
-    Label nameText = Label.new(name)
+    Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll("content-text", "head-name", "shaleia-head-name")
     box.getChildren().add(nameText)
-    box.setMargin(nameText, Insets.new(0, 10, 0, 0))
     box.setAlignment(Pos.CENTER_LEFT)
   }
  
   private void addCreationDateNode(HBox box, String wholeClass, String creationDate) {
     Label wholeClassText = Label.new(wholeClass)
-    Label creationDateText = Label.new(" " + creationDate)
+    Text creationDateText = Text.new(" " + creationDate)
     wholeClassText.getStyleClass().addAll("content-text", "shaleia-whole-class")
     creationDateText.getStyleClass().addAll("content-text", "shaleia-creation-date")
     box.getChildren().addAll(wholeClassText, creationDateText)
@@ -156,21 +168,24 @@ public class ShaleiaWord extends Word {
 
   private void addOtherNode(VBox box, String item, String other, Boolean modifiesPunctuation) {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    TextFlow itemTextFlow = TextFlow.new()
     TextFlow textFlow = TextFlow.new()
-    Label itemText = Label.new("【${item}】")
+    Text itemText = Text.new("【${item}】")
+    Text dammyText = Text.new(" ")
     List<Text> otherTexts = createRichTexts(newOther)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     otherTexts.each() { Text otherText ->
       otherText.getStyleClass().addAll("content-text")
     }
+    itemTextFlow.getChildren().addAll(itemText, dammyText)
     textFlow.getChildren().addAll(otherTexts)
-    box.getChildren().addAll(itemText, textFlow)
+    box.getChildren().addAll(itemTextFlow, textFlow)
   }
 
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
-    Label itemText = Label.new("cf: ")
-    List<Text> synonymTexts = createRichTexts(synonym)
+    Text itemText = Text.new("cf:")
+    List<Text> synonymTexts = createRichTexts(" " + synonym)
     itemText.getStyleClass().addAll("content-text", "shaleia-item")
     synonymTexts.each() { Text synonymText ->
       synonymText.getStyleClass().addAll("content-text")
@@ -182,7 +197,145 @@ public class ShaleiaWord extends Word {
 
   private List<Text> createRichTexts(String string) {
     List<Text> texts = ArrayList.new()
-    Text text = Text.new(string.replaceAll(/\{|\}|\[|\]|\//, ""))
+    List<Text> unnamedTexts = ArrayList.new()
+    StringBuilder currentString = StringBuilder.new()
+    StringBuilder currentName = StringBuilder.new()
+    Integer currentMode = 0
+    string.each() { String character ->
+      if (currentMode == 0 && character == "{") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 1
+      } else if ((currentMode == 1 || currentMode == 11) && character == "}") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        if (currentName.length() > 0) {
+          String name = currentName.toString()
+          unnamedTexts.each() { Text unnamedText ->
+            unnamedText.setOnMouseClicked() {
+              if ($onLinkClicked != null) {
+                $onLinkClicked.accept(name)
+              }
+            }
+          }
+          currentName.setLength(0)
+          unnamedTexts.clear()
+        }
+        currentMode = 0
+      } else if ((currentMode == 1 || currentMode == 11) && (character == " " || character == "." || character == "," || character == "?" || character == "-")) {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        if (currentName.length() > 0) {
+          String name = currentName.toString()
+          unnamedTexts.each() { Text unnamedText ->
+            unnamedText.setOnMouseClicked() {
+              if ($onLinkClicked != null) {
+                $onLinkClicked.accept(name)
+              }
+            }
+          }
+          currentName.setLength(0)
+          unnamedTexts.clear()
+        }
+        Text characterText = Text.new(character)
+        characterText.getStyleClass().add("shaleia-word")
+        texts.add(characterText)    
+      } else if (currentMode == 1 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        currentMode = 11
+      } else if (currentMode == 11 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-link", "shaleia-italic")
+          unnamedTexts.add(text)
+          texts.add(text)
+          currentString.setLength(0)
+        }
+        currentMode = 1
+      } else if (currentMode == 0 && character == "[") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }      
+        currentMode = 2
+      } else if ((currentMode == 2 || currentName == 12) && character == "]") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          text.getStyleClass().add("shaleia-word")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 0
+      } else if (currentMode == 2 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().add("shaleia-word")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 12
+      } else if (currentMode == 12 && character == "/") {
+        if (currentString.length() > 0) {
+          String partName = currentString.toString()
+          Text text = Text.new(partName)
+          text.getStyleClass().addAll("shaleia-word", "shaleia-italic")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }      
+        currentMode = 2
+      } else if (currentMode == 0 && character == "/") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 3
+      } else if (currentMode == 3 && character == "/") {
+        if (currentString.length() > 0) {
+          Text text = Text.new(currentString.toString())
+          text.getStyleClass().add("shaleia-italic")
+          texts.add(text)
+          currentString.setLength(0)
+          currentName.setLength(0)
+        }
+        currentMode = 0
+      } else {
+        currentString.append(character)
+        currentName.append(character)
+      }
+    }
+    Text text = Text.new(currentString.toString())
     texts.add(text)
     return texts
   }
@@ -216,6 +369,10 @@ public class ShaleiaWord extends Word {
     return ShaleiaWord.new(name, data)
   }
 
+  public Boolean isChanged() {
+    return $isChanged
+  }
+
   public String getName() {
     return $name
   }
@@ -238,6 +395,14 @@ public class ShaleiaWord extends Word {
 
   public Pane getContentPane() {
     return $contentPane
+  }
+
+  public Consumer<String> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
 }

@@ -18,6 +18,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -31,11 +33,23 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="辞書の新規作成" onAction="#createDictionary" accelerator="Shortcut+Shift+N"/>
-        <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O"/>
+        <MenuItem text="辞書の新規作成" onAction="#createDictionary" accelerator="Shortcut+Shift+N">
+          <graphic>
+            <ImageView><Image url="@../icon/new_dictionary.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O">
+          <graphic>
+            <ImageView><Image url="@../icon/open_file.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
         <SeparatorMenuItem/>
-        <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S"/>
+        <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
+          <graphic>
+            <ImageView><Image url="@../icon/save.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <MenuItem text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
@@ -48,17 +62,29 @@
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
         <SeparatorMenuItem/>
-        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R"/>
+        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R">
+          <graphic>
+            <ImageView><Image url="@../icon/random_search.png"/></ImageView>
+          </graphic>
+        </MenuItem>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
         <SeparatorMenuItem/>
         <MenuItem text="常に手前に表示" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E"/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E">
+          <graphic>
+            <ImageView><Image url="@../icon/setting.png"/></ImageView>
+          </graphic>
+        </MenuItem>
       </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" disable="true" accelerator="F1"/>
+        <MenuItem text="ヘルプ" disable="true" accelerator="F1">
+          <graphic>
+            <ImageView><Image url="@../icon/empty.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem text="公式サイト" disable="true"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>

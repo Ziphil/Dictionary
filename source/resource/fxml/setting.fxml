@@ -46,7 +46,7 @@
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$contentFontNames" editable="true">
+            <ComboBox fx:id="$contentFontFamilies" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
@@ -59,7 +59,7 @@
           <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$editorFontNames" editable="true">
+            <ComboBox fx:id="$editorFontFamilies" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
@@ -102,6 +102,47 @@
           </TextFlow>
         </GridPane>
       </Tab>
+      <Tab text="検索" closable="false">
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <ToggleButton fx:id="$ignoresAccent" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$ignoresCase" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+              <Insets>
+                <bottom><Double rpx="10"/></bottom>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
+          </TextFlow>
+        </GridPane>
+      </Tab>
       <Tab text="登録辞書" closable="false">
         <GridPane fx:id="$registeredDictionaryPane">
           <vgap><Double rpx="5"/></vgap>
@@ -136,6 +177,7 @@
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
+                <bottom><Double rpx="10"/></bottom>
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>

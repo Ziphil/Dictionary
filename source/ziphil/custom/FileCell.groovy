@@ -13,6 +13,8 @@ public class FileCell extends ListCell<File> {
 
   private static final Image DIRECTORY_ICON = createIcon("resource/icon/directory.png")
   private static final Image FILE_ICON = createIcon("resource/icon/file.png")
+  private static final Image XDC_DICTIONARY_ICON = createIcon("resource/icon/xdc_dictionary.png")
+  private static final Image CSV_DICTIONARY_ICON = createIcon("resource/icon/csv_dictionary.png")
 
   public FileCell() {
     super()
@@ -26,7 +28,18 @@ public class FileCell extends ListCell<File> {
       setGraphic(null)
     } else {
       String name = file.getName()
-      Image icon = (file.isDirectory()) ? DIRECTORY_ICON : FILE_ICON
+      Image icon
+      if (file.isDirectory()) {
+        icon = DIRECTORY_ICON
+      } else {
+        if (name.endsWith(".xdc")) {
+          icon = XDC_DICTIONARY_ICON
+        } else if (name.endsWith(".csv")) {
+          icon = CSV_DICTIONARY_ICON
+        } else {
+          icon = FILE_ICON
+        }
+      }
       setText(name)
       setGraphic(ImageView.new(icon))
     }
