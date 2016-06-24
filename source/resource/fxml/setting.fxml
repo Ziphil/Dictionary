@@ -46,7 +46,7 @@
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$contentFontNames" editable="true">
+            <ComboBox fx:id="$contentFontFamilies" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
@@ -59,7 +59,7 @@
           <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$editorFontNames" editable="true">
+            <ComboBox fx:id="$editorFontFamilies" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
