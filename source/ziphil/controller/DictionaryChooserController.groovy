@@ -37,7 +37,8 @@ public class DictionaryChooserController {
   private void initialize() {
     ExtensionFilter shaleiaFilter = ExtensionFilter.new("シャレイア語辞典形式", "xdc")
     ExtensionFilter personalFilter = ExtensionFilter.new("PDIC-CSV形式", "csv")
-    $chooser.getExtensionFilters().addAll(shaleiaFilter, personalFilter)
+    ExtensionFilter slimeFilter = ExtensionFilter.new("OneToMany-JSON形式", "json")
+    $chooser.getExtensionFilters().addAll(shaleiaFilter, personalFilter, slimeFilter)
   }
 
   public void prepare(Boolean adjustsExtension) {

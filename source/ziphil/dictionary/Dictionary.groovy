@@ -44,6 +44,8 @@ public abstract class Dictionary {
       dictionary = ShaleiaDictionary.new(fileName, filePath)
     } else if (type == DictionaryType.PERSONAL) {
       dictionary = PersonalDictionary.new(fileName, filePath)
+    } else if (type == DictionaryType.SLIME) {
+      dictionary = SlimeDictionary.new(fileName, filePath)
     }
     return dictionary
   }
@@ -58,6 +60,9 @@ public abstract class Dictionary {
       dictionary.setPath(filePath)
     } else if (type == DictionaryType.PERSONAL) {
       dictionary = PersonalDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
+    } else if (type == DictionaryType.SLIME) {
+      dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
     return dictionary
