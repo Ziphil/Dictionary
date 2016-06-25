@@ -176,7 +176,7 @@ public class MainController {
   private void removeWord(Word word) {
     if ($dictionary != null) {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      $dictionary.getRawWords().remove(word)
+      $dictionary.removeWord(word)
       if (savesAutomatically) {
         $dictionary.save()
       }
@@ -202,7 +202,7 @@ public class MainController {
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
-        $dictionary.getRawWords().add(newWord)
+        $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
         }
@@ -228,7 +228,7 @@ public class MainController {
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
-        $dictionary.getRawWords().add(newWord)
+        $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
         }

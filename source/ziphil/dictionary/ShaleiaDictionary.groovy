@@ -88,6 +88,14 @@ public class ShaleiaDictionary extends Dictionary {
     }
   }
 
+  public void addWord(Word word) {
+    $words.add((ShaleiaWord)word)
+  }
+
+  public void removeWord(Word word) {
+    $words.remove((ShaleiaWord)word)
+  }
+
   private void load() {
     if ($path != null) {
       File file = File.new($path)
@@ -98,6 +106,7 @@ public class ShaleiaDictionary extends Dictionary {
         if (matcher.matches()) {
           if (currentName != null) {
             ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+            word.setDictionary(this)
             $words.add(word)
           }
           currentName = matcher.group(1)
@@ -109,6 +118,7 @@ public class ShaleiaDictionary extends Dictionary {
       }
       if (currentName != null) {
         ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+        word.setDictionary(this)
         $words.add(word)
       }
     }
@@ -182,9 +192,6 @@ public class ShaleiaDictionary extends Dictionary {
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-    $words.each() { ShaleiaWord word ->
-      word.setOnLinkClicked(onLinkClicked)
-    }
   }
 
 }

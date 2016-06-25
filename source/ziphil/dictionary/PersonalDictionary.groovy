@@ -70,6 +70,14 @@ public class PersonalDictionary extends Dictionary {
     }
   }
 
+  public void addWord(Word word) {
+    $words.add((PersonalWord)word)
+  }
+
+  public void removeWord(Word word) {
+    $words.remove((PersonalWord)word)
+  }
+
   private void load() {
     if ($path != null) {
       File file = File.new($path)

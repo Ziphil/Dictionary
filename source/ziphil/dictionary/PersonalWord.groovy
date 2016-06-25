@@ -14,6 +14,7 @@ import ziphil.module.Strings
 @CompileStatic @Newify
 public class PersonalWord extends Word {
 
+  private PersonalDictionary $dictionary
   private String $name = ""
   private List<String> $equivalents = ArrayList.new()
   private String $pronunciation = ""
@@ -97,6 +98,14 @@ public class PersonalWord extends Word {
 
   public Boolean isChanged() {
     return $isChanged
+  }
+
+  public Dictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(Dictionary dictionary) {
+    $dictionary = (PersonalDictionary)dictionary
   }
 
   public String getName() {

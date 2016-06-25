@@ -11,6 +11,10 @@ public abstract class Word {
 
   public abstract Boolean isChanged()
 
+  public abstract Dictionary getDictionary()
+
+  public abstract void setDictionary(Dictionary dictionary)
+
   public abstract String getName()
 
   public abstract List<String> getEquivalents()

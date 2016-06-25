@@ -13,6 +13,10 @@ public abstract class Dictionary {
 
   public abstract void searchByContent(String search)
 
+  public abstract void addWord(Word word)
+
+  public abstract void removeWord(Word word)
+
   public abstract void save()
 
   public abstract Boolean supportsEquivalent()

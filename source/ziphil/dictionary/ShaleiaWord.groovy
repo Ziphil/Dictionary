@@ -25,13 +25,13 @@ public class ShaleiaWord extends Word {
                                                               ("e"): 25, ("ê"): 26, ("é"): 27, ("è"): 28, ("i"): 29, ("î"): 30, ("í"): 31, ("ì"): 32, ("o"): 31, ("ô"): 32, ("ò"): 33, ("u"): 34,
                                                               ("û"): 35, ("ù"): 36]
 
+  private ShaleiaDictionary $dictionary
   private String $name = ""
   private String $uniqueName = ""
   private List<String> $equivalents = ArrayList.new()
   private String $data = ""
   private String $content = ""
   private VBox $contentPane = VBox.new()
-  private Consumer<String> $onLinkClicked
   private Boolean $isChanged = true
 
   public ShaleiaWord(String uniqueName, String data) {
@@ -223,8 +223,8 @@ public class ShaleiaWord extends Word {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
             unnamedText.setOnMouseClicked() {
-              if ($onLinkClicked != null) {
-                $onLinkClicked.accept(name)
+              if ($dictionary.getOnLinkClicked() != null) {
+                $dictionary.getOnLinkClicked().accept(name)
               }
             }
           }
@@ -245,8 +245,8 @@ public class ShaleiaWord extends Word {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
             unnamedText.setOnMouseClicked() {
-              if ($onLinkClicked != null) {
-                $onLinkClicked.accept(name)
+              if ($dictionary.getOnLinkClicked() != null) {
+                $dictionary.getOnLinkClicked().accept(name)
               }
             }
           }
@@ -373,6 +373,14 @@ public class ShaleiaWord extends Word {
     return $isChanged
   }
 
+  public Dictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(Dictionary dictionary) {
+    $dictionary = (ShaleiaDictionary)dictionary
+  }
+
   public String getName() {
     return $name
   }
@@ -395,14 +403,6 @@ public class ShaleiaWord extends Word {
 
   public Pane getContentPane() {
     return $contentPane
-  }
-
-  public Consumer<String> getOnLinkClicked() {
-    return $onLinkClicked
-  }
-
-  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
-    $onLinkClicked = onLinkClicked
   }
 
 }
