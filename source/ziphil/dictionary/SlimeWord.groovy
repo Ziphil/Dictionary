@@ -1,10 +1,16 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.geometry.Insets
+import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.scene.text.Text
+import javafx.scene.text.TextFlow
 import net.arnx.jsonic.JSONHint
+import ziphil.custom.Measurement
 import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
@@ -43,7 +49,71 @@ public class SlimeWord extends Word {
   }
 
   public void createContentPane() {
+    HBox headBox = HBox.new()
+    VBox equivalentBox = VBox.new()
+    VBox informationBox = VBox.new()
+    VBox relationBox = VBox.new()
+    Boolean hasInformation = false
+    Boolean hasRelation = false
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation() ?: false
+    $contentPane.getChildren().clear()
+    $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
+    addNameNode(headBox, $name)
+    addEquivalentNode(equivalentBox, $equivalents.join(", "))
+    $informations.each() { SlimeInformation information ->
+      addInformationNode(informationBox, information.getTitle(), information.getText(), modifiesPunctuation)
+      hasInformation = true
+    }
+    $relations.each() { SlimeRelation relation ->
+      addRelationNode(relationBox, relation.getTitle(), relation.getName())
+    }
+    if (hasInformation) {
+      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, Measurement.rpx(3), 0))
+    }
+    if (hasRelation) {
+      $contentPane.setMargin(informationBox, Insets.new(0, 0, Measurement.rpx(3), 0))
+    }
     $isChanged = false
+  }
+
+  private void addNameNode(HBox box, String name) {
+    Text nameText = Text.new(name)
+    nameText.getStyleClass().addAll("content-text", "head-name", "slime-head-name")
+    box.getChildren().add(nameText)
+  }
+
+  private void addEquivalentNode(VBox box, String equivalent) {
+    TextFlow textFlow = TextFlow.new()
+    Text equivalentText = Text.new(equivalent)
+    equivalentText.getStyleClass().addAll("content-text", "slime-equivalent")
+    textFlow.getChildren().add(equivalentText)
+    box.getChildren().add(textFlow)
+  }
+
+  private void addInformationNode(VBox box, String title, String information, Boolean modifiesPunctuation) {
+    String newInformation = (modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
+    TextFlow titleTextFlow = TextFlow.new()
+    TextFlow textFlow = TextFlow.new()
+    Text titleText = Text.new("【${title}】")
+    Text dammyText = Text.new(" ")
+    Text informationText = Text.new(newInformation)
+    titleText.getStyleClass().addAll("content-text", "slime-title")
+    informationText.getStyleClass().add("content-text")
+    titleTextFlow.getChildren().addAll(titleText, dammyText)
+    textFlow.getChildren().add(informationText)
+    box.getChildren().addAll(titleTextFlow, textFlow)
+  }
+
+  private void addRelationNode(VBox box, String title, String relation) {
+    TextFlow textFlow = TextFlow.new()
+    Text formerTitleText = Text.new("cf:")
+    Text titleText = Text.new("〈${title}〉")
+    Text relationText = Text.new(" " + relation)
+    formerTitleText.getStyleClass().addAll("content-text", "slime-title")
+    titleText.getStyleClass().addAll("content-text", "slime-title")
+    relationText.getStyleClass().add("content-text")
+    textFlow.getChildren().addAll(formerTitleText, titleText, relationText)
+    box.getChildren().add(textFlow)
   }
 
   private void setupContentPane() {

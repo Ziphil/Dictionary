@@ -30,7 +30,8 @@
 }
 
 #dictionary-list .shaleia-creation-date,
-#dictionary-list .shaleia-item {
+#dictionary-list .shaleia-item,
+#dictionary-list .slime-title {
   -fx-font-size: 0.9em;
 }
 
