@@ -1,11 +1,11 @@
 // @charset "utf-8";
 
 
-#dictionary-list .content-text {
+#dictionary-list .content {
   -fx-fill: -fx-text-base-color;
 }
 
-#dictionary-list:focused .list-cell:filled:selected .content-text {
+#dictionary-list:focused .list-cell:filled:selected .content {
   -fx-fill: white;
 }
 
@@ -30,7 +30,7 @@
 }
 
 #dictionary-list .shaleia-creation-date,
-#dictionary-list .shaleia-item,
+#dictionary-list .shaleia-title,
 #dictionary-list .slime-title {
   -fx-font-size: 0.9em;
 }

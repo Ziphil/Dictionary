@@ -59,7 +59,7 @@ public class PersonalWord extends Word {
 
   private void addNameNode(HBox box, String name) {
     Label nameText = Label.new(name)
-    nameText.getStyleClass().addAll("content-text", "head-name")
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
   }
 
@@ -67,7 +67,7 @@ public class PersonalWord extends Word {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
     Text otherText = Text.new(newOther)
-    otherText.getStyleClass().add("content-text")
+    otherText.getStyleClass().add(CONTENT_CLASS)
     textFlow.getChildren().add(otherText)
     box.getChildren().add(textFlow)
   }

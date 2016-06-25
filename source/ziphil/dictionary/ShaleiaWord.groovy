@@ -24,6 +24,15 @@ public class ShaleiaWord extends Word {
                                                               ("x"): 13, ("j"): 14, ("r"): 15, ("l"): 16, ("m"): 17, ("n"): 18, ("h"): 19, ("y"): 20, ("a"): 21, ("â"): 22, ("á"): 23, ("à"): 24,
                                                               ("e"): 25, ("ê"): 26, ("é"): 27, ("è"): 28, ("i"): 29, ("î"): 30, ("í"): 31, ("ì"): 32, ("o"): 31, ("ô"): 32, ("ò"): 33, ("u"): 34,
                                                               ("û"): 35, ("ù"): 36]
+  public static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
+  public static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
+  public static final String SHALEIA_WHOLE_CLASS_CLASS = "shaleia-whole-class"
+  public static final String SHALEIA_LOCAL_CLASS_CLASS = "shaleia-local-class"
+  public static final String SHALEIA_CREATION_DATE_CLASS = "shaleia-creation-date"
+  public static final String SHALEIA_TITLE_CLASS = "shaleia-title"
+  public static final String SHALEIA_NAME_CLASS = "shaleia-name"
+  public static final String SHALEIA_LINK_CLASS = "shaleia-link"
+  public static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
 
   private ShaleiaDictionary $dictionary
   private String $name = ""
@@ -140,7 +149,7 @@ public class ShaleiaWord extends Word {
 
   private void addNameNode(HBox box, String name) {
     Text nameText = Text.new(name + "  ")
-    nameText.getStyleClass().addAll("content-text", "head-name", "shaleia-head-name")
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
     box.setAlignment(Pos.CENTER_LEFT)
   }
@@ -148,8 +157,8 @@ public class ShaleiaWord extends Word {
   private void addCreationDateNode(HBox box, String wholeClass, String creationDate) {
     Label wholeClassText = Label.new(wholeClass)
     Text creationDateText = Text.new(" " + creationDate)
-    wholeClassText.getStyleClass().addAll("content-text", "shaleia-whole-class")
-    creationDateText.getStyleClass().addAll("content-text", "shaleia-creation-date")
+    wholeClassText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_WHOLE_CLASS_CLASS)
+    creationDateText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CREATION_DATE_CLASS)
     box.getChildren().addAll(wholeClassText, creationDateText)
   }
 
@@ -157,40 +166,40 @@ public class ShaleiaWord extends Word {
     TextFlow textFlow = TextFlow.new()
     Label localClassText = Label.new(localClass)
     List<Text> equivalentTexts = createRichTexts(" " + equivalent)
-    localClassText.getStyleClass().addAll("content-text", "shaleia-local-class")
+    localClassText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LOCAL_CLASS_CLASS)
     equivalentTexts.each() { Text equivalentText ->
-      equivalentText.getStyleClass().addAll("content-text", "shaleia-equivalent")
+      equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
     textFlow.getChildren().add(localClassText)
     textFlow.getChildren().addAll(equivalentTexts)
     box.getChildren().add(textFlow)
   }
 
-  private void addOtherNode(VBox box, String item, String other, Boolean modifiesPunctuation) {
+  private void addOtherNode(VBox box, String title, String other, Boolean modifiesPunctuation) {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
-    TextFlow itemTextFlow = TextFlow.new()
+    TextFlow titleTextFlow = TextFlow.new()
     TextFlow textFlow = TextFlow.new()
-    Text itemText = Text.new("【${item}】")
+    Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" ")
     List<Text> otherTexts = createRichTexts(newOther)
-    itemText.getStyleClass().addAll("content-text", "shaleia-item")
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
     otherTexts.each() { Text otherText ->
-      otherText.getStyleClass().addAll("content-text")
+      otherText.getStyleClass().add(CONTENT_CLASS)
     }
-    itemTextFlow.getChildren().addAll(itemText, dammyText)
+    titleTextFlow.getChildren().addAll(titleText, dammyText)
     textFlow.getChildren().addAll(otherTexts)
-    box.getChildren().addAll(itemTextFlow, textFlow)
+    box.getChildren().addAll(titleTextFlow, textFlow)
   }
 
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
-    Text itemText = Text.new("cf:")
+    Text titleText = Text.new("cf:")
     List<Text> synonymTexts = createRichTexts(" " + synonym)
-    itemText.getStyleClass().addAll("content-text", "shaleia-item")
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
     synonymTexts.each() { Text synonymText ->
-      synonymText.getStyleClass().addAll("content-text")
+      synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    textFlow.getChildren().add(itemText)
+    textFlow.getChildren().add(titleText)
     textFlow.getChildren().addAll(synonymTexts)
     box.getChildren().add(textFlow)
   }
@@ -214,7 +223,7 @@ public class ShaleiaWord extends Word {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -236,7 +245,7 @@ public class ShaleiaWord extends Word {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -254,13 +263,13 @@ public class ShaleiaWord extends Word {
           unnamedTexts.clear()
         }
         Text characterText = Text.new(character)
-        characterText.getStyleClass().add("shaleia-word")
+        characterText.getStyleClass().add(SHALEIA_NAME_CLASS)
         texts.add(characterText)    
       } else if (currentMode == 1 && character == "/") {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll("shaleia-word", "shaleia-link")
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -270,7 +279,7 @@ public class ShaleiaWord extends Word {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll("shaleia-word", "shaleia-link", "shaleia-italic")
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS, SHALEIA_ITALIC_CLASS)
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -287,7 +296,7 @@ public class ShaleiaWord extends Word {
       } else if ((currentMode == 2 || currentName == 12) && character == "]") {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
-          text.getStyleClass().add("shaleia-word")
+          text.getStyleClass().add(SHALEIA_NAME_CLASS)
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
@@ -297,7 +306,7 @@ public class ShaleiaWord extends Word {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().add("shaleia-word")
+          text.getStyleClass().add(SHALEIA_NAME_CLASS)
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
@@ -307,7 +316,7 @@ public class ShaleiaWord extends Word {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll("shaleia-word", "shaleia-italic")
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
@@ -324,7 +333,7 @@ public class ShaleiaWord extends Word {
       } else if (currentMode == 3 && character == "/") {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
-          text.getStyleClass().add("shaleia-italic")
+          text.getStyleClass().add(SHALEIA_ITALIC_CLASS)
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
