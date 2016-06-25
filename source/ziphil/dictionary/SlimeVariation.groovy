@@ -23,12 +23,12 @@ public class SlimeVariation {
     $title = title
   }
 
-  @JSONHint(name="form")
+  @JSONHint(name="getForm")
   public String getName() {
     return $name
   }
 
-  @JSONHint(name="form")
+  @JSONHint(name="setForm")
   public void setName(String name) {
     $name = name
   }

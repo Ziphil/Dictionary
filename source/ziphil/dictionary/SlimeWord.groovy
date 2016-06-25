@@ -110,12 +110,12 @@ public class SlimeWord extends Word {
     $tags = tags
   }
 
-  @JSONHint(name="contents")
+  @JSONHint(name="getContents")
   public List<SlimeInformation> getInformations() {
     return $informations
   }
 
-  @JSONHint(name="contents")
+  @JSONHint(name="setContents")
   public void setInformations(List<SlimeInformation> informations) {
     $informations = informations
   }
@@ -136,11 +136,11 @@ public class SlimeWord extends Word {
     $relations = relations
   }
 
-  public Map<String, ? extends Object> getEntry() {
-    return [("id"): $id, ("form"): $name]
+  public Map<String, Object> getEntry() {
+    return [("id"): (Object)$id, ("form"): (Object)$name]
   }
 
-  public void setEntry(Map<String, ? extends Object> entry) {
+  public void setEntry(Map<String, Object> entry) {
     $id = (Integer)entry["id"]
     $name = (String)entry["form"]
   }

@@ -45,11 +45,11 @@ public class SlimeRelation {
     $name = name
   }
 
-  public Map<String, ? extends Object> getEntry() {
-    return [("id"): $id, ("form"): $name]
+  public Map<String, Object> getEntry() {
+    return [("id"): (Object)$id, ("form"): (Object)$name]
   }
 
-  public void setEntry(Map<String, ? extends Object> entry) {
+  public void setEntry(Map<String, Object> entry) {
     $id = (Integer)entry["id"]
     $name = (String)entry["form"]
   }

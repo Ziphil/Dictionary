@@ -8,6 +8,11 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import net.arnx.jsonic.JSON
+import net.arnx.jsonic.JSONEventType
+import net.arnx.jsonic.JSONException
+import net.arnx.jsonic.JSONReader
+import net.arnx.jsonic.TypeReference
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -95,6 +100,23 @@ public class SlimeDictionary extends Dictionary {
   }
 
   private void load() {
+    if ($path != null) {
+      FileInputStream stream = FileInputStream.new($path)
+      JSON json = JSON.new()
+      JSONReader reader = json.getReader(stream)
+      JSONEventType type
+      while ((type = reader.next()) != null) {
+        if (type == JSONEventType.NAME) {
+          String keyName = reader.getString()
+          if (keyName == "words") {
+            reader.next()
+            TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
+            List<SlimeWord> words = (List)(reader.getValue(typeReference))
+            $words.addAll(words)
+          }
+        }
+      }
+    }
   }
 
   public void save() {
@@ -140,4 +162,8 @@ public class SlimeDictionary extends Dictionary {
     return $words
   }
 
+}
+
+
+protected class SlimeTypeReference extends TypeReference<List<SlimeWord>> {
 }
