@@ -66,6 +66,7 @@ public class SlimeWord extends Word {
     }
     $relations.each() { SlimeRelation relation ->
       addRelationNode(relationBox, relation.getTitle(), relation.getName())
+      hasRelation = true
     }
     if (hasInformation) {
       $contentPane.setMargin(equivalentBox, Insets.new(0, 0, Measurement.rpx(3), 0))
