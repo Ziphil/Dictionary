@@ -9,6 +9,9 @@ public class SlimeInformation {
   private String $title = ""
   private String $text = ""
 
+  public SlimeInformation() {
+  }
+
   public SlimeInformation(String title, String text) {
     $title = title
     $text = text

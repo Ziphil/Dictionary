@@ -11,7 +11,10 @@ public class SlimeRelation {
   private Integer $id = -1
   private String $name = ""
 
-  public SlimeInformation(String title, Integer id, String name) {
+  public SlimeRelation() {
+  }
+
+  public SlimeRelation(String title, Integer id, String name) {
     $title = title
     $id = id
     $name = name

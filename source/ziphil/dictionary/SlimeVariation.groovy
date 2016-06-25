@@ -10,7 +10,10 @@ public class SlimeVariation {
   private String $title = ""
   private String $name = ""
 
-  public SlimeInformation(String title, String name) {
+  public SlimeVariation() {
+  }
+
+  public SlimeVariation(String title, String name) {
     $title = title
     $name = name
   }
@@ -23,12 +26,12 @@ public class SlimeVariation {
     $title = title
   }
 
-  @JSONHint(name="getForm")
+  @JSONHint(name="form")
   public String getName() {
     return $name
   }
 
-  @JSONHint(name="setForm")
+  @JSONHint(name="form")
   public void setName(String name) {
     $name = name
   }

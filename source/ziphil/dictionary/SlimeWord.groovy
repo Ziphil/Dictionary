@@ -180,12 +180,12 @@ public class SlimeWord extends Word {
     $tags = tags
   }
 
-  @JSONHint(name="getContents")
+  @JSONHint(name="contents")
   public List<SlimeInformation> getInformations() {
     return $informations
   }
 
-  @JSONHint(name="setContents")
+  @JSONHint(name="contents")
   public void setInformations(List<SlimeInformation> informations) {
     $informations = informations
   }
