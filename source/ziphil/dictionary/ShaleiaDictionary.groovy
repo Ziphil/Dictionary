@@ -89,8 +89,9 @@ public class ShaleiaDictionary extends Dictionary {
   }
 
   public void addWord(Word word) {
-    word.setDictionary(this)
-    $words.add((ShaleiaWord)word)
+    ShaleiaWord castedWord = (ShaleiaWord)word
+    castedWord.setDictionary(this)
+    $words.add(castedWord)
   }
 
   public void removeWord(Word word) {

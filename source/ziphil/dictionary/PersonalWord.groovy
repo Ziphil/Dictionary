@@ -100,12 +100,12 @@ public class PersonalWord extends Word {
     return $isChanged
   }
 
-  public Dictionary getDictionary() {
+  public PersonalDictionary getDictionary() {
     return $dictionary
   }
 
-  public void setDictionary(Dictionary dictionary) {
-    $dictionary = (PersonalDictionary)dictionary
+  public void setDictionary(PersonalDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public String getName() {

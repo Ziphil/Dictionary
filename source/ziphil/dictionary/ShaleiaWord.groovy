@@ -382,12 +382,12 @@ public class ShaleiaWord extends Word {
     return $isChanged
   }
 
-  public Dictionary getDictionary() {
+  public ShaleiaDictionary getDictionary() {
     return $dictionary
   }
 
-  public void setDictionary(Dictionary dictionary) {
-    $dictionary = (ShaleiaDictionary)dictionary
+  public void setDictionary(ShaleiaDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public String getName() {

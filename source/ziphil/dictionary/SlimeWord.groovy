@@ -149,12 +149,12 @@ public class SlimeWord extends Word {
     return $isChanged
   }
 
-  public Dictionary getDictionary() {
+  public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
-  public void setDictionary(Dictionary dictionary) {
-    $dictionary = (SlimeDictionary)dictionary
+  public void setDictionary(SlimeDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   @JSONHint(ignore=true)
