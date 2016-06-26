@@ -149,10 +149,12 @@ public class SlimeWord extends Word {
     return $isChanged
   }
 
+  @JSONHint(ignore=true)
   public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
+  @JSONHint(ignore=true)
   public void setDictionary(SlimeDictionary dictionary) {
     $dictionary = dictionary
   }
@@ -220,10 +222,12 @@ public class SlimeWord extends Word {
     $name = (String)entry["form"]
   }
 
+  @JSONHint(ignore=true)
   public String getContent() {
     return $content
   }
 
+  @JSONHint(ignore=true)
   public Pane getContentPane() {
     return $contentPane
   }

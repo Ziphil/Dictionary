@@ -12,6 +12,7 @@ import net.arnx.jsonic.JSON
 import net.arnx.jsonic.JSONEventType
 import net.arnx.jsonic.JSONException
 import net.arnx.jsonic.JSONReader
+import net.arnx.jsonic.JSONWriter
 import net.arnx.jsonic.TypeReference
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -120,6 +121,27 @@ public class SlimeDictionary extends Dictionary {
   }
 
   public void save() {
+    FileOutputStream stream = FileOutputStream.new($path)
+    JSON json = JSON.new()
+    json.setPrettyPrint(true)
+    json.setIndentText("  ")
+    JSONWriter writer = json.getWriter(stream)
+    writer.beginObject()
+    writer.name("words")
+    writer.beginArray()
+    $words.each() { SlimeWord word ->
+      writer.beginObject()
+      writer.name("entry").value(word.getEntry())
+      writer.name("translations").value(word.getEquivalents())
+      writer.name("tags").value(word.getTags())
+      writer.name("contents").value(word.getInformations())
+      writer.name("variations").value(word.getVariations())
+      writer.name("relations").value(word.getRelations())
+      writer.endObject()
+    }
+    writer.endArray()
+    writer.endObject()
+    stream.close()
   }
 
   private void setupWords() {
