@@ -28,22 +28,18 @@ public class SlimeRelation {
     $title = title
   }
 
-  @JSONHint(ignore=true)
   public Integer getId() {
     return $id
   }
 
-  @JSONHint(ignore=true)
   public void setId(Integer id) {
     $id = id
   }
 
-  @JSONHint(ignore=true)
   public String getName() {
     return $name
   }
 
-  @JSONHint(ignore=true)
   public void setName(String name) {
     $name = name
   }

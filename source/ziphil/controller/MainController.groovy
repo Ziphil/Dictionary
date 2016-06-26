@@ -33,13 +33,13 @@ import javafx.stage.Modality
 import ziphil.Launcher
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
-import ziphil.dictionary.ShaleiaWord
-import ziphil.dictionary.SlimeWord
-import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryType
-import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.PersonalDictionary
+import ziphil.dictionary.PersonalWord
+import ziphil.dictionary.ShaleiaDictionary
+import ziphil.dictionary.ShaleiaWord
+import ziphil.dictionary.SlimeDictionary
+import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Word
 import ziphil.module.Setting
 import ziphil.node.UtilityStage
@@ -55,9 +55,9 @@ public class MainController {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<Word> $list
+  @FXML private ListView<? extends Word> $list
   @FXML private TextField $searchText
-  @FXML private ComboBox $searchMode
+  @FXML private ComboBox<String> $searchMode
   @FXML private ToggleButton $searchType
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $modifyWordItem
@@ -154,16 +154,15 @@ public class MainController {
   private void modifyWord(Word word) {
     if ($dictionary != null) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryType dictionaryType = $dictionary.getType()
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
-      if (dictionaryType == DictionaryType.SHALEIA) {
+      if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
         controller.prepare((ShaleiaWord)word)
-      } else if (dictionaryType == DictionaryType.PERSONAL) {
+      } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(stage)
         controller.prepare((PersonalWord)word)
-      } else if (dictionaryType == DictionaryType.SLIME) {
+      } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(stage)
         controller.prepare((SlimeWord)word)
       }
@@ -192,20 +191,22 @@ public class MainController {
     if ($dictionary != null) {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryType dictionaryType = $dictionary.getType()
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
-      if (dictionaryType == DictionaryType.SHALEIA) {
-        newWord = ShaleiaWord.emptyWord()
+      if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+        newWord = castedDictionary.emptyWord()
         controller.prepare(newWord)
-      } else if (dictionaryType == DictionaryType.PERSONAL) {
-        newWord = PersonalWord.emptyWord()
+      } else if ($dictionary instanceof PersonalDictionary) {
+        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
+        newWord = castedDictionary.emptyWord()
         controller.prepare(newWord)
-      } else if (dictionaryType == DictionaryType.SLIME) {
-        newWord = SlimeWord.emptyWord()
+      } else if ($dictionary instanceof SlimeDictionary) {
+        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
+        newWord = castedDictionary.emptyWord()
         controller.prepare(newWord)
       }
       Boolean isDone = stage.showAndWaitResult()
@@ -222,20 +223,22 @@ public class MainController {
     if ($dictionary != null) {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryType dictionaryType = $dictionary.getType()
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
-      if (dictionaryType == DictionaryType.SHALEIA) {
-        newWord = ShaleiaWord.copyFrom((ShaleiaWord)word)
+      if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+        newWord = castedDictionary.copyWord((ShaleiaWord)word)
         controller.prepare(newWord)
-      } else if (dictionaryType == DictionaryType.PERSONAL) {
-        newWord = PersonalWord.copyFrom((PersonalWord)word)
+      } else if ($dictionary instanceof PersonalDictionary) {
+        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
+        newWord = castedDictionary.copyWord((PersonalWord)word)
         controller.prepare(newWord)
-      } else if (dictionaryType == DictionaryType.SLIME) {
-        newWord = SlimeWord.copyFrom((SlimeWord)word)
+      } else if ($dictionary instanceof SlimeDictionary) {
+        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
+        newWord = castedDictionary.copyWord((SlimeWord)word)
         controller.prepare(newWord)
       }
       Boolean isDone = stage.showAndWaitResult()

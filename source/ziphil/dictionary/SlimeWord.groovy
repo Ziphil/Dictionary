@@ -130,41 +130,22 @@ public class SlimeWord extends Word {
     }
   }
 
-  public static SlimeWord emptyWord() {
-    return SlimeWord.new()
-  }
-
-  public static SlimeWord copyFrom(SlimeWord oldWord) {
-    Integer id = oldWord.getId()
-    String name = oldWord.getName()
-    List<String> equivalents = oldWord.getEquivalents()
-    List<String> tags = oldWord.getTags()
-    List<SlimeInformation> informations = oldWord.getInformations()
-    List<SlimeVariation> variations = oldWord.getVariations()
-    List<SlimeRelation> relations = oldWord.getRelations()
-    return SlimeWord.new(id, name, equivalents, tags, informations, variations, relations)
-  }
-
   public Boolean isChanged() {
     return $isChanged
   }
 
-  @JSONHint(ignore=true)
   public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
-  @JSONHint(ignore=true)
   public void setDictionary(SlimeDictionary dictionary) {
     $dictionary = dictionary
   }
 
-  @JSONHint(ignore=true)
   public Integer getId() {
     return $id
   }
 
-  @JSONHint(ignore=true)
   public String getName() {
     return $name
   }
@@ -222,12 +203,10 @@ public class SlimeWord extends Word {
     $name = (String)entry["form"]
   }
 
-  @JSONHint(ignore=true)
   public String getContent() {
     return $content
   }
 
-  @JSONHint(ignore=true)
   public Pane getContentPane() {
     return $contentPane
   }

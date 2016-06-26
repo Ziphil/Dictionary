@@ -19,7 +19,7 @@ import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class SlimeDictionary extends Dictionary {
+public class SlimeDictionary extends Dictionary<SlimeWord> {
 
   private String $name = ""
   private String $path = ""
@@ -92,12 +92,28 @@ public class SlimeDictionary extends Dictionary {
     }
   }
 
-  public void addWord(Word word) {
-    $words.add((SlimeWord)word)
+  public void addWord(SlimeWord word) {
+    $words.add(word)
   }
 
-  public void removeWord(Word word) {
-    $words.remove((SlimeWord)word)
+  public void removeWord(SlimeWord word) {
+    $words.remove(word)
+  }
+
+  public SlimeWord emptyWord() {
+    return SlimeWord.new()
+  }
+
+  public SlimeWord copyWord(SlimeWord oldWord) {
+    Integer id = oldWord.getId()
+    String name = oldWord.getName()
+    List<String> equivalents = oldWord.getEquivalents()
+    List<String> tags = oldWord.getTags()
+    List<SlimeInformation> informations = oldWord.getInformations()
+    List<SlimeVariation> variations = oldWord.getVariations()
+    List<SlimeRelation> relations = oldWord.getRelations()
+    SlimeWord newWord = SlimeWord.new(id, name, equivalents, tags, informations, variations, relations)
+    return newWord
   }
 
   private void load() {
@@ -172,15 +188,11 @@ public class SlimeDictionary extends Dictionary {
     $path = path
   }
 
-  public DictionaryType getType() {
-    return DictionaryType.SLIME
-  }
-
-  public ObservableList<? extends Word> getWords() {
+  public ObservableList<SlimeWord> getWords() {
     return $sortedWords
   }
 
-  public ObservableList<? extends Word> getRawWords() {
+  public ObservableList<SlimeWord> getRawWords() {
     return $words
   }
 

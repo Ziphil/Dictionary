@@ -14,7 +14,7 @@ import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class ShaleiaDictionary extends Dictionary {
+public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
 
   private String $name = ""
   private String $path = ""
@@ -88,14 +88,24 @@ public class ShaleiaDictionary extends Dictionary {
     }
   }
 
-  public void addWord(Word word) {
-    ShaleiaWord castedWord = (ShaleiaWord)word
-    castedWord.setDictionary(this)
-    $words.add(castedWord)
+  public void addWord(ShaleiaWord word) {
+    word.setDictionary(this)
+    $words.add(word)
   }
 
-  public void removeWord(Word word) {
-    $words.remove((ShaleiaWord)word)
+  public void removeWord(ShaleiaWord word) {
+    $words.remove(word)
+  }
+
+  public ShaleiaWord emptyWord() {
+    return ShaleiaWord.new("", "")
+  }
+
+  public ShaleiaWord copyWord(ShaleiaWord oldWord) {
+    String name = oldWord.getName()
+    String data = oldWord.getData()
+    ShaleiaWord newWord = ShaleiaWord.new(name, data)
+    return newWord
   }
 
   private void load() {
@@ -176,15 +186,11 @@ public class ShaleiaDictionary extends Dictionary {
     $path = path
   }
 
-  public DictionaryType getType() {
-    return DictionaryType.SHALEIA
-  }
-
-  public ObservableList<? extends Word> getWords() {
+  public ObservableList<ShaleiaWord> getWords() {
     return $sortedWords
   }
 
-  public ObservableList<? extends Word> getRawWords() {
+  public ObservableList<ShaleiaWord> getRawWords() {
     return $words
   }
 
