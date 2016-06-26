@@ -34,6 +34,7 @@ import ziphil.Launcher
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.dictionary.ShaleiaWord
+import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryType
@@ -162,6 +163,9 @@ public class MainController {
       } else if (dictionaryType == DictionaryType.PERSONAL) {
         PersonalEditorController controller = PersonalEditorController.new(stage)
         controller.prepare((PersonalWord)word)
+      } else if (dictionaryType == DictionaryType.SLIME) {
+        SlimeEditorController controller = SlimeEditorController.new(stage)
+        controller.prepare((SlimeWord)word)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -199,6 +203,10 @@ public class MainController {
         newWord = PersonalWord.emptyWord()
         PersonalEditorController controller = PersonalEditorController.new(stage)
         controller.prepare(newWord)
+      } else if (dictionaryType == DictionaryType.SLIME) {
+        newWord = SlimeWord.emptyWord()
+        SlimeEditorController controller = SlimeEditorController.new(stage)
+        controller.prepare(newWord)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -224,6 +232,10 @@ public class MainController {
       } else if (dictionaryType == DictionaryType.PERSONAL) {
         newWord = PersonalWord.copyFrom((PersonalWord)word)
         PersonalEditorController controller = PersonalEditorController.new(stage)
+        controller.prepare(newWord)
+      } else if (dictionaryType == DictionaryType.SLIME) {
+        newWord = SlimeWord.copyFrom((SlimeWord)word)
+        SlimeEditorController controller = SlimeEditorController.new(stage)
         controller.prepare(newWord)
       }
       Boolean isDone = stage.showAndWaitResult()
