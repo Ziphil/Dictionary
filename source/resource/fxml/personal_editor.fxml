@@ -50,7 +50,7 @@
         <RowConstraints vgrow="never"/>
         <RowConstraints vgrow="never"/>
       </rowConstraints>
-      <Label text="単語名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="発音記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Label text="用例:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>

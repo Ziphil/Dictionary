@@ -48,11 +48,11 @@
         <RowConstraints vgrow="never"/>
       </rowConstraints>
       <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label text="単語名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="baseline"/>
       <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="baseline"/>
-      <Label text="別表記:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.valignment="baseline"/>
+      <Label text="変化形:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.valignment="baseline"/>
       <Label text="関連語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.valignment="baseline"/>
       <TextField fx:id="$id" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <prefWidth><Double rpx="70"/></prefWidth>
