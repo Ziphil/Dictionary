@@ -280,7 +280,7 @@ public class SlimeEditorController {
     remove.setOnAction() {
       removeVariationControl(box)
     }
-    if (title != null) {
+    if (titleString != null) {
       title.setValue(titleString)
     }
     if (nameString != null) {
@@ -291,7 +291,7 @@ public class SlimeEditorController {
     $variationTitles.add(title)
     $variationNames.add(name)
     $variationBox.getChildren().add(box)
-    $informationBox.setVgrow(box, Priority.ALWAYS)
+    $variationBox.setVgrow(box, Priority.ALWAYS)
   }
 
   private void addRelationControl(String titleString, String nameString) {
@@ -307,7 +307,7 @@ public class SlimeEditorController {
     remove.setOnAction() {
       removeRelationControl(box)
     }
-    if (title != null) {
+    if (titleString != null) {
       title.setValue(titleString)
     }
     if (nameString != null) {
@@ -318,7 +318,7 @@ public class SlimeEditorController {
     $relationTitles.add(title)
     $relationNames.add(name)
     $relationBox.getChildren().add(box)
-    $informationBox.setVgrow(box, Priority.ALWAYS)
+    $relationBox.setVgrow(box, Priority.ALWAYS)
   }
 
 
