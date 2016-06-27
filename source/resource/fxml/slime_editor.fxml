@@ -49,7 +49,7 @@
       </rowConstraints>
       <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="単語名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="baseline"/>
       <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="baseline"/>
       <Label text="別表記:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.valignment="baseline"/>
@@ -59,7 +59,9 @@
         <maxWidth><Double rpx="70"/></maxWidth>
       </TextField>
       <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <TextField fx:id="$equivalent" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <VBox fx:id="$equivalentBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <spacing><Double rpx="5"/></spacing>
+      </VBox>
       <TextField fx:id="$tag" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
       <VBox fx:id="$informationBox" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <spacing><Double rpx="5"/></spacing>
@@ -70,6 +72,10 @@
       <VBox fx:id="$relationBox" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <spacing><Double rpx="5"/></spacing>
       </VBox>
+      <Button text="追加" onAction="#insertEquivalentControl" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="bottom">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+      </Button>
       <Button text="追加" onAction="#insertInformationControl" GridPane.columnIndex="2" GridPane.rowIndex="4" GridPane.valignment="bottom">
         <prefWidth><Double rpx="70"/></prefWidth>
         <minWidth><Double rpx="70"/></minWidth>

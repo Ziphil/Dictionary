@@ -23,6 +23,7 @@ public class SlimeWord extends Word {
   private SlimeDictionary $dictionary
   private Integer $id = -1
   private String $name = ""
+  private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
   private List<String> $equivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
@@ -32,8 +33,9 @@ public class SlimeWord extends Word {
   private VBox $contentPane = VBox.new()
   private Boolean $isChanged = true
 
-  public SlimeWord(Integer id, String name, List<String> equivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations, List<SlimeRelation> relations) {
-    update(id, name, equivalents, tags, informations, variations, relations)
+  public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
+                   List<SlimeRelation> relations) {
+    update(id, name, rawEquivalents, tags, informations, variations, relations)
     setupContentPane()
   }
 
@@ -41,10 +43,12 @@ public class SlimeWord extends Word {
     setupContentPane()
   }
 
-  public void update(Integer id, String name, List<String> equivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations, List<SlimeRelation> relations) {
+  public void update(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
+                     List<SlimeRelation> relations) {
     $id = id
     $name = name
-    $equivalents = equivalents
+    $rawEquivalents = rawEquivalents
+    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
     $tags = tags
     $informations = informations
     $variations = variations
@@ -63,7 +67,9 @@ public class SlimeWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $name)
-    addEquivalentNode(equivalentBox, $equivalents.join(", "))
+    $rawEquivalents.groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> eachGroup ->
+      addEquivalentNode(equivalentBox, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "))
+    }
     $informations.each() { SlimeInformation information ->
       addInformationNode(informationBox, information.getTitle(), information.getText(), modifiesPunctuation)
       hasInformation = true
@@ -150,14 +156,19 @@ public class SlimeWord extends Word {
     return $name
   }
 
-  @JSONHint(name="translations")
   public List<String> getEquivalents() {
     return $equivalents
   }
 
   @JSONHint(name="translations")
-  public void setEquivalents(List<String> equivalents) {
-    $equivalents = equivalents
+  public List<SlimeEquivalent> getRawEquivalents() {
+    return $rawEquivalents
+  }
+
+  @JSONHint(name="translations")
+  public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
+    $rawEquivalents = rawEquivalents
+    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
   }
 
   public List<String> getTags() {

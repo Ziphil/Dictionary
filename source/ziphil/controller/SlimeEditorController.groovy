@@ -16,6 +16,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.dictionary.SlimeEquivalent
 import ziphil.dictionary.SlimeInformation
 import ziphil.dictionary.SlimeRelation
 import ziphil.dictionary.SlimeVariation
@@ -34,11 +35,13 @@ public class SlimeEditorController {
 
   @FXML private TextField $id
   @FXML private TextField $name
-  @FXML private TextField $equivalent
   @FXML private TextField $tag
+  @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
+  private List<ComboBox<String>> $equivalentTitles = ArrayList.new()
+  private List<TextField> $equivalentNames = ArrayList.new()
   private List<ComboBox<String>> $informationTitles = ArrayList.new()
   private List<TextArea> $informationTexts = ArrayList.new()
   private List<ComboBox<String>> $variationTitles = ArrayList.new()
@@ -59,8 +62,10 @@ public class SlimeEditorController {
     $word = word
     $id.setText(word.getId().toString())
     $name.setText(word.getName())
-    $equivalent.setText(word.getEquivalents().join(", "))
     $tag.setText(word.getTags().join(", "))
+    word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> eachGroup ->
+      addEquivalentControl(title, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "))
+    }
     word.getInformations().each() { SlimeInformation information ->
       addInformationControl(information.getTitle(), information.getText())
     }
@@ -80,11 +85,20 @@ public class SlimeEditorController {
   private void commitEdit() {
     Integer id = $id.getText().toInteger()
     String name = $name.getText()
-    List<String> equivalents = $equivalent.getText().split(/\s*(,|、)\s*/).toList()
+    List<SlimeEquivalent> rawEquivalents = ArrayList.new()
     List<String> tags = $tag.getText().split(/\s*(,|、)\s*/).toList()
     List<SlimeInformation> informations = ArrayList.new()
     List<SlimeVariation> variations = ArrayList.new()
     List<SlimeRelation> relations = ArrayList.new()
+    (0 ..< $equivalentTitles.size()).each() { Integer i ->
+      String title = $equivalentTitles[i].getValue()
+      List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
+      equivalentNames.each() { String equivalentName ->
+        if (title != "" && equivalentName != "") {
+          rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
+        }
+      }
+    }
     (0 ..< $informationTitles.size()).each() { Integer i ->
       String title = $informationTitles[i].getValue()
       String text = $informationTexts[i].getText()
@@ -106,13 +120,19 @@ public class SlimeEditorController {
         relations.add(SlimeRelation.new(title, -1, relationName))
       }
     }
-    $word.update(id, name, equivalents, tags, informations, variations, relations)
+    $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
     $stage.close(true)
   }
 
   @FXML
   private void cancelEdit() {
     $stage.close(false)
+  }
+
+  @FXML
+  private void insertEquivalentControl() {
+    addEquivalentControl(null, null)
+    setupEditor()
   }
 
   @FXML
@@ -131,6 +151,20 @@ public class SlimeEditorController {
   private void insertRelationControl() {
     addRelationControl(null, null)
     setupEditor()
+  }
+
+  private void removeEquivalentControl(HBox box) {
+    Integer index
+    $equivalentBox.getChildren().eachWithIndex() { Node node, Integer i ->
+      if (node == box) {
+        index = i
+      }
+    }
+    if (index != null) {
+      $equivalentBox.getChildren().removeAt(index)
+      $equivalentTitles.removeAt(index)
+      $equivalentNames.removeAt(index)
+    }
   }
 
   private void removeInformationControl(HBox box) {
@@ -173,6 +207,33 @@ public class SlimeEditorController {
       $relationTitles.removeAt(index)
       $relationNames.removeAt(index)
     }
+  }
+
+  private void addEquivalentControl(String titleString, String nameString) {
+    HBox box = HBox.new(Measurement.rpx(5))
+    ComboBox<String> title = ComboBox.new()
+    TextField name = TextField.new()
+    Button remove = Button.new("削除")
+    title.setEditable(true)
+    title.setPrefWidth(Measurement.rpx(120))
+    title.setMinWidth(Measurement.rpx(120))
+    remove.setPrefWidth(Measurement.rpx(70))
+    remove.setMinWidth(Measurement.rpx(70))
+    remove.setOnAction() {
+      removeEquivalentControl(box)
+    }
+    if (titleString != null) {
+      title.setValue(titleString)
+    }
+    if (nameString != null) {
+      name.setText(nameString)
+    }
+    box.getChildren().addAll(title, name, remove)
+    box.setHgrow(name, Priority.ALWAYS)
+    $equivalentTitles.add(title)
+    $equivalentNames.add(name)
+    $equivalentBox.getChildren().add(box)
+    $equivalentBox.setVgrow(box, Priority.ALWAYS)
   }
 
   private void addInformationControl(String titleString, String textString) {

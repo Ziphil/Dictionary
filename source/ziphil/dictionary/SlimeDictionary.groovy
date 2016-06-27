@@ -107,12 +107,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   public SlimeWord copyWord(SlimeWord oldWord) {
     Integer id = oldWord.getId()
     String name = oldWord.getName()
-    List<String> equivalents = oldWord.getEquivalents()
+    List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
     List<String> tags = oldWord.getTags()
     List<SlimeInformation> informations = oldWord.getInformations()
     List<SlimeVariation> variations = oldWord.getVariations()
     List<SlimeRelation> relations = oldWord.getRelations()
-    SlimeWord newWord = SlimeWord.new(id, name, equivalents, tags, informations, variations, relations)
+    SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
     return newWord
   }
 
@@ -148,7 +148,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     $words.each() { SlimeWord word ->
       writer.beginObject()
       writer.name("entry").value(word.getEntry())
-      writer.name("translations").value(word.getEquivalents())
+      writer.name("translations").value(word.getRawEquivalents())
       writer.name("tags").value(word.getTags())
       writer.name("contents").value(word.getInformations())
       writer.name("variations").value(word.getVariations())
