@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos
@@ -31,7 +32,7 @@ public class SlimeEditorController {
   private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"
   private static final String TITLE = "単語編集"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(640)
 
   @FXML private TextField $id
   @FXML private TextField $name
@@ -76,7 +77,9 @@ public class SlimeEditorController {
       addRelationControl(relation.getTitle(), relation.getName())
     }
     if (!$informationTexts.isEmpty()) {
-      $informationTexts[0].requestFocus()
+      Platform.runLater() {
+        $informationTexts[0].requestFocus()
+      }
     }
     setupEditor()
   }
@@ -247,6 +250,8 @@ public class SlimeEditorController {
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     text.setWrapText(true)
+    text.setPrefHeight(Measurement.rpx(120))
+    text.setMinHeight(Measurement.rpx(120))
     remove.setPrefWidth(Measurement.rpx(70))
     remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {

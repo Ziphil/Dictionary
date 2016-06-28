@@ -61,3 +61,12 @@
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
 }
+
+.transparent {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0px;
+}
+
+.transparent:focused {
+  -fx-background-insets: 0px;
+}
