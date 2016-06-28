@@ -152,6 +152,10 @@ public class SlimeWord extends Word {
     return $id
   }
 
+  public void setId(Integer id) {
+    $id = id
+  }
+
   public String getName() {
     return $name
   }

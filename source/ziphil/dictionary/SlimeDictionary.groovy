@@ -101,7 +101,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public SlimeWord emptyWord() {
-    return SlimeWord.new()
+    SlimeWord word = SlimeWord.new()
+    word.setId(validMinId())
+    return word
   }
 
   public SlimeWord copyWord(SlimeWord oldWord) {
@@ -114,6 +116,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     List<SlimeRelation> relations = oldWord.getRelations()
     SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
     return newWord
+  }
+
+  public Integer validMinId() {
+    Integer minId = 0
+    $words.each() { SlimeWord word ->
+      if (minId < word.getId()) {
+        minId = word.getId()
+      }
+    }
+    return minId + 1
   }
 
   private void load() {
