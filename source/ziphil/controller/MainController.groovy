@@ -164,7 +164,7 @@ public class MainController {
         controller.prepare((PersonalWord)word)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        controller.prepare((SlimeWord)word)
+        controller.prepare((SlimeWord)word, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -207,7 +207,7 @@ public class MainController {
         SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
         newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord)
+        controller.prepare(newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -239,7 +239,7 @@ public class MainController {
         SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
         newWord = castedDictionary.copyWord((SlimeWord)word)
-        controller.prepare(newWord)
+        controller.prepare(newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {

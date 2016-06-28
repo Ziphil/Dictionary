@@ -128,6 +128,54 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     return minId + 1
   }
 
+  public List<String> registeredEquivalentTitles() {
+    List<String> titles = ArrayList.new()
+    $words.each() { SlimeWord word ->
+      word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+        if (!titles.contains(equivalent.getTitle())) {
+          titles.add(equivalent.getTitle())
+        }
+      }
+    }
+    return titles
+  }
+
+  public List<String> registeredInformationTitles() {
+    List<String> titles = ArrayList.new()
+    $words.each() { SlimeWord word ->
+      word.getInformations().each() { SlimeInformation information ->
+        if (!titles.contains(information.getTitle())) {
+          titles.add(information.getTitle())
+        }
+      }
+    }
+    return titles
+  }
+
+  public List<String> registeredVariationTitles() {
+    List<String> titles = ArrayList.new()
+    $words.each() { SlimeWord word ->
+      word.getVariations().each() { SlimeVariation variation ->
+        if (!titles.contains(variation.getTitle())) {
+          titles.add(variation.getTitle())
+        }
+      }
+    }
+    return titles
+  }
+
+  public List<String> registeredRelationTitles() {
+    List<String> titles = ArrayList.new()
+    $words.each() { SlimeWord word ->
+      word.getRelations().each() { SlimeRelation relation ->
+        if (!titles.contains(relation.getTitle())) {
+          titles.add(relation.getTitle())
+        }
+      }
+    }
+    return titles
+  }
+
   private void load() {
     if ($path != null) {
       FileInputStream stream = FileInputStream.new($path)

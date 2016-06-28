@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeEquivalent
 import ziphil.dictionary.SlimeInformation
 import ziphil.dictionary.SlimeRelation
@@ -50,6 +51,7 @@ public class SlimeEditorController {
   private List<ComboBox<String>> $relationTitles = ArrayList.new()
   private List<TextField> $relationNames = ArrayList.new()
   private SlimeWord $word
+  private SlimeDictionary $dictionary
   private UtilityStage<Boolean> $stage
   private Scene $scene
 
@@ -59,22 +61,23 @@ public class SlimeEditorController {
     setupEditor()
   }
 
-  public void prepare(SlimeWord word) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary) {
     $word = word
+    $dictionary = dictionary
     $id.setText(word.getId().toString())
     $name.setText(word.getName())
     $tag.setText(word.getTags().join(", "))
     word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> eachGroup ->
-      addEquivalentControl(title, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "))
+      addEquivalentControl(title, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "), dictionary.registeredEquivalentTitles())
     }
     word.getInformations().each() { SlimeInformation information ->
-      addInformationControl(information.getTitle(), information.getText())
+      addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
     }
     word.getVariations().each() { SlimeVariation variation ->
-      addVariationControl(variation.getTitle(), variation.getName())
+      addVariationControl(variation.getTitle(), variation.getName(), dictionary.registeredVariationTitles())
     }
     word.getRelations().each() { SlimeRelation relation ->
-      addRelationControl(relation.getTitle(), relation.getName())
+      addRelationControl(relation.getTitle(), relation.getName(), dictionary.registeredRelationTitles())
     }
     if (!$informationTexts.isEmpty()) {
       Platform.runLater() {
@@ -134,25 +137,25 @@ public class SlimeEditorController {
 
   @FXML
   private void insertEquivalentControl() {
-    addEquivalentControl(null, null)
+    addEquivalentControl(null, null, ArrayList.new())
     setupEditor()
   }
 
   @FXML
   private void insertInformationControl() {
-    addInformationControl(null, null)
+    addInformationControl(null, null, ArrayList.new())
     setupEditor()
   }
 
   @FXML
   private void insertVariationControl() {
-    addVariationControl(null, null)
+    addVariationControl(null, null, ArrayList.new())
     setupEditor()
   }
 
   @FXML
   private void insertRelationControl() {
-    addRelationControl(null, null)
+    addRelationControl(null, null, ArrayList.new())
     setupEditor()
   }
 
@@ -212,12 +215,13 @@ public class SlimeEditorController {
     }
   }
 
-  private void addEquivalentControl(String titleString, String nameString) {
+  private void addEquivalentControl(String titleString, String nameString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
     Button remove = Button.new("削除")
     title.setEditable(true)
+    title.getItems().addAll(registeredTitles)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     remove.setPrefWidth(Measurement.rpx(70))
@@ -239,7 +243,7 @@ public class SlimeEditorController {
     $equivalentBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void addInformationControl(String titleString, String textString) {
+  private void addInformationControl(String titleString, String textString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     HBox removeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
@@ -247,6 +251,7 @@ public class SlimeEditorController {
     Button remove = Button.new("削除")
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     title.setEditable(true)
+    title.getItems().addAll(registeredTitles)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     text.setWrapText(true)
@@ -272,12 +277,13 @@ public class SlimeEditorController {
     $informationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void addVariationControl(String titleString, String nameString) {
+  private void addVariationControl(String titleString, String nameString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
     Button remove = Button.new("削除")
     title.setEditable(true)
+    title.getItems().addAll(registeredTitles)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     remove.setPrefWidth(Measurement.rpx(70))
@@ -299,12 +305,13 @@ public class SlimeEditorController {
     $variationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void addRelationControl(String titleString, String nameString) {
+  private void addRelationControl(String titleString, String nameString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
     Button remove = Button.new("削除")
     title.setEditable(true)
+    title.getItems().addAll(registeredTitles)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     remove.setPrefWidth(Measurement.rpx(70))
