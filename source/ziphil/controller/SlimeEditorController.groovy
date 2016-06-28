@@ -137,25 +137,25 @@ public class SlimeEditorController {
 
   @FXML
   private void insertEquivalentControl() {
-    addEquivalentControl(null, null, ArrayList.new())
+    addEquivalentControl(null, null, $dictionary.registeredEquivalentTitles())
     setupEditor()
   }
 
   @FXML
   private void insertInformationControl() {
-    addInformationControl(null, null, ArrayList.new())
+    addInformationControl(null, null, $dictionary.registeredInformationTitles())
     setupEditor()
   }
 
   @FXML
   private void insertVariationControl() {
-    addVariationControl(null, null, ArrayList.new())
+    addVariationControl(null, null, $dictionary.registeredVariationTitles())
     setupEditor()
   }
 
   @FXML
   private void insertRelationControl() {
-    addRelationControl(null, null, ArrayList.new())
+    addRelationControl(null, null, $dictionary.registeredRelationTitles())
     setupEditor()
   }
 
