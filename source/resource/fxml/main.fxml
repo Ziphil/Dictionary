@@ -121,7 +121,7 @@
           <minWidth><Double rpx="70"/></minWidth>
         </ToggleButton>
       </HBox>
-      <ListView fx:id="$wordList" id="dictionary-list" prefHeight="65536"/>
+      <ListView fx:id="$wordList" id="dictionary-list" VBox.vgrow="always"/>
     </VBox>
   </center>
   <bottom>
