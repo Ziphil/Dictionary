@@ -55,7 +55,7 @@ public class MainController {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<? extends Word> $list
+  @FXML private ListView<? extends Word> $wordList
   @FXML private TextField $searchText
   @FXML private ComboBox<String> $searchMode
   @FXML private ToggleButton $searchType
@@ -81,7 +81,7 @@ public class MainController {
 
   @FXML
   public void initialize() {
-    setupList()
+    setupWordList()
     setupSearchType()
     setupOpenRegisteredDictionaryMenu()
     updateDictionaryToDefault()
@@ -108,7 +108,7 @@ public class MainController {
       $elapsedTime.setText(elapsedTime.toString())
       $hitWordSize.setText(hitWordSize.toString())
       $totalWordSize.setText(totalWordSize.toString())
-      $list.scrollTo(0)
+      $wordList.scrollTo(0)
     }
   }
 
@@ -330,7 +330,7 @@ public class MainController {
     $dictionary = dictionary
     $totalWordSize.setText($dictionary.getRawWords().size().toString())
     $dictionaryName.setText($dictionary.getName())
-    $list.setItems($dictionary.getWords())
+    $wordList.setItems($dictionary.getWords())
     $searchText.setText("")
     $searchText.requestFocus()
     if ($dictionary instanceof ShaleiaDictionary) {
@@ -363,8 +363,8 @@ public class MainController {
     Platform.exit()
   }
 
-  private void setupList() {
-    $list.setCellFactory() { ListView<Word> list ->
+  private void setupWordList() {
+    $wordList.setCellFactory() { ListView<Word> list ->
       WordCell cell = WordCell.new()
       cell.setOnMouseClicked() { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
