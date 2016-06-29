@@ -33,6 +33,8 @@ import javafx.stage.Modality
 import ziphil.Launcher
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
+import ziphil.custom.WordCell
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.PersonalWord
@@ -42,8 +44,6 @@ import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Word
 import ziphil.module.Setting
-import ziphil.node.UtilityStage
-import ziphil.node.WordCell
 
 
 @CompileStatic @Newify

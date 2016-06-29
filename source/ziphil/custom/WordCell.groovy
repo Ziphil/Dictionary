@@ -1,4 +1,4 @@
-package ziphil.node
+package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell

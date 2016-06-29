@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeEquivalent
 import ziphil.dictionary.SlimeInformation
@@ -24,7 +25,6 @@ import ziphil.dictionary.SlimeRelation
 import ziphil.dictionary.SlimeVariation
 import ziphil.dictionary.SlimeWord
 import ziphil.module.Setting
-import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify
