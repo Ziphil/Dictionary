@@ -40,10 +40,12 @@ public class SlimeEditorController {
   @FXML private TextField $id
   @FXML private TextField $name
   @FXML private TextField $tag
+  @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
+  private List<ComboBox<String>> $tags = ArrayList.new()
   private List<ComboBox<String>> $equivalentTitles = ArrayList.new()
   private List<TextField> $equivalentNames = ArrayList.new()
   private List<ComboBox<String>> $informationTitles = ArrayList.new()
@@ -69,7 +71,9 @@ public class SlimeEditorController {
     $dictionary = dictionary
     $id.setText(word.getId().toString())
     $name.setText(word.getName())
-    $tag.setText(word.getTags().join(", "))
+    word.getTags().each() { String tag ->
+      addTagControl(tag, dictionary.registeredTags())
+    }
     word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
       String nameString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
       addEquivalentControl(title, nameString, dictionary.registeredEquivalentTitles())
@@ -97,10 +101,16 @@ public class SlimeEditorController {
     Integer id = $id.getText().toInteger()
     String name = $name.getText()
     List<SlimeEquivalent> rawEquivalents = ArrayList.new()
-    List<String> tags = $tag.getText().split(/\s*(,|、)\s*/).toList()
+    List<String> tags = ArrayList.new()
     List<SlimeInformation> informations = ArrayList.new()
     List<SlimeVariation> variations = ArrayList.new()
     List<SlimeRelation> relations = ArrayList.new()
+    (0 ..< $tags.size()).each() { Integer i ->
+      String tag = $tags[i].getValue()
+      if (tag != "") {
+        tags.add(tag)
+      }
+    }
     (0 ..< $equivalentTitles.size()).each() { Integer i ->
       String title = $equivalentTitles[i].getValue()
       List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
@@ -143,6 +153,12 @@ public class SlimeEditorController {
   }
 
   @FXML
+  private void insertTagControl() {
+    addTagControl("", $dictionary.registeredTags())
+    setupEditor()
+  }
+
+  @FXML
   private void insertEquivalentControl() {
     addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
     setupEditor()
@@ -164,6 +180,19 @@ public class SlimeEditorController {
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.registeredRelationTitles())
     setupEditor()
+  }
+
+  private void removeTagControl(HBox box) {
+    Integer index
+    $tagBox.getChildren().eachWithIndex() { Node node, Integer i ->
+      if (node == box) {
+        index = i
+      }
+    }
+    if (index != null) {
+      $tagBox.getChildren().removeAt(index)
+      $tags.removeAt(index)
+    }
   }
 
   private void removeEquivalentControl(HBox box) {
@@ -241,6 +270,25 @@ public class SlimeEditorController {
         $relationNames[index].setText(word.getName())
       }
     }
+  }
+
+  private void addTagControl(String tagString, List<String> registeredTags) {
+    HBox box = HBox.new(Measurement.rpx(5))
+    ComboBox<String> tag = ComboBox.new()
+    Button remove = Button.new("削除")
+    tag.setEditable(true)
+    tag.getItems().addAll(registeredTags)
+    tag.setValue(tagString)
+    tag.setPrefWidth(Measurement.rpx(120))
+    tag.setMinWidth(Measurement.rpx(120))
+    remove.setPrefWidth(Measurement.rpx(70))
+    remove.setMinWidth(Measurement.rpx(70))
+    remove.setOnAction() {
+      removeTagControl(box)
+    }
+    box.getChildren().addAll(tag, remove)
+    $tags.add(tag)
+    $tagBox.getChildren().add(box)
   }
 
   private void addEquivalentControl(String titleString, String nameString, List<String> registeredTitles) {

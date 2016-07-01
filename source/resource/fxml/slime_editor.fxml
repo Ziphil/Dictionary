@@ -87,7 +87,13 @@
                 </Insets>
               </padding>
               <spacing><Double rpx="5"/></spacing>
-              <TextField fx:id="$tag"/>
+              <VBox fx:id="$tagBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertTagControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
           <TitledPane text="内容">

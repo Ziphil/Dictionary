@@ -135,6 +135,18 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     return minId + 1
   }
 
+  public List<String> registeredTags() {
+    List<String> tags = ArrayList.new()
+    $words.each() { SlimeWord word ->
+      word.getTags().each() { String tag ->
+        if (!tags.contains(tag)) {
+          tags.add(tag)
+        }
+      }
+    }
+    return tags
+  }
+
   public List<String> registeredEquivalentTitles() {
     List<String> titles = ArrayList.new()
     $words.each() { SlimeWord word ->
