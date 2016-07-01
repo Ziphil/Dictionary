@@ -88,6 +88,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     }
   }
 
+  public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
+    newWord.createContentPane()
+  }
+
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
     $words.add(word)

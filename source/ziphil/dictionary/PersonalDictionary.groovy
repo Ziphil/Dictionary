@@ -70,6 +70,10 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
     }
   }
 
+  public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
+    newWord.createContentPane()
+  }
+
   public void addWord(PersonalWord word) {
     $words.add(word)
   }

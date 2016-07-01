@@ -155,6 +155,7 @@ public class MainController {
     if ($dictionary != null) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      Word oldWord = $dictionary.copyWord(word)
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
@@ -168,7 +169,7 @@ public class MainController {
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
-        word.createContentPane()
+        $dictionary.modifyWord(oldWord, word)
         if (savesAutomatically) {
           $dictionary.save()
         }

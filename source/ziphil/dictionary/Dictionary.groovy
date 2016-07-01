@@ -13,6 +13,8 @@ public abstract class Dictionary<W extends Word> {
 
   public abstract void searchByContent(String search)
 
+  public abstract void modifyWord(W oldWord, W newWord)
+
   public abstract void addWord(W word)
 
   public abstract void removeWord(W word)

@@ -99,6 +99,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     }
   }
 
+  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    newWord.createContentPane()
+  }
+
   public void addWord(SlimeWord word) {
     $words.add(word)
   }
