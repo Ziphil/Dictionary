@@ -23,6 +23,8 @@ public abstract class Dictionary<W extends Word> {
 
   public abstract W copyWord(W oldWord)
 
+  public abstract W inheritedWord(W oldWord)
+
   public abstract void save()
 
   public abstract Boolean supportsEquivalent()

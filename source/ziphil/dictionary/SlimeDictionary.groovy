@@ -129,6 +129,18 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     return newWord
   }
 
+  public SlimeWord inheritedWord(SlimeWord oldWord) {
+    Integer id = validMinId()
+    String name = oldWord.getName()
+    List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
+    List<String> tags = oldWord.getTags()
+    List<SlimeInformation> informations = oldWord.getInformations()
+    List<SlimeVariation> variations = oldWord.getVariations()
+    List<SlimeRelation> relations = oldWord.getRelations()
+    SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
+    return newWord
+  }
+
   public Integer validMinId() {
     Integer minId = 0
     $words.each() { SlimeWord word ->

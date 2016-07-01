@@ -229,17 +229,17 @@ public class MainController {
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-        newWord = castedDictionary.copyWord((ShaleiaWord)word)
+        newWord = castedDictionary.inheritedWord((ShaleiaWord)word)
         controller.prepare(newWord)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
-        newWord = castedDictionary.copyWord((PersonalWord)word)
+        newWord = castedDictionary.inheritedWord((PersonalWord)word)
         controller.prepare(newWord)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        newWord = castedDictionary.copyWord((SlimeWord)word)
+        newWord = castedDictionary.inheritedWord((SlimeWord)word)
         controller.prepare(newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()

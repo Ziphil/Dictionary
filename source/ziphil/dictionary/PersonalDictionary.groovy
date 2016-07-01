@@ -98,6 +98,10 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
     return newWord
   }
 
+  public PersonalWord inheritedWord(PersonalWord oldWord) {
+    return copyWord(oldWord)
+  }
+
   private void load() {
     if ($path != null) {
       File file = File.new($path)

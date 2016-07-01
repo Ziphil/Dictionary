@@ -112,6 +112,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     return newWord
   }
 
+  public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
+    return copyWord(oldWord)
+  }
+
   private void load() {
     if ($path != null) {
       File file = File.new($path)
