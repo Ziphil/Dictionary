@@ -243,7 +243,7 @@ public class FileChooser extends VBox {
     return comparator
   }
 
-  public Boolean showsHidden() {
+  public Boolean isShowsHidden() {
     return $showsHidden.get()
   }
 
@@ -255,7 +255,7 @@ public class FileChooser extends VBox {
     return $showsHidden
   }
 
-  public Boolean adjustsExtension() {
+  public Boolean isAdjustsExtension() {
     return $adjustsExtension.get()
   }
 
