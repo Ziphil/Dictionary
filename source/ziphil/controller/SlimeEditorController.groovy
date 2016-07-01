@@ -103,7 +103,7 @@ public class SlimeEditorController {
       String title = $equivalentTitles[i].getValue()
       List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
       equivalentNames.each() { String equivalentName ->
-        if (title != "" && equivalentName != "") {
+        if (equivalentName != "") {
           rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
         }
       }
@@ -111,7 +111,7 @@ public class SlimeEditorController {
     (0 ..< $informationTitles.size()).each() { Integer i ->
       String title = $informationTitles[i].getValue()
       String text = $informationTexts[i].getText()
-      if (title != "" && text != "") {
+      if (text != "") {
         informations.add(SlimeInformation.new(title, text))
       }
     }
@@ -119,7 +119,7 @@ public class SlimeEditorController {
       String title = $variationTitles[i].getValue()
       List<String> variationNames = $variationNames[i].getText().split(/\s*(,|、)\s*/).toList()
       variationNames.each() { String variationName ->
-        if (title != "" && variationName != "") {
+        if (variationName != "") {
           variations.add(SlimeVariation.new(title, variationName))
         }
       }
@@ -127,7 +127,7 @@ public class SlimeEditorController {
     (0 ..< $relationTitles.size()).each() { Integer i ->
       String title = $relationTitles[i].getValue()
       SlimeRelation relation = $relations[i]
-      if (title != "" && relation != null) {
+      if (relation != null) {
         relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
       }
     }
