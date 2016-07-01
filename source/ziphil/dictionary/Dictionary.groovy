@@ -62,10 +62,10 @@ public abstract class Dictionary<W extends Word> {
     if (filePath.endsWith(".xdc")) {
       dictionary = ShaleiaDictionary.new(fileName, null)
       dictionary.setPath(filePath)
-    } else if (filePath.endsWith(".xdc")) {
+    } else if (filePath.endsWith(".csv")) {
       dictionary = PersonalDictionary.new(fileName, null)
       dictionary.setPath(filePath)
-    } else if (filePath.endsWith(".xdc")) {
+    } else if (filePath.endsWith(".json")) {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
