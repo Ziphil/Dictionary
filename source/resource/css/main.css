@@ -15,7 +15,8 @@
 }
 
 #dictionary-list .shaleia-whole-class,
-#dictionary-list .shaleia-local-class {
+#dictionary-list .shaleia-local-class,
+#dictionary-list .slime-equivalent-title {
   -fx-font-size: 0.8em;
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
@@ -25,7 +26,8 @@
 }
 
 #dictionary-list:focused .list-cell:filled:selected .shaleia-whole-class,
-#dictionary-list:focused .list-cell:filled:selected .shaleia-local-class {
+#dictionary-list:focused .list-cell:filled:selected .shaleia-local-class,
+#dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title {
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 

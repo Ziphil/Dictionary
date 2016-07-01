@@ -2,6 +2,7 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
+import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -18,6 +19,7 @@ public class SlimeWord extends Word {
 
   public static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   public static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
+  public static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
   public static final String SLIME_TITLE_CLASS = "slime-title"
   public static final String SLIME_ID_CLASS = "slime-id"
 
@@ -70,15 +72,17 @@ public class SlimeWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $name)
-    $rawEquivalents.groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> eachGroup ->
-      addEquivalentNode(equivalentBox, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "))
+    $rawEquivalents.groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
+      String equivalentString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
+      addEquivalentNode(equivalentBox, title, equivalentString)
     }
     $informations.each() { SlimeInformation information ->
       addInformationNode(informationBox, information.getTitle(), information.getText(), modifiesPunctuation)
       hasInformation = true
     }
-    $relations.each() { SlimeRelation relation ->
-      addRelationNode(relationBox, relation.getTitle(), relation.getName())
+    $relations.groupBy{relation -> relation.getTitle()}.each() { String title, List<SlimeRelation> relationGroup ->
+      String nameString = relationGroup.collect{relation -> relation.getName()}.join(", ")
+      addRelationNode(relationBox, title, nameString)
       hasRelation = true
     }
     if (hasInformation) {
@@ -112,11 +116,13 @@ public class SlimeWord extends Word {
     box.getChildren().add(nameText)
   }
 
-  private void addEquivalentNode(VBox box, String equivalent) {
+  private void addEquivalentNode(VBox box, String title, String equivalent) {
     TextFlow textFlow = TextFlow.new()
-    Text equivalentText = Text.new(equivalent)
+    Label titleText = Label.new(title)
+    Text equivalentText = Text.new(" " + equivalent)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    textFlow.getChildren().add(equivalentText)
+    textFlow.getChildren().addAll(titleText, equivalentText)
     box.getChildren().add(textFlow)
   }
 
