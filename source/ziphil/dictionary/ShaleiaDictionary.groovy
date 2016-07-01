@@ -14,7 +14,7 @@ import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class ShaleiaDictionary extends Dictionary {
+public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
 
   private String $name = ""
   private String $path = ""
@@ -88,6 +88,34 @@ public class ShaleiaDictionary extends Dictionary {
     }
   }
 
+  public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
+    newWord.createContentPane()
+  }
+
+  public void addWord(ShaleiaWord word) {
+    word.setDictionary(this)
+    $words.add(word)
+  }
+
+  public void removeWord(ShaleiaWord word) {
+    $words.remove(word)
+  }
+
+  public ShaleiaWord emptyWord() {
+    return ShaleiaWord.new("", "")
+  }
+
+  public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
+    String name = oldWord.getName()
+    String data = oldWord.getData()
+    ShaleiaWord newWord = ShaleiaWord.new(name, data)
+    return newWord
+  }
+
+  public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
+    return copiedWord(oldWord)
+  }
+
   private void load() {
     if ($path != null) {
       File file = File.new($path)
@@ -98,6 +126,7 @@ public class ShaleiaDictionary extends Dictionary {
         if (matcher.matches()) {
           if (currentName != null) {
             ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+            word.setDictionary(this)
             $words.add(word)
           }
           currentName = matcher.group(1)
@@ -109,6 +138,7 @@ public class ShaleiaDictionary extends Dictionary {
       }
       if (currentName != null) {
         ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+        word.setDictionary(this)
         $words.add(word)
       }
     }
@@ -164,15 +194,11 @@ public class ShaleiaDictionary extends Dictionary {
     $path = path
   }
 
-  public DictionaryType getType() {
-    return DictionaryType.SHALEIA
-  }
-
-  public ObservableList<? extends Word> getWords() {
+  public ObservableList<ShaleiaWord> getWords() {
     return $sortedWords
   }
 
-  public ObservableList<? extends Word> getRawWords() {
+  public ObservableList<ShaleiaWord> getRawWords() {
     return $words
   }
 
@@ -182,9 +208,6 @@ public class ShaleiaDictionary extends Dictionary {
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-    $words.each() { ShaleiaWord word ->
-      word.setOnLinkClicked(onLinkClicked)
-    }
   }
 
 }

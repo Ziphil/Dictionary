@@ -13,7 +13,7 @@ import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class PersonalDictionary extends Dictionary {
+public class PersonalDictionary extends Dictionary<PersonalWord> {
 
   private String $name = ""
   private String $path = ""
@@ -68,6 +68,38 @@ public class PersonalDictionary extends Dictionary {
       }
     } catch (PatternSyntaxException exception) {
     }
+  }
+
+  public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
+    newWord.createContentPane()
+  }
+
+  public void addWord(PersonalWord word) {
+    $words.add(word)
+  }
+
+  public void removeWord(PersonalWord word) {
+    $words.remove(word)
+  }
+
+  public PersonalWord emptyWord() {
+    return PersonalWord.new("", "", "", "", 0, 0, 0)
+  }
+
+  public PersonalWord copiedWord(PersonalWord oldWord) {
+    String name = oldWord.getName()
+    String pronunciation = oldWord.getPronunciation()
+    String translation = oldWord.getTranslation()
+    String usage = oldWord.getUsage()
+    Integer level = oldWord.getLevel()
+    Integer memory = oldWord.getMemory()
+    Integer modification = oldWord.getModification()
+    PersonalWord newWord = PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+    return newWord
+  }
+
+  public PersonalWord inheritedWord(PersonalWord oldWord) {
+    return copiedWord(oldWord)
   }
 
   private void load() {
@@ -126,15 +158,11 @@ public class PersonalDictionary extends Dictionary {
     $path = path
   }
 
-  public DictionaryType getType() {
-    return DictionaryType.PERSONAL
-  }
-
-  public ObservableList<? extends Word> getWords() {
+  public ObservableList<PersonalWord> getWords() {
     return $sortedWords
   }
 
-  public ObservableList<? extends Word> getRawWords() {
+  public ObservableList<PersonalWord> getRawWords() {
     return $words
   }
 

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <URL value="@../css/main.css"/>
+    <URL value="@../css/modification.css"/>
+  </stylesheets>
+  <center>
+    <VBox>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <ScrollPane fitToWidth="true" styleClass="transparent">
+        <VBox>
+          <padding>
+            <Insets>
+              <right><Double rpx="10"/></right>
+            </Insets>
+          </padding>
+          <spacing><Double rpx="10"/></spacing>
+          <GridPane>
+            <vgap><Double rpx="5"/></vgap>
+            <hgap><Double rpx="5"/></hgap>
+            <columnConstraints>
+              <ColumnConstraints hgrow="never"/>
+              <ColumnConstraints hgrow="always"/>
+            </columnConstraints>
+            <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="$id" GridPane.columnIndex="1" GridPane.rowIndex="0">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <maxWidth><Double rpx="70"/></maxWidth>
+            </TextField>
+            <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <prefWidth><Double rpx="150"/></prefWidth>
+              <minWidth><Double rpx="150"/></minWidth>
+              <maxWidth><Double rpx="150"/></maxWidth>
+            </TextField>
+          </GridPane>
+          <TitledPane text="訳語">
+            <VBox alignment="center_right">
+              <padding>
+                <Insets>
+                  <top><Double rpx="10"/></top>
+                  <right><Double rpx="10"/></right>
+                  <bottom><Double rpx="10"/></bottom>
+                  <left><Double rpx="10"/></left>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <VBox fx:id="$equivalentBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertEquivalentControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </VBox>
+          </TitledPane>
+          <TitledPane text="タグ">
+            <VBox alignment="center_right">
+              <padding>
+                <Insets>
+                  <top><Double rpx="10"/></top>
+                  <right><Double rpx="10"/></right>
+                  <bottom><Double rpx="10"/></bottom>
+                  <left><Double rpx="10"/></left>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <VBox fx:id="$tagBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertTagControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </VBox>
+          </TitledPane>
+          <TitledPane text="内容">
+            <VBox alignment="center_right">
+              <padding>
+                <Insets>
+                  <top><Double rpx="10"/></top>
+                  <right><Double rpx="10"/></right>
+                  <bottom><Double rpx="10"/></bottom>
+                  <left><Double rpx="10"/></left>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <VBox fx:id="$informationBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertInformationControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </VBox>
+          </TitledPane>
+          <TitledPane text="変化形">
+            <VBox alignment="center_right">
+              <padding>
+                <Insets>
+                  <top><Double rpx="10"/></top>
+                  <right><Double rpx="10"/></right>
+                  <bottom><Double rpx="10"/></bottom>
+                  <left><Double rpx="10"/></left>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <VBox fx:id="$variationBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertVariationControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </VBox>
+          </TitledPane>
+          <TitledPane text="関連語">
+            <VBox alignment="center_right">
+              <padding>
+                <Insets>
+                  <top><Double rpx="10"/></top>
+                  <right><Double rpx="10"/></right>
+                  <bottom><Double rpx="10"/></bottom>
+                  <left><Double rpx="10"/></left>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <VBox fx:id="$relationBox">
+                <spacing><Double rpx="5"/></spacing>
+              </VBox>
+              <Button text="追加" onAction="#insertRelationControl">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </VBox>
+          </TitledPane>
+        </VBox>
+      </ScrollPane>
+    </VBox>
+  </center>
+  <bottom>
+    <AnchorPane>
+      <HBox spacing="5">
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commitEdit" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+      </HBox>
+    </AnchorPane>
+  </bottom>
+</BorderPane>
+

@@ -9,9 +9,9 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
 import ziphil.dictionary.ShaleiaWord
 import ziphil.module.Setting
-import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify

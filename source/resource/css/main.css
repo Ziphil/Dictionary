@@ -1,11 +1,11 @@
 // @charset "utf-8";
 
 
-#dictionary-list .content-text {
+#dictionary-list .content {
   -fx-fill: -fx-text-base-color;
 }
 
-#dictionary-list:focused .list-cell:filled:selected .content-text {
+#dictionary-list:focused .list-cell:filled:selected .content {
   -fx-fill: white;
 }
 
@@ -15,7 +15,8 @@
 }
 
 #dictionary-list .shaleia-whole-class,
-#dictionary-list .shaleia-local-class {
+#dictionary-list .shaleia-local-class,
+#dictionary-list .slime-equivalent-title {
   -fx-font-size: 0.8em;
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
@@ -25,12 +26,15 @@
 }
 
 #dictionary-list:focused .list-cell:filled:selected .shaleia-whole-class,
-#dictionary-list:focused .list-cell:filled:selected .shaleia-local-class {
+#dictionary-list:focused .list-cell:filled:selected .shaleia-local-class,
+#dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title {
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
 #dictionary-list .shaleia-creation-date,
-#dictionary-list .shaleia-item {
+#dictionary-list .shaleia-title,
+#dictionary-list .slime-title,
+#dictionary-list .slime-id {
   -fx-font-size: 0.9em;
 }
 
@@ -59,4 +63,13 @@
 .application-version {
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
+}
+
+.transparent {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0px;
+}
+
+.transparent:focused {
+  -fx-background-insets: 0px;
 }

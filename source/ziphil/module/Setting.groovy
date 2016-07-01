@@ -9,7 +9,7 @@ import net.arnx.jsonic.JSONException
 @CompileStatic @Newify 
 public class Setting {
 
-  private static final String SETTINGS_PATH = "data/setting/settings.zpdt"
+  private static final String SETTINGS_PATH = "data/setting/setting.zpdt"
 
   private static Setting $$instance = createInstance()
 

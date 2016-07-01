@@ -23,8 +23,8 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
 import ziphil.module.Setting
-import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify

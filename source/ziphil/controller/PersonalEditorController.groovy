@@ -10,9 +10,9 @@ import javafx.scene.control.TextField
 import javafx.scene.control.Spinner
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
 import ziphil.dictionary.PersonalWord
 import ziphil.module.Setting
-import ziphil.node.UtilityStage
 
 
 @CompileStatic @Newify

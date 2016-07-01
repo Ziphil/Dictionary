@@ -14,6 +14,7 @@ import ziphil.module.Strings
 @CompileStatic @Newify
 public class PersonalWord extends Word {
 
+  private PersonalDictionary $dictionary
   private String $name = ""
   private List<String> $equivalents = ArrayList.new()
   private String $pronunciation = ""
@@ -58,7 +59,7 @@ public class PersonalWord extends Word {
 
   private void addNameNode(HBox box, String name) {
     Label nameText = Label.new(name)
-    nameText.getStyleClass().addAll("content-text", "head-name")
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
   }
 
@@ -66,7 +67,7 @@ public class PersonalWord extends Word {
     String newOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
     Text otherText = Text.new(newOther)
-    otherText.getStyleClass().add("content-text")
+    otherText.getStyleClass().add(CONTENT_CLASS)
     textFlow.getChildren().add(otherText)
     box.getChildren().add(textFlow)
   }
@@ -80,23 +81,16 @@ public class PersonalWord extends Word {
     }
   }
 
-  public static PersonalWord emptyWord() {
-    return PersonalWord.new("", "", "", "", 0, 0, 0)
-  }
-
-  public static PersonalWord copyFrom(PersonalWord oldWord) {
-    String name = oldWord.getName()
-    String pronunciation = oldWord.getPronunciation()
-    String translation = oldWord.getTranslation()
-    String usage = oldWord.getUsage()
-    Integer level = oldWord.getLevel()
-    Integer memory = oldWord.getMemory()
-    Integer modification = oldWord.getModification()
-    return PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
-  }
-
   public Boolean isChanged() {
     return $isChanged
+  }
+
+  public PersonalDictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(PersonalDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public String getName() {
