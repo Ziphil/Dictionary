@@ -105,7 +105,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     return ShaleiaWord.new("", "")
   }
 
-  public ShaleiaWord copyWord(ShaleiaWord oldWord) {
+  public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
     String name = oldWord.getName()
     String data = oldWord.getData()
     ShaleiaWord newWord = ShaleiaWord.new(name, data)
@@ -113,7 +113,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
   }
 
   public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
-    return copyWord(oldWord)
+    return copiedWord(oldWord)
   }
 
   private void load() {

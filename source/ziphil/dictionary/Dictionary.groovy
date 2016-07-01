@@ -21,7 +21,7 @@ public abstract class Dictionary<W extends Word> {
 
   public abstract W emptyWord()
 
-  public abstract W copyWord(W oldWord)
+  public abstract W copiedWord(W oldWord)
 
   public abstract W inheritedWord(W oldWord)
 

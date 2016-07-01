@@ -86,7 +86,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
     return PersonalWord.new("", "", "", "", 0, 0, 0)
   }
 
-  public PersonalWord copyWord(PersonalWord oldWord) {
+  public PersonalWord copiedWord(PersonalWord oldWord) {
     String name = oldWord.getName()
     String pronunciation = oldWord.getPronunciation()
     String translation = oldWord.getTranslation()
@@ -99,7 +99,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
   }
 
   public PersonalWord inheritedWord(PersonalWord oldWord) {
-    return copyWord(oldWord)
+    return copiedWord(oldWord)
   }
 
   private void load() {

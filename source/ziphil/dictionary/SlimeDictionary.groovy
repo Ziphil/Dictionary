@@ -117,7 +117,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     return word
   }
 
-  public SlimeWord copyWord(SlimeWord oldWord) {
+  public SlimeWord copiedWord(SlimeWord oldWord) {
     Integer id = oldWord.getId()
     String name = oldWord.getName()
     List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
