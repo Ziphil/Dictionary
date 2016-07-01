@@ -393,6 +393,8 @@ public class SlimeEditorController {
     title.setMinWidth(Measurement.rpx(120))
     name.setEditable(false)
     name.setText(nameString)
+    name.setPrefWidth(Measurement.rpx(150))
+    name.setMinWidth(Measurement.rpx(150))
     name.getStyleClass().add("left-pill")
     choose.getStyleClass().add("right-pill")
     remove.setPrefWidth(Measurement.rpx(70))

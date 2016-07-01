@@ -57,7 +57,11 @@
       <Label text="レベル:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <Label text="暗記フラグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
       <Label text="修正フラグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-      <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <prefWidth><Double rpx="150"/></prefWidth>
+        <minWidth><Double rpx="150"/></minWidth>
+        <maxWidth><Double rpx="150"/></maxWidth>
+      </TextField>
       <TextField fx:id="$pronunciation" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <TextArea fx:id="$translation" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       <TextArea fx:id="$usage" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
