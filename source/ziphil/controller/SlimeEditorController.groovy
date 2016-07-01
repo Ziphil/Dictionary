@@ -76,8 +76,8 @@ public class SlimeEditorController {
     word.getInformations().each() { SlimeInformation information ->
       addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
     }
-    word.getVariations().each() { SlimeVariation variation ->
-      addVariationControl(variation.getTitle(), variation.getName(), dictionary.registeredVariationTitles())
+    word.getVariations().groupBy{variation -> variation.getTitle()}.each() { String title, List<SlimeVariation> variationGroup ->
+      addVariationControl(title, variationGroup.collect{variation -> variation.getName()}.join(", "), dictionary.registeredVariationTitles())
     }
     word.getRelations().each() { SlimeRelation relation ->
       addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
@@ -117,9 +117,11 @@ public class SlimeEditorController {
     }
     (0 ..< $variationTitles.size()).each() { Integer i ->
       String title = $variationTitles[i].getValue()
-      String variationName = $variationNames[i].getText()
-      if (title != "" && variationName != "") {
-        variations.add(SlimeVariation.new(title, variationName))
+      List<String> variationNames = $variationNames[i].getText().split(/\s*(,|、)\s*/).toList()
+      variationNames.each() { String variationName ->
+        if (title != "" && variationName != "") {
+          variations.add(SlimeVariation.new(title, variationName))
+        }
       }
     }
     (0 ..< $relationTitles.size()).each() { Integer i ->
