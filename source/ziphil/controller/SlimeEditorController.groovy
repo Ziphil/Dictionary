@@ -144,25 +144,25 @@ public class SlimeEditorController {
 
   @FXML
   private void insertEquivalentControl() {
-    addEquivalentControl(null, null, $dictionary.registeredEquivalentTitles())
+    addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
     setupEditor()
   }
 
   @FXML
   private void insertInformationControl() {
-    addInformationControl(null, null, $dictionary.registeredInformationTitles())
+    addInformationControl("", "", $dictionary.registeredInformationTitles())
     setupEditor()
   }
 
   @FXML
   private void insertVariationControl() {
-    addVariationControl(null, null, $dictionary.registeredVariationTitles())
+    addVariationControl("", "", $dictionary.registeredVariationTitles())
     setupEditor()
   }
 
   @FXML
   private void insertRelationControl() {
-    addRelationControl(null, null, null, $dictionary.registeredRelationTitles())
+    addRelationControl("", "", null, $dictionary.registeredRelationTitles())
     setupEditor()
   }
 
@@ -250,18 +250,14 @@ public class SlimeEditorController {
     Button remove = Button.new("削除")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
+    title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
+    name.setText(nameString)
     remove.setPrefWidth(Measurement.rpx(70))
     remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeEquivalentControl(box)
-    }
-    if (titleString != null) {
-      title.setValue(titleString)
-    }
-    if (nameString != null) {
-      name.setText(nameString)
     }
     box.getChildren().addAll(title, name, remove)
     box.setHgrow(name, Priority.ALWAYS)
@@ -280,21 +276,17 @@ public class SlimeEditorController {
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
+    title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     text.setWrapText(true)
+    text.setText(textString)
     text.setPrefHeight(Measurement.rpx(120))
     text.setMinHeight(Measurement.rpx(120))
     remove.setPrefWidth(Measurement.rpx(70))
     remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeInformationControl(box)
-    }
-    if (title != null) {
-      title.setValue(titleString)
-    }
-    if (textString != null) {
-      text.setText(textString)
     }
     removeBox.getChildren().add(remove)
     box.getChildren().addAll(title, text, removeBox)
@@ -312,18 +304,14 @@ public class SlimeEditorController {
     Button remove = Button.new("削除")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
+    title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
+    name.setText(nameString)
     remove.setPrefWidth(Measurement.rpx(70))
     remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeVariationControl(box)
-    }
-    if (titleString != null) {
-      title.setValue(titleString)
-    }
-    if (nameString != null) {
-      name.setText(nameString)
     }
     box.getChildren().addAll(title, name, remove)
     box.setHgrow(name, Priority.ALWAYS)
@@ -342,9 +330,11 @@ public class SlimeEditorController {
     Button remove = Button.new("削除")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
+    title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     name.setEditable(false)
+    name.setText(nameString)
     name.getStyleClass().add("left-pill")
     choose.getStyleClass().add("right-pill")
     remove.setPrefWidth(Measurement.rpx(70))
@@ -354,12 +344,6 @@ public class SlimeEditorController {
     }
     remove.setOnAction() {
       removeRelationControl(box)
-    }
-    if (titleString != null) {
-      title.setValue(titleString)
-    }
-    if (nameString != null) {
-      name.setText(nameString)
     }
     nameBox.getChildren().addAll(name, choose)
     box.getChildren().addAll(title, nameBox, remove)
