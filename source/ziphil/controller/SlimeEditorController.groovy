@@ -8,6 +8,7 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.stage.Modality
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import javafx.stage.StageStyle
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -48,6 +50,7 @@ public class SlimeEditorController {
   private List<TextArea> $informationTexts = ArrayList.new()
   private List<ComboBox<String>> $variationTitles = ArrayList.new()
   private List<TextField> $variationNames = ArrayList.new()
+  private List<SlimeRelation> $relations = ArrayList.new()
   private List<ComboBox<String>> $relationTitles = ArrayList.new()
   private List<TextField> $relationNames = ArrayList.new()
   private SlimeWord $word
@@ -77,7 +80,7 @@ public class SlimeEditorController {
       addVariationControl(variation.getTitle(), variation.getName(), dictionary.registeredVariationTitles())
     }
     word.getRelations().each() { SlimeRelation relation ->
-      addRelationControl(relation.getTitle(), relation.getName(), dictionary.registeredRelationTitles())
+      addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
     }
     if (!$informationTexts.isEmpty()) {
       Platform.runLater() {
@@ -121,9 +124,9 @@ public class SlimeEditorController {
     }
     (0 ..< $relationTitles.size()).each() { Integer i ->
       String title = $relationTitles[i].getValue()
-      String relationName = $relationNames[i].getText()
-      if (title != "" && relationName != "") {
-        relations.add(SlimeRelation.new(title, -1, relationName))
+      SlimeRelation relation = $relations[i]
+      if (title != "" && relation != null) {
+        relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
       }
     }
     $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
@@ -155,7 +158,7 @@ public class SlimeEditorController {
 
   @FXML
   private void insertRelationControl() {
-    addRelationControl(null, null, $dictionary.registeredRelationTitles())
+    addRelationControl(null, null, null, $dictionary.registeredRelationTitles())
     setupEditor()
   }
 
@@ -212,6 +215,27 @@ public class SlimeEditorController {
       $relationBox.getChildren().removeAt(index)
       $relationTitles.removeAt(index)
       $relationNames.removeAt(index)
+    }
+  }
+
+  private void chooseRelation(HBox box) {
+    UtilityStage<SlimeWord> stage = UtilityStage.new(StageStyle.UTILITY)
+    SlimeWordChooserController controller = SlimeWordChooserController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    controller.prepare($dictionary.copy())
+    SlimeWord word = stage.showAndWaitResult()
+    if (word != null) {
+      Integer index
+      $relationBox.getChildren().eachWithIndex() { Node node, Integer i ->
+        if (node == box) {
+          index = i
+        }
+      }
+      if (index != null) {
+        $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
+        $relationNames[index].setText(word.getName())
+      }
     }
   }
 
@@ -305,17 +329,25 @@ public class SlimeEditorController {
     $variationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void addRelationControl(String titleString, String nameString, List<String> registeredTitles) {
+  private void addRelationControl(String titleString, String nameString, SlimeRelation relation, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox nameBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
+    Button choose = Button.new("…")
     Button remove = Button.new("削除")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
+    name.setEditable(false)
+    name.getStyleClass().add("left-pill")
+    choose.getStyleClass().add("right-pill")
     remove.setPrefWidth(Measurement.rpx(70))
     remove.setMinWidth(Measurement.rpx(70))
+    choose.setOnAction() {
+      chooseRelation(box)
+    }
     remove.setOnAction() {
       removeRelationControl(box)
     }
@@ -325,14 +357,15 @@ public class SlimeEditorController {
     if (nameString != null) {
       name.setText(nameString)
     }
-    box.getChildren().addAll(title, name, remove)
+    nameBox.getChildren().addAll(name, choose)
+    box.getChildren().addAll(title, nameBox, remove)
     box.setHgrow(name, Priority.ALWAYS)
+    $relations.add(relation)
     $relationTitles.add(title)
     $relationNames.add(name)
     $relationBox.getChildren().add(box)
     $relationBox.setVgrow(box, Priority.ALWAYS)
   }
-
 
   private void setupEditor() {
     Setting setting = Setting.getInstance()

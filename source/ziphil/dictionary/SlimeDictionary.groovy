@@ -34,6 +34,13 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     setupWords()
   }
 
+  public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
+    $name = name
+    $path = path
+    $words = words
+    setupWords()
+  }
+
   public void searchByName(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
@@ -174,6 +181,13 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
       }
     }
     return titles
+  }
+
+  public SlimeDictionary copy() {
+    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList()
+    copiedWords.addAll($words)
+    SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
+    return dictionary
   }
 
   private void load() {

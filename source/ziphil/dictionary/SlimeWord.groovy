@@ -19,6 +19,7 @@ public class SlimeWord extends Word {
   public static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   public static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   public static final String SLIME_TITLE_CLASS = "slime-title"
+  public static final String SLIME_ID_CLASS = "slime-id"
 
   private SlimeDictionary $dictionary
   private Integer $id = -1
@@ -31,7 +32,9 @@ public class SlimeWord extends Word {
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $content = ""
   private VBox $contentPane = VBox.new()
+  private VBox $simpleContentPane = VBox.new()
   private Boolean $isChanged = true
+  private Boolean $isSimpleChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
                    List<SlimeRelation> relations) {
@@ -87,6 +90,22 @@ public class SlimeWord extends Word {
     $isChanged = false
   }
 
+  public void createSimpleContentPane() {
+    HBox headBox = HBox.new()
+    HBox equivalentBox = HBox.new()
+    $simpleContentPane.getChildren().clear()
+    $simpleContentPane.getChildren().addAll(headBox, equivalentBox)
+    Text nameText = Text.new($name + " ")
+    Text idText = Text.new("#${$id}")
+    Text equivalentText = Text.new($equivalents.join(", "))
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
+    equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
+    headBox.getChildren().addAll(nameText, idText)
+    equivalentBox.getChildren().add(equivalentText)
+    $isSimpleChanged = false
+  }
+
   private void addNameNode(HBox box, String name) {
     Text nameText = Text.new(name)
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
@@ -138,6 +157,10 @@ public class SlimeWord extends Word {
 
   public Boolean isChanged() {
     return $isChanged
+  }
+
+  public Boolean isSimpleChanged() {
+    return $isSimpleChanged
   }
 
   public SlimeDictionary getDictionary() {
@@ -224,6 +247,10 @@ public class SlimeWord extends Word {
 
   public Pane getContentPane() {
     return $contentPane
+  }
+
+  public Pane getSimpleContentPane() {
+    return $simpleContentPane
   }
 
 }
