@@ -28,6 +28,7 @@ public class SlimeRelation {
     $title = title
   }
 
+  @JSONHint(ignore=true)
   public Integer getId() {
     return $id
   }
@@ -36,6 +37,7 @@ public class SlimeRelation {
     $id = id
   }
 
+  @JSONHint(ignore=true)
   public String getName() {
     return $name
   }
