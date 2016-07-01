@@ -100,6 +100,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
+      $words.each() { SlimeWord registeredWord ->
+        registeredWord.getRelations().each() { SlimeRelation relation ->
+          if (relation.getId() == oldWord.getId()) {
+            relation.setId(newWord.getId())
+            relation.setName(newWord.getName())
+          }
+        }
+      }
+    }
     newWord.createContentPane()
   }
 
@@ -108,6 +118,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void removeWord(SlimeWord word) {
+    $words.each() { SlimeWord registeredWord ->
+      registeredWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+    }
     $words.remove(word)
   }
 
