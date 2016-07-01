@@ -70,14 +70,16 @@ public class SlimeEditorController {
     $id.setText(word.getId().toString())
     $name.setText(word.getName())
     $tag.setText(word.getTags().join(", "))
-    word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> eachGroup ->
-      addEquivalentControl(title, eachGroup.collect{equivalent -> equivalent.getName()}.join(", "), dictionary.registeredEquivalentTitles())
+    word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
+      String nameString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
+      addEquivalentControl(title, nameString, dictionary.registeredEquivalentTitles())
     }
     word.getInformations().each() { SlimeInformation information ->
       addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
     }
     word.getVariations().groupBy{variation -> variation.getTitle()}.each() { String title, List<SlimeVariation> variationGroup ->
-      addVariationControl(title, variationGroup.collect{variation -> variation.getName()}.join(", "), dictionary.registeredVariationTitles())
+      String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
+      addVariationControl(title, nameString, dictionary.registeredVariationTitles())
     }
     word.getRelations().each() { SlimeRelation relation ->
       addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
