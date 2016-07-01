@@ -224,6 +224,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     return titles
   }
 
+  public Boolean containsId(Integer id, SlimeWord excludedWord) {
+    return $words.any{word -> word != excludedWord && word.getId() == id}
+  }
+
   public SlimeDictionary copy() {
     ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList()
     copiedWords.addAll($words)

@@ -18,6 +18,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.StageStyle
 import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
@@ -99,52 +100,61 @@ public class SlimeEditorController {
   @FXML
   private void commitEdit() {
     Integer id = $id.getText().toInteger()
-    String name = $name.getText()
-    List<SlimeEquivalent> rawEquivalents = ArrayList.new()
-    List<String> tags = ArrayList.new()
-    List<SlimeInformation> informations = ArrayList.new()
-    List<SlimeVariation> variations = ArrayList.new()
-    List<SlimeRelation> relations = ArrayList.new()
-    (0 ..< $tags.size()).each() { Integer i ->
-      String tag = $tags[i].getValue()
-      if (tag != "") {
-        tags.add(tag)
-      }
-    }
-    (0 ..< $equivalentTitles.size()).each() { Integer i ->
-      String title = $equivalentTitles[i].getValue()
-      List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
-      equivalentNames.each() { String equivalentName ->
-        if (equivalentName != "") {
-          rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
+    if (!$dictionary.containsId(id, $word)) {
+      String name = $name.getText()
+      List<SlimeEquivalent> rawEquivalents = ArrayList.new()
+      List<String> tags = ArrayList.new()
+      List<SlimeInformation> informations = ArrayList.new()
+      List<SlimeVariation> variations = ArrayList.new()
+      List<SlimeRelation> relations = ArrayList.new()
+      (0 ..< $tags.size()).each() { Integer i ->
+        String tag = $tags[i].getValue()
+        if (tag != "") {
+          tags.add(tag)
         }
       }
-    }
-    (0 ..< $informationTitles.size()).each() { Integer i ->
-      String title = $informationTitles[i].getValue()
-      String text = $informationTexts[i].getText()
-      if (text != "") {
-        informations.add(SlimeInformation.new(title, text))
-      }
-    }
-    (0 ..< $variationTitles.size()).each() { Integer i ->
-      String title = $variationTitles[i].getValue()
-      List<String> variationNames = $variationNames[i].getText().split(/\s*(,|、)\s*/).toList()
-      variationNames.each() { String variationName ->
-        if (variationName != "") {
-          variations.add(SlimeVariation.new(title, variationName))
+      (0 ..< $equivalentTitles.size()).each() { Integer i ->
+        String title = $equivalentTitles[i].getValue()
+        List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
+        equivalentNames.each() { String equivalentName ->
+          if (equivalentName != "") {
+            rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
+          }
         }
       }
-    }
-    (0 ..< $relationTitles.size()).each() { Integer i ->
-      String title = $relationTitles[i].getValue()
-      SlimeRelation relation = $relations[i]
-      if (relation != null) {
-        relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+      (0 ..< $informationTitles.size()).each() { Integer i ->
+        String title = $informationTitles[i].getValue()
+        String text = $informationTexts[i].getText()
+        if (text != "") {
+          informations.add(SlimeInformation.new(title, text))
+        }
       }
+      (0 ..< $variationTitles.size()).each() { Integer i ->
+        String title = $variationTitles[i].getValue()
+        List<String> variationNames = $variationNames[i].getText().split(/\s*(,|、)\s*/).toList()
+        variationNames.each() { String variationName ->
+          if (variationName != "") {
+            variations.add(SlimeVariation.new(title, variationName))
+          }
+        }
+      }
+      (0 ..< $relationTitles.size()).each() { Integer i ->
+        String title = $relationTitles[i].getValue()
+        SlimeRelation relation = $relations[i]
+        if (relation != null) {
+          relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+        }
+      }
+      $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
+      $stage.close(true)
+    } else {
+      Dialog dialog = Dialog.new()
+      dialog.initOwner($stage)
+      dialog.setTitle("重複IDエラー")
+      dialog.setContentString("このIDはすでに利用されています。別のIDを指定してください。")
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
     }
-    $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
-    $stage.close(true)
   }
 
   @FXML
