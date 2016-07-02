@@ -42,22 +42,17 @@ public class Setting {
 
   private void saveCustomStylesheet() {
     File file = File.new(CUSTOM_STYLESHEET_PATH)
-    Setting setting = Setting.getInstance()
     StringBuilder stylesheet = StringBuilder.new()
-    String contentFontFamily = setting.getContentFontFamily()
-    Integer contentFontSize = setting.getContentFontSize()
-    String editorFontFamily = setting.getEditorFontFamily()
-    Integer editorFontSize = setting.getEditorFontSize()
-    if (contentFontFamily != null && contentFontSize != null) {
+    if ($contentFontFamily != null && $contentFontSize != null) {
       stylesheet.append("#dictionary-list .content-pane {\n")
-      stylesheet.append("  -fx-font-family: \"${contentFontFamily}\";\n")
-      stylesheet.append("  -fx-font-size: ${contentFontSize};\n")
+      stylesheet.append("  -fx-font-family: \"${$contentFontFamily}\";\n")
+      stylesheet.append("  -fx-font-size: ${$contentFontSize};\n")
       stylesheet.append("}\n\n")
     }
-    if (editorFontFamily != null && editorFontSize != null) {
+    if ($editorFontFamily != null && $editorFontSize != null) {
       stylesheet.append(".editor {\n")
-      stylesheet.append("  -fx-font-family: \"${editorFontFamily}\";\n")
-      stylesheet.append("  -fx-font-size: ${editorFontSize};\n")
+      stylesheet.append("  -fx-font-family: \"${$editorFontFamily}\";\n")
+      stylesheet.append("  -fx-font-size: ${$editorFontSize};\n")
       stylesheet.append("}\n\n")
     }    
     file.setText(stylesheet.toString(), "UTF-8")
