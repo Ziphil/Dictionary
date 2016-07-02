@@ -9,7 +9,7 @@ import net.arnx.jsonic.JSONException
 @CompileStatic @Newify 
 public class Setting {
 
-  private static final String SETTINGS_PATH = "data/setting/setting.zpdt"
+  private static final String SETTING_PATH = "data/setting/setting.zpdt"
   private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
 
   private static Setting $$instance = createInstance()
@@ -32,7 +32,7 @@ public class Setting {
   }
 
   private void saveSetting() {
-    FileOutputStream stream = FileOutputStream.new(SETTINGS_PATH)
+    FileOutputStream stream = FileOutputStream.new(SETTING_PATH)
     JSON json = JSON.new()
     json.setPrettyPrint(true)
     json.setIndentText("  ")
@@ -64,10 +64,10 @@ public class Setting {
   }
 
   public static Setting createInstance() {
-    File file = File.new(SETTINGS_PATH)
+    File file = File.new(SETTING_PATH)
     if (file.exists()) {
       try {
-        FileInputStream stream = FileInputStream.new(SETTINGS_PATH)
+        FileInputStream stream = FileInputStream.new(SETTING_PATH)
         JSON json = JSON.new()
         Setting instance = json.parse(stream, Setting)
         stream.close()
