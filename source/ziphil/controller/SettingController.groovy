@@ -47,6 +47,7 @@ public class SettingController {
   @FXML private ToggleButton $savesAutomatically
   @FXML private ToggleButton $ignoresAccent
   @FXML private ToggleButton $ignoresCase
+  @FXML private ToggleButton $prefixSearch
   private Stage $stage
   private Scene $scene
 
@@ -74,6 +75,7 @@ public class SettingController {
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean prefixSearch = setting.getPrefixSearch()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontFamilies.getSelectionModel().select(contentFontFamily)
@@ -103,6 +105,9 @@ public class SettingController {
     if (ignoresCase) {
       $ignoresCase.setSelected(true)
     }
+    if (prefixSearch) {
+      $prefixSearch.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
@@ -120,6 +125,7 @@ public class SettingController {
     Boolean savesAutomatically = $savesAutomatically.isSelected()
     Boolean ignoresAccent = $ignoresAccent.isSelected()
     Boolean ignoresCase = $ignoresCase.isSelected()
+    Boolean prefixSearch = $prefixSearch.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPaths.collect{path -> path.getText()}
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
@@ -139,6 +145,7 @@ public class SettingController {
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
+    setting.setPrefixSearch(prefixSearch)
     (0 ..< 10).each() { Integer i ->
       String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -226,14 +233,19 @@ public class SettingController {
     Callable<String> ignoresCaseFunction = (Callable){
       return ($ignoresCase.selectedProperty().get()) ? "有効" : "無効"
     }
+    Callable<String> prefixSearchFunction = (Callable){
+      return ($prefixSearch.selectedProperty().get()) ? "有効" : "無効"
+    }
     StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
     StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
     StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
     StringBinding ignoresCaseBinding = Bindings.createStringBinding(ignoresCaseFunction, $ignoresCase.selectedProperty())
+    StringBinding prefixSearchBinding = Bindings.createStringBinding(prefixSearchFunction, $prefixSearch.selectedProperty())
     $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
     $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
     $ignoresAccent.textProperty().bind(ignoresAccentBinding)
     $ignoresCase.textProperty().bind(ignoresCaseBinding)
+    $prefixSearch.textProperty().bind(prefixSearchBinding)
   }
 
   private void loadResource() {

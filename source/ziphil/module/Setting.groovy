@@ -27,6 +27,7 @@ public class Setting {
   private Boolean $savesAutomatically
   private Boolean $ignoresAccent
   private Boolean $ignoresCase
+  private Boolean $prefixSearch
 
   public void save() {
     saveSetting()
@@ -172,6 +173,14 @@ public class Setting {
 
   public void setIgnoresCase(Boolean ignoresCase) {
     $ignoresCase = ignoresCase
+  }
+
+  public Boolean getPrefixSearch() {
+    return $prefixSearch
+  }
+
+  public void setPrefixSearch(Boolean prefixSearch) {
+    $prefixSearch = prefixSearch
   }
 
 }

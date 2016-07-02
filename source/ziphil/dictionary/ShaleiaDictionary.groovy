@@ -37,6 +37,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean prefixSearch = setting.getPrefixSearch()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { ShaleiaWord word ->
@@ -51,7 +52,15 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
             newName = Strings.toLowerCase(newName)
             newSearch = Strings.toLowerCase(newSearch)
           }
-          return newName.startsWith(newSearch)
+          if (search != "") {
+            if (prefixSearch) {
+              return newName.startsWith(newSearch)
+            } else {
+              return newName == newSearch
+            }
+          } else {
+            return true
+          }
         } else {
           Matcher matcher = pattern.matcher(word.getName())
           return matcher.find()
@@ -62,12 +71,22 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
   }
 
   public void searchByEquivalent(String search, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean prefixSearch = setting.getPrefixSearch()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { ShaleiaWord word ->
         if (isStrict) {
-          return word.getEquivalents().any() { String equivalent ->
-            return equivalent.startsWith(search)
+          if (search != "") {
+            return word.getEquivalents().any() { String equivalent ->
+              if (prefixSearch) {
+                return equivalent.startsWith(search)
+              } else {
+                return equivalent == search
+              }
+            }
+          } else {
+            return true
           }
         } else {
           return word.getEquivalents().any() { String equivalent ->

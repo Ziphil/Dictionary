@@ -32,6 +32,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean prefixSearch = setting.getPrefixSearch()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { PersonalWord word ->
@@ -46,7 +47,15 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
             newName = Strings.toLowerCase(newName)
             newSearch = Strings.toLowerCase(newSearch)
           }
-          return newName.startsWith(newSearch)
+          if (search != "") {
+            if (prefixSearch) {
+              return newName.startsWith(newSearch)
+            } else {
+              return newName == newSearch
+            }
+          } else {
+            return true
+          }
         } else {
           Matcher matcher = pattern.matcher(word.getName())
           return matcher.find()
