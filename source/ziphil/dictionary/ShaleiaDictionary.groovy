@@ -1,6 +1,9 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -102,7 +105,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
   }
 
   public ShaleiaWord emptyWord() {
-    return ShaleiaWord.new("", "")
+    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    String data = "+ ${hairiaNumber} 〈不〉\n\n=〈〉"
+    return ShaleiaWord.new("", data)
   }
 
   public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
