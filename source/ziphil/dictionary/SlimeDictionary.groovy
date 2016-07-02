@@ -252,6 +252,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           }
         }
       }
+      stream.close()
     }
   }
 
