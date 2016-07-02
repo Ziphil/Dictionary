@@ -20,6 +20,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <URL value="@../../data/setting/custom.css"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>
@@ -50,7 +51,7 @@
         <minWidth><Double rpx="150"/></minWidth>
         <maxWidth><Double rpx="150"/></maxWidth>
       </TextField>
-      <TextArea fx:id="$data" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextArea fx:id="$data" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>

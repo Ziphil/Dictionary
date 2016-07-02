@@ -22,6 +22,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <URL value="@../../data/setting/custom.css"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>
@@ -63,8 +64,8 @@
         <maxWidth><Double rpx="150"/></maxWidth>
       </TextField>
       <TextField fx:id="$pronunciation" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <TextArea fx:id="$translation" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-      <TextArea fx:id="$usage" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+      <TextArea fx:id="$translation" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <TextArea fx:id="$usage" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
       <Spinner fx:id="$level" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <prefWidth><Double rpx="70"/></prefWidth>
         <minWidth><Double rpx="70"/></minWidth>

@@ -50,6 +50,10 @@
   -fx-fill: -fx-text-base-color;
 }
 
+.editor > * {
+  -fx-font-size: 1em;
+}
+
 .footer .label {
   -fx-font-size: 0.9em;
   -fx-alignment: center-right;

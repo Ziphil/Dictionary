@@ -31,7 +31,6 @@ public class ShaleiaEditorController {
   public ShaleiaEditorController(UtilityStage<Boolean> stage) {
     $stage = stage
     loadResource()
-    setupEditor()
   }
 
   public void prepare(ShaleiaWord word) {
@@ -52,15 +51,6 @@ public class ShaleiaEditorController {
   @FXML
   private void cancelEdit() {
     $stage.close(false)
-  }
-
-  private void setupEditor() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getEditorFontFamily()
-    Integer fontSize = setting.getEditorFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $data.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
-    }
   }
 
   private void loadResource() {

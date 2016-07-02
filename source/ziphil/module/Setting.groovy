@@ -10,6 +10,7 @@ import net.arnx.jsonic.JSONException
 public class Setting {
 
   private static final String SETTINGS_PATH = "data/setting/setting.zpdt"
+  private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
 
   private static Setting $$instance = createInstance()
 
@@ -26,12 +27,40 @@ public class Setting {
   private Boolean $ignoresCase
 
   public void save() {
+    saveSetting()
+    saveCustomStylesheet()
+  }
+
+  private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(SETTINGS_PATH)
     JSON json = JSON.new()
     json.setPrettyPrint(true)
     json.setIndentText("  ")
     json.format(this, stream)
     stream.close()
+  }
+
+  private void saveCustomStylesheet() {
+    File file = File.new(CUSTOM_STYLESHEET_PATH)
+    Setting setting = Setting.getInstance()
+    StringBuilder stylesheet = StringBuilder.new()
+    String contentFontFamily = setting.getContentFontFamily()
+    Integer contentFontSize = setting.getContentFontSize()
+    String editorFontFamily = setting.getEditorFontFamily()
+    Integer editorFontSize = setting.getEditorFontSize()
+    if (contentFontFamily != null && contentFontSize != null) {
+      stylesheet.append("#dictionary-list .content-pane {\n")
+      stylesheet.append("  -fx-font-family: \"${contentFontFamily}\";\n")
+      stylesheet.append("  -fx-font-size: ${contentFontSize};\n")
+      stylesheet.append("}\n\n")
+    }
+    if (editorFontFamily != null && editorFontSize != null) {
+      stylesheet.append(".editor {\n")
+      stylesheet.append("  -fx-font-family: \"${editorFontFamily}\";\n")
+      stylesheet.append("  -fx-font-size: ${editorFontSize};\n")
+      stylesheet.append("}\n\n")
+    }    
+    file.setText(stylesheet.toString(), "UTF-8")
   }
 
   public static Setting createInstance() {

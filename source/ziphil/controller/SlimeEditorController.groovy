@@ -64,7 +64,6 @@ public class SlimeEditorController {
   public SlimeEditorController(UtilityStage<Boolean> stage) {
     $stage = stage
     loadResource()
-    setupEditor()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
@@ -94,7 +93,6 @@ public class SlimeEditorController {
         $informationTexts[0].requestFocus()
       }
     }
-    setupEditor()
   }
 
   @FXML
@@ -165,31 +163,26 @@ public class SlimeEditorController {
   @FXML
   private void insertTagControl() {
     addTagControl("", $dictionary.registeredTags())
-    setupEditor()
   }
 
   @FXML
   private void insertEquivalentControl() {
     addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
-    setupEditor()
   }
 
   @FXML
   private void insertInformationControl() {
     addInformationControl("", "", $dictionary.registeredInformationTitles())
-    setupEditor()
   }
 
   @FXML
   private void insertVariationControl() {
     addVariationControl("", "", $dictionary.registeredVariationTitles())
-    setupEditor()
   }
 
   @FXML
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.registeredRelationTitles())
-    setupEditor()
   }
 
   private void removeTagControl(HBox box) {
@@ -338,6 +331,7 @@ public class SlimeEditorController {
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     text.setWrapText(true)
+    text.getStyleClass().add("editor")
     text.setText(textString)
     text.setPrefHeight(Measurement.rpx(120))
     text.setMinHeight(Measurement.rpx(120))
@@ -413,17 +407,6 @@ public class SlimeEditorController {
     $relationNames.add(name)
     $relationBox.getChildren().add(box)
     $relationBox.setVgrow(box, Priority.ALWAYS)
-  }
-
-  private void setupEditor() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getEditorFontFamily()
-    Integer fontSize = setting.getEditorFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $informationTexts.each() { TextArea informationText ->
-        informationText.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
-      }
-    }
   }
 
   private void loadResource() {

@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane
 public abstract class Word {
 
   public static final String CONTENT_CLASS = "content"
+  public static final String CONTENT_PANE_CLASS = "content-pane"
   public static final String HEAD_NAME_CLASS = "head-name"
 
   public abstract void createContentPane()

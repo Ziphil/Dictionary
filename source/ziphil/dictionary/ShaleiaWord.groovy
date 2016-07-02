@@ -360,12 +360,7 @@ public class ShaleiaWord extends Word {
   }
 
   private void setupContentPane() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getContentFontFamily()
-    Integer fontSize = setting.getContentFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
-    }
+    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public Boolean isChanged() {
