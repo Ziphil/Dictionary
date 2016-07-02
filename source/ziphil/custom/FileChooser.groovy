@@ -196,14 +196,10 @@ public class FileChooser extends VBox {
       if (directory != null) {
         String filePath = directory.getAbsolutePath() + File.separator + $file.getText()
         if ($adjustsExtension.get()) {
-          if (!(filePath ==~ /^.*\.[\w\d]+$/)) {
-            String additionalExtension = $fileTypes.getValue().getExtension()
-            if (additionalExtension != null) {
-              if (filePath.endsWith(".")) {
-                filePath = filePath + additionalExtension
-              } else {
-                filePath = filePath + "." + additionalExtension
-              }
+          String additionalExtension = $fileTypes.getValue().getExtension()
+          if (additionalExtension != null) {
+            if (!filePath.endsWith("." + additionalExtension)) {
+              filePath = filePath + "." + additionalExtension
             }
           }
         }
