@@ -23,11 +23,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
-    <URL value="@../../data/setting/custom.css"/>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>

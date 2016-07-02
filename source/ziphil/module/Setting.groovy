@@ -11,6 +11,7 @@ public class Setting {
 
   private static final String SETTING_PATH = "data/setting/setting.zpdt"
   private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
+  public static final String CUSTOM_STYLESHEET_URL = createCustomStylesheetURL()
 
   private static Setting $$instance = createInstance()
 
@@ -73,6 +74,11 @@ public class Setting {
     } else {
       return Setting.new()
     }
+  }
+
+  public static String createCustomStylesheetURL() {
+    URL url = File.new("data/setting/custom.css").toURI().toURL()
+    return url.toString()
   }
 
   public static Setting getInstance() {
