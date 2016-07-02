@@ -132,8 +132,8 @@
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
-                <bottom><Double rpx="10"/></bottom>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
