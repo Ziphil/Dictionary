@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import net.arnx.jsonic.JSON
 import net.arnx.jsonic.JSONException
+import ziphil.Launcher
 
 
 @CompileStatic @Newify 
@@ -33,7 +34,7 @@ public class Setting {
   }
 
   private void saveSetting() {
-    FileOutputStream stream = FileOutputStream.new(SETTING_PATH)
+    FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
     JSON json = JSON.new()
     json.setPrettyPrint(true)
     json.setIndentText("  ")
@@ -42,7 +43,7 @@ public class Setting {
   }
 
   private void saveCustomStylesheet() {
-    File file = File.new(CUSTOM_STYLESHEET_PATH)
+    File file = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH)
     StringBuilder stylesheet = StringBuilder.new()
     if ($contentFontFamily != null && $contentFontSize != null) {
       stylesheet.append("#dictionary-list .content-pane {\n")
@@ -60,10 +61,10 @@ public class Setting {
   }
 
   public static Setting createInstance() {
-    File file = File.new(SETTING_PATH)
+    File file = File.new(Launcher.BASE_PATH + SETTING_PATH)
     if (file.exists()) {
       try {
-        FileInputStream stream = FileInputStream.new(SETTING_PATH)
+        FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
         JSON json = JSON.new()
         Setting instance = json.parse(stream, Setting)
         stream.close()
@@ -77,7 +78,7 @@ public class Setting {
   }
 
   public static String createCustomStylesheetURL() {
-    URL url = File.new("data/setting/custom.css").toURI().toURL()
+    URL url = File.new(Launcher.BASE_PATH + "data/setting/custom.css").toURI().toURL()
     return url.toString()
   }
 
