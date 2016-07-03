@@ -87,7 +87,7 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem text="公式サイト" disable="true"/>
+        <MenuItem text="公式サイト" onAction="#showOfficialSite"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>

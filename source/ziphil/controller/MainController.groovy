@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.awt.Desktop
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
@@ -307,6 +308,13 @@ public class MainController {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
     }
+  }
+
+  @FXML
+  private void showOfficialSite() {
+    Desktop desktop = Desktop.getDesktop()
+    URI uri = URI.new("http://ziphil.s2.adexd.net/application/download/2.html")
+    desktop.browse(uri)
   }
 
   @FXML
