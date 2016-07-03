@@ -48,13 +48,13 @@ public class Setting {
     StringBuilder stylesheet = StringBuilder.new()
     if ($contentFontFamily != null && $contentFontSize != null) {
       stylesheet.append("#dictionary-list .content-pane {\n")
-      stylesheet.append("  -fx-font-family: \"${$contentFontFamily}\";\n")
+      stylesheet.append("  -fx-font-family: \"${Strings.escapeUnicode($contentFontFamily)}\";\n")
       stylesheet.append("  -fx-font-size: ${$contentFontSize};\n")
       stylesheet.append("}\n\n")
     }
     if ($editorFontFamily != null && $editorFontSize != null) {
       stylesheet.append(".editor {\n")
-      stylesheet.append("  -fx-font-family: \"${$editorFontFamily}\";\n")
+      stylesheet.append("  -fx-font-family: \"${Strings.escapeUnicode($editorFontFamily)}\";\n")
       stylesheet.append("  -fx-font-size: ${$editorFontSize};\n")
       stylesheet.append("}\n\n")
     }    
