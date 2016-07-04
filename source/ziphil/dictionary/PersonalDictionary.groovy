@@ -79,8 +79,4 @@ public class PersonalDictionary extends Dictionary<PersonalWord> {
     }
   }
 
-  public Boolean supportsEquivalent() {
-    return false
-  }
-
 }

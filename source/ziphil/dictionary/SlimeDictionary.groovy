@@ -212,10 +212,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     }
   }
 
-  public Boolean supportsEquivalent() {
-    return true
-  }
-
 }
 
 

@@ -123,8 +123,6 @@ public abstract class Dictionary<W extends Word> {
     $sortedWords = SortedList.new($filteredWords)
   }
 
-  public abstract Boolean supportsEquivalent()
-
   public String getName() {
     return $name
   }

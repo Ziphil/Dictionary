@@ -105,10 +105,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     }
   }
 
-  public Boolean supportsEquivalent() {
-    return true
-  }
-
   public Consumer<String> getOnLinkClicked() {
     return $onLinkClicked
   }
