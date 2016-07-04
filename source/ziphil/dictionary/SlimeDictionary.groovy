@@ -156,8 +156,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public SlimeDictionary copy() {
-    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList()
-    copiedWords.addAll($words)
+    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
     SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
     return dictionary
   }
