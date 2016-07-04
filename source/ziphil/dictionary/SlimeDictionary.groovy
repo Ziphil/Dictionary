@@ -22,7 +22,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
 
   public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
     super(name, path)
-    $words = words
+    $words.addAll(words)
     setupWords()
   }
 
