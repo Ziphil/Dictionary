@@ -1,121 +1,29 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
-import javafx.collections.transformation.SortedList
 import net.arnx.jsonic.JSON
 import net.arnx.jsonic.JSONEventType
 import net.arnx.jsonic.JSONException
 import net.arnx.jsonic.JSONReader
 import net.arnx.jsonic.JSONWriter
 import net.arnx.jsonic.TypeReference
-import ziphil.module.Setting
-import ziphil.module.Strings
 
 
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord> {
 
-  private String $name = ""
-  private String $path = ""
-  private ObservableList<SlimeWord> $words = FXCollections.observableArrayList()
-  private FilteredList<SlimeWord> $filteredWords
-  private SortedList<SlimeWord> $sortedWords
-
   public SlimeDictionary(String name, String path) {
-    $name = name
-    $path = path
+    super(name, path)
     load()
     setupWords()
   }
 
   public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
-    $name = name
-    $path = path
+    super(name, path)
     $words = words
     setupWords()
-  }
-
-  public void searchByName(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        if (isStrict) {
-          String newName = word.getName()
-          String newSearch = search
-          if (ignoresAccent) {
-            newName = Strings.unaccent(newName)
-            newSearch = Strings.unaccent(newSearch)
-          }
-          if (ignoresCase) {
-            newName = Strings.toLowerCase(newName)
-            newSearch = Strings.toLowerCase(newSearch)
-          }
-          if (search != "") {
-            if (prefixSearch) {
-              return newName.startsWith(newSearch)
-            } else {
-              return newName == newSearch
-            }
-          } else {
-            return true
-          }
-        } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByEquivalent(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean prefixSearch = setting.getPrefixSearch()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        if (isStrict) {
-          if (search != "") {
-            return word.getEquivalents().any() { String equivalent ->
-              if (prefixSearch) {
-                return equivalent.startsWith(search)
-              } else {
-                return equivalent == search
-              }
-            }
-          } else {
-            return true
-          }
-        } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
-          }
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByContent(String search) {
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
-      }
-    } catch (PatternSyntaxException exception) {
-    }
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
@@ -300,8 +208,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   private void setupWords() {
-    $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords)
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
@@ -309,30 +215,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
 
   public Boolean supportsEquivalent() {
     return true
-  }
-
-  public String getName() {
-    return $name
-  }
-
-  public void setName(String name) {
-    $name = name
-  }
-
-  public String getPath() {
-    return $path
-  }
-
-  public void setPath(String path) {
-    $path = path
-  }
-
-  public ObservableList<SlimeWord> getWords() {
-    return $sortedWords
-  }
-
-  public ObservableList<SlimeWord> getRawWords() {
-    return $words
   }
 
 }

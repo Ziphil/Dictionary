@@ -6,108 +6,17 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
-import javafx.collections.transformation.SortedList
-import ziphil.module.Setting
-import ziphil.module.Strings
 
 
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
 
-  private String $name = ""
-  private String $path = ""
-  private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
-  private FilteredList<ShaleiaWord> $filteredWords
-  private SortedList<ShaleiaWord> $sortedWords
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
-    $name = name
-    $path = path
+    super(name, path)
     load()
     setupWords()
-  }
-
-  public void searchByName(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        if (isStrict) {
-          String newName = word.getName()
-          String newSearch = search
-          if (ignoresAccent) {
-            newName = Strings.unaccent(newName)
-            newSearch = Strings.unaccent(newSearch)
-          }
-          if (ignoresCase) {
-            newName = Strings.toLowerCase(newName)
-            newSearch = Strings.toLowerCase(newSearch)
-          }
-          if (search != "") {
-            if (prefixSearch) {
-              return newName.startsWith(newSearch)
-            } else {
-              return newName == newSearch
-            }
-          } else {
-            return true
-          }
-        } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByEquivalent(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean prefixSearch = setting.getPrefixSearch()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        if (isStrict) {
-          if (search != "") {
-            return word.getEquivalents().any() { String equivalent ->
-              if (prefixSearch) {
-                return equivalent.startsWith(search)
-              } else {
-                return equivalent == search
-              }
-            }
-          } else {
-            return true
-          }
-        } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
-          }
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByContent(String search) {
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
-      }
-    } catch (PatternSyntaxException exception) {
-    }
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
@@ -181,8 +90,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
   }
 
   private void setupWords() {
-    $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords)
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       List<Integer> firstList = firstWord.listForComparison()
       List<Integer> secondList = secondWord.listForComparison()
@@ -200,30 +107,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
 
   public Boolean supportsEquivalent() {
     return true
-  }
-
-  public String getName() {
-    return $name
-  }
-
-  public void setName(String name) {
-    $name = name
-  }
-
-  public String getPath() {
-    return $path
-  }
-
-  public void setPath(String path) {
-    $path = path
-  }
-
-  public ObservableList<ShaleiaWord> getWords() {
-    return $sortedWords
-  }
-
-  public ObservableList<ShaleiaWord> getRawWords() {
-    return $words
   }
 
   public Consumer<String> getOnLinkClicked() {

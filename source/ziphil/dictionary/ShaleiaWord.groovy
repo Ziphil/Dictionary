@@ -35,13 +35,8 @@ public class ShaleiaWord extends Word {
   public static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
 
   private ShaleiaDictionary $dictionary
-  private String $name = ""
   private String $uniqueName = ""
-  private List<String> $equivalents = ArrayList.new()
   private String $data = ""
-  private String $content = ""
-  private VBox $contentPane = VBox.new()
-  private Boolean $isChanged = true
 
   public ShaleiaWord(String uniqueName, String data) {
     update(uniqueName, data)
@@ -363,9 +358,6 @@ public class ShaleiaWord extends Word {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
-  public Boolean isChanged() {
-    return $isChanged
-  }
 
   public ShaleiaDictionary getDictionary() {
     return $dictionary
@@ -375,28 +367,12 @@ public class ShaleiaWord extends Word {
     $dictionary = dictionary
   }
 
-  public String getName() {
-    return $name
-  }
-
   public String getUniqueName() {
     return $uniqueName
   }
 
-  public List<String> getEquivalents() {
-    return $equivalents
-  }
-
   public String getData() {
     return $data
-  }
-
-  public String getContent() {
-    return $content
-  }
-
-  public Pane getContentPane() {
-    return $contentPane
   }
 
 }

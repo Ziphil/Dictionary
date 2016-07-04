@@ -25,17 +25,12 @@ public class SlimeWord extends Word {
 
   private SlimeDictionary $dictionary
   private Integer $id = -1
-  private String $name = ""
   private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
-  private List<String> $equivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
-  private String $content = ""
-  private VBox $contentPane = VBox.new()
   private VBox $simpleContentPane = VBox.new()
-  private Boolean $isChanged = true
   private Boolean $isSimpleChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
@@ -156,10 +151,6 @@ public class SlimeWord extends Word {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
-  public Boolean isChanged() {
-    return $isChanged
-  }
-
   public Boolean isSimpleChanged() {
     return $isSimpleChanged
   }
@@ -178,14 +169,6 @@ public class SlimeWord extends Word {
 
   public void setId(Integer id) {
     $id = id
-  }
-
-  public String getName() {
-    return $name
-  }
-
-  public List<String> getEquivalents() {
-    return $equivalents
   }
 
   @JSONHint(name="translations")
@@ -240,14 +223,6 @@ public class SlimeWord extends Word {
   public void setEntry(Map<String, Object> entry) {
     $id = (Integer)entry["id"]
     $name = (String)entry["form"]
-  }
-
-  public String getContent() {
-    return $content
-  }
-
-  public Pane getContentPane() {
-    return $contentPane
   }
 
   public Pane getSimpleContentPane() {
