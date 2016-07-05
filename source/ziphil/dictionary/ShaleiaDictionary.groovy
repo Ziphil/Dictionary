@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
 
 
 @CompileStatic @Newify
@@ -17,6 +19,44 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     super(name, path)
     load()
     setupWords()
+  }
+
+  public void searchInDetail(ShaleiaSearchParameter parameter) {
+    String searchName = parameter.getName()
+    SearchType type = parameter.getSearchType()
+    try {
+      Pattern pattern = Pattern.compile(searchName)
+      $filteredWords.setPredicate() { ShaleiaWord word ->
+        String name = word.getName()
+        if (type == SearchType.EXACT) {
+          return name = searchName
+        } else if (type == SearchType.PREFIX) {
+          return name.startsWith(searchName)
+        } else if (type == SearchType.SUFFIX) {
+          return name.endsWith(searchName)
+        } else if (type == SearchType.PART) {
+          return name.contains(searchName)
+        } else if (type == SearchType.REGULAR_EXPRESSION) {
+          Matcher matcher = pattern.matcher(name)
+          return matcher.find()
+        } else if (type == SearchType.MINIMAL_PAIR) {
+          Boolean predicate = false
+          (0 ..< searchName.length()).each() { Integer i ->
+            String beforeSearchName = (i == 0) ? "" : searchName[0 .. i - 1]
+            String afterSearchName = (i == searchName.length() - 1) ? "" : searchName[i + 1 .. -1]
+            String searchRegex = "^" + beforeSearchName + "." + afterSearchName + "\$"
+            Matcher matcher = Pattern.compile(searchRegex).matcher(name)
+            if (matcher.find()) {
+              predicate = true
+            }
+          }
+          return predicate
+        } else {
+          return false
+        }
+      }
+    } catch (PatternSyntaxException exception) {
+    }
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {

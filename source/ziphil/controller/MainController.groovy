@@ -40,6 +40,7 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.ShaleiaDictionary
+import ziphil.dictionary.ShaleiaSearchParameter
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeWord
@@ -110,6 +111,22 @@ public class MainController {
       $hitWordSize.setText(hitWordSize.toString())
       $totalWordSize.setText(totalWordSize.toString())
       $wordList.scrollTo(0)
+    }
+  }
+
+  @FXML
+  private void searchInDetail() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof ShaleiaDictionary) {
+        UtilityStage<ShaleiaSearchParameter> stage = UtilityStage.new(StageStyle.UTILITY)
+        ShaleiaSearcherController controller = ShaleiaSearcherController.new(stage)
+        stage.initOwner($stage)
+        ShaleiaSearchParameter parameter = stage.showAndWaitResult()
+        if (parameter != null) {
+          $dictionary.searchInDetail(parameter)
+          $wordList.scrollTo(0)
+        }
+      }
     }
   }
 
