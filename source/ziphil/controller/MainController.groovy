@@ -123,7 +123,15 @@ public class MainController {
         stage.initOwner($stage)
         ShaleiaSearchParameter parameter = stage.showAndWaitResult()
         if (parameter != null) {
+          Long beforeTime = System.nanoTime()
           $dictionary.searchInDetail(parameter)
+          Long afterTime = System.nanoTime()
+          Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
+          Integer hitWordSize = $dictionary.getWords().size()
+          Integer totalWordSize = $dictionary.getRawWords().size()
+          $elapsedTime.setText(elapsedTime.toString())
+          $hitWordSize.setText(hitWordSize.toString())
+          $totalWordSize.setText(totalWordSize.toString())
           $wordList.scrollTo(0)
         }
       }
