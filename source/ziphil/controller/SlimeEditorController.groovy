@@ -74,9 +74,9 @@ public class SlimeEditorController {
     word.getTags().each() { String tag ->
       addTagControl(tag, dictionary.registeredTags())
     }
-    word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
-      String nameString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
-      addEquivalentControl(title, nameString, dictionary.registeredEquivalentTitles())
+    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+      String nameString = equivalent.getNames().join(", ")
+      addEquivalentControl(equivalent.getTitle(), nameString, dictionary.registeredEquivalentTitles())
     }
     word.getInformations().each() { SlimeInformation information ->
       addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
@@ -114,10 +114,8 @@ public class SlimeEditorController {
       (0 ..< $equivalentTitles.size()).each() { Integer i ->
         String title = $equivalentTitles[i].getValue()
         List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
-        equivalentNames.each() { String equivalentName ->
-          if (equivalentName != "") {
-            rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
-          }
+        if (!equivalentNames.isEmpty()) {
+          rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
         }
       }
       (0 ..< $informationTitles.size()).each() { Integer i ->

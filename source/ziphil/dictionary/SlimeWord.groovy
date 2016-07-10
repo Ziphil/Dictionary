@@ -48,7 +48,10 @@ public class SlimeWord extends Word {
     $id = id
     $name = name
     $rawEquivalents = rawEquivalents
-    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
+    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
+      result.addAll(equivalent.getNames())
+      return result
+    }
     $tags = tags
     $informations = informations
     $variations = variations
@@ -67,9 +70,9 @@ public class SlimeWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $name)
-    $rawEquivalents.groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
-      String equivalentString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
-      addEquivalentNode(equivalentBox, title, equivalentString)
+    $rawEquivalents.each() { SlimeEquivalent equivalent ->
+      String equivalentString = equivalent.getNames().join(", ")
+      addEquivalentNode(equivalentBox, equivalent.getTitle(), equivalentString)
     }
     $informations.each() { SlimeInformation information ->
       addInformationNode(informationBox, information.getTitle(), information.getText(), modifiesPunctuation)
@@ -179,7 +182,10 @@ public class SlimeWord extends Word {
   @JSONHint(name="translations")
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
-    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
+    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
+      result.addAll(equivalent.getNames())
+      return result
+    }
   }
 
   public List<String> getTags() {
