@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.application.Platform
+import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos
@@ -13,6 +14,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
@@ -64,6 +67,7 @@ public class SlimeEditorController {
   public SlimeEditorController(UtilityStage<Boolean> stage) {
     $stage = stage
     loadResource()
+    setupShortcutKeys()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
@@ -253,6 +257,64 @@ public class SlimeEditorController {
     }
   }
 
+  private void focusName() {
+    $name.requestFocus()
+  }
+
+  private void focusEquivalentControl(EventTarget target) {
+    Integer index
+    $equivalentNames.eachWithIndex() { TextField node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $equivalentNames.size() - 1) ? index + 1 : 0
+      $equivalentNames[nextIndex].requestFocus()
+    } else {
+      if ($equivalentNames.isEmpty()) {
+        insertEquivalentControl()
+      }
+      $equivalentNames[0].requestFocus()
+    }
+  }
+
+  private void focusInformationControl(EventTarget target) {
+    Integer index
+    $informationTexts.eachWithIndex() { TextArea node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $informationTexts.size() - 1) ? index + 1 : 0
+      $informationTexts[nextIndex].requestFocus()
+    } else {
+      if ($informationTexts.isEmpty()) {
+        insertInformationControl()
+      }
+      $informationTexts[0].requestFocus()
+    }
+  }
+
+  private void focusVariationControl(EventTarget target) {
+    Integer index
+    $variationNames.eachWithIndex() { TextField node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $variationNames.size() - 1) ? index + 1 : 0
+      $variationNames[nextIndex].requestFocus()
+    } else {
+      if ($variationNames.isEmpty()) {
+        insertVariationControl()
+      }
+      $variationNames[0].requestFocus()
+    }
+  }
+
   private void chooseRelation(HBox box) {
     UtilityStage<SlimeWord> stage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(stage)
@@ -406,6 +468,22 @@ public class SlimeEditorController {
     $relationNames.add(name)
     $relationBox.getChildren().add(box)
     $relationBox.setVgrow(box, Priority.ALWAYS)
+  }
+
+  private void setupShortcutKeys() {
+    $scene.setOnKeyPressed() { KeyEvent event ->
+      if (KeyCombination.valueOf("Shortcut+Shift+W").match(event)) {
+        focusName()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+E").match(event)) {
+        focusEquivalentControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+Shift+C").match(event)) {
+        focusInformationControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+Shift+V").match(event)) {
+        focusVariationControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
+        commitEdit()
+      }
+    }
   }
 
   private void loadResource() {
