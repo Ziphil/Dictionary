@@ -88,10 +88,11 @@ public class SlimeEditorController {
     word.getRelations().each() { SlimeRelation relation ->
       addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
     }
-    if (!$informationTexts.isEmpty()) {
-      Platform.runLater() {
-        $informationTexts[0].requestFocus()
-      }
+    if ($informationTexts.isEmpty()) {
+      insertInformationControl()
+    }
+    Platform.runLater() {
+      $informationTexts[0].requestFocus()
     }
   }
 
