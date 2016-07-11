@@ -47,7 +47,6 @@ public class SlimeEditorController {
   @FXML private TextField $name
   @FXML private TextField $tag
   @FXML private ScrollPane $scrollPane
-  @FXML private VBox $scrollContent
   @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
@@ -482,10 +481,11 @@ public class SlimeEditorController {
   }
 
   private void scrollToNode(Node node) {
-    Double contentHeight = $scrollPane.getContent().getBoundsInLocal().getHeight()
+    Node content = $scrollPane.getContent()
     Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
+    Double contentHeight = content.getBoundsInLocal().getHeight()
     Double nodeMinY = node.localToScene(node.getBoundsInLocal()).getMinY()
-    Double contentMinY = $scrollContent.localToScene($scrollContent.getBoundsInLocal()).getMinY()
+    Double contentMinY = content.localToScene(content.getBoundsInLocal()).getMinY()
     Double vvalue = (Double)((nodeMinY - contentMinY) / (contentHeight - viewportHeight))
     $scrollPane.setVvalue(vvalue)
   }

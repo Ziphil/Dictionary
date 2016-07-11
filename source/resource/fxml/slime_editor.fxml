@@ -36,7 +36,7 @@
         </Insets>
       </padding>
       <ScrollPane fx:id="$scrollPane" fitToWidth="true" styleClass="transparent">
-        <VBox fx:id="$scrollContent">
+        <VBox>
           <padding>
             <Insets>
               <right><Double rpx="10"/></right>
