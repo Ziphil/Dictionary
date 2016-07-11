@@ -45,7 +45,6 @@ public class SlimeEditorController {
 
   @FXML private TextField $id
   @FXML private TextField $name
-  @FXML private TextField $tag
   @FXML private ScrollPane $scrollPane
   @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
