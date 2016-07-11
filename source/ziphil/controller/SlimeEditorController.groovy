@@ -5,6 +5,7 @@ import javafx.application.Platform
 import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Bounds
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Parent
@@ -12,6 +13,7 @@ import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
+import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCombination
@@ -44,6 +46,8 @@ public class SlimeEditorController {
   @FXML private TextField $id
   @FXML private TextField $name
   @FXML private TextField $tag
+  @FXML private ScrollPane $scrollPane
+  @FXML private VBox $scrollContent
   @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
@@ -259,6 +263,7 @@ public class SlimeEditorController {
 
   private void focusName() {
     $name.requestFocus()
+    scrollToNode($name)
   }
 
   private void focusEquivalentControl(EventTarget target) {
@@ -271,11 +276,13 @@ public class SlimeEditorController {
     if (index != null) {
       Integer nextIndex = (index < $equivalentNames.size() - 1) ? index + 1 : 0
       $equivalentNames[nextIndex].requestFocus()
+      scrollToNode($equivalentNames[nextIndex])
     } else {
       if ($equivalentNames.isEmpty()) {
         insertEquivalentControl()
       }
       $equivalentNames[0].requestFocus()
+      scrollToNode($equivalentNames[0])
     }
   }
 
@@ -289,11 +296,13 @@ public class SlimeEditorController {
     if (index != null) {
       Integer nextIndex = (index < $informationTexts.size() - 1) ? index + 1 : 0
       $informationTexts[nextIndex].requestFocus()
+      scrollToNode($informationTexts[nextIndex])
     } else {
       if ($informationTexts.isEmpty()) {
         insertInformationControl()
       }
       $informationTexts[0].requestFocus()
+      scrollToNode($informationTexts[0])
     }
   }
 
@@ -307,11 +316,13 @@ public class SlimeEditorController {
     if (index != null) {
       Integer nextIndex = (index < $variationNames.size() - 1) ? index + 1 : 0
       $variationNames[nextIndex].requestFocus()
+      scrollToNode($variationNames[nextIndex])
     } else {
       if ($variationNames.isEmpty()) {
         insertVariationControl()
       }
       $variationNames[0].requestFocus()
+      scrollToNode($variationNames[0])
     }
   }
 
@@ -468,6 +479,15 @@ public class SlimeEditorController {
     $relationNames.add(name)
     $relationBox.getChildren().add(box)
     $relationBox.setVgrow(box, Priority.ALWAYS)
+  }
+
+  private void scrollToNode(Node node) {
+    Double contentHeight = $scrollPane.getContent().getBoundsInLocal().getHeight()
+    Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
+    Double nodeMinY = node.localToScene(node.getBoundsInLocal()).getMinY()
+    Double contentMinY = $scrollContent.localToScene($scrollContent.getBoundsInLocal()).getMinY()
+    Double vvalue = (Double)((nodeMinY - contentMinY) / (contentHeight - viewportHeight))
+    $scrollPane.setVvalue(vvalue)
   }
 
   private void setupShortcutKeys() {
