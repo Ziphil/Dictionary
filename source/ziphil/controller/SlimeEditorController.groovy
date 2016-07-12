@@ -482,11 +482,23 @@ public class SlimeEditorController {
   private void scrollToNode(Node node) {
     Node content = $scrollPane.getContent()
     Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
+    Double paneMinY = $scrollPane.localToScene($scrollPane.getBoundsInLocal()).getMinY()
+    Double contentMinY = content.localToScene(content.getBoundsInLocal()).getMinY()
     Double contentHeight = content.getBoundsInLocal().getHeight()
     Double nodeMinY = node.localToScene(node.getBoundsInLocal()).getMinY()
-    Double contentMinY = content.localToScene(content.getBoundsInLocal()).getMinY()
-    Double vvalue = (Double)((nodeMinY - contentMinY) / (contentHeight - viewportHeight))
-    $scrollPane.setVvalue(vvalue)
+    Double nodeMaxY = node.localToScene(node.getBoundsInLocal()).getMaxY()
+    Double nodeHeight = node.getBoundsInLocal().getHeight()
+    Double nodeRelativeMinY = nodeMinY - contentMinY
+    Double nodeRelativeMaxY = nodeMaxY - contentMinY
+    Double nodeAbsoluteMinY = nodeMinY - paneMinY
+    Double nodeAbsoluteMaxY = nodeMaxY - paneMinY
+    if (nodeAbsoluteMinY < 0) {
+      Double vvalue = (Double)(nodeRelativeMinY / (contentHeight - viewportHeight))
+      $scrollPane.setVvalue(vvalue)
+    } else if (nodeAbsoluteMaxY > viewportHeight) {
+      Double vvalue = (Double)((nodeRelativeMaxY - viewportHeight) / (contentHeight - viewportHeight))
+      $scrollPane.setVvalue(vvalue)
+    }
   }
 
   private void setupShortcutKeys() {
