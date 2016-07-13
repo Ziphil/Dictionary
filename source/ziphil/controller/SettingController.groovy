@@ -1,9 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import java.util.concurrent.Callable
-import javafx.beans.binding.Bindings
-import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -24,6 +21,7 @@ import javafx.stage.Modality
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.module.CustomBindings
 import ziphil.module.Setting
 
 
@@ -221,31 +219,11 @@ public class SettingController {
   }
 
   private void setupTextBindings() {
-    Callable<String> modifiesPunctuationFunction = (Callable){
-      return ($modifiesPunctuation.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> savesAutomaticallyFunction = (Callable){
-      return ($savesAutomatically.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> ignoresAccentFunction = (Callable){
-      return ($ignoresAccent.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> ignoresCaseFunction = (Callable){
-      return ($ignoresCase.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> prefixSearchFunction = (Callable){
-      return ($prefixSearch.selectedProperty().get()) ? "有効" : "無効"
-    }
-    StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
-    StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
-    StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
-    StringBinding ignoresCaseBinding = Bindings.createStringBinding(ignoresCaseFunction, $ignoresCase.selectedProperty())
-    StringBinding prefixSearchBinding = Bindings.createStringBinding(prefixSearchFunction, $prefixSearch.selectedProperty())
-    $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
-    $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
-    $ignoresAccent.textProperty().bind(ignoresAccentBinding)
-    $ignoresCase.textProperty().bind(ignoresCaseBinding)
-    $prefixSearch.textProperty().bind(prefixSearchBinding)
+    $modifiesPunctuation.textProperty().bind(CustomBindings.whichString($modifiesPunctuation, "有効", "無効"))
+    $savesAutomatically.textProperty().bind(CustomBindings.whichString($savesAutomatically, "有効", "無効"))
+    $ignoresAccent.textProperty().bind(CustomBindings.whichString($ignoresAccent, "有効", "無効"))
+    $ignoresCase.textProperty().bind(CustomBindings.whichString($ignoresCase, "有効", "無効"))
+    $prefixSearch.textProperty().bind(CustomBindings.whichString($prefixSearch, "有効", "無効"))
   }
 
   private void loadResource() {
