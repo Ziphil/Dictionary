@@ -44,7 +44,7 @@
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$name" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ComboBox fx:id="$searchType">
+        <ComboBox fx:id="$nameSearchType">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
           <items>

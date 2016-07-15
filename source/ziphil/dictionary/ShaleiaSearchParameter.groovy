@@ -7,11 +7,11 @@ import groovy.transform.CompileStatic
 public class ShaleiaSearchParameter {
 
   private String $name
-  private SearchType $searchType
+  private SearchType $nameSearchType
 
-  public ShaleiaSearchParameter(String name, SearchType searchType) {
+  public ShaleiaSearchParameter(String name, SearchType nameSearchType) {
     $name = name
-    $searchType = searchType
+    $nameSearchType = nameSearchType
   }
 
   public String getName() {
@@ -22,12 +22,12 @@ public class ShaleiaSearchParameter {
     $name = name
   }
 
-  public SearchType getSearchType() {
-    return $searchType
+  public SearchType getNameSearchType() {
+    return $nameSearchType
   }
 
-  public void setSearchType(SearchType searchType) {
-    $searchType = searchType
+  public void setNameSearchType(SearchType nameSearchType) {
+    $nameSearchType = nameSearchType
   }
 
 }

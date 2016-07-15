@@ -21,10 +21,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
 
   public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
-    SearchType type = parameter.getSearchType()
+    SearchType nameSearchType = parameter.getNameSearchType()
     $filteredWords.setPredicate() { ShaleiaWord word ->
       String name = word.getName()
-      Boolean predicate = SearchType.matches(type, name, searchName)
+      Boolean predicate = SearchType.matches(nameSearchType, name, searchName)
       return predicate
     }
   }
