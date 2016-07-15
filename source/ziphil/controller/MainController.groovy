@@ -203,6 +203,14 @@ public class MainController {
     }
   }
 
+  @FXML
+  private void modifyWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      modifyWord(word)
+    }
+  }
+
   private void removeWord(Word word) {
     if ($dictionary != null) {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -210,6 +218,14 @@ public class MainController {
       if (savesAutomatically) {
         $dictionary.save()
       }
+    }
+  }
+
+  @FXML
+  private void removeWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      removeWord(word)
     }
   }
 
@@ -275,6 +291,14 @@ public class MainController {
           $dictionary.save()
         }
       }
+    }
+  }
+
+  @FXML
+  private void addInheritedWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      addInheritedWord(word)
     }
   }
 

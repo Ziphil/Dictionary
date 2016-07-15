@@ -73,6 +73,9 @@
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
+        <MenuItem text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I"/>
+        <MenuItem text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
+        <MenuItem text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
         <SeparatorMenuItem/>
         <MenuItem text="個別設定" disable="true"/>
         <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E">
