@@ -6,6 +6,7 @@ import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Bounds
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Parent
@@ -13,11 +14,13 @@ import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
@@ -46,11 +49,13 @@ public class SlimeEditorController {
   @FXML private TextField $id
   @FXML private TextField $name
   @FXML private ScrollPane $scrollPane
+  @FXML private GridPane $gridPane
   @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
+  @FXML private Label $idLabel
   private List<ComboBox<String>> $tags = ArrayList.new()
   private List<ComboBox<String>> $equivalentTitles = ArrayList.new()
   private List<TextField> $equivalentNames = ArrayList.new()
@@ -70,6 +75,11 @@ public class SlimeEditorController {
     $stage = stage
     loadResource()
     setupShortcutKeys()
+  }
+
+  @FXML
+  private void initialize() {
+    setupIdControl()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
@@ -514,6 +524,18 @@ public class SlimeEditorController {
       } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
         commitEdit()
       }
+    }
+  }
+
+  private void setupIdControl() {
+    Boolean showsSlimeId = Setting.getInstance().getShowsSlimeId()
+    if (!showsSlimeId) {
+      $gridPane.getChildren().remove($id)
+      $gridPane.getChildren().remove($idLabel)
+      $gridPane.getChildren().each() { Node node ->
+        $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
+      }
+
     }
   }
 

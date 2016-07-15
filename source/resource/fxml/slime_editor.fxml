@@ -43,14 +43,14 @@
             </Insets>
           </padding>
           <spacing><Double rpx="10"/></spacing>
-          <GridPane>
+          <GridPane fx:id="$gridPane">
             <vgap><Double rpx="5"/></vgap>
             <hgap><Double rpx="5"/></hgap>
             <columnConstraints>
               <ColumnConstraints hgrow="never"/>
               <ColumnConstraints hgrow="always"/>
             </columnConstraints>
-            <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="$idLabel" text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <TextField fx:id="$id" GridPane.columnIndex="1" GridPane.rowIndex="0">
               <prefWidth><Double rpx="70"/></prefWidth>

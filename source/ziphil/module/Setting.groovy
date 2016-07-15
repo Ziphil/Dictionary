@@ -28,6 +28,8 @@ public class Setting {
   private Boolean $ignoresAccent
   private Boolean $ignoresCase
   private Boolean $prefixSearch
+  private Boolean $ignoresDuplicateSlimeId
+  private Boolean $showsSlimeId
 
   public void save() {
     saveSetting()
@@ -181,6 +183,22 @@ public class Setting {
 
   public void setPrefixSearch(Boolean prefixSearch) {
     $prefixSearch = prefixSearch
+  }
+
+  public Boolean getIgnoresDuplicateSlimeId() {
+    return $ignoresDuplicateSlimeId
+  }
+
+  public void setIgnoresDuplicateSlimeId(Boolean ignoresDuplicateSlimeId) {
+    $ignoresDuplicateSlimeId = ignoresDuplicateSlimeId
+  }
+
+  public Boolean getShowsSlimeId() {
+    return $showsSlimeId
+  }
+
+  public void setShowsSlimeId(Boolean showsSlimeId) {
+    $showsSlimeId = showsSlimeId
   }
 
 }

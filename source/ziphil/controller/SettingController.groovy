@@ -46,6 +46,8 @@ public class SettingController {
   @FXML private ToggleButton $ignoresAccent
   @FXML private ToggleButton $ignoresCase
   @FXML private ToggleButton $prefixSearch
+  @FXML private ToggleButton $ignoresDuplicateSlimeId
+  @FXML private ToggleButton $showsSlimeId
   private Stage $stage
   private Scene $scene
 
@@ -74,6 +76,8 @@ public class SettingController {
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
+    Boolean showsSlimeId = setting.getShowsSlimeId()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontFamilies.getSelectionModel().select(contentFontFamily)
@@ -106,6 +110,12 @@ public class SettingController {
     if (prefixSearch) {
       $prefixSearch.setSelected(true)
     }
+    if (ignoresDuplicateSlimeId) {
+      $ignoresDuplicateSlimeId.setSelected(true)
+    }
+    if (showsSlimeId) {
+      $showsSlimeId.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
@@ -124,6 +134,8 @@ public class SettingController {
     Boolean ignoresAccent = $ignoresAccent.isSelected()
     Boolean ignoresCase = $ignoresCase.isSelected()
     Boolean prefixSearch = $prefixSearch.isSelected()
+    Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeId.isSelected()
+    Boolean showsSlimeId = $showsSlimeId.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPaths.collect{path -> path.getText()}
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
@@ -144,6 +156,8 @@ public class SettingController {
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
     setting.setPrefixSearch(prefixSearch)
+    setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
+    setting.setShowsSlimeId(showsSlimeId)
     (0 ..< 10).each() { Integer i ->
       String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -224,6 +238,8 @@ public class SettingController {
     $ignoresAccent.textProperty().bind(CustomBindings.whichString($ignoresAccent, "有効", "無効"))
     $ignoresCase.textProperty().bind(CustomBindings.whichString($ignoresCase, "有効", "無効"))
     $prefixSearch.textProperty().bind(CustomBindings.whichString($prefixSearch, "有効", "無効"))
+    $ignoresDuplicateSlimeId.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeId, "有効", "無効"))
+    $showsSlimeId.textProperty().bind(CustomBindings.whichString($showsSlimeId, "有効", "無効"))
   }
 
   private void loadResource() {
