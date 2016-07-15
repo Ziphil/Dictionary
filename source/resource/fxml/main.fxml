@@ -159,11 +159,10 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$modifyWordItem" text="編集"/>
-        <MenuItem fx:id="$removeWordItem" text="削除"/>
-        <SeparatorMenuItem/>
         <MenuItem fx:id="$addWordItem" text="新規作成"/>
         <MenuItem fx:id="$addInheritedWordItem" text="この単語から新規作成"/>
+        <MenuItem fx:id="$modifyWordItem" text="編集"/>
+        <MenuItem fx:id="$removeWordItem" text="削除"/>        
       </items>
     </ContextMenu>
   </fx:define>
