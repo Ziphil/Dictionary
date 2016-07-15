@@ -27,6 +27,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    if (containsId(newWord.getId(), newWord)) {
+      newWord.setId(validMinId())
+    }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
       $words.each() { SlimeWord registeredWord ->
         registeredWord.getRelations().each() { SlimeRelation relation ->
@@ -41,6 +44,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void addWord(SlimeWord word) {
+    if (containsId(word.getId(), word)) {
+      word.setId(validMinId())
+    }
     $words.add(word)
   }
 

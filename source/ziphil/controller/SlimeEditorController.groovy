@@ -113,8 +113,9 @@ public class SlimeEditorController {
 
   @FXML
   private void commitEdit() {
+    Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     Integer id = $id.getText().toInteger()
-    if (!$dictionary.containsId(id, $word)) {
+    if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
       String name = $name.getText()
       List<SlimeEquivalent> rawEquivalents = ArrayList.new()
       List<String> tags = ArrayList.new()
