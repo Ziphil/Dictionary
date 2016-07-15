@@ -2,6 +2,7 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
@@ -18,6 +19,7 @@ import ziphil.module.Strings
 public class SlimeWord extends Word {
 
   public static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
+  public static final String SLIME_TAG_CLASS = "slime-tag"
   public static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   public static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
   public static final String SLIME_TITLE_CLASS = "slime-title"
@@ -70,6 +72,7 @@ public class SlimeWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $name)
+    addTagNode(headBox, $tags)
     $rawEquivalents.each() { SlimeEquivalent equivalent ->
       String equivalentString = equivalent.getNames().join(", ")
       addEquivalentNode(equivalentBox, equivalent.getTitle(), equivalentString)
@@ -109,9 +112,20 @@ public class SlimeWord extends Word {
   }
 
   private void addNameNode(HBox box, String name) {
-    Text nameText = Text.new(name)
+    Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
+    box.setAlignment(Pos.CENTER_LEFT)
+  }
+
+  private void addTagNode(HBox box, List<String> tags) {
+    tags.each() { String tag ->
+      Label tagText = Label.new(tag)
+      Text spaceText = Text.new(" ")
+      tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      box.getChildren().addAll(tagText, spaceText)
+    }
   }
 
   private void addEquivalentNode(VBox box, String title, String equivalent) {
