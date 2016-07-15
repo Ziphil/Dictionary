@@ -69,7 +69,7 @@
             <ImageView><Image url="@../icon/random_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem text="高度な検索" onAction="#searchInDetail" accelerator="Shortcut+U"/>
+        <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>

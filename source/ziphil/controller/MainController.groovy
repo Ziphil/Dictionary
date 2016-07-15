@@ -115,7 +115,7 @@ public class MainController {
   }
 
   @FXML
-  private void searchInDetail() {
+  private void searchDetail() {
     if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         UtilityStage<ShaleiaSearchParameter> stage = UtilityStage.new(StageStyle.UTILITY)
@@ -124,7 +124,7 @@ public class MainController {
         ShaleiaSearchParameter parameter = stage.showAndWaitResult()
         if (parameter != null) {
           Long beforeTime = System.nanoTime()
-          $dictionary.searchInDetail(parameter)
+          $dictionary.searchDetail(parameter)
           Long afterTime = System.nanoTime()
           Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
           Integer hitWordSize = $dictionary.getWords().size()

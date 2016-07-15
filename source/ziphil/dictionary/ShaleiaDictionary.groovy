@@ -21,7 +21,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
     setupWords()
   }
 
-  public void searchInDetail(ShaleiaSearchParameter parameter) {
+  public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
     SearchType type = parameter.getSearchType()
     try {
