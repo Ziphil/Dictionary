@@ -77,8 +77,8 @@
         <MenuItem text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
         <MenuItem text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
         <SeparatorMenuItem/>
-        <MenuItem text="個別設定" disable="true"/>
-        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E">
+        <MenuItem text="辞書の個別設定" disable="true" accelerator="Shortcut+P"/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../icon/setting.png"/></ImageView>
           </graphic>
