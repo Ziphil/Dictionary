@@ -534,7 +534,6 @@ public class SlimeEditorController {
       $gridPane.getChildren().each() { Node node ->
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
-
     }
   }
 
