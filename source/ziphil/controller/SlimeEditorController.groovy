@@ -178,26 +178,31 @@ public class SlimeEditorController {
   @FXML
   private void insertTagControl() {
     addTagControl("", $dictionary.registeredTags())
+    $tags[-1].requestFocus()
   }
 
   @FXML
   private void insertEquivalentControl() {
     addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
+    $equivalentNames[-1].requestFocus()
   }
 
   @FXML
   private void insertInformationControl() {
     addInformationControl("", "", $dictionary.registeredInformationTitles())
+    $informationTexts[-1].requestFocus()
   }
 
   @FXML
   private void insertVariationControl() {
     addVariationControl("", "", $dictionary.registeredVariationTitles())
+    $variationNames[-1].requestFocus()
   }
 
   @FXML
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.registeredRelationTitles())
+    chooseRelation((HBox)$relationBox.getChildren()[-1])
   }
 
   private void removeTagControl(HBox box) {
