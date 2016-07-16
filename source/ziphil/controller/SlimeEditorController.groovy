@@ -73,7 +73,7 @@ public class SlimeEditorController {
   public SlimeEditorController(UtilityStage<Boolean> stage) {
     $stage = stage
     loadResource()
-    setupShortcutKeys()
+    setupShortcuts()
   }
 
   @FXML
@@ -516,7 +516,7 @@ public class SlimeEditorController {
     }
   }
 
-  private void setupShortcutKeys() {
+  private void setupShortcuts() {
     $scene.setOnKeyPressed() { KeyEvent event ->
       if (KeyCombination.valueOf("Shortcut+Shift+W").match(event)) {
         focusName()
