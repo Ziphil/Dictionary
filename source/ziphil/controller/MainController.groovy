@@ -429,7 +429,7 @@ public class MainController {
           modifyWord(cell.getItem())
         }
         if (event.getButton() == MouseButton.SECONDARY) {
-          $editMenu.show(cell, event.getScreenX(), event.getScreenY())
+          cell.setContextMenu($editMenu)
           $modifyWordItem.setOnAction() {
             modifyWord(cell.getItem())
           }
