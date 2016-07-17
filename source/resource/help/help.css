@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+
+body {
+  font-family: "Meiryo UI", sans-serif;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+h1 {
+  margin: 10px 0px 5px 0px;
+  padding: 0px 3px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 20px;
+  border-bottom: rgb(0,0,0) 1px solid;
+}
+
+p {
+  margin: 5px 0px;
+  padding: 0px;
+}
+
+table {
+  margin: 5px 0px;
+  border-collapse: collapse;
+  border-top: rgb(0,0,0) 1px solid;
+  border-bottom: rgb(0,0,0) 1px solid;
+}
+
+table tr td {
+  margin: 0px;
+  padding: 1px 8px 1px 3px;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: left;
+}
+
+table tr td:last-child {
+  padding: 0px 3px 0px 3px;
+}
+
+table tr:nth-child(odd) td {
+  background-color: rgb(238,238,238);
+}
+
+table tr:nth-child(even) td {
+  background-color: rgb(255,255,255);
+}

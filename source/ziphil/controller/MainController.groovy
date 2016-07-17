@@ -360,6 +360,15 @@ public class MainController {
   }
 
   @FXML
+  private void showHelp() {
+    Stage stage = Stage.new(StageStyle.UTILITY)
+    HelpController controller = HelpController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait()
+  }
+
+  @FXML
   private void showOfficialSite() {
     Desktop desktop = Desktop.getDesktop()
     URI uri = URI.new("http://ziphil.s2.adexd.net/application/download/2.html")
