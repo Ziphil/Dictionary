@@ -42,9 +42,9 @@ table tr td:last-child {
 }
 
 table tr:nth-child(odd) td {
-  background-color: rgb(249,249,249);
+  background-color: rgb(255,255,255);
 }
 
 table tr:nth-child(even) td {
-  background-color: rgb(255,255,255);
+  background-color: rgb(249,249,249);
 }
