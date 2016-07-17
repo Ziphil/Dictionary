@@ -17,7 +17,8 @@
     <URL value="@../css/modification.css"/>
   </stylesheets>
   <center>
-    <VBox spacing="15" alignment="center">
+    <VBox alignment="center">
+      <spacing><Double rpx="15"/></spacing>
       <padding>
         <Insets>
           <top><Double rpx="20"/></top>
