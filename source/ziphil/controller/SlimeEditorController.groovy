@@ -279,6 +279,26 @@ public class SlimeEditorController {
     scrollToNode($name)
   }
 
+  private void focusTagControl(EventTarget target) {
+    Integer index
+    $tags.eachWithIndex() { ComboBox<String> node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $tags.size() - 1) ? index + 1 : 0
+      $tags[nextIndex].requestFocus()
+      scrollToNode($tags[nextIndex])
+    } else {
+      if ($tags.isEmpty()) {
+        insertTagControl()
+      }
+      $tags[0].requestFocus()
+      scrollToNode($tags[0])
+    }
+  }
+
   private void focusEquivalentControl(EventTarget target) {
     Integer index
     $equivalentNames.eachWithIndex() { TextField node, Integer i ->
@@ -520,12 +540,24 @@ public class SlimeEditorController {
     $scene.setOnKeyPressed() { KeyEvent event ->
       if (KeyCombination.valueOf("Shortcut+W").match(event)) {
         focusName()
+      } else if (KeyCombination.valueOf("Shortcut+T").match(event)) {
+        focusTagControl(event.getTarget())
       } else if (KeyCombination.valueOf("Shortcut+E").match(event)) {
         focusEquivalentControl(event.getTarget())
       } else if (KeyCombination.valueOf("Shortcut+I").match(event)) {
         focusInformationControl(event.getTarget())
       } else if (KeyCombination.valueOf("Shortcut+D").match(event)) {
         focusVariationControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+Shift+T").match(event)) {
+        insertTagControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+E").match(event)) {
+        insertEquivalentControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+I").match(event)) {
+        insertInformationControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+D").match(event)) {
+        insertVariationControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+R").match(event)) {
+        insertRelationControl()
       } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
         commitEdit()
       }
