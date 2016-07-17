@@ -518,13 +518,13 @@ public class SlimeEditorController {
 
   private void setupShortcuts() {
     $scene.setOnKeyPressed() { KeyEvent event ->
-      if (KeyCombination.valueOf("Shortcut+Shift+W").match(event)) {
+      if (KeyCombination.valueOf("Shortcut+W").match(event)) {
         focusName()
-      } else if (KeyCombination.valueOf("Shortcut+Shift+E").match(event)) {
+      } else if (KeyCombination.valueOf("Shortcut+E").match(event)) {
         focusEquivalentControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+Shift+C").match(event)) {
+      } else if (KeyCombination.valueOf("Shortcut+I").match(event)) {
         focusInformationControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+Shift+V").match(event)) {
+      } else if (KeyCombination.valueOf("Shortcut+D").match(event)) {
         focusVariationControl(event.getTarget())
       } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
         commitEdit()
