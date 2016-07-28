@@ -8,8 +8,8 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
-  public static final String VERSION = "0.4.0α"
-  public static final String DATE = "1622"
+  public static final String VERSION = "0.5.0α"
+  public static final String DATE = "1649"
   public static final Boolean DEBUG = false
   public static final String BASE_PATH = createBasePath()
 
@@ -41,6 +41,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  0. 5. 0 | OneToMany 形式の編集画面で使えるショートカットキーを追加。
+//          | 高度な検索機能を追加。
+//          | ヘルプを確認できる画面を追加。
 //  0. 4. 0 | OneToMany 形式の表示や編集を行う機能を追加。
 //  0. 3. 0 | アクセント記号の有無や大文字小文字の違いなどを無視するオプションを追加。
 //          | シャレイア語辞典形式のテキスト装飾に対応。
