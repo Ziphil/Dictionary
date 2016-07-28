@@ -10,6 +10,24 @@ public enum SearchType {
 
   EXACT, PREFIX, SUFFIX, PART, REGULAR_EXPRESSION, MINIMAL_PAIR
 
+  public static SearchType valueOfExplanation(String explanation) {
+    if (explanation == "完全一致") {
+      return SearchType.EXACT
+    } else if (explanation == "前方一致") {
+      return SearchType.PREFIX
+    } else if (explanation == "後方一致") {
+      return SearchType.SUFFIX
+    } else if (explanation == "部分一致") {
+      return SearchType.PART
+    } else if (explanation == "正規表現") {
+      return SearchType.REGULAR_EXPRESSION
+    } else if (explanation == "最小対語") {
+      return SearchType.MINIMAL_PAIR
+    } else {
+      return null
+    }
+  }
+
   public static Boolean matches(SearchType type, String data, String search) {
     try {
       if (type == EXACT) {

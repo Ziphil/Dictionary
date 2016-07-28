@@ -26,6 +26,69 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     setupWords()
   }
 
+  public void searchDetail(SlimeSearchParameter parameter) {
+    String searchName = parameter.getName()
+    SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalent = parameter.getEquivalent()
+    String searchEquivalentTitle = parameter.getEquivalentTitle()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchInformation = parameter.getInformation()
+    String searchInformationTitle = parameter.getInformationTitle()
+    SearchType informationSearchType = parameter.getInformationSearchType()
+    String searchTag = parameter.getTag()
+    $filteredWords.setPredicate() { SlimeWord word ->
+      Boolean predicate = true
+      String name = word.getName()
+      List<SlimeEquivalent> equivalents = word.getRawEquivalents()
+      List<SlimeInformation> informations = word.getInformations()
+      List<String> tags = word.getTags()
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
+        }
+      }
+      if (searchEquivalent != null) {
+        Boolean equivalentPredicate = false
+        equivalents.each() { SlimeEquivalent equivalent ->
+          String equivalentTitle = equivalent.getTitle()
+          equivalent.getNames().each() { String equivalentName ->
+            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalent) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+              equivalentPredicate = true
+            }
+          }
+        }
+        if (!equivalentPredicate) {
+          predicate = false
+        }
+      }
+      if (searchInformation != null) {
+        Boolean informationPredicate = false
+        informations.each() { SlimeInformation information ->
+          String informationText = information.getText()
+          String informationTitle = information.getTitle()
+          if (SearchType.matches(informationSearchType, informationText, searchInformation) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+            informationPredicate = true
+          }
+        }
+        if (!informationPredicate) {
+          predicate = false
+        }
+      }
+      if (searchTag != null) {
+        Boolean tagPredicate = false
+        tags.each() { String tag ->
+          if (tag == searchTag) {
+            tagPredicate = true
+          }
+        }
+        if (!tagPredicate) {
+          predicate = false
+        }
+      }
+      return predicate
+    }
+  }
+
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
       newWord.setId(validMinId())

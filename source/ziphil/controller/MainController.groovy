@@ -43,6 +43,7 @@ import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.ShaleiaSearchParameter
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.SlimeDictionary
+import ziphil.dictionary.SlimeSearchParameter
 import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Word
 import ziphil.module.Setting
@@ -92,25 +93,18 @@ public class MainController {
   @FXML
   private void search() {
     if ($dictionary != null) {
-      Long beforeTime = System.nanoTime()
-      String search = $searchText.getText()
-      String searchMode = $searchMode.getValue()
-      Boolean isStrict = $searchType.getText() == "完全一致"
-      if (searchMode == "単語") {
-        $dictionary.searchByName(search, isStrict)
-      } else if (searchMode == "訳語") {
-        $dictionary.searchByEquivalent(search, isStrict)
-      } else if (searchMode == "全文") {
-        $dictionary.searchByContent(search)
+      measureDictionaryStatus() {
+        String search = $searchText.getText()
+        String searchMode = $searchMode.getValue()
+        Boolean isStrict = $searchType.getText() == "完全一致"
+        if (searchMode == "単語") {
+          $dictionary.searchByName(search, isStrict)
+        } else if (searchMode == "訳語") {
+          $dictionary.searchByEquivalent(search, isStrict)
+        } else if (searchMode == "全文") {
+          $dictionary.searchByContent(search)
+        }
       }
-      Long afterTime = System.nanoTime()
-      Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-      Integer hitWordSize = $dictionary.getWords().size()
-      Integer totalWordSize = $dictionary.getRawWords().size()
-      $elapsedTime.setText(elapsedTime.toString())
-      $hitWordSize.setText(hitWordSize.toString())
-      $totalWordSize.setText(totalWordSize.toString())
-      $wordList.scrollTo(0)
     }
   }
 
@@ -123,19 +117,36 @@ public class MainController {
         stage.initOwner($stage)
         ShaleiaSearchParameter parameter = stage.showAndWaitResult()
         if (parameter != null) {
-          Long beforeTime = System.nanoTime()
-          $dictionary.searchDetail(parameter)
-          Long afterTime = System.nanoTime()
-          Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-          Integer hitWordSize = $dictionary.getWords().size()
-          Integer totalWordSize = $dictionary.getRawWords().size()
-          $elapsedTime.setText(elapsedTime.toString())
-          $hitWordSize.setText(hitWordSize.toString())
-          $totalWordSize.setText(totalWordSize.toString())
-          $wordList.scrollTo(0)
+          measureDictionaryStatus() {
+            $dictionary.searchDetail(parameter)
+          }
+        }
+      } else if ($dictionary instanceof SlimeDictionary) {
+        UtilityStage<SlimeSearchParameter> stage = UtilityStage.new(StageStyle.UTILITY)
+        SlimeSearcherController controller = SlimeSearcherController.new(stage)
+        stage.initOwner($stage)
+        controller.prepare($dictionary)
+        SlimeSearchParameter parameter = stage.showAndWaitResult()
+        if (parameter != null) {
+          measureDictionaryStatus() {
+            $dictionary.searchDetail(parameter) 
+          }
         }
       }
     }
+  }
+
+  private void measureDictionaryStatus(Runnable searchFunction) {
+    Long beforeTime = System.nanoTime()
+    searchFunction.run()
+    Long afterTime = System.nanoTime()
+    Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
+    Integer hitWordSize = $dictionary.getWords().size()
+    Integer totalWordSize = $dictionary.getRawWords().size()
+    $elapsedTime.setText(elapsedTime.toString())
+    $hitWordSize.setText(hitWordSize.toString())
+    $totalWordSize.setText(totalWordSize.toString())
+    $wordList.scrollTo(0)
   }
 
   @FXML
