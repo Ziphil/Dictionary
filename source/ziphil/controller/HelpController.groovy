@@ -2,21 +2,16 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.web.WebView
-import javafx.stage.Stage
-import ziphil.Launcher
-import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.UtilityStage
 
 
 @CompileStatic @Newify
-public class HelpController {
+public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
   private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
@@ -26,12 +21,10 @@ public class HelpController {
 
   @FXML private ListView<String> $sectionList
   @FXML private WebView $help
-  private Stage $stage
-  private Scene $scene
 
-  public HelpController(Stage stage) {
-    $stage = stage
-    loadResource()
+  public HelpController(UtilityStage<Void> stage) {
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }
 
   @FXML
@@ -54,17 +47,6 @@ public class HelpController {
         changeHelp(section)
       }
     }
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.setResizable(false)
-    $stage.sizeToScene()
   }
 
 }

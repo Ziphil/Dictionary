@@ -6,16 +6,12 @@ import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.SimpleWordCell
 import ziphil.custom.UtilityStage
@@ -25,7 +21,7 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SlimeWordChooserController {
+public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_word_chooser.fxml"
   private static final String TITLE = "単語選択"
@@ -37,12 +33,10 @@ public class SlimeWordChooserController {
   @FXML private ComboBox<String> $searchMode
   @FXML private ToggleButton $searchType
   private SlimeDictionary $dictionary
-  private UtilityStage<SlimeWord> $stage
-  private Scene $scene
 
   public SlimeWordChooserController(UtilityStage<SlimeWord> stage) {
-    $stage = stage
-    loadResource()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }
 
   public void prepare(SlimeDictionary dictionary) {
@@ -82,14 +76,9 @@ public class SlimeWordChooserController {
   }
 
   @FXML
-  private void commitEdit() {
+  protected void commit() {
     SlimeWord word = $wordList.getSelectionModel().getSelectedItem()
     $stage.close(word)
-  }
-
-  @FXML
-  private void cancelEdit() {
-    $stage.close(null)
   }
 
   private void setupWordList() {
@@ -98,7 +87,7 @@ public class SlimeWordChooserController {
       SimpleWordCell cell = SimpleWordCell.new()
       cell.setOnMouseClicked() { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-          commitEdit()
+          commit()
         }
       }
       return cell
@@ -125,16 +114,6 @@ public class SlimeWordChooserController {
     BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchMode.valueProperty())    
     $searchType.textProperty().bind(textBinding)
     $searchType.disableProperty().bind(disableBinding)
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.sizeToScene()
   }
 
 }

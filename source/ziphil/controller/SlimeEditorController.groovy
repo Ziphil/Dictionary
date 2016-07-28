@@ -4,12 +4,9 @@ import groovy.transform.CompileStatic
 import javafx.application.Platform
 import javafx.event.EventTarget
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.geometry.Bounds
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
@@ -24,7 +21,6 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.StageStyle
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -38,7 +34,7 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SlimeEditorController {
+public class SlimeEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -67,12 +63,10 @@ public class SlimeEditorController {
   private List<TextField> $relationNames = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
-  private UtilityStage<Boolean> $stage
-  private Scene $scene
 
   public SlimeEditorController(UtilityStage<Boolean> stage) {
-    $stage = stage
-    loadResource()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
   }
 
@@ -112,7 +106,7 @@ public class SlimeEditorController {
   }
 
   @FXML
-  private void commitEdit() {
+  protected void commit() {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     Integer id = $id.getText().toInteger()
     if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
@@ -168,11 +162,6 @@ public class SlimeEditorController {
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
     }
-  }
-
-  @FXML
-  private void cancelEdit() {
-    $stage.close(false)
   }
 
   @FXML
@@ -559,7 +548,7 @@ public class SlimeEditorController {
       } else if (KeyCombination.valueOf("Shortcut+Shift+R").match(event)) {
         insertRelationControl()
       } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
-        commitEdit()
+        commit()
       }
     }
   }
@@ -573,16 +562,6 @@ public class SlimeEditorController {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.sizeToScene()
   }
 
 }

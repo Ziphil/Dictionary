@@ -2,22 +2,17 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
-import ziphil.custom.DirectoryItem
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.ShaleiaWord
 
 
 @CompileStatic @Newify
-public class DictionaryChooserController {
+public class DictionaryChooserController extends Controller<File> {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_chooser.fxml"
   private static final String TITLE = "参照"
@@ -25,12 +20,10 @@ public class DictionaryChooserController {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private FileChooser $chooser
-  private UtilityStage<File> $stage
-  private Scene $scene
 
   public DictionaryChooserController(UtilityStage<File> stage) {
-    $stage = stage
-    loadResource()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }
 
   @FXML
@@ -46,24 +39,9 @@ public class DictionaryChooserController {
   }
 
   @FXML
-  private void commitChoose() {
+  protected void commit() {
     File file = $chooser.getSelectedFile()
     $stage.close(file)
-  }
-
-  @FXML
-  private void cancelChoose() {
-    $stage.close(null)
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.sizeToScene()
   }
 
 }

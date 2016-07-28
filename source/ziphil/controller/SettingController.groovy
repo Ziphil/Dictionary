@@ -2,9 +2,6 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.CheckBox
@@ -15,10 +12,8 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Font
-import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
@@ -26,7 +21,7 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SettingController {
+public class SettingController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
   private static final String TITLE = "設定"
@@ -48,12 +43,10 @@ public class SettingController {
   @FXML private ToggleButton $prefixSearch
   @FXML private ToggleButton $ignoresDuplicateSlimeId
   @FXML private ToggleButton $showsSlimeId
-  private Stage $stage
-  private Scene $scene
 
-  public SettingController(Stage stage) {
-    $stage = stage
-    loadResource()
+  public SettingController(UtilityStage<Void> stage) {
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
   @FXML
@@ -181,13 +174,8 @@ public class SettingController {
   }
 
   @FXML
-  private void commitChange() {
+  protected void commit() {
     saveSettings()
-    $stage.close()
-  }
-
-  @FXML
-  private void cancelChange() {
     $stage.close()
   }
 
@@ -240,17 +228,6 @@ public class SettingController {
     $prefixSearch.textProperty().bind(CustomBindings.whichString($prefixSearch, "有効", "無効"))
     $ignoresDuplicateSlimeId.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeId, "有効", "無効"))
     $showsSlimeId.textProperty().bind(CustomBindings.whichString($showsSlimeId, "有効", "無効"))
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.setResizable(false)
-    $stage.sizeToScene()
   }
 
 }

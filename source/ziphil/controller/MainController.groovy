@@ -8,9 +8,7 @@ import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
@@ -32,7 +30,6 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.Launcher
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
@@ -50,9 +47,10 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class MainController {
+public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
+  private static final String TITLE = "ZpDIC alpha"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
@@ -74,12 +72,10 @@ public class MainController {
   @FXML private Label $totalWordSize
   @FXML private Label $elapsedTime
   private Dictionary $dictionary
-  private Stage $stage
-  private Scene $scene
 
   public MainController(Stage stage) {
-    $stage = stage
-    loadResource()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
   }
 
   @FXML
@@ -372,7 +368,7 @@ public class MainController {
 
   @FXML
   private void showHelp() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
@@ -388,7 +384,7 @@ public class MainController {
 
   @FXML
   private void showApplicationInformation() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
@@ -397,7 +393,7 @@ public class MainController {
 
   @FXML
   private void showSetting() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
@@ -512,18 +508,6 @@ public class MainController {
       item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle("${Launcher.TITLE} (ver ${Launcher.VERSION})")
-    $stage.setMinWidth(MIN_WIDTH)
-    $stage.setMinHeight(MIN_HEIGHT)
-    $stage.sizeToScene()
   }
 
   public Scene getScene() {

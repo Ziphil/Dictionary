@@ -90,11 +90,11 @@
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true">
+        <Button text="キャンセル" onAction="#cancel" cancelButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true">
+        <Button text="OK" onAction="#commit" defaultButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
