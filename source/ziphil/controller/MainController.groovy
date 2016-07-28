@@ -83,6 +83,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupWordList()
     setupSearchType()
     setupOpenRegisteredDictionaryMenu()
+    setupShortcuts()
     updateDictionaryToDefault()
   }
 
@@ -513,6 +514,14 @@ public class MainController extends PrimitiveController<Stage> {
       item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
       $openRegisteredDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupShortcuts() {
+    $wordList.setOnKeyPressed() { KeyEvent event ->
+      if (event.getCode() == KeyCode.ENTER) {
+        modifyWord()
+      }
     }
   }
 
