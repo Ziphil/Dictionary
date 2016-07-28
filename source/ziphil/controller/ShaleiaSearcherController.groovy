@@ -23,7 +23,7 @@ public class ShaleiaSearcherController {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $name
-  @FXML private ComboBox $nameSearchType
+  @FXML private ComboBox<String> $nameSearchType
   private UtilityStage<ShaleiaSearchParameter> $stage
   private Scene $scene
 
@@ -35,21 +35,7 @@ public class ShaleiaSearcherController {
   @FXML
   private void commitSearch() {
     String name = $name.getText()
-    String nameSearchTypeValue = $nameSearchType.getValue()
-    SearchType nameSearchType
-    if (nameSearchTypeValue == "完全一致") {
-      nameSearchType = SearchType.EXACT
-    } else if (nameSearchTypeValue == "前方一致") {
-      nameSearchType = SearchType.PREFIX
-    } else if (nameSearchTypeValue == "後方一致") {
-      nameSearchType = SearchType.SUFFIX
-    } else if (nameSearchTypeValue == "部分一致") {
-      nameSearchType = SearchType.PART
-    } else if (nameSearchTypeValue == "正規表現") {
-      nameSearchType = SearchType.REGULAR_EXPRESSION
-    } else if (nameSearchTypeValue == "最小対語") {
-      nameSearchType = SearchType.MINIMAL_PAIR
-    }
+    SearchType nameSearchType = SearchType.valueOfExplanation($nameSearchType.getValue())
     ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new(name, nameSearchType)
     $stage.close(parameter)
   }
