@@ -76,6 +76,7 @@ public class MainController extends PrimitiveController<Stage> {
   public MainController(Stage stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
+    setupShortcuts()
   }
 
   @FXML
@@ -83,7 +84,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupWordList()
     setupSearchType()
     setupOpenRegisteredDictionaryMenu()
-    setupShortcuts()
+    setupWordListShortcuts()
     updateDictionaryToDefault()
   }
 
@@ -373,6 +374,14 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void focusWordList() {
+    $wordList.requestFocus()
+    if ($wordList.getSelectionModel().getSelectedItems().isEmpty()) {
+      $wordList.getSelectionModel().selectFirst()
+      $wordList.scrollTo(0)
+    }
+  }
+
   @FXML
   private void showHelp() {
     UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
@@ -517,10 +526,18 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupShortcuts() {
+  private void setupWordListShortcuts() {
     $wordList.setOnKeyPressed() { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
+      }
+    }
+  }
+
+  private void setupShortcuts() {
+    $scene.setOnKeyPressed() { KeyEvent event ->
+      if (KeyCombination.valueOf("Shortcut+L").match(event)) {
+        focusWordList()
       }
     }
   }
