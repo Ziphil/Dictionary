@@ -1,15 +1,14 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.awt.Desktop
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
@@ -31,7 +30,6 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.Launcher
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
@@ -39,17 +37,20 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.ShaleiaDictionary
+import ziphil.dictionary.ShaleiaSearchParameter
 import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.SlimeDictionary
+import ziphil.dictionary.SlimeSearchParameter
 import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Word
 import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class MainController {
+public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
+  private static final String TITLE = "ZpDIC alpha"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
@@ -71,12 +72,10 @@ public class MainController {
   @FXML private Label $totalWordSize
   @FXML private Label $elapsedTime
   private Dictionary $dictionary
-  private Stage $stage
-  private Scene $scene
 
   public MainController(Stage stage) {
-    $stage = stage
-    loadResource()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
   }
 
   @FXML
@@ -84,32 +83,73 @@ public class MainController {
     setupWordList()
     setupSearchType()
     setupOpenRegisteredDictionaryMenu()
+    setupShortcuts()
     updateDictionaryToDefault()
   }
 
   @FXML
-  private void search() {
+  private void search(KeyEvent event) {
     if ($dictionary != null) {
-      Long beforeTime = System.nanoTime()
-      String search = $searchText.getText()
-      String searchMode = $searchMode.getValue()
-      Boolean isStrict = $searchType.getText() == "完全一致"
-      if (searchMode == "単語") {
-        $dictionary.searchByName(search, isStrict)
-      } else if (searchMode == "訳語") {
-        $dictionary.searchByEquivalent(search, isStrict)
-      } else if (searchMode == "全文") {
-        $dictionary.searchByContent(search)
+      if (event == null || event.getCode() != KeyCode.ENTER) {
+        measureDictionaryStatus() {
+          String search = $searchText.getText()
+          String searchMode = $searchMode.getValue()
+          Boolean isStrict = $searchType.getText() == "完全一致"
+          if (searchMode == "単語") {
+            $dictionary.searchByName(search, isStrict)
+          } else if (searchMode == "訳語") {
+            $dictionary.searchByEquivalent(search, isStrict)
+          } else if (searchMode == "全文") {
+            $dictionary.searchByContent(search)
+          }
+        }
       }
-      Long afterTime = System.nanoTime()
-      Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-      Integer hitWordSize = $dictionary.getWords().size()
-      Integer totalWordSize = $dictionary.getRawWords().size()
-      $elapsedTime.setText(elapsedTime.toString())
-      $hitWordSize.setText(hitWordSize.toString())
-      $totalWordSize.setText(totalWordSize.toString())
-      $wordList.scrollTo(0)
     }
+  }
+
+  private void search() {
+    search(null)
+  }
+
+  @FXML
+  private void searchDetail() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof ShaleiaDictionary) {
+        UtilityStage<ShaleiaSearchParameter> stage = UtilityStage.new(StageStyle.UTILITY)
+        ShaleiaSearcherController controller = ShaleiaSearcherController.new(stage)
+        stage.initOwner($stage)
+        ShaleiaSearchParameter parameter = stage.showAndWaitResult()
+        if (parameter != null) {
+          measureDictionaryStatus() {
+            $dictionary.searchDetail(parameter)
+          }
+        }
+      } else if ($dictionary instanceof SlimeDictionary) {
+        UtilityStage<SlimeSearchParameter> stage = UtilityStage.new(StageStyle.UTILITY)
+        SlimeSearcherController controller = SlimeSearcherController.new(stage)
+        stage.initOwner($stage)
+        controller.prepare($dictionary)
+        SlimeSearchParameter parameter = stage.showAndWaitResult()
+        if (parameter != null) {
+          measureDictionaryStatus() {
+            $dictionary.searchDetail(parameter) 
+          }
+        }
+      }
+    }
+  }
+
+  private void measureDictionaryStatus(Runnable searchFunction) {
+    Long beforeTime = System.nanoTime()
+    searchFunction.run()
+    Long afterTime = System.nanoTime()
+    Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
+    Integer hitWordSize = $dictionary.getWords().size()
+    Integer totalWordSize = $dictionary.getRawWords().size()
+    $elapsedTime.setText(elapsedTime.toString())
+    $hitWordSize.setText(hitWordSize.toString())
+    $totalWordSize.setText(totalWordSize.toString())
+    $wordList.scrollTo(0)
   }
 
   @FXML
@@ -177,6 +217,14 @@ public class MainController {
     }
   }
 
+  @FXML
+  private void modifyWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      modifyWord(word)
+    }
+  }
+
   private void removeWord(Word word) {
     if ($dictionary != null) {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -184,6 +232,14 @@ public class MainController {
       if (savesAutomatically) {
         $dictionary.save()
       }
+    }
+  }
+
+  @FXML
+  private void removeWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      removeWord(word)
     }
   }
 
@@ -253,6 +309,14 @@ public class MainController {
   }
 
   @FXML
+  private void addInheritedWord() {
+    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    if (word != null) {
+      addInheritedWord(word)
+    }
+  }
+
+  @FXML
   private void openDictionary() {
     UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(stage)
@@ -310,8 +374,24 @@ public class MainController {
   }
 
   @FXML
+  private void showHelp() {
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
+    HelpController controller = HelpController.new(stage)
+    stage.initModality(Modality.WINDOW_MODAL)
+    stage.initOwner($stage)
+    stage.showAndWait()
+  }
+
+  @FXML
+  private void showOfficialSite() {
+    Desktop desktop = Desktop.getDesktop()
+    URI uri = URI.new("http://ziphil.s2.adexd.net/application/download/2.html")
+    desktop.browse(uri)
+  }
+
+  @FXML
   private void showApplicationInformation() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
@@ -320,7 +400,7 @@ public class MainController {
 
   @FXML
   private void showSetting() {
-    Stage stage = Stage.new(StageStyle.UTILITY)
+    UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(stage)
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
@@ -372,7 +452,7 @@ public class MainController {
           modifyWord(cell.getItem())
         }
         if (event.getButton() == MouseButton.SECONDARY) {
-          $editMenu.show(cell, event.getScreenX(), event.getScreenY())
+          cell.setContextMenu($editMenu)
           $modifyWordItem.setOnAction() {
             modifyWord(cell.getItem())
           }
@@ -437,16 +517,12 @@ public class MainController {
     }
   }
 
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle("${Launcher.TITLE} (ver ${Launcher.VERSION})")
-    $stage.setMinWidth(MIN_WIDTH)
-    $stage.setMinHeight(MIN_HEIGHT)
-    $stage.sizeToScene()
+  private void setupShortcuts() {
+    $wordList.setOnKeyPressed() { KeyEvent event ->
+      if (event.getCode() == KeyCode.ENTER) {
+        modifyWord()
+      }
+    }
   }
 
   public Scene getScene() {

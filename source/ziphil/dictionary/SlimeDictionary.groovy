@@ -1,105 +1,98 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
-import javafx.collections.transformation.SortedList
 import net.arnx.jsonic.JSON
 import net.arnx.jsonic.JSONEventType
 import net.arnx.jsonic.JSONException
 import net.arnx.jsonic.JSONReader
 import net.arnx.jsonic.JSONWriter
 import net.arnx.jsonic.TypeReference
-import ziphil.module.Setting
-import ziphil.module.Strings
 
 
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord> {
 
-  private String $name = ""
-  private String $path = ""
-  private ObservableList<SlimeWord> $words = FXCollections.observableArrayList()
-  private FilteredList<SlimeWord> $filteredWords
-  private SortedList<SlimeWord> $sortedWords
-
   public SlimeDictionary(String name, String path) {
-    $name = name
-    $path = path
+    super(name, path)
     load()
     setupWords()
   }
 
   public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
-    $name = name
-    $path = path
-    $words = words
+    super(name, path)
+    $words.addAll(words)
     setupWords()
   }
 
-  public void searchByName(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        if (isStrict) {
-          String newName = word.getName()
-          String newSearch = search
-          if (ignoresAccent) {
-            newName = Strings.unaccent(newName)
-            newSearch = Strings.unaccent(newSearch)
-          }
-          if (ignoresCase) {
-            newName = Strings.toLowerCase(newName)
-            newSearch = Strings.toLowerCase(newSearch)
-          }
-          return newName.startsWith(newSearch)
-        } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
+  public void searchDetail(SlimeSearchParameter parameter) {
+    String searchName = parameter.getName()
+    SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalent = parameter.getEquivalent()
+    String searchEquivalentTitle = parameter.getEquivalentTitle()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchInformation = parameter.getInformation()
+    String searchInformationTitle = parameter.getInformationTitle()
+    SearchType informationSearchType = parameter.getInformationSearchType()
+    String searchTag = parameter.getTag()
+    $filteredWords.setPredicate() { SlimeWord word ->
+      Boolean predicate = true
+      String name = word.getName()
+      List<SlimeEquivalent> equivalents = word.getRawEquivalents()
+      List<SlimeInformation> informations = word.getInformations()
+      List<String> tags = word.getTags()
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
         }
       }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByEquivalent(String search, Boolean isStrict) {
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        if (isStrict) {
-          return word.getEquivalents().any() { String equivalent ->
-            return equivalent.startsWith(search)
-          }
-        } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
+      if (searchEquivalent != null) {
+        Boolean equivalentPredicate = false
+        equivalents.each() { SlimeEquivalent equivalent ->
+          String equivalentTitle = equivalent.getTitle()
+          equivalent.getNames().each() { String equivalentName ->
+            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalent) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+              equivalentPredicate = true
+            }
           }
         }
+        if (!equivalentPredicate) {
+          predicate = false
+        }
       }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchByContent(String search) {
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { SlimeWord word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
+      if (searchInformation != null) {
+        Boolean informationPredicate = false
+        informations.each() { SlimeInformation information ->
+          String informationText = information.getText()
+          String informationTitle = information.getTitle()
+          if (SearchType.matches(informationSearchType, informationText, searchInformation) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+            informationPredicate = true
+          }
+        }
+        if (!informationPredicate) {
+          predicate = false
+        }
       }
-    } catch (PatternSyntaxException exception) {
+      if (searchTag != null) {
+        Boolean tagPredicate = false
+        tags.each() { String tag ->
+          if (tag == searchTag) {
+            tagPredicate = true
+          }
+        }
+        if (!tagPredicate) {
+          predicate = false
+        }
+      }
+      return predicate
     }
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    if (containsId(newWord.getId(), newWord)) {
+      newWord.setId(validMinId())
+    }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
       $words.each() { SlimeWord registeredWord ->
         registeredWord.getRelations().each() { SlimeRelation relation ->
@@ -114,6 +107,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void addWord(SlimeWord word) {
+    if (containsId(word.getId(), word)) {
+      word.setId(validMinId())
+    }
     $words.add(word)
   }
 
@@ -229,8 +225,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public SlimeDictionary copy() {
-    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList()
-    copiedWords.addAll($words)
+    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
     SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
     return dictionary
   }
@@ -252,6 +247,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           }
         }
       }
+      stream.close()
     }
   }
 
@@ -280,39 +276,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   private void setupWords() {
-    $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords)
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
-  }
-
-  public Boolean supportsEquivalent() {
-    return true
-  }
-
-  public String getName() {
-    return $name
-  }
-
-  public void setName(String name) {
-    $name = name
-  }
-
-  public String getPath() {
-    return $path
-  }
-
-  public void setPath(String path) {
-    $path = path
-  }
-
-  public ObservableList<SlimeWord> getWords() {
-    return $sortedWords
-  }
-
-  public ObservableList<SlimeWord> getRawWords() {
-    return $words
   }
 
 }

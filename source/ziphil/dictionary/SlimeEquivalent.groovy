@@ -8,14 +8,14 @@ import net.arnx.jsonic.JSONHint
 public class SlimeEquivalent {
 
   private String $title = ""
-  private String $name = ""
+  private List<String> $names = ArrayList.new()
 
   public SlimeEquivalent() {
   }
 
-  public SlimeEquivalent(String title, String name) {
+  public SlimeEquivalent(String title, List<String> names) {
     $title = title
-    $name = name
+    $names = names
   }
 
   public String getTitle() {
@@ -27,13 +27,18 @@ public class SlimeEquivalent {
   }
 
   @JSONHint(name="form")
-  public String getName() {
-    return $name
+  public String setName(String name) {
+    $names.add(name)
   }
 
-  @JSONHint(name="form")
-  public void setName(String name) {
-    $name = name
+  @JSONHint(name="forms")
+  public List<String> getNames() {
+    return $names
+  }
+
+  @JSONHint(name="forms")
+  public void setNames(List<String> names) {
+    $names = names
   }
 
 }

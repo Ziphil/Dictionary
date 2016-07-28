@@ -116,6 +116,7 @@
           </padding>
           <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="前方一致検索:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <ToggleButton fx:id="$ignoresAccent" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
@@ -124,11 +125,15 @@
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
+          <ToggleButton fx:id="$prefixSearch" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
-                <bottom><Double rpx="10"/></bottom>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
@@ -137,9 +142,18 @@
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -155,6 +169,47 @@
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
+        </GridPane>
+      </Tab>
+      <Tab text="OTM形式" closable="false">
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <ToggleButton fx:id="$ignoresDuplicateSlimeId" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$showsSlimeId" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに自動的に使われていないIDを割り振ります。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語の編集画面にIDを表示します。"/>
+          </TextFlow>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -193,11 +248,11 @@
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
-        <Button text="キャンセル" onAction="#cancelChange" cancelButton="true">
+        <Button text="キャンセル" onAction="#cancel" cancelButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
-        <Button text="OK" onAction="#commitChange" defaultButton="true">
+        <Button text="OK" onAction="#commit" defaultButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>

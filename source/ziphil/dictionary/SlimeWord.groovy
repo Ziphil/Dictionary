@@ -2,6 +2,7 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
@@ -18,6 +19,7 @@ import ziphil.module.Strings
 public class SlimeWord extends Word {
 
   public static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
+  public static final String SLIME_TAG_CLASS = "slime-tag"
   public static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   public static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
   public static final String SLIME_TITLE_CLASS = "slime-title"
@@ -25,17 +27,12 @@ public class SlimeWord extends Word {
 
   private SlimeDictionary $dictionary
   private Integer $id = -1
-  private String $name = ""
   private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
-  private List<String> $equivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
-  private String $content = ""
-  private VBox $contentPane = VBox.new()
   private VBox $simpleContentPane = VBox.new()
-  private Boolean $isChanged = true
   private Boolean $isSimpleChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
@@ -53,7 +50,10 @@ public class SlimeWord extends Word {
     $id = id
     $name = name
     $rawEquivalents = rawEquivalents
-    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
+    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
+      result.addAll(equivalent.getNames())
+      return result
+    }
     $tags = tags
     $informations = informations
     $variations = variations
@@ -72,9 +72,10 @@ public class SlimeWord extends Word {
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $name)
-    $rawEquivalents.groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
-      String equivalentString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
-      addEquivalentNode(equivalentBox, title, equivalentString)
+    addTagNode(headBox, $tags)
+    $rawEquivalents.each() { SlimeEquivalent equivalent ->
+      String equivalentString = equivalent.getNames().join(", ")
+      addEquivalentNode(equivalentBox, equivalent.getTitle(), equivalentString)
     }
     $informations.each() { SlimeInformation information ->
       addInformationNode(informationBox, information.getTitle(), information.getText(), modifiesPunctuation)
@@ -111,9 +112,20 @@ public class SlimeWord extends Word {
   }
 
   private void addNameNode(HBox box, String name) {
-    Text nameText = Text.new(name)
+    Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
+    box.setAlignment(Pos.CENTER_LEFT)
+  }
+
+  private void addTagNode(HBox box, List<String> tags) {
+    tags.each() { String tag ->
+      Label tagText = Label.new(tag)
+      Text spaceText = Text.new(" ")
+      tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      box.getChildren().addAll(tagText, spaceText)
+    }
   }
 
   private void addEquivalentNode(VBox box, String title, String equivalent) {
@@ -153,16 +165,7 @@ public class SlimeWord extends Word {
   }
 
   private void setupContentPane() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getContentFontFamily()
-    Integer fontSize = setting.getContentFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
-    }
-  }
-
-  public Boolean isChanged() {
-    return $isChanged
+    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public Boolean isSimpleChanged() {
@@ -185,14 +188,6 @@ public class SlimeWord extends Word {
     $id = id
   }
 
-  public String getName() {
-    return $name
-  }
-
-  public List<String> getEquivalents() {
-    return $equivalents
-  }
-
   @JSONHint(name="translations")
   public List<SlimeEquivalent> getRawEquivalents() {
     return $rawEquivalents
@@ -201,7 +196,10 @@ public class SlimeWord extends Word {
   @JSONHint(name="translations")
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
-    $equivalents = rawEquivalents.collect{equivalent -> equivalent.getName()}
+    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
+      result.addAll(equivalent.getNames())
+      return result
+    }
   }
 
   public List<String> getTags() {
@@ -245,14 +243,6 @@ public class SlimeWord extends Word {
   public void setEntry(Map<String, Object> entry) {
     $id = (Integer)entry["id"]
     $name = (String)entry["form"]
-  }
-
-  public String getContent() {
-    return $content
-  }
-
-  public Pane getContentPane() {
-    return $contentPane
   }
 
   public Pane getSimpleContentPane() {

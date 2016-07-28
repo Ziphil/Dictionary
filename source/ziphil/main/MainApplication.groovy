@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.stage.Stage
+import ziphil.Launcher
 import ziphil.controller.MainController
 import ziphil.module.Setting
 
@@ -29,7 +30,7 @@ public class MainApplication extends Application {
   }
 
   private void createDataDirectory() {
-    File.new("data/setting").mkdirs()
+    File.new(Launcher.BASE_PATH + "data/setting").mkdirs()
   }
 
   private void setupFontRendering() {

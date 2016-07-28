@@ -19,6 +19,20 @@ public class Strings {
     return result
   }
 
+  public static String escapeUnicode(String string) {
+    StringBuilder result = StringBuilder.new()
+    (0 ..< string.length()).each() { Integer i ->
+      String character = string[i]
+      if (!(character ==~ /^\p{ASCII}$/)) {
+        String escapedCharacter = String.format("\\u%04x", string.codePointAt(i))
+        result.append(escapedCharacter)
+      } else {
+        result.append(character)
+      }
+    }
+    return result.toString()
+  }
+
   public static String unaccent(String string) {
     String normalizedString = Normalizer.normalize(string, Normalizer.Form.NFD)
     String result = normalizedString.replaceAll(/\p{InCombiningDiacriticalMarks}+/, "")

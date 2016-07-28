@@ -2,22 +2,25 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.application.Platform
+import javafx.event.EventTarget
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
+import javafx.geometry.Bounds
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.stage.Modality
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
+import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.StageStyle
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -31,7 +34,7 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SlimeEditorController {
+public class SlimeEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -40,12 +43,14 @@ public class SlimeEditorController {
 
   @FXML private TextField $id
   @FXML private TextField $name
-  @FXML private TextField $tag
+  @FXML private ScrollPane $scrollPane
+  @FXML private GridPane $gridPane
   @FXML private VBox $tagBox
   @FXML private VBox $equivalentBox
   @FXML private VBox $informationBox
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
+  @FXML private Label $idLabel
   private List<ComboBox<String>> $tags = ArrayList.new()
   private List<ComboBox<String>> $equivalentTitles = ArrayList.new()
   private List<TextField> $equivalentNames = ArrayList.new()
@@ -58,13 +63,16 @@ public class SlimeEditorController {
   private List<TextField> $relationNames = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
-  private UtilityStage<Boolean> $stage
-  private Scene $scene
 
   public SlimeEditorController(UtilityStage<Boolean> stage) {
-    $stage = stage
-    loadResource()
-    setupEditor()
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
+    setupShortcuts()
+  }
+
+  @FXML
+  private void initialize() {
+    setupIdControl()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
@@ -75,9 +83,9 @@ public class SlimeEditorController {
     word.getTags().each() { String tag ->
       addTagControl(tag, dictionary.registeredTags())
     }
-    word.getRawEquivalents().groupBy{equivalent -> equivalent.getTitle()}.each() { String title, List<SlimeEquivalent> equivalentGroup ->
-      String nameString = equivalentGroup.collect{equivalent -> equivalent.getName()}.join(", ")
-      addEquivalentControl(title, nameString, dictionary.registeredEquivalentTitles())
+    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+      String nameString = equivalent.getNames().join(", ")
+      addEquivalentControl(equivalent.getTitle(), nameString, dictionary.registeredEquivalentTitles())
     }
     word.getInformations().each() { SlimeInformation information ->
       addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
@@ -89,18 +97,19 @@ public class SlimeEditorController {
     word.getRelations().each() { SlimeRelation relation ->
       addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
     }
-    if (!$informationTexts.isEmpty()) {
-      Platform.runLater() {
-        $informationTexts[0].requestFocus()
-      }
+    if ($informationTexts.isEmpty()) {
+      insertInformationControl()
     }
-    setupEditor()
+    Platform.runLater() {
+      $informationTexts[0].requestFocus()
+    }
   }
 
   @FXML
-  private void commitEdit() {
+  protected void commit() {
+    Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     Integer id = $id.getText().toInteger()
-    if (!$dictionary.containsId(id, $word)) {
+    if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
       String name = $name.getText()
       List<SlimeEquivalent> rawEquivalents = ArrayList.new()
       List<String> tags = ArrayList.new()
@@ -116,10 +125,8 @@ public class SlimeEditorController {
       (0 ..< $equivalentTitles.size()).each() { Integer i ->
         String title = $equivalentTitles[i].getValue()
         List<String> equivalentNames = $equivalentNames[i].getText().split(/\s*(,|、)\s*/).toList()
-        equivalentNames.each() { String equivalentName ->
-          if (equivalentName != "") {
-            rawEquivalents.add(SlimeEquivalent.new(title, equivalentName))
-          }
+        if (!equivalentNames.isEmpty()) {
+          rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
         }
       }
       (0 ..< $informationTitles.size()).each() { Integer i ->
@@ -158,38 +165,33 @@ public class SlimeEditorController {
   }
 
   @FXML
-  private void cancelEdit() {
-    $stage.close(false)
-  }
-
-  @FXML
   private void insertTagControl() {
     addTagControl("", $dictionary.registeredTags())
-    setupEditor()
+    $tags[-1].requestFocus()
   }
 
   @FXML
   private void insertEquivalentControl() {
     addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
-    setupEditor()
+    $equivalentNames[-1].requestFocus()
   }
 
   @FXML
   private void insertInformationControl() {
     addInformationControl("", "", $dictionary.registeredInformationTitles())
-    setupEditor()
+    $informationTexts[-1].requestFocus()
   }
 
   @FXML
   private void insertVariationControl() {
     addVariationControl("", "", $dictionary.registeredVariationTitles())
-    setupEditor()
+    $variationNames[-1].requestFocus()
   }
 
   @FXML
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.registeredRelationTitles())
-    setupEditor()
+    chooseRelation((HBox)$relationBox.getChildren()[-1])
   }
 
   private void removeTagControl(HBox box) {
@@ -258,6 +260,91 @@ public class SlimeEditorController {
       $relationBox.getChildren().removeAt(index)
       $relationTitles.removeAt(index)
       $relationNames.removeAt(index)
+    }
+  }
+
+  private void focusName() {
+    $name.requestFocus()
+    scrollToNode($name)
+  }
+
+  private void focusTagControl(EventTarget target) {
+    Integer index
+    $tags.eachWithIndex() { ComboBox<String> node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $tags.size() - 1) ? index + 1 : 0
+      $tags[nextIndex].requestFocus()
+      scrollToNode($tags[nextIndex])
+    } else {
+      if ($tags.isEmpty()) {
+        insertTagControl()
+      }
+      $tags[0].requestFocus()
+      scrollToNode($tags[0])
+    }
+  }
+
+  private void focusEquivalentControl(EventTarget target) {
+    Integer index
+    $equivalentNames.eachWithIndex() { TextField node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $equivalentNames.size() - 1) ? index + 1 : 0
+      $equivalentNames[nextIndex].requestFocus()
+      scrollToNode($equivalentNames[nextIndex])
+    } else {
+      if ($equivalentNames.isEmpty()) {
+        insertEquivalentControl()
+      }
+      $equivalentNames[0].requestFocus()
+      scrollToNode($equivalentNames[0])
+    }
+  }
+
+  private void focusInformationControl(EventTarget target) {
+    Integer index
+    $informationTexts.eachWithIndex() { TextArea node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $informationTexts.size() - 1) ? index + 1 : 0
+      $informationTexts[nextIndex].requestFocus()
+      scrollToNode($informationTexts[nextIndex])
+    } else {
+      if ($informationTexts.isEmpty()) {
+        insertInformationControl()
+      }
+      $informationTexts[0].requestFocus()
+      scrollToNode($informationTexts[0])
+    }
+  }
+
+  private void focusVariationControl(EventTarget target) {
+    Integer index
+    $variationNames.eachWithIndex() { TextField node, Integer i ->
+      if (node == target) {
+        index = i
+      }
+    }
+    if (index != null) {
+      Integer nextIndex = (index < $variationNames.size() - 1) ? index + 1 : 0
+      $variationNames[nextIndex].requestFocus()
+      scrollToNode($variationNames[nextIndex])
+    } else {
+      if ($variationNames.isEmpty()) {
+        insertVariationControl()
+      }
+      $variationNames[0].requestFocus()
+      scrollToNode($variationNames[0])
     }
   }
 
@@ -338,6 +425,7 @@ public class SlimeEditorController {
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     text.setWrapText(true)
+    text.getStyleClass().add("editor")
     text.setText(textString)
     text.setPrefHeight(Measurement.rpx(120))
     text.setMinHeight(Measurement.rpx(120))
@@ -415,25 +503,65 @@ public class SlimeEditorController {
     $relationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void setupEditor() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getEditorFontFamily()
-    Integer fontSize = setting.getEditorFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $informationTexts.each() { TextArea informationText ->
-        informationText.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
+  private void scrollToNode(Node node) {
+    Node content = $scrollPane.getContent()
+    Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
+    Double paneMinY = $scrollPane.localToScene($scrollPane.getBoundsInLocal()).getMinY()
+    Double contentMinY = content.localToScene(content.getBoundsInLocal()).getMinY()
+    Double contentHeight = content.getBoundsInLocal().getHeight()
+    Double nodeMinY = node.localToScene(node.getBoundsInLocal()).getMinY()
+    Double nodeMaxY = node.localToScene(node.getBoundsInLocal()).getMaxY()
+    Double nodeHeight = node.getBoundsInLocal().getHeight()
+    Double nodeRelativeMinY = nodeMinY - contentMinY
+    Double nodeRelativeMaxY = nodeMaxY - contentMinY
+    Double nodeAbsoluteMinY = nodeMinY - paneMinY
+    Double nodeAbsoluteMaxY = nodeMaxY - paneMinY
+    if (nodeAbsoluteMinY < 0) {
+      Double vvalue = (Double)(nodeRelativeMinY / (contentHeight - viewportHeight))
+      $scrollPane.setVvalue(vvalue)
+    } else if (nodeAbsoluteMaxY > viewportHeight) {
+      Double vvalue = (Double)((nodeRelativeMaxY - viewportHeight) / (contentHeight - viewportHeight))
+      $scrollPane.setVvalue(vvalue)
+    }
+  }
+
+  private void setupShortcuts() {
+    $scene.setOnKeyPressed() { KeyEvent event ->
+      if (KeyCombination.valueOf("Shortcut+W").match(event)) {
+        focusName()
+      } else if (KeyCombination.valueOf("Shortcut+T").match(event)) {
+        focusTagControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+E").match(event)) {
+        focusEquivalentControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+I").match(event)) {
+        focusInformationControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+D").match(event)) {
+        focusVariationControl(event.getTarget())
+      } else if (KeyCombination.valueOf("Shortcut+Shift+T").match(event)) {
+        insertTagControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+E").match(event)) {
+        insertEquivalentControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+I").match(event)) {
+        insertInformationControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+D").match(event)) {
+        insertVariationControl()
+      } else if (KeyCombination.valueOf("Shortcut+Shift+R").match(event)) {
+        insertRelationControl()
+      } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
+        commit()
       }
     }
   }
 
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.sizeToScene()
+  private void setupIdControl() {
+    Boolean showsSlimeId = Setting.getInstance().getShowsSlimeId()
+    if (!showsSlimeId) {
+      $gridPane.getChildren().remove($id)
+      $gridPane.getChildren().remove($idLabel)
+      $gridPane.getChildren().each() { Node node ->
+        $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
+      }
+    }
   }
 
 }

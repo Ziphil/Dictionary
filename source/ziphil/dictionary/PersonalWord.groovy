@@ -15,17 +15,12 @@ import ziphil.module.Strings
 public class PersonalWord extends Word {
 
   private PersonalDictionary $dictionary
-  private String $name = ""
-  private List<String> $equivalents = ArrayList.new()
   private String $pronunciation = ""
   private String $translation = ""
   private String $usage = ""
   private Integer $level = 0
   private Integer $memory = 0
   private Integer $modification = 0
-  private String $content = ""
-  private VBox $contentPane = VBox.new()
-  private Boolean $isChanged = true
 
   public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
     update(name, pronunciation, translation, usage, level, memory, modification)
@@ -73,16 +68,7 @@ public class PersonalWord extends Word {
   }
 
   private void setupContentPane() {
-    Setting setting = Setting.getInstance()
-    String fontFamily = setting.getContentFontFamily()
-    Integer fontSize = setting.getContentFontSize()
-    if (fontFamily != null && fontSize != null) {
-      $contentPane.setStyle("-fx-font-family: \"${fontFamily}\"; -fx-font-size: ${fontSize}")
-    }
-  }
-
-  public Boolean isChanged() {
-    return $isChanged
+    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public PersonalDictionary getDictionary() {
@@ -91,14 +77,6 @@ public class PersonalWord extends Word {
 
   public void setDictionary(PersonalDictionary dictionary) {
     $dictionary = dictionary
-  }
-
-  public String getName() {
-    return $name
-  }
-
-  public List<String> getEquivalents() {
-    return null
   }
 
   public String getPronunciation() {
@@ -123,14 +101,6 @@ public class PersonalWord extends Word {
 
   public Integer getModification() {
     return $modification
-  }
-
-  public String getContent() {
-    return $content
-  }
-
-  public Pane getContentPane() {
-    return $contentPane
   }
 
 }

@@ -1,13 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import java.util.concurrent.Callable
-import javafx.beans.binding.Bindings
-import javafx.beans.binding.StringBinding
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.CheckBox
@@ -18,17 +12,16 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Font
-import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
-import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.module.CustomBindings
 import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SettingController {
+public class SettingController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
   private static final String TITLE = "設定"
@@ -47,12 +40,13 @@ public class SettingController {
   @FXML private ToggleButton $savesAutomatically
   @FXML private ToggleButton $ignoresAccent
   @FXML private ToggleButton $ignoresCase
-  private Stage $stage
-  private Scene $scene
+  @FXML private ToggleButton $prefixSearch
+  @FXML private ToggleButton $ignoresDuplicateSlimeId
+  @FXML private ToggleButton $showsSlimeId
 
-  public SettingController(Stage stage) {
-    $stage = stage
-    loadResource()
+  public SettingController(UtilityStage<Void> stage) {
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
   @FXML
@@ -74,6 +68,9 @@ public class SettingController {
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
+    Boolean showsSlimeId = setting.getShowsSlimeId()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontFamilies.getSelectionModel().select(contentFontFamily)
@@ -103,6 +100,15 @@ public class SettingController {
     if (ignoresCase) {
       $ignoresCase.setSelected(true)
     }
+    if (prefixSearch) {
+      $prefixSearch.setSelected(true)
+    }
+    if (ignoresDuplicateSlimeId) {
+      $ignoresDuplicateSlimeId.setSelected(true)
+    }
+    if (showsSlimeId) {
+      $showsSlimeId.setSelected(true)
+    }
     (0 ..< 10).each() { Integer i ->
       $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
     }
@@ -120,6 +126,9 @@ public class SettingController {
     Boolean savesAutomatically = $savesAutomatically.isSelected()
     Boolean ignoresAccent = $ignoresAccent.isSelected()
     Boolean ignoresCase = $ignoresCase.isSelected()
+    Boolean prefixSearch = $prefixSearch.isSelected()
+    Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeId.isSelected()
+    Boolean showsSlimeId = $showsSlimeId.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPaths.collect{path -> path.getText()}
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
@@ -139,6 +148,9 @@ public class SettingController {
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
+    setting.setPrefixSearch(prefixSearch)
+    setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
+    setting.setShowsSlimeId(showsSlimeId)
     (0 ..< 10).each() { Integer i ->
       String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -162,13 +174,8 @@ public class SettingController {
   }
 
   @FXML
-  private void commitChange() {
+  protected void commit() {
     saveSettings()
-    $stage.close()
-  }
-
-  @FXML
-  private void cancelChange() {
     $stage.close()
   }
 
@@ -214,37 +221,13 @@ public class SettingController {
   }
 
   private void setupTextBindings() {
-    Callable<String> modifiesPunctuationFunction = (Callable){
-      return ($modifiesPunctuation.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> savesAutomaticallyFunction = (Callable){
-      return ($savesAutomatically.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> ignoresAccentFunction = (Callable){
-      return ($ignoresAccent.selectedProperty().get()) ? "有効" : "無効"
-    }
-    Callable<String> ignoresCaseFunction = (Callable){
-      return ($ignoresCase.selectedProperty().get()) ? "有効" : "無効"
-    }
-    StringBinding modifiesPunctuationBinding = Bindings.createStringBinding(modifiesPunctuationFunction, $modifiesPunctuation.selectedProperty())
-    StringBinding savesAutomaticallyBinding = Bindings.createStringBinding(savesAutomaticallyFunction, $savesAutomatically.selectedProperty())
-    StringBinding ignoresAccentBinding = Bindings.createStringBinding(ignoresAccentFunction, $ignoresAccent.selectedProperty())
-    StringBinding ignoresCaseBinding = Bindings.createStringBinding(ignoresCaseFunction, $ignoresCase.selectedProperty())
-    $modifiesPunctuation.textProperty().bind(modifiesPunctuationBinding)
-    $savesAutomatically.textProperty().bind(savesAutomaticallyBinding)
-    $ignoresAccent.textProperty().bind(ignoresAccentBinding)
-    $ignoresCase.textProperty().bind(ignoresCaseBinding)
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    $stage.setScene($scene)
-    $stage.setTitle(TITLE)
-    $stage.setResizable(false)
-    $stage.sizeToScene()
+    $modifiesPunctuation.textProperty().bind(CustomBindings.whichString($modifiesPunctuation, "有効", "無効"))
+    $savesAutomatically.textProperty().bind(CustomBindings.whichString($savesAutomatically, "有効", "無効"))
+    $ignoresAccent.textProperty().bind(CustomBindings.whichString($ignoresAccent, "有効", "無効"))
+    $ignoresCase.textProperty().bind(CustomBindings.whichString($ignoresCase, "有効", "無効"))
+    $prefixSearch.textProperty().bind(CustomBindings.whichString($prefixSearch, "有効", "無効"))
+    $ignoresDuplicateSlimeId.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeId, "有効", "無効"))
+    $showsSlimeId.textProperty().bind(CustomBindings.whichString($showsSlimeId, "有効", "無効"))
   }
 
 }

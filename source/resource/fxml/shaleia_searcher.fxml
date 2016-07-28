@@ -6,14 +6,13 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import ziphil.module.Setting?>
@@ -41,18 +40,26 @@
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
-      <rowConstraints>
-        <RowConstraints vgrow="never"/>
-        <RowConstraints vgrow="always"/>
-      </rowConstraints>
       <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <prefWidth><Double rpx="150"/></prefWidth>
-        <minWidth><Double rpx="150"/></minWidth>
-        <maxWidth><Double rpx="150"/></maxWidth>
-      </TextField>
-      <TextArea fx:id="$data" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <spacing><Double rpx="5"/></spacing>
+        <TextField fx:id="$name" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$nameSearchType">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <minWidth><Double rpx="100"/></minWidth>
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="完全一致"/>
+              <String fx:value="前方一致"/>
+              <String fx:value="後方一致"/>
+              <String fx:value="部分一致"/>
+              <String fx:value="正規表現"/>
+              <String fx:value="最小対語"/>
+            </FXCollections>
+          </items>
+          <value><String fx:value="最小対語"/></value>
+        </ComboBox>
+      </HBox>
     </GridPane>
   </center>
   <bottom>

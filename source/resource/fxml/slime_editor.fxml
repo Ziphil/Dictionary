@@ -16,10 +16,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>
@@ -33,7 +35,7 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
-      <ScrollPane fitToWidth="true" styleClass="transparent">
+      <ScrollPane fx:id="$scrollPane" fitToWidth="true" styleClass="transparent">
         <VBox>
           <padding>
             <Insets>
@@ -41,14 +43,14 @@
             </Insets>
           </padding>
           <spacing><Double rpx="10"/></spacing>
-          <GridPane>
+          <GridPane fx:id="$gridPane">
             <vgap><Double rpx="5"/></vgap>
             <hgap><Double rpx="5"/></hgap>
             <columnConstraints>
               <ColumnConstraints hgrow="never"/>
               <ColumnConstraints hgrow="always"/>
             </columnConstraints>
-            <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="$idLabel" text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <TextField fx:id="$id" GridPane.columnIndex="1" GridPane.rowIndex="0">
               <prefWidth><Double rpx="70"/></prefWidth>
@@ -170,11 +172,11 @@
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
-        <Button text="キャンセル" onAction="#cancelEdit" cancelButton="true">
+        <Button text="キャンセル" onAction="#cancel" cancelButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
-        <Button text="OK" onAction="#commitEdit" defaultButton="true">
+        <Button text="OK" onAction="#commit" defaultButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>

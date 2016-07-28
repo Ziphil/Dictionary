@@ -23,10 +23,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>
@@ -67,25 +69,29 @@
             <ImageView><Image url="@../icon/random_search.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
+        <MenuItem text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I"/>
+        <MenuItem text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
+        <MenuItem text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
         <SeparatorMenuItem/>
-        <MenuItem text="個別設定" disable="true"/>
-        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+E">
+        <MenuItem text="辞書の個別設定" disable="true" accelerator="Shortcut+P"/>
+        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../icon/setting.png"/></ImageView>
           </graphic>
         </MenuItem>
       </Menu>
       <Menu text="ヘルプ">
-        <MenuItem text="ヘルプ" disable="true" accelerator="F1">
+        <MenuItem text="ヘルプ" onAction="#showHelp" accelerator="F1">
           <graphic>
             <ImageView><Image url="@../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem text="公式サイト" disable="true"/>
+        <MenuItem text="公式サイト" onAction="#showOfficialSite"/>
         <MenuItem text="ZpDICについて" onAction="#showApplicationInformation"/>
       </Menu>
     </MenuBar>
@@ -153,11 +159,10 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$modifyWordItem" text="編集"/>
-        <MenuItem fx:id="$removeWordItem" text="削除"/>
-        <SeparatorMenuItem/>
         <MenuItem fx:id="$addWordItem" text="新規作成"/>
         <MenuItem fx:id="$addInheritedWordItem" text="この単語から新規作成"/>
+        <MenuItem fx:id="$modifyWordItem" text="編集"/>
+        <MenuItem fx:id="$removeWordItem" text="削除"/>        
       </items>
     </ContextMenu>
   </fx:define>
