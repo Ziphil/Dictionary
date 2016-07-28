@@ -87,21 +87,27 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void search() {
+  private void search(KeyEvent event) {
     if ($dictionary != null) {
-      measureDictionaryStatus() {
-        String search = $searchText.getText()
-        String searchMode = $searchMode.getValue()
-        Boolean isStrict = $searchType.getText() == "完全一致"
-        if (searchMode == "単語") {
-          $dictionary.searchByName(search, isStrict)
-        } else if (searchMode == "訳語") {
-          $dictionary.searchByEquivalent(search, isStrict)
-        } else if (searchMode == "全文") {
-          $dictionary.searchByContent(search)
+      if (event == null || event.getCode() != KeyCode.ENTER) {
+        measureDictionaryStatus() {
+          String search = $searchText.getText()
+          String searchMode = $searchMode.getValue()
+          Boolean isStrict = $searchType.getText() == "完全一致"
+          if (searchMode == "単語") {
+            $dictionary.searchByName(search, isStrict)
+          } else if (searchMode == "訳語") {
+            $dictionary.searchByEquivalent(search, isStrict)
+          } else if (searchMode == "全文") {
+            $dictionary.searchByContent(search)
+          }
         }
       }
     }
+  }
+
+  private void search() {
+    search(null)
   }
 
   @FXML
