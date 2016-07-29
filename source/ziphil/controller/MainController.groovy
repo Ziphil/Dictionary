@@ -543,8 +543,4 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  public Scene getScene() {
-    return $scene
-  }
-
 }

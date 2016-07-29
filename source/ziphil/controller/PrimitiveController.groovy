@@ -47,4 +47,12 @@ public class PrimitiveController<S extends Stage> {
     loadResource(resourcePath, title, defaultWidth, defaultHeight, null, null, true)
   }
 
+  public S getStage() {
+    return $stage
+  }
+
+  public Scene getScene() {
+    return $scene
+  }
+
 }
