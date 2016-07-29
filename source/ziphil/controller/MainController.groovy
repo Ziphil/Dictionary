@@ -21,6 +21,7 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
@@ -521,7 +522,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
-      item.setAccelerator(KeyCombination.valueOf("Shortcut+${(i + 1) % 10}"))
+      item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN))
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
   }
@@ -536,7 +537,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupShortcuts() {
     $scene.setOnKeyPressed() { KeyEvent event ->
-      if (KeyCombination.valueOf("Shortcut+L").match(event)) {
+      if (KeyCodeCombination.new(KeyCode.L, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusWordList()
       }
     }
