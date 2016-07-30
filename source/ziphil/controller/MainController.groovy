@@ -218,6 +218,7 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.modifyWord(oldWord, word)
         if (savesAutomatically) {
           $dictionary.save()
+          $isDictionaryChanged = false
         } else {
           $isDictionaryChanged = true
         }
@@ -239,6 +240,7 @@ public class MainController extends PrimitiveController<Stage> {
       $dictionary.removeWord(word)
       if (savesAutomatically) {
         $dictionary.save()
+        $isDictionaryChanged = false
       } else {
         $isDictionaryChanged = true
       }
@@ -281,6 +283,7 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
+          $isDictionaryChanged = false
         } else {
           $isDictionaryChanged = true
         }
@@ -315,6 +318,7 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
+          $isDictionaryChanged = false
         } else {
           $isDictionaryChanged = true
         }
