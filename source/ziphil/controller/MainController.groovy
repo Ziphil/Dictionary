@@ -30,7 +30,9 @@ import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import javafx.stage.WindowEvent
 import ziphil.Launcher
+import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
@@ -73,11 +75,13 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Label $totalWordSize
   @FXML private Label $elapsedTime
   private Dictionary $dictionary
+  private Boolean $isDictionaryChanged = false
 
   public MainController(Stage stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
     setupShortcuts()
+    setupCloseConfirmation()
   }
 
   @FXML
@@ -214,6 +218,8 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.modifyWord(oldWord, word)
         if (savesAutomatically) {
           $dictionary.save()
+        } else {
+          $isDictionaryChanged = true
         }
       }
     }
@@ -233,6 +239,8 @@ public class MainController extends PrimitiveController<Stage> {
       $dictionary.removeWord(word)
       if (savesAutomatically) {
         $dictionary.save()
+      } else {
+        $isDictionaryChanged = true
       }
     }
   }
@@ -273,6 +281,8 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
+        } else {
+          $isDictionaryChanged = true
         }
       }
     }
@@ -305,6 +315,8 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
+        } else {
+          $isDictionaryChanged = true
         }
       }
     }
@@ -355,6 +367,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void saveDictionary() {
     if ($dictionary != null) {
       $dictionary.save()
+      $isDictionaryChanged = false
     }
   }
 
@@ -370,6 +383,7 @@ public class MainController extends PrimitiveController<Stage> {
       if (file != null) {
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
+        $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
     }
@@ -380,6 +394,33 @@ public class MainController extends PrimitiveController<Stage> {
     if ($wordList.getSelectionModel().getSelectedItems().isEmpty()) {
       $wordList.getSelectionModel().selectFirst()
       $wordList.scrollTo(0)
+    }
+  }
+
+  private Boolean checkDictionaryChange() {
+    if ($dictionary != null) {
+      if ($isDictionaryChanged) {
+        Dialog dialog = Dialog.new()
+        dialog.initOwner($stage)
+        dialog.setTitle("確認")
+        dialog.setContentString("辞書は変更されています。保存して終了しますか?")
+        dialog.setCommitString("保存する")
+        dialog.setNegateString("保存しない")
+        dialog.setAllowsNegate(true)
+        Boolean result = dialog.showAndWaitResult()
+        if (result == true) {
+          $dictionary.save()
+          return true
+        } else if (result == false) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    } else {
+      return true
     }
   }
 
@@ -539,6 +580,15 @@ public class MainController extends PrimitiveController<Stage> {
     $scene.setOnKeyPressed() { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.L, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusWordList()
+      }
+    }
+  }
+
+  private void setupCloseConfirmation() {
+    $stage.setOnCloseRequest() { WindowEvent event ->
+      Boolean allowsClose = checkDictionaryChange()
+      if (!allowsClose) {
+        event.consume()
       }
     }
   }

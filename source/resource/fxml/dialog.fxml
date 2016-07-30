@@ -42,11 +42,15 @@
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
-        <Button fx:id="$cancel" onAction="#cancel" cancelButton="true">
+        <Button fx:id="$cancel" text="キャンセル" onAction="#cancel" cancelButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
-        <Button fx:id="$commit" onAction="#commit" defaultButton="true">
+        <Button fx:id="$negate" text="NG" onAction="#negate">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button fx:id="$commit" text="OK" onAction="#commit" defaultButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>

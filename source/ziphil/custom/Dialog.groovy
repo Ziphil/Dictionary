@@ -27,10 +27,9 @@ public class Dialog extends Stage {
 
   @FXML private Label $content
   @FXML private Button $commit
+  @FXML private Button $negate
   @FXML private Button $cancel
-  private StringProperty $contentString = SimpleStringProperty.new()
-  private StringProperty $commitString = SimpleStringProperty.new("OK")
-  private StringProperty $cancelString = SimpleStringProperty.new("キャンセル")
+  private BooleanProperty $allowsNegate = SimpleBooleanProperty.new(false)
   private BooleanProperty $allowsCancel = SimpleBooleanProperty.new(true)
   private Boolean $result = false
   private Scene $scene
@@ -43,7 +42,6 @@ public class Dialog extends Stage {
 
   @FXML
   private void initialize(){
-    setupContent()
     setupButtons()
   }
 
@@ -53,14 +51,20 @@ public class Dialog extends Stage {
   }
 
   @FXML
-  private void cancel() {
+  private void commit() {
+    $result = true
+    close()
+  }
+
+  @FXML
+  private void negate() {
     $result = false
     close()
   }
 
   @FXML
-  private void commit() {
-    $result = true
+  private void cancel() {
+    $result = null
     close()
   }
 
@@ -68,14 +72,11 @@ public class Dialog extends Stage {
     initModality(Modality.WINDOW_MODAL)
   }
 
-  private void setupContent() {
-    $content.textProperty().bind($contentString)
-  }
-
   private void setupButtons() {
-    $commit.textProperty().bind($commitString)
-    $cancel.textProperty().bind($cancelString)
+    $negate.visibleProperty().bind($allowsNegate)
+    $negate.managedProperty().bind($allowsNegate)
     $cancel.visibleProperty().bind($allowsCancel)
+    $cancel.managedProperty().bind($allowsCancel)
     Platform.runLater() {
       $commit.requestFocus()
     }
@@ -91,39 +92,63 @@ public class Dialog extends Stage {
   }
 
   public String getContentString() {
-    return $contentString.get()
+    return $content.getText()
   }
 
   public void setContentString(String contentString) {
-    $contentString.set(contentString)
+    $content.setText(contentString)
   }
 
   public StringProperty contentStringProperty() {
-    return $contentString
+    return $content.textProperty()
   }
 
   public String getCommitString() {
-    return $commitString.get()
+    return $commit.getText()
   }
 
   public void setCommitString(String commitString) {
-    $commitString.set(commitString)
+    $commit.setText(commitString)
   }
 
   public StringProperty commitStringProperty() {
-    return $commitString
+    return $commit.textProperty()
+  }
+
+  public String getNegateString() {
+    return $negate.getText()
+  }
+
+  public void setNegateString(String negateString) {
+    $negate.setText(negateString)
+  }
+
+  public StringProperty negateStringProperty() {
+    return $negate.textProperty()
   }
 
   public String getCancelString() {
-    return $cancelString.get()
+    return $cancel.getText()
   }
 
   public void setCancelString(String cancelString) {
-    $cancelString.set(cancelString)
+    $cancel.setText(cancelString)
   }
 
   public StringProperty cancelStringProperty() {
-    return $cancelString
+    return $cancel.textProperty()
+  }
+
+  public Boolean isAllowsNegate() {
+    return $allowsNegate.get()
+  }
+
+  public void setAllowsNegate(Boolean allowsNegate) {
+    $allowsNegate.set(allowsNegate)
+  }
+
+  public BooleanProperty allowsNegateProperty() {
+    return $allowsNegate
   }
 
   public Boolean isAllowsCancel() {
