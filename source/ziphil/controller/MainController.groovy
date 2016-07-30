@@ -53,6 +53,7 @@ import ziphil.module.Setting
 public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
+  private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String TITLE = "ZpDIC alpha"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
@@ -82,6 +83,7 @@ public class MainController extends PrimitiveController<Stage> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
     setupShortcuts()
     setupCloseConfirmation()
+    setupExceptionHandler()
   }
 
   @FXML
@@ -428,6 +430,19 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void handleException(Throwable throwable) {
+    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    String name = throwable.getClass().getSimpleName()
+    Dialog dialog = Dialog.new()
+    dialog.initOwner($stage)
+    dialog.setTitle("エラー")
+    dialog.setContentString("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
+    dialog.setAllowsCancel(false)
+    throwable.printStackTrace(stream)
+    dialog.showAndWait()
+    Platform.exit()
+  }
+
   @FXML
   private void showHelp() {
     UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
@@ -594,6 +609,12 @@ public class MainController extends PrimitiveController<Stage> {
       if (!allowsClose) {
         event.consume()
       }
+    }
+  }
+
+  private void setupExceptionHandler() {
+    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
+      handleException(throwable)
     }
   }
 
