@@ -81,7 +81,7 @@ public class Setting {
   }
 
   public static String createCustomStylesheetURL() {
-    URL url = File.new(Launcher.BASE_PATH + "data/setting/custom.css").toURI().toURL()
+    URL url = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH).toURI().toURL()
     return url.toString()
   }
 
