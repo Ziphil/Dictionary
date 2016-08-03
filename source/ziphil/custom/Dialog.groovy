@@ -45,10 +45,10 @@ public class Dialog extends Stage {
     setTitle(title)
   }
 
-  public Dialog(String title, String contentString) {
+  public Dialog(String title, String contentText) {
     this()
     setTitle(title)
-    setContentString(contentString)
+    setContentText(contentText)
   }
 
   @FXML
@@ -102,51 +102,51 @@ public class Dialog extends Stage {
     sizeToScene()
   }
 
-  public String getContentString() {
+  public String getContentText() {
     return $content.getText()
   }
 
-  public void setContentString(String contentString) {
-    $content.setText(contentString)
+  public void setContentText(String contentText) {
+    $content.setText(contentText)
   }
 
-  public StringProperty contentStringProperty() {
+  public StringProperty contentTextProperty() {
     return $content.textProperty()
   }
 
-  public String getCommitString() {
+  public String getCommitText() {
     return $commit.getText()
   }
 
-  public void setCommitString(String commitString) {
-    $commit.setText(commitString)
+  public void setCommitText(String commitText) {
+    $commit.setText(commitText)
   }
 
-  public StringProperty commitStringProperty() {
+  public StringProperty commitTextProperty() {
     return $commit.textProperty()
   }
 
-  public String getNegateString() {
+  public String getNegateText() {
     return $negate.getText()
   }
 
-  public void setNegateString(String negateString) {
-    $negate.setText(negateString)
+  public void setNegateText(String negateText) {
+    $negate.setText(negateText)
   }
 
-  public StringProperty negateStringProperty() {
+  public StringProperty negateTextProperty() {
     return $negate.textProperty()
   }
 
-  public String getCancelString() {
+  public String getCancelText() {
     return $cancel.getText()
   }
 
-  public void setCancelString(String cancelString) {
-    $cancel.setText(cancelString)
+  public void setCancelText(String cancelText) {
+    $cancel.setText(cancelText)
   }
 
-  public StringProperty cancelStringProperty() {
+  public StringProperty cancelTextProperty() {
     return $cancel.textProperty()
   }
 

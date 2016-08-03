@@ -453,8 +453,8 @@ public class MainController extends PrimitiveController<Stage> {
       if ($isDictionaryChanged) {
         Dialog dialog = Dialog.new("確認", "辞書データは変更されています。保存しますか?")
         dialog.initOwner($stage)
-        dialog.setCommitString("保存する")
-        dialog.setNegateString("保存しない")
+        dialog.setCommitText("保存する")
+        dialog.setNegateText("保存しない")
         dialog.setAllowsNegate(true)
         Boolean result = dialog.showAndWaitResult()
         if (result == true) {
