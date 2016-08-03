@@ -14,7 +14,10 @@ import ziphil.custom.UtilityStage
 public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
+  private static final String BASIC_HTML_PATH = "resource/help/basic.html"
+  private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"
   private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
+  private static final String DICTIONARY_TYPE_HTML_PATH = "resource/help/dictionary_type.html"
   private static final String TITLE = "ヘルプ"
   private static final Double DEFAULT_WIDTH = 640
   private static final Double DEFAULT_HEIGHT = 480
@@ -34,8 +37,14 @@ public class HelpController extends Controller<Void> {
 
   private void changeHelp(String section) {
     String url = ""
-    if (section == "ショートカットキー") {
+    if (section == "基本操作") {
+      url = getClass().getClassLoader().getResource(BASIC_HTML_PATH).toExternalForm()
+    } else if (section == "OneToMany形式の編集") {
+      url = getClass().getClassLoader().getResource(SLIME_EDIT_HTML_PATH).toExternalForm()
+    } else if (section == "ショートカットキー") {
       url = getClass().getClassLoader().getResource(SHORTCUT_HTML_PATH).toExternalForm()
+    } else if (section == "各形式について") {
+      url = getClass().getClassLoader().getResource(DICTIONARY_TYPE_HTML_PATH).toExternalForm()
     }
     $help.getEngine().load(url)
   }
