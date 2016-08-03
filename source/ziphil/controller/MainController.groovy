@@ -351,7 +351,17 @@ public class MainController extends PrimitiveController<Stage> {
           updateDictionary(dictionary)
           $isDictionaryChanged = false
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        } else {
+          Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+          dialog.initOwner($stage)
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
         }
+      } else {
+        Dialog dialog = Dialog.new("エラー", "ファイルが正常ではありません。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
     }
   }
@@ -360,9 +370,16 @@ public class MainController extends PrimitiveController<Stage> {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
       Dictionary dictionary = Dictionary.loadDictionary(file)
-      updateDictionary(dictionary)
-      $isDictionaryChanged = false
-      Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      if (dictionary != null) {
+        updateDictionary(dictionary)
+        $isDictionaryChanged = false
+        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      } else {
+        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
     }
   }
 
@@ -382,7 +399,17 @@ public class MainController extends PrimitiveController<Stage> {
           updateDictionary(dictionary)
           $isDictionaryChanged = true
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        } else {
+          Dialog dialog = Dialog.new("新規作成エラー", "辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
+          dialog.initOwner($stage)
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
         }
+      } else {
+        Dialog dialog = Dialog.new("エラー", "ファイルが正常ではありません。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
     }
   }
