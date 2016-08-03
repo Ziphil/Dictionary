@@ -249,7 +249,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           if (keyName == "words") {
             reader.next()
             TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
-            List<SlimeWord> words = (List)(reader.getValue(typeReference))
+            List<SlimeWord> words = (List)reader.getValue(typeReference)
             $words.addAll(words)
           }
         }
