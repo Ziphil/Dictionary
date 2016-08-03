@@ -338,33 +338,51 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    File file = stage.showAndWaitResult()
-    if (file != null && file.isFile()) {
-      Dictionary dictionary = Dictionary.loadDictionary(file)
-      if (dictionary != null) {
-        updateDictionary(dictionary)
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+    Boolean allowsOpen = checkDictionaryChange()
+    if (allowsOpen) {
+      UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryChooserController controller = DictionaryChooserController.new(stage)
+      stage.initModality(Modality.WINDOW_MODAL)
+      stage.initOwner($stage)
+      File file = stage.showAndWaitResult()
+      if (file != null && file.isFile()) {
+        Dictionary dictionary = Dictionary.loadDictionary(file)
+        if (dictionary != null) {
+          updateDictionary(dictionary)
+          $isDictionaryChanged = false
+          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        }
       }
+    }
+  }
+
+  private void openRegisteredDictionary(File file) {
+    Boolean allowsOpen = checkDictionaryChange()
+    if (allowsOpen) {
+      Dictionary dictionary = Dictionary.loadDictionary(file)
+      updateDictionary(dictionary)
+      $isDictionaryChanged = false
+      Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
     }
   }
 
   @FXML
   private void createDictionary() {
-    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    controller.prepare(true)
-    File file = stage.showAndWaitResult()
-    if (file != null) {
-      Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
-      if (dictionary != null) {
-        updateDictionary(dictionary)
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+    Boolean allowsCreate = checkDictionaryChange()
+    if (allowsCreate) {
+      UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
+      DictionaryChooserController controller = DictionaryChooserController.new(stage)
+      stage.initModality(Modality.WINDOW_MODAL)
+      stage.initOwner($stage)
+      controller.prepare(true)
+      File file = stage.showAndWaitResult()
+      if (file != null) {
+        Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
+        if (dictionary != null) {
+          updateDictionary(dictionary)
+          $isDictionaryChanged = true
+          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        }
       }
     }
   }
@@ -409,7 +427,7 @@ public class MainController extends PrimitiveController<Stage> {
         Dialog dialog = Dialog.new()
         dialog.initOwner($stage)
         dialog.setTitle("確認")
-        dialog.setContentString("辞書は変更されています。保存して終了しますか?")
+        dialog.setContentString("辞書は変更されています。保存しますか?")
         dialog.setCommitString("保存する")
         dialog.setNegateString("保存しない")
         dialog.setAllowsNegate(true)
@@ -572,9 +590,7 @@ public class MainController extends PrimitiveController<Stage> {
         File file = File.new(dictionaryPath)
         item.setText(file.getName())
         item.setOnAction() {
-          Dictionary dictionary = Dictionary.loadDictionary(file)
-          updateDictionary(dictionary)
-          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          openRegisteredDictionary(file)
         }
       } else {
         item.setText("")
