@@ -19,6 +19,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
+  @FXML private TextField $id
   @FXML private TextField $name
   @FXML private ComboBox<String> $nameSearchType
   @FXML private TextField $equivalent
@@ -42,6 +43,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML
   protected void commit() {
+    Integer id = ($id.getText() != "") ? $id.getText().toInteger() : null
     String name = ($name.getText() != "") ? $name.getText() : null
     SearchType nameSearchType = SearchType.valueOfExplanation($nameSearchType.getValue())
     String equivalent = ($equivalent.getText() != "") ? $equivalent.getText() : null
@@ -51,7 +53,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     String informationTitle = ($informationTitle.getValue() != "") ? $informationTitle.getValue() : null
     SearchType informationSearchType = SearchType.valueOfExplanation($informationSearchType.getValue())
     String tag = ($tag.getValue() != "") ? $tag.getValue() : null
-    SlimeSearchParameter parameter = SlimeSearchParameter.new(name, nameSearchType, equivalent, equivalentTitle, equivalentSearchType, information, informationTitle, informationSearchType, tag)
+    SlimeSearchParameter parameter = SlimeSearchParameter.new(id, name, nameSearchType, equivalent, equivalentTitle, equivalentSearchType, information, informationTitle, informationSearchType, tag)
     $stage.close(parameter)
   }
 

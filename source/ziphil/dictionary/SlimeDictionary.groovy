@@ -27,6 +27,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
   }
 
   public void searchDetail(SlimeSearchParameter parameter) {
+    Integer searchId = parameter.getId()
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
     String searchEquivalent = parameter.getEquivalent()
@@ -38,10 +39,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     String searchTag = parameter.getTag()
     $filteredWords.setPredicate() { SlimeWord word ->
       Boolean predicate = true
+      Integer id = word.getId()
       String name = word.getName()
       List<SlimeEquivalent> equivalents = word.getRawEquivalents()
       List<SlimeInformation> informations = word.getInformations()
       List<String> tags = word.getTags()
+      if (searchId != null) {
+        if (id != searchId) {
+          predicate = false
+        }
+      }
       if (searchName != null) {
         if (!SearchType.matches(nameSearchType, name, searchName)) {
           predicate = false

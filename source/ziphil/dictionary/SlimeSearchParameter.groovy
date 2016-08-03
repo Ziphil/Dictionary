@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 @CompileStatic @Newify
 public class SlimeSearchParameter {
 
+  private Integer $id
   private String $name
   private SearchType $nameSearchType
   private String $equivalent
@@ -16,8 +17,9 @@ public class SlimeSearchParameter {
   private SearchType $informationSearchType
   private String $tag
 
-  public SlimeSearchParameter(String name, SearchType nameSearchType, String equivalent, String equivalentTitle, SearchType equivalentSearchType, String information, String informationTitle,
-                              SearchType informationSearchType, String tag) {
+  public SlimeSearchParameter(Integer id, String name, SearchType nameSearchType, String equivalent, String equivalentTitle, SearchType equivalentSearchType, String information,
+                              String informationTitle, SearchType informationSearchType, String tag) {
+    $id = id
     $name = name
     $nameSearchType = nameSearchType
     $equivalent = equivalent
@@ -27,6 +29,14 @@ public class SlimeSearchParameter {
     $informationTitle = informationTitle
     $informationSearchType = informationSearchType
     $tag = tag
+  }
+
+  public Integer getId() {
+    return $id
+  }
+
+  public void setId(Integer id) {
+    $id = id
   }
 
   public String getName() {
