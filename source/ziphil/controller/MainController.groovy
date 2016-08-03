@@ -424,10 +424,8 @@ public class MainController extends PrimitiveController<Stage> {
   private Boolean checkDictionaryChange() {
     if ($dictionary != null) {
       if ($isDictionaryChanged) {
-        Dialog dialog = Dialog.new()
+        Dialog dialog = Dialog.new("確認", "辞書は変更されています。保存しますか?")
         dialog.initOwner($stage)
-        dialog.setTitle("確認")
-        dialog.setContentString("辞書は変更されています。保存しますか?")
         dialog.setCommitString("保存する")
         dialog.setNegateString("保存しない")
         dialog.setAllowsNegate(true)
@@ -451,10 +449,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void handleException(Throwable throwable) {
     PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new()
+    Dialog dialog = Dialog.new("エラー", "エラーが発生しました(${name})。詳細はエラーログを確認してください。")
     dialog.initOwner($stage)
-    dialog.setTitle("エラー")
-    dialog.setContentString("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
     dialog.setAllowsCancel(false)
     throwable.printStackTrace(stream)
     dialog.showAndWait()

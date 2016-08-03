@@ -40,6 +40,17 @@ public class Dialog extends Stage {
     setupStage()
   }
 
+  public Dialog(String title) {
+    this()
+    setTitle(title)
+  }
+
+  public Dialog(String title, String contentString) {
+    this()
+    setTitle(title)
+    setContentString(contentString)
+  }
+
   @FXML
   private void initialize(){
     setupButtons()

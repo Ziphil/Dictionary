@@ -157,10 +157,8 @@ public class SlimeEditorController extends Controller<Boolean> {
       $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
       $stage.close(true)
     } else {
-      Dialog dialog = Dialog.new()
+      Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
       dialog.initOwner($stage)
-      dialog.setTitle("重複IDエラー")
-      dialog.setContentString("このIDはすでに利用されています。別のIDを指定してください。")
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
     }
