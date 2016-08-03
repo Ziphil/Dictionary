@@ -30,10 +30,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     Integer searchId = parameter.getId()
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalent = parameter.getEquivalent()
+    String searchEquivalentName = parameter.getEquivalentName()
     String searchEquivalentTitle = parameter.getEquivalentTitle()
     SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchInformation = parameter.getInformation()
+    String searchInformationText = parameter.getInformationText()
     String searchInformationTitle = parameter.getInformationTitle()
     SearchType informationSearchType = parameter.getInformationSearchType()
     String searchTag = parameter.getTag()
@@ -54,12 +54,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           predicate = false
         }
       }
-      if (searchEquivalent != null) {
+      if (searchEquivalentName != null) {
         Boolean equivalentPredicate = false
         equivalents.each() { SlimeEquivalent equivalent ->
           String equivalentTitle = equivalent.getTitle()
           equivalent.getNames().each() { String equivalentName ->
-            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalent) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
               equivalentPredicate = true
             }
           }
@@ -68,12 +68,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           predicate = false
         }
       }
-      if (searchInformation != null) {
+      if (searchInformationText != null) {
         Boolean informationPredicate = false
         informations.each() { SlimeInformation information ->
           String informationText = information.getText()
           String informationTitle = information.getTitle()
-          if (SearchType.matches(informationSearchType, informationText, searchInformation) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
             informationPredicate = true
           }
         }

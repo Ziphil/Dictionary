@@ -14,6 +14,9 @@ public class ShaleiaSearchParameter {
     $nameSearchType = nameSearchType
   }
 
+  public ShaleiaSearchParameter() {
+  }
+
   public String getName() {
     return $name
   }

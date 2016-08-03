@@ -74,7 +74,7 @@
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$equivalent" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$equivalentName" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$equivalentSearchType">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -96,7 +96,7 @@
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$information" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$informationText" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$informationSearchType">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>

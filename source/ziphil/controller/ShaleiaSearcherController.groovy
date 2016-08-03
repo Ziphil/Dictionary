@@ -28,9 +28,9 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
 
   @FXML
   protected void commit() {
-    String name = $name.getText()
-    SearchType nameSearchType = SearchType.valueOfExplanation($nameSearchType.getValue())
-    ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new(name, nameSearchType)
+    ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
+    parameter.setName($name.getText())
+    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchType.getValue()))
     $stage.close(parameter)
   }
 
