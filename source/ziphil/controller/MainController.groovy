@@ -533,6 +533,14 @@ public class MainController extends PrimitiveController<Stage> {
         $searchText.requestFocus()
         search()
       }
+    } else if ($dictionary instanceof SlimeDictionary) {
+      $dictionary.setOnLinkClicked() { Integer id ->
+        measureDictionaryStatus() {
+          SlimeSearchParameter parameter = SlimeSearchParameter.new()
+          parameter.setId(id)
+          $dictionary.searchDetail(parameter)
+        }
+      }
     }
     search()
   }

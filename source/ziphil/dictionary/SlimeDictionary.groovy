@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import net.arnx.jsonic.JSON
@@ -15,6 +16,8 @@ import ziphil.module.Strings
 
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
+
+  private Consumer<Integer> $onLinkClicked
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -149,6 +152,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     if (containsId(word.getId(), word)) {
       word.setId(validMinId())
     }
+    word.setDictionary(this)
     $words.add(word)
   }
 
@@ -282,6 +286,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
             reader.next()
             TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
             List<SlimeWord> words = (List)reader.getValue(typeReference)
+            words.each() { SlimeWord word ->
+              word.setDictionary(this)
+            }
             $words.addAll(words)
           }
         }
@@ -324,6 +331,14 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     SlimeSuggestion suggestion = SlimeSuggestion.new()
     suggestion.setDictionary(this)
     $suggestions.add(suggestion)
+  }
+
+  public Consumer<Integer> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
 }

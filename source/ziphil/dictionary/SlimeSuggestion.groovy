@@ -41,7 +41,9 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
     nameText.setOnMouseClicked() {
-      println("${id} clicked")
+      if ($dictionary.getOnLinkClicked() != null) {
+        $dictionary.getOnLinkClicked().accept(id)
+      }
     }
     textFlow.getChildren().addAll(prefixText, nameText, possibilityNameText)
     box.getChildren().add(textFlow)
