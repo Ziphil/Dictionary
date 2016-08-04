@@ -33,8 +33,10 @@
         <ListView fx:id="$sectionList">
           <prefWidth><Double rpx="150"/></prefWidth>
           <minWidth><Double rpx="150"/></minWidth>
-          <String fx:value="各形式について"/>
+          <String fx:value="基本操作"/>
+          <String fx:value="OneToMany形式の編集"/>
           <String fx:value="ショートカットキー"/>
+          <String fx:value="各形式について"/>
         </ListView>
         <WebView fx:id="$help"/>
       </HBox>

@@ -13,10 +13,9 @@ import ziphil.module.Setting
 public class MainApplication extends Application {
 
   public void start(Stage stage) {
-    createDataDirectory()
+    createDirectories()
     setupFontRendering()
     load(stage)
-    setupExceptionHandler()
     setupStylesheet()
   }
 
@@ -29,8 +28,9 @@ public class MainApplication extends Application {
     Setting.getInstance().save()
   }
 
-  private void createDataDirectory() {
+  private void createDirectories() {
     File.new(Launcher.BASE_PATH + "data/setting").mkdirs()
+    File.new(Launcher.BASE_PATH + "data/log").mkdirs()
   }
 
   private void setupFontRendering() {
@@ -41,13 +41,6 @@ public class MainApplication extends Application {
     } else if (setting.getFontRenderingType() == 2) {
       System.setProperty("prism.lcdtext", "false")
       System.setProperty("prism.text", "t2k")
-    }
-  }
-
-  private void setupExceptionHandler() {
-    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
-      throwable.printStackTrace()
-      Platform.exit()
     }
   }
 

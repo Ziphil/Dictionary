@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import net.arnx.jsonic.JSON
@@ -9,50 +10,91 @@ import net.arnx.jsonic.JSONException
 import net.arnx.jsonic.JSONReader
 import net.arnx.jsonic.JSONWriter
 import net.arnx.jsonic.TypeReference
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class SlimeDictionary extends Dictionary<SlimeWord> {
+public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
+
+  private Consumer<Integer> $onLinkClicked
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
     load()
     setupWords()
+    setupSuggestions()
   }
 
   public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
     super(name, path)
     $words.addAll(words)
     setupWords()
+    setupSuggestions()
+  }
+
+  protected Boolean checkSuggestion(SlimeWord word, String search) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean existsSuggestion = false
+    word.getVariations().each() { SlimeVariation variation ->
+      String variationTitle = variation.getTitle()
+      String variationName = variation.getName()
+      String newVariationName = variationName
+      String newSearch = search
+      if (ignoresAccent) {
+        newVariationName = Strings.unaccent(newVariationName)
+        newSearch = Strings.unaccent(newSearch)
+      }
+      if (ignoresCase) {
+        newVariationName = Strings.toLowerCase(newVariationName)
+        newSearch = Strings.toLowerCase(newSearch)
+      }
+      if (newVariationName == newSearch) {
+        SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
+        $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].update()
+        existsSuggestion = true
+      }
+    }
+    return existsSuggestion
   }
 
   public void searchDetail(SlimeSearchParameter parameter) {
+    Integer searchId = parameter.getId()
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalent = parameter.getEquivalent()
+    String searchEquivalentName = parameter.getEquivalentName()
     String searchEquivalentTitle = parameter.getEquivalentTitle()
     SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchInformation = parameter.getInformation()
+    String searchInformationText = parameter.getInformationText()
     String searchInformationTitle = parameter.getInformationTitle()
     SearchType informationSearchType = parameter.getInformationSearchType()
     String searchTag = parameter.getTag()
     $filteredWords.setPredicate() { SlimeWord word ->
       Boolean predicate = true
+      Integer id = word.getId()
       String name = word.getName()
       List<SlimeEquivalent> equivalents = word.getRawEquivalents()
       List<SlimeInformation> informations = word.getInformations()
       List<String> tags = word.getTags()
+      if (searchId != null) {
+        if (id != searchId) {
+          predicate = false
+        }
+      }
       if (searchName != null) {
         if (!SearchType.matches(nameSearchType, name, searchName)) {
           predicate = false
         }
       }
-      if (searchEquivalent != null) {
+      if (searchEquivalentName != null) {
         Boolean equivalentPredicate = false
         equivalents.each() { SlimeEquivalent equivalent ->
           String equivalentTitle = equivalent.getTitle()
           equivalent.getNames().each() { String equivalentName ->
-            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalent) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
               equivalentPredicate = true
             }
           }
@@ -61,12 +103,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           predicate = false
         }
       }
-      if (searchInformation != null) {
+      if (searchInformationText != null) {
         Boolean informationPredicate = false
         informations.each() { SlimeInformation information ->
           String informationText = information.getText()
           String informationTitle = information.getTitle()
-          if (SearchType.matches(informationSearchType, informationText, searchInformation) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
             informationPredicate = true
           }
         }
@@ -86,6 +128,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
         }
       }
       return predicate
+    }
+    $filteredSuggestions.setPredicate() { SlimeSuggestion suggestion ->
+      return false
     }
   }
 
@@ -110,6 +155,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     if (containsId(word.getId(), word)) {
       word.setId(validMinId())
     }
+    word.setDictionary(this)
     $words.add(word)
   }
 
@@ -242,7 +288,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
           if (keyName == "words") {
             reader.next()
             TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
-            List<SlimeWord> words = (List)(reader.getValue(typeReference))
+            List<SlimeWord> words = (List)reader.getValue(typeReference)
+            words.each() { SlimeWord word ->
+              word.setDictionary(this)
+            }
             $words.addAll(words)
           }
         }
@@ -279,6 +328,20 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+  }
+
+  private void setupSuggestions() {
+    SlimeSuggestion suggestion = SlimeSuggestion.new()
+    suggestion.setDictionary(this)
+    $suggestions.add(suggestion)
+  }
+
+  public Consumer<Integer> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
 }

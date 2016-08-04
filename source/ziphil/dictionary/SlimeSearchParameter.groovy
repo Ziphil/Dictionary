@@ -6,27 +6,40 @@ import groovy.transform.CompileStatic
 @CompileStatic @Newify
 public class SlimeSearchParameter {
 
+  private Integer $id
   private String $name
   private SearchType $nameSearchType
-  private String $equivalent
+  private String $equivalentName
   private String $equivalentTitle
   private SearchType $equivalentSearchType
-  private String $information
+  private String $informationText
   private String $informationTitle
   private SearchType $informationSearchType
   private String $tag
 
-  public SlimeSearchParameter(String name, SearchType nameSearchType, String equivalent, String equivalentTitle, SearchType equivalentSearchType, String information, String informationTitle,
-                              SearchType informationSearchType, String tag) {
+  public SlimeSearchParameter(Integer id, String name, SearchType nameSearchType, String equivalentName, String equivalentTitle, SearchType equivalentSearchType, String informationText,
+                              String informationTitle, SearchType informationSearchType, String tag) {
+    $id = id
     $name = name
     $nameSearchType = nameSearchType
-    $equivalent = equivalent
+    $equivalentName = equivalentName
     $equivalentTitle = equivalentTitle
     $equivalentSearchType = equivalentSearchType
-    $information = information
+    $informationText = informationText
     $informationTitle = informationTitle
     $informationSearchType = informationSearchType
     $tag = tag
+  }
+
+  public SlimeSearchParameter() {
+  }
+
+  public Integer getId() {
+    return $id
+  }
+
+  public void setId(Integer id) {
+    $id = id
   }
 
   public String getName() {
@@ -45,12 +58,12 @@ public class SlimeSearchParameter {
     $nameSearchType = nameSearchType
   }
 
-  public String getEquivalent() {
-    return $equivalent
+  public String getEquivalentName() {
+    return $equivalentName
   }
 
-  public void setEquivalent(String equivalent) {
-    $equivalent = equivalent
+  public void setEquivalentName(String equivalentName) {
+    $equivalentName = equivalentName
   }
 
   public String getEquivalentTitle() {
@@ -69,12 +82,12 @@ public class SlimeSearchParameter {
     $equivalentSearchType = equivalentSearchType
   }
 
-  public String getInformation() {
-    return $information
+  public String getInformationText() {
+    return $informationText
   }
 
-  public void setInformation(String information) {
-    $information = information
+  public void setInformationText(String informationText) {
+    $informationText = informationText
   }
 
   public String getInformationTitle() {

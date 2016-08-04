@@ -40,11 +40,16 @@
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
-      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-      <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+      <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <TextField fx:id="$id" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <maxWidth><Double rpx="70"/></maxWidth>
+      </TextField>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$name" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$nameSearchType">
@@ -63,13 +68,13 @@
           <value><String fx:value="完全一致"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$equivalentTitle" editable="true">
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$equivalent" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$equivalentName" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$equivalentSearchType">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -85,13 +90,13 @@
           <value><String fx:value="完全一致"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$informationTitle" editable="true">
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$information" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$informationText" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$informationSearchType">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -104,7 +109,7 @@
           <value><String fx:value="部分一致"/></value>
         </ComboBox>
       </HBox>
-      <ComboBox fx:id="$tag" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <ComboBox fx:id="$tag" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <prefWidth><Double rpx="120"/></prefWidth>
         <minWidth><Double rpx="120"/></minWidth>
       </ComboBox>

@@ -5,6 +5,8 @@ import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.Spinner
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import ziphil.custom.Measurement
@@ -63,7 +65,7 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   private void setupShortcuts() {
     $scene.setOnKeyPressed() { KeyEvent event ->
-      if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
+      if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
         commit()
       }
     }

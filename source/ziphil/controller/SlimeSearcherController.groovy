@@ -19,12 +19,13 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
+  @FXML private TextField $id
   @FXML private TextField $name
   @FXML private ComboBox<String> $nameSearchType
-  @FXML private TextField $equivalent
+  @FXML private TextField $equivalentName
   @FXML private ComboBox<String> $equivalentTitle
   @FXML private ComboBox<String> $equivalentSearchType
-  @FXML private TextField $information
+  @FXML private TextField $informationText
   @FXML private ComboBox<String> $informationTitle
   @FXML private ComboBox<String> $informationSearchType
   @FXML private ComboBox<String> $tag
@@ -42,16 +43,31 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML
   protected void commit() {
-    String name = ($name.getText() != "") ? $name.getText() : null
-    SearchType nameSearchType = SearchType.valueOfExplanation($nameSearchType.getValue())
-    String equivalent = ($equivalent.getText() != "") ? $equivalent.getText() : null
-    String equivalentTitle = ($equivalentTitle.getValue() != "") ? $equivalentTitle.getValue() : null
-    SearchType equivalentSearchType = SearchType.valueOfExplanation($equivalentSearchType.getValue())
-    String information = ($information.getText() != "") ? $information.getText() : null
-    String informationTitle = ($informationTitle.getValue() != "") ? $informationTitle.getValue() : null
-    SearchType informationSearchType = SearchType.valueOfExplanation($informationSearchType.getValue())
-    String tag = ($tag.getValue() != "") ? $tag.getValue() : null
-    SlimeSearchParameter parameter = SlimeSearchParameter.new(name, nameSearchType, equivalent, equivalentTitle, equivalentSearchType, information, informationTitle, informationSearchType, tag)
+    SlimeSearchParameter parameter = SlimeSearchParameter.new()
+    if ($id.getText() != "") {
+      parameter.setId($id.getText().toInteger())
+    }
+    if ($name.getText() != "") {
+      parameter.setName($name.getText())
+    }
+    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchType.getValue()))
+    if ($equivalentName.getText() != "") {
+      parameter.setEquivalentName($equivalentName.getText())
+    }
+    if ($equivalentTitle.getValue() != "") {
+      parameter.setEquivalentTitle($equivalentTitle.getValue())
+    } 
+    parameter.setEquivalentSearchType(SearchType.valueOfExplanation($equivalentSearchType.getValue()))
+    if ($informationText.getText() != "") {
+      parameter.setInformationText($informationText.getText())
+    }
+    if ($informationTitle.getValue() != "") {
+      parameter.setInformationTitle($informationTitle.getValue())
+    }
+    parameter.setInformationSearchType(SearchType.valueOfExplanation($informationSearchType.getValue()))
+    if ($tag.getValue() != "") {
+      parameter.setTag($tag.getValue())
+    }
     $stage.close(parameter)
   }
 

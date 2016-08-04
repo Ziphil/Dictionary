@@ -5,7 +5,7 @@ import java.util.regex.Matcher
 
 
 @CompileStatic @Newify
-public class PersonalDictionary extends Dictionary<PersonalWord> {
+public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)

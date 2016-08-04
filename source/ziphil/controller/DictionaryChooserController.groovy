@@ -28,10 +28,10 @@ public class DictionaryChooserController extends Controller<File> {
 
   @FXML
   private void initialize() {
-    ExtensionFilter shaleiaFilter = ExtensionFilter.new("シャレイア語辞典形式", "xdc")
-    ExtensionFilter personalFilter = ExtensionFilter.new("PDIC-CSV形式", "csv")
     ExtensionFilter slimeFilter = ExtensionFilter.new("OneToMany-JSON形式", "json")
-    $chooser.getExtensionFilters().addAll(shaleiaFilter, personalFilter, slimeFilter)
+    ExtensionFilter personalFilter = ExtensionFilter.new("PDIC-CSV形式", "csv")
+    ExtensionFilter shaleiaFilter = ExtensionFilter.new("シャレイア語辞典形式", "xdc")
+    $chooser.getExtensionFilters().addAll(slimeFilter, personalFilter, shaleiaFilter)
   }
 
   public void prepare(Boolean adjustsExtension) {

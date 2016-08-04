@@ -14,6 +14,8 @@ import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane
@@ -155,10 +157,8 @@ public class SlimeEditorController extends Controller<Boolean> {
       $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
       $stage.close(true)
     } else {
-      Dialog dialog = Dialog.new()
+      Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
       dialog.initOwner($stage)
-      dialog.setTitle("重複IDエラー")
-      dialog.setContentString("このIDはすでに利用されています。別のIDを指定してください。")
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
     }
@@ -527,27 +527,27 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void setupShortcuts() {
     $scene.setOnKeyPressed() { KeyEvent event ->
-      if (KeyCombination.valueOf("Shortcut+W").match(event)) {
+      if (KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusName()
-      } else if (KeyCombination.valueOf("Shortcut+T").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.T, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusTagControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+E").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.E, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusEquivalentControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+I").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.I, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusInformationControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+D").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.D, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusVariationControl(event.getTarget())
-      } else if (KeyCombination.valueOf("Shortcut+Shift+T").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.T, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertTagControl()
-      } else if (KeyCombination.valueOf("Shortcut+Shift+E").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.E, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertEquivalentControl()
-      } else if (KeyCombination.valueOf("Shortcut+Shift+I").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.I, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertInformationControl()
-      } else if (KeyCombination.valueOf("Shortcut+Shift+D").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.D, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertVariationControl()
-      } else if (KeyCombination.valueOf("Shortcut+Shift+R").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.R, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertRelationControl()
-      } else if (KeyCombination.valueOf("Shortcut+Enter").match(event)) {
+      } else if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
         commit()
       }
     }

@@ -9,7 +9,7 @@ import java.util.regex.Matcher
 
 
 @CompileStatic @Newify
-public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
+public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private Consumer<String> $onLinkClicked
 
@@ -26,6 +26,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
       String name = word.getName()
       Boolean predicate = SearchType.matches(nameSearchType, name, searchName)
       return predicate
+    }
+    $filteredSuggestions.setPredicate() { Suggestion suggestion ->
+      return false
     }
   }
 
