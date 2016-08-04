@@ -176,7 +176,6 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void changeSearchMode() {
     $hitWordSize.setText($totalWordSize.getText())
-    $searchText.setText("")
     $searchText.requestFocus()
     search()
   }
