@@ -129,6 +129,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
       return predicate
     }
+    $filteredSuggestions.setPredicate() { SlimeSuggestion suggestion ->
+      return false
+    }
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {

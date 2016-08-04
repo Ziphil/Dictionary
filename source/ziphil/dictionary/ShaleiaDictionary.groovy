@@ -27,6 +27,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       Boolean predicate = SearchType.matches(nameSearchType, name, searchName)
       return predicate
     }
+    $filteredSuggestions.setPredicate() { Suggestion suggestion ->
+      return false
+    }
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
