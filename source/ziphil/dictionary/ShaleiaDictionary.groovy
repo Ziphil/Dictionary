@@ -9,7 +9,7 @@ import java.util.regex.Matcher
 
 
 @CompileStatic @Newify
-public class ShaleiaDictionary extends Dictionary<ShaleiaWord> {
+public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private Consumer<String> $onLinkClicked
 

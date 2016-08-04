@@ -9,21 +9,53 @@ import net.arnx.jsonic.JSONException
 import net.arnx.jsonic.JSONReader
 import net.arnx.jsonic.JSONWriter
 import net.arnx.jsonic.TypeReference
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class SlimeDictionary extends Dictionary<SlimeWord> {
+public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
     load()
     setupWords()
+    setupSuggestions()
   }
 
   public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
     super(name, path)
     $words.addAll(words)
     setupWords()
+    setupSuggestions()
+  }
+
+  protected Boolean checkSuggestion(SlimeWord word, String search) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean existsSuggestion = false
+    word.getVariations().each() { SlimeVariation variation ->
+      String variationTitle = variation.getTitle()
+      String variationName = variation.getName()
+      String newVariationName = variationName
+      String newSearch = search
+      if (ignoresAccent) {
+        newVariationName = Strings.unaccent(newVariationName)
+        newSearch = Strings.unaccent(newSearch)
+      }
+      if (ignoresCase) {
+        newVariationName = Strings.toLowerCase(newVariationName)
+        newSearch = Strings.toLowerCase(newSearch)
+      }
+      if (newVariationName == newSearch) {
+        SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
+        $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].update()
+        existsSuggestion = true
+      }
+    }
+    return existsSuggestion
   }
 
   public void searchDetail(SlimeSearchParameter parameter) {
@@ -286,6 +318,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord> {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+  }
+
+  private void setupSuggestions() {
+    SlimeSuggestion suggestion = SlimeSuggestion.new()
+    suggestion.setDictionary(this)
+    $suggestions.add(suggestion)
   }
 
 }

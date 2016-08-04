@@ -1,10 +1,13 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
+import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
@@ -13,18 +16,23 @@ import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public abstract class Dictionary<W extends Word> {
+public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   protected String $name = ""
   protected String $path = ""
   protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected FilteredList<W> $filteredWords
   protected SortedList<W> $sortedWords
+  protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
+  protected FilteredList<S> $filteredSuggestions
+  protected SortedList<S> $sortedSuggestions
+  private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
 
   public Dictionary(String name, String path) {
     $name = name
     $path = path
     setupSortedWords()
+    setupWholeWords()
   }
 
   public void searchByName(String search, Boolean isStrict) {
@@ -32,9 +40,13 @@ public abstract class Dictionary<W extends Word> {
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean existsSuggestion = false
     try {
       Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { Word word ->
+      $suggestions.each() { S suggestion ->
+        suggestion.getPossibilities().clear()
+      }
+      $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           String newName = word.getName()
           String newSearch = search
@@ -45,6 +57,9 @@ public abstract class Dictionary<W extends Word> {
           if (ignoresCase) {
             newName = Strings.toLowerCase(newName)
             newSearch = Strings.toLowerCase(newSearch)
+          }
+          if (checkSuggestion(word, search)) {
+            existsSuggestion = true
           }
           if (search != "") {
             if (prefixSearch) {
@@ -60,6 +75,9 @@ public abstract class Dictionary<W extends Word> {
           return matcher.find()
         }
       }
+      $filteredSuggestions.setPredicate() { S suggestion ->
+        return existsSuggestion
+      }
     } catch (PatternSyntaxException exception) {
     }
   }
@@ -69,7 +87,7 @@ public abstract class Dictionary<W extends Word> {
     Boolean prefixSearch = setting.getPrefixSearch()
     try {
       Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { Word word ->
+      $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           if (search != "") {
             return word.getEquivalents().any() { String equivalent ->
@@ -89,6 +107,9 @@ public abstract class Dictionary<W extends Word> {
           }
         }
       }
+      $filteredSuggestions.setPredicate() { S suggestion ->
+        return false
+      }
     } catch (PatternSyntaxException exception) {
     }
   }
@@ -96,12 +117,19 @@ public abstract class Dictionary<W extends Word> {
   public void searchByContent(String search) {
     try {
       Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { Word word ->
+      $filteredWords.setPredicate() { W word ->
         Matcher matcher = pattern.matcher(word.getContent())
         return matcher.find()
       }
+      $filteredSuggestions.setPredicate() { S suggestion ->
+        return false
+      }
     } catch (PatternSyntaxException exception) {
     }
+  }
+
+  protected Boolean checkSuggestion(W word, String search) {
+    return false
   }
 
   public abstract void modifyWord(W oldWord, W newWord)
@@ -121,6 +149,18 @@ public abstract class Dictionary<W extends Word> {
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords)
+    $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
+    $sortedSuggestions = SortedList.new($filteredSuggestions)
+  }
+
+  private void setupWholeWords() {
+    ListChangeListener<?> listener = (ListChangeListener){ Change<?> change ->
+      $wholeWords.clear()
+      $wholeWords.addAll($sortedSuggestions)
+      $wholeWords.addAll($sortedWords)
+    }
+    $filteredWords.addListener(listener)
+    $filteredSuggestions.addListener(listener)
   }
 
   public String getName() {
@@ -137,6 +177,10 @@ public abstract class Dictionary<W extends Word> {
 
   public void setPath(String path) {
     $path = path
+  }
+
+  public ObservableList<? extends Word> getWholeWords() {
+    return $wholeWords
   }
 
   public ObservableList<W> getWords() {

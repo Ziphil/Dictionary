@@ -522,7 +522,7 @@ public class MainController extends PrimitiveController<Stage> {
     $dictionary = dictionary
     $totalWordSize.setText($dictionary.getRawWords().size().toString())
     $dictionaryName.setText($dictionary.getName())
-    $wordList.setItems($dictionary.getWords())
+    $wordList.setItems($dictionary.getWholeWords())
     $searchText.setText("")
     $searchText.requestFocus()
     if ($dictionary instanceof ShaleiaDictionary) {

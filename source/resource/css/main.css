@@ -40,7 +40,8 @@
   -fx-font-size: 0.9em;
 }
 
-#dictionary-list .shaleia-link {
+#dictionary-list .shaleia-link,
+#dictionary-list .slime-link {
   -fx-underline: true;
 }
 
