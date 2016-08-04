@@ -369,11 +369,6 @@ public class MainController extends PrimitiveController<Stage> {
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
-      } else {
-        Dialog dialog = Dialog.new("エラー", "ファイルが正常ではありません。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
       }
     }
   }
@@ -417,11 +412,6 @@ public class MainController extends PrimitiveController<Stage> {
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
-      } else {
-        Dialog dialog = Dialog.new("エラー", "ファイルが正常ではありません。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
       }
     }
   }

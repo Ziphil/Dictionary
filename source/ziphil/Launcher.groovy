@@ -8,7 +8,7 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
-  public static final String VERSION = "0.6.0α"
+  public static final String VERSION = "0.6.1α"
   public static final String DATE = "1656"
   public static final Boolean DEBUG = false
   public static final String BASE_PATH = createBasePath()
@@ -41,6 +41,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  0. 6. 1 | ファイルを開くときにキャンセルするとエラーダイアログが表示される不具合を修正。
 //  0. 6. 0 | OneToMany 形式で変化形サジェストを行う機能を追加。
 //          | OneToMany 形式で関連語をクリックするとその単語を表示するよう変更。
 //          | ヘルプに基本操作に関する説明を追加。
