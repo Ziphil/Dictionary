@@ -492,6 +492,7 @@ public class MainController extends PrimitiveController<Stage> {
     dialog.initOwner($stage)
     dialog.setAllowsCancel(false)
     throwable.printStackTrace(stream)
+    stream.close()
     dialog.showAndWait()
     Platform.exit()
   }
