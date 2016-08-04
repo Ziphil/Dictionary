@@ -23,6 +23,7 @@ public class SlimeWord extends Word {
   public static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   public static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
   public static final String SLIME_TITLE_CLASS = "slime-title"
+  public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_ID_CLASS = "slime-id"
 
   private SlimeDictionary $dictionary
@@ -82,8 +83,9 @@ public class SlimeWord extends Word {
       hasInformation = true
     }
     $relations.groupBy{relation -> relation.getTitle()}.each() { String title, List<SlimeRelation> relationGroup ->
-      String nameString = relationGroup.collect{relation -> relation.getName()}.join(", ")
-      addRelationNode(relationBox, title, nameString)
+      List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
+      List<String> names = relationGroup.collect{relation -> relation.getName()}
+      addRelationNode(relationBox, title, ids, names)
       hasRelation = true
     }
     if (hasInformation) {
@@ -152,15 +154,30 @@ public class SlimeWord extends Word {
     box.getChildren().addAll(titleTextFlow, textFlow)
   }
 
-  private void addRelationNode(VBox box, String title, String relation) {
+  private void addRelationNode(VBox box, String title, List<Integer> ids, List<String> names) {
     TextFlow textFlow = TextFlow.new()
     Text formerTitleText = Text.new("cf:")
-    Text titleText = Text.new("〈${title}〉")
-    Text relationText = Text.new(" " + relation)
+    Text titleText = Text.new("〈${title}〉" + " ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    relationText.getStyleClass().add(CONTENT_CLASS)
-    textFlow.getChildren().addAll(formerTitleText, titleText, relationText)
+    textFlow.getChildren().addAll(formerTitleText, titleText)
+    (0 ..< names.size()).each() { Integer i ->
+      Integer id = ids[i]
+      String name = names[i]
+      Text nameText = Text.new(name)
+      nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
+      nameText.setOnMouseClicked() {
+        if ($dictionary.getOnLinkClicked() != null) {
+          $dictionary.getOnLinkClicked().accept(id)
+        }
+      }
+      textFlow.getChildren().add(nameText)
+      if (i < names.size() - 1) {
+        Text punctuationText = Text.new(", ")
+        punctuationText.getStyleClass().add(CONTENT_CLASS)
+        textFlow.getChildren().add(punctuationText)
+      }      
+    }
     box.getChildren().add(textFlow)
   }
 
