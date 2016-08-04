@@ -39,6 +39,7 @@ import ziphil.custom.WordCell
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.PersonalDictionary
 import ziphil.dictionary.PersonalWord
+import ziphil.dictionary.SearchType
 import ziphil.dictionary.ShaleiaDictionary
 import ziphil.dictionary.ShaleiaSearchParameter
 import ziphil.dictionary.ShaleiaWord
@@ -143,6 +144,18 @@ public class MainController extends PrimitiveController<Stage> {
             $dictionary.searchDetail(parameter) 
           }
         }
+      }
+    }
+  }
+
+  private void searchDetailBy(Object parameter) {
+    if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
+      measureDictionaryStatus() {
+        $dictionary.searchDetail(parameter)
+      }
+    } else if ($dictionary instanceof SlimeDictionary && parameter instanceof SlimeSearchParameter) {
+      measureDictionaryStatus() {
+        $dictionary.searchDetail(parameter)
       }
     }
   }
@@ -527,19 +540,16 @@ public class MainController extends PrimitiveController<Stage> {
     $searchText.requestFocus()
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
-        $searchMode.setValue("単語")
-        $searchType.setSelected(true)
-        $searchText.setText(name)
-        $searchText.requestFocus()
-        search()
+        ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
+        parameter.setName(name)
+        parameter.setNameSearchType(SearchType.EXACT)
+        searchDetailBy(parameter)
       }
     } else if ($dictionary instanceof SlimeDictionary) {
       $dictionary.setOnLinkClicked() { Integer id ->
-        measureDictionaryStatus() {
-          SlimeSearchParameter parameter = SlimeSearchParameter.new()
-          parameter.setId(id)
-          $dictionary.searchDetail(parameter)
-        }
+        SlimeSearchParameter parameter = SlimeSearchParameter.new()
+        parameter.setId(id)
+        searchDetailBy(parameter)
       }
     }
     search()
