@@ -11,6 +11,8 @@ import java.util.regex.Matcher
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
+  private static final String ALPHABET_ORDER = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
+
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
@@ -104,8 +106,8 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
-      List<Integer> firstList = firstWord.listForComparison()
-      List<Integer> secondList = secondWord.listForComparison()
+      List<Integer> firstList = firstWord.listForComparison(ALPHABET_ORDER)
+      List<Integer> secondList = secondWord.listForComparison(ALPHABET_ORDER)
       Integer result = null
       (0 ..< firstList.size()).each() { Integer i ->
         Integer firstData = firstList[i]
