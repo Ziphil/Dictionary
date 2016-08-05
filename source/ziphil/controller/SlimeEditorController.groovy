@@ -318,6 +318,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     Integer index = $relationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $relationBox.getChildren().removeAt(index)
+      $relations.removeAt(index)
       $relationTitles.removeAt(index)
       $relationNames.removeAt(index)
     }
