@@ -181,6 +181,12 @@ public class SlimeWord extends Word {
     box.getChildren().add(textFlow)
   }
 
+  public List<Integer> listForComparison(String order) {
+    List<String> splittedString = $name.split("").toList()
+    List<Integer> convertedString = splittedString.collect{character -> order.indexOf(character)}
+    return convertedString
+  }
+
   private void setupContentPane() {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }

@@ -17,6 +17,7 @@ import ziphil.module.Strings
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
+  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private Consumer<Integer> $onLinkClicked
   private Map<String, Object> $externalData = HashMap.new()
 
@@ -294,6 +295,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
               word.setDictionary(this)
             }
             $words.addAll(words)
+          } else if (keyName == "zpdic") {
+            Map<?, ?> setting = reader.getMap()
+            $alphabetOrder = setting["alphabetOrder"]
           } else {
             $externalData.put(keyName, reader.getValue(Object))
           }
@@ -324,6 +328,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       writer.endObject()
     }
     writer.endArray()
+    writer.name("zpdic")
+    writer.beginObject()
+    writer.name("alphabetOrder").value($alphabetOrder)
+    writer.endObject()
     $externalData.each() { String keyName, Object object ->
       writer.name(keyName).value(object)
     }
@@ -333,7 +341,19 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
-      return firstWord.getName() <=> secondWord.getName()
+      Integer firstId = firstWord.getId()
+      Integer secondId = secondWord.getId()
+      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
+      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
+      Integer result = null
+      (0 ..< firstList.size()).each() { Integer i ->
+        Integer firstData = firstList[i]
+        Integer secondData = secondList[i]
+        if (result == null && firstData <=> secondData != 0) {
+          result = firstData <=> secondData
+        }
+      }
+      return result ?: firstId <=> secondId
     }
   }
 
