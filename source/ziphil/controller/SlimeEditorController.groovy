@@ -194,6 +194,91 @@ public class SlimeEditorController extends Controller<Boolean> {
     chooseRelation((HBox)$relationBox.getChildren()[-1])
   }
 
+  private void exchangeTagControl(HBox box, Integer amount) {
+    Integer index = $tagBox.getChildren().indexOf(box)
+    Integer otherIndex = index + amount
+    if (index >= 0 && otherIndex >= 0 && otherIndex < $tagBox.getChildren().size()) {
+      Node otherBox = $tagBox.getChildren()[otherIndex]
+      $tagBox.getChildren()[index] = HBox.new()
+      $tagBox.getChildren()[otherIndex] = box
+      $tagBox.getChildren()[index] = otherBox
+      ComboBox<String> other = $tags[otherIndex]
+      $tags[otherIndex] = $tags[index]
+      $tags[index] = other
+    }
+  }
+
+  private void exchangeEquivalentControl(HBox box, Integer amount) {
+    Integer index = $equivalentBox.getChildren().indexOf(box)
+    Integer otherIndex = index + amount
+    if (index >= 0 && otherIndex >= 0 && otherIndex < $equivalentBox.getChildren().size()) {
+      Node otherBox = $equivalentBox.getChildren()[otherIndex]
+      $equivalentBox.getChildren()[index] = HBox.new()
+      $equivalentBox.getChildren()[otherIndex] = box
+      $equivalentBox.getChildren()[index] = otherBox
+      ComboBox<String> otherTitle = $equivalentTitles[otherIndex]
+      $equivalentTitles[otherIndex] = $equivalentTitles[index]
+      $equivalentTitles[index] = otherTitle
+      TextField otherText = $equivalentNames[otherIndex]
+      $equivalentNames[otherIndex] = $equivalentNames[index]
+      $equivalentNames[index] = otherText
+    }
+  }
+
+  private void exchangeInformationControl(HBox box, Integer amount) {
+    Integer index = $informationBox.getChildren().indexOf(box)
+    Integer otherIndex = index + amount
+    if (index >= 0 && otherIndex >= 0 && otherIndex < $informationBox.getChildren().size()) {
+      Node otherBox = $informationBox.getChildren()[otherIndex]
+      $informationBox.getChildren()[index] = HBox.new()
+      $informationBox.getChildren()[otherIndex] = box
+      $informationBox.getChildren()[index] = otherBox
+      ComboBox<String> otherTitle = $informationTitles[otherIndex]
+      $informationTitles[otherIndex] = $informationTitles[index]
+      $informationTitles[index] = otherTitle
+      TextArea otherText = $informationTexts[otherIndex]
+      $informationTexts[otherIndex] = $informationTexts[index]
+      $informationTexts[index] = otherText
+    }
+  }
+
+  private void exchangeVariationControl(HBox box, Integer amount) {
+    Integer index = $variationBox.getChildren().indexOf(box)
+    Integer otherIndex = index + amount
+    if (index >= 0 && otherIndex >= 0 && otherIndex < $variationBox.getChildren().size()) {
+      Node otherBox = $variationBox.getChildren()[otherIndex]
+      $variationBox.getChildren()[index] = HBox.new()
+      $variationBox.getChildren()[otherIndex] = box
+      $variationBox.getChildren()[index] = otherBox
+      ComboBox<String> otherTitle = $variationTitles[otherIndex]
+      $variationTitles[otherIndex] = $variationTitles[index]
+      $variationTitles[index] = otherTitle
+      TextField otherName = $variationNames[otherIndex]
+      $variationNames[otherIndex] = $variationNames[index]
+      $variationNames[index] = otherName
+    }
+  }
+
+  private void exchangeRelationControl(HBox box, Integer amount) {
+    Integer index = $relationBox.getChildren().indexOf(box)
+    Integer otherIndex = index + amount
+    if (index >= 0 && otherIndex >= 0 && otherIndex < $relationBox.getChildren().size()) {
+      Node otherBox = $relationBox.getChildren()[otherIndex]
+      $relationBox.getChildren()[index] = HBox.new()
+      $relationBox.getChildren()[otherIndex] = box
+      $relationBox.getChildren()[index] = otherBox
+      SlimeRelation other = $relations[otherIndex]
+      $relations[otherIndex] = $relations[index]
+      $relations[index] = other
+      ComboBox<String> otherTitle = $relationTitles[otherIndex]
+      $relationTitles[otherIndex] = $relationTitles[index]
+      $relationTitles[index] = otherTitle
+      TextField otherName = $relationNames[otherIndex]
+      $relationNames[otherIndex] = $relationNames[index]
+      $relationNames[index] = otherName
+    }
+  }
+
   private void removeTagControl(HBox box) {
     Integer index = $tagBox.getChildren().indexOf(box)
     if (index >= 0) {
@@ -321,25 +406,40 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void addTagControl(String tagString, List<String> registeredTags) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox exchangeBox = HBox.new()
     ComboBox<String> tag = ComboBox.new()
+    Button exchangeUp = Button.new("↑")
+    Button exchangeDown = Button.new("↓")
     Button remove = Button.new("－")
     tag.setEditable(true)
     tag.getItems().addAll(registeredTags)
     tag.setValue(tagString)
     tag.setPrefWidth(Measurement.rpx(120))
     tag.setMinWidth(Measurement.rpx(120))
+    exchangeUp.getStyleClass().add("left-pill")
+    exchangeUp.setOnAction() {
+      exchangeTagControl(box, -1)
+    }
+    exchangeDown.getStyleClass().add("right-pill")
+    exchangeDown.setOnAction() {
+      exchangeTagControl(box, 1)
+    }
     remove.setOnAction() {
       removeTagControl(box)
     }
-    box.getChildren().addAll(tag, remove)
+    exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
+    box.getChildren().addAll(tag, exchangeBox, remove)
     $tags.add(tag)
     $tagBox.getChildren().add(box)
   }
 
   private void addEquivalentControl(String titleString, String nameString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox exchangeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
+    Button exchangeUp = Button.new("↑")
+    Button exchangeDown = Button.new("↓")
     Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
@@ -347,10 +447,19 @@ public class SlimeEditorController extends Controller<Boolean> {
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     name.setText(nameString)
+    exchangeUp.getStyleClass().add("left-pill")
+    exchangeUp.setOnAction() {
+      exchangeEquivalentControl(box, -1)
+    }
+    exchangeDown.getStyleClass().add("right-pill")
+    exchangeDown.setOnAction() {
+      exchangeEquivalentControl(box, 1)
+    }
     remove.setOnAction() {
       removeEquivalentControl(box)
     }
-    box.getChildren().addAll(title, name, remove)
+    exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
+    box.getChildren().addAll(title, name, exchangeBox, remove)
     box.setHgrow(name, Priority.ALWAYS)
     $equivalentTitles.add(title)
     $equivalentNames.add(name)
@@ -360,10 +469,14 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void addInformationControl(String titleString, String textString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox exchangeBox = HBox.new()
     HBox removeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextArea text = TextArea.new()
+    Button exchangeUp = Button.new("↑")
+    Button exchangeDown = Button.new("↓")
     Button remove = Button.new("－")
+    exchangeBox.setAlignment(Pos.BOTTOM_CENTER)
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
@@ -375,11 +488,20 @@ public class SlimeEditorController extends Controller<Boolean> {
     text.setText(textString)
     text.setPrefHeight(Measurement.rpx(120))
     text.setMinHeight(Measurement.rpx(120))
+    exchangeUp.getStyleClass().add("left-pill")
+    exchangeUp.setOnAction() {
+      exchangeInformationControl(box, -1)
+    }
+    exchangeDown.getStyleClass().add("right-pill")
+    exchangeDown.setOnAction() {
+      exchangeInformationControl(box, 1)
+    }
     remove.setOnAction() {
       removeInformationControl(box)
     }
+    exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
     removeBox.getChildren().add(remove)
-    box.getChildren().addAll(title, text, removeBox)
+    box.getChildren().addAll(title, text, exchangeBox, removeBox)
     box.setHgrow(text, Priority.ALWAYS)
     $informationTitles.add(title)
     $informationTexts.add(text)
@@ -389,8 +511,11 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void addVariationControl(String titleString, String nameString, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox exchangeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
+    Button exchangeUp = Button.new("↑")
+    Button exchangeDown = Button.new("↓")
     Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
@@ -398,10 +523,19 @@ public class SlimeEditorController extends Controller<Boolean> {
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     name.setText(nameString)
+    exchangeUp.getStyleClass().add("left-pill")
+    exchangeUp.setOnAction() {
+      exchangeVariationControl(box, -1)
+    }
+    exchangeDown.getStyleClass().add("right-pill")
+    exchangeDown.setOnAction() {
+      exchangeVariationControl(box, 1)
+    }
     remove.setOnAction() {
       removeVariationControl(box)
     }
-    box.getChildren().addAll(title, name, remove)
+    exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
+    box.getChildren().addAll(title, name, exchangeBox, remove)
     box.setHgrow(name, Priority.ALWAYS)
     $variationTitles.add(title)
     $variationNames.add(name)
@@ -412,9 +546,12 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void addRelationControl(String titleString, String nameString, SlimeRelation relation, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     HBox nameBox = HBox.new()
+    HBox exchangeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
     Button choose = Button.new("…")
+    Button exchangeUp = Button.new("↑")
+    Button exchangeDown = Button.new("↓")
     Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
@@ -430,11 +567,20 @@ public class SlimeEditorController extends Controller<Boolean> {
     choose.setOnAction() {
       chooseRelation(box)
     }
+    exchangeUp.getStyleClass().add("left-pill")
+    exchangeUp.setOnAction() {
+      exchangeRelationControl(box, -1)
+    }
+    exchangeDown.getStyleClass().add("right-pill")
+    exchangeDown.setOnAction() {
+      exchangeRelationControl(box, 1)
+    }
     remove.setOnAction() {
       removeRelationControl(box)
     }
     nameBox.getChildren().addAll(name, choose)
-    box.getChildren().addAll(title, nameBox, remove)
+    exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
+    box.getChildren().addAll(title, nameBox, exchangeBox, remove)
     box.setHgrow(name, Priority.ALWAYS)
     $relations.add(relation)
     $relationTitles.add(title)
