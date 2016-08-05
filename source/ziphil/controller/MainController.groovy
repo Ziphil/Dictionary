@@ -278,20 +278,17 @@ public class MainController extends PrimitiveController<Stage> {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((ShaleiaWord)newWord)
       } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((PersonalWord)newWord)
       } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord, $dictionary)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((SlimeWord)newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -313,20 +310,17 @@ public class MainController extends PrimitiveController<Stage> {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((ShaleiaWord)word)
-        controller.prepare(newWord)
+        newWord = $dictionary.inheritedWord((ShaleiaWord)word)
+        controller.prepare((ShaleiaWord)newWord)
       } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((PersonalWord)word)
-        controller.prepare(newWord)
+        newWord = $dictionary.inheritedWord((PersonalWord)word)
+        controller.prepare((PersonalWord)newWord)
       } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((SlimeWord)word)
-        controller.prepare(newWord, $dictionary)
+        newWord = $dictionary.inheritedWord((SlimeWord)word)
+        controller.prepare((SlimeWord)newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
