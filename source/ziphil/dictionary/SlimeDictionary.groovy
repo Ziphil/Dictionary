@@ -18,6 +18,7 @@ import ziphil.module.Strings
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private Consumer<Integer> $onLinkClicked
+  private Map<String, Object> $externalData = HashMap.new()
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -293,6 +294,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
               word.setDictionary(this)
             }
             $words.addAll(words)
+          } else {
+            reader.next()
+            $externalData.put(keyName, reader.getValue(Object))
           }
         }
       }
@@ -320,6 +324,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       writer.endObject()
     }
     writer.endArray()
+    $externalData.each() { String keyName, Object object ->
+      writer.name(keyName).value(object)
+    }
     writer.endObject()
     stream.close()
   }
