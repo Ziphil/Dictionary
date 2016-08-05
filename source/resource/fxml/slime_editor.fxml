@@ -76,10 +76,7 @@
               <VBox fx:id="$equivalentBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="追加" onAction="#insertEquivalentControl">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <minWidth><Double rpx="70"/></minWidth>
-              </Button>
+              <Button text="＋" onAction="#insertEquivalentControl"/>
             </VBox>
           </TitledPane>
           <TitledPane text="タグ">
@@ -96,10 +93,7 @@
               <VBox fx:id="$tagBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="追加" onAction="#insertTagControl">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <minWidth><Double rpx="70"/></minWidth>
-              </Button>
+              <Button text="＋" onAction="#insertTagControl"/>
             </VBox>
           </TitledPane>
           <TitledPane text="内容">
@@ -116,10 +110,7 @@
               <VBox fx:id="$informationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="追加" onAction="#insertInformationControl">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <minWidth><Double rpx="70"/></minWidth>
-              </Button>
+              <Button text="＋" onAction="#insertInformationControl"/>
             </VBox>
           </TitledPane>
           <TitledPane text="変化形">
@@ -136,10 +127,7 @@
               <VBox fx:id="$variationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="追加" onAction="#insertVariationControl">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <minWidth><Double rpx="70"/></minWidth>
-              </Button>
+              <Button text="＋" onAction="#insertVariationControl"/>
             </VBox>
           </TitledPane>
           <TitledPane text="関連語">
@@ -156,10 +144,7 @@
               <VBox fx:id="$relationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="追加" onAction="#insertRelationControl">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <minWidth><Double rpx="70"/></minWidth>
-              </Button>
+              <Button text="＋" onAction="#insertRelationControl"/>
             </VBox>
           </TitledPane>
         </VBox>

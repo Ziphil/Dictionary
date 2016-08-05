@@ -322,14 +322,12 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void addTagControl(String tagString, List<String> registeredTags) {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> tag = ComboBox.new()
-    Button remove = Button.new("削除")
+    Button remove = Button.new("－")
     tag.setEditable(true)
     tag.getItems().addAll(registeredTags)
     tag.setValue(tagString)
     tag.setPrefWidth(Measurement.rpx(120))
     tag.setMinWidth(Measurement.rpx(120))
-    remove.setPrefWidth(Measurement.rpx(70))
-    remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeTagControl(box)
     }
@@ -342,15 +340,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
-    Button remove = Button.new("削除")
+    Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
     title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     name.setText(nameString)
-    remove.setPrefWidth(Measurement.rpx(70))
-    remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeEquivalentControl(box)
     }
@@ -367,7 +363,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox removeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextArea text = TextArea.new()
-    Button remove = Button.new("削除")
+    Button remove = Button.new("－")
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
@@ -379,8 +375,6 @@ public class SlimeEditorController extends Controller<Boolean> {
     text.setText(textString)
     text.setPrefHeight(Measurement.rpx(120))
     text.setMinHeight(Measurement.rpx(120))
-    remove.setPrefWidth(Measurement.rpx(70))
-    remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeInformationControl(box)
     }
@@ -397,15 +391,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox box = HBox.new(Measurement.rpx(5))
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
-    Button remove = Button.new("削除")
+    Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
     title.setValue(titleString)
     title.setPrefWidth(Measurement.rpx(120))
     title.setMinWidth(Measurement.rpx(120))
     name.setText(nameString)
-    remove.setPrefWidth(Measurement.rpx(70))
-    remove.setMinWidth(Measurement.rpx(70))
     remove.setOnAction() {
       removeVariationControl(box)
     }
@@ -423,7 +415,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
     Button choose = Button.new("…")
-    Button remove = Button.new("削除")
+    Button remove = Button.new("－")
     title.setEditable(true)
     title.getItems().addAll(registeredTitles)
     title.setValue(titleString)
@@ -435,8 +427,6 @@ public class SlimeEditorController extends Controller<Boolean> {
     name.setMinWidth(Measurement.rpx(150))
     name.getStyleClass().add("left-pill")
     choose.getStyleClass().add("right-pill")
-    remove.setPrefWidth(Measurement.rpx(70))
-    remove.setMinWidth(Measurement.rpx(70))
     choose.setOnAction() {
       chooseRelation(box)
     }
