@@ -512,14 +512,21 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       if ($dictionary instanceof SlimeDictionary) {
         UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
-        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
         stage.initModality(Modality.WINDOW_MODAL)
         stage.initOwner($stage)
-        controller.prepare($dictionary)
-        Boolean result = stage.showAndWaitResult()
-        if (result != null) {
+        if ($dictionary instanceof SlimeDictionary) {
+          SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
+          controller.prepare($dictionary)
+        }
+        Boolean isDone = stage.showAndWaitResult()
+        if (isDone != null) {
           $isDictionaryChanged = true
         }
+      } else {
+        Dialog dialog = Dialog.new("通知", "この辞書形式に個別設定項目はありません。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
     }
   }
