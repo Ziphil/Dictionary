@@ -192,7 +192,7 @@ public class SettingController extends Controller<Void> {
       dictionaryPath.getStyleClass().add("left-pill")
       browse.getStyleClass().add("right-pill")
       deregister.setPrefWidth(Measurement.rpx(70))
-      deregister.setPrefWidth(Measurement.rpx(70))
+      deregister.setMinWidth(Measurement.rpx(70))
       browse.setOnAction() {
         browseDictionary(i)
       }
