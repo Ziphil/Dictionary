@@ -407,6 +407,7 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void addTagControl(String tagString, List<String> registeredTags) {
     HBox box = HBox.new(Measurement.rpx(5))
+    HBox dammyBox = HBox.new()
     HBox exchangeBox = HBox.new()
     ComboBox<String> tag = ComboBox.new()
     Button exchangeUp = Button.new("↑")
@@ -429,7 +430,8 @@ public class SlimeEditorController extends Controller<Boolean> {
       removeTagControl(box)
     }
     exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
-    box.getChildren().addAll(tag, exchangeBox, remove)
+    box.getChildren().addAll(tag, dammyBox, exchangeBox, remove)
+    box.setHgrow(dammyBox, Priority.ALWAYS)
     $tags.add(tag)
     $tagBox.getChildren().add(box)
   }
@@ -547,6 +549,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void addRelationControl(String titleString, String nameString, SlimeRelation relation, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
     HBox nameBox = HBox.new()
+    HBox dammyBox = HBox.new()
     HBox exchangeBox = HBox.new()
     ComboBox<String> title = ComboBox.new()
     TextField name = TextField.new()
@@ -581,8 +584,8 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
     nameBox.getChildren().addAll(name, choose)
     exchangeBox.getChildren().addAll(exchangeUp, exchangeDown)
-    box.getChildren().addAll(title, nameBox, exchangeBox, remove)
-    box.setHgrow(name, Priority.ALWAYS)
+    box.getChildren().addAll(title, nameBox, dammyBox, exchangeBox, remove)
+    box.setHgrow(dammyBox, Priority.ALWAYS)
     $relations.add(relation)
     $relationTitles.add(title)
     $relationNames.add(name)
