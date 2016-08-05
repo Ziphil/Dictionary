@@ -195,26 +195,16 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeTagControl(HBox box) {
-    Integer index
-    $tagBox.getChildren().eachWithIndex() { Node node, Integer i ->
-      if (node == box) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $tagBox.getChildren().indexOf(box)
+    if (index >= 0) {
       $tagBox.getChildren().removeAt(index)
       $tags.removeAt(index)
     }
   }
 
   private void removeEquivalentControl(HBox box) {
-    Integer index
-    $equivalentBox.getChildren().eachWithIndex() { Node node, Integer i ->
-      if (node == box) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $equivalentBox.getChildren().indexOf(box)
+    if (index >= 0) {
       $equivalentBox.getChildren().removeAt(index)
       $equivalentTitles.removeAt(index)
       $equivalentNames.removeAt(index)
@@ -222,13 +212,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeInformationControl(HBox box) {
-    Integer index
-    $informationBox.getChildren().eachWithIndex() { Node node, Integer i ->
-      if (node == box) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $informationBox.getChildren().indexOf(box)
+    if (index >= 0) {
       $informationBox.getChildren().removeAt(index)
       $informationTitles.removeAt(index)
       $informationTexts.removeAt(index)
@@ -236,13 +221,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeVariationControl(HBox box) {
-    Integer index
-    $variationBox.getChildren().eachWithIndex() { Node node, Integer i ->
-      if (node == box) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $variationBox.getChildren().indexOf(box)
+    if (index >= 0) {
       $variationBox.getChildren().removeAt(index)
       $variationTitles.removeAt(index)
       $variationNames.removeAt(index)
@@ -250,13 +230,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeRelationControl(HBox box) {
-    Integer index
-    $relationBox.getChildren().eachWithIndex() { Node node, Integer i ->
-      if (node == box) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $relationBox.getChildren().indexOf(box)
+    if (index >= 0) {
       $relationBox.getChildren().removeAt(index)
       $relationTitles.removeAt(index)
       $relationNames.removeAt(index)
@@ -269,13 +244,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusTagControl(EventTarget target) {
-    Integer index
-    $tags.eachWithIndex() { ComboBox<String> node, Integer i ->
-      if (node == target) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $tags.indexOf(target)
+    if (index >= 0) {
       Integer nextIndex = (index < $tags.size() - 1) ? index + 1 : 0
       $tags[nextIndex].requestFocus()
       scrollToNode($tags[nextIndex])
@@ -289,13 +259,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusEquivalentControl(EventTarget target) {
-    Integer index
-    $equivalentNames.eachWithIndex() { TextField node, Integer i ->
-      if (node == target) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $equivalentNames.indexOf(target)
+    if (index >= 0) {
       Integer nextIndex = (index < $equivalentNames.size() - 1) ? index + 1 : 0
       $equivalentNames[nextIndex].requestFocus()
       scrollToNode($equivalentNames[nextIndex])
@@ -309,13 +274,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusInformationControl(EventTarget target) {
-    Integer index
-    $informationTexts.eachWithIndex() { TextArea node, Integer i ->
-      if (node == target) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $informationTexts.indexOf(target)
+    if (index >= 0) {
       Integer nextIndex = (index < $informationTexts.size() - 1) ? index + 1 : 0
       $informationTexts[nextIndex].requestFocus()
       scrollToNode($informationTexts[nextIndex])
@@ -329,13 +289,8 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusVariationControl(EventTarget target) {
-    Integer index
-    $variationNames.eachWithIndex() { TextField node, Integer i ->
-      if (node == target) {
-        index = i
-      }
-    }
-    if (index != null) {
+    Integer index = $variationNames.indexOf(target)
+    if (index >= 0) {
       Integer nextIndex = (index < $variationNames.size() - 1) ? index + 1 : 0
       $variationNames[nextIndex].requestFocus()
       scrollToNode($variationNames[nextIndex])
@@ -356,13 +311,8 @@ public class SlimeEditorController extends Controller<Boolean> {
     controller.prepare($dictionary.copy())
     SlimeWord word = stage.showAndWaitResult()
     if (word != null) {
-      Integer index
-      $relationBox.getChildren().eachWithIndex() { Node node, Integer i ->
-        if (node == box) {
-          index = i
-        }
-      }
-      if (index != null) {
+      Integer index = $relationBox.getChildren().indexOf(box)
+      if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNames[index].setText(word.getName())
       }
