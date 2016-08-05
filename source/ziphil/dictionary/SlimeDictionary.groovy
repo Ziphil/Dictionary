@@ -282,12 +282,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       FileInputStream stream = FileInputStream.new($path)
       JSON json = JSON.new()
       JSONReader reader = json.getReader(stream)
-      JSONEventType type
-      while ((type = reader.next()) != null) {
+      JSONEventType type = reader.next()
+      while (type != null) {
         if (type == JSONEventType.NAME) {
           String keyName = reader.getString()
+          reader.next()
           if (keyName == "words") {
-            reader.next()
             TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
             List<SlimeWord> words = (List)reader.getValue(typeReference)
             words.each() { SlimeWord word ->
@@ -295,10 +295,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
             }
             $words.addAll(words)
           } else {
-            reader.next()
             $externalData.put(keyName, reader.getValue(Object))
           }
         }
+        type = reader.next()
       }
       stream.close()
     }
