@@ -363,6 +363,14 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $suggestions.add(suggestion)
   }
 
+  public String getAlphabetOrder() {
+    return $alphabetOrder
+  }
+
+  public void setAlphabetOrder(String alphabetOrder) {
+    $alphabetOrder = alphabetOrder
+  }
+
   public Consumer<Integer> getOnLinkClicked() {
     return $onLinkClicked
   }

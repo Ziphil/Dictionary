@@ -508,6 +508,23 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void showIndividualSetting() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof SlimeDictionary) {
+        UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
+        stage.initModality(Modality.WINDOW_MODAL)
+        stage.initOwner($stage)
+        controller.prepare($dictionary)
+        Boolean result = stage.showAndWaitResult()
+        if (result != null) {
+          $isDictionaryChanged = true
+        }
+      }
+    }
+  }
+
+  @FXML
   private void showSetting() {
     UtilityStage<Void> stage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(stage)
