@@ -163,34 +163,6 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $filteredSuggestions.addListener(listener)
   }
 
-  public String getName() {
-    return $name
-  }
-
-  public void setName(String name) {
-    $name = name
-  }
-
-  public String getPath() {
-    return $path
-  }
-
-  public void setPath(String path) {
-    $path = path
-  }
-
-  public ObservableList<? extends Word> getWholeWords() {
-    return $wholeWords
-  }
-
-  public ObservableList<W> getWords() {
-    return $sortedWords
-  }
-
-  public ObservableList<W> getRawWords() {
-    return $words
-  }
-
   public static Dictionary loadDictionary(File file) {
     Dictionary dictionary
     String fileName = file.getName()
@@ -220,6 +192,34 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary.setPath(filePath)
     }
     return dictionary
+  }
+
+  public String getName() {
+    return $name
+  }
+
+  public void setName(String name) {
+    $name = name
+  }
+
+  public String getPath() {
+    return $path
+  }
+
+  public void setPath(String path) {
+    $path = path
+  }
+
+  public ObservableList<? extends Word> getWholeWords() {
+    return $wholeWords
+  }
+
+  public ObservableList<W> getWords() {
+    return $sortedWords
+  }
+
+  public ObservableList<W> getRawWords() {
+    return $words
   }
 
 }
