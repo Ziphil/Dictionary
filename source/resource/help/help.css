@@ -17,6 +17,20 @@ h1 {
   border-bottom: rgb(200,200,200) 1px solid;
 }
 
+h2 {
+  margin: 8px 0px 4px 0px;
+  padding: 0px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 17px;
+}
+
+h2:before {
+  margin: 0px 3px 0px 0px;
+  color: rgb(200,200,200);
+  content: "▶";
+}
+
 p {
   margin: 5px 0px;
   padding: 0px;

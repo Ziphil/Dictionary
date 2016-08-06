@@ -11,6 +11,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import javafx.stage.Modality
@@ -25,7 +26,7 @@ public class SettingController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
   private static final String TITLE = "設定"
-  private static final Double DEFAULT_WIDTH = -1
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilies
@@ -187,12 +188,10 @@ public class SettingController extends Controller<Void> {
       TextField dictionaryPath = TextField.new()
       Button browse = Button.new("…")
       Button deregister = Button.new("解除")
-      dictionaryPath.setPrefWidth(Measurement.rpx(400))
-      dictionaryPath.setMinWidth(Measurement.rpx(400))
       dictionaryPath.getStyleClass().add("left-pill")
       browse.getStyleClass().add("right-pill")
       deregister.setPrefWidth(Measurement.rpx(70))
-      deregister.setPrefWidth(Measurement.rpx(70))
+      deregister.setMinWidth(Measurement.rpx(70))
       browse.setOnAction() {
         browseDictionary(i)
       }
@@ -200,7 +199,9 @@ public class SettingController extends Controller<Void> {
         deregisterDictionary(i)
       }
       innerBox.getChildren().addAll(dictionaryPath, browse)
+      innerBox.setHgrow(dictionaryPath, Priority.ALWAYS)
       box.getChildren().addAll(innerBox, deregister)
+      box.setHgrow(innerBox, Priority.ALWAYS)
       $registeredDictionaryPaths[i] = dictionaryPath
       $registeredDictionaryPane.add(number, 0, i)
       $registeredDictionaryPane.add(box, 1, i)

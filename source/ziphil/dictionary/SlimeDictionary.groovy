@@ -17,7 +17,9 @@ import ziphil.module.Strings
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
+  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private Consumer<Integer> $onLinkClicked
+  private Map<String, Object> $externalData = HashMap.new()
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -281,20 +283,26 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       FileInputStream stream = FileInputStream.new($path)
       JSON json = JSON.new()
       JSONReader reader = json.getReader(stream)
-      JSONEventType type
-      while ((type = reader.next()) != null) {
+      JSONEventType type = reader.next()
+      while (type != null) {
         if (type == JSONEventType.NAME) {
           String keyName = reader.getString()
+          reader.next()
           if (keyName == "words") {
-            reader.next()
             TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
             List<SlimeWord> words = (List)reader.getValue(typeReference)
             words.each() { SlimeWord word ->
               word.setDictionary(this)
             }
             $words.addAll(words)
+          } else if (keyName == "zpdic") {
+            Map<?, ?> setting = reader.getMap()
+            $alphabetOrder = setting["alphabetOrder"]
+          } else {
+            $externalData.put(keyName, reader.getValue(Object))
           }
         }
+        type = reader.next()
       }
       stream.close()
     }
@@ -320,13 +328,32 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       writer.endObject()
     }
     writer.endArray()
+    writer.name("zpdic")
+    writer.beginObject()
+    writer.name("alphabetOrder").value($alphabetOrder)
+    writer.endObject()
+    $externalData.each() { String keyName, Object object ->
+      writer.name(keyName).value(object)
+    }
     writer.endObject()
     stream.close()
   }
 
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
-      return firstWord.getName() <=> secondWord.getName()
+      Integer firstId = firstWord.getId()
+      Integer secondId = secondWord.getId()
+      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
+      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
+      Integer result = null
+      (0 ..< firstList.size()).each() { Integer i ->
+        Integer firstData = firstList[i]
+        Integer secondData = secondList[i]
+        if (result == null && firstData <=> secondData != 0) {
+          result = firstData <=> secondData
+        }
+      }
+      return result ?: firstId <=> secondId
     }
   }
 
@@ -334,6 +361,14 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     SlimeSuggestion suggestion = SlimeSuggestion.new()
     suggestion.setDictionary(this)
     $suggestions.add(suggestion)
+  }
+
+  public String getAlphabetOrder() {
+    return $alphabetOrder
+  }
+
+  public void setAlphabetOrder(String alphabetOrder) {
+    $alphabetOrder = alphabetOrder
   }
 
   public Consumer<Integer> getOnLinkClicked() {

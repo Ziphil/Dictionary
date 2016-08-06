@@ -46,6 +46,7 @@ import ziphil.dictionary.ShaleiaWord
 import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeSearchParameter
 import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.module.Setting
 
@@ -212,7 +213,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void modifyWord(Word word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && !(word instanceof Suggestion)) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       Word oldWord = $dictionary.copiedWord(word)
@@ -249,7 +250,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void removeWord(Word word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && !(word instanceof Suggestion)) {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       $dictionary.removeWord(word)
       if (savesAutomatically) {
@@ -275,22 +276,20 @@ public class MainController extends PrimitiveController<Stage> {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      String defaultName = $searchText.getText()
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((ShaleiaWord)newWord, defaultName)
       } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((PersonalWord)newWord, defaultName)
       } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        newWord = castedDictionary.emptyWord()
-        controller.prepare(newWord, $dictionary)
+        newWord = $dictionary.emptyWord()
+        controller.prepare((SlimeWord)newWord, $dictionary, defaultName)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -306,26 +305,23 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addInheritedWord(Word word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && !(word instanceof Suggestion)) {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaDictionary castedDictionary = (ShaleiaDictionary)$dictionary
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((ShaleiaWord)word)
-        controller.prepare(newWord)
+        newWord = $dictionary.inheritedWord((ShaleiaWord)word)
+        controller.prepare((ShaleiaWord)newWord)
       } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalDictionary castedDictionary = (PersonalDictionary)$dictionary
         PersonalEditorController controller = PersonalEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((PersonalWord)word)
-        controller.prepare(newWord)
+        newWord = $dictionary.inheritedWord((PersonalWord)word)
+        controller.prepare((PersonalWord)newWord)
       } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeDictionary castedDictionary = (SlimeDictionary)$dictionary
         SlimeEditorController controller = SlimeEditorController.new(stage)
-        newWord = castedDictionary.inheritedWord((SlimeWord)word)
-        controller.prepare(newWord, $dictionary)
+        newWord = $dictionary.inheritedWord((SlimeWord)word)
+        controller.prepare((SlimeWord)newWord, $dictionary)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -510,6 +506,30 @@ public class MainController extends PrimitiveController<Stage> {
     stage.initModality(Modality.WINDOW_MODAL)
     stage.initOwner($stage)
     stage.showAndWait()
+  }
+
+  @FXML
+  private void showIndividualSetting() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof SlimeDictionary) {
+        UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
+        stage.initModality(Modality.WINDOW_MODAL)
+        stage.initOwner($stage)
+        if ($dictionary instanceof SlimeDictionary) {
+          SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
+          controller.prepare($dictionary)
+        }
+        Boolean isDone = stage.showAndWaitResult()
+        if (isDone != null) {
+          $isDictionaryChanged = true
+        }
+      } else {
+        Dialog dialog = Dialog.new("通知", "この辞書形式に個別設定項目はありません。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
+    }
   }
 
   @FXML

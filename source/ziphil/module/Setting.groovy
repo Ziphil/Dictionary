@@ -23,13 +23,13 @@ public class Setting {
   private String $editorFontFamily
   private Integer $editorFontSize
   private Integer $fontRenderingType
-  private Boolean $modifiesPunctuation
-  private Boolean $savesAutomatically
-  private Boolean $ignoresAccent
-  private Boolean $ignoresCase
-  private Boolean $prefixSearch
-  private Boolean $ignoresDuplicateSlimeId
-  private Boolean $showsSlimeId
+  private Boolean $modifiesPunctuation = false
+  private Boolean $savesAutomatically = false
+  private Boolean $ignoresAccent = false
+  private Boolean $ignoresCase = false
+  private Boolean $prefixSearch = true
+  private Boolean $ignoresDuplicateSlimeId = true
+  private Boolean $showsSlimeId = false
 
   public void save() {
     saveSetting()

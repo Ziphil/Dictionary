@@ -20,10 +20,6 @@ import ziphil.module.Strings
 @CompileStatic @Newify
 public class ShaleiaWord extends Word {
 
-  private static final Map<String, Integer> ALPHABET_ORDER = [("s"): 1, ("z"): 2, ("t"): 3, ("d"): 4, ("k"): 5, ("g"): 6, ("f"): 7, ("v"): 8, ("p"): 9, ("b"): 10, ("c"): 11, ("q"): 12,
-                                                              ("x"): 13, ("j"): 14, ("r"): 15, ("l"): 16, ("m"): 17, ("n"): 18, ("h"): 19, ("y"): 20, ("a"): 21, ("â"): 22, ("á"): 23, ("à"): 24,
-                                                              ("e"): 25, ("ê"): 26, ("é"): 27, ("è"): 28, ("i"): 29, ("î"): 30, ("í"): 31, ("ì"): 32, ("o"): 31, ("ô"): 32, ("ò"): 33, ("u"): 34,
-                                                              ("û"): 35, ("ù"): 36]
   public static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   public static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
   public static final String SHALEIA_WHOLE_CLASS_CLASS = "shaleia-whole-class"
@@ -344,9 +340,9 @@ public class ShaleiaWord extends Word {
     return texts
   }
 
-  public List<Integer> listForComparison() {
+  public List<Integer> listForComparison(String order) {
     List<String> splittedString = $uniqueName.split("").toList()
-    List<Integer> convertedString = splittedString.collect{character -> ALPHABET_ORDER.get(character, -1)}
+    List<Integer> convertedString = splittedString.collect{character -> order.indexOf(character)}
     if (convertedString[0] == -1) {
       convertedString.remove(0)
       convertedString.add(-2)
