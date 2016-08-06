@@ -77,7 +77,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     setupIdControl()
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
     $word = word
     $dictionary = dictionary
     $id.setText(word.getId().toString())
@@ -102,9 +102,20 @@ public class SlimeEditorController extends Controller<Boolean> {
     if ($informationTexts.isEmpty()) {
       insertInformationControl()
     }
-    Platform.runLater() {
-      $informationTexts[0].requestFocus()
+    if (defaultName != null) {
+      $name.setText(defaultName)
+      Platform.runLater() {
+        $name.requestFocus()
+      }
+    } else {
+      Platform.runLater() {
+        $informationTexts[0].requestFocus()
+      }
     }
+  }
+
+  public void prepare(SlimeWord word, SlimeDictionary dictionary) {
+    prepare(word, dictionary, null)
   }
 
   @FXML

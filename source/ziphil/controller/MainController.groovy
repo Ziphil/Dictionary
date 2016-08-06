@@ -276,19 +276,20 @@ public class MainController extends PrimitiveController<Stage> {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      String defaultName = $searchText.getText()
       stage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
         newWord = $dictionary.emptyWord()
-        controller.prepare((ShaleiaWord)newWord)
+        controller.prepare((ShaleiaWord)newWord, defaultName)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(stage)
         newWord = $dictionary.emptyWord()
-        controller.prepare((PersonalWord)newWord)
+        controller.prepare((PersonalWord)newWord, defaultName)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(stage)
         newWord = $dictionary.emptyWord()
-        controller.prepare((SlimeWord)newWord, $dictionary)
+        controller.prepare((SlimeWord)newWord, $dictionary, defaultName)
       }
       Boolean isDone = stage.showAndWaitResult()
       if (isDone != null && isDone) {

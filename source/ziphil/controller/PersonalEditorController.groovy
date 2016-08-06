@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -38,7 +39,7 @@ public class PersonalEditorController extends Controller<Boolean> {
     setupShortcuts()
   }
 
-  public void prepare(PersonalWord word) {
+  public void prepare(PersonalWord word, String defaultName) {
     $word = word
     $name.setText(word.getName())
     $pronunciation.setText(word.getPronunciation())
@@ -47,7 +48,20 @@ public class PersonalEditorController extends Controller<Boolean> {
     $level.getValueFactory().setValue(word.getLevel())
     $memory.getValueFactory().setValue(word.getMemory())
     $modification.getValueFactory().setValue(word.getModification())
-    $translation.requestFocus()
+    if (defaultName != null) {
+      $name.setText(defaultName)
+      Platform.runLater() {
+        $name.requestFocus()
+      }
+    } else {
+      Platform.runLater() {
+        $translation.requestFocus()
+      }
+    }
+  }
+
+  public void prepare(PersonalWord word) {
+    prepare(word, null)
   }
 
   @FXML
