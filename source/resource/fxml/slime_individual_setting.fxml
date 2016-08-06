@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -34,6 +35,10 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
+      <columnConstraints>
+        <ColumnConstraints hgrow="never"/>
+        <ColumnConstraints hgrow="always"/>
+      </columnConstraints>
       <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <TextField fx:id="$alphabetOrder" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <prefWidth><Double rpx="350"/></prefWidth>
@@ -45,7 +50,7 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </GridPane.margin>
-        <Text text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;例えば「sztd」と入力すると、zから始まる単語はtから始まる単語より前に表示されます。&#10;何も入力しなかった場合はID順になります。"/>
+        <Text text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;何も入力しなかった場合はID順になります。"/>
       </TextFlow>
     </GridPane>
   </center>
