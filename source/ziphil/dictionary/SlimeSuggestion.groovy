@@ -10,6 +10,7 @@ import javafx.scene.text.TextFlow
 public class SlimeSuggestion extends Suggestion<SlimePossibility> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"
+  public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
 
   private SlimeDictionary $dictionary
 
@@ -37,7 +38,7 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
-    prefixText.getStyleClass().add(CONTENT_CLASS)
+    prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
     nameText.setOnMouseClicked() {
