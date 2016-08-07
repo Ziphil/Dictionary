@@ -349,11 +349,23 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       (0 ..< firstList.size()).each() { Integer i ->
         Integer firstData = firstList[i]
         Integer secondData = secondList[i]
-        if (result == null && firstData <=> secondData != 0) {
-          result = firstData <=> secondData
+        if (result == null) {
+          if (secondData == null) {
+            result = 1
+          } else if (firstData != secondData) {
+            result = firstData <=> secondData
+          }
         }
       }
-      return result ?: firstId <=> secondId
+      if (result == null) {
+        if (firstList.size() != secondList.size()) {
+          return -1
+        } else {
+          return firstId <=> secondId
+        }
+      } else {
+        return result
+      }
     }
   }
 
