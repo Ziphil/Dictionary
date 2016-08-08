@@ -111,11 +111,23 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       (0 ..< firstList.size()).each() { Integer i ->
         Integer firstData = firstList[i]
         Integer secondData = secondList[i]
-        if (result == null && firstData <=> secondData != 0) {
-          result = firstData <=> secondData
+        if (result == null) {
+          if (secondData == null) {
+            result = 1
+          } else if (firstData != secondData) {
+            result = firstData <=> secondData
+          }
         }
       }
-      return (result == null) ? -1 : result
+      if (result == null) {
+        if (firstList.size() != secondList.size()) {
+          return -1
+        } else {
+          return 0
+        }
+      } else {
+        return result
+      }
     }
   }
 
