@@ -213,7 +213,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void modifyWord(Word word) {
-    if ($dictionary != null && !(word instanceof Suggestion)) {
+    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       Word oldWord = $dictionary.copiedWord(word)
@@ -244,13 +244,11 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void modifyWord() {
     Word word = $wordList.getSelectionModel().getSelectedItems()[0]
-    if (word != null) {
-      modifyWord(word)
-    }
+    modifyWord(word)
   }
 
   private void removeWord(Word word) {
-    if ($dictionary != null && !(word instanceof Suggestion)) {
+    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       $dictionary.removeWord(word)
       if (savesAutomatically) {
@@ -265,9 +263,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void removeWord() {
     Word word = $wordList.getSelectionModel().getSelectedItems()[0]
-    if (word != null) {
-      removeWord(word)
-    }
+    removeWord(word)
   }
 
   @FXML
@@ -305,7 +301,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addInheritedWord(Word word) {
-    if ($dictionary != null && !(word instanceof Suggestion)) {
+    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
       Word newWord
       UtilityStage<Boolean> stage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -339,9 +335,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void addInheritedWord() {
     Word word = $wordList.getSelectionModel().getSelectedItems()[0]
-    if (word != null) {
-      addInheritedWord(word)
-    }
+    addInheritedWord(word)
   }
 
   @FXML
