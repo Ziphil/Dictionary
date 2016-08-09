@@ -8,8 +8,8 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
-  public static final String VERSION = "0.7.1α"
-  public static final String DATE = "1660"
+  public static final String VERSION = "0.7.2α"
+  public static final String DATE = "1661"
   public static final Boolean DEBUG = false
   public static final String BASE_PATH = createBasePath()
 
