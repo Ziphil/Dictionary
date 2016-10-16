@@ -43,8 +43,8 @@
       <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$name" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ComboBox fx:id="$nameSearchType">
+        <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$nameSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
           <items>

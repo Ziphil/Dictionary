@@ -47,12 +47,12 @@
       </rowConstraints>
       <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <TextField fx:id="$name" GridPane.columnIndex="1" GridPane.rowIndex="0">
+      <TextField fx:id="$nameControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <prefWidth><Double rpx="150"/></prefWidth>
         <minWidth><Double rpx="150"/></minWidth>
         <maxWidth><Double rpx="150"/></maxWidth>
       </TextField>
-      <TextArea fx:id="$data" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextArea fx:id="$dataControl" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>

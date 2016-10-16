@@ -29,24 +29,24 @@ public class SettingController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private ComboBox<String> $contentFontFamilies
-  @FXML private Spinner $contentFontSize
-  @FXML private CheckBox $usesSystemContentFont
-  @FXML private ComboBox<String> $editorFontFamilies
-  @FXML private Spinner $editorFontSize
-  @FXML private CheckBox $usesSystemEditorFont
-  @FXML private ToggleButton $modifiesPunctuation
+  @FXML private ComboBox<String> $contentFontFamilyControl
+  @FXML private Spinner $contentFontSizeControl
+  @FXML private CheckBox $usesSystemContentFontControl
+  @FXML private ComboBox<String> $editorFontFamilyControl
+  @FXML private Spinner $editorFontSizeControl
+  @FXML private CheckBox $usesSystemEditorFontControl
+  @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
-  @FXML private List<TextField> $registeredDictionaryPaths = ArrayList.new(10)
-  @FXML private ToggleButton $savesAutomatically
-  @FXML private ToggleButton $ignoresAccent
-  @FXML private ToggleButton $ignoresCase
-  @FXML private ToggleButton $prefixSearch
-  @FXML private ToggleButton $ignoresDuplicateSlimeId
-  @FXML private ToggleButton $showsSlimeId
+  @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
+  @FXML private ToggleButton $savesAutomaticallyControl
+  @FXML private ToggleButton $ignoresAccentControl
+  @FXML private ToggleButton $ignoresCaseControl
+  @FXML private ToggleButton $prefixSearchControl
+  @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
+  @FXML private ToggleButton $showsSlimeIdControl
 
-  public SettingController(UtilityStage<Void> stage) {
-    super(stage)
+  public SettingController(UtilityStage<Void> nextStage) {
+    super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
@@ -74,63 +74,63 @@ public class SettingController extends Controller<Void> {
     Boolean showsSlimeId = setting.getShowsSlimeId()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
-      $contentFontFamilies.getSelectionModel().select(contentFontFamily)
+      $contentFontFamilyControl.getSelectionModel().select(contentFontFamily)
     } else {
-      $usesSystemContentFont.setSelected(true)
+      $usesSystemContentFontControl.setSelected(true)
     }
     if (contentFontSize != null) {
-      $contentFontSize.getValueFactory().setValue(contentFontSize)
+      $contentFontSizeControl.getValueFactory().setValue(contentFontSize)
     }
     if (editorFontFamily != null) {
-      $editorFontFamilies.getSelectionModel().select(editorFontFamily)
+      $editorFontFamilyControl.getSelectionModel().select(editorFontFamily)
     } else {
-      $usesSystemEditorFont.setSelected(true)
+      $usesSystemEditorFontControl.setSelected(true)
     }
     if (editorFontSize != null) {
-      $editorFontSize.getValueFactory().setValue(editorFontSize)
+      $editorFontSizeControl.getValueFactory().setValue(editorFontSize)
     }
     if (modifiesPunctuation) {
-      $modifiesPunctuation.setSelected(true)
+      $modifiesPunctuationControl.setSelected(true)
     }
     if (savesAutomatically) {
-      $savesAutomatically.setSelected(true)
+      $savesAutomaticallyControl.setSelected(true)
     }
     if (ignoresAccent) {
-      $ignoresAccent.setSelected(true)
+      $ignoresAccentControl.setSelected(true)
     }
     if (ignoresCase) {
-      $ignoresCase.setSelected(true)
+      $ignoresCaseControl.setSelected(true)
     }
     if (prefixSearch) {
-      $prefixSearch.setSelected(true)
+      $prefixSearchControl.setSelected(true)
     }
     if (ignoresDuplicateSlimeId) {
-      $ignoresDuplicateSlimeId.setSelected(true)
+      $ignoresDuplicateSlimeIdControl.setSelected(true)
     }
     if (showsSlimeId) {
-      $showsSlimeId.setSelected(true)
+      $showsSlimeIdControl.setSelected(true)
     }
     (0 ..< 10).each() { Integer i ->
-      $registeredDictionaryPaths[i].setText(registeredDictionaryPaths[i])
+      $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
     }
   }
 
   private void saveSettings() {
     Setting setting = Setting.getInstance()
-    String contentFontFamily = $contentFontFamilies.getSelectionModel().getSelectedItem()
-    Integer contentFontSize = $contentFontSize.getValue()
-    Boolean usesSystemContentFont = $usesSystemContentFont.isSelected()
-    String editorFontFamily = $editorFontFamilies.getSelectionModel().getSelectedItem()
-    Integer editorFontSize = $editorFontSize.getValue()
-    Boolean usesSystemEditorFont = $usesSystemEditorFont.isSelected()
-    Boolean modifiesPunctuation = $modifiesPunctuation.isSelected()
-    Boolean savesAutomatically = $savesAutomatically.isSelected()
-    Boolean ignoresAccent = $ignoresAccent.isSelected()
-    Boolean ignoresCase = $ignoresCase.isSelected()
-    Boolean prefixSearch = $prefixSearch.isSelected()
-    Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeId.isSelected()
-    Boolean showsSlimeId = $showsSlimeId.isSelected()
-    List<String> registeredDictionaryPaths = $registeredDictionaryPaths.collect{path -> path.getText()}
+    String contentFontFamily = $contentFontFamilyControl.getSelectionModel().getSelectedItem()
+    Integer contentFontSize = $contentFontSizeControl.getValue()
+    Boolean usesSystemContentFont = $usesSystemContentFontControl.isSelected()
+    String editorFontFamily = $editorFontFamilyControl.getSelectionModel().getSelectedItem()
+    Integer editorFontSize = $editorFontSizeControl.getValue()
+    Boolean usesSystemEditorFont = $usesSystemEditorFontControl.isSelected()
+    Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
+    Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
+    Boolean ignoresAccent = $ignoresAccentControl.isSelected()
+    Boolean ignoresCase = $ignoresCaseControl.isSelected()
+    Boolean prefixSearch = $prefixSearchControl.isSelected()
+    Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
+    Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
+    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
     if (!usesSystemContentFont && contentFontFamily != null) {
       setting.setContentFontFamily(contentFontFamily)
       setting.setContentFontSize(contentFontSize)
@@ -160,18 +160,18 @@ public class SettingController extends Controller<Void> {
   }
 
   private void browseDictionary(Integer i) {
-    UtilityStage<File> stage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(stage)
-    stage.initModality(Modality.WINDOW_MODAL)
-    stage.initOwner($stage)
-    File file = stage.showAndWaitResult()
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initOwner($stage)
+    File file = nextStage.showAndWaitResult()
     if (file != null) {
-      $registeredDictionaryPaths[i].setText(file.getAbsolutePath())
+      $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())
     }
   }
 
   private void deregisterDictionary(Integer i) {
-    $registeredDictionaryPaths[i].setText("")
+    $registeredDictionaryPathControls[i].setText("")
   }
 
   @FXML
@@ -202,7 +202,7 @@ public class SettingController extends Controller<Void> {
       innerBox.setHgrow(dictionaryPath, Priority.ALWAYS)
       box.getChildren().addAll(innerBox, deregister)
       box.setHgrow(innerBox, Priority.ALWAYS)
-      $registeredDictionaryPaths[i] = dictionaryPath
+      $registeredDictionaryPathControls[i] = dictionaryPath
       $registeredDictionaryPane.add(number, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }
@@ -210,25 +210,25 @@ public class SettingController extends Controller<Void> {
 
   private void setupFontFamilies() {
     List<String> fontFamilies = Font.getFamilies()
-    $contentFontFamilies.getItems().addAll(fontFamilies)
-    $editorFontFamilies.getItems().addAll(fontFamilies)
+    $contentFontFamilyControl.getItems().addAll(fontFamilies)
+    $editorFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
   private void setupFontDisableBindings() {
-    $contentFontFamilies.disableProperty().bind($usesSystemContentFont.selectedProperty())
-    $contentFontSize.disableProperty().bind($usesSystemContentFont.selectedProperty())
-    $editorFontFamilies.disableProperty().bind($usesSystemEditorFont.selectedProperty())
-    $editorFontSize.disableProperty().bind($usesSystemEditorFont.selectedProperty())
+    $contentFontFamilyControl.disableProperty().bind($usesSystemContentFontControl.selectedProperty())
+    $contentFontSizeControl.disableProperty().bind($usesSystemContentFontControl.selectedProperty())
+    $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontControl.selectedProperty())
+    $editorFontSizeControl.disableProperty().bind($usesSystemEditorFontControl.selectedProperty())
   }
 
   private void setupTextBindings() {
-    $modifiesPunctuation.textProperty().bind(CustomBindings.whichString($modifiesPunctuation, "有効", "無効"))
-    $savesAutomatically.textProperty().bind(CustomBindings.whichString($savesAutomatically, "有効", "無効"))
-    $ignoresAccent.textProperty().bind(CustomBindings.whichString($ignoresAccent, "有効", "無効"))
-    $ignoresCase.textProperty().bind(CustomBindings.whichString($ignoresCase, "有効", "無効"))
-    $prefixSearch.textProperty().bind(CustomBindings.whichString($prefixSearch, "有効", "無効"))
-    $ignoresDuplicateSlimeId.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeId, "有効", "無効"))
-    $showsSlimeId.textProperty().bind(CustomBindings.whichString($showsSlimeId, "有効", "無効"))
+    $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
+    $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
+    $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
+    $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))
+    $prefixSearchControl.textProperty().bind(CustomBindings.whichString($prefixSearchControl, "有効", "無効"))
+    $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
+    $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
   }
 
 }

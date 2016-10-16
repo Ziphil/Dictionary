@@ -25,10 +25,10 @@ public class Dialog extends Stage {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(360)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private Label $content
-  @FXML private Button $commit
-  @FXML private Button $negate
-  @FXML private Button $cancel
+  @FXML private Label $contentLabel
+  @FXML private Button $commitButton
+  @FXML private Button $negateButton
+  @FXML private Button $cancelButton
   private BooleanProperty $allowsNegate = SimpleBooleanProperty.new(false)
   private BooleanProperty $allowsCancel = SimpleBooleanProperty.new(true)
   private Boolean $result = false
@@ -84,12 +84,12 @@ public class Dialog extends Stage {
   }
 
   private void setupButtons() {
-    $negate.visibleProperty().bind($allowsNegate)
-    $negate.managedProperty().bind($allowsNegate)
-    $cancel.visibleProperty().bind($allowsCancel)
-    $cancel.managedProperty().bind($allowsCancel)
+    $negateButton.visibleProperty().bind($allowsNegate)
+    $negateButton.managedProperty().bind($allowsNegate)
+    $cancelButton.visibleProperty().bind($allowsCancel)
+    $cancelButton.managedProperty().bind($allowsCancel)
     Platform.runLater() {
-      $commit.requestFocus()
+      $commitButton.requestFocus()
     }
   }
 
@@ -103,51 +103,51 @@ public class Dialog extends Stage {
   }
 
   public String getContentText() {
-    return $content.getText()
+    return $contentLabel.getText()
   }
 
   public void setContentText(String contentText) {
-    $content.setText(contentText)
+    $contentLabel.setText(contentText)
   }
 
   public StringProperty contentTextProperty() {
-    return $content.textProperty()
+    return $contentLabel.textProperty()
   }
 
   public String getCommitText() {
-    return $commit.getText()
+    return $commitButton.getText()
   }
 
   public void setCommitText(String commitText) {
-    $commit.setText(commitText)
+    $commitButton.setText(commitText)
   }
 
   public StringProperty commitTextProperty() {
-    return $commit.textProperty()
+    return $commitButton.textProperty()
   }
 
   public String getNegateText() {
-    return $negate.getText()
+    return $negateButton.getText()
   }
 
   public void setNegateText(String negateText) {
-    $negate.setText(negateText)
+    $negateButton.setText(negateText)
   }
 
   public StringProperty negateTextProperty() {
-    return $negate.textProperty()
+    return $negateButton.textProperty()
   }
 
   public String getCancelText() {
-    return $cancel.getText()
+    return $cancelButton.getText()
   }
 
   public void setCancelText(String cancelText) {
-    $cancel.setText(cancelText)
+    $cancelButton.setText(cancelText)
   }
 
   public StringProperty cancelTextProperty() {
-    return $cancel.textProperty()
+    return $cancelButton.textProperty()
   }
 
   public Boolean isAllowsNegate() {

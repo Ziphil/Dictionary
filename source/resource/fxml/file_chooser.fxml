@@ -26,7 +26,7 @@
   <HBox alignment="center">
     <spacing><Double rpx="5"/></spacing>
     <Label text="ディレクトリ:"/>
-    <TextField fx:id="$directory" HBox.hgrow="always"/>
+    <TextField fx:id="$directoryControl" HBox.hgrow="always"/>
     <Button onAction="#changeCurrentDirectoryToParent">
       <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
       <graphic>
@@ -75,8 +75,8 @@
   <HBox alignment="center">
     <spacing><Double rpx="5"/></spacing>
     <Label text="ファイル:"/>
-    <TextField fx:id="$file" HBox.hgrow="always"/>
-    <ComboBox fx:id="$fileTypes">
+    <TextField fx:id="$fileControl" HBox.hgrow="always"/>
+    <ComboBox fx:id="$fileTypeControl">
       <prefWidth><Double rpx="200"/></prefWidth>
       <minWidth><Double rpx="200"/></minWidth>
     </ComboBox>

@@ -41,9 +41,9 @@ public class FileChooser extends VBox {
   @FXML private TreeView<File> $directoryTree
   @FXML private ListView<File> $fileList
   @FXML private SplitPane $splitPane
-  @FXML private TextField $directory
-  @FXML private TextField $file
-  @FXML private ComboBox<ExtensionFilter> $fileTypes
+  @FXML private TextField $directoryControl
+  @FXML private TextField $fileControl
+  @FXML private ComboBox<ExtensionFilter> $fileTypeControl
   private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
   private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
   private ObjectProperty<ObservableList<File>> $currentFiles = SimpleObjectProperty.new()
@@ -70,7 +70,7 @@ public class FileChooser extends VBox {
 
   private void changeCurrentFile(File file) {
     if (file != null && file.isFile()) {
-      $file.setText(file.getName())
+      $fileControl.setText(file.getName())
       $currentFile.set(file)
     }
   }
@@ -78,11 +78,11 @@ public class FileChooser extends VBox {
   private void changeCurrentDirectory(File file) {
     if (file != null) {
       if (file.isDirectory()) {
-        $directory.setText(file.getAbsolutePath())
+        $directoryControl.setText(file.getAbsolutePath())
         $currentDirectory.set(file)
         $fileList.scrollTo(0)
       } else if (file.isFile()) {
-        $file.setText(file.getName())
+        $fileControl.setText(file.getName())
         $currentFile.set(file)
       }
     }
@@ -93,7 +93,7 @@ public class FileChooser extends VBox {
     String homePath = System.getProperty("user.home")
     File home = File.new(homePath)
     if (home.isDirectory()) {
-      $directory.setText(home.getAbsolutePath())
+      $directoryControl.setText(home.getAbsolutePath())
       $currentDirectory.set(home)
       $fileList.scrollTo(0)
     }
@@ -103,7 +103,7 @@ public class FileChooser extends VBox {
   private void changeCurrentDirectoryToParent() {
     File parent = $currentDirectory.get().getParentFile()
     if (parent != null) {
-      $directory.setText(parent.getAbsolutePath())
+      $directoryControl.setText(parent.getAbsolutePath())
       $currentDirectory.set(parent)
       $fileList.scrollTo(0)
     }
@@ -147,7 +147,7 @@ public class FileChooser extends VBox {
         if (innerFiles != null) {
           innerFiles.each() { File innerFile ->
             if ($showsHidden.get() || !innerFile.isHidden()) {
-              if (innerFile.isDirectory() || $fileTypes.getValue().accepts(innerFile)) {
+              if (innerFile.isDirectory() || $fileTypeControl.getValue().accepts(innerFile)) {
                 files.add(innerFile)
               }
             }
@@ -157,7 +157,7 @@ public class FileChooser extends VBox {
       SortedList sortedFiles = SortedList.new(files, FILE_COMPARATOR)
       return sortedFiles
     }
-    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden, $fileTypes.valueProperty())
+    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden, $fileTypeControl.valueProperty())
     $fileList.itemsProperty().bind(binding)
   }
 
@@ -166,15 +166,15 @@ public class FileChooser extends VBox {
   }
 
   private void setupDirectory() {
-    $directory.setOnAction() {
-      File file = File.new($directory.getText())
+    $directoryControl.setOnAction() {
+      File file = File.new($directoryControl.getText())
       changeCurrentDirectory(file)
     }
   }
 
   private void setupFile() {
     Platform.runLater() {
-      $file.requestFocus()
+      $fileControl.requestFocus()
     }
   }
 
@@ -186,17 +186,17 @@ public class FileChooser extends VBox {
       return items
     }
     ObjectBinding<ObservableList<ExtensionFilter>> binding = Bindings.createObjectBinding(function, $extensionFilters)
-    $fileTypes.itemsProperty().bind(binding)
-    $fileTypes.getSelectionModel().selectFirst()
+    $fileTypeControl.itemsProperty().bind(binding)
+    $fileTypeControl.getSelectionModel().selectFirst()
   }
 
   private void bindSelectedFile() {
     Callable<File> function = (Callable){
       File directory = $currentDirectory.get()
       if (directory != null) {
-        String filePath = directory.getAbsolutePath() + File.separator + $file.getText()
+        String filePath = directory.getAbsolutePath() + File.separator + $fileControl.getText()
         if ($adjustsExtension.get()) {
-          String additionalExtension = $fileTypes.getValue().getExtension()
+          String additionalExtension = $fileTypeControl.getValue().getExtension()
           if (additionalExtension != null) {
             if (!filePath.endsWith("." + additionalExtension)) {
               filePath = filePath + "." + additionalExtension
@@ -209,7 +209,7 @@ public class FileChooser extends VBox {
         return null
       }
     }
-    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $file.textProperty(), $adjustsExtension, $fileTypes.valueProperty())
+    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $fileControl.textProperty(), $adjustsExtension, $fileTypeControl.valueProperty())
     $selectedFile.bind(binding)
   }
 

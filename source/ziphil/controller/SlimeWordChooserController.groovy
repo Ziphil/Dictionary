@@ -29,9 +29,9 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private ListView<SlimeWord> $wordList
-  @FXML private TextField $searchText
-  @FXML private ComboBox<String> $searchMode
-  @FXML private ToggleButton $searchType
+  @FXML private TextField $searchControl
+  @FXML private ComboBox<String> $searchModeControl
+  @FXML private ToggleButton $searchTypeControl
   private SlimeDictionary $dictionary
 
   public SlimeWordChooserController(UtilityStage<SlimeWord> stage) {
@@ -48,9 +48,9 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   @FXML
   private void search() {
     if ($dictionary != null) {
-      String search = $searchText.getText()
-      String searchMode = $searchMode.getValue()
-      Boolean isStrict = $searchType.getText() == "完全一致"
+      String search = $searchControl.getText()
+      String searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
       if (searchMode == "単語") {
         $dictionary.searchByName(search, isStrict)
       } else if (searchMode == "訳語") {
@@ -64,14 +64,14 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   @FXML
   private void changeSearchMode() {
-    $searchText.setText("")
-    $searchText.requestFocus()
+    $searchControl.setText("")
+    $searchControl.requestFocus()
     search()
   }
 
   @FXML
   private void toggleSearchType() {
-    $searchText.requestFocus()
+    $searchControl.requestFocus()
     search()
   }
 
@@ -96,10 +96,10 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private void setupSearchType() {
     Callable<String> textFunction = (Callable){
-      return ($searchType.selectedProperty().get()) ? "完全一致" : "部分一致"
+      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }
     Callable<Boolean> disableFunction = (Callable){
-      String searchMode = $searchMode.getValue()
+      String searchMode = $searchModeControl.getValue()
       if (searchMode == "単語") {
         return false
       } else if (searchMode == "訳語") {
@@ -110,10 +110,10 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
         return true
       }
     }
-    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchType.selectedProperty())
-    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchMode.valueProperty())    
-    $searchType.textProperty().bind(textBinding)
-    $searchType.disableProperty().bind(disableBinding)
+    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
+    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
+    $searchTypeControl.textProperty().bind(textBinding)
+    $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
 }

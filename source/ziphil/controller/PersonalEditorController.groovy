@@ -24,13 +24,13 @@ public class PersonalEditorController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
-  @FXML private TextField $name
-  @FXML private TextField $pronunciation
-  @FXML private TextArea $translation
-  @FXML private TextArea $usage
-  @FXML private Spinner $level
-  @FXML private Spinner $memory
-  @FXML private Spinner $modification
+  @FXML private TextField $nameControl
+  @FXML private TextField $pronunciationControl
+  @FXML private TextArea $translationControl
+  @FXML private TextArea $usageControl
+  @FXML private Spinner $levelControl
+  @FXML private Spinner $memoryControl
+  @FXML private Spinner $modificationControl
   private PersonalWord $word
 
   public PersonalEditorController(UtilityStage<Boolean> stage) {
@@ -41,21 +41,21 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   public void prepare(PersonalWord word, String defaultName) {
     $word = word
-    $name.setText(word.getName())
-    $pronunciation.setText(word.getPronunciation())
-    $translation.setText(word.getTranslation())
-    $usage.setText(word.getUsage())
-    $level.getValueFactory().setValue(word.getLevel())
-    $memory.getValueFactory().setValue(word.getMemory())
-    $modification.getValueFactory().setValue(word.getModification())
+    $nameControl.setText(word.getName())
+    $pronunciationControl.setText(word.getPronunciation())
+    $translationControl.setText(word.getTranslation())
+    $usageControl.setText(word.getUsage())
+    $levelControl.getValueFactory().setValue(word.getLevel())
+    $memoryControl.getValueFactory().setValue(word.getMemory())
+    $modificationControl.getValueFactory().setValue(word.getModification())
     if (defaultName != null) {
-      $name.setText(defaultName)
+      $nameControl.setText(defaultName)
       Platform.runLater() {
-        $name.requestFocus()
+        $nameControl.requestFocus()
       }
     } else {
       Platform.runLater() {
-        $translation.requestFocus()
+        $translationControl.requestFocus()
       }
     }
   }
@@ -66,13 +66,13 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
-    String name = $name.getText()
-    String pronunciation = $pronunciation.getText()
-    String translation = $translation.getText()
-    String usage = $usage.getText()
-    Integer level = $level.getValue()
-    Integer memory = $memory.getValue()
-    Integer modification = $modification.getValue()
+    String name = $nameControl.getText()
+    String pronunciation = $pronunciationControl.getText()
+    String translation = $translationControl.getText()
+    String usage = $usageControl.getText()
+    Integer level = $levelControl.getValue()
+    Integer memory = $memoryControl.getValue()
+    Integer modification = $modificationControl.getValue()
     $word.update(name, pronunciation, translation, usage, level, memory, modification)
     $stage.close(true)
   }

@@ -108,8 +108,8 @@
       </padding>
       <HBox>
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$searchText" onKeyReleased="#search" HBox.hgrow="always"/>
-        <ComboBox fx:id="$searchMode" onAction="#changeSearchMode">
+        <TextField fx:id="$searchControl" onKeyReleased="#search" HBox.hgrow="always"/>
+        <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
           <items>
@@ -121,7 +121,7 @@
           </items>
           <value><String fx:value="単語"/></value>
         </ComboBox>
-        <ToggleButton fx:id="$searchType" onAction="#toggleSearchType" text="完全一致" selected="true">
+        <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
         </ToggleButton>
@@ -130,7 +130,7 @@
     </VBox>
   </center>
   <bottom>
-    <HBox fx:id="$footer" styleClass="footer">
+    <HBox fx:id="$footerBox" styleClass="footer">
       <spacing><Double rpx="5"/></spacing>
       <padding>
         <Insets>
@@ -138,19 +138,19 @@
           <right><Double rpx="10"/></right>
         </Insets>
       </padding>
-      <Label fx:id="$dictionaryName"/>
+      <Label fx:id="$dictionaryNameLabel"/>
       <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSize" text="0">
+      <Label fx:id="$hitWordSizeLabel" text="0">
         <prefWidth><Double rpx="35"/></prefWidth>
         <minWidth><Double rpx="35"/></minWidth>
       </Label>
       <Label text="/"/>
-      <Label fx:id="$totalWordSize" text="0">
+      <Label fx:id="$totalWordSizeLabel" text="0">
         <prefWidth><Double rpx="35"/></prefWidth>
         <minWidth><Double rpx="35"/></minWidth>
       </Label>
       <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTime" text="0">
+      <Label fx:id="$elapsedTimeLabel" text="0">
         <prefWidth><Double rpx="35"/></prefWidth>
         <minWidth><Double rpx="35"/></minWidth>
       </Label>

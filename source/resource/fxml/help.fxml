@@ -38,7 +38,7 @@
           <String fx:value="ショートカットキー"/>
           <String fx:value="各形式について"/>
         </ListView>
-        <WebView fx:id="$help"/>
+        <WebView fx:id="$helpView"/>
       </HBox>
     </VBox>
   </center>
