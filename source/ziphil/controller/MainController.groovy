@@ -471,6 +471,7 @@ public class MainController extends PrimitiveController<Stage> {
     Dialog dialog = Dialog.new("エラー", "エラーが発生しました(${name})。詳細はエラーログを確認してください。")
     dialog.initOwner($stage)
     dialog.setAllowsCancel(false)
+    throwable.printStackTrace()
     throwable.printStackTrace(stream)
     stream.close()
     dialog.showAndWait()
