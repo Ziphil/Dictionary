@@ -1,9 +1,9 @@
 package ziphil.module
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import net.arnx.jsonic.JSON
-import net.arnx.jsonic.JSONException
 import ziphil.Launcher
 
 
@@ -14,6 +14,7 @@ public class Setting {
   private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
   public static final String CUSTOM_STYLESHEET_URL = createCustomStylesheetURL()
 
+  private static ObjectMapper $$mapper = createObjectMapper()
   private static Setting $$instance = createInstance()
 
   private List<String> $registeredDictionaryPaths = ArrayList.new()
@@ -38,10 +39,7 @@ public class Setting {
 
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
-    JSON json = JSON.new()
-    json.setPrettyPrint(true)
-    json.setIndentText("  ")
-    json.format(this, stream)
+    $$mapper.writeValue(stream, this)
     stream.close()
   }
 
@@ -68,16 +66,21 @@ public class Setting {
     if (file.exists()) {
       try {
         FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
-        JSON json = JSON.new()
-        Setting instance = json.parse(stream, Setting)
+        Setting instance = $$mapper.readValue(stream, Setting)
         stream.close()
         return instance
-      } catch (JSONException exception) {
+      } catch (IOException exception) {
         return Setting.new()
       }
     } else {
       return Setting.new()
     }
+  }
+
+  private static ObjectMapper createObjectMapper() {
+    ObjectMapper mapper = ObjectMapper.new()
+    mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    return mapper
   }
 
   public static String createCustomStylesheetURL() {

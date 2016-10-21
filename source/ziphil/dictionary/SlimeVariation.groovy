@@ -1,7 +1,7 @@
 package ziphil.dictionary
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
-import net.arnx.jsonic.JSONHint
 
 
 @CompileStatic @Newify
@@ -26,12 +26,12 @@ public class SlimeVariation {
     $title = title
   }
 
-  @JSONHint(name="form")
+  @JsonProperty("form")
   public String getName() {
     return $name
   }
 
-  @JSONHint(name="form")
+  @JsonProperty("form")
   public void setName(String name) {
     $name = name
   }

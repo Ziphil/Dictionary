@@ -1,21 +1,23 @@
 package ziphil.dictionary
 
+import com.fasterxml.jackson.core.JsonFactory
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.JsonToken
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import net.arnx.jsonic.JSON
-import net.arnx.jsonic.JSONEventType
-import net.arnx.jsonic.JSONException
-import net.arnx.jsonic.JSONReader
-import net.arnx.jsonic.JSONWriter
-import net.arnx.jsonic.TypeReference
 import ziphil.module.Setting
 import ziphil.module.Strings
 
 
 @CompileStatic @Newify
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
+
+  private static ObjectMapper $$mapper = createObjectMapper()
 
   private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private Consumer<Integer> $onLinkClicked
@@ -281,61 +283,66 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   private void load() {
     if ($path != null) {
       FileInputStream stream = FileInputStream.new($path)
-      JSON json = JSON.new()
-      JSONReader reader = json.getReader(stream)
-      JSONEventType type = reader.next()
-      while (type != null) {
-        if (type == JSONEventType.NAME) {
-          String keyName = reader.getString()
-          reader.next()
-          if (keyName == "words") {
-            TypeReference<List<SlimeWord>> typeReference = SlimeTypeReference.new()
-            List<SlimeWord> words = (List)reader.getValue(typeReference)
-            words.each() { SlimeWord word ->
+      JsonFactory factory = $$mapper.getFactory()
+      JsonParser parser = factory.createParser(stream)
+      while (parser.nextToken() != null) {
+        if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+          String fieldName = parser.getCurrentName()
+          parser.nextToken()
+          if (fieldName == "words") {
+            while (parser.nextToken() == JsonToken.START_OBJECT) {
+              SlimeWord word = $$mapper.readValue(parser, SlimeWord)
               word.setDictionary(this)
+              $words.add(word)
             }
-            $words.addAll(words)
-          } else if (keyName == "zpdic") {
-            Map<?, ?> setting = reader.getMap()
+          } else if (fieldName == "zpdic") {
+            Map<String, Object> setting = (Map)$$mapper.readValue(parser, $$mapper.getTypeFactory().constructMapType(Map, String, Object))
             $alphabetOrder = setting["alphabetOrder"]
           } else {
-            $externalData.put(keyName, reader.getValue(Object))
+            $externalData.put(fieldName, parser.readValueAs(Object))
           }
         }
-        type = reader.next()
       }
+      parser.close()
       stream.close()
     }
   }
 
   public void save() {
     FileOutputStream stream = FileOutputStream.new($path)
-    JSON json = JSON.new()
-    json.setPrettyPrint(true)
-    json.setIndentText("  ")
-    JSONWriter writer = json.getWriter(stream)
-    writer.beginObject()
-    writer.name("words")
-    writer.beginArray()
+    JsonFactory factory = $$mapper.getFactory()
+    JsonGenerator generator = factory.createGenerator(stream)
+    generator.useDefaultPrettyPrinter()
+    generator.writeStartObject()
+    generator.writeFieldName("words")
+    generator.writeStartArray()
     $words.each() { SlimeWord word ->
-      writer.beginObject()
-      writer.name("entry").value(word.getEntry())
-      writer.name("translations").value(word.getRawEquivalents())
-      writer.name("tags").value(word.getTags())
-      writer.name("contents").value(word.getInformations())
-      writer.name("variations").value(word.getVariations())
-      writer.name("relations").value(word.getRelations())
-      writer.endObject()
+      generator.writeStartObject()
+      generator.writeFieldName("entry")
+      $$mapper.writeValue(generator, word.getEntry())
+      generator.writeFieldName("translations")
+      $$mapper.writeValue(generator, word.getRawEquivalents())
+      generator.writeFieldName("tags")
+      $$mapper.writeValue(generator, word.getTags())
+      generator.writeFieldName("contents")
+      $$mapper.writeValue(generator, word.getInformations())
+      generator.writeFieldName("variations")
+      $$mapper.writeValue(generator, word.getVariations())
+      generator.writeFieldName("relations")
+      $$mapper.writeValue(generator, word.getRelations())
+      generator.writeEndObject()
     }
-    writer.endArray()
-    writer.name("zpdic")
-    writer.beginObject()
-    writer.name("alphabetOrder").value($alphabetOrder)
-    writer.endObject()
+    generator.writeEndArray()
+    generator.writeFieldName("zpdic")
+    generator.writeStartObject()
+    generator.writeStringField("alphabetOrder", $alphabetOrder)
+    generator.writeEndObject()
     $externalData.each() { String keyName, Object object ->
-      writer.name(keyName).value(object)
+      generator.writeFieldName(keyName)
+      $$mapper.writeValue(generator, object)
     }
-    writer.endObject()
+    generator.writeEndObject()
+    generator.close()
     stream.close()
   }
 
@@ -375,6 +382,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $suggestions.add(suggestion)
   }
 
+  private static ObjectMapper createObjectMapper() {
+    ObjectMapper mapper = ObjectMapper.new()
+    mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    return mapper
+  }
+
   public String getAlphabetOrder() {
     return $alphabetOrder
   }
@@ -391,8 +404,4 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $onLinkClicked = onLinkClicked
   }
 
-}
-
-
-protected class SlimeTypeReference extends TypeReference<List<SlimeWord>> {
 }
