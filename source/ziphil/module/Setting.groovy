@@ -61,7 +61,7 @@ public class Setting {
     file.setText(stylesheet.toString(), "UTF-8")
   }
 
-  public static Setting createInstance() {
+  private static Setting createInstance() {
     File file = File.new(Launcher.BASE_PATH + SETTING_PATH)
     if (file.exists()) {
       try {
