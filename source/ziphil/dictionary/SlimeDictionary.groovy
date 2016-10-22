@@ -337,8 +337,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     generator.writeStartObject()
     generator.writeStringField("alphabetOrder", $alphabetOrder)
     generator.writeEndObject()
-    $externalData.each() { String keyName, Object object ->
-      generator.writeFieldName(keyName)
+    $externalData.each() { String fieldName, Object object ->
+      generator.writeFieldName(fieldName)
       $$mapper.writeValue(generator, object)
     }
     generator.writeEndObject()
