@@ -1,7 +1,7 @@
 package ziphil.dictionary
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.CompileStatic
-import net.arnx.jsonic.JSONHint
 
 
 @CompileStatic @Newify
@@ -28,7 +28,7 @@ public class SlimeRelation {
     $title = title
   }
 
-  @JSONHint(ignore=true)
+  @JsonIgnore
   public Integer getId() {
     return $id
   }
@@ -37,7 +37,7 @@ public class SlimeRelation {
     $id = id
   }
 
-  @JSONHint(ignore=true)
+  @JsonIgnore
   public String getName() {
     return $name
   }

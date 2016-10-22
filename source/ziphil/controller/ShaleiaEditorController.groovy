@@ -23,8 +23,8 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
-  @FXML private TextField $name
-  @FXML private TextArea $data
+  @FXML private TextField $nameControl
+  @FXML private TextArea $dataControl
   private ShaleiaWord $word
 
   public ShaleiaEditorController(UtilityStage<Boolean> stage) {
@@ -35,16 +35,16 @@ public class ShaleiaEditorController extends Controller<Boolean> {
 
   public void prepare(ShaleiaWord word, String defaultName) {
     $word = word
-    $name.setText(word.getUniqueName())
-    $data.setText(word.getData())
+    $nameControl.setText(word.getUniqueName())
+    $dataControl.setText(word.getData())
     if (defaultName != null) {
-      $name.setText(defaultName)
+      $nameControl.setText(defaultName)
       Platform.runLater() {
-        $name.requestFocus()
+        $nameControl.requestFocus()
       }
     } else {
       Platform.runLater() {
-        $data.requestFocus()
+        $dataControl.requestFocus()
       }
     }
   }
@@ -55,8 +55,8 @@ public class ShaleiaEditorController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
-    String name = $name.getText()
-    String data = $data.getText()
+    String name = $nameControl.getText()
+    String data = $dataControl.getText()
     $word.update(name, data)
     $stage.close(true)
   }

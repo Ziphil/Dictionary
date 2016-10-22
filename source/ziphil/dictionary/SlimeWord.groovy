@@ -1,5 +1,7 @@
 package ziphil.dictionary
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -9,7 +11,6 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import net.arnx.jsonic.JSONHint
 import ziphil.custom.Measurement
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -195,10 +196,12 @@ public class SlimeWord extends Word {
     return $isSimpleChanged
   }
 
+  @JsonIgnore
   public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
+  @JsonIgnore
   public void setDictionary(SlimeDictionary dictionary) {
     $dictionary = dictionary
   }
@@ -211,12 +214,12 @@ public class SlimeWord extends Word {
     $id = id
   }
 
-  @JSONHint(name="translations")
+  @JsonProperty("translations")
   public List<SlimeEquivalent> getRawEquivalents() {
     return $rawEquivalents
   }
 
-  @JSONHint(name="translations")
+  @JsonProperty("translations")
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
     $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
@@ -233,12 +236,12 @@ public class SlimeWord extends Word {
     $tags = tags
   }
 
-  @JSONHint(name="contents")
+  @JsonProperty("contents")
   public List<SlimeInformation> getInformations() {
     return $informations
   }
 
-  @JSONHint(name="contents")
+  @JsonProperty("contents")
   public void setInformations(List<SlimeInformation> informations) {
     $informations = informations
   }

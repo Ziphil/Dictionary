@@ -47,31 +47,31 @@
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$contentFontFamilies" editable="true">
+            <ComboBox fx:id="$contentFontFamilyControl" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
-            <Spinner fx:id="$contentFontSize" editable="true">
+            <Spinner fx:id="$contentFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemContentFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+          <CheckBox fx:id="$usesSystemContentFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$editorFontFamilies" editable="true">
+            <ComboBox fx:id="$editorFontFamilyControl" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
-            <Spinner fx:id="$editorFontSize" editable="true">
+            <Spinner fx:id="$editorFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemEditorFont" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$modifiesPunctuation" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="6">
+          <CheckBox fx:id="$usesSystemEditorFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+          <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -118,15 +118,15 @@
           <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <Label text="前方一致検索:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$ignoresAccent" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+          <ToggleButton fx:id="$ignoresAccentControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <ToggleButton fx:id="$ignoresCase" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <ToggleButton fx:id="$ignoresCaseControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <ToggleButton fx:id="$prefixSearch" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <ToggleButton fx:id="$prefixSearchControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -190,11 +190,11 @@
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ToggleButton fx:id="$ignoresDuplicateSlimeId" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+          <ToggleButton fx:id="$ignoresDuplicateSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <ToggleButton fx:id="$showsSlimeId" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <ToggleButton fx:id="$showsSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -230,7 +230,7 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <ToggleButton fx:id="$savesAutomatically" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+          <ToggleButton fx:id="$savesAutomaticallyControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>

@@ -29,7 +29,7 @@
       </padding>
       <VBox alignment="center"> 
         <Label text="ZpDIC" styleClass="application-name"/>
-        <Label fx:id="$version" styleClass="application-version"/>
+        <Label fx:id="$versionLabel" styleClass="application-version"/>
       </VBox>
       <HBox>
         <spacing><Double rpx="10"/></spacing>

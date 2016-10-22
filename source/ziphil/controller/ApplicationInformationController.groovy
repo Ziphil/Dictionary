@@ -15,7 +15,7 @@ public class ApplicationInformationController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private Label $version
+  @FXML private Label $versionLabel
 
   public ApplicationInformationController(UtilityStage<Void> stage) {
     super(stage)
@@ -29,7 +29,7 @@ public class ApplicationInformationController extends Controller<Void> {
 
   private void setupVersion() {
     String version = "version ${Launcher.VERSION}-${Launcher.DATE}"
-    $version.setText(version)
+    $versionLabel.setText(version)
   }
 
 }

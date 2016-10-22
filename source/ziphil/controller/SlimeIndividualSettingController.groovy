@@ -16,7 +16,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private TextField $alphabetOrder
+  @FXML private TextField $alphabetOrderControl
   private SlimeDictionary $dictionary
 
   public SlimeIndividualSettingController(UtilityStage<Boolean> stage) {
@@ -31,11 +31,11 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   private void applySettings() {
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    $alphabetOrder.setText(alphabetOrder)
+    $alphabetOrderControl.setText(alphabetOrder)
   }
 
   private void saveSettings() {
-    String alphabetOrder = $alphabetOrder.getText()
+    String alphabetOrder = $alphabetOrderControl.getText()
     $dictionary.setAlphabetOrder(alphabetOrder)
   }
 

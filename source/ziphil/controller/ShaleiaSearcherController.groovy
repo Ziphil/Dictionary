@@ -18,8 +18,8 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private TextField $name
-  @FXML private ComboBox<String> $nameSearchType
+  @FXML private TextField $nameControl
+  @FXML private ComboBox<String> $nameSearchTypeControl
 
   public ShaleiaSearcherController(UtilityStage<ShaleiaSearchParameter> stage) {
     super(stage)
@@ -29,8 +29,8 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   @FXML
   protected void commit() {
     ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-    parameter.setName($name.getText())
-    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchType.getValue()))
+    parameter.setName($nameControl.getText())
+    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchTypeControl.getValue()))
     $stage.close(parameter)
   }
 

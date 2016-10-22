@@ -19,16 +19,16 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private TextField $id
-  @FXML private TextField $name
-  @FXML private ComboBox<String> $nameSearchType
-  @FXML private TextField $equivalentName
-  @FXML private ComboBox<String> $equivalentTitle
-  @FXML private ComboBox<String> $equivalentSearchType
-  @FXML private TextField $informationText
-  @FXML private ComboBox<String> $informationTitle
-  @FXML private ComboBox<String> $informationSearchType
-  @FXML private ComboBox<String> $tag
+  @FXML private TextField $idControl
+  @FXML private TextField $nameControl
+  @FXML private ComboBox<String> $nameSearchTypeControl
+  @FXML private TextField $equivalentNameControl
+  @FXML private ComboBox<String> $equivalentTitleControl
+  @FXML private ComboBox<String> $equivalentSearchTypeControl
+  @FXML private TextField $informationTextControl
+  @FXML private ComboBox<String> $informationTitleControl
+  @FXML private ComboBox<String> $informationSearchTypeControl
+  @FXML private ComboBox<String> $tagControl
   private SlimeDictionary $dictionary
 
   public SlimeSearcherController(UtilityStage<SlimeSearchParameter> stage) {
@@ -44,37 +44,37 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
-    if ($id.getText() != "") {
-      parameter.setId($id.getText().toInteger())
+    if ($idControl.getText() != "") {
+      parameter.setId($idControl.getText().toInteger())
     }
-    if ($name.getText() != "") {
-      parameter.setName($name.getText())
+    if ($nameControl.getText() != "") {
+      parameter.setName($nameControl.getText())
     }
-    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchType.getValue()))
-    if ($equivalentName.getText() != "") {
-      parameter.setEquivalentName($equivalentName.getText())
+    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchTypeControl.getValue()))
+    if ($equivalentNameControl.getText() != "") {
+      parameter.setEquivalentName($equivalentNameControl.getText())
     }
-    if ($equivalentTitle.getValue() != "") {
-      parameter.setEquivalentTitle($equivalentTitle.getValue())
+    if ($equivalentTitleControl.getValue() != "") {
+      parameter.setEquivalentTitle($equivalentTitleControl.getValue())
     } 
-    parameter.setEquivalentSearchType(SearchType.valueOfExplanation($equivalentSearchType.getValue()))
-    if ($informationText.getText() != "") {
-      parameter.setInformationText($informationText.getText())
+    parameter.setEquivalentSearchType(SearchType.valueOfExplanation($equivalentSearchTypeControl.getValue()))
+    if ($informationTextControl.getText() != "") {
+      parameter.setInformationText($informationTextControl.getText())
     }
-    if ($informationTitle.getValue() != "") {
-      parameter.setInformationTitle($informationTitle.getValue())
+    if ($informationTitleControl.getValue() != "") {
+      parameter.setInformationTitle($informationTitleControl.getValue())
     }
-    parameter.setInformationSearchType(SearchType.valueOfExplanation($informationSearchType.getValue()))
-    if ($tag.getValue() != "") {
-      parameter.setTag($tag.getValue())
+    parameter.setInformationSearchType(SearchType.valueOfExplanation($informationSearchTypeControl.getValue()))
+    if ($tagControl.getValue() != "") {
+      parameter.setTag($tagControl.getValue())
     }
     $stage.close(parameter)
   }
 
   private void setupTitles() {
-    $equivalentTitle.getItems().addAll($dictionary.registeredEquivalentTitles())
-    $informationTitle.getItems().addAll($dictionary.registeredInformationTitles())
-    $tag.getItems().addAll($dictionary.registeredTags())
+    $equivalentTitleControl.getItems().addAll($dictionary.registeredEquivalentTitles())
+    $informationTitleControl.getItems().addAll($dictionary.registeredInformationTitles())
+    $tagControl.getItems().addAll($dictionary.registeredTags())
   }
 
 }

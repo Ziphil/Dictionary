@@ -23,7 +23,7 @@ public class HelpController extends Controller<Void> {
   private static final Double DEFAULT_HEIGHT = 480
 
   @FXML private ListView<String> $sectionList
-  @FXML private WebView $help
+  @FXML private WebView $helpView
 
   public HelpController(UtilityStage<Void> stage) {
     super(stage)
@@ -46,7 +46,7 @@ public class HelpController extends Controller<Void> {
     } else if (section == "各形式について") {
       url = getClass().getClassLoader().getResource(DICTIONARY_TYPE_HTML_PATH).toExternalForm()
     }
-    $help.getEngine().load(url)
+    $helpView.getEngine().load(url)
   }
 
   private void setupContentList() {
