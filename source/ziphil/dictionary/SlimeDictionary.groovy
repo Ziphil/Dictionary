@@ -2,6 +2,7 @@ package ziphil.dictionary
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.databind.JavaType
@@ -283,30 +284,33 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private void load() {
     if ($path != null) {
-      FileInputStream stream = FileInputStream.new($path)
-      JsonFactory factory = $$mapper.getFactory()
-      JsonParser parser = factory.createParser(stream)
-      JavaType mapType = $$mapper.getTypeFactory().constructMapType(Map, String, Object)
-      while (parser.nextToken() != null) {
-        if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-          String fieldName = parser.getCurrentName()
-          parser.nextToken()
-          if (fieldName == "words") {
-            while (parser.nextToken() == JsonToken.START_OBJECT) {
-              SlimeWord word = $$mapper.readValue(parser, SlimeWord)
-              word.setDictionary(this)
-              $words.add(word)
+      try {
+        FileInputStream stream = FileInputStream.new($path)
+        JsonFactory factory = $$mapper.getFactory()
+        JsonParser parser = factory.createParser(stream)
+        JavaType mapType = $$mapper.getTypeFactory().constructMapType(Map, String, Object)
+        while (parser.nextToken() != null) {
+          if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
+            String fieldName = parser.getCurrentName()
+            parser.nextToken()
+            if (fieldName == "words") {
+              while (parser.nextToken() == JsonToken.START_OBJECT) {
+                SlimeWord word = $$mapper.readValue(parser, SlimeWord)
+                word.setDictionary(this)
+                $words.add(word)
+              }
+            } else if (fieldName == "zpdic") {
+              Map<String, Object> setting = (Map)$$mapper.readValue(parser, mapType)
+              $alphabetOrder = setting["alphabetOrder"]
+            } else {
+              $externalData.put(fieldName, parser.readValueAs(Object))
             }
-          } else if (fieldName == "zpdic") {
-            Map<String, Object> setting = (Map)$$mapper.readValue(parser, mapType)
-            $alphabetOrder = setting["alphabetOrder"]
-          } else {
-            $externalData.put(fieldName, parser.readValueAs(Object))
           }
         }
+        parser.close()
+        stream.close()
+      } catch (JsonParseException exception) {
       }
-      parser.close()
-      stream.close()
     }
   }
 
