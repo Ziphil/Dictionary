@@ -20,12 +20,15 @@ import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.input.Dragboard
+import javafx.scene.input.DragEvent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
@@ -83,6 +86,7 @@ public class MainController extends PrimitiveController<Stage> {
   public MainController(Stage nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
+    setupDragAndDrop()
     setupShortcuts()
     setupCloseConfirmation()
     setupExceptionHandler()
@@ -654,6 +658,29 @@ public class MainController extends PrimitiveController<Stage> {
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
+    }
+  }
+
+  private void setupDragAndDrop() {
+    $scene.setOnDragOver() { DragEvent event ->
+      Dragboard dragboard = event.getDragboard()
+      if (dragboard.hasFiles()) {
+        event.acceptTransferModes(TransferMode.COPY_OR_MOVE)
+      }
+      event.consume()
+    }
+    $scene.setOnDragDropped() { DragEvent event ->
+      Boolean isCompleted = false
+      Dragboard dragboard = event.getDragboard()
+      if (dragboard.hasFiles()) {
+        File file = dragboard.getFiles()[0]
+        Platform.runLater() {
+          openRegisteredDictionary(file)
+        }
+        isCompleted = true
+      }
+      event.setDropCompleted(isCompleted)
+      event.consume()
     }
   }
 
