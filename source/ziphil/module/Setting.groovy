@@ -1,5 +1,6 @@
 package ziphil.module
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
@@ -69,7 +70,7 @@ public class Setting {
         Setting instance = $$mapper.readValue(stream, Setting)
         stream.close()
         return instance
-      } catch (IOException exception) {
+      } catch (JsonParseException exception) {
         return Setting.new()
       }
     } else {
