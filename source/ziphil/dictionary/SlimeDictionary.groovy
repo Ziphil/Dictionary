@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
@@ -285,6 +286,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       FileInputStream stream = FileInputStream.new($path)
       JsonFactory factory = $$mapper.getFactory()
       JsonParser parser = factory.createParser(stream)
+      JavaType mapType = $$mapper.getTypeFactory().constructMapType(Map, String, Object)
       while (parser.nextToken() != null) {
         if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
           String fieldName = parser.getCurrentName()
@@ -296,7 +298,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
               $words.add(word)
             }
           } else if (fieldName == "zpdic") {
-            Map<String, Object> setting = (Map)$$mapper.readValue(parser, $$mapper.getTypeFactory().constructMapType(Map, String, Object))
+            Map<String, Object> setting = (Map)$$mapper.readValue(parser, mapType)
             $alphabetOrder = setting["alphabetOrder"]
           } else {
             $externalData.put(fieldName, parser.readValueAs(Object))
