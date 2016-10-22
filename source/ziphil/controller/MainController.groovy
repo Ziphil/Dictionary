@@ -659,7 +659,7 @@ public class MainController extends PrimitiveController<Stage> {
           openRegisteredDictionary(file)
         }
       } else {
-        item.setText("")
+        item.setText("未登録")
         item.setDisable(true)
       }
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
