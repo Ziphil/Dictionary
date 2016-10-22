@@ -22,7 +22,7 @@ import ziphil.module.Setting
 
 
 @CompileStatic @Newify
-public class SettingController extends Controller<Void> {
+public class SettingController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
   private static final String TITLE = "設定"
@@ -45,7 +45,7 @@ public class SettingController extends Controller<Void> {
   @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
   @FXML private ToggleButton $showsSlimeIdControl
 
-  public SettingController(UtilityStage<Void> nextStage) {
+  public SettingController(UtilityStage<Boolean> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -115,7 +115,7 @@ public class SettingController extends Controller<Void> {
     }
   }
 
-  private void saveSettings() {
+  private void updateSettings() {
     Setting setting = Setting.getInstance()
     String contentFontFamily = $contentFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer contentFontSize = $contentFontSizeControl.getValue()
@@ -156,7 +156,6 @@ public class SettingController extends Controller<Void> {
       String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
     }
-    setting.save()
   }
 
   private void browseDictionary(Integer i) {
@@ -176,8 +175,8 @@ public class SettingController extends Controller<Void> {
 
   @FXML
   protected void commit() {
-    saveSettings()
-    $stage.close()
+    updateSettings()
+    $stage.close(true)
   }
 
   private void setupRegisteredDictionaryPane() {

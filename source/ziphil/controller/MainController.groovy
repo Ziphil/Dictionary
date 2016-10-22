@@ -75,6 +75,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
   @FXML private Menu $openRegisteredDictionaryMenu
+  @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private HBox $footerBox
   @FXML private Label $dictionaryNameLabel
   @FXML private Label $hitWordSizeLabel
@@ -97,6 +98,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupWordList()
     setupSearchType()
     setupOpenRegisteredDictionaryMenu()
+    setupRegisterCurrentDictionaryMenu()
     setupWordListShortcuts()
     updateDictionaryToDefault()
   }
@@ -436,6 +438,14 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void registerCurrentDictionary(Integer i) {
+    Setting setting = Setting.getInstance()
+    setting.getRegisteredDictionaryPaths()[i] = $dictionary.getPath()
+    setting.save()
+    setupOpenRegisteredDictionaryMenu()
+    setupRegisterCurrentDictionaryMenu()
+  }
+
   private void focusWordList() {
     $wordList.requestFocus()
     if ($wordList.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -533,11 +543,16 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void showSetting() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
-    nextStage.showAndWait() 
+    Boolean isDone = nextStage.showAndWaitResult()
+    if (isDone != null) {
+      Setting.getInstance().save()
+      setupOpenRegisteredDictionaryMenu()
+      setupRegisterCurrentDictionaryMenu()
+    }
   }
 
   private void updateDictionary(Dictionary dictionary) {
@@ -633,6 +648,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupOpenRegisteredDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
+    $openRegisteredDictionaryMenu.getItems().clear()
     (0 ..< 10).each() { Integer i ->
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
@@ -650,6 +666,28 @@ public class MainController extends PrimitiveController<Stage> {
       item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN))
       $openRegisteredDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupRegisterCurrentDictionaryMenu() {
+    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
+    $registerCurrentDictionaryMenu.getItems().clear()
+    (0 ..< 10).each() { Integer i ->
+      String dictionaryPath = dictionaryPaths[i]
+      MenuItem item = MenuItem.new()
+      if (dictionaryPath == null) {
+        item.setText("辞書${(i + 1) % 10}に登録")
+        item.setOnAction() {
+          registerCurrentDictionary(i)
+        }
+      } else {
+        item.setText("登録済み")
+        item.setDisable(true)
+      }
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
+      item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
+      $registerCurrentDictionaryMenu.getItems().add(item)
     }
   }
 
