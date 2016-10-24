@@ -72,9 +72,9 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   }
 
   private void setupTitles() {
-    $equivalentTitleControl.getItems().addAll($dictionary.registeredEquivalentTitles())
-    $informationTitleControl.getItems().addAll($dictionary.registeredInformationTitles())
-    $tagControl.getItems().addAll($dictionary.registeredTags())
+    $equivalentTitleControl.getItems().addAll($dictionary.getRegisteredEquivalentTitles())
+    $informationTitleControl.getItems().addAll($dictionary.getRegisteredInformationTitles())
+    $tagControl.getItems().addAll($dictionary.getRegisteredTags())
   }
 
 }

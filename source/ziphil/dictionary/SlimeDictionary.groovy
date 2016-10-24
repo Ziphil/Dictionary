@@ -21,6 +21,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
+  private Integer $validMinId = 0
+  private List<String> $registeredTags = ArrayList.new()
+  private List<String> $registeredEquivalentTitles = ArrayList.new()
+  private List<String> $registeredInformationTitles = ArrayList.new()
+  private List<String> $registeredVariationTitles = ArrayList.new()
+  private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private Consumer<Integer> $onLinkClicked
   private Map<String, Object> $externalData = HashMap.new()
@@ -28,6 +34,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   public SlimeDictionary(String name, String path) {
     super(name, path)
     load()
+    setupRegisteredTitles()
     setupWords()
     setupSuggestions()
   }
@@ -142,11 +149,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
-      newWord.setId(validMinId())
+      newWord.setId($validMinId)
+      $validMinId += 1
+    } else {
+      if (newWord.getId() >= $validMinId) {
+        $validMinId = newWord.getId() + 1
+      }
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
-      $words.each() { SlimeWord registeredWord ->
-        registeredWord.getRelations().each() { SlimeRelation relation ->
+      $words.each() { SlimeWord otherWord ->
+        otherWord.getRelations().each() { SlimeRelation relation ->
           if (relation.getId() == oldWord.getId()) {
             relation.setId(newWord.getId())
             relation.setName(newWord.getName())
@@ -154,27 +166,66 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         }
       }
     }
+    addRegisteredTitles(newWord)
     newWord.createContentPane()
   }
 
   public void addWord(SlimeWord word) {
     if (containsId(word.getId(), word)) {
-      word.setId(validMinId())
+      word.setId($validMinId)
+      $validMinId += 1
+    } else {
+      if (word.getId() >= $validMinId) {
+        $validMinId = word.getId() + 1
+      }
     }
     word.setDictionary(this)
+    addRegisteredTitles(word)
     $words.add(word)
   }
 
   public void removeWord(SlimeWord word) {
-    $words.each() { SlimeWord registeredWord ->
-      registeredWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+    $words.each() { SlimeWord otherWord ->
+      otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
     }
     $words.remove(word)
   }
 
+  private void addRegisteredTitles(SlimeWord word) {
+    word.getTags().each() { String tag ->
+      if (!$registeredTags.contains(tag)) {
+        $registeredTags.addAll(tag)
+      }
+    }
+    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+      String title = equivalent.getTitle()
+      if (!$registeredEquivalentTitles.contains(title)) {
+        $registeredEquivalentTitles.add(title)
+      }
+    }
+    word.getInformations().each() { SlimeInformation information ->
+      String title = information.getTitle()
+      if (!$registeredInformationTitles.contains(title)) {
+        $registeredInformationTitles.add(title)
+      }
+    }
+    word.getVariations().each() { SlimeVariation variation ->
+      String title = variation.getTitle()
+      if (!$registeredVariationTitles.contains(title)) {
+        $registeredVariationTitles.add(title)
+      }
+    }
+    word.getRelations().each() { SlimeRelation relation ->
+      String title = relation.getTitle()
+      if (!$registeredRelationTitles.contains(title)) {
+        $registeredRelationTitles.add(title)
+      }
+    }
+  }
+
   public SlimeWord emptyWord() {
     SlimeWord word = SlimeWord.new()
-    word.setId(validMinId())
+    word.setId($validMinId)
     return word
   }
 
@@ -191,7 +242,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   public SlimeWord inheritedWord(SlimeWord oldWord) {
-    Integer id = validMinId()
+    Integer id = $validMinId
     String name = oldWord.getName()
     List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
     List<String> tags = oldWord.getTags()
@@ -200,76 +251,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     List<SlimeRelation> relations = oldWord.getRelations()
     SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
     return newWord
-  }
-
-  public Integer validMinId() {
-    Integer minId = 0
-    $words.each() { SlimeWord word ->
-      if (minId < word.getId()) {
-        minId = word.getId()
-      }
-    }
-    return minId + 1
-  }
-
-  public List<String> registeredTags() {
-    List<String> tags = ArrayList.new()
-    $words.each() { SlimeWord word ->
-      word.getTags().each() { String tag ->
-        if (!tags.contains(tag)) {
-          tags.add(tag)
-        }
-      }
-    }
-    return tags
-  }
-
-  public List<String> registeredEquivalentTitles() {
-    List<String> titles = ArrayList.new()
-    $words.each() { SlimeWord word ->
-      word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
-        if (!titles.contains(equivalent.getTitle())) {
-          titles.add(equivalent.getTitle())
-        }
-      }
-    }
-    return titles
-  }
-
-  public List<String> registeredInformationTitles() {
-    List<String> titles = ArrayList.new()
-    $words.each() { SlimeWord word ->
-      word.getInformations().each() { SlimeInformation information ->
-        if (!titles.contains(information.getTitle())) {
-          titles.add(information.getTitle())
-        }
-      }
-    }
-    return titles
-  }
-
-  public List<String> registeredVariationTitles() {
-    List<String> titles = ArrayList.new()
-    $words.each() { SlimeWord word ->
-      word.getVariations().each() { SlimeVariation variation ->
-        if (!titles.contains(variation.getTitle())) {
-          titles.add(variation.getTitle())
-        }
-      }
-    }
-    return titles
-  }
-
-  public List<String> registeredRelationTitles() {
-    List<String> titles = ArrayList.new()
-    $words.each() { SlimeWord word ->
-      word.getRelations().each() { SlimeRelation relation ->
-        if (!titles.contains(relation.getTitle())) {
-          titles.add(relation.getTitle())
-        }
-      }
-    }
-    return titles
   }
 
   public Boolean containsId(Integer id, SlimeWord excludedWord) {
@@ -352,6 +333,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     stream.close()
   }
 
+  private void setupRegisteredTitles() {
+    $words.each() { SlimeWord word ->
+      if ($validMinId < word.getId()) {
+        $validMinId = word.getId()
+      }
+      addRegisteredTitles(word)
+    }
+    $validMinId += 1
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Integer firstId = firstWord.getId()
@@ -392,6 +383,30 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     ObjectMapper mapper = ObjectMapper.new()
     mapper.enable(SerializationFeature.INDENT_OUTPUT)
     return mapper
+  }
+
+  public Integer getValidMinId() {
+    return $validMinId
+  }
+
+  public List<String> getRegisteredTags() {
+    return $registeredTags
+  }
+
+  public List<String> getRegisteredEquivalentTitles() {
+    return $registeredEquivalentTitles
+  }
+
+  public List<String> getRegisteredInformationTitles() {
+    return $registeredInformationTitles
+  }
+
+  public List<String> getRegisteredVariationTitles() {
+    return $registeredVariationTitles
+  }
+
+  public List<String> getRegisteredRelationTitles() {
+    return $registeredRelationTitles
   }
 
   public String getAlphabetOrder() {
