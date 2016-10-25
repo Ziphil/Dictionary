@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
@@ -29,12 +29,11 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private Consumer<Integer> $onLinkClicked
-  private Map<String, Object> $externalData = HashMap.new()
+  private Map<String, TreeNode> $externalData = HashMap.new()
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
     load()
-    setupRegisteredTitles()
     setupWords()
     setupSuggestions()
   }
@@ -269,28 +268,149 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         FileInputStream stream = FileInputStream.new($path)
         JsonFactory factory = $$mapper.getFactory()
         JsonParser parser = factory.createParser(stream)
-        JavaType mapType = $$mapper.getTypeFactory().constructMapType(Map, String, Object)
-        while (parser.nextToken() != null) {
-          if (parser.getCurrentToken() == JsonToken.FIELD_NAME) {
-            String fieldName = parser.getCurrentName()
-            parser.nextToken()
-            if (fieldName == "words") {
-              while (parser.nextToken() == JsonToken.START_OBJECT) {
-                SlimeWord word = $$mapper.readValue(parser, SlimeWord)
-                word.setDictionary(this)
-                $words.add(word)
+        parser.nextToken()
+        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+          String topFieldName = parser.getCurrentName()
+          parser.nextToken()
+          if (topFieldName == "words") {
+            while (parser.nextToken() == JsonToken.START_OBJECT) {
+              SlimeWord word = SlimeWord.new()
+              while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                String wordFieldName = parser.getCurrentName()
+                parser.nextToken()
+                if (wordFieldName == "entry") {
+                  while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                    String entryFieldName = parser.getCurrentName()
+                    parser.nextToken()
+                    if (entryFieldName == "id") {
+                      Integer id = parser.getValueAsInt()
+                      word.setId(id)
+                      if ($validMinId < id) {
+                        $validMinId = id
+                      }
+                    } else if (entryFieldName == "form") {
+                      String name = parser.getValueAsString()
+                      word.setName(name)
+                    }
+                  }
+                } else if (wordFieldName == "translations") {
+                  while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    SlimeEquivalent equivalent = SlimeEquivalent.new()
+                    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                      String equivalentFieldName = parser.getCurrentName()
+                      parser.nextToken()
+                      if (equivalentFieldName == "title") {
+                        String title = parser.getValueAsString()
+                        equivalent.setTitle(title)
+                        if (!$registeredEquivalentTitles.contains(title)) {
+                          $registeredEquivalentTitles.add(title)
+                        } 
+                      } else if (equivalentFieldName == "forms") {
+                        while (parser.nextToken() != JsonToken.END_ARRAY) {
+                          String name = parser.getValueAsString()
+                          equivalent.getNames().add(name)
+                          word.getEquivalents().add(name)
+                        }
+                      }
+                    }
+                    word.getRawEquivalents().add(equivalent)
+                  }
+                } else if (wordFieldName == "tags") {
+                  while (parser.nextToken() != JsonToken.END_ARRAY) {
+                    String tag = parser.getValueAsString()
+                    word.getTags().add(tag)
+                    if (!$registeredTags.contains(tag)) {
+                      $registeredTags.addAll(tag)
+                    }
+                  }
+                } else if (wordFieldName == "contents") {
+                  while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    SlimeInformation information = SlimeInformation.new()
+                    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                      String informationFieldName = parser.getCurrentName()
+                      parser.nextToken()
+                      if (informationFieldName == "title") {
+                        String title = parser.getValueAsString()
+                        information.setTitle(title)
+                        if (!$registeredInformationTitles.contains(title)) {
+                          $registeredInformationTitles.add(title)
+                        }
+                      } else if (informationFieldName == "text") {
+                        String text = parser.getValueAsString()
+                        information.setText(text)
+                      }
+                    }
+                    word.getInformations().add(information)
+                  }
+                } else if (wordFieldName == "variations") {
+                  while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    SlimeVariation variation = SlimeVariation.new()
+                    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                      String variationFieldName = parser.getCurrentName()
+                      parser.nextToken()
+                      if (variationFieldName == "title") {
+                        String title = parser.getValueAsString()
+                        variation.setTitle(title)
+                        if (!$registeredVariationTitles.contains(title)) {
+                          $registeredVariationTitles.add(title)
+                        }
+                      } else if (variationFieldName == "form") {
+                        String name = parser.getValueAsString()
+                        variation.setName(name)
+                      }
+                    }
+                    word.getVariations().add(variation)
+                  }
+                } else if (wordFieldName == "relations") {
+                  while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    SlimeRelation relation = SlimeRelation.new()
+                    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                      String relationFieldName = parser.getCurrentName()
+                      parser.nextToken()
+                      if (relationFieldName == "title") {
+                        String title = parser.getValueAsString()
+                        relation.setTitle(title)
+                        if (!$registeredRelationTitles.contains(title)) {
+                          $registeredRelationTitles.add(title)
+                        }
+                      } else if (relationFieldName == "entry") {
+                        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                          String relationEntryFieldName = parser.getCurrentName()
+                          parser.nextToken()
+                          if (relationEntryFieldName == "id") {
+                            Integer id = parser.getValueAsInt()
+                            relation.setId(id)
+                          } else if (relationEntryFieldName == "form") {
+                            String name = parser.getValueAsString()
+                            relation.setName(name)
+                          }
+                        }
+                      }
+                    }
+                    word.getRelations().add(relation)
+                  }
+                }
               }
-            } else if (fieldName == "zpdic") {
-              Map<String, Object> setting = (Map)$$mapper.readValue(parser, mapType)
-              $alphabetOrder = setting["alphabetOrder"]
-            } else {
-              $externalData.put(fieldName, parser.readValueAs(Object))
+              word.setDictionary(this)
+              $words.add(word)
             }
+          } else if (topFieldName == "zpdic") {
+            while (parser.nextToken() == JsonToken.FIELD_NAME) {
+              String specialFieldName = parser.getCurrentName()
+              parser.nextToken()
+              if (specialFieldName == "alphabetOrder") {
+                $alphabetOrder = parser.getValueAsString()
+              }
+            }
+          } else {
+            $externalData.put(topFieldName, parser.readValueAsTree())
           }
         }
+        $validMinId ++
         parser.close()
         stream.close()
       } catch (JsonParseException exception) {
+        exception.printStackTrace()
       }
     }
   }
@@ -324,23 +444,13 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     generator.writeStartObject()
     generator.writeStringField("alphabetOrder", $alphabetOrder)
     generator.writeEndObject()
-    $externalData.each() { String fieldName, Object object ->
+    $externalData.each() { String fieldName, TreeNode node ->
       generator.writeFieldName(fieldName)
-      $$mapper.writeValue(generator, object)
+      $$mapper.writeValue(generator, node)
     }
     generator.writeEndObject()
     generator.close()
     stream.close()
-  }
-
-  private void setupRegisteredTitles() {
-    $words.each() { SlimeWord word ->
-      if ($validMinId < word.getId()) {
-        $validMinId = word.getId()
-      }
-      addRegisteredTitles(word)
-    }
-    $validMinId += 1
   }
 
   private void setupWords() {
