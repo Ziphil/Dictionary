@@ -168,8 +168,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         }
       }
     }
-    addRegisteredTitles(newWord)
+    newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
+    addRegisteredTitles(newWord)
   }
 
   public void addWord(SlimeWord word) {
@@ -182,6 +183,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
     }
     word.setDictionary(this)
+    word.createComparisonString($alphabetOrder)
     addRegisteredTitles(word)
     $words.add(word)
   }
@@ -319,6 +321,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         } catch (JsonParseException exception) {
           exception.printStackTrace()
         }
+      }
+      currentWords.each() { SlimeWord word ->
+        word.createComparisonString($alphabetOrder)
       }
       return currentWords
     }
@@ -563,26 +568,11 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Integer firstId = firstWord.getId()
       Integer secondId = secondWord.getId()
-      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
-      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
-      Integer result = null
-      (0 ..< firstList.size()).each() { Integer i ->
-        Integer firstData = firstList[i]
-        Integer secondData = secondList[i]
-        if (result == null) {
-          if (secondData == null) {
-            result = 1
-          } else if (firstData != secondData) {
-            result = firstData <=> secondData
-          }
-        }
-      }
-      if (result == null) {
-        if (firstList.size() != secondList.size()) {
-          return -1
-        } else {
-          return firstId <=> secondId
-        }
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      Integer result = firstString <=> secondString
+      if (result == 0) {
+        return firstId <=> secondId
       } else {
         return result
       }

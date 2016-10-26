@@ -34,11 +34,13 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
+    newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
   }
 
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
+    word.createComparisonString($alphabetOrder)
     $words.add(word)
   }
 
@@ -74,6 +76,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
           if (currentName != null) {
             ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
             word.setDictionary(this)
+            word.createComparisonString($alphabetOrder)
             $words.add(word)
           }
           currentName = matcher.group(1)
@@ -86,6 +89,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       if (currentName != null) {
         ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
         word.setDictionary(this)
+        word.createComparisonString($alphabetOrder)
         $words.add(word)
       }
     }
@@ -105,29 +109,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
-      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
-      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
-      Integer result = null
-      (0 ..< firstList.size()).each() { Integer i ->
-        Integer firstData = firstList[i]
-        Integer secondData = secondList[i]
-        if (result == null) {
-          if (secondData == null) {
-            result = 1
-          } else if (firstData != secondData) {
-            result = firstData <=> secondData
-          }
-        }
-      }
-      if (result == null) {
-        if (firstList.size() != secondList.size()) {
-          return -1
-        } else {
-          return 0
-        }
-      } else {
-        return result
-      }
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      return firstString <=> secondString
     }
   }
 

@@ -32,6 +32,7 @@ public class SlimeWord extends Word {
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
+  private String $comparisonString = ""
   private VBox $simpleContentPane = VBox.new()
   private Boolean $isSimpleChanged = true
 
@@ -180,10 +181,17 @@ public class SlimeWord extends Word {
     box.getChildren().add(textFlow)
   }
 
-  public List<Integer> listForComparison(String order) {
-    List<String> splittedString = $name.split("").toList()
-    List<Integer> convertedString = splittedString.collect{character -> order.indexOf(character)}
-    return convertedString
+  public void createComparisonString(String order) {
+    StringBuilder comparisonString = StringBuilder.new()
+    (0 ..< $name.length()).each() { Integer i ->
+      Integer position = order.indexOf($name.codePointAt(i))
+      if (position > -1) {
+        comparisonString.appendCodePoint(position + 174)
+      } else {
+        comparisonString.appendCodePoint(10000)
+      }
+    }
+    $comparisonString = comparisonString.toString()
   }
 
   private void setupContentPane() {
@@ -256,6 +264,10 @@ public class SlimeWord extends Word {
 
   public void setRelations(List<SlimeRelation> relations) {
     $relations = relations
+  }
+
+  public String getComparisonString() {
+    return $comparisonString
   }
 
   public Pane getSimpleContentPane() {
