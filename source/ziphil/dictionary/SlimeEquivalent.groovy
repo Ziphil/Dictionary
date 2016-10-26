@@ -1,6 +1,5 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
 
 
@@ -26,17 +25,10 @@ public class SlimeEquivalent {
     $title = title
   }
 
-  @JsonProperty("form")
-  public String setName(String name) {
-    $names.add(name)
-  }
-
-  @JsonProperty("forms")
   public List<String> getNames() {
     return $names
   }
 
-  @JsonProperty("forms")
   public void setNames(List<String> names) {
     $names = names
   }

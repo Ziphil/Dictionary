@@ -1,7 +1,5 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -196,12 +194,10 @@ public class SlimeWord extends Word {
     return $isSimpleChanged
   }
 
-  @JsonIgnore
   public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
-  @JsonIgnore
   public void setDictionary(SlimeDictionary dictionary) {
     $dictionary = dictionary
   }
@@ -218,12 +214,10 @@ public class SlimeWord extends Word {
     $name = name
   }
 
-  @JsonProperty("translations")
   public List<SlimeEquivalent> getRawEquivalents() {
     return $rawEquivalents
   }
 
-  @JsonProperty("translations")
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
     $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
@@ -240,12 +234,10 @@ public class SlimeWord extends Word {
     $tags = tags
   }
 
-  @JsonProperty("contents")
   public List<SlimeInformation> getInformations() {
     return $informations
   }
 
-  @JsonProperty("contents")
   public void setInformations(List<SlimeInformation> informations) {
     $informations = informations
   }
@@ -264,15 +256,6 @@ public class SlimeWord extends Word {
 
   public void setRelations(List<SlimeRelation> relations) {
     $relations = relations
-  }
-
-  public Map<String, Object> getEntry() {
-    return [("id"): (Object)$id, ("form"): (Object)$name]
-  }
-
-  public void setEntry(Map<String, Object> entry) {
-    $id = (Integer)entry["id"]
-    $name = (String)entry["form"]
   }
 
   public Pane getSimpleContentPane() {

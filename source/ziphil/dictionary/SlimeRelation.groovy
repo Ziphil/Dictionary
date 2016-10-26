@@ -1,6 +1,5 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.CompileStatic
 
 
@@ -28,7 +27,6 @@ public class SlimeRelation {
     $title = title
   }
 
-  @JsonIgnore
   public Integer getId() {
     return $id
   }
@@ -37,22 +35,12 @@ public class SlimeRelation {
     $id = id
   }
 
-  @JsonIgnore
   public String getName() {
     return $name
   }
 
   public void setName(String name) {
     $name = name
-  }
-
-  public Map<String, Object> getEntry() {
-    return [("id"): (Object)$id, ("form"): (Object)$name]
-  }
-
-  public void setEntry(Map<String, Object> entry) {
-    $id = (Integer)entry["id"]
-    $name = (String)entry["form"]
   }
 
 }
