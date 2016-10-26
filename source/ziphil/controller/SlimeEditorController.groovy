@@ -83,21 +83,21 @@ public class SlimeEditorController extends Controller<Boolean> {
     $idControl.setText(word.getId().toString())
     $nameControl.setText(word.getName())
     word.getTags().each() { String tag ->
-      addTagControl(tag, dictionary.registeredTags())
+      addTagControl(tag, dictionary.getRegisteredTags())
     }
     word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
       String nameString = equivalent.getNames().join(", ")
-      addEquivalentControl(equivalent.getTitle(), nameString, dictionary.registeredEquivalentTitles())
+      addEquivalentControl(equivalent.getTitle(), nameString, dictionary.getRegisteredEquivalentTitles())
     }
     word.getInformations().each() { SlimeInformation information ->
-      addInformationControl(information.getTitle(), information.getText(), dictionary.registeredInformationTitles())
+      addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
     word.getVariations().groupBy{variation -> variation.getTitle()}.each() { String title, List<SlimeVariation> variationGroup ->
       String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
-      addVariationControl(title, nameString, dictionary.registeredVariationTitles())
+      addVariationControl(title, nameString, dictionary.getRegisteredVariationTitles())
     }
     word.getRelations().each() { SlimeRelation relation ->
-      addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.registeredRelationTitles())
+      addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.getRegisteredRelationTitles())
     }
     if ($informationTextControls.isEmpty()) {
       insertInformationControl()
@@ -177,31 +177,31 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   @FXML
   private void insertTagControl() {
-    addTagControl("", $dictionary.registeredTags())
+    addTagControl("", $dictionary.getRegisteredTags())
     $tagControls[-1].requestFocus()
   }
 
   @FXML
   private void insertEquivalentControl() {
-    addEquivalentControl("", "", $dictionary.registeredEquivalentTitles())
+    addEquivalentControl("", "", $dictionary.getRegisteredEquivalentTitles())
     $equivalentNameControls[-1].requestFocus()
   }
 
   @FXML
   private void insertInformationControl() {
-    addInformationControl("", "", $dictionary.registeredInformationTitles())
+    addInformationControl("", "", $dictionary.getRegisteredInformationTitles())
     $informationTextControls[-1].requestFocus()
   }
 
   @FXML
   private void insertVariationControl() {
-    addVariationControl("", "", $dictionary.registeredVariationTitles())
+    addVariationControl("", "", $dictionary.getRegisteredVariationTitles())
     $variationNameControls[-1].requestFocus()
   }
 
   @FXML
   private void insertRelationControl() {
-    addRelationControl("", "", null, $dictionary.registeredRelationTitles())
+    addRelationControl("", "", null, $dictionary.getRegisteredRelationTitles())
     chooseRelation((HBox)$relationBox.getChildren()[-1])
   }
 

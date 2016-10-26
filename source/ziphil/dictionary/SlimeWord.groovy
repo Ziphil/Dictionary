@@ -214,6 +214,10 @@ public class SlimeWord extends Word {
     $id = id
   }
 
+  public void setName(String name) {
+    $name = name
+  }
+
   @JsonProperty("translations")
   public List<SlimeEquivalent> getRawEquivalents() {
     return $rawEquivalents
