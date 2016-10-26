@@ -8,8 +8,8 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC alpha"
-  public static final String VERSION = "0.8.0α"
-  public static final String DATE = "1735"
+  public static final String VERSION = "0.8.1α"
+  public static final String DATE = "1739"
   public static final Boolean DEBUG = false
   public static final String BASE_PATH = createBasePath()
 
@@ -41,6 +41,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  0. 8. 1 | OneToMany 形式の読み込みや編集を高速化。
 //  0. 8. 0 | ファイルをドラッグアンドドロップで開く機能を追加。
 //          | 現在開いている辞書を登録辞書に登録する機能を追加。
 //  0. 7. 2 | 単語リストの空白部分をダブルクリックするとエラーになる不具合を修正
