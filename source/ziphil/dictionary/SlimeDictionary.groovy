@@ -341,17 +341,17 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $words.each() { SlimeWord word ->
       generator.writeStartObject()
       generator.writeFieldName("entry")
-      $$mapper.writeValue(generator, word.getEntry())
+      writeEntry(generator, word)
       generator.writeFieldName("translations")
-      $$mapper.writeValue(generator, word.getRawEquivalents())
+      writeEquivalents(generator, word)
       generator.writeFieldName("tags")
-      $$mapper.writeValue(generator, word.getTags())
+      writeTags(generator, word)
       generator.writeFieldName("contents")
-      $$mapper.writeValue(generator, word.getInformations())
+      writeInformations(generator, word)
       generator.writeFieldName("variations")
-      $$mapper.writeValue(generator, word.getVariations())
+      writeVariations(generator, word)
       generator.writeFieldName("relations")
-      $$mapper.writeValue(generator, word.getRelations())
+      writeRelations(generator, word)
       generator.writeEndObject()
     }
     generator.writeEndArray()
@@ -361,7 +361,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     generator.writeEndObject()
     $externalData.each() { String fieldName, TreeNode node ->
       generator.writeFieldName(fieldName)
-      $$mapper.writeValue(generator, node)
+      generator.writeTree(node)
     }
     generator.writeEndObject()
     generator.close()
@@ -489,6 +489,74 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
       word.getRelations().add(relation)
     }
+  }
+
+  private void writeEntry(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartObject()
+    generator.writeNumberField("id", word.getId())
+    generator.writeStringField("form", word.getName())
+    generator.writeEndObject()
+  }
+
+  private void writeEquivalents(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartArray()
+    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+      generator.writeStartObject()
+      generator.writeStringField("title", equivalent.getTitle())
+      generator.writeFieldName("forms")
+      generator.writeStartArray()
+      equivalent.getNames().each() { String name ->
+        generator.writeString(name)
+      }
+      generator.writeEndArray()
+      generator.writeEndObject()
+    }
+    generator.writeEndArray()
+  }
+
+  private void writeTags(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartArray()
+    word.getTags().each() { String tag ->
+      generator.writeString(tag)
+    }
+    generator.writeEndArray()
+  }
+
+  private void writeInformations(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartArray()
+    word.getInformations().each() { SlimeInformation information ->
+      generator.writeStartObject()
+      generator.writeStringField("title", information.getTitle())
+      generator.writeStringField("text", information.getText())
+      generator.writeEndObject()
+    }
+    generator.writeEndArray()
+  }
+
+  private void writeVariations(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartArray()
+    word.getVariations().each() { SlimeVariation variation ->
+      generator.writeStartObject()
+      generator.writeStringField("title", variation.getTitle())
+      generator.writeStringField("form", variation.getName())
+      generator.writeEndObject()
+    }
+    generator.writeEndArray()
+  }
+
+  private void writeRelations(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartArray()
+    word.getRelations().each() { SlimeRelation relation ->
+      generator.writeStartObject()
+      generator.writeStringField("title", relation.getTitle())
+      generator.writeFieldName("entry")
+      generator.writeStartObject()
+      generator.writeNumberField("id", relation.getId())
+      generator.writeStringField("form", relation.getName())
+      generator.writeEndObject()
+      generator.writeEndObject()
+    }
+    generator.writeEndArray()
   }
 
   private void setupWords() {
