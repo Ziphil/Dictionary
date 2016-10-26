@@ -12,6 +12,9 @@ import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
+import ziphil.custom.SimpleTask
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -263,57 +266,68 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void load() {
-    if ($path != null) {
-      try {
-        FileInputStream stream = FileInputStream.new($path)
-        JsonFactory factory = $$mapper.getFactory()
-        JsonParser parser = factory.createParser(stream)
-        parser.nextToken()
-        while (parser.nextToken() == JsonToken.FIELD_NAME) {
-          String topFieldName = parser.getCurrentName()
+    SlimeDictionary dictionary = this
+    Task<ObservableList<SlimeWord>> task = SimpleTask.new() {
+      ObservableList<SlimeWord> currentWords = FXCollections.observableArrayList()
+      if ($path != null) {
+        try {
+          FileInputStream stream = FileInputStream.new($path)
+          JsonFactory factory = $$mapper.getFactory()
+          JsonParser parser = factory.createParser(stream)
           parser.nextToken()
-          if (topFieldName == "words") {
-            while (parser.nextToken() == JsonToken.START_OBJECT) {
-              SlimeWord word = SlimeWord.new()
+          while (parser.nextToken() == JsonToken.FIELD_NAME) {
+            String topFieldName = parser.getCurrentName()
+            parser.nextToken()
+            if (topFieldName == "words") {
+              while (parser.nextToken() == JsonToken.START_OBJECT) {
+                SlimeWord word = SlimeWord.new()
+                while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                  String wordFieldName = parser.getCurrentName()
+                  parser.nextToken()
+                  if (wordFieldName == "entry") {
+                    parseEntry(parser, word)
+                  } else if (wordFieldName == "translations") {
+                    parseEquivalents(parser, word)
+                  } else if (wordFieldName == "tags") {
+                    parseTags(parser, word)
+                  } else if (wordFieldName == "contents") {
+                    parseInformations(parser, word)
+                  } else if (wordFieldName == "variations") {
+                    parseVariations(parser, word)
+                  } else if (wordFieldName == "relations") {
+                    parseRelations(parser, word)
+                  }
+                }
+                word.setDictionary(dictionary)
+                currentWords.add(word)
+              }
+            } else if (topFieldName == "zpdic") {
               while (parser.nextToken() == JsonToken.FIELD_NAME) {
-                String wordFieldName = parser.getCurrentName()
+                String specialFieldName = parser.getCurrentName()
                 parser.nextToken()
-                if (wordFieldName == "entry") {
-                  parseEntry(parser, word)
-                } else if (wordFieldName == "translations") {
-                  parseEquivalents(parser, word)
-                } else if (wordFieldName == "tags") {
-                  parseTags(parser, word)
-                } else if (wordFieldName == "contents") {
-                  parseInformations(parser, word)
-                } else if (wordFieldName == "variations") {
-                  parseVariations(parser, word)
-                } else if (wordFieldName == "relations") {
-                  parseRelations(parser, word)
+                if (specialFieldName == "alphabetOrder") {
+                  $alphabetOrder = parser.getValueAsString()
                 }
               }
-              word.setDictionary(this)
-              $words.add(word)
+            } else {
+              $externalData.put(topFieldName, parser.readValueAsTree())
             }
-          } else if (topFieldName == "zpdic") {
-            while (parser.nextToken() == JsonToken.FIELD_NAME) {
-              String specialFieldName = parser.getCurrentName()
-              parser.nextToken()
-              if (specialFieldName == "alphabetOrder") {
-                $alphabetOrder = parser.getValueAsString()
-              }
-            }
-          } else {
-            $externalData.put(topFieldName, parser.readValueAsTree())
           }
+          $validMinId ++
+          parser.close()
+          stream.close()
+        } catch (JsonParseException exception) {
+          exception.printStackTrace()
         }
-        $validMinId ++
-        parser.close()
-        stream.close()
-      } catch (JsonParseException exception) {
-        exception.printStackTrace()
       }
+      return currentWords
     }
+    task.setOnSucceeded() { WorkerStateEvent event ->
+      $words.addAll(task.getValue())
+    }
+    Thread thread = Thread.new(task)
+    thread.setDaemon(true)
+    thread.start()
   }
 
   public void save() {
