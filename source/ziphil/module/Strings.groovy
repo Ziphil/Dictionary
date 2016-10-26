@@ -7,6 +7,9 @@ import java.text.Normalizer
 @CompileStatic @Newify
 public class Strings {
 
+  private static final String ASCII = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
+  private static final String UNICODE = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
+
   public static String modifyPunctuation(String string) {
     String result = string
     result = result.replaceAll(/(、|。)/, "\$1 ")
@@ -34,9 +37,16 @@ public class Strings {
   }
 
   public static String unaccent(String string) {
-    String normalizedString = Normalizer.normalize(string, Normalizer.Form.NFD)
-    String result = normalizedString.replaceAll(/\p{InCombiningDiacriticalMarks}+/, "")
-    return result
+    StringBuilder result = StringBuilder.new()
+    (0 ..< string.length()).each() { Integer i ->
+      Integer position = UNICODE.indexOf(string.codePointAt(i))
+      if (position > -1) {
+        result.append(ASCII.charAt(position))
+      } else {
+        result.append(string.charAt(i))
+      }
+    }
+    return result.toString()
   }
 
   public static String toLowerCase(String string) {
