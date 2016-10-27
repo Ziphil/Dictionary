@@ -64,7 +64,11 @@
           <graphic>
             <ImageView><Image url="@../icon/empty.png"/></ImageView>
           </graphic>
-          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
+          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W">
+            <graphic>
+              <ImageView><Image url="@../icon/empty.png"/></ImageView>
+            </graphic>
+          </MenuItem>
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
