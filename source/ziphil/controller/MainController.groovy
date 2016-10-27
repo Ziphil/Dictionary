@@ -9,6 +9,7 @@ import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -616,8 +617,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupWordList() {
     $wordList.setCellFactory() { ListView<Word> list ->
-      WordCell cell = WordCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      WordCell cell = WordCell.new() 
+      EventHandler<MouseEvent> handler = { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
         }
@@ -637,6 +638,7 @@ public class MainController extends PrimitiveController<Stage> {
           }
         }
       }
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
   }
@@ -709,22 +711,23 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupWordListShortcuts() {
-    $wordList.setOnKeyPressed() { KeyEvent event ->
+    EventHandler<KeyEvent> handler = { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
     }
+    $wordList.addEventHandler(KeyEvent.KEY_PRESSED, handler)
   }
 
   private void setupDragAndDrop() {
-    $scene.setOnDragOver() { DragEvent event ->
+    EventHandler<DragEvent> dragOverHandler = { DragEvent event ->
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
         event.acceptTransferModes(TransferMode.COPY_OR_MOVE)
       }
       event.consume()
     }
-    $scene.setOnDragDropped() { DragEvent event ->
+    EventHandler<DragEvent> dragDroppedHandler = { DragEvent event ->
       Boolean isCompleted = false
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
@@ -737,23 +740,27 @@ public class MainController extends PrimitiveController<Stage> {
       event.setDropCompleted(isCompleted)
       event.consume()
     }
+    $scene.addEventHandler(DragEvent.DRAG_OVER, dragOverHandler)
+    $scene.addEventHandler(DragEvent.DRAG_DROPPED, dragDroppedHandler)
   }
 
   private void setupShortcuts() {
-    $scene.setOnKeyPressed() { KeyEvent event ->
+    EventHandler<KeyEvent> handler = { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.L, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusWordList()
       }
     }
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED, handler)
   }
 
   private void setupCloseConfirmation() {
-    $stage.setOnCloseRequest() { WindowEvent event ->
+    EventHandler<WindowEvent> handler = { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
       if (!allowsClose) {
         event.consume()
       }
     }
+    $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, handler)
   }
 
   private void setupExceptionHandler() {

@@ -17,6 +17,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.ComboBox
@@ -118,11 +119,12 @@ public class FileChooser extends VBox {
     $directoryTree.setShowRoot(false)
     $directoryTree.setCellFactory() { TreeView<File> tree ->
       DirectoryCell cell = DirectoryCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      EventHandler<MouseEvent> handler = { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentDirectory(cell.getItem())
         }
       }
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
   }
@@ -130,13 +132,14 @@ public class FileChooser extends VBox {
   private void setupFileList() {
     $fileList.setCellFactory() { ListView<File> list ->
       FileCell cell = FileCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      EventHandler<MouseEvent> handler = { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentFile(cell.getItem())
         } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentDirectory(cell.getItem())
         }
       }
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
     Callable<ObservableList<File>> function = (Callable){

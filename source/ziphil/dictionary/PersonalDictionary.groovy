@@ -3,6 +3,7 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import javafx.event.EventHandler
 
 
 @CompileStatic @Newify
@@ -49,10 +50,11 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
   }
 
   private void load() {
-    $loader = PersonalDictionaryLoader.new($path)
-    $loader.setOnSucceeded() { WorkerStateEvent event ->
+    EventHandler<WorkerStateEvent> filter = { WorkerStateEvent event ->
       $words.addAll($loader.getValue())
     }
+    $loader = PersonalDictionaryLoader.new($path)
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED, filter)
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()

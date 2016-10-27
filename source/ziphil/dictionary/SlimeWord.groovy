@@ -1,9 +1,11 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -165,12 +167,13 @@ public class SlimeWord extends Word {
       Integer id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
-      nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-      nameText.setOnMouseClicked() {
+      EventHandler<MouseEvent> handler = { MouseEvent event ->
         if ($dictionary.getOnLinkClicked() != null) {
           $dictionary.getOnLinkClicked().accept(id)
         }
       }
+      nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       textFlow.getChildren().add(nameText)
       if (i < names.size() - 1) {
         Text punctuationText = Text.new(", ")
