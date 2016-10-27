@@ -9,6 +9,7 @@ import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
+import javafx.concurrent.WorkerStateEvent
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -578,6 +579,10 @@ public class MainController extends PrimitiveController<Stage> {
     $loadingBox.visibleProperty().unbind()
     $progressIndicator.progressProperty().unbind()
     Task<?> loader = $dictionary.getLoader()
+    EventHandler<WorkerStateEvent> handler = { WorkerStateEvent event ->
+      $wordList.scrollTo(0)
+    }
+    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, handler)
     $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
     $progressIndicator.progressProperty().bind(loader.progressProperty())
     if ($dictionary instanceof ShaleiaDictionary) {
