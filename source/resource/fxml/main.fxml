@@ -61,17 +61,15 @@
       </Menu>
       <Menu text="検索">
         <Menu text="検索範囲の変更">
+          <graphic>
+            <ImageView><Image url="@../icon/empty.png"/></ImageView>
+          </graphic>
           <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
         <SeparatorMenuItem/>
-        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R">
-          <graphic>
-            <ImageView><Image url="@../icon/random_search.png"/></ImageView>
-          </graphic>
-        </MenuItem>
         <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U"/>
       </Menu>
       <Menu text="ツール">
