@@ -564,7 +564,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateDictionary(Dictionary dictionary) {
     if ($dictionary != null) {
       Task<?> oldLoader = $dictionary.getLoader()
-      if (oldLoader != null && oldLoader.isRunning()) {
+      if (oldLoader.isRunning()) {
         oldLoader.cancel()
       }
     }
@@ -577,15 +577,8 @@ public class MainController extends PrimitiveController<Stage> {
     $loadingBox.visibleProperty().unbind()
     $progressIndicator.progressProperty().unbind()
     Task<?> loader = $dictionary.getLoader()
-    if (loader != null) {
-      $loadingBox.setVisible(true)
-      $progressIndicator.setProgress(0)
-      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
-      $progressIndicator.progressProperty().bind(loader.progressProperty())
-    } else {
-      $loadingBox.setVisible(false)
-      $progressIndicator.setProgress(1)
-    }
+    $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+    $progressIndicator.progressProperty().bind(loader.progressProperty())
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
         ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
