@@ -6,12 +6,15 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 
 
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
-  private String $alphabetOrder = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
+  private ShaleiaDictionaryLoader $loader
+  private String $alphabetOrder
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
@@ -66,33 +69,14 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   private void load() {
-    if ($path != null) {
-      File file = File.new($path)
-      String currentName = null
-      StringBuilder currentData = StringBuilder.new()
-      file.eachLine() { String line ->
-        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-        if (matcher.matches()) {
-          if (currentName != null) {
-            ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-            word.setDictionary(this)
-            word.createComparisonString($alphabetOrder)
-            $words.add(word)
-          }
-          currentName = matcher.group(1)
-          currentData.setLength(0)
-        } else {
-          currentData.append(line)
-          currentData.append("\n")
-        }
-      }
-      if (currentName != null) {
-        ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-        word.setDictionary(this)
-        word.createComparisonString($alphabetOrder)
-        $words.add(word)
-      }
+    $loader = ShaleiaDictionaryLoader.new($path, this)
+    $loader.setOnSucceeded() { WorkerStateEvent event ->
+      $alphabetOrder = $loader.getAlphabetOrder()
+      $words.addAll($loader.getValue())
     }
+    Thread thread = Thread.new(loader)
+    thread.setDaemon(true)
+    thread.start()
   }
 
   public void save() {
@@ -121,6 +105,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+  public Task<?> getLoader() {
+    return $loader
   }
 
 }

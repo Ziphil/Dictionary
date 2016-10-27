@@ -223,8 +223,6 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     return $words
   }
 
-  public Task<?> getLoader() {
-    return null
-  }
+  public abstract Task<?> getLoader()
 
 }

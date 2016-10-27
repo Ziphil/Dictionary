@@ -1,11 +1,14 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 
 
 @CompileStatic @Newify
 public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
+
+  private PersonalDictionaryLoader $loader
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -46,15 +49,13 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
   }
 
   private void load() {
-    if ($path != null) {
-      File file = File.new($path)
-      String input = file.getText()
-      Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
-      matcher.each() { List<String> matches ->
-        PersonalWord word = PersonalWord.new(matches[1], matches[7], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger())
-        $words.add(word)
-      }
+    $loader = PersonalDictionaryLoader.new($path)
+    $loader.setOnSucceeded() { WorkerStateEvent event ->
+      $words.addAll($loader.getValue())
     }
+    Thread thread = Thread.new(loader)
+    thread.setDaemon(true)
+    thread.start()
   }
 
   public void save() {
@@ -77,6 +78,10 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+  }
+
+  public Task<?> getLoader() {
+    return $loader
   }
 
 }
