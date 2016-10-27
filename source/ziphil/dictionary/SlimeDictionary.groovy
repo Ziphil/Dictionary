@@ -23,6 +23,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
+  private SlimeDictionaryLoader $loader
   private Integer $validMinId
   private List<String> $registeredTags
   private List<String> $registeredEquivalentTitles
@@ -267,17 +268,17 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void load() {
-    Task<ObservableList<SlimeWord>> loader = SlimeDictionaryLoader.new($path, $$mapper, this)
-    loader.setOnSucceeded() { WorkerStateEvent event ->
-      $validMinId = loader.getValidMinId()
-      $registeredTags = loader.getRegisteredTags()
-      $registeredEquivalentTitles = loader.getRegisteredEquivalentTitles()
-      $registeredInformationTitles = loader.getRegisteredInformationTitles()
-      $registeredVariationTitles = loader.getRegisteredVariationTitles()
-      $registeredRelationTitles = loader.getRegisteredRelationTitles()
-      $alphabetOrder = loader.getAlphabetOrder()
-      $externalData = loader.getExternalData()
-      $words.addAll(loader.getValue())
+    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
+    $loader.setOnSucceeded() { WorkerStateEvent event ->
+      $validMinId = $loader.getValidMinId()
+      $registeredTags = $loader.getRegisteredTags()
+      $registeredEquivalentTitles = $loader.getRegisteredEquivalentTitles()
+      $registeredInformationTitles = $loader.getRegisteredInformationTitles()
+      $registeredVariationTitles = $loader.getRegisteredVariationTitles()
+      $registeredRelationTitles = $loader.getRegisteredRelationTitles()
+      $alphabetOrder = $loader.getAlphabetOrder()
+      $externalData = $loader.getExternalData()
+      $words.addAll($loader.getValue())
     }
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
@@ -455,6 +456,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+  public Task<?> getLoader() {
+    return $loader
   }
 
 }

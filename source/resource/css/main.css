@@ -81,3 +81,7 @@
 .transparent:focused {
   -fx-background-insets: 0px;
 }
+
+.opaque {
+  -fx-background-color: -fx-background;
+}

@@ -7,6 +7,8 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
+import javafx.concurrent.Task
+import javafx.concurrent.Worker
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -16,6 +18,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
+import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
@@ -30,6 +33,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
@@ -81,6 +85,8 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Label $hitWordSizeLabel
   @FXML private Label $totalWordSizeLabel
   @FXML private Label $elapsedTimeLabel
+  @FXML private VBox $loadingBox
+  @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
   private Boolean $isDictionaryChanged = false
 
@@ -562,6 +568,15 @@ public class MainController extends PrimitiveController<Stage> {
     $wordList.setItems($dictionary.getWholeWords())
     $searchControl.setText("")
     $searchControl.requestFocus()
+    $loadingBox.visibleProperty().unbind()
+    $progressIndicator.progressProperty().unbind()
+    Task<?> loader = $dictionary.getLoader()
+    if (loader != null) {
+      $loadingBox.setVisible(true)
+      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+    } else {
+      $loadingBox.setVisible(false)
+    }
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
         ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()

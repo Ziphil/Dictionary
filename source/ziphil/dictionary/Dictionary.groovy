@@ -11,6 +11,7 @@ import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import javafx.concurrent.Task
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -220,6 +221,10 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public ObservableList<W> getRawWords() {
     return $words
+  }
+
+  public Task<?> getLoader() {
+    return null
   }
 
 }
