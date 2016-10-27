@@ -160,7 +160,10 @@
         </HBox>
       </VBox>
       <VBox fx:id="$loadingBox" styleClass="opaque" alignment="center">
-        <ProgressIndicator fx:id="$progressIndicator"/>
+        <ProgressIndicator fx:id="$progressIndicator" progress="0">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <prefHeight><Double rpx="100"/></prefHeight>
+        </ProgressIndicator>
       </VBox>
     </StackPane>
   </center>

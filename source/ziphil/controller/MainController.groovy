@@ -573,9 +573,12 @@ public class MainController extends PrimitiveController<Stage> {
     Task<?> loader = $dictionary.getLoader()
     if (loader != null) {
       $loadingBox.setVisible(true)
+      $progressIndicator.setProgress(0)
       $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+      $progressIndicator.progressProperty().bind(loader.progressProperty())
     } else {
       $loadingBox.setVisible(false)
+      $progressIndicator.setProgress(1)
     }
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->

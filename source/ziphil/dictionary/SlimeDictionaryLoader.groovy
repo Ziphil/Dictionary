@@ -30,6 +30,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
     $path = path
     $mapper = mapper
     $dictionary = dictionary
+    updateProgress(null, null)
   }
 
   protected ObservableList<SlimeWord> call() {
@@ -38,6 +39,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       FileInputStream stream = FileInputStream.new($path)
       JsonFactory factory = $mapper.getFactory()
       JsonParser parser = factory.createParser(stream)
+      Integer size = stream.available()
       parser.nextToken()
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String topFieldName = parser.getCurrentName()
@@ -64,6 +66,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
             }
             word.setDictionary($dictionary)
             words.add(word)
+            updateProgress(parser, size)
           }
         } else if (topFieldName == "zpdic") {
           while (parser.nextToken() == JsonToken.FIELD_NAME) {
@@ -72,6 +75,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
             if (specialFieldName == "alphabetOrder") {
               $alphabetOrder = parser.getValueAsString()
             }
+            updateProgress(parser, size)
           }
         } else {
           $externalData.put(topFieldName, parser.readValueAsTree())
@@ -207,6 +211,14 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         }
       }
       word.getRelations().add(relation)
+    }
+  }
+
+  private void updateProgress(JsonParser parser, Integer size) {
+    if (parser != null) {
+      updateProgress(parser.getCurrentLocation().getByteOffset(), size)
+    } else {
+      updateProgress(0, 1)
     }
   }
 
