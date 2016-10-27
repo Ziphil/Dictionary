@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.awt.Desktop
+import java.lang.Thread.UncaughtExceptionHandler
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
@@ -769,9 +770,10 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupExceptionHandler() {
-    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
+    UncaughtExceptionHandler handler = { Thread thread, Throwable throwable ->
       handleException(throwable)
     }
+    Thread.currentThread().setUncaughtExceptionHandler(handler)
   }
 
 }
