@@ -14,6 +14,7 @@ import javafx.concurrent.Task
 @CompileStatic @Newify
 public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
 
+  private ObservableList<SlimeWord> $words = FXCollections.observableArrayList()
   private String $path
   private ObjectMapper $mapper
   private SlimeDictionary $dictionary
@@ -34,7 +35,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
   }
 
   protected ObservableList<SlimeWord> call() {
-    ObservableList<SlimeWord> words = FXCollections.observableArrayList()
     if ($path != null) {
       FileInputStream stream = FileInputStream.new($path)
       JsonFactory factory = $mapper.getFactory()
@@ -71,7 +71,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
               }
             }
             word.setDictionary($dictionary)
-            words.add(word)
+            $words.add(word)
             updateProgress(parser, size)
           }
         } else if (topFieldName == "zpdic") {
@@ -91,10 +91,10 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       parser.close()
       stream.close()
     }
-    words.each() { SlimeWord word ->
+    $words.each() { SlimeWord word ->
       word.createComparisonString($alphabetOrder)
     }
-    return words
+    return $words
   }
 
   private void parseEntry(JsonParser parser, SlimeWord word) {

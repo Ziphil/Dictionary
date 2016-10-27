@@ -10,6 +10,7 @@ import javafx.concurrent.Task
 @CompileStatic @Newify
 public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
 
+  private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private String $path
   private ShaleiaDictionary $dictionary
   private String $alphabetOrder = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
@@ -20,7 +21,6 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   }
 
   protected ObservableList<ShaleiaWord> call() {
-    ObservableList<ShaleiaWord> words = FXCollections.observableArrayList()
     if ($path != null) {
       File file = File.new($path)
       String currentName = null
@@ -28,7 +28,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
       file.eachLine() { String line ->
         Matcher matcher = line =~ /^\*\s*(.+)\s*$/
         if (matcher.matches()) {
-          addWord(words, currentName, currentData)
+          addWord(currentName, currentData)
           currentName = matcher.group(1)
           currentData.setLength(0)
         } else {
@@ -36,17 +36,17 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
           currentData.append("\n")
         }
       }
-      addWord(words, currentName, currentData)
+      addWord(currentName, currentData)
     }
-    return words
+    return $words
   }
 
-  private void addWord(List<ShaleiaWord> words, String currentName, StringBuilder currentData) {
+  private void addWord(String currentName, StringBuilder currentData) {
     if (currentName != null) {
       ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
       word.setDictionary($dictionary)
       word.createComparisonString($alphabetOrder)
-      words.add(word)
+      $words.add(word)
     }
   }
 
