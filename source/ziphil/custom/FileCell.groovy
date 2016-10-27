@@ -14,6 +14,7 @@ public class FileCell extends ListCell<File> {
   private static final Image DIRECTORY_ICON = createIcon("resource/icon/directory.png")
   private static final Image FILE_ICON = createIcon("resource/icon/file.png")
   private static final Image XDC_DICTIONARY_ICON = createIcon("resource/icon/xdc_dictionary.png")
+  private static final Image OTM_DICTIONARY_ICON = createIcon("resource/icon/otm_dictionary.png")
   private static final Image CSV_DICTIONARY_ICON = createIcon("resource/icon/csv_dictionary.png")
 
   public FileCell() {
@@ -34,6 +35,8 @@ public class FileCell extends ListCell<File> {
       } else {
         if (name.endsWith(".xdc")) {
           icon = XDC_DICTIONARY_ICON
+        } else if (name.endsWith(".json")) {
+          icon = OTM_DICTIONARY_ICON
         } else if (name.endsWith(".csv")) {
           icon = CSV_DICTIONARY_ICON
         } else {
