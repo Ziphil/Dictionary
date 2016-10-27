@@ -562,6 +562,12 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionary(Dictionary dictionary) {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader != null && oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
     $dictionary = dictionary
     $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
     $dictionaryNameLabel.setText($dictionary.getName())

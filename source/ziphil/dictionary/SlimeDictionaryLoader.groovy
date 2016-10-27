@@ -44,12 +44,18 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String topFieldName = parser.getCurrentName()
         parser.nextToken()
+        if (isCancelled()) {
+          return null
+        }
         if (topFieldName == "words") {
           while (parser.nextToken() == JsonToken.START_OBJECT) {
             SlimeWord word = SlimeWord.new()
             while (parser.nextToken() == JsonToken.FIELD_NAME) {
               String wordFieldName = parser.getCurrentName()
               parser.nextToken()
+              if (isCancelled()) {
+                return null
+              }
               if (wordFieldName == "entry") {
                 parseEntry(parser, word)
               } else if (wordFieldName == "translations") {
