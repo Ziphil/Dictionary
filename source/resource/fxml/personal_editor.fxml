@@ -6,6 +6,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
@@ -72,16 +73,8 @@
         <minWidth><Double rpx="70"/></minWidth>
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="15" amountToStepBy="1"/></valueFactory>
       </Spinner>
-      <Spinner fx:id="$memoryControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
-        <prefWidth><Double rpx="70"/></prefWidth>
-        <minWidth><Double rpx="70"/></minWidth>
-        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
-      </Spinner>
-      <Spinner fx:id="$modificationControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
-        <prefWidth><Double rpx="70"/></prefWidth>
-        <minWidth><Double rpx="70"/></minWidth>
-        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1" amountToStepBy="1"/></valueFactory>
-      </Spinner>
+      <CheckBox fx:id="$memoryControl" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+      <CheckBox fx:id="$modificationControl" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
     </GridPane>
   </center>
   <bottom>
