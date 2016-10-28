@@ -431,6 +431,11 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       $dictionary.save()
       $isDictionaryChanged = false
+    } else {
+      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
+      dialog.initOwner($stage)
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
     }
   }
 
@@ -449,6 +454,11 @@ public class MainController extends PrimitiveController<Stage> {
         $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
+    } else {
+      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
+      dialog.initOwner($stage)
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
     }
   }
 
