@@ -5,6 +5,7 @@ import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
+import ziphil.module.ThrowMarker
 
 
 @CompileStatic @Newify
@@ -22,21 +23,28 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
 
   protected ObservableList<ShaleiaWord> call() {
     if ($path != null) {
-      File file = File.new($path)
-      String currentName = null
-      StringBuilder currentData = StringBuilder.new()
-      file.eachLine() { String line ->
-        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-        if (matcher.matches()) {
-          addWord(currentName, currentData)
-          currentName = matcher.group(1)
-          currentData.setLength(0)
-        } else {
-          currentData.append(line)
-          currentData.append("\n")
+      try {
+        File file = File.new($path)
+        String currentName = null
+        StringBuilder currentData = StringBuilder.new()
+        file.eachLine() { String line ->
+          if (isCancelled()) {
+            throw ThrowMarker.new()
+          }
+          Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+          if (matcher.matches()) {
+            addWord(currentName, currentData)
+            currentName = matcher.group(1)
+            currentData.setLength(0)
+          } else {
+            currentData.append(line)
+            currentData.append("\n")
+          }
         }
+        addWord(currentName, currentData)
+      } catch (ThrowMarker marker) {
+        return null
       }
-      addWord(currentName, currentData)
     }
     return $words
   }
