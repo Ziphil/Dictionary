@@ -15,6 +15,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import ziphil.custom.IntegerStringConverter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
@@ -54,6 +55,7 @@ public class SettingController extends Controller<Boolean> {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupFontFamilies()
+    setupSpinners()
     setupFontDisableBindings()
     setupTextBindings()
     applySettings()
@@ -211,6 +213,11 @@ public class SettingController extends Controller<Boolean> {
     List<String> fontFamilies = Font.getFamilies()
     $contentFontFamilyControl.getItems().addAll(fontFamilies)
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
+  }
+
+  private void setupSpinners() {
+    $contentFontSizeControl.getValueFactory().setConverter(IntegerStringConverter.new())
+    $editorFontSizeControl.getValueFactory().setConverter(IntegerStringConverter.new())
   }
 
   private void setupFontDisableBindings() {
