@@ -371,6 +371,7 @@ public class MainController extends PrimitiveController<Stage> {
           $isDictionaryChanged = false
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
+          updateDictionaryToEmpty()
           Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
           dialog.initOwner($stage)
           dialog.setAllowsCancel(false)
@@ -389,6 +390,7 @@ public class MainController extends PrimitiveController<Stage> {
         $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
+        updateDictionaryToEmpty()
         Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.initOwner($stage)
         dialog.setAllowsCancel(false)
@@ -414,6 +416,7 @@ public class MainController extends PrimitiveController<Stage> {
           $isDictionaryChanged = true
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
+          updateDictionaryToEmpty()
           Dialog dialog = Dialog.new("新規作成エラー", "辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.initOwner($stage)
           dialog.setAllowsCancel(false)
