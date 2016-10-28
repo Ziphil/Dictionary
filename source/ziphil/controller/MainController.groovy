@@ -642,11 +642,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void failUpdateDictionary() {
+    updateDictionaryToEmpty()
     Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
     dialog.initOwner($stage)
     dialog.setAllowsCancel(false)
     dialog.showAndWait()
-    updateDictionaryToEmpty()
   }
 
   @FXML
