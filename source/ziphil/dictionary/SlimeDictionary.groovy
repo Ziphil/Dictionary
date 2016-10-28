@@ -104,8 +104,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           predicate = false
         }
       }
-      if (searchEquivalentName != null) {
+      if (searchEquivalentName != null || searchEquivalentTitle != null) {
         Boolean equivalentPredicate = false
+        searchEquivalentName = searchEquivalentName ?: ""
         equivalents.each() { SlimeEquivalent equivalent ->
           String equivalentTitle = equivalent.getTitle()
           equivalent.getNames().each() { String equivalentName ->
@@ -118,8 +119,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           predicate = false
         }
       }
-      if (searchInformationText != null) {
+      if (searchInformationText != null || searchInformationTitle != null) {
         Boolean informationPredicate = false
+        searchInformationText = searchInformationText ?: ""
         informations.each() { SlimeInformation information ->
           String informationText = information.getText()
           String informationTitle = information.getTitle()
