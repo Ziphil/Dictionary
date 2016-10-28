@@ -638,11 +638,9 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      if (file.exists() && file.isFile()) {
-        Dictionary dictionary = Dictionary.loadDictionary(file)
-        if (dictionary != null) {
-          updateDictionary(dictionary)
-        }
+      Dictionary dictionary = Dictionary.loadDictionary(file)
+      if (dictionary != null) {
+        updateDictionary(dictionary)
       }
     }
   }

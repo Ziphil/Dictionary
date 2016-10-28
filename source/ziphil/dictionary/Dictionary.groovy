@@ -165,17 +165,21 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   }
 
   public static Dictionary loadDictionary(File file) {
-    Dictionary dictionary
-    String fileName = file.getName()
-    String filePath = file.getPath()
-    if (filePath.endsWith(".xdc")) {
-      dictionary = ShaleiaDictionary.new(fileName, filePath)
-    } else if (filePath.endsWith(".csv")) {
-      dictionary = PersonalDictionary.new(fileName, filePath)
-    } else if (filePath.endsWith(".json")) {
-      dictionary = SlimeDictionary.new(fileName, filePath)
+    if (file.exists() && file.isFile()) {
+      Dictionary dictionary
+      String fileName = file.getName()
+      String filePath = file.getPath()
+      if (filePath.endsWith(".xdc")) {
+        dictionary = ShaleiaDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".csv")) {
+        dictionary = PersonalDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".json")) {
+        dictionary = SlimeDictionary.new(fileName, filePath)
+      }
+      return dictionary
+    } else {
+      return null
     }
-    return dictionary
   }
 
   public static Dictionary loadEmptyDictionary(File file) {
