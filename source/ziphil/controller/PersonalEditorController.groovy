@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import ziphil.custom.IntegerStringConverter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.PersonalWord
@@ -61,6 +62,11 @@ public class PersonalEditorController extends Controller<Boolean> {
     }
   }
 
+  @FXML
+  private void initialize() {
+    setupSpinner()
+  }
+
   public void prepare(PersonalWord word) {
     prepare(word, null)
   }
@@ -84,6 +90,10 @@ public class PersonalEditorController extends Controller<Boolean> {
         commit()
       }
     }
+  }
+
+  private void setupSpinner() {
+    $levelControl.getValueFactory().setConverter(IntegerStringConverter.new())
   }
 
 }
