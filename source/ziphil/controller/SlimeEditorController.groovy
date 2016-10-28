@@ -337,7 +337,7 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void focusName() {
     $nameControl.requestFocus()
-    scrollToNode($nameControl)
+    scrollPaneTo($nameControl)
   }
 
   private void focusTagControl(EventTarget target) {
@@ -345,13 +345,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $tagControls.size() - 1) ? index + 1 : 0
       $tagControls[nextIndex].requestFocus()
-      scrollToNode($tagControls[nextIndex])
+      scrollPaneTo($tagControls[nextIndex])
     } else {
       if ($tagControls.isEmpty()) {
         insertTagControl()
       }
       $tagControls[0].requestFocus()
-      scrollToNode($tagControls[0])
+      scrollPaneTo($tagControls[0])
     }
   }
 
@@ -360,13 +360,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $equivalentNameControls.size() - 1) ? index + 1 : 0
       $equivalentNameControls[nextIndex].requestFocus()
-      scrollToNode($equivalentNameControls[nextIndex])
+      scrollPaneTo($equivalentNameControls[nextIndex])
     } else {
       if ($equivalentNameControls.isEmpty()) {
         insertEquivalentControl()
       }
       $equivalentNameControls[0].requestFocus()
-      scrollToNode($equivalentNameControls[0])
+      scrollPaneTo($equivalentNameControls[0])
     }
   }
 
@@ -375,13 +375,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $informationTextControls.size() - 1) ? index + 1 : 0
       $informationTextControls[nextIndex].requestFocus()
-      scrollToNode($informationTextControls[nextIndex])
+      scrollPaneTo($informationTextControls[nextIndex])
     } else {
       if ($informationTextControls.isEmpty()) {
         insertInformationControl()
       }
       $informationTextControls[0].requestFocus()
-      scrollToNode($informationTextControls[0])
+      scrollPaneTo($informationTextControls[0])
     }
   }
 
@@ -390,13 +390,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $variationNameControls.size() - 1) ? index + 1 : 0
       $variationNameControls[nextIndex].requestFocus()
-      scrollToNode($variationNameControls[nextIndex])
+      scrollPaneTo($variationNameControls[nextIndex])
     } else {
       if ($variationNameControls.isEmpty()) {
         insertVariationControl()
       }
       $variationNameControls[0].requestFocus()
-      scrollToNode($variationNameControls[0])
+      scrollPaneTo($variationNameControls[0])
     }
   }
 
@@ -604,7 +604,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     $relationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void scrollToNode(Node node) {
+  private void scrollPaneTo(Node node) {
     Node content = $scrollPane.getContent()
     Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
     Double paneMinY = $scrollPane.localToScene($scrollPane.getBoundsInLocal()).getMinY()
