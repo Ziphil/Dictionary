@@ -8,6 +8,8 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
 import javafx.concurrent.WorkerStateEvent
@@ -585,6 +587,9 @@ public class MainController extends PrimitiveController<Stage> {
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       $wordList.scrollTo(0)
     }
+    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+      failUpdateDictionary()
+    }
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
         ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
@@ -602,6 +607,27 @@ public class MainController extends PrimitiveController<Stage> {
     search()
   }
 
+  private void updateDictionaryToEmpty() {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
+    ObservableList<Word> emptyWords = FXCollections.observableArrayList()
+    $dictionary = null
+    $totalWordSizeLabel.setText("0")
+    $dictionaryNameLabel.setText("")
+    $wordList.setItems(emptyWords)
+    $searchControl.setText("")
+    $searchControl.requestFocus()
+    $loadingBox.visibleProperty().unbind()
+    $loadingBox.setVisible(false)
+    $progressIndicator.progressProperty().unbind()
+    $progressIndicator.setProgress(0)
+    search()
+  }
+
   private void updateDictionaryToDefault() {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
@@ -613,6 +639,14 @@ public class MainController extends PrimitiveController<Stage> {
         }
       }
     }
+  }
+
+  private void failUpdateDictionary() {
+    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    dialog.initOwner($stage)
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
+    updateDictionaryToEmpty()
   }
 
   @FXML
