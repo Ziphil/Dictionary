@@ -11,6 +11,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
+import javafx.scene.control.Spinner
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
@@ -24,6 +25,7 @@ import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphil.custom.Dialog
+import ziphil.custom.IntegerStringConverter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
@@ -43,7 +45,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(640)
 
-  @FXML private TextField $idControl
+  @FXML private Spinner<Integer> $idControl
   @FXML private TextField $nameControl
   @FXML private ScrollPane $scrollPane
   @FXML private GridPane $gridPane
@@ -80,7 +82,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
     $word = word
     $dictionary = dictionary
-    $idControl.setText(word.getId().toString())
+    $idControl.getValueFactory().setValue(word.getId())
     $nameControl.setText(word.getName())
     word.getTags().each() { String tag ->
       addTagControl(tag, dictionary.getRegisteredTags())
@@ -121,7 +123,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
-    Integer id = $idControl.getText().toInteger()
+    Integer id = $idControl.getValue()
     if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
       String name = $nameControl.getText()
       List<SlimeEquivalent> rawEquivalents = ArrayList.new()
@@ -663,6 +665,7 @@ public class SlimeEditorController extends Controller<Boolean> {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
+    $idControl.getValueFactory().setConverter(IntegerStringConverter.new())
   }
 
 }
