@@ -1,7 +1,6 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.event.EventHandler
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
@@ -40,7 +39,7 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
-    EventHandler<MouseEvent> handler = { MouseEvent event ->
+    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
         $dictionary.getOnLinkClicked().accept(id)
       }
@@ -48,7 +47,6 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
     textFlow.getChildren().addAll(prefixText, nameText, possibilityNameText)
     box.getChildren().add(textFlow)
   }

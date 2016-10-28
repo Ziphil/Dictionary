@@ -8,7 +8,6 @@ import java.util.function.Consumer
 import java.util.regex.Matcher
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
-import javafx.event.EventHandler
 
 
 @CompileStatic @Newify
@@ -70,12 +69,11 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   private void load() {
-    EventHandler<WorkerStateEvent> filter = { WorkerStateEvent event ->
+    $loader = ShaleiaDictionaryLoader.new($path, this)
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       $alphabetOrder = $loader.getAlphabetOrder()
       $words.addAll($loader.getValue())
     }
-    $loader = ShaleiaDictionaryLoader.new($path, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED, filter)
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()

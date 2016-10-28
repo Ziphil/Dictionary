@@ -1,7 +1,6 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -14,6 +13,7 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -156,6 +156,7 @@ public class SlimeWord extends Word {
     box.getChildren().addAll(titleTextFlow, textFlow)
   }
 
+  @ReturnVoidClosure
   private void addRelationNode(VBox box, String title, List<Integer> ids, List<String> names) {
     TextFlow textFlow = TextFlow.new()
     Text formerTitleText = Text.new("cf:")
@@ -167,13 +168,12 @@ public class SlimeWord extends Word {
       Integer id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
-      EventHandler<MouseEvent> handler = { MouseEvent event ->
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if ($dictionary.getOnLinkClicked() != null) {
           $dictionary.getOnLinkClicked().accept(id)
         }
       }
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       textFlow.getChildren().add(nameText)
       if (i < names.size() - 1) {
         Text punctuationText = Text.new(", ")

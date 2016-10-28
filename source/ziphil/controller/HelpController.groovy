@@ -2,7 +2,6 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.event.EventHandler
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseButton
@@ -51,13 +50,12 @@ public class HelpController extends Controller<Void> {
   }
 
   private void setupContentList() {
-    EventHandler<MouseEvent> handler = { MouseEvent event ->
+    $sectionList.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
         String section = $sectionList.getSelectionModel().getSelectedItems()[0]
         changeHelp(section)
       }
     }
-    $sectionList.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
   }
 
 }

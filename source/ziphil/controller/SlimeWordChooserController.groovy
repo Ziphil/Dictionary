@@ -5,7 +5,6 @@ import java.util.concurrent.Callable
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
-import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ListView
@@ -19,6 +18,7 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeWord
 import ziphil.module.Setting
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -82,16 +82,16 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     $stage.close(word)
   }
 
+  @ReturnVoidClosure
   private void setupWordList() {
     $wordList.setItems($dictionary.getWords())
     $wordList.setCellFactory() { ListView<SlimeWord> list ->
       SimpleWordCell cell = SimpleWordCell.new()
-      EventHandler<MouseEvent> handler = { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           commit()
         }
-      }      
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
+      }
       return cell
     }
   }

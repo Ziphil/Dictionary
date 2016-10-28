@@ -2,7 +2,6 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.application.Platform
-import javafx.event.EventHandler
 import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.geometry.Bounds
@@ -628,7 +627,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void setupShortcuts() {
-    EventHandler<KeyEvent> handler = { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusName()
       } else if (KeyCodeCombination.new(KeyCode.T, KeyCombination.SHORTCUT_DOWN).match(event)) {
@@ -653,7 +652,6 @@ public class SlimeEditorController extends Controller<Boolean> {
         commit()
       }
     }
-    $scene.addEventHandler(KeyEvent.KEY_PRESSED, handler)
   }
 
   private void setupIdControl() {

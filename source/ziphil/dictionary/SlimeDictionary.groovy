@@ -14,7 +14,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
-import javafx.event.EventHandler
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -269,7 +268,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void load() {
-    EventHandler<WorkerStateEvent> filter = { WorkerStateEvent event ->
+    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       $validMinId = $loader.getValidMinId()
       $registeredTags = $loader.getRegisteredTags()
       $registeredEquivalentTitles = $loader.getRegisteredEquivalentTitles()
@@ -280,8 +280,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       $externalData = $loader.getExternalData()
       $words.addAll($loader.getValue())
     }
-    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED, filter)
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()

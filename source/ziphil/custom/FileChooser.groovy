@@ -17,7 +17,6 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
-import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.ComboBox
@@ -30,6 +29,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -110,6 +110,7 @@ public class FileChooser extends VBox {
     }
   }
 
+  @ReturnVoidClosure
   private void setupDirectoryTree() {
     DirectoryItem root = DirectoryItem.new(null)
     File.listRoots().each() { File file ->
@@ -119,27 +120,26 @@ public class FileChooser extends VBox {
     $directoryTree.setShowRoot(false)
     $directoryTree.setCellFactory() { TreeView<File> tree ->
       DirectoryCell cell = DirectoryCell.new()
-      EventHandler<MouseEvent> handler = { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentDirectory(cell.getItem())
         }
       }
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
   }
 
+  @ReturnVoidClosure
   private void setupFileList() {
     $fileList.setCellFactory() { ListView<File> list ->
       FileCell cell = FileCell.new()
-      EventHandler<MouseEvent> handler = { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentFile(cell.getItem())
         } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentDirectory(cell.getItem())
         }
       }
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
     Callable<ObservableList<File>> function = (Callable){

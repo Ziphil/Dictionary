@@ -3,7 +3,6 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import java.util.regex.Matcher
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -225,12 +224,11 @@ public class ShaleiaWord extends Word {
         if (currentName.length() > 0) {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
-            EventHandler<MouseEvent> handler = { MouseEvent event ->
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)
               }
             }
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
           }
           currentName.setLength(0)
           unnamedTexts.clear()
@@ -248,12 +246,11 @@ public class ShaleiaWord extends Word {
         if (currentName.length() > 0) {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
-            EventHandler<MouseEvent> handler = { MouseEvent event ->
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)
               }
             }
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
           }
           currentName.setLength(0)
           unnamedTexts.clear()

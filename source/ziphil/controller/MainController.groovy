@@ -11,7 +11,6 @@ import javafx.beans.binding.StringBinding
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
 import javafx.concurrent.WorkerStateEvent
-import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -59,6 +58,7 @@ import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -577,15 +577,14 @@ public class MainController extends PrimitiveController<Stage> {
     $wordList.setItems($dictionary.getWholeWords())
     $searchControl.setText("")
     $searchControl.requestFocus()
+    Task<?> loader = $dictionary.getLoader()
     $loadingBox.visibleProperty().unbind()
     $progressIndicator.progressProperty().unbind()
-    Task<?> loader = $dictionary.getLoader()
-    EventHandler<WorkerStateEvent> handler = { WorkerStateEvent event ->
-      $wordList.scrollTo(0)
-    }
-    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, handler)
     $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
     $progressIndicator.progressProperty().bind(loader.progressProperty())
+    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $wordList.scrollTo(0)
+    }
     if ($dictionary instanceof ShaleiaDictionary) {
       $dictionary.setOnLinkClicked() { String name ->
         ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
@@ -621,10 +620,11 @@ public class MainController extends PrimitiveController<Stage> {
     Platform.exit()
   }
 
+  @ReturnVoidClosure
   private void setupWordList() {
     $wordList.setCellFactory() { ListView<Word> list ->
-      WordCell cell = WordCell.new() 
-      EventHandler<MouseEvent> handler = { MouseEvent event ->
+      WordCell cell = WordCell.new()
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
         }
@@ -644,7 +644,6 @@ public class MainController extends PrimitiveController<Stage> {
           }
         }
       }
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED, handler)
       return cell
     }
   }
@@ -717,23 +716,22 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupWordListShortcuts() {
-    EventHandler<KeyEvent> handler = { KeyEvent event ->
+    $wordList.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
     }
-    $wordList.addEventHandler(KeyEvent.KEY_PRESSED, handler)
   }
 
   private void setupDragAndDrop() {
-    EventHandler<DragEvent> dragOverHandler = { DragEvent event ->
+    $scene.addEventHandler(DragEvent.DRAG_OVER) { DragEvent event ->
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
         event.acceptTransferModes(TransferMode.COPY_OR_MOVE)
       }
       event.consume()
     }
-    EventHandler<DragEvent> dragDroppedHandler = { DragEvent event ->
+    $scene.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
       Boolean isCompleted = false
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
@@ -746,34 +744,29 @@ public class MainController extends PrimitiveController<Stage> {
       event.setDropCompleted(isCompleted)
       event.consume()
     }
-    $scene.addEventHandler(DragEvent.DRAG_OVER, dragOverHandler)
-    $scene.addEventHandler(DragEvent.DRAG_DROPPED, dragDroppedHandler)
   }
 
   private void setupShortcuts() {
-    EventHandler<KeyEvent> handler = { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.L, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusWordList()
       }
     }
-    $scene.addEventHandler(KeyEvent.KEY_PRESSED, handler)
   }
 
   private void setupCloseConfirmation() {
-    EventHandler<WindowEvent> handler = { WindowEvent event ->
+    $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
       if (!allowsClose) {
         event.consume()
       }
     }
-    $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, handler)
   }
 
   private void setupExceptionHandler() {
-    UncaughtExceptionHandler handler = { Thread thread, Throwable throwable ->
+    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
       handleException(throwable)
     }
-    Thread.currentThread().setUncaughtExceptionHandler(handler)
   }
 
 }
