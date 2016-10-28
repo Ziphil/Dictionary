@@ -230,29 +230,31 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void modifyWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      Word oldWord = $dictionary.copiedWord(word)
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        controller.prepare((ShaleiaWord)word)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        controller.prepare((PersonalWord)word)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        controller.prepare((SlimeWord)word, $dictionary)
-      }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
-        $dictionary.modifyWord(oldWord, word)
-        if (savesAutomatically) {
-          $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
+    if ($dictionary != null) {
+      if (word != null && !(word instanceof Suggestion)) {
+        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Word oldWord = $dictionary.copiedWord(word)
+        nextStage.initOwner($stage)
+        if ($dictionary instanceof ShaleiaDictionary) {
+          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
+          controller.prepare((ShaleiaWord)word)
+        } else if ($dictionary instanceof PersonalDictionary) {
+          PersonalEditorController controller = PersonalEditorController.new(nextStage)
+          controller.prepare((PersonalWord)word)
+        } else if ($dictionary instanceof SlimeDictionary) {
+          SlimeEditorController controller = SlimeEditorController.new(nextStage)
+          controller.prepare((SlimeWord)word, $dictionary)
+        }
+        Boolean isDone = nextStage.showAndWaitResult()
+        if (isDone != null && isDone) {
+          $dictionary.modifyWord(oldWord, word)
+          if (savesAutomatically) {
+            $dictionary.save()
+            $isDictionaryChanged = false
+          } else {
+            $isDictionaryChanged = true
+          }
         }
       }
     }
@@ -265,14 +267,16 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void removeWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      $dictionary.removeWord(word)
-      if (savesAutomatically) {
-        $dictionary.save()
-        $isDictionaryChanged = false
-      } else {
-        $isDictionaryChanged = true
+    if ($dictionary != null) {
+      if (word != null && !(word instanceof Suggestion)) {
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        $dictionary.removeWord(word)
+        if (savesAutomatically) {
+          $dictionary.save()
+          $isDictionaryChanged = false
+        } else {
+          $isDictionaryChanged = true
+        }
       }
     }
   }
@@ -318,32 +322,34 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addInheritedWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      Word newWord
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((ShaleiaWord)word)
-        controller.prepare((ShaleiaWord)newWord)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((PersonalWord)word)
-        controller.prepare((PersonalWord)newWord)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((SlimeWord)word)
-        controller.prepare((SlimeWord)newWord, $dictionary)
-      }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
-        $dictionary.addWord(newWord)
-        if (savesAutomatically) {
-          $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
+    if ($dictionary != null) {
+     if (word != null && !(word instanceof Suggestion)) {
+        Word newWord
+        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        nextStage.initOwner($stage)
+        if ($dictionary instanceof ShaleiaDictionary) {
+          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((ShaleiaWord)word)
+          controller.prepare((ShaleiaWord)newWord)
+        } else if ($dictionary instanceof PersonalDictionary) {
+          PersonalEditorController controller = PersonalEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((PersonalWord)word)
+          controller.prepare((PersonalWord)newWord)
+        } else if ($dictionary instanceof SlimeDictionary) {
+          SlimeEditorController controller = SlimeEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((SlimeWord)word)
+          controller.prepare((SlimeWord)newWord, $dictionary)
+        }
+        Boolean isDone = nextStage.showAndWaitResult()
+        if (isDone != null && isDone) {
+          $dictionary.addWord(newWord)
+          if (savesAutomatically) {
+            $dictionary.save()
+            $isDictionaryChanged = false
+          } else {
+            $isDictionaryChanged = true
+          }
         }
       }
     }
