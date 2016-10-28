@@ -629,6 +629,8 @@ public class MainController extends PrimitiveController<Stage> {
       File file = File.new(filePath)
       Dictionary dictionary = Dictionary.loadDictionary(file)
       updateDictionary(dictionary)
+    } else {
+      updateDictionary(null)
     }
   }
 
