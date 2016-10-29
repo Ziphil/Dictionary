@@ -41,6 +41,8 @@
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
       <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
@@ -58,6 +60,39 @@
             </FXCollections>
           </items>
           <value><String fx:value="最小対語"/></value>
+        </ComboBox>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <spacing><Double rpx="5"/></spacing>
+        <TextField fx:id="$equivalentControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$equivalentSearchTypeControl">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <minWidth><Double rpx="100"/></minWidth>
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="完全一致"/>
+              <String fx:value="前方一致"/>
+              <String fx:value="後方一致"/>
+              <String fx:value="部分一致"/>
+              <String fx:value="正規表現"/>
+            </FXCollections>
+          </items>
+          <value><String fx:value="完全一致"/></value>
+        </ComboBox>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <spacing><Double rpx="5"/></spacing>
+        <TextField fx:id="$dataControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$dataSearchTypeControl">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <minWidth><Double rpx="100"/></minWidth>
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="部分一致"/>
+              <String fx:value="正規表現"/>
+            </FXCollections>
+          </items>
+          <value><String fx:value="部分一致"/></value>
         </ComboBox>
       </HBox>
     </GridPane>

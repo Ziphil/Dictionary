@@ -26,9 +26,36 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalent = parameter.getEquivalent()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchData = parameter.getData()
+    SearchType dataSearchType = parameter.getDataSearchType()
     $filteredWords.setPredicate() { ShaleiaWord word ->
+      Boolean predicate = true
       String name = word.getName()
-      Boolean predicate = SearchType.matches(nameSearchType, name, searchName)
+      List<String> equivalents = word.getEquivalents()
+      String data = word.getData()
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
+        }
+      }
+      if (searchEquivalent != null) {
+        Boolean equivalentPredicate = false
+        equivalents.each() { String equivalent ->
+          if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
+            equivalentPredicate = true
+          }
+        }
+        if (!equivalentPredicate) {
+          predicate = false
+        }
+      }
+      if (searchData != null) {
+        if (!SearchType.matches(dataSearchType, data, searchData)) {
+          predicate = false
+        }
+      }
       return predicate
     }
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
