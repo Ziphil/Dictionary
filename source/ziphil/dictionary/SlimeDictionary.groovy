@@ -161,6 +161,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           if (relation.getId() == oldWord.getId()) {
             relation.setId(newWord.getId())
             relation.setName(newWord.getName())
+            otherWord.change()
           }
         }
       }

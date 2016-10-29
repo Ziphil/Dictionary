@@ -196,6 +196,10 @@ public class SlimeWord extends Word {
     box.getChildren().add(textFlow)
   }
 
+  public void change() {
+    $isChanged = true
+  }
+
   public void createComparisonString(String order) {
     StringBuilder comparisonString = StringBuilder.new()
     (0 ..< $name.length()).each() { Integer i ->
