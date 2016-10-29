@@ -183,7 +183,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void removeWord(SlimeWord word) {
     $words.each() { SlimeWord otherWord ->
-      otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+      Boolean isChanged = otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+      if (isChanged) {
+        otherWord.change()
+      }
     }
     $words.remove(word)
   }
