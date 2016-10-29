@@ -23,7 +23,7 @@ public class SimpleWordCell extends ListCell<SlimeWord> {
       if (word.isSimpleChanged()) {
         word.createSimpleContentPane()
       }
-      word.getSimpleContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(29))
+      word.getSimpleContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(word.getSimpleContentPane())
     }
