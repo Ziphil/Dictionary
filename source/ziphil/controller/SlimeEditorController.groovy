@@ -124,54 +124,61 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
-    Integer id = $idControl.getText().toInteger()
-    if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
-      String name = $nameControl.getText()
-      List<SlimeEquivalent> rawEquivalents = ArrayList.new()
-      List<String> tags = ArrayList.new()
-      List<SlimeInformation> informations = ArrayList.new()
-      List<SlimeVariation> variations = ArrayList.new()
-      List<SlimeRelation> relations = ArrayList.new()
-      (0 ..< $tagControls.size()).each() { Integer i ->
-        String tag = $tagControls[i].getValue()
-        if (tag != "") {
-          tags.add(tag)
-        }
-      }
-      (0 ..< $equivalentTitleControls.size()).each() { Integer i ->
-        String title = $equivalentTitleControls[i].getValue()
-        List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
-        if (!equivalentNames.isEmpty()) {
-          rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
-        }
-      }
-      (0 ..< $informationTitleControls.size()).each() { Integer i ->
-        String title = $informationTitleControls[i].getValue()
-        String text = $informationTextControls[i].getText()
-        if (text != "") {
-          informations.add(SlimeInformation.new(title, text))
-        }
-      }
-      (0 ..< $variationTitleControls.size()).each() { Integer i ->
-        String title = $variationTitleControls[i].getValue()
-        List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
-        variationNames.each() { String variationName ->
-          if (variationName != "") {
-            variations.add(SlimeVariation.new(title, variationName))
+    try {
+      Integer id = $idControl.getText().toInteger()
+      if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
+        String name = $nameControl.getText()
+        List<SlimeEquivalent> rawEquivalents = ArrayList.new()
+        List<String> tags = ArrayList.new()
+        List<SlimeInformation> informations = ArrayList.new()
+        List<SlimeVariation> variations = ArrayList.new()
+        List<SlimeRelation> relations = ArrayList.new()
+        (0 ..< $tagControls.size()).each() { Integer i ->
+          String tag = $tagControls[i].getValue()
+          if (tag != "") {
+            tags.add(tag)
           }
         }
-      }
-      (0 ..< $relationTitleControls.size()).each() { Integer i ->
-        String title = $relationTitleControls[i].getValue()
-        SlimeRelation relation = $relations[i]
-        if (relation != null) {
-          relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+        (0 ..< $equivalentTitleControls.size()).each() { Integer i ->
+          String title = $equivalentTitleControls[i].getValue()
+          List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          if (!equivalentNames.isEmpty()) {
+            rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
+          }
         }
+        (0 ..< $informationTitleControls.size()).each() { Integer i ->
+          String title = $informationTitleControls[i].getValue()
+          String text = $informationTextControls[i].getText()
+          if (text != "") {
+            informations.add(SlimeInformation.new(title, text))
+          }
+        }
+        (0 ..< $variationTitleControls.size()).each() { Integer i ->
+          String title = $variationTitleControls[i].getValue()
+          List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          variationNames.each() { String variationName ->
+            if (variationName != "") {
+              variations.add(SlimeVariation.new(title, variationName))
+            }
+          }
+        }
+        (0 ..< $relationTitleControls.size()).each() { Integer i ->
+          String title = $relationTitleControls[i].getValue()
+          SlimeRelation relation = $relations[i]
+          if (relation != null) {
+            relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+          }
+        }
+        $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
+        $stage.close(true)
+      } else {
+        Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
-      $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
-      $stage.close(true)
-    } else {
-      Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
+    } catch (NumberFormatException exception) {
+      Dialog dialog = Dialog.new("フォーマットエラー", "IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
       dialog.initOwner($stage)
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
