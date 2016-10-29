@@ -43,7 +43,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ToggleButton $savesAutomaticallyControl
   @FXML private ToggleButton $ignoresAccentControl
   @FXML private ToggleButton $ignoresCaseControl
-  @FXML private ToggleButton $prefixSearchControl
+  @FXML private ToggleButton $searchesPrefixControl
   @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
   @FXML private ToggleButton $showsSlimeIdControl
 
@@ -72,7 +72,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
@@ -104,8 +104,8 @@ public class SettingController extends Controller<Boolean> {
     if (ignoresCase) {
       $ignoresCaseControl.setSelected(true)
     }
-    if (prefixSearch) {
-      $prefixSearchControl.setSelected(true)
+    if (searchesPrefix) {
+      $searchesPrefixControl.setSelected(true)
     }
     if (ignoresDuplicateSlimeId) {
       $ignoresDuplicateSlimeIdControl.setSelected(true)
@@ -130,7 +130,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
-    Boolean prefixSearch = $prefixSearchControl.isSelected()
+    Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
@@ -152,7 +152,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
-    setting.setPrefixSearch(prefixSearch)
+    setting.setSearchesPrefix(searchesPrefix)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     (0 ..< 10).each() { Integer i ->
@@ -233,7 +233,7 @@ public class SettingController extends Controller<Boolean> {
     $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
     $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
     $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))
-    $prefixSearchControl.textProperty().bind(CustomBindings.whichString($prefixSearchControl, "有効", "無効"))
+    $searchesPrefixControl.textProperty().bind(CustomBindings.whichString($searchesPrefixControl, "有効", "無効"))
     $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
     $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
   }

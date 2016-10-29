@@ -40,7 +40,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean existsSuggestion = false
     try {
       Pattern pattern = Pattern.compile(search)
@@ -63,7 +63,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
             existsSuggestion = true
           }
           if (search != "") {
-            if (prefixSearch) {
+            if (searchesPrefix) {
               return newName.startsWith(newSearch)
             } else {
               return newName == newSearch
@@ -85,14 +85,14 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public void searchByEquivalent(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           if (search != "") {
             return word.getEquivalents().any() { String equivalent ->
-              if (prefixSearch) {
+              if (searchesPrefix) {
                 return equivalent.startsWith(search)
               } else {
                 return equivalent == search

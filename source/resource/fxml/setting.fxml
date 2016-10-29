@@ -126,7 +126,7 @@
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <ToggleButton fx:id="$prefixSearchControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <ToggleButton fx:id="$searchesPrefixControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
