@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
@@ -15,7 +16,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import javafx.stage.Modality
-import ziphil.custom.IntegerStringConverter
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
@@ -55,7 +56,7 @@ public class SettingController extends Controller<Boolean> {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupFontFamilies()
-    setupSpinners()
+    setupTextFormatters()
     setupFontDisableBindings()
     setupTextBindings()
     applySettings()
@@ -215,9 +216,9 @@ public class SettingController extends Controller<Boolean> {
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
-  private void setupSpinners() {
-    $contentFontSizeControl.getValueFactory().setConverter(IntegerStringConverter.new())
-    $editorFontSizeControl.getValueFactory().setConverter(IntegerStringConverter.new())
+  private void setupTextFormatters() {
+    $contentFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $editorFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
   private void setupFontDisableBindings() {

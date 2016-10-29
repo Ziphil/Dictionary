@@ -6,12 +6,13 @@ import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
 import javafx.scene.control.Spinner
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
-import ziphil.custom.IntegerStringConverter
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.PersonalWord
@@ -41,6 +42,11 @@ public class PersonalEditorController extends Controller<Boolean> {
     setupShortcuts()
   }
 
+  @FXML
+  private void initialize() {
+    setupTextFormatter()
+  }
+
   public void prepare(PersonalWord word, String defaultName) {
     $word = word
     $nameControl.setText(word.getName())
@@ -60,11 +66,6 @@ public class PersonalEditorController extends Controller<Boolean> {
         $translationControl.requestFocus()
       }
     }
-  }
-
-  @FXML
-  private void initialize() {
-    setupSpinner()
   }
 
   public void prepare(PersonalWord word) {
@@ -92,8 +93,8 @@ public class PersonalEditorController extends Controller<Boolean> {
     }
   }
 
-  private void setupSpinner() {
-    $levelControl.getValueFactory().setConverter(IntegerStringConverter.new())
+  private void setupTextFormatter() {
+    $levelControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }
