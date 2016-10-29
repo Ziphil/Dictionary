@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
@@ -34,6 +36,11 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   public SlimeSearcherController(UtilityStage<SlimeSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
+  }
+
+  @FXML
+  private void initialize() {
+    setupTextFormatter()
   }
 
   public void prepare(SlimeDictionary dictionary) {
@@ -75,6 +82,10 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     $equivalentTitleControl.getItems().addAll($dictionary.getRegisteredEquivalentTitles())
     $informationTitleControl.getItems().addAll($dictionary.getRegisteredInformationTitles())
     $tagControl.getItems().addAll($dictionary.getRegisteredTags())
+  }
+
+  private void setupTextFormatter() {
+    $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }
