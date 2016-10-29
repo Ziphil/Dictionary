@@ -18,7 +18,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
   private String $path
   private ObjectMapper $mapper
   private SlimeDictionary $dictionary
-  private Integer $validMinId = 0
+  private Integer $validMinId = -1
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
