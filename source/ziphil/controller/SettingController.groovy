@@ -184,28 +184,28 @@ public class SettingController extends Controller<Boolean> {
 
   private void setupRegisteredDictionaryPane() {
     (0 ..< 10).each() { Integer i ->
-      Label number = Label.new("登録辞書${(i + 1) % 10}:")
+      Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
-      TextField dictionaryPath = TextField.new()
-      Button browse = Button.new("…")
-      Button deregister = Button.new("解除")
-      dictionaryPath.getStyleClass().add("left-pill")
-      browse.getStyleClass().add("right-pill")
-      deregister.setPrefWidth(Measurement.rpx(70))
-      deregister.setMinWidth(Measurement.rpx(70))
-      browse.setOnAction() {
+      TextField dictionaryPathControl = TextField.new()
+      Button browseButton = Button.new("…")
+      Button deregisterButton = Button.new("解除")
+      dictionaryPathControl.getStyleClass().add("left-pill")
+      browseButton.getStyleClass().add("right-pill")
+      deregisterButton.setPrefWidth(Measurement.rpx(70))
+      deregisterButton.setMinWidth(Measurement.rpx(70))
+      browseButton.setOnAction() {
         browseDictionary(i)
       }
-      deregister.setOnAction() {
+      deregisterButton.setOnAction() {
         deregisterDictionary(i)
       }
-      innerBox.getChildren().addAll(dictionaryPath, browse)
-      innerBox.setHgrow(dictionaryPath, Priority.ALWAYS)
-      box.getChildren().addAll(innerBox, deregister)
+      innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
+      innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
+      box.getChildren().addAll(innerBox, deregisterButton)
       box.setHgrow(innerBox, Priority.ALWAYS)
-      $registeredDictionaryPathControls[i] = dictionaryPath
-      $registeredDictionaryPane.add(number, 0, i)
+      $registeredDictionaryPathControls[i] = dictionaryPathControl
+      $registeredDictionaryPane.add(numberLabel, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }
   }
