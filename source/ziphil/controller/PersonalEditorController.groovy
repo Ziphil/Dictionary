@@ -31,7 +31,7 @@ public class PersonalEditorController extends Controller<Boolean> {
   @FXML private TextField $pronunciationControl
   @FXML private TextArea $translationControl
   @FXML private TextArea $usageControl
-  @FXML private Spinner $levelControl
+  @FXML private Spinner<Integer> $levelControl
   @FXML private CheckBox $memoryControl
   @FXML private CheckBox $modificationControl
   private PersonalWord $word

@@ -32,10 +32,10 @@ public class SettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilyControl
-  @FXML private Spinner $contentFontSizeControl
+  @FXML private Spinner<Integer> $contentFontSizeControl
   @FXML private CheckBox $usesSystemContentFontControl
   @FXML private ComboBox<String> $editorFontFamilyControl
-  @FXML private Spinner $editorFontSizeControl
+  @FXML private Spinner<Integer> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
