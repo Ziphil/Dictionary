@@ -41,11 +41,11 @@ public class SlimeWord extends Word {
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
                    List<SlimeRelation> relations) {
     update(id, name, rawEquivalents, tags, informations, variations, relations)
-    setupContentPane()
+    setupContentPanes()
   }
 
   public SlimeWord() {
-    setupContentPane()
+    setupContentPanes()
   }
 
   public void update(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
@@ -62,6 +62,7 @@ public class SlimeWord extends Word {
     $variations = variations
     $relations = relations
     $isChanged = true
+    $isSimpleChanged = true
   }
 
   public void createContentPane() {
@@ -101,17 +102,11 @@ public class SlimeWord extends Word {
 
   public void createSimpleContentPane() {
     HBox headBox = HBox.new()
-    HBox equivalentBox = HBox.new()
+    VBox equivalentBox = VBox.new()
     $simpleContentPane.getChildren().clear()
     $simpleContentPane.getChildren().addAll(headBox, equivalentBox)
-    Text nameText = Text.new($name + " ")
-    Text idText = Text.new("#${$id}")
-    Text equivalentText = Text.new($equivalents.join(", "))
-    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
-    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
-    equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    headBox.getChildren().addAll(nameText, idText)
-    equivalentBox.getChildren().add(equivalentText)
+    addSimpleNameNode(headBox, $name, $id)
+    addSimpleEquivalentNode(equivalentBox, $equivalents.join(", "))
     $isSimpleChanged = false
   }
 
@@ -119,6 +114,15 @@ public class SlimeWord extends Word {
     Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
+    box.setAlignment(Pos.CENTER_LEFT)
+  }
+
+  private void addSimpleNameNode(HBox box, String name, Integer id) {
+    Text nameText = Text.new($name + " ")
+    Text idText = Text.new("#${$id}")
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
+    box.getChildren().addAll(nameText, idText)
     box.setAlignment(Pos.CENTER_LEFT)
   }
 
@@ -139,6 +143,14 @@ public class SlimeWord extends Word {
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
     textFlow.getChildren().addAll(titleText, equivalentText)
+    box.getChildren().add(textFlow)
+  }
+
+  private void addSimpleEquivalentNode(VBox box, String equivalent) {
+    TextFlow textFlow = TextFlow.new()
+    Text equivalentText = Text.new(equivalent)
+    equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
+    textFlow.getChildren().add(equivalentText)
     box.getChildren().add(textFlow)
   }
 
@@ -197,8 +209,9 @@ public class SlimeWord extends Word {
     $comparisonString = comparisonString.toString()
   }
 
-  private void setupContentPane() {
+  private void setupContentPanes() {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    $simpleContentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public Boolean isSimpleChanged() {
