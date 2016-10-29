@@ -154,11 +154,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
       newWord.setId($validMinId)
-      $validMinId += 1
-    } else {
-      if (newWord.getId() >= $validMinId) {
-        $validMinId = newWord.getId() + 1
-      }
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
       $words.each() { SlimeWord otherWord ->
@@ -178,11 +173,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   public void addWord(SlimeWord word) {
     if (containsId(word.getId(), word)) {
       word.setId($validMinId)
-      $validMinId += 1
-    } else {
-      if (word.getId() >= $validMinId) {
-        $validMinId = word.getId() + 1
-      }
     }
     word.setDictionary(this)
     word.createComparisonString($alphabetOrder)
@@ -198,6 +188,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void addRegisteredTitles(SlimeWord word) {
+    if (word.getId() >= $validMinId) {
+      $validMinId = word.getId() + 1
+    }
     word.getTags().each() { String tag ->
       if (!$registeredTags.contains(tag)) {
         $registeredTags.addAll(tag)
