@@ -33,7 +33,8 @@
         <ListView fx:id="$sectionList">
           <prefWidth><Double rpx="150"/></prefWidth>
           <minWidth><Double rpx="150"/></minWidth>
-          <String fx:value="基本操作"/>
+          <String fx:value="基本操作(編集)"/>
+          <String fx:value="基本操作(検索)"/>
           <String fx:value="OneToMany形式の編集"/>
           <String fx:value="ショートカットキー"/>
           <String fx:value="各形式について"/>
