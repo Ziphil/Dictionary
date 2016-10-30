@@ -18,6 +18,7 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
 import ziphil.dictionary.SlimeWord
 import ziphil.module.Setting
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -81,11 +82,12 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     $stage.close(word)
   }
 
+  @ReturnVoidClosure
   private void setupWordList() {
     $wordList.setItems($dictionary.getWords())
     $wordList.setCellFactory() { ListView<SlimeWord> list ->
       SimpleWordCell cell = SimpleWordCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           commit()
         }

@@ -7,6 +7,7 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -33,6 +34,7 @@ public class ShaleiaWord extends Word {
   private ShaleiaDictionary $dictionary
   private String $uniqueName = ""
   private String $data = ""
+  private String $comparisonString = ""
 
   public ShaleiaWord(String uniqueName, String data) {
     update(uniqueName, data)
@@ -222,7 +224,7 @@ public class ShaleiaWord extends Word {
         if (currentName.length() > 0) {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
-            unnamedText.setOnMouseClicked() {
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)
               }
@@ -244,7 +246,7 @@ public class ShaleiaWord extends Word {
         if (currentName.length() > 0) {
           String name = currentName.toString()
           unnamedTexts.each() { Text unnamedText ->
-            unnamedText.setOnMouseClicked() {
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)
               }
@@ -340,20 +342,24 @@ public class ShaleiaWord extends Word {
     return texts
   }
 
-  public List<Integer> listForComparison(String order) {
-    List<String> splittedString = $uniqueName.split("").toList()
-    List<Integer> convertedString = splittedString.collect{character -> order.indexOf(character)}
-    if (convertedString[0] == -1) {
-      convertedString.remove(0)
-      convertedString.add(-2)
+  public void createComparisonString(String order) {
+    StringBuilder comparisonString = StringBuilder.new()
+    (0 ..< $name.length()).each() { Integer i ->
+      if ($name[i] != "'") {
+        Integer position = order.indexOf($name.codePointAt(i))
+        if (position > -1) {
+          comparisonString.appendCodePoint(position + 174)
+        } else {
+          comparisonString.appendCodePoint(10000)
+        }
+      }
     }
-    return convertedString
+    $comparisonString = comparisonString.toString()
   }
 
   private void setupContentPane() {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
-
 
   public ShaleiaDictionary getDictionary() {
     return $dictionary
@@ -369,6 +375,10 @@ public class ShaleiaWord extends Word {
 
   public String getData() {
     return $data
+  }
+
+  public String getComparisonString() {
+    return $comparisonString
   }
 
 }

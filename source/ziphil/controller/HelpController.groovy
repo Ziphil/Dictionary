@@ -14,7 +14,8 @@ import ziphil.custom.UtilityStage
 public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
-  private static final String BASIC_HTML_PATH = "resource/help/basic.html"
+  private static final String BASIC_EDIT_HTML_PATH = "resource/help/basic_edit.html"
+  private static final String BASIC_SEARCH_HTML_PATH = "resource/help/basic_search.html"
   private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"
   private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
   private static final String DICTIONARY_TYPE_HTML_PATH = "resource/help/dictionary_type.html"
@@ -32,13 +33,15 @@ public class HelpController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupContentList()
+    setupSectionList()
   }
 
   private void changeHelp(String section) {
     String url = ""
-    if (section == "基本操作") {
-      url = getClass().getClassLoader().getResource(BASIC_HTML_PATH).toExternalForm()
+    if (section == "基本操作(編集)") {
+      url = getClass().getClassLoader().getResource(BASIC_EDIT_HTML_PATH).toExternalForm()
+    } else if (section == "基本操作(検索)") {
+      url = getClass().getClassLoader().getResource(BASIC_SEARCH_HTML_PATH).toExternalForm()
     } else if (section == "OneToMany形式の編集") {
       url = getClass().getClassLoader().getResource(SLIME_EDIT_HTML_PATH).toExternalForm()
     } else if (section == "ショートカットキー") {
@@ -49,8 +52,8 @@ public class HelpController extends Controller<Void> {
     $helpView.getEngine().load(url)
   }
 
-  private void setupContentList() {
-    $sectionList.setOnMouseClicked() { MouseEvent event ->
+  private void setupSectionList() {
+    $sectionList.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
         String section = $sectionList.getSelectionModel().getSelectedItems()[0]
         changeHelp(section)

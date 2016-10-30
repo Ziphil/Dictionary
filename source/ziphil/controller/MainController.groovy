@@ -2,11 +2,17 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.awt.Desktop
+import java.lang.Thread.UncaughtExceptionHandler
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
+import javafx.concurrent.Task
+import javafx.concurrent.Worker
+import javafx.concurrent.WorkerStateEvent
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -16,6 +22,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
+import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
@@ -30,6 +37,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
@@ -52,6 +60,7 @@ import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -59,7 +68,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
-  private static final String TITLE = "ZpDIC alpha"
+  private static final String TITLE = "ZpDIC shalnif"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
@@ -81,6 +90,8 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Label $hitWordSizeLabel
   @FXML private Label $totalWordSizeLabel
   @FXML private Label $elapsedTimeLabel
+  @FXML private VBox $loadingBox
+  @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
   private Boolean $isDictionaryChanged = false
 
@@ -219,29 +230,31 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void modifyWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      Word oldWord = $dictionary.copiedWord(word)
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        controller.prepare((ShaleiaWord)word)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        controller.prepare((PersonalWord)word)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        controller.prepare((SlimeWord)word, $dictionary)
-      }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
-        $dictionary.modifyWord(oldWord, word)
-        if (savesAutomatically) {
-          $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
+    if ($dictionary != null) {
+      if (word != null && !(word instanceof Suggestion)) {
+        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Word oldWord = $dictionary.copiedWord(word)
+        nextStage.initOwner($stage)
+        if ($dictionary instanceof ShaleiaDictionary) {
+          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
+          controller.prepare((ShaleiaWord)word)
+        } else if ($dictionary instanceof PersonalDictionary) {
+          PersonalEditorController controller = PersonalEditorController.new(nextStage)
+          controller.prepare((PersonalWord)word)
+        } else if ($dictionary instanceof SlimeDictionary) {
+          SlimeEditorController controller = SlimeEditorController.new(nextStage)
+          controller.prepare((SlimeWord)word, $dictionary)
+        }
+        Boolean isDone = nextStage.showAndWaitResult()
+        if (isDone != null && isDone) {
+          $dictionary.modifyWord(oldWord, word)
+          if (savesAutomatically) {
+            $dictionary.save()
+            $isDictionaryChanged = false
+          } else {
+            $isDictionaryChanged = true
+          }
         }
       }
     }
@@ -254,14 +267,16 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void removeWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      $dictionary.removeWord(word)
-      if (savesAutomatically) {
-        $dictionary.save()
-        $isDictionaryChanged = false
-      } else {
-        $isDictionaryChanged = true
+    if ($dictionary != null) {
+      if (word != null && !(word instanceof Suggestion)) {
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        $dictionary.removeWord(word)
+        if (savesAutomatically) {
+          $dictionary.save()
+          $isDictionaryChanged = false
+        } else {
+          $isDictionaryChanged = true
+        }
       }
     }
   }
@@ -307,32 +322,34 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addInheritedWord(Word word) {
-    if ($dictionary != null && word != null && !(word instanceof Suggestion)) {
-      Word newWord
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((ShaleiaWord)word)
-        controller.prepare((ShaleiaWord)newWord)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((PersonalWord)word)
-        controller.prepare((PersonalWord)newWord)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        newWord = $dictionary.inheritedWord((SlimeWord)word)
-        controller.prepare((SlimeWord)newWord, $dictionary)
-      }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
-        $dictionary.addWord(newWord)
-        if (savesAutomatically) {
-          $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
+    if ($dictionary != null) {
+     if (word != null && !(word instanceof Suggestion)) {
+        Word newWord
+        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        nextStage.initOwner($stage)
+        if ($dictionary instanceof ShaleiaDictionary) {
+          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((ShaleiaWord)word)
+          controller.prepare((ShaleiaWord)newWord)
+        } else if ($dictionary instanceof PersonalDictionary) {
+          PersonalEditorController controller = PersonalEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((PersonalWord)word)
+          controller.prepare((PersonalWord)newWord)
+        } else if ($dictionary instanceof SlimeDictionary) {
+          SlimeEditorController controller = SlimeEditorController.new(nextStage)
+          newWord = $dictionary.inheritedWord((SlimeWord)word)
+          controller.prepare((SlimeWord)newWord, $dictionary)
+        }
+        Boolean isDone = nextStage.showAndWaitResult()
+        if (isDone != null && isDone) {
+          $dictionary.addWord(newWord)
+          if (savesAutomatically) {
+            $dictionary.save()
+            $isDictionaryChanged = false
+          } else {
+            $isDictionaryChanged = true
+          }
         }
       }
     }
@@ -353,13 +370,14 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
       File file = nextStage.showAndWaitResult()
-      if (file != null && file.isFile()) {
+      if (file != null) {
         Dictionary dictionary = Dictionary.loadDictionary(file)
+        updateDictionary(dictionary)
+        $isDictionaryChanged = false
         if (dictionary != null) {
-          updateDictionary(dictionary)
-          $isDictionaryChanged = false
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
+          Setting.getInstance().setDefaultDictionaryPath(null)
           Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
           dialog.initOwner($stage)
           dialog.setAllowsCancel(false)
@@ -373,11 +391,12 @@ public class MainController extends PrimitiveController<Stage> {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
       Dictionary dictionary = Dictionary.loadDictionary(file)
+      updateDictionary(dictionary)
+      $isDictionaryChanged = false
       if (dictionary != null) {
-        updateDictionary(dictionary)
-        $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
+        Setting.getInstance().setDefaultDictionaryPath(null)
         Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.initOwner($stage)
         dialog.setAllowsCancel(false)
@@ -398,11 +417,12 @@ public class MainController extends PrimitiveController<Stage> {
       File file = nextStage.showAndWaitResult()
       if (file != null) {
         Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
+        updateDictionary(dictionary)
+        $isDictionaryChanged = true
         if (dictionary != null) {
-          updateDictionary(dictionary)
-          $isDictionaryChanged = true
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
+          Setting.getInstance().setDefaultDictionaryPath(null)
           Dialog dialog = Dialog.new("新規作成エラー", "辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.initOwner($stage)
           dialog.setAllowsCancel(false)
@@ -417,6 +437,11 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       $dictionary.save()
       $isDictionaryChanged = false
+    } else {
+      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
+      dialog.initOwner($stage)
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
     }
   }
 
@@ -427,14 +452,21 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true)
+      controller.prepare(true, Dictionary.extensionOf($dictionary))
       File file = nextStage.showAndWaitResult()
       if (file != null) {
+        $dictionary.setName(file.getName())
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
+        $dictionaryNameLabel.setText($dictionary.getName())
         $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
+    } else {
+      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
+      dialog.initOwner($stage)
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
     }
   }
 
@@ -556,25 +588,55 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionary(Dictionary dictionary) {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
     $dictionary = dictionary
-    $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
-    $dictionaryNameLabel.setText($dictionary.getName())
-    $wordList.setItems($dictionary.getWholeWords())
-    $searchControl.setText("")
-    $searchControl.requestFocus()
-    if ($dictionary instanceof ShaleiaDictionary) {
-      $dictionary.setOnLinkClicked() { String name ->
-        ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-        parameter.setName(name)
-        parameter.setNameSearchType(SearchType.EXACT)
-        searchDetailBy(parameter)
+    if ($dictionary != null) {
+      $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
+      $dictionaryNameLabel.setText($dictionary.getName())
+      $wordList.setItems($dictionary.getWholeWords())
+      $searchControl.setText("")
+      $searchControl.requestFocus()
+      Task<?> loader = $dictionary.getLoader()
+      $loadingBox.visibleProperty().unbind()
+      $progressIndicator.progressProperty().unbind()
+      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+      $progressIndicator.progressProperty().bind(loader.progressProperty())
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $wordList.scrollTo(0)
       }
-    } else if ($dictionary instanceof SlimeDictionary) {
-      $dictionary.setOnLinkClicked() { Integer id ->
-        SlimeSearchParameter parameter = SlimeSearchParameter.new()
-        parameter.setId(id)
-        searchDetailBy(parameter)
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        failUpdateDictionary()
       }
+      if ($dictionary instanceof ShaleiaDictionary) {
+        $dictionary.setOnLinkClicked() { String name ->
+          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
+          parameter.setName(name)
+          parameter.setNameSearchType(SearchType.EXACT)
+          searchDetailBy(parameter)
+        }
+      } else if ($dictionary instanceof SlimeDictionary) {
+        $dictionary.setOnLinkClicked() { Integer id ->
+          SlimeSearchParameter parameter = SlimeSearchParameter.new()
+          parameter.setId(id)
+          searchDetailBy(parameter)
+        }
+      }
+    } else {
+      ObservableList<Word> emptyWords = FXCollections.observableArrayList()
+      $totalWordSizeLabel.setText("0")
+      $dictionaryNameLabel.setText("")
+      $wordList.setItems(emptyWords)
+      $searchControl.setText("")
+      $searchControl.requestFocus()
+      $loadingBox.visibleProperty().unbind()
+      $loadingBox.setVisible(false)
+      $progressIndicator.progressProperty().unbind()
+      $progressIndicator.setProgress(0)
     }
     search()
   }
@@ -583,13 +645,26 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      if (file.exists() && file.isFile()) {
-        Dictionary dictionary = Dictionary.loadDictionary(file)
-        if (dictionary != null) {
-          updateDictionary(dictionary)
-        }
+      Dictionary dictionary = Dictionary.loadDictionary(file)
+      updateDictionary(dictionary)
+      if (dictionary == null) {
+        Setting.getInstance().setDefaultDictionaryPath(null)
+        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
+    } else {
+      updateDictionary(null)
     }
+  }
+
+  private void failUpdateDictionary() {
+    updateDictionary(null)
+    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    dialog.initOwner($stage)
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
   }
 
   @FXML
@@ -597,10 +672,11 @@ public class MainController extends PrimitiveController<Stage> {
     Platform.exit()
   }
 
+  @ReturnVoidClosure
   private void setupWordList() {
     $wordList.setCellFactory() { ListView<Word> list ->
       WordCell cell = WordCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
         }
@@ -692,7 +768,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupWordListShortcuts() {
-    $wordList.setOnKeyPressed() { KeyEvent event ->
+    $wordList.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
@@ -700,14 +776,14 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupDragAndDrop() {
-    $scene.setOnDragOver() { DragEvent event ->
+    $scene.addEventHandler(DragEvent.DRAG_OVER) { DragEvent event ->
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
         event.acceptTransferModes(TransferMode.COPY_OR_MOVE)
       }
       event.consume()
     }
-    $scene.setOnDragDropped() { DragEvent event ->
+    $scene.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
       Boolean isCompleted = false
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
@@ -723,7 +799,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupShortcuts() {
-    $scene.setOnKeyPressed() { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.L, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusWordList()
       }
@@ -731,7 +807,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupCloseConfirmation() {
-    $stage.setOnCloseRequest() { WindowEvent event ->
+    $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
       if (!allowsClose) {
         event.consume()

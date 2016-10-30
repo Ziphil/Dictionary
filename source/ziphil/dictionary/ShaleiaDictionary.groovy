@@ -6,12 +6,15 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 
 
 @CompileStatic @Newify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
-  private String $alphabetOrder = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
+  private ShaleiaDictionaryLoader $loader
+  private String $alphabetOrder
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
@@ -23,9 +26,36 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalent = parameter.getEquivalent()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchData = parameter.getData()
+    SearchType dataSearchType = parameter.getDataSearchType()
     $filteredWords.setPredicate() { ShaleiaWord word ->
+      Boolean predicate = true
       String name = word.getName()
-      Boolean predicate = SearchType.matches(nameSearchType, name, searchName)
+      List<String> equivalents = word.getEquivalents()
+      String data = word.getData()
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
+        }
+      }
+      if (searchEquivalent != null) {
+        Boolean equivalentPredicate = false
+        equivalents.each() { String equivalent ->
+          if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
+            equivalentPredicate = true
+          }
+        }
+        if (!equivalentPredicate) {
+          predicate = false
+        }
+      }
+      if (searchData != null) {
+        if (!SearchType.matches(dataSearchType, data, searchData)) {
+          predicate = false
+        }
+      }
       return predicate
     }
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
@@ -34,11 +64,13 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
+    newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
   }
 
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
+    word.createComparisonString($alphabetOrder)
     $words.add(word)
   }
 
@@ -64,31 +96,14 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   private void load() {
-    if ($path != null) {
-      File file = File.new($path)
-      String currentName = null
-      StringBuilder currentData = StringBuilder.new()
-      file.eachLine() { String line ->
-        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-        if (matcher.matches()) {
-          if (currentName != null) {
-            ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-            word.setDictionary(this)
-            $words.add(word)
-          }
-          currentName = matcher.group(1)
-          currentData.setLength(0)
-        } else {
-          currentData.append(line)
-          currentData.append("\n")
-        }
-      }
-      if (currentName != null) {
-        ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-        word.setDictionary(this)
-        $words.add(word)
-      }
+    $loader = ShaleiaDictionaryLoader.new($path, this)
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $alphabetOrder = $loader.getAlphabetOrder()
+      $words.addAll($loader.getValue())
     }
+    Thread thread = Thread.new(loader)
+    thread.setDaemon(true)
+    thread.start()
   }
 
   public void save() {
@@ -105,29 +120,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
-      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
-      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
-      Integer result = null
-      (0 ..< firstList.size()).each() { Integer i ->
-        Integer firstData = firstList[i]
-        Integer secondData = secondList[i]
-        if (result == null) {
-          if (secondData == null) {
-            result = 1
-          } else if (firstData != secondData) {
-            result = firstData <=> secondData
-          }
-        }
-      }
-      if (result == null) {
-        if (firstList.size() != secondList.size()) {
-          return -1
-        } else {
-          return 0
-        }
-      } else {
-        return result
-      }
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      return firstString <=> secondString
     }
   }
 
@@ -137,6 +132,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+  public Task<?> getLoader() {
+    return $loader
   }
 
 }

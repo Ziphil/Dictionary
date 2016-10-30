@@ -62,7 +62,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   }
 
   private void setupShortcuts() {
-    $scene.setOnKeyPressed() { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
         commit()
       }

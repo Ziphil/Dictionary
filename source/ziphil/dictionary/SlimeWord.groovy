@@ -1,11 +1,10 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -14,6 +13,7 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -34,17 +34,18 @@ public class SlimeWord extends Word {
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
+  private String $comparisonString = ""
   private VBox $simpleContentPane = VBox.new()
   private Boolean $isSimpleChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
                    List<SlimeRelation> relations) {
     update(id, name, rawEquivalents, tags, informations, variations, relations)
-    setupContentPane()
+    setupContentPanes()
   }
 
   public SlimeWord() {
-    setupContentPane()
+    setupContentPanes()
   }
 
   public void update(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
@@ -61,6 +62,7 @@ public class SlimeWord extends Word {
     $variations = variations
     $relations = relations
     $isChanged = true
+    $isSimpleChanged = true
   }
 
   public void createContentPane() {
@@ -100,17 +102,11 @@ public class SlimeWord extends Word {
 
   public void createSimpleContentPane() {
     HBox headBox = HBox.new()
-    HBox equivalentBox = HBox.new()
+    VBox equivalentBox = VBox.new()
     $simpleContentPane.getChildren().clear()
     $simpleContentPane.getChildren().addAll(headBox, equivalentBox)
-    Text nameText = Text.new($name + " ")
-    Text idText = Text.new("#${$id}")
-    Text equivalentText = Text.new($equivalents.join(", "))
-    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
-    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
-    equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    headBox.getChildren().addAll(nameText, idText)
-    equivalentBox.getChildren().add(equivalentText)
+    addSimpleNameNode(headBox, $name, $id)
+    addSimpleEquivalentNode(equivalentBox, $equivalents.join(", "))
     $isSimpleChanged = false
   }
 
@@ -118,6 +114,15 @@ public class SlimeWord extends Word {
     Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     box.getChildren().add(nameText)
+    box.setAlignment(Pos.CENTER_LEFT)
+  }
+
+  private void addSimpleNameNode(HBox box, String name, Integer id) {
+    Text nameText = Text.new($name + " ")
+    Text idText = Text.new("#${$id}")
+    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
+    box.getChildren().addAll(nameText, idText)
     box.setAlignment(Pos.CENTER_LEFT)
   }
 
@@ -141,6 +146,14 @@ public class SlimeWord extends Word {
     box.getChildren().add(textFlow)
   }
 
+  private void addSimpleEquivalentNode(VBox box, String equivalent) {
+    TextFlow textFlow = TextFlow.new()
+    Text equivalentText = Text.new(equivalent)
+    equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
+    textFlow.getChildren().add(equivalentText)
+    box.getChildren().add(textFlow)
+  }
+
   private void addInformationNode(VBox box, String title, String information, Boolean modifiesPunctuation) {
     String newInformation = (modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
     TextFlow titleTextFlow = TextFlow.new()
@@ -155,6 +168,7 @@ public class SlimeWord extends Word {
     box.getChildren().addAll(titleTextFlow, textFlow)
   }
 
+  @ReturnVoidClosure
   private void addRelationNode(VBox box, String title, List<Integer> ids, List<String> names) {
     TextFlow textFlow = TextFlow.new()
     Text formerTitleText = Text.new("cf:")
@@ -166,12 +180,12 @@ public class SlimeWord extends Word {
       Integer id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
-      nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-      nameText.setOnMouseClicked() {
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if ($dictionary.getOnLinkClicked() != null) {
           $dictionary.getOnLinkClicked().accept(id)
         }
       }
+      nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       textFlow.getChildren().add(nameText)
       if (i < names.size() - 1) {
         Text punctuationText = Text.new(", ")
@@ -182,26 +196,36 @@ public class SlimeWord extends Word {
     box.getChildren().add(textFlow)
   }
 
-  public List<Integer> listForComparison(String order) {
-    List<String> splittedString = $name.split("").toList()
-    List<Integer> convertedString = splittedString.collect{character -> order.indexOf(character)}
-    return convertedString
+  public void change() {
+    $isChanged = true
   }
 
-  private void setupContentPane() {
+  public void createComparisonString(String order) {
+    StringBuilder comparisonString = StringBuilder.new()
+    (0 ..< $name.length()).each() { Integer i ->
+      Integer position = order.indexOf($name.codePointAt(i))
+      if (position > -1) {
+        comparisonString.appendCodePoint(position + 174)
+      } else {
+        comparisonString.appendCodePoint(10000)
+      }
+    }
+    $comparisonString = comparisonString.toString()
+  }
+
+  private void setupContentPanes() {
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    $simpleContentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public Boolean isSimpleChanged() {
     return $isSimpleChanged
   }
 
-  @JsonIgnore
   public SlimeDictionary getDictionary() {
     return $dictionary
   }
 
-  @JsonIgnore
   public void setDictionary(SlimeDictionary dictionary) {
     $dictionary = dictionary
   }
@@ -218,12 +242,10 @@ public class SlimeWord extends Word {
     $name = name
   }
 
-  @JsonProperty("translations")
   public List<SlimeEquivalent> getRawEquivalents() {
     return $rawEquivalents
   }
 
-  @JsonProperty("translations")
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
     $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
@@ -240,12 +262,10 @@ public class SlimeWord extends Word {
     $tags = tags
   }
 
-  @JsonProperty("contents")
   public List<SlimeInformation> getInformations() {
     return $informations
   }
 
-  @JsonProperty("contents")
   public void setInformations(List<SlimeInformation> informations) {
     $informations = informations
   }
@@ -266,13 +286,8 @@ public class SlimeWord extends Word {
     $relations = relations
   }
 
-  public Map<String, Object> getEntry() {
-    return [("id"): (Object)$id, ("form"): (Object)$name]
-  }
-
-  public void setEntry(Map<String, Object> entry) {
-    $id = (Integer)entry["id"]
-    $name = (String)entry["form"]
+  public String getComparisonString() {
+    return $comparisonString
   }
 
   public Pane getSimpleContentPane() {

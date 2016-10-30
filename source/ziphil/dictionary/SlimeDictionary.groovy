@@ -14,7 +14,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
-import ziphil.custom.SimpleTask
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -24,15 +23,16 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Integer $validMinId = 0
-  private List<String> $registeredTags = ArrayList.new()
-  private List<String> $registeredEquivalentTitles = ArrayList.new()
-  private List<String> $registeredInformationTitles = ArrayList.new()
-  private List<String> $registeredVariationTitles = ArrayList.new()
-  private List<String> $registeredRelationTitles = ArrayList.new()
-  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
+  private SlimeDictionaryLoader $loader
+  private Integer $validMinId
+  private List<String> $registeredTags
+  private List<String> $registeredEquivalentTitles
+  private List<String> $registeredInformationTitles
+  private List<String> $registeredVariationTitles
+  private List<String> $registeredRelationTitles
+  private String $alphabetOrder
   private Consumer<Integer> $onLinkClicked
-  private Map<String, TreeNode> $externalData = HashMap.new()
+  private Map<String, TreeNode> $externalData
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -104,8 +104,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           predicate = false
         }
       }
-      if (searchEquivalentName != null) {
+      if (searchEquivalentName != null || searchEquivalentTitle != null) {
         Boolean equivalentPredicate = false
+        searchEquivalentName = searchEquivalentName ?: ""
         equivalents.each() { SlimeEquivalent equivalent ->
           String equivalentTitle = equivalent.getTitle()
           equivalent.getNames().each() { String equivalentName ->
@@ -118,8 +119,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           predicate = false
         }
       }
-      if (searchInformationText != null) {
+      if (searchInformationText != null || searchInformationTitle != null) {
         Boolean informationPredicate = false
+        searchInformationText = searchInformationText ?: ""
         informations.each() { SlimeInformation information ->
           String informationText = information.getText()
           String informationTitle = information.getTitle()
@@ -152,11 +154,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
       newWord.setId($validMinId)
-      $validMinId += 1
-    } else {
-      if (newWord.getId() >= $validMinId) {
-        $validMinId = newWord.getId() + 1
-      }
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
       $words.each() { SlimeWord otherWord ->
@@ -164,36 +161,40 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           if (relation.getId() == oldWord.getId()) {
             relation.setId(newWord.getId())
             relation.setName(newWord.getName())
+            otherWord.change()
           }
         }
       }
     }
-    addRegisteredTitles(newWord)
+    newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
+    addRegisteredTitles(newWord)
   }
 
   public void addWord(SlimeWord word) {
     if (containsId(word.getId(), word)) {
       word.setId($validMinId)
-      $validMinId += 1
-    } else {
-      if (word.getId() >= $validMinId) {
-        $validMinId = word.getId() + 1
-      }
     }
     word.setDictionary(this)
+    word.createComparisonString($alphabetOrder)
     addRegisteredTitles(word)
     $words.add(word)
   }
 
   public void removeWord(SlimeWord word) {
     $words.each() { SlimeWord otherWord ->
-      otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+      Boolean isChanged = otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+      if (isChanged) {
+        otherWord.change()
+      }
     }
     $words.remove(word)
   }
 
   private void addRegisteredTitles(SlimeWord word) {
+    if (word.getId() >= $validMinId) {
+      $validMinId = word.getId() + 1
+    }
     word.getTags().each() { String tag ->
       if (!$registeredTags.contains(tag)) {
         $registeredTags.addAll(tag)
@@ -266,66 +267,19 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void load() {
-    SlimeDictionary dictionary = this
-    Task<ObservableList<SlimeWord>> task = SimpleTask.new() {
-      ObservableList<SlimeWord> currentWords = FXCollections.observableArrayList()
-      if ($path != null) {
-        try {
-          FileInputStream stream = FileInputStream.new($path)
-          JsonFactory factory = $$mapper.getFactory()
-          JsonParser parser = factory.createParser(stream)
-          parser.nextToken()
-          while (parser.nextToken() == JsonToken.FIELD_NAME) {
-            String topFieldName = parser.getCurrentName()
-            parser.nextToken()
-            if (topFieldName == "words") {
-              while (parser.nextToken() == JsonToken.START_OBJECT) {
-                SlimeWord word = SlimeWord.new()
-                while (parser.nextToken() == JsonToken.FIELD_NAME) {
-                  String wordFieldName = parser.getCurrentName()
-                  parser.nextToken()
-                  if (wordFieldName == "entry") {
-                    parseEntry(parser, word)
-                  } else if (wordFieldName == "translations") {
-                    parseEquivalents(parser, word)
-                  } else if (wordFieldName == "tags") {
-                    parseTags(parser, word)
-                  } else if (wordFieldName == "contents") {
-                    parseInformations(parser, word)
-                  } else if (wordFieldName == "variations") {
-                    parseVariations(parser, word)
-                  } else if (wordFieldName == "relations") {
-                    parseRelations(parser, word)
-                  }
-                }
-                word.setDictionary(dictionary)
-                currentWords.add(word)
-              }
-            } else if (topFieldName == "zpdic") {
-              while (parser.nextToken() == JsonToken.FIELD_NAME) {
-                String specialFieldName = parser.getCurrentName()
-                parser.nextToken()
-                if (specialFieldName == "alphabetOrder") {
-                  $alphabetOrder = parser.getValueAsString()
-                }
-              }
-            } else {
-              $externalData.put(topFieldName, parser.readValueAsTree())
-            }
-          }
-          $validMinId ++
-          parser.close()
-          stream.close()
-        } catch (JsonParseException exception) {
-          exception.printStackTrace()
-        }
-      }
-      return currentWords
+    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $validMinId = $loader.getValidMinId()
+      $registeredTags = $loader.getRegisteredTags()
+      $registeredEquivalentTitles = $loader.getRegisteredEquivalentTitles()
+      $registeredInformationTitles = $loader.getRegisteredInformationTitles()
+      $registeredVariationTitles = $loader.getRegisteredVariationTitles()
+      $registeredRelationTitles = $loader.getRegisteredRelationTitles()
+      $alphabetOrder = $loader.getAlphabetOrder()
+      $externalData = $loader.getExternalData()
+      $words.addAll($loader.getValue())
     }
-    task.setOnSucceeded() { WorkerStateEvent event ->
-      $words.addAll(task.getValue())
-    }
-    Thread thread = Thread.new(task)
+    Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()
   }
@@ -366,129 +320,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     generator.writeEndObject()
     generator.close()
     stream.close()
-  }
-
-  private void parseEntry(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() == JsonToken.FIELD_NAME) {
-      String entryFieldName = parser.getCurrentName()
-      parser.nextToken()
-      if (entryFieldName == "id") {
-        Integer id = parser.getValueAsInt()
-        word.setId(id)
-        if ($validMinId < id) {
-          $validMinId = id
-        }
-      } else if (entryFieldName == "form") {
-        String name = parser.getValueAsString()
-        word.setName(name)
-      }
-    }
-  }
-
-  private void parseEquivalents(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeEquivalent equivalent = SlimeEquivalent.new()
-      while (parser.nextToken() == JsonToken.FIELD_NAME) {
-        String equivalentFieldName = parser.getCurrentName()
-        parser.nextToken()
-        if (equivalentFieldName == "title") {
-          String title = parser.getValueAsString()
-          equivalent.setTitle(title)
-          if (!$registeredEquivalentTitles.contains(title)) {
-            $registeredEquivalentTitles.add(title)
-          } 
-        } else if (equivalentFieldName == "forms") {
-          while (parser.nextToken() != JsonToken.END_ARRAY) {
-            String name = parser.getValueAsString()
-            equivalent.getNames().add(name)
-            word.getEquivalents().add(name)
-          }
-        }
-      }
-      word.getRawEquivalents().add(equivalent)
-    }
-  }
-
-  private void parseTags(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() != JsonToken.END_ARRAY) {
-      String tag = parser.getValueAsString()
-      word.getTags().add(tag)
-      if (!$registeredTags.contains(tag)) {
-        $registeredTags.addAll(tag)
-      }
-    }
-  }
-
-  private void parseInformations(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeInformation information = SlimeInformation.new()
-      while (parser.nextToken() == JsonToken.FIELD_NAME) {
-        String informationFieldName = parser.getCurrentName()
-        parser.nextToken()
-        if (informationFieldName == "title") {
-          String title = parser.getValueAsString()
-          information.setTitle(title)
-          if (!$registeredInformationTitles.contains(title)) {
-            $registeredInformationTitles.add(title)
-          }
-        } else if (informationFieldName == "text") {
-          String text = parser.getValueAsString()
-          information.setText(text)
-        }
-      }
-      word.getInformations().add(information)
-    }
-  }
-
-  private void parseVariations(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeVariation variation = SlimeVariation.new()
-      while (parser.nextToken() == JsonToken.FIELD_NAME) {
-        String variationFieldName = parser.getCurrentName()
-        parser.nextToken()
-        if (variationFieldName == "title") {
-          String title = parser.getValueAsString()
-          variation.setTitle(title)
-          if (!$registeredVariationTitles.contains(title)) {
-            $registeredVariationTitles.add(title)
-          }
-        } else if (variationFieldName == "form") {
-          String name = parser.getValueAsString()
-          variation.setName(name)
-        }
-      }
-      word.getVariations().add(variation)
-    }
-  }
-
-  private void parseRelations(JsonParser parser, SlimeWord word) {
-    while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeRelation relation = SlimeRelation.new()
-      while (parser.nextToken() == JsonToken.FIELD_NAME) {
-        String relationFieldName = parser.getCurrentName()
-        parser.nextToken()
-        if (relationFieldName == "title") {
-          String title = parser.getValueAsString()
-          relation.setTitle(title)
-          if (!$registeredRelationTitles.contains(title)) {
-            $registeredRelationTitles.add(title)
-          }
-        } else if (relationFieldName == "entry") {
-          while (parser.nextToken() == JsonToken.FIELD_NAME) {
-            String relationEntryFieldName = parser.getCurrentName()
-            parser.nextToken()
-            if (relationEntryFieldName == "id") {
-              Integer id = parser.getValueAsInt()
-              relation.setId(id)
-            } else if (relationEntryFieldName == "form") {
-              String name = parser.getValueAsString()
-              relation.setName(name)
-            }
-          }
-        }
-      }
-      word.getRelations().add(relation)
-    }
   }
 
   private void writeEntry(JsonGenerator generator, SlimeWord word) {
@@ -563,26 +394,11 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Integer firstId = firstWord.getId()
       Integer secondId = secondWord.getId()
-      List<Integer> firstList = firstWord.listForComparison($alphabetOrder)
-      List<Integer> secondList = secondWord.listForComparison($alphabetOrder)
-      Integer result = null
-      (0 ..< firstList.size()).each() { Integer i ->
-        Integer firstData = firstList[i]
-        Integer secondData = secondList[i]
-        if (result == null) {
-          if (secondData == null) {
-            result = 1
-          } else if (firstData != secondData) {
-            result = firstData <=> secondData
-          }
-        }
-      }
-      if (result == null) {
-        if (firstList.size() != secondList.size()) {
-          return -1
-        } else {
-          return firstId <=> secondId
-        }
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      Integer result = firstString <=> secondString
+      if (result == 0) {
+        return firstId <=> secondId
       } else {
         return result
       }
@@ -639,6 +455,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+  public Task<?> getLoader() {
+    return $loader
   }
 
 }

@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.custom.ExtensionFilter
@@ -34,8 +35,19 @@ public class DictionaryChooserController extends Controller<File> {
     $chooser.getExtensionFilters().addAll(slimeFilter, personalFilter, shaleiaFilter)
   }
 
-  public void prepare(Boolean adjustsExtension) {
+  public void prepare(Boolean adjustsExtension, String extension) {
+    if (extension != null) {
+      ComboBox<ExtensionFilter> fileTypeControl = $chooser.getFileTypeControl()
+      Integer index = fileTypeControl.getItems().findIndexOf{filter -> ((ExtensionFilter)filter).getExtension() == extension}
+      if (index >= 0) {
+        fileTypeControl.getSelectionModel().select(index)
+      }
+    }
     $chooser.setAdjustsExtension(adjustsExtension)
+  }
+
+  public void prepare(Boolean adjustsExtension) {
+    prepare(adjustsExtension, null)
   }
 
   @FXML

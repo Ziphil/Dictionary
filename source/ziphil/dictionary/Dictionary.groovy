@@ -11,6 +11,7 @@ import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import javafx.concurrent.Task
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -39,7 +40,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean existsSuggestion = false
     try {
       Pattern pattern = Pattern.compile(search)
@@ -62,7 +63,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
             existsSuggestion = true
           }
           if (search != "") {
-            if (prefixSearch) {
+            if (searchesPrefix) {
               return newName.startsWith(newSearch)
             } else {
               return newName == newSearch
@@ -84,14 +85,14 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public void searchByEquivalent(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           if (search != "") {
             return word.getEquivalents().any() { String equivalent ->
-              if (prefixSearch) {
+              if (searchesPrefix) {
                 return equivalent.startsWith(search)
               } else {
                 return equivalent == search
@@ -164,17 +165,21 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   }
 
   public static Dictionary loadDictionary(File file) {
-    Dictionary dictionary
-    String fileName = file.getName()
-    String filePath = file.getPath()
-    if (filePath.endsWith(".xdc")) {
-      dictionary = ShaleiaDictionary.new(fileName, filePath)
-    } else if (filePath.endsWith(".csv")) {
-      dictionary = PersonalDictionary.new(fileName, filePath)
-    } else if (filePath.endsWith(".json")) {
-      dictionary = SlimeDictionary.new(fileName, filePath)
+    if (file.exists() && file.isFile()) {
+      Dictionary dictionary
+      String fileName = file.getName()
+      String filePath = file.getPath()
+      if (filePath.endsWith(".xdc")) {
+        dictionary = ShaleiaDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".csv")) {
+        dictionary = PersonalDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".json")) {
+        dictionary = SlimeDictionary.new(fileName, filePath)
+      }
+      return dictionary
+    } else {
+      return null
     }
-    return dictionary
   }
 
   public static Dictionary loadEmptyDictionary(File file) {
@@ -192,6 +197,18 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary.setPath(filePath)
     }
     return dictionary
+  }
+
+  public static String extensionOf(Dictionary dictionary) {
+    if (dictionary instanceof ShaleiaDictionary) {
+      return "xdc"
+    } else if (dictionary instanceof PersonalDictionary) {
+      return "csv"
+    } else if (dictionary instanceof SlimeDictionary) {
+      return "json"
+    } else {
+      return null
+    }
   }
 
   public String getName() {
@@ -221,5 +238,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   public ObservableList<W> getRawWords() {
     return $words
   }
+
+  public abstract Task<?> getLoader()
 
 }

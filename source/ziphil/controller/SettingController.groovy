@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
@@ -15,6 +16,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
@@ -25,15 +27,15 @@ import ziphil.module.Setting
 public class SettingController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
-  private static final String TITLE = "設定"
+  private static final String TITLE = "環境設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilyControl
-  @FXML private Spinner $contentFontSizeControl
+  @FXML private Spinner<Integer> $contentFontSizeControl
   @FXML private CheckBox $usesSystemContentFontControl
   @FXML private ComboBox<String> $editorFontFamilyControl
-  @FXML private Spinner $editorFontSizeControl
+  @FXML private Spinner<Integer> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
@@ -41,7 +43,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ToggleButton $savesAutomaticallyControl
   @FXML private ToggleButton $ignoresAccentControl
   @FXML private ToggleButton $ignoresCaseControl
-  @FXML private ToggleButton $prefixSearchControl
+  @FXML private ToggleButton $searchesPrefixControl
   @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
   @FXML private ToggleButton $showsSlimeIdControl
 
@@ -54,6 +56,7 @@ public class SettingController extends Controller<Boolean> {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupFontFamilies()
+    setupTextFormatters()
     setupFontDisableBindings()
     setupTextBindings()
     applySettings()
@@ -69,7 +72,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean prefixSearch = setting.getPrefixSearch()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
@@ -101,8 +104,8 @@ public class SettingController extends Controller<Boolean> {
     if (ignoresCase) {
       $ignoresCaseControl.setSelected(true)
     }
-    if (prefixSearch) {
-      $prefixSearchControl.setSelected(true)
+    if (searchesPrefix) {
+      $searchesPrefixControl.setSelected(true)
     }
     if (ignoresDuplicateSlimeId) {
       $ignoresDuplicateSlimeIdControl.setSelected(true)
@@ -127,7 +130,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
-    Boolean prefixSearch = $prefixSearchControl.isSelected()
+    Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
@@ -149,7 +152,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
-    setting.setPrefixSearch(prefixSearch)
+    setting.setSearchesPrefix(searchesPrefix)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     (0 ..< 10).each() { Integer i ->
@@ -181,28 +184,28 @@ public class SettingController extends Controller<Boolean> {
 
   private void setupRegisteredDictionaryPane() {
     (0 ..< 10).each() { Integer i ->
-      Label number = Label.new("登録辞書${(i + 1) % 10}:")
+      Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
-      TextField dictionaryPath = TextField.new()
-      Button browse = Button.new("…")
-      Button deregister = Button.new("解除")
-      dictionaryPath.getStyleClass().add("left-pill")
-      browse.getStyleClass().add("right-pill")
-      deregister.setPrefWidth(Measurement.rpx(70))
-      deregister.setMinWidth(Measurement.rpx(70))
-      browse.setOnAction() {
+      TextField dictionaryPathControl = TextField.new()
+      Button browseButton = Button.new("…")
+      Button deregisterButton = Button.new("解除")
+      dictionaryPathControl.getStyleClass().add("left-pill")
+      browseButton.getStyleClass().add("right-pill")
+      deregisterButton.setPrefWidth(Measurement.rpx(70))
+      deregisterButton.setMinWidth(Measurement.rpx(70))
+      browseButton.setOnAction() {
         browseDictionary(i)
       }
-      deregister.setOnAction() {
+      deregisterButton.setOnAction() {
         deregisterDictionary(i)
       }
-      innerBox.getChildren().addAll(dictionaryPath, browse)
-      innerBox.setHgrow(dictionaryPath, Priority.ALWAYS)
-      box.getChildren().addAll(innerBox, deregister)
+      innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
+      innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
+      box.getChildren().addAll(innerBox, deregisterButton)
       box.setHgrow(innerBox, Priority.ALWAYS)
-      $registeredDictionaryPathControls[i] = dictionaryPath
-      $registeredDictionaryPane.add(number, 0, i)
+      $registeredDictionaryPathControls[i] = dictionaryPathControl
+      $registeredDictionaryPane.add(numberLabel, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }
   }
@@ -211,6 +214,11 @@ public class SettingController extends Controller<Boolean> {
     List<String> fontFamilies = Font.getFamilies()
     $contentFontFamilyControl.getItems().addAll(fontFamilies)
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
+  }
+
+  private void setupTextFormatters() {
+    $contentFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $editorFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
   private void setupFontDisableBindings() {
@@ -225,7 +233,7 @@ public class SettingController extends Controller<Boolean> {
     $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
     $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
     $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))
-    $prefixSearchControl.textProperty().bind(CustomBindings.whichString($prefixSearchControl, "有効", "無効"))
+    $searchesPrefixControl.textProperty().bind(CustomBindings.whichString($searchesPrefixControl, "有効", "無効"))
     $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
     $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
   }

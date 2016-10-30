@@ -8,20 +8,22 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import ziphil.module.Setting?>
 
@@ -59,18 +61,21 @@
       </Menu>
       <Menu text="検索">
         <Menu text="検索範囲の変更">
-          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W"/>
+          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W">
+            <graphic>
+              <ImageView><Image url="@../icon/empty.png"/></ImageView>
+            </graphic>
+          </MenuItem>
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
         <SeparatorMenuItem/>
-        <MenuItem text="ランダム検索" disable="true" accelerator="Shortcut+R">
+        <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
-            <ImageView><Image url="@../icon/random_search.png"/></ImageView>
+            <ImageView><Image url="@../icon/detail_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
@@ -88,7 +93,7 @@
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" onAction="#showHelp" accelerator="F1">
           <graphic>
-            <ImageView><Image url="@../icon/empty.png"/></ImageView>
+            <ImageView><Image url="@../icon/help.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
@@ -98,65 +103,73 @@
     </MenuBar>
   </top>
   <center>
-    <VBox alignment="center">
-      <spacing><Double rpx="10"/></spacing>
-      <padding>
-        <Insets>
-          <top><Double rpx="10"/></top>
-          <right><Double rpx="10"/></right>
-          <left><Double rpx="10"/></left>
-        </Insets>
-      </padding>
-      <HBox>
-        <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$searchControl" onKeyReleased="#search" HBox.hgrow="always"/>
-        <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="単語"/>
-              <String fx:value="訳語"/>
-              <String fx:value="全文"/>
-            </FXCollections>
-          </items>
-          <value><String fx:value="単語"/></value>
-        </ComboBox>
-        <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
-        </ToggleButton>
-      </HBox>
-      <ListView fx:id="$wordList" id="dictionary-list" VBox.vgrow="always"/>
-    </VBox>
+    <StackPane>
+      <VBox>
+        <VBox alignment="center" VBox.vgrow="always">
+          <spacing><Double rpx="10"/></spacing>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <HBox>
+            <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$searchControl" onKeyReleased="#search" HBox.hgrow="always"/>
+            <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="単語"/>
+                  <String fx:value="訳語"/>
+                  <String fx:value="全文"/>
+                </FXCollections>
+              </items>
+              <value><String fx:value="単語"/></value>
+            </ComboBox>
+            <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </ToggleButton>
+          </HBox>
+          <ListView fx:id="$wordList" id="dictionary-list" VBox.vgrow="always"/>
+        </VBox>
+        <HBox fx:id="$footerBox" styleClass="footer">
+          <spacing><Double rpx="5"/></spacing>
+          <padding>
+            <Insets>
+              <left><Double rpx="10"/></left>
+              <right><Double rpx="10"/></right>
+            </Insets>
+          </padding>
+          <Label fx:id="$dictionaryNameLabel"/>
+          <HBox HBox.hgrow="always"/>
+          <Label fx:id="$hitWordSizeLabel" text="0">
+            <prefWidth><Double rpx="35"/></prefWidth>
+            <minWidth><Double rpx="35"/></minWidth>
+          </Label>
+          <Label text="/"/>
+          <Label fx:id="$totalWordSizeLabel" text="0">
+            <prefWidth><Double rpx="35"/></prefWidth>
+            <minWidth><Double rpx="35"/></minWidth>
+          </Label>
+          <Separator orientation="vertical"/>
+          <Label fx:id="$elapsedTimeLabel" text="0">
+            <prefWidth><Double rpx="35"/></prefWidth>
+            <minWidth><Double rpx="35"/></minWidth>
+          </Label>
+        </HBox>
+      </VBox>
+      <VBox fx:id="$loadingBox" styleClass="opaque" alignment="center">
+        <ProgressIndicator fx:id="$progressIndicator" progress="0">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <prefHeight><Double rpx="100"/></prefHeight>
+        </ProgressIndicator>
+      </VBox>
+    </StackPane>
   </center>
-  <bottom>
-    <HBox fx:id="$footerBox" styleClass="footer">
-      <spacing><Double rpx="5"/></spacing>
-      <padding>
-        <Insets>
-          <left><Double rpx="10"/></left>
-          <right><Double rpx="10"/></right>
-        </Insets>
-      </padding>
-      <Label fx:id="$dictionaryNameLabel"/>
-      <HBox HBox.hgrow="always"/>
-      <Label fx:id="$hitWordSizeLabel" text="0">
-        <prefWidth><Double rpx="35"/></prefWidth>
-        <minWidth><Double rpx="35"/></minWidth>
-      </Label>
-      <Label text="/"/>
-      <Label fx:id="$totalWordSizeLabel" text="0">
-        <prefWidth><Double rpx="35"/></prefWidth>
-        <minWidth><Double rpx="35"/></minWidth>
-      </Label>
-      <Separator orientation="vertical"/>
-      <Label fx:id="$elapsedTimeLabel" text="0">
-        <prefWidth><Double rpx="35"/></prefWidth>
-        <minWidth><Double rpx="35"/></minWidth>
-      </Label>
-    </HBox>
-  </bottom>
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>

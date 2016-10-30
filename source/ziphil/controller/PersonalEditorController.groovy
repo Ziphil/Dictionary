@@ -3,13 +3,16 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.application.Platform
 import javafx.fxml.FXML
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
 import javafx.scene.control.Spinner
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.PersonalWord
@@ -28,15 +31,20 @@ public class PersonalEditorController extends Controller<Boolean> {
   @FXML private TextField $pronunciationControl
   @FXML private TextArea $translationControl
   @FXML private TextArea $usageControl
-  @FXML private Spinner $levelControl
-  @FXML private Spinner $memoryControl
-  @FXML private Spinner $modificationControl
+  @FXML private Spinner<Integer> $levelControl
+  @FXML private CheckBox $memoryControl
+  @FXML private CheckBox $modificationControl
   private PersonalWord $word
 
   public PersonalEditorController(UtilityStage<Boolean> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
+  }
+
+  @FXML
+  private void initialize() {
+    setupTextFormatter()
   }
 
   public void prepare(PersonalWord word, String defaultName) {
@@ -46,8 +54,8 @@ public class PersonalEditorController extends Controller<Boolean> {
     $translationControl.setText(word.getTranslation())
     $usageControl.setText(word.getUsage())
     $levelControl.getValueFactory().setValue(word.getLevel())
-    $memoryControl.getValueFactory().setValue(word.getMemory())
-    $modificationControl.getValueFactory().setValue(word.getModification())
+    $memoryControl.setSelected(word.getMemory() == 1)
+    $modificationControl.setSelected(word.getModification() == 1)
     if (defaultName != null) {
       $nameControl.setText(defaultName)
       Platform.runLater() {
@@ -71,18 +79,22 @@ public class PersonalEditorController extends Controller<Boolean> {
     String translation = $translationControl.getText()
     String usage = $usageControl.getText()
     Integer level = $levelControl.getValue()
-    Integer memory = $memoryControl.getValue()
-    Integer modification = $modificationControl.getValue()
+    Integer memory = ($memoryControl.isSelected()) ? 1 : 0
+    Integer modification = ($modificationControl.isSelected()) ? 1 : 0
     $word.update(name, pronunciation, translation, usage, level, memory, modification)
     $stage.close(true)
   }
 
   private void setupShortcuts() {
-    $scene.setOnKeyPressed() { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
         commit()
       }
     }
+  }
+
+  private void setupTextFormatter() {
+    $levelControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }

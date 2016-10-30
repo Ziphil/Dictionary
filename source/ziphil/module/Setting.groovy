@@ -1,5 +1,6 @@
 package ziphil.module
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -8,7 +9,8 @@ import java.util.regex.Matcher
 import ziphil.Launcher
 
 
-@CompileStatic @Newify 
+@JsonIgnoreProperties(ignoreUnknown=true)
+@CompileStatic @Newify
 public class Setting {
 
   private static final String SETTING_PATH = "data/setting/setting.zpdt"
@@ -29,7 +31,7 @@ public class Setting {
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
   private Boolean $ignoresCase = false
-  private Boolean $prefixSearch = true
+  private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
 
@@ -181,12 +183,12 @@ public class Setting {
     $ignoresCase = ignoresCase
   }
 
-  public Boolean getPrefixSearch() {
-    return $prefixSearch
+  public Boolean getSearchesPrefix() {
+    return $searchesPrefix
   }
 
-  public void setPrefixSearch(Boolean prefixSearch) {
-    $prefixSearch = prefixSearch
+  public void setSearchesPrefix(Boolean searchesPrefix) {
+    $searchesPrefix = searchesPrefix
   }
 
   public Boolean getIgnoresDuplicateSlimeId() {

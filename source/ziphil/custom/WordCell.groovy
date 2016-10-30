@@ -23,7 +23,7 @@ public class WordCell extends ListCell<Word> {
       if (word.isChanged()) {
         word.createContentPane()
       }
-      word.getContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(29))
+      word.getContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(word.getContentPane())
     }

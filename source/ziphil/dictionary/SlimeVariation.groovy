@@ -1,6 +1,5 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.CompileStatic
 
 
@@ -26,12 +25,10 @@ public class SlimeVariation {
     $title = title
   }
 
-  @JsonProperty("form")
   public String getName() {
     return $name
   }
 
-  @JsonProperty("form")
   public void setName(String name) {
     $name = name
   }

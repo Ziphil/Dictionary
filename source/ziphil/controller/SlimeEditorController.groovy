@@ -13,6 +13,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.control.TextFormatter
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -24,6 +25,7 @@ import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphil.custom.Dialog
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SlimeDictionary
@@ -75,6 +77,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   private void initialize() {
     setupIdControl()
+    setupTextFormatter()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
@@ -121,54 +124,61 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
-    Integer id = $idControl.getText().toInteger()
-    if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
-      String name = $nameControl.getText()
-      List<SlimeEquivalent> rawEquivalents = ArrayList.new()
-      List<String> tags = ArrayList.new()
-      List<SlimeInformation> informations = ArrayList.new()
-      List<SlimeVariation> variations = ArrayList.new()
-      List<SlimeRelation> relations = ArrayList.new()
-      (0 ..< $tagControls.size()).each() { Integer i ->
-        String tag = $tagControls[i].getValue()
-        if (tag != "") {
-          tags.add(tag)
-        }
-      }
-      (0 ..< $equivalentTitleControls.size()).each() { Integer i ->
-        String title = $equivalentTitleControls[i].getValue()
-        List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
-        if (!equivalentNames.isEmpty()) {
-          rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
-        }
-      }
-      (0 ..< $informationTitleControls.size()).each() { Integer i ->
-        String title = $informationTitleControls[i].getValue()
-        String text = $informationTextControls[i].getText()
-        if (text != "") {
-          informations.add(SlimeInformation.new(title, text))
-        }
-      }
-      (0 ..< $variationTitleControls.size()).each() { Integer i ->
-        String title = $variationTitleControls[i].getValue()
-        List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
-        variationNames.each() { String variationName ->
-          if (variationName != "") {
-            variations.add(SlimeVariation.new(title, variationName))
+    try {
+      Integer id = $idControl.getText().toInteger()
+      if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
+        String name = $nameControl.getText()
+        List<SlimeEquivalent> rawEquivalents = ArrayList.new()
+        List<String> tags = ArrayList.new()
+        List<SlimeInformation> informations = ArrayList.new()
+        List<SlimeVariation> variations = ArrayList.new()
+        List<SlimeRelation> relations = ArrayList.new()
+        (0 ..< $tagControls.size()).each() { Integer i ->
+          String tag = $tagControls[i].getValue()
+          if (tag != "") {
+            tags.add(tag)
           }
         }
-      }
-      (0 ..< $relationTitleControls.size()).each() { Integer i ->
-        String title = $relationTitleControls[i].getValue()
-        SlimeRelation relation = $relations[i]
-        if (relation != null) {
-          relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+        (0 ..< $equivalentTitleControls.size()).each() { Integer i ->
+          String title = $equivalentTitleControls[i].getValue()
+          List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          if (!equivalentNames.isEmpty()) {
+            rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
+          }
         }
+        (0 ..< $informationTitleControls.size()).each() { Integer i ->
+          String title = $informationTitleControls[i].getValue()
+          String text = $informationTextControls[i].getText()
+          if (text != "") {
+            informations.add(SlimeInformation.new(title, text))
+          }
+        }
+        (0 ..< $variationTitleControls.size()).each() { Integer i ->
+          String title = $variationTitleControls[i].getValue()
+          List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          variationNames.each() { String variationName ->
+            if (variationName != "") {
+              variations.add(SlimeVariation.new(title, variationName))
+            }
+          }
+        }
+        (0 ..< $relationTitleControls.size()).each() { Integer i ->
+          String title = $relationTitleControls[i].getValue()
+          SlimeRelation relation = $relations[i]
+          if (relation != null) {
+            relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+          }
+        }
+        $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
+        $stage.close(true)
+      } else {
+        Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
-      $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
-      $stage.close(true)
-    } else {
-      Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
+    } catch (NumberFormatException exception) {
+      Dialog dialog = Dialog.new("フォーマットエラー", "IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
       dialog.initOwner($stage)
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
@@ -337,7 +347,7 @@ public class SlimeEditorController extends Controller<Boolean> {
 
   private void focusName() {
     $nameControl.requestFocus()
-    scrollToNode($nameControl)
+    scrollPaneTo($nameControl)
   }
 
   private void focusTagControl(EventTarget target) {
@@ -345,13 +355,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $tagControls.size() - 1) ? index + 1 : 0
       $tagControls[nextIndex].requestFocus()
-      scrollToNode($tagControls[nextIndex])
+      scrollPaneTo($tagControls[nextIndex])
     } else {
       if ($tagControls.isEmpty()) {
         insertTagControl()
       }
       $tagControls[0].requestFocus()
-      scrollToNode($tagControls[0])
+      scrollPaneTo($tagControls[0])
     }
   }
 
@@ -360,13 +370,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $equivalentNameControls.size() - 1) ? index + 1 : 0
       $equivalentNameControls[nextIndex].requestFocus()
-      scrollToNode($equivalentNameControls[nextIndex])
+      scrollPaneTo($equivalentNameControls[nextIndex])
     } else {
       if ($equivalentNameControls.isEmpty()) {
         insertEquivalentControl()
       }
       $equivalentNameControls[0].requestFocus()
-      scrollToNode($equivalentNameControls[0])
+      scrollPaneTo($equivalentNameControls[0])
     }
   }
 
@@ -375,13 +385,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $informationTextControls.size() - 1) ? index + 1 : 0
       $informationTextControls[nextIndex].requestFocus()
-      scrollToNode($informationTextControls[nextIndex])
+      scrollPaneTo($informationTextControls[nextIndex])
     } else {
       if ($informationTextControls.isEmpty()) {
         insertInformationControl()
       }
       $informationTextControls[0].requestFocus()
-      scrollToNode($informationTextControls[0])
+      scrollPaneTo($informationTextControls[0])
     }
   }
 
@@ -390,13 +400,13 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (index >= 0) {
       Integer nextIndex = (index < $variationNameControls.size() - 1) ? index + 1 : 0
       $variationNameControls[nextIndex].requestFocus()
-      scrollToNode($variationNameControls[nextIndex])
+      scrollPaneTo($variationNameControls[nextIndex])
     } else {
       if ($variationNameControls.isEmpty()) {
         insertVariationControl()
       }
       $variationNameControls[0].requestFocus()
-      scrollToNode($variationNameControls[0])
+      scrollPaneTo($variationNameControls[0])
     }
   }
 
@@ -604,7 +614,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     $relationBox.setVgrow(box, Priority.ALWAYS)
   }
 
-  private void scrollToNode(Node node) {
+  private void scrollPaneTo(Node node) {
     Node content = $scrollPane.getContent()
     Double viewportHeight = $scrollPane.getViewportBounds().getHeight()
     Double paneMinY = $scrollPane.localToScene($scrollPane.getBoundsInLocal()).getMinY()
@@ -627,7 +637,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void setupShortcuts() {
-    $scene.setOnKeyPressed() { KeyEvent event ->
+    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN).match(event)) {
         focusName()
       } else if (KeyCodeCombination.new(KeyCode.T, KeyCombination.SHORTCUT_DOWN).match(event)) {
@@ -663,6 +673,10 @@ public class SlimeEditorController extends Controller<Boolean> {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
+  }
+
+  private void setupTextFormatter() {
+    $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }

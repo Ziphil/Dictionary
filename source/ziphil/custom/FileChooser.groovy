@@ -29,6 +29,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -109,6 +110,7 @@ public class FileChooser extends VBox {
     }
   }
 
+  @ReturnVoidClosure
   private void setupDirectoryTree() {
     DirectoryItem root = DirectoryItem.new(null)
     File.listRoots().each() { File file ->
@@ -118,7 +120,7 @@ public class FileChooser extends VBox {
     $directoryTree.setShowRoot(false)
     $directoryTree.setCellFactory() { TreeView<File> tree ->
       DirectoryCell cell = DirectoryCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentDirectory(cell.getItem())
         }
@@ -127,10 +129,11 @@ public class FileChooser extends VBox {
     }
   }
 
+  @ReturnVoidClosure
   private void setupFileList() {
     $fileList.setCellFactory() { ListView<File> list ->
       FileCell cell = FileCell.new()
-      cell.setOnMouseClicked() { MouseEvent event ->
+      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentFile(cell.getItem())
         } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -237,6 +240,10 @@ public class FileChooser extends VBox {
       }
     }
     return comparator
+  }
+
+  public ComboBox<ExtensionFilter> getFileTypeControl() {
+    return $fileTypeControl
   }
 
   public Boolean isShowsHidden() {
