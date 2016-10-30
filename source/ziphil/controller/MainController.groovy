@@ -68,7 +68,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
-  private static final String TITLE = "ZpDIC alpha"
+  private static final String TITLE = "ZpDIC shalnif"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
