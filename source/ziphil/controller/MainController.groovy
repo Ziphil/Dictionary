@@ -645,6 +645,13 @@ public class MainController extends PrimitiveController<Stage> {
       File file = File.new(filePath)
       Dictionary dictionary = Dictionary.loadDictionary(file)
       updateDictionary(dictionary)
+      if (dictionary == null) {
+        Setting.getInstance().setDefaultDictionaryPath(null)
+        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
     } else {
       updateDictionary(null)
     }
