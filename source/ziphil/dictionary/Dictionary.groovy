@@ -199,6 +199,18 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     return dictionary
   }
 
+  public static String extensionOf(Dictionary dictionary) {
+    if (dictionary instanceof ShaleiaDictionary) {
+      return "xdc"
+    } else if (dictionary instanceof PersonalDictionary) {
+      return "csv"
+    } else if (dictionary instanceof SlimeDictionary) {
+      return "json"
+    } else {
+      return null
+    }
+  }
+
   public String getName() {
     return $name
   }

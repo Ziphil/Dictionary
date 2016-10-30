@@ -242,6 +242,10 @@ public class FileChooser extends VBox {
     return comparator
   }
 
+  public ComboBox<ExtensionFilter> getFileTypeControl() {
+    return $fileTypeControl
+  }
+
   public Boolean isShowsHidden() {
     return $showsHidden.get()
   }

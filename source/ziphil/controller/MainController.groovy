@@ -452,7 +452,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true)
+      controller.prepare(true, Dictionary.extensionOf($dictionary))
       File file = nextStage.showAndWaitResult()
       if (file != null) {
         $dictionary.setName(file.getName())
