@@ -455,8 +455,10 @@ public class MainController extends PrimitiveController<Stage> {
       controller.prepare(true)
       File file = nextStage.showAndWaitResult()
       if (file != null) {
+        $dictionary.setName(file.getName())
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
+        $dictionaryNameLabel.setText($dictionary.getName())
         $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
