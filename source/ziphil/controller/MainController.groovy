@@ -470,6 +470,86 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void updateDictionary(Dictionary dictionary) {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
+    $dictionary = dictionary
+    if ($dictionary != null) {
+      $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
+      $dictionaryNameLabel.setText($dictionary.getName())
+      $wordList.setItems($dictionary.getWholeWords())
+      $searchControl.setText("")
+      $searchControl.requestFocus()
+      Task<?> loader = $dictionary.getLoader()
+      $loadingBox.visibleProperty().unbind()
+      $progressIndicator.progressProperty().unbind()
+      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+      $progressIndicator.progressProperty().bind(loader.progressProperty())
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $wordList.scrollTo(0)
+      }
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        failUpdateDictionary()
+      }
+      if ($dictionary instanceof ShaleiaDictionary) {
+        $dictionary.setOnLinkClicked() { String name ->
+          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
+          parameter.setName(name)
+          parameter.setNameSearchType(SearchType.EXACT)
+          searchDetailBy(parameter)
+        }
+      } else if ($dictionary instanceof SlimeDictionary) {
+        $dictionary.setOnLinkClicked() { Integer id ->
+          SlimeSearchParameter parameter = SlimeSearchParameter.new()
+          parameter.setId(id)
+          searchDetailBy(parameter)
+        }
+      }
+    } else {
+      ObservableList<Word> emptyWords = FXCollections.observableArrayList()
+      $totalWordSizeLabel.setText("0")
+      $dictionaryNameLabel.setText("")
+      $wordList.setItems(emptyWords)
+      $searchControl.setText("")
+      $searchControl.requestFocus()
+      $loadingBox.visibleProperty().unbind()
+      $loadingBox.setVisible(false)
+      $progressIndicator.progressProperty().unbind()
+      $progressIndicator.setProgress(0)
+    }
+    search()
+  }
+
+  private void updateDictionaryToDefault() {
+    String filePath = Setting.getInstance().getDefaultDictionaryPath()
+    if (filePath != null) {
+      File file = File.new(filePath)
+      Dictionary dictionary = Dictionary.loadDictionary(file)
+      updateDictionary(dictionary)
+      if (dictionary == null) {
+        Setting.getInstance().setDefaultDictionaryPath(null)
+        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
+    } else {
+      updateDictionary(null)
+    }
+  }
+
+  private void failUpdateDictionary() {
+    updateDictionary(null)
+    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    dialog.initOwner($stage)
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
+  }
+
   private void registerCurrentDictionary(Integer i) {
     Setting setting = Setting.getInstance()
     setting.getRegisteredDictionaryPaths()[i] = $dictionary.getPath()
@@ -585,86 +665,6 @@ public class MainController extends PrimitiveController<Stage> {
       setupOpenRegisteredDictionaryMenu()
       setupRegisterCurrentDictionaryMenu()
     }
-  }
-
-  private void updateDictionary(Dictionary dictionary) {
-    if ($dictionary != null) {
-      Task<?> oldLoader = $dictionary.getLoader()
-      if (oldLoader.isRunning()) {
-        oldLoader.cancel()
-      }
-    }
-    $dictionary = dictionary
-    if ($dictionary != null) {
-      $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
-      $dictionaryNameLabel.setText($dictionary.getName())
-      $wordList.setItems($dictionary.getWholeWords())
-      $searchControl.setText("")
-      $searchControl.requestFocus()
-      Task<?> loader = $dictionary.getLoader()
-      $loadingBox.visibleProperty().unbind()
-      $progressIndicator.progressProperty().unbind()
-      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
-      $progressIndicator.progressProperty().bind(loader.progressProperty())
-      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        $wordList.scrollTo(0)
-      }
-      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-        failUpdateDictionary()
-      }
-      if ($dictionary instanceof ShaleiaDictionary) {
-        $dictionary.setOnLinkClicked() { String name ->
-          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-          parameter.setName(name)
-          parameter.setNameSearchType(SearchType.EXACT)
-          searchDetailBy(parameter)
-        }
-      } else if ($dictionary instanceof SlimeDictionary) {
-        $dictionary.setOnLinkClicked() { Integer id ->
-          SlimeSearchParameter parameter = SlimeSearchParameter.new()
-          parameter.setId(id)
-          searchDetailBy(parameter)
-        }
-      }
-    } else {
-      ObservableList<Word> emptyWords = FXCollections.observableArrayList()
-      $totalWordSizeLabel.setText("0")
-      $dictionaryNameLabel.setText("")
-      $wordList.setItems(emptyWords)
-      $searchControl.setText("")
-      $searchControl.requestFocus()
-      $loadingBox.visibleProperty().unbind()
-      $loadingBox.setVisible(false)
-      $progressIndicator.progressProperty().unbind()
-      $progressIndicator.setProgress(0)
-    }
-    search()
-  }
-
-  private void updateDictionaryToDefault() {
-    String filePath = Setting.getInstance().getDefaultDictionaryPath()
-    if (filePath != null) {
-      File file = File.new(filePath)
-      Dictionary dictionary = Dictionary.loadDictionary(file)
-      updateDictionary(dictionary)
-      if (dictionary == null) {
-        Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
-      }
-    } else {
-      updateDictionary(null)
-    }
-  }
-
-  private void failUpdateDictionary() {
-    updateDictionary(null)
-    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
-    dialog.initOwner($stage)
-    dialog.setAllowsCancel(false)
-    dialog.showAndWait()
   }
 
   @FXML
