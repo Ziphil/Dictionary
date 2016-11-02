@@ -70,14 +70,22 @@
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
-        <MenuItem text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R"/>
+        <MenuItem text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
+          <graphic>
+            <ImageView><Image url="@../icon/shuffle.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
             <ImageView><Image url="@../icon/detail_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U"/>
+        <MenuItem text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
+          <graphic>
+            <ImageView><Image url="@../icon/script_search.png"/></ImageView>
+          </graphic>
+        </MenuItem>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
