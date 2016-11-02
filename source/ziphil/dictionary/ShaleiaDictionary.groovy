@@ -67,16 +67,19 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
     newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
+    $isChanged = true
   }
 
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
     word.createComparisonString($alphabetOrder)
     $words.add(word)
+    $isChanged = true
   }
 
   public void removeWord(ShaleiaWord word) {
     $words.remove(word)
+    $isChanged = true
   }
 
   public ShaleiaWord emptyWord() {
@@ -117,6 +120,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       output.append("\n\n")
     }
     file.setText(output.toString(), "UTF-8")
+    $isChanged = false
   }
 
   private void setupWords() {

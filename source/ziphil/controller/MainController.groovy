@@ -94,7 +94,6 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
   private String $previousSearch
-  private Boolean $isDictionaryChanged = false
 
   public MainController(Stage nextStage) {
     super(nextStage)
@@ -267,9 +266,6 @@ public class MainController extends PrimitiveController<Stage> {
           $dictionary.modifyWord(oldWord, word)
           if (savesAutomatically) {
             $dictionary.save()
-            $isDictionaryChanged = false
-          } else {
-            $isDictionaryChanged = true
           }
         }
       }
@@ -289,9 +285,6 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.removeWord(word)
         if (savesAutomatically) {
           $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
         }
       }
     }
@@ -329,9 +322,6 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
         }
       }
     }
@@ -362,9 +352,6 @@ public class MainController extends PrimitiveController<Stage> {
           $dictionary.addWord(newWord)
           if (savesAutomatically) {
             $dictionary.save()
-            $isDictionaryChanged = false
-          } else {
-            $isDictionaryChanged = true
           }
         }
       }
@@ -389,7 +376,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (file != null) {
         Dictionary dictionary = Dictionary.loadDictionary(file)
         updateDictionary(dictionary)
-        $isDictionaryChanged = false
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
@@ -408,7 +394,6 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsOpen) {
       Dictionary dictionary = Dictionary.loadDictionary(file)
       updateDictionary(dictionary)
-      $isDictionaryChanged = false
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
@@ -434,7 +419,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (file != null) {
         Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
         updateDictionary(dictionary)
-        $isDictionaryChanged = true
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
@@ -452,7 +436,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void saveDictionary() {
     if ($dictionary != null) {
       $dictionary.save()
-      $isDictionaryChanged = false
     } else {
       Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
       dialog.initOwner($stage)
@@ -475,7 +458,6 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
         $dictionaryNameLabel.setText($dictionary.getName())
-        $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
     } else {
@@ -584,7 +566,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private Boolean checkDictionaryChange() {
     if ($dictionary != null) {
-      if ($isDictionaryChanged) {
+      if ($dictionary.isChanged()) {
         Dialog dialog = Dialog.new("確認", "辞書データは変更されています。保存しますか?")
         dialog.initOwner($stage)
         dialog.setCommitText("保存する")
@@ -657,9 +639,6 @@ public class MainController extends PrimitiveController<Stage> {
           controller.prepare($dictionary)
         }
         Boolean isDone = nextStage.showAndWaitResult()
-        if (isDone != null) {
-          $isDictionaryChanged = true
-        }
       } else {
         Dialog dialog = Dialog.new("通知", "この辞書形式に個別設定項目はありません。")
         dialog.initOwner($stage)

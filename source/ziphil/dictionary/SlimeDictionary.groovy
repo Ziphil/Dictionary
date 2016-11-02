@@ -170,6 +170,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
     addRegisteredTitles(newWord)
+    $isChanged = true
   }
 
   public void addWord(SlimeWord word) {
@@ -180,6 +181,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     word.createComparisonString($alphabetOrder)
     addRegisteredTitles(word)
     $words.add(word)
+    $isChanged = true
   }
 
   public void removeWord(SlimeWord word) {
@@ -190,6 +192,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
     }
     $words.remove(word)
+    $isChanged = true
   }
 
   private void addRegisteredTitles(SlimeWord word) {
@@ -321,6 +324,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     generator.writeEndObject()
     generator.close()
     stream.close()
+    $isChanged = false
   }
 
   private void writeEntry(JsonGenerator generator, SlimeWord word) {
@@ -448,6 +452,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
+    $isChanged = true
   }
 
   public Consumer<Integer> getOnLinkClicked() {

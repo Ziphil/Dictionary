@@ -30,6 +30,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
   private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
+  protected Boolean $isChanged = false
 
   public Dictionary(String name, String path) {
     $name = name
@@ -207,6 +208,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
+    dictionary.setChanged(true)
     return dictionary
   }
 
@@ -248,6 +250,14 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public ObservableList<W> getRawWords() {
     return $words
+  }
+
+  public Boolean isChanged() {
+    return $isChanged
+  }
+
+  public void setChanged(Boolean isChanged) {
+    $isChanged = isChanged
   }
 
   public abstract Task<?> getLoader()

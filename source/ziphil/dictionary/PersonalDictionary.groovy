@@ -18,14 +18,17 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
     newWord.createContentPane()
+    $isChanged = true
   }
 
   public void addWord(PersonalWord word) {
     $words.add(word)
+    $isChanged = true
   }
 
   public void removeWord(PersonalWord word) {
     $words.remove(word)
+    $isChanged = true
   }
 
   public PersonalWord emptyWord() {
@@ -72,6 +75,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
       output.append("\"" + word.getPronunciation() + "\"\n")
     }
     file.setText(output.toString(), "UTF-8")
+    $isChanged = false
   }
 
   private void setupWords() {
