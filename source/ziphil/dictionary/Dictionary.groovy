@@ -153,16 +153,13 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
           return false
         }
       }
-      $filteredSuggestions.setPredicate() { S suggestion ->
-        return false
-      }
     } catch (Exception exception) {
       $filteredWords.setPredicate() { W word ->
         return false
       }
-      $filteredSuggestions.setPredicate() { S suggestion ->
-        return false
-      }
+    }
+    $filteredSuggestions.setPredicate() { S suggestion ->
+      return false
     }
   }
 
