@@ -187,6 +187,21 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void searchScript() {
+    if ($dictionary != null) {
+      UtilityStage<String> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      ScriptController controller = ScriptController.new(nextStage)
+      nextStage.initOwner($stage)
+      String script = nextStage.showAndWaitResult()
+      if (script != null) {
+        measureDictionaryStatus() {
+          $dictionary.searchScript(script)
+        }
+      }
+    }
+  }
+
+  @FXML
   private void shuffleWords() {
     if ($dictionary != null) {
       $dictionary.shuffleWords()

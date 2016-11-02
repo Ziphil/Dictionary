@@ -1,6 +1,9 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import groovy.lang.Binding as GroovyBinding
+import groovy.lang.GroovyShell
+import groovy.lang.Script
 import java.util.concurrent.Callable
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -133,6 +136,34 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     } catch (PatternSyntaxException exception) {
     }
     $shufflableWords.unshuffle()
+  }
+
+  public void searchScript(String script) {
+    GroovyShell shell = GroovyShell.new()
+    Script parsedScript = shell.parse(script)
+    try {
+      $filteredWords.setPredicate() { W word ->
+        GroovyBinding binding = GroovyBinding.new()
+        binding.setVariable("word", word)
+        parsedScript.setBinding(binding)
+        Object result = parsedScript.run()
+        if (result) {
+          return true
+        } else {
+          return false
+        }
+      }
+      $filteredSuggestions.setPredicate() { S suggestion ->
+        return false
+      }
+    } catch (Exception exception) {
+      $filteredWords.setPredicate() { W word ->
+        return false
+      }
+      $filteredSuggestions.setPredicate() { S suggestion ->
+        return false
+      }
+    }
   }
 
   public void shuffleWords() {
