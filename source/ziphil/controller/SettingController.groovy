@@ -55,7 +55,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML
   private void initialize() {
     setupRegisteredDictionaryPane()
-    setupFontFamilies()
+    setupFontFamilyControls()
     setupTextFormatters()
     setupFontDisableBindings()
     setupTextBindings()
@@ -210,7 +210,7 @@ public class SettingController extends Controller<Boolean> {
     }
   }
 
-  private void setupFontFamilies() {
+  private void setupFontFamilyControls() {
     List<String> fontFamilies = Font.getFamilies()
     $contentFontFamilyControl.getItems().addAll(fontFamilies)
     $editorFontFamilyControl.getItems().addAll(fontFamilies)

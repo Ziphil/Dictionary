@@ -43,7 +43,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
     setupWordList()
-    setupSearchType()
+    setupSearchTypeControl()
   }
 
   @FXML
@@ -96,7 +96,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     }
   }
 
-  private void setupSearchType() {
+  private void setupSearchTypeControl() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }

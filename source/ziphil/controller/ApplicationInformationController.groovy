@@ -24,10 +24,10 @@ public class ApplicationInformationController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupVersion()
+    setupVersionLabel()
   }
 
-  private void setupVersion() {
+  private void setupVersionLabel() {
     String version = "version ${Launcher.VERSION}-${Launcher.DATE}"
     $versionLabel.setText(version)
   }

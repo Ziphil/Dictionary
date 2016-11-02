@@ -108,7 +108,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   public void initialize() {
     setupWordList()
-    setupSearchType()
+    setupSearchTypeControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
     setupWordListShortcuts()
@@ -711,7 +711,7 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupSearchType() {
+  private void setupSearchTypeControl() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }
