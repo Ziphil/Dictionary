@@ -178,6 +178,13 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
+  private void shuffleWords() {
+    if ($dictionary != null) {
+      $dictionary.shuffleWords()
+    }
+  }
+
   private void measureDictionaryStatus(Runnable searchFunction) {
     Long beforeTime = System.nanoTime()
     searchFunction.run()

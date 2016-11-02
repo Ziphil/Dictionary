@@ -61,6 +61,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
       return false
     }
+    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {

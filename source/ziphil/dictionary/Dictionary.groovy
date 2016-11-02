@@ -12,6 +12,7 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
+import ziphil.custom.ShufflableList
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -24,6 +25,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected FilteredList<W> $filteredWords
   protected SortedList<W> $sortedWords
+  protected ShufflableList<W> $shufflableWords
   protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
@@ -81,6 +83,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
   }
 
   public void searchByEquivalent(String search, Boolean isStrict) {
@@ -113,6 +116,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
   }
 
   public void searchByContent(String search) {
@@ -127,6 +131,11 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
+  }
+
+  public void shuffleWords() {
+    $shufflableWords.shuffle()
   }
 
   protected Boolean checkSuggestion(W word, String search) {
@@ -150,6 +159,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords)
+    $shufflableWords = ShufflableList.new($sortedWords)
     $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
   }
@@ -158,10 +168,11 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     ListChangeListener<?> listener = (ListChangeListener){ Change<?> change ->
       $wholeWords.clear()
       $wholeWords.addAll($sortedSuggestions)
-      $wholeWords.addAll($sortedWords)
+      $wholeWords.addAll($shufflableWords)
     }
     $filteredWords.addListener(listener)
     $filteredSuggestions.addListener(listener)
+    $shufflableWords.addListener(listener)
   }
 
   public static Dictionary loadDictionary(File file) {
@@ -232,7 +243,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   }
 
   public ObservableList<W> getWords() {
-    return $sortedWords
+    return $shufflableWords
   }
 
   public ObservableList<W> getRawWords() {

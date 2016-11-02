@@ -149,6 +149,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $filteredSuggestions.setPredicate() { SlimeSuggestion suggestion ->
       return false
     }
+    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
