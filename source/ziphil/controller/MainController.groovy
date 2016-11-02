@@ -329,7 +329,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void addInheritedWord(Word word) {
     if ($dictionary != null) {
-     if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && !(word instanceof Suggestion)) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
