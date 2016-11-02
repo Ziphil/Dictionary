@@ -93,6 +93,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
+  private String $previousSearch
   private Boolean $isDictionaryChanged = false
 
   public MainController(Stage nextStage) {
@@ -117,18 +118,21 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void search(KeyEvent event) {
     if ($dictionary != null) {
-      if (event == null || event.getCode() != KeyCode.ENTER) {
-        measureDictionaryStatus() {
-          String search = $searchControl.getText()
-          String searchMode = $searchModeControl.getValue()
-          Boolean isStrict = $searchTypeControl.getText() == "完全一致"
-          if (searchMode == "単語") {
-            $dictionary.searchByName(search, isStrict)
-          } else if (searchMode == "訳語") {
-            $dictionary.searchByEquivalent(search, isStrict)
-          } else if (searchMode == "全文") {
-            $dictionary.searchByContent(search)
+      String search = $searchControl.getText()
+      String searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
+      if (search != $previousSearch) {
+        if (event == null || event.getCode() != KeyCode.ENTER) {
+          measureDictionaryStatus() {
+            if (searchMode == "単語") {
+              $dictionary.searchByName(search, isStrict)
+            } else if (searchMode == "訳語") {
+              $dictionary.searchByEquivalent(search, isStrict)
+            } else if (searchMode == "全文") {
+              $dictionary.searchByContent(search)
+            }
           }
+          $previousSearch = search
         }
       }
     }
