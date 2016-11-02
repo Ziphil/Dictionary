@@ -161,6 +161,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $filteredSuggestions.setPredicate() { S suggestion ->
       return false
     }
+    $shufflableWords.unshuffle()
   }
 
   public void shuffleWords() {
