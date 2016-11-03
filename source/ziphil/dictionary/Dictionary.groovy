@@ -49,23 +49,16 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean existsSuggestion = false
     try {
-      Pattern pattern = Pattern.compile(search)
+      Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      String newSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       $suggestions.each() { S suggestion ->
         suggestion.getPossibilities().clear()
       }
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
-          String newName = word.getName()
-          String newSearch = search
-          if (ignoresAccent) {
-            newName = Strings.unaccent(newName)
-            newSearch = Strings.unaccent(newSearch)
-          }
-          if (ignoresCase) {
-            newName = Strings.toLowerCase(newName)
-            newSearch = Strings.toLowerCase(newSearch)
-          }
-          if (checkSuggestion(word, search)) {
+          String name = word.getName()
+          String newName = Strings.convert(name, ignoresAccent, ignoresCase)
+          if (checkSuggestion(word, search, newSearch)) {
             existsSuggestion = true
           }
           if (search != "") {
@@ -168,15 +161,23 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $shufflableWords.shuffle()
   }
 
-  protected Boolean checkSuggestion(W word, String search) {
+  protected Boolean checkSuggestion(W word, String search, String newSearch) {
     return false
   }
 
-  public abstract void modifyWord(W oldWord, W newWord)
+  public void modifyWord(W oldWord, W newWord) {
+    $isChanged = true
+  }
 
-  public abstract void addWord(W word)
+  public void addWord(W word) {
+    $words.add(word)
+    $isChanged = true
+  }
 
-  public abstract void removeWord(W word)
+  public void removeWord(W word) {
+    $words.remove(word)
+    $isChanged = true
+  }
 
   public abstract W emptyWord()
 

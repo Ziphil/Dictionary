@@ -54,4 +54,15 @@ public class Strings {
     return result
   }
 
+  public static String convert(String string, Boolean ignoresAccent, Boolean ignoresCase) {
+    String result = string
+    if (ignoresAccent) {
+      result = Strings.unaccent(result)
+    }
+    if (ignoresCase) {
+      result = Strings.toLowerCase(result)
+    }
+    return result
+  }
+
 }
