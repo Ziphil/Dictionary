@@ -134,8 +134,8 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   public void searchScript(String script) {
     GroovyShell shell = GroovyShell.new()
     Script parsedScript = shell.parse(script)
-    try {
-      $filteredWords.setPredicate() { W word ->
+    $filteredWords.setPredicate() { W word ->
+      try {
         GroovyBinding binding = GroovyBinding.new()
         binding.setVariable("word", word)
         parsedScript.setBinding(binding)
@@ -145,9 +145,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
         } else {
           return false
         }
-      }
-    } catch (Exception exception) {
-      $filteredWords.setPredicate() { W word ->
+      } catch (Exception exception) {
         return false
       }
     }
