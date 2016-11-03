@@ -23,8 +23,8 @@ public class ShaleiaWord extends Word {
 
   public static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   public static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
-  public static final String SHALEIA_WHOLE_CLASS_CLASS = "shaleia-whole-class"
-  public static final String SHALEIA_LOCAL_CLASS_CLASS = "shaleia-local-class"
+  public static final String SHALEIA_TOTAL_PART_CLASS = "shaleia-total-part"
+  public static final String SHALEIA_PART_CLASS = "shaleia-part"
   public static final String SHALEIA_CREATION_DATE_CLASS = "shaleia-creation-date"
   public static final String SHALEIA_TITLE_CLASS = "shaleia-title"
   public static final String SHALEIA_NAME_CLASS = "shaleia-name"
@@ -84,13 +84,13 @@ public class ShaleiaWord extends Word {
       }
       if (creationDateMatcher.matches()) {
         String creationDate = creationDateMatcher.group(1)
-        String wholeClass = creationDateMatcher.group(2)
-        addCreationDateNode(headBox, wholeClass, creationDate)
+        String totalPart = creationDateMatcher.group(2)
+        addCreationDateNode(headBox, totalPart, creationDate)
       }
       if (equivalentMatcher.matches()) {
-        String localClass = equivalentMatcher.group(1)
+        String part = equivalentMatcher.group(1)
         String equivalent = equivalentMatcher.group(2)
-        addEquivalentNode(equivalentBox, localClass, equivalent)
+        addEquivalentNode(equivalentBox, part, equivalent)
       }
       if (hiddenEquivalentMatcher.matches()) {
         String equivalent = hiddenEquivalentMatcher.group(1)
@@ -147,23 +147,23 @@ public class ShaleiaWord extends Word {
     box.setAlignment(Pos.CENTER_LEFT)
   }
  
-  private void addCreationDateNode(HBox box, String wholeClass, String creationDate) {
-    Label wholeClassText = Label.new(wholeClass)
+  private void addCreationDateNode(HBox box, String totalPart, String creationDate) {
+    Label totalPartText = Label.new(totalPart)
     Text creationDateText = Text.new(" " + creationDate)
-    wholeClassText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_WHOLE_CLASS_CLASS)
+    totalPartText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TOTAL_PART_CLASS)
     creationDateText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CREATION_DATE_CLASS)
-    box.getChildren().addAll(wholeClassText, creationDateText)
+    box.getChildren().addAll(totalPartText, creationDateText)
   }
 
-  private void addEquivalentNode(VBox box, String localClass, String equivalent) {
+  private void addEquivalentNode(VBox box, String part, String equivalent) {
     TextFlow textFlow = TextFlow.new()
-    Label localClassText = Label.new(localClass)
+    Label partText = Label.new(part)
     List<Text> equivalentTexts = createRichTexts(" " + equivalent)
-    localClassText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LOCAL_CLASS_CLASS)
+    partText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
     equivalentTexts.each() { Text equivalentText ->
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
-    textFlow.getChildren().add(localClassText)
+    textFlow.getChildren().add(partText)
     textFlow.getChildren().addAll(equivalentTexts)
     box.getChildren().add(textFlow)
   }
