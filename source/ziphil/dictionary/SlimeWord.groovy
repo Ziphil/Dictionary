@@ -53,14 +53,13 @@ public class SlimeWord extends Word {
     $id = id
     $name = name
     $rawEquivalents = rawEquivalents
-    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
-      result.addAll(equivalent.getNames())
-      return result
-    }
     $tags = tags
     $informations = informations
     $variations = variations
     $relations = relations
+    rawEquivalents.each() { SlimeEquivalent equivalent ->
+      $equivalents.addAll(equivalent.getNames())
+    }
     $isChanged = true
     $isSimpleChanged = true
   }
@@ -248,9 +247,8 @@ public class SlimeWord extends Word {
 
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
-    $equivalents = (List)rawEquivalents.inject([]) { List<String> result, SlimeEquivalent equivalent ->
-      result.addAll(equivalent.getNames())
-      return result
+    rawEquivalents.each() { SlimeEquivalent equivalent ->
+      $equivalents.addAll(equivalent.getNames())
     }
   }
 
