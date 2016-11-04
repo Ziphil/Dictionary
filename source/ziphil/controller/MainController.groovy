@@ -48,17 +48,17 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.PersonalDictionary
-import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.ShaleiaDictionary
-import ziphil.dictionary.ShaleiaSearchParameter
-import ziphil.dictionary.ShaleiaWord
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeSearchParameter
-import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
+import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.personal.PersonalWord
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.shaleia.ShaleiaSearchParameter
+import ziphil.dictionary.shaleia.ShaleiaWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeSearchParameter
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 import ziphilib.transform.ReturnVoidClosure
 

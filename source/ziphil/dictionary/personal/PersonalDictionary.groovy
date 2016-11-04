@@ -1,8 +1,10 @@
-package ziphil.dictionary
+package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Suggestion
 
 
 @CompileStatic @Newify

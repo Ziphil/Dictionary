@@ -1,19 +1,21 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 
 
 @CompileStatic @Newify
-public class SlimeVariation {
+public class SlimeRelation {
 
   private String $title = ""
+  private Integer $id = -1
   private String $name = ""
 
-  public SlimeVariation() {
+  public SlimeRelation() {
   }
 
-  public SlimeVariation(String title, String name) {
+  public SlimeRelation(String title, Integer id, String name) {
     $title = title
+    $id = id
     $name = name
   }
 
@@ -23,6 +25,14 @@ public class SlimeVariation {
 
   public void setTitle(String title) {
     $title = title
+  }
+
+  public Integer getId() {
+    return $id
+  }
+
+  public void setId(Integer id) {
+    $id = id
   }
 
   public String getName() {

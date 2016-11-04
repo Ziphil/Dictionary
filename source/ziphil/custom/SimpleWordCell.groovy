@@ -2,7 +2,7 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
-import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.slime.SlimeWord
 import ziphilib.transform.ConvertPrimitive
 
 

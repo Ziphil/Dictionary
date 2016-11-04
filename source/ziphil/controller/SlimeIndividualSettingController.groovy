@@ -5,7 +5,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.SlimeDictionary
+import ziphil.dictionary.slime.SlimeDictionary
 
 
 @CompileStatic @Newify

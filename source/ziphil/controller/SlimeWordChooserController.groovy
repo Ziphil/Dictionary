@@ -15,8 +15,8 @@ import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
 import ziphil.custom.SimpleWordCell
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 import ziphilib.transform.ReturnVoidClosure
 

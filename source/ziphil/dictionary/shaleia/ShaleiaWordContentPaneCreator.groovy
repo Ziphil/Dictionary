@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
+import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
 
 

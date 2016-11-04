@@ -1,8 +1,9 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import ziphil.dictionary.Word
 import ziphil.module.Setting
 
 

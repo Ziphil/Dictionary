@@ -16,6 +16,9 @@ import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
 import ziphil.custom.ShufflableList
+import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 

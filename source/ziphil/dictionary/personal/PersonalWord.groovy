@@ -1,6 +1,7 @@
-package ziphil.dictionary
+package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.Word
 import ziphil.module.Setting
 
 

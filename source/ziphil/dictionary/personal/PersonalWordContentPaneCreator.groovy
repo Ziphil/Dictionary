@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.Label
@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
 
 

@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
@@ -14,6 +14,8 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
 

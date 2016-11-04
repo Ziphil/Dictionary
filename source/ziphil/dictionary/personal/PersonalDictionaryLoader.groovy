@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher

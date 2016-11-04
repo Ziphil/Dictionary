@@ -1,6 +1,7 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
 
 

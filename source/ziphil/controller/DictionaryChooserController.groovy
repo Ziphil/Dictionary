@@ -9,7 +9,6 @@ import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.ShaleiaWord
 
 
 @CompileStatic @Newify

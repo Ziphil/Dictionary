@@ -9,8 +9,8 @@ import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeSearchParameter
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeSearchParameter
 
 
 @CompileStatic @Newify

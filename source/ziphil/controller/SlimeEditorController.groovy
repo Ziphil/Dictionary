@@ -28,12 +28,12 @@ import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeEquivalent
-import ziphil.dictionary.SlimeInformation
-import ziphil.dictionary.SlimeRelation
-import ziphil.dictionary.SlimeVariation
-import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeEquivalent
+import ziphil.dictionary.slime.SlimeInformation
+import ziphil.dictionary.slime.SlimeRelation
+import ziphil.dictionary.slime.SlimeVariation
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 
 
