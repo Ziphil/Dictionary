@@ -1,23 +1,16 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.scene.input.MouseEvent
-import javafx.scene.layout.VBox
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
+import ziphil.module.Setting
 
 
 @CompileStatic @Newify
 public class SlimeSuggestion extends Suggestion<SlimePossibility> {
 
-  public static final String SLIME_LINK_CLASS = "slime-link"
-  public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
-
   private SlimeDictionary $dictionary
 
   public SlimeSuggestion() {
     update()
-    setupContentPane()
   }
 
   public void update() {
@@ -25,34 +18,12 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
   }
 
   public void createContentPane() {
-    VBox possibilityBox = VBox.new()
-    $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(possibilityBox)
-    $possibilities.each() { SlimePossibility possibility ->
-      addPossibilityNode(possibilityBox, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
-    }
+    Setting setting = Setting.getInstance()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    SlimeSuggestionContentPaneCreator creator = SlimeSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setModifiesPunctuation(modifiesPunctuation)
+    creator.create()
     $isChanged = false
-  }
-
-  private void addPossibilityNode(VBox box, Integer id, String name, String possibilityName) {
-    TextFlow textFlow = TextFlow.new()
-    Text prefixText = Text.new("もしかして: ")
-    Text nameText = Text.new(name)
-    Text possibilityNameText = Text.new(" の${possibilityName}?")
-    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-      if ($dictionary.getOnLinkClicked() != null) {
-        $dictionary.getOnLinkClicked().accept(id)
-      }
-    }
-    prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
-    nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-    possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    textFlow.getChildren().addAll(prefixText, nameText, possibilityNameText)
-    box.getChildren().add(textFlow)
-  }
-
-  private void setupContentPane() {
-    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
   }
 
   public SlimeDictionary getDictionary() {

@@ -8,10 +8,6 @@ import javafx.scene.layout.VBox
 @CompileStatic @Newify
 public abstract class Word {
 
-  public static final String CONTENT_CLASS = "content"
-  public static final String CONTENT_PANE_CLASS = "content-pane"
-  public static final String HEAD_NAME_CLASS = "head-name"
-
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
@@ -20,8 +16,8 @@ public abstract class Word {
 
   public abstract void createContentPane()
 
-  public Boolean isChanged() {
-    return $isChanged
+  public void change() {
+    $isChanged = true
   }
 
   public String getName() {
@@ -38,6 +34,10 @@ public abstract class Word {
 
   public Pane getContentPane() {
     return $contentPane
+  }
+
+  public Boolean isChanged() {
+    return $isChanged
   }
 
 }
