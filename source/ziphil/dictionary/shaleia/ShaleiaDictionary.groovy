@@ -114,15 +114,17 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   public void save() {
-    File file = File.new($path)
-    StringBuilder output = StringBuilder.new()
-    $words.each() { ShaleiaWord word ->
-      output.append("* " + word.getUniqueName())
-      output.append("\n")
-      output.append(word.getData().trim())
-      output.append("\n\n")
+    if ($path != null) {
+      File file = File.new($path)
+      StringBuilder output = StringBuilder.new()
+      $words.each() { ShaleiaWord word ->
+        output.append("* " + word.getUniqueName())
+        output.append("\n")
+        output.append(word.getData().trim())
+        output.append("\n\n")
+      }
+      file.setText(output.toString(), "UTF-8")
     }
-    file.setText(output.toString(), "UTF-8")
     $isChanged = false
   }
 
