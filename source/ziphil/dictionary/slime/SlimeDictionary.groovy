@@ -248,14 +248,14 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     return newWord
   }
 
-  public Boolean containsId(Integer id, SlimeWord excludedWord) {
-    return $words.any{word -> word != excludedWord && word.getId() == id}
-  }
-
   public SlimeDictionary copy() {
     ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
     SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
     return dictionary
+  }
+
+  public Boolean containsId(Integer id, SlimeWord excludedWord) {
+    return $words.any{word -> word != excludedWord && word.getId() == id}
   }
 
   private void load() {
