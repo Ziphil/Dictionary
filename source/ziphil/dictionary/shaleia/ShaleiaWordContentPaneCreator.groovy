@@ -144,12 +144,12 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
   }
 
   private void addOtherNode(VBox box, String title, String other) {
-    String newOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    String modifiedOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow titleTextFlow = TextFlow.new()
     TextFlow textFlow = TextFlow.new()
     Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" ")
-    List<Text> otherTexts = createRichTexts(newOther)
+    List<Text> otherTexts = createRichTexts(modifiedOther)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
     otherTexts.each() { Text otherText ->
       otherText.getStyleClass().add(CONTENT_CLASS)

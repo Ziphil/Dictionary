@@ -45,7 +45,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     setupSuggestions()
   }
 
-  protected Boolean checkSuggestion(SlimeWord word, String search, String newSearch) {
+  protected Boolean checkSuggestion(SlimeWord word, String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -53,8 +53,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     word.getVariations().each() { SlimeVariation variation ->
       String variationTitle = variation.getTitle()
       String variationName = variation.getName()
-      String newVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
-      if (newVariationName == newSearch) {
+      String convertedVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
+      if (convertedVariationName == convertedSearch) {
         SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
         $suggestions[0].getPossibilities().add(possibility)
         $suggestions[0].update()

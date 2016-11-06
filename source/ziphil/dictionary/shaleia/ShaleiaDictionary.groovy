@@ -31,12 +31,12 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     setupSuggestions()
   }
 
-  protected Boolean checkWholeSuggestion(String search, String newSearch) {
+  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    if ($changes.containsKey(newSearch)) {
-      $changes[newSearch].each() { String newName ->
+    if ($changes.containsKey(convertedSearch)) {
+      $changes[convertedSearch].each() { String newName ->
         ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
         $suggestions[0].getPossibilities().add(possibility)
         $suggestions[0].update()

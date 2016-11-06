@@ -53,25 +53,25 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     Boolean existsSuggestion = false
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
-      String newSearch = Strings.convert(search, ignoresAccent, ignoresCase)
+      String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       $suggestions.each() { S suggestion ->
         suggestion.getPossibilities().clear()
       }
-      if (checkWholeSuggestion(search, newSearch)) {
+      if (checkWholeSuggestion(search, convertedSearch)) {
         existsSuggestion = true
       }
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           String name = word.getName()
-          String newName = Strings.convert(name, ignoresAccent, ignoresCase)
-          if (checkSuggestion(word, search, newSearch)) {
+          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+          if (checkSuggestion(word, search, convertedSearch)) {
             existsSuggestion = true
           }
           if (search != "") {
             if (searchesPrefix) {
-              return newName.startsWith(newSearch)
+              return convertedName.startsWith(convertedSearch)
             } else {
-              return newName == newSearch
+              return convertedName == convertedSearch
             }
           } else {
             return true
@@ -165,11 +165,11 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $shufflableWords.shuffle()
   }
 
-  protected Boolean checkWholeSuggestion(String search, String newSearch) {
+  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
     return false
   }
 
-  protected Boolean checkSuggestion(W word, String search, String newSearch) {
+  protected Boolean checkSuggestion(W word, String search, String convertedSearch) {
     return false
   }
 

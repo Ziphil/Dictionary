@@ -37,9 +37,9 @@ public class PersonalWordContentPaneCreator extends ContentPaneCreator<PersonalW
   }
 
   private void addOtherNode(VBox box, String other) {
-    String newOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    String modifiedOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     TextFlow textFlow = TextFlow.new()
-    Text otherText = Text.new(newOther)
+    Text otherText = Text.new(modifiedOther)
     otherText.getStyleClass().add(CONTENT_CLASS)
     textFlow.getChildren().add(otherText)
     box.getChildren().add(textFlow)

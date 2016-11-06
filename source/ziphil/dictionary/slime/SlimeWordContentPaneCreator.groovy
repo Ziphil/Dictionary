@@ -92,12 +92,12 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
   }
 
   private void addInformationNode(VBox box, String title, String information) {
-    String newInformation = ($modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
+    String modifiedInformation = ($modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
     TextFlow titleTextFlow = TextFlow.new()
     TextFlow textFlow = TextFlow.new()
     Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" ")
-    Text informationText = Text.new(newInformation)
+    Text informationText = Text.new(modifiedInformation)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     informationText.getStyleClass().add(CONTENT_CLASS)
     titleTextFlow.getChildren().addAll(titleText, dammyText)
