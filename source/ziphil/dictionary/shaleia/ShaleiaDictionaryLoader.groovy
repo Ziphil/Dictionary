@@ -14,6 +14,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private String $path
   private ShaleiaDictionary $dictionary
+  private String $changeData = ""
   private String $alphabetOrder = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
 
   public ShaleiaDictionaryLoader(String path, ShaleiaDictionary dictionary) {
@@ -33,7 +34,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
           }
           Matcher matcher = line =~ /^\*\s*(.+)\s*$/
           if (matcher.matches()) {
-            addWord(currentName, currentData)
+            add(currentName, currentData)
             currentName = matcher.group(1)
             currentData.setLength(0)
           } else {
@@ -41,7 +42,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
             currentData.append("\n")
           }
         }
-        addWord(currentName, currentData)
+        add(currentName, currentData)
       } catch (ThrowMarker marker) {
         return null
       }
@@ -49,13 +50,29 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
     return $words
   }
 
-  private void addWord(String currentName, StringBuilder currentData) {
+  private void add(String currentName, StringBuilder currentData) {
     if (currentName != null) {
-      ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
-      word.setDictionary($dictionary)
-      word.createComparisonString($alphabetOrder)
-      $words.add(word)
+      if (currentName == "META-CHANGE") {
+        addChangeData(currentData)
+      } else {
+        addWord(currentName, currentData)
+      }
     }
+  }
+
+  private void addWord(String currentName, StringBuilder currentData) {
+    ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+    word.setDictionary($dictionary)
+    word.createComparisonString($alphabetOrder)
+    $words.add(word)
+  }
+
+  private void addChangeData(StringBuilder currentData) {
+    $changeData = currentData.toString()
+  }
+
+  private String getChangeData() {
+    return $changeData
   }
 
   public String getAlphabetOrder() {

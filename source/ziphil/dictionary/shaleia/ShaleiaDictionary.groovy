@@ -17,6 +17,8 @@ import ziphil.dictionary.Suggestion
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
 
   private ShaleiaDictionaryLoader $loader
+  private String $changeData
+  private Map<String, List<String>> $changes = HashMap.new()
   private String $alphabetOrder
   private Consumer<String> $onLinkClicked
 
@@ -85,6 +87,20 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
     $isChanged = true
   }
 
+  private void createChanges() {
+    $changes.clear()
+    $changeData.eachLine() { String line ->
+      Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
+      if (matcher.matches()) {
+        String oldName = matcher.group(2)
+        if (!$changes.containsKey(oldName)) {
+          $changes[oldName] = ArrayList.new()
+        }
+        $changes[oldName].add(matcher.group(3))
+      }
+    }
+  }
+
   public ShaleiaWord emptyWord() {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     String data = "+ ${hairiaNumber} 〈不〉\n\n=〈〉"
@@ -105,8 +121,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   private void load() {
     $loader = ShaleiaDictionaryLoader.new($path, this)
     $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $changeData = $loader.getChangeData()
       $alphabetOrder = $loader.getAlphabetOrder()
       $words.addAll($loader.getValue())
+      createChanges()
     }
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
@@ -118,11 +136,11 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       File file = File.new($path)
       StringBuilder output = StringBuilder.new()
       $words.each() { ShaleiaWord word ->
-        output.append("* " + word.getUniqueName())
-        output.append("\n")
-        output.append(word.getData().trim())
-        output.append("\n\n")
+        output.append("* ").append(word.getUniqueName()).append("\n")
+        output.append(word.getData().trim()).append("\n\n")
       }
+      output.append("* META-CHANGE\n\n")
+      output.append($changeData.trim()).append("\n\n")
       file.setText(output.toString(), "UTF-8")
     }
     $isChanged = false
