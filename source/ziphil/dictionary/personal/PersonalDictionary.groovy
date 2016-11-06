@@ -69,13 +69,13 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
       StringBuilder output = StringBuilder.new()
       output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
       $words.each() { PersonalWord word ->
-        output.append("\"" + word.getName() + "\",")
-        output.append("\"" + word.getTranslation() + "\",")
-        output.append("\"" + word.getUsage() + "\",")
-        output.append(word.getLevel().toString() + ",")
-        output.append(word.getMemory().toString() + ",")
-        output.append(word.getModification().toString() + ",")
-        output.append("\"" + word.getPronunciation() + "\"\n")
+        output.append("\"").append(word.getName()).append("\",")
+        output.append("\"").append(word.getTranslation()).append("\",")
+        output.append("\"").append(word.getUsage()).append("\",")
+        output.append(word.getLevel().toString()).append(",")
+        output.append(word.getMemory().toString()).append(",")
+        output.append(word.getModification().toString()).append(",")
+        output.append("\"").append(word.getPronunciation()).append("\"\n")
       }
       file.setText(output.toString(), "UTF-8")
     }
