@@ -135,6 +135,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
     if ($path != null) {
       File file = File.new($path)
       StringBuilder output = StringBuilder.new()
+      $words.sort($sortedWords.getComparator())
       $words.each() { ShaleiaWord word ->
         output.append("* ").append(word.getUniqueName()).append("\n")
         output.append(word.getData().trim()).append("\n\n")
