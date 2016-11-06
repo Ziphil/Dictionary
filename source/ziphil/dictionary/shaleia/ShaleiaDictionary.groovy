@@ -11,10 +11,12 @@ import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
+import ziphil.module.Setting
+import ziphil.module.Strings
 
 
 @CompileStatic @Newify
-public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
+public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
 
   private ShaleiaDictionaryLoader $loader
   private String $changeData
@@ -26,6 +28,22 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
     super(name, path)
     load()
     setupWords()
+    setupSuggestions()
+  }
+
+  protected Boolean checkWholeSuggestion(String search, String newSearch) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    if ($changes.containsKey(newSearch)) {
+      $changes[newSearch].each() { String newName ->
+        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
+        $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].update()
+      }
+      return true
+    }
+    return false
   }
 
   public void searchDetail(ShaleiaSearchParameter parameter) {
@@ -88,11 +106,14 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
   }
 
   private void createChanges() {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     $changes.clear()
     $changeData.eachLine() { String line ->
       Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
       if (matcher.matches()) {
-        String oldName = matcher.group(2)
+        String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
         if (!$changes.containsKey(oldName)) {
           $changes[oldName] = ArrayList.new()
         }
@@ -153,6 +174,12 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, Suggestion> {
       String secondString = secondWord.getComparisonString()
       return firstString <=> secondString
     }
+  }
+
+  private void setupSuggestions() {
+    ShaleiaSuggestion suggestion = ShaleiaSuggestion.new()
+    suggestion.setDictionary(this)
+    $suggestions.add(suggestion)
   }
 
   public Consumer<String> getOnLinkClicked() {

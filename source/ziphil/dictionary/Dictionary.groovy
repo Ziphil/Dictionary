@@ -57,6 +57,9 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       $suggestions.each() { S suggestion ->
         suggestion.getPossibilities().clear()
       }
+      if (checkWholeSuggestion(search, newSearch)) {
+        existsSuggestion = true
+      }
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           String name = word.getName()
@@ -160,6 +163,10 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public void shuffleWords() {
     $shufflableWords.shuffle()
+  }
+
+  protected Boolean checkWholeSuggestion(String search, String newSearch) {
+    return false
   }
 
   protected Boolean checkSuggestion(W word, String search, String newSearch) {
