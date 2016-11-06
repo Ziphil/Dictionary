@@ -2,10 +2,14 @@ binary
 build
 distribution
 library
+out
 source/data
 source/scenicView.properties
 *.sublime-project
 *.sublime-workspace
+*.iml
+*.ipr
+*.iws
 .git-ignore
 .git-attribute
 desktop.ini
