@@ -182,6 +182,16 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $suggestions.add(suggestion)
   }
 
+  public String getChangeData() {
+    return $changeData
+  }
+
+  public void setChangeData(String changeData) {
+    $changeData = changeData
+    $isChanged = true
+    createChanges()
+  }
+
   public Consumer<String> getOnLinkClicked() {
     return $onLinkClicked
   }

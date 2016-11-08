@@ -645,12 +645,15 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showIndividualSetting() {
     if ($dictionary != null) {
-      if ($dictionary instanceof SlimeDictionary) {
+      if ($dictionary instanceof SlimeDictionary || $dictionary instanceof ShaleiaDictionary) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         nextStage.initModality(Modality.WINDOW_MODAL)
         nextStage.initOwner($stage)
         if ($dictionary instanceof SlimeDictionary) {
           SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
+          controller.prepare($dictionary)
+        } else if ($dictionary instanceof ShaleiaDictionary) {
+          ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
           controller.prepare($dictionary)
         }
         Boolean isDone = nextStage.showAndWaitResult()
