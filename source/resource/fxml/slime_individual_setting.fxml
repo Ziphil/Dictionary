@@ -40,10 +40,7 @@
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
       <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <prefWidth><Double rpx="350"/></prefWidth>
-        <minWidth><Double rpx="350"/></minWidth>
-      </TextField>
+      <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
         <GridPane.margin>
           <Insets>
