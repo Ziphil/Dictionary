@@ -67,7 +67,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   }
 
   private void addChangeData(StringBuilder currentData) {
-    $changeData = currentData.toString()
+    $changeData = currentData.toString().replaceAll(/^\s*\n/, "")
   }
 
   private String getChangeData() {
