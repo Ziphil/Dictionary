@@ -113,7 +113,7 @@ public class SettingController extends Controller<Boolean> {
     if (showsSlimeId) {
       $showsSlimeIdControl.setSelected(true)
     }
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
     }
   }
@@ -155,7 +155,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setSearchesPrefix(searchesPrefix)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       String path = registeredDictionaryPaths[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
     }
@@ -183,7 +183,7 @@ public class SettingController extends Controller<Boolean> {
   }
 
   private void setupRegisteredDictionaryPane() {
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()

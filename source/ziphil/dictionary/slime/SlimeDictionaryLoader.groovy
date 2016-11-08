@@ -91,7 +91,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       parser.close()
       stream.close()
     }
-    $words.each() { SlimeWord word ->
+    for (SlimeWord word : $words) {
       word.createComparisonString($alphabetOrder)
     }
     return $words

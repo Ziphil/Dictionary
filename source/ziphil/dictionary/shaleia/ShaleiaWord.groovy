@@ -23,7 +23,9 @@ public class ShaleiaWord extends Word {
     $uniqueName = uniqueName
     $data = data
     $content = uniqueName + "\n" + data
-    data.eachLine() { String line ->
+    BufferedReader reader = BufferedReader.new(StringReader.new(data))
+    String line
+    while ((line = reader.readLine()) != null) {
       Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
       if (matcher.matches()) {
         String equivalent = matcher.group(2)
@@ -31,6 +33,7 @@ public class ShaleiaWord extends Word {
         $equivalents.addAll(equivalents)
       }
     }
+    reader.close()
     $isChanged = true
   }
 
@@ -45,7 +48,7 @@ public class ShaleiaWord extends Word {
 
   public void createComparisonString(String order) {
     StringBuilder comparisonString = StringBuilder.new()
-    (0 ..< $name.length()).each() { Integer i ->
+    for (Integer i : 0 ..< $name.length()) {
       if ($name[i] != "'") {
         Integer position = order.indexOf($name.codePointAt(i))
         if (position > -1) {

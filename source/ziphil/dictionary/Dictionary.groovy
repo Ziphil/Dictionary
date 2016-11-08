@@ -54,7 +54,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-      $suggestions.each() { S suggestion ->
+      for (S suggestion : $suggestions) {
         suggestion.getPossibilities().clear()
       }
       if (checkWholeSuggestion(search, convertedSearch)) {

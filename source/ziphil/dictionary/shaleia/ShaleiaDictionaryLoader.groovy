@@ -24,28 +24,27 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
 
   protected ObservableList<ShaleiaWord> call() {
     if ($path != null) {
-      try {
-        File file = File.new($path)
-        String currentName = null
-        StringBuilder currentData = StringBuilder.new()
-        file.eachLine() { String line ->
-          if (isCancelled()) {
-            throw ThrowMarker.new()
-          }
-          Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-          if (matcher.matches()) {
-            add(currentName, currentData)
-            currentName = matcher.group(1)
-            currentData.setLength(0)
-          } else {
-            currentData.append(line)
-            currentData.append("\n")
-          }
+      BufferedReader reader = File.new($path).newReader("UTF-8")
+      String currentName = null
+      StringBuilder currentData = StringBuilder.new()
+      String line
+      while ((line = reader.readLine()) != null) {
+        if (isCancelled()) {
+          reader.close()
+          return null
         }
-        add(currentName, currentData)
-      } catch (ThrowMarker marker) {
-        return null
+        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+        if (matcher.matches()) {
+          add(currentName, currentData)
+          currentName = matcher.group(1)
+          currentData.setLength(0)
+        } else {
+          currentData.append(line)
+          currentData.append("\n")
+        }
       }
+      add(currentName, currentData)
+      reader.close()
     }
     return $words
   }

@@ -22,7 +22,7 @@ public class DirectoryItem extends TreeItem<File> {
     ObservableList<TreeItem<File>> children = super.getChildren()
     File file = getValue()
     if (children.isEmpty() && file != null) {
-      file.listFiles().each() { File childFile ->
+      for (File childFile : file.listFiles()) {
         if (!childFile.isFile()) {
           children.add(DirectoryItem.new(childFile))
         }

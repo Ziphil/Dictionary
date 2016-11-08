@@ -38,7 +38,7 @@ public class SlimeWord extends Word {
     $informations = informations
     $variations = variations
     $relations = relations
-    rawEquivalents.each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : rawEquivalents) {
       $equivalents.addAll(equivalent.getNames())
     }
     $isChanged = true
@@ -65,7 +65,7 @@ public class SlimeWord extends Word {
 
   public void createComparisonString(String order) {
     StringBuilder comparisonString = StringBuilder.new()
-    (0 ..< $name.length()).each() { Integer i ->
+    for (Integer i : 0 ..< $name.length()) {
       Integer position = order.indexOf($name.codePointAt(i))
       if (position > -1) {
         comparisonString.appendCodePoint(position + 174)
@@ -106,7 +106,7 @@ public class SlimeWord extends Word {
 
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
-    rawEquivalents.each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : rawEquivalents) {
       $equivalents.addAll(equivalent.getNames())
     }
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.Map.Entry
 import groovy.transform.CompileStatic
 
 
@@ -31,7 +32,7 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeStartObject()
       generator.writeFieldName("words")
       generator.writeStartArray()
-      $words.each() { SlimeWord word ->
+      for (SlimeWord word : $words) {
         generator.writeStartObject()
         generator.writeFieldName("entry")
         writeEntry(generator, word)
@@ -52,7 +53,9 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeStartObject()
       generator.writeStringField("alphabetOrder", $dictionary.getAlphabetOrder())
       generator.writeEndObject()
-      $dictionary.getExternalData().each() { String fieldName, TreeNode node ->
+      for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
+        String fieldName = entry.getKey()
+        TreeNode node = entry.getValue()
         generator.writeFieldName(fieldName)
         generator.writeTree(node)
       }
@@ -71,12 +74,12 @@ public class SlimeDictionarySaver implements Runnable {
 
   private void writeEquivalents(JsonGenerator generator, SlimeWord word) {
     generator.writeStartArray()
-    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
       generator.writeStartObject()
       generator.writeStringField("title", equivalent.getTitle())
       generator.writeFieldName("forms")
       generator.writeStartArray()
-      equivalent.getNames().each() { String name ->
+      for (String name : equivalent.getNames()) {
         generator.writeString(name)
       }
       generator.writeEndArray()
@@ -87,7 +90,7 @@ public class SlimeDictionarySaver implements Runnable {
 
   private void writeTags(JsonGenerator generator, SlimeWord word) {
     generator.writeStartArray()
-    word.getTags().each() { String tag ->
+    for (String tag : word.getTags()) {
       generator.writeString(tag)
     }
     generator.writeEndArray()
@@ -95,7 +98,7 @@ public class SlimeDictionarySaver implements Runnable {
 
   private void writeInformations(JsonGenerator generator, SlimeWord word) {
     generator.writeStartArray()
-    word.getInformations().each() { SlimeInformation information ->
+    for (SlimeInformation information : word.getInformations()) {
       generator.writeStartObject()
       generator.writeStringField("title", information.getTitle())
       generator.writeStringField("text", information.getText())
@@ -106,7 +109,7 @@ public class SlimeDictionarySaver implements Runnable {
 
   private void writeVariations(JsonGenerator generator, SlimeWord word) {
     generator.writeStartArray()
-    word.getVariations().each() { SlimeVariation variation ->
+    for (SlimeVariation variation : word.getVariations()) {
       generator.writeStartObject()
       generator.writeStringField("title", variation.getTitle())
       generator.writeStringField("form", variation.getName())
@@ -117,7 +120,7 @@ public class SlimeDictionarySaver implements Runnable {
 
   private void writeRelations(JsonGenerator generator, SlimeWord word) {
     generator.writeStartArray()
-    word.getRelations().each() { SlimeRelation relation ->
+    for (SlimeRelation relation : word.getRelations()) {
       generator.writeStartObject()
       generator.writeStringField("title", relation.getTitle())
       generator.writeFieldName("entry")

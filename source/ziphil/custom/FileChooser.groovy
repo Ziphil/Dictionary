@@ -113,7 +113,7 @@ public class FileChooser extends VBox {
   @ReturnVoidClosure
   private void setupDirectoryTree() {
     DirectoryItem root = DirectoryItem.new(null)
-    File.listRoots().each() { File file ->
+    for (File file : File.listRoots()) {
       root.getChildren().add(DirectoryItem.new(file))
     }
     $directoryTree.setRoot(root)
@@ -148,7 +148,7 @@ public class FileChooser extends VBox {
       if (directory != null) {
         File[] innerFiles = $currentDirectory.get().listFiles()
         if (innerFiles != null) {
-          innerFiles.each() { File innerFile ->
+          for (File innerFile : innerFiles) {
             if ($showsHidden.get() || !innerFile.isHidden()) {
               if (innerFile.isDirectory() || $fileTypeControl.getValue().accepts(innerFile)) {
                 files.add(innerFile)

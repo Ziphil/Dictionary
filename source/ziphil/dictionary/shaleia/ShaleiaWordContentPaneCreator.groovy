@@ -13,6 +13,7 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
+import ziphilib.transform.ReturnVoidClosure
 
 
 @CompileStatic @Newify
@@ -43,7 +44,9 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(headBox, equivalentBox, otherBox, synonymBox)
-    $word.getData().eachLine() { String line ->
+    BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
+    String line
+    while ((line = reader.readLine()) != null) {
       Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
       Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
@@ -113,6 +116,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     if (hasSynonym) {
       $contentPane.setMargin(otherBox, Insets.new(0, 0, Measurement.rpx(3), 0))
     }
+    reader.close()
   }
 
   private void addNameNode(HBox box, String name) {
@@ -135,7 +139,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     Label partText = Label.new(part)
     List<Text> equivalentTexts = createRichTexts(" " + equivalent)
     partText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
-    equivalentTexts.each() { Text equivalentText ->
+    for (Text equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
     textFlow.getChildren().add(partText)
@@ -151,7 +155,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     Text dammyText = Text.new(" ")
     List<Text> otherTexts = createRichTexts(modifiedOther)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
-    otherTexts.each() { Text otherText ->
+    for (Text otherText : otherTexts) {
       otherText.getStyleClass().add(CONTENT_CLASS)
     }
     titleTextFlow.getChildren().addAll(titleText, dammyText)
@@ -164,7 +168,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     Text titleText = Text.new("cf:")
     List<Text> synonymTexts = createRichTexts(" " + synonym)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
-    synonymTexts.each() { Text synonymText ->
+    for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
     textFlow.getChildren().add(titleText)
@@ -172,13 +176,14 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     box.getChildren().add(textFlow)
   }
 
+  @ReturnVoidClosure
   private List<Text> createRichTexts(String string) {
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()
     StringBuilder currentString = StringBuilder.new()
     StringBuilder currentName = StringBuilder.new()
     Integer currentMode = 0
-    string.each() { String character ->
+    for (String character : string) {
       if (currentMode == 0 && character == "{") {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
@@ -198,7 +203,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         }
         if (currentName.length() > 0) {
           String name = currentName.toString()
-          unnamedTexts.each() { Text unnamedText ->
+          for (Text unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)
@@ -220,7 +225,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         }
         if (currentName.length() > 0) {
           String name = currentName.toString()
-          unnamedTexts.each() { Text unnamedText ->
+          for (Text unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
                 $dictionary.getOnLinkClicked().accept(name)

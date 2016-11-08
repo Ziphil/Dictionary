@@ -68,7 +68,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
       File file = File.new($path)
       StringBuilder output = StringBuilder.new()
       output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
-      $words.each() { PersonalWord word ->
+      for (PersonalWord word : $words) {
         output.append("\"").append(word.getName()).append("\",")
         output.append("\"").append(word.getTranslation()).append("\",")
         output.append("\"").append(word.getUsage()).append("\",")

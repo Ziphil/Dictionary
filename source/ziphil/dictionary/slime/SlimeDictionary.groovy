@@ -50,7 +50,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean existsSuggestion = false
-    word.getVariations().each() { SlimeVariation variation ->
+    for (SlimeVariation variation : word.getVariations()) {
       String variationTitle = variation.getTitle()
       String variationName = variation.getName()
       String convertedVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
@@ -95,9 +95,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       if (searchEquivalentName != null || searchEquivalentTitle != null) {
         Boolean equivalentPredicate = false
         searchEquivalentName = searchEquivalentName ?: ""
-        equivalents.each() { SlimeEquivalent equivalent ->
+        for (SlimeEquivalent equivalent : equivalents) {
           String equivalentTitle = equivalent.getTitle()
-          equivalent.getNames().each() { String equivalentName ->
+          for (String equivalentName : equivalent.getNames()) {
             if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
               equivalentPredicate = true
             }
@@ -110,7 +110,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       if (searchInformationText != null || searchInformationTitle != null) {
         Boolean informationPredicate = false
         searchInformationText = searchInformationText ?: ""
-        informations.each() { SlimeInformation information ->
+        for (SlimeInformation information : informations) {
           String informationText = information.getText()
           String informationTitle = information.getTitle()
           if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
@@ -123,7 +123,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
       if (searchTag != null) {
         Boolean tagPredicate = false
-        tags.each() { String tag ->
+        for (String tag : tags) {
           if (tag == searchTag) {
             tagPredicate = true
           }
@@ -145,8 +145,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       newWord.setId($validMinId)
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
-      $words.each() { SlimeWord otherWord ->
-        otherWord.getRelations().each() { SlimeRelation relation ->
+      for (SlimeWord otherWord : $words) {
+        for (SlimeRelation relation : otherWord.getRelations()) {
           if (relation.getId() == oldWord.getId()) {
             relation.setId(newWord.getId())
             relation.setName(newWord.getName())
@@ -173,7 +173,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   public void removeWord(SlimeWord word) {
-    $words.each() { SlimeWord otherWord ->
+    for (SlimeWord otherWord : $words) {
       Boolean isChanged = otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
       if (isChanged) {
         otherWord.change()
@@ -187,30 +187,30 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     if (word.getId() >= $validMinId) {
       $validMinId = word.getId() + 1
     }
-    word.getTags().each() { String tag ->
+    for (String tag : word.getTags()) {
       if (!$registeredTags.contains(tag)) {
         $registeredTags.addAll(tag)
       }
     }
-    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
       String title = equivalent.getTitle()
       if (!$registeredEquivalentTitles.contains(title)) {
         $registeredEquivalentTitles.add(title)
       }
     }
-    word.getInformations().each() { SlimeInformation information ->
+    for (SlimeInformation information : word.getInformations()) {
       String title = information.getTitle()
       if (!$registeredInformationTitles.contains(title)) {
         $registeredInformationTitles.add(title)
       }
     }
-    word.getVariations().each() { SlimeVariation variation ->
+    for (SlimeVariation variation : word.getVariations()) {
       String title = variation.getTitle()
       if (!$registeredVariationTitles.contains(title)) {
         $registeredVariationTitles.add(title)
       }
     }
-    word.getRelations().each() { SlimeRelation relation ->
+    for (SlimeRelation relation : word.getRelations()) {
       String title = relation.getTitle()
       if (!$registeredRelationTitles.contains(title)) {
         $registeredRelationTitles.add(title)

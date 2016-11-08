@@ -738,7 +738,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupOpenRegisteredDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $openRegisteredDictionaryMenu.getItems().clear()
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath != null) {
@@ -761,7 +761,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupRegisterCurrentDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $registerCurrentDictionaryMenu.getItems().clear()
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath == null) {

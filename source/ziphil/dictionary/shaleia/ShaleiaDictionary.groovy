@@ -36,7 +36,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     if ($changes.containsKey(convertedSearch)) {
-      $changes[convertedSearch].each() { String newName ->
+      for (String newName : $changes[convertedSearch]) {
         ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
         $suggestions[0].getPossibilities().add(possibility)
         $suggestions[0].update()
@@ -65,7 +65,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
       }
       if (searchEquivalent != null) {
         Boolean equivalentPredicate = false
-        equivalents.each() { String equivalent ->
+        for (String equivalent : equivalents) {
           if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
             equivalentPredicate = true
           }
@@ -109,8 +109,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
+    BufferedReader reader = BufferedReader.new(StringReader.new($changeData))
+    String line
     $changes.clear()
-    $changeData.eachLine() { String line ->
+    while ((line = reader.readLine()) != null) {
       Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
       if (matcher.matches()) {
         String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
@@ -120,6 +122,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
         $changes[oldName].add(matcher.group(3))
       }
     }
+    reader.close()
   }
 
   public ShaleiaWord emptyWord() {
@@ -157,7 +160,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
       File file = File.new($path)
       StringBuilder output = StringBuilder.new()
       $words.sort($sortedWords.getComparator())
-      $words.each() { ShaleiaWord word ->
+      for (ShaleiaWord word : $words) {
         output.append("* ").append(word.getUniqueName()).append("\n")
         output.append(word.getData().trim()).append("\n\n")
       }

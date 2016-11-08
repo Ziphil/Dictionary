@@ -26,7 +26,7 @@ public class ShaleiaSuggestionContentPaneCreator extends ContentPaneCreator<Shal
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(possibilityBox)
-    $word.getPossibilities().each() { ShaleiaPossibility possibility ->
+    for (ShaleiaPossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(possibilityBox, possibility.getName(), possibility.getPossibilityName())
     }
   }

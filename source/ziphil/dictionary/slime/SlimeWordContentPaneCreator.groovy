@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import java.util.Map.Entry
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -42,15 +43,18 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
     $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
     addNameNode(headBox, $word.getName())
     addTagNode(headBox, $word.getTags())
-    $word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
       String equivalentString = equivalent.getNames().join(", ")
       addEquivalentNode(equivalentBox, equivalent.getTitle(), equivalentString)
     }
-    $word.getInformations().each() { SlimeInformation information ->
+    for (SlimeInformation information : $word.getInformations()) {
       addInformationNode(informationBox, information.getTitle(), information.getText())
       hasInformation = true
     }
-    $word.getRelations().groupBy{relation -> relation.getTitle()}.each() { String title, List<SlimeRelation> relationGroup ->
+    Map<String, List<SlimeRelation>> groupedRelation = $word.getRelations().groupBy{relation -> relation.getTitle()}
+    for (Entry<String, List<SlimeRelation>> entry : groupedRelation) {
+      String title = entry.getKey()
+      List<SlimeRelation> relationGroup = entry.getValue()
       List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
       List<String> names = relationGroup.collect{relation -> relation.getName()}
       addRelationNode(relationBox, title, ids, names)
@@ -72,7 +76,7 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
   }
 
   private void addTagNode(HBox box, List<String> tags) {
-    tags.each() { String tag ->
+    for (String tag : tags) {
       Label tagText = Label.new(tag)
       Text spaceText = Text.new(" ")
       tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
@@ -113,7 +117,7 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     textFlow.getChildren().addAll(formerTitleText, titleText)
-    (0 ..< names.size()).each() { Integer i ->
+    for (Integer i : 0 ..< names.size()) {
       Integer id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)

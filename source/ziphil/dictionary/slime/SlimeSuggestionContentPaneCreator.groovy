@@ -26,7 +26,7 @@ public class SlimeSuggestionContentPaneCreator extends ContentPaneCreator<SlimeS
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
     $contentPane.getChildren().addAll(possibilityBox)
-    $word.getPossibilities().each() { SlimePossibility possibility ->
+    for (SlimePossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(possibilityBox, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
     }
   }

@@ -5,7 +5,6 @@ import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import ziphil.module.ThrowMarker
 
 
 @CompileStatic @Newify
@@ -20,19 +19,22 @@ public class PersonalDictionaryLoader extends Task<ObservableList<PersonalWord>>
 
   protected ObservableList<PersonalWord> call() {
     if ($path != null) {
-      try {
-        File file = File.new($path)
-        String input = file.getText()
-        Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
-        matcher.each() { List<String> matches ->
-          if (isCancelled()) {
-            throw ThrowMarker.new()
-          }
-          PersonalWord word = PersonalWord.new(matches[1], matches[7], matches[2], matches[3], matches[4].toInteger(), matches[5].toInteger(), matches[6].toInteger())
-          $words.add(word)
+      File file = File.new($path)
+      String input = file.getText()
+      Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
+      while (matcher.find()) {
+        if (isCancelled()) {
+          return null
         }
-      } catch (ThrowMarker marker) {
-        return null
+        String name = matcher.group(1)
+        String pronunciation = matcher.group(7)
+        String translation = matcher.group(2)
+        String usage = matcher.group(3)
+        Integer level = matcher.group(4).toInteger()
+        Integer memory = matcher.group(5).toInteger()
+        Integer modification = matcher.group(6).toInteger()
+        PersonalWord word = PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+        $words.add(word)
       }
     }
     return $words
