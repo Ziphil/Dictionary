@@ -7,8 +7,8 @@ import java.text.Normalizer
 @CompileStatic @Newify
 public class Strings {
 
-  private static final String ASCII = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
-  private static final String UNICODE = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
+  private static final String ASCII_CHARACTER = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
+  private static final String UNICODE_CHARACTER = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
 
   public static String modifyPunctuation(String string) {
     String result = string
@@ -39,9 +39,9 @@ public class Strings {
   public static String unaccent(String string) {
     StringBuilder result = StringBuilder.new()
     for (Integer i : 0 ..< string.length()) {
-      Integer position = UNICODE.indexOf(string.codePointAt(i))
+      Integer position = UNICODE_CHARACTER.indexOf(string.codePointAt(i))
       if (position > -1) {
-        result.append(ASCII.charAt(position))
+        result.append(ASCII_CHARACTER.charAt(position))
       } else {
         result.append(string.charAt(i))
       }
