@@ -21,9 +21,9 @@ import ziphil.module.Strings
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
 
   private ShaleiaDictionaryLoader $loader
+  private String $alphabetOrder
   private String $changeData
   private Map<String, List<String>> $changes = HashMap.new()
-  private String $alphabetOrder
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
 
@@ -309,6 +309,15 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public Integer totalSize() {
     return $words.size() - $systemWordSize
+  }
+
+  public String getAlphabetOrder() {
+    return $alphabetOrder
+  }
+
+  public void setAlphabetOrder(String alphabetOrder) {
+    $alphabetOrder = alphabetOrder
+    $isChanged = true
   }
 
   public String getChangeData() {
