@@ -24,6 +24,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
   private String $changeData
   private Map<String, List<String>> $changes = HashMap.new()
   private String $alphabetOrder
+  private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
@@ -239,6 +240,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     reader.close()
   }
 
+  private void calculateSystemWordSize() {
+    $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
+  }
+
   public ShaleiaWord emptyWord() {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     String data = "+ ${hairiaNumber} 〈不〉\n\n=〈〉"
@@ -263,6 +268,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
       $alphabetOrder = $loader.getAlphabetOrder()
       $words.addAll($loader.getValue())
       createChanges()
+      calculateSystemWordSize()
     }
     Thread thread = Thread.new(loader)
     thread.setDaemon(true)
@@ -299,6 +305,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     ShaleiaSuggestion suggestion = ShaleiaSuggestion.new()
     suggestion.setDictionary(this)
     $suggestions.add(suggestion)
+  }
+
+  public Integer totalSize() {
+    return $words.size() - $systemWordSize
   }
 
   public String getChangeData() {
