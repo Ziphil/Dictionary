@@ -14,8 +14,8 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
   private String $path
   private ShaleiaDictionary $dictionary
-  private String $changeData = ""
   private String $alphabetOrder = ""
+  private String $changeData = ""
 
   public ShaleiaDictionaryLoader(String path, ShaleiaDictionary dictionary) {
     $path = path
@@ -24,7 +24,8 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
 
   protected ObservableList<ShaleiaWord> call() {
     if ($path != null) {
-      BufferedReader reader = File.new($path).newReader("UTF-8")
+      File file = File.new($path)
+      BufferedReader reader = file.newReader("UTF-8")
       String currentName = null
       StringBuilder currentData = StringBuilder.new()
       String line
