@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.function.Consumer
 import java.util.regex.Matcher
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
@@ -29,6 +31,118 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     load()
     setupWords()
     setupSuggestions()
+  }
+
+  public void searchByName(String search, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    Boolean existsSuggestion = false
+    try {
+      Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
+      for (ShaleiaSuggestion suggestion : $suggestions) {
+        suggestion.getPossibilities().clear()
+      }
+      if (checkWholeSuggestion(search, convertedSearch)) {
+        existsSuggestion = true
+      }
+      $filteredWords.setPredicate() { ShaleiaWord word ->
+        if (isStrict) {
+          if (!word.getUniqueName().startsWith("\$")) {
+            String name = word.getName()
+            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+            if (checkSuggestion(word, search, convertedSearch)) {
+              existsSuggestion = true
+            }
+            if (search != "") {
+              if (searchesPrefix) {
+                return convertedName.startsWith(convertedSearch)
+              } else {
+                return convertedName == convertedSearch
+              }
+            } else {
+              return true
+            }
+          } else {
+            return search == "\$"
+          }
+        } else {
+          if (!word.getUniqueName().startsWith("\$")) {
+            Matcher matcher = pattern.matcher(word.getName())
+            return matcher.find()
+          } else {
+            return false
+          }
+        }
+      }
+      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
+        return existsSuggestion
+      }
+    } catch (PatternSyntaxException exception) {
+    }
+    $shufflableWords.unshuffle()
+  }
+
+  public void searchByEquivalent(String search, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    try {
+      Pattern pattern = Pattern.compile(search)
+      $filteredWords.setPredicate() { ShaleiaWord word ->
+        if (isStrict) {
+          if (!word.getUniqueName().startsWith("\$")) {
+            if (search != "") {
+              return word.getEquivalents().any() { String equivalent ->
+                if (searchesPrefix) {
+                  return equivalent.startsWith(search)
+                } else {
+                  return equivalent == search
+                }
+              }
+            } else {
+              return true
+            }
+          } else {
+            return false
+          }
+        } else {
+          if (!word.getUniqueName().startsWith("\$")) {
+            return word.getEquivalents().any() { String equivalent ->
+              Matcher matcher = pattern.matcher(equivalent)
+              return matcher.find()
+            }
+          } else {
+            return false
+          }
+        }
+      }
+      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
+        return false
+      }
+    } catch (PatternSyntaxException exception) {
+    }
+    $shufflableWords.unshuffle()
+  }
+
+  public void searchByContent(String search) {
+    try {
+      Pattern pattern = Pattern.compile(search)
+      $filteredWords.setPredicate() { ShaleiaWord word ->
+        if (!word.getUniqueName().startsWith("\$")) {     
+          Matcher matcher = pattern.matcher(word.getContent())
+          return matcher.find()
+        } else {
+          return false
+        }
+      }
+      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
+        return false
+      }
+    } catch (PatternSyntaxException exception) {
+    }
+    $shufflableWords.unshuffle()
   }
 
   protected Boolean checkWholeSuggestion(String search, String convertedSearch) {

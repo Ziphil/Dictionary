@@ -55,6 +55,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
       Matcher usageMatcher = line =~ /^U>\s*(.+)$/
       Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
       Matcher noteMatcher = line =~ /^N>\s*(.+)$/
+      Matcher taskMatcher = line =~ /^O>\s*(.+)$/
       Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
       Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
       if (headBox.getChildren().isEmpty()) {
@@ -97,6 +98,11 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
       if (noteMatcher.matches()) {
         String note = noteMatcher.group(1)
         addOtherNode(otherBox, "備考", note)
+        hasOther = true
+      }
+      if (taskMatcher.matches()) {
+        String task = taskMatcher.group(1)
+        addOtherNode(otherBox, "タスク", task)
         hasOther = true
       }
       if (exampleMatcher.matches()) {

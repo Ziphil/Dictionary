@@ -19,7 +19,7 @@ public class ShaleiaWord extends Word {
   }
 
   public void update(String uniqueName, String data) {
-    $name = uniqueName.replaceAll(/\+|~/, "")
+    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
     $uniqueName = uniqueName
     $data = data
     $content = uniqueName + "\n" + data
@@ -48,9 +48,10 @@ public class ShaleiaWord extends Word {
 
   public void createComparisonString(String order) {
     StringBuilder comparisonString = StringBuilder.new()
-    for (Integer i : 0 ..< $name.length()) {
-      if ($name[i] != "'") {
-        Integer position = order.indexOf($name.codePointAt(i))
+    for (Integer i : 0 ..< $uniqueName.length()) {
+      String character = $uniqueName[i]
+      if (character != "'" && character != "+" && character != "~") {
+        Integer position = order.indexOf($uniqueName.codePointAt(i))
         if (position > -1) {
           comparisonString.appendCodePoint(position + 174)
         } else {
