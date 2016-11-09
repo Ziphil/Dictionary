@@ -213,11 +213,9 @@ public class MainController extends PrimitiveController<Stage> {
     searchFunction.run()
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-    Integer hitWordSize = $dictionary.getWords().size()
-    Integer totalWordSize = $dictionary.getRawWords().size()
     $elapsedTimeLabel.setText(elapsedTime.toString())
-    $hitWordSizeLabel.setText(hitWordSize.toString())
-    $totalWordSizeLabel.setText(totalWordSize.toString())
+    $hitWordSizeLabel.setText($dictionary.hitSize().toString())
+    $totalWordSizeLabel.setText($dictionary.totalSize().toString())
     $wordList.scrollTo(0)
   }
 
@@ -492,7 +490,7 @@ public class MainController extends PrimitiveController<Stage> {
     }
     $dictionary = dictionary
     if ($dictionary != null) {
-      $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
+      $totalWordSizeLabel.setText($dictionary.totalSize().toString())
       $dictionaryNameLabel.setText($dictionary.getName())
       $wordList.setItems($dictionary.getWholeWords())
       $searchControl.setText("")

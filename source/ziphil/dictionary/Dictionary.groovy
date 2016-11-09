@@ -214,6 +214,14 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $shufflableWords.addListener(listener)
   }
 
+  public Integer hitSize() {
+    return $shufflableWords.size()
+  }
+
+  public Integer totalSize() {
+    return $words.size()
+  }
+
   public static Dictionary loadDictionary(File file) {
     if (file.exists() && file.isFile()) {
       Dictionary dictionary
