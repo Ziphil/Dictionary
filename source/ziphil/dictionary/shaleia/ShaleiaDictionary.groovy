@@ -164,6 +164,8 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
         output.append("* ").append(word.getUniqueName()).append("\n")
         output.append(word.getData().trim()).append("\n\n")
       }
+      output.append("* META-ALPHABET-ORDER\n\n")
+      output.append($alphabetOrder).append("\n\n")
       output.append("* META-CHANGE\n\n")
       output.append($changeData.trim()).append("\n\n")
       file.setText(output.toString(), "UTF-8")
