@@ -15,7 +15,7 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   private String $path
   private ShaleiaDictionary $dictionary
   private String $changeData = ""
-  private String $alphabetOrder = "sztdkgfvpbcqxjrlmnhyaâáàeêéèiîíìoôòuûù"
+  private String $alphabetOrder = ""
 
   public ShaleiaDictionaryLoader(String path, ShaleiaDictionary dictionary) {
     $path = path
@@ -46,12 +46,17 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
       add(currentName, currentData)
       reader.close()
     }
+    for (ShaleiaWord word : $words) {
+      word.createComparisonString($alphabetOrder)
+    }
     return $words
   }
 
   private void add(String currentName, StringBuilder currentData) {
     if (currentName != null) {
-      if (currentName == "META-CHANGE") {
+      if (currentName == "META-ALPHABET-ORDER") {
+        addAlphabetOrder(currentData)
+      } else if (currentName == "META-CHANGE") {
         addChangeData(currentData)
       } else {
         addWord(currentName, currentData)
@@ -62,20 +67,23 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   private void addWord(String currentName, StringBuilder currentData) {
     ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
     word.setDictionary($dictionary)
-    word.createComparisonString($alphabetOrder)
     $words.add(word)
+  }
+
+  private void addAlphabetOrder(StringBuilder currentData) {
+    $alphabetOrder = currentData.toString().trim().replaceAll(/^\-\s*/, "")
   }
 
   private void addChangeData(StringBuilder currentData) {
     $changeData = currentData.toString().replaceAll(/^\s*\n/, "")
   }
 
-  private String getChangeData() {
-    return $changeData
-  }
-
   public String getAlphabetOrder() {
     return $alphabetOrder
+  }
+
+  private String getChangeData() {
+    return $changeData
   }
 
 }
