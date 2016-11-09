@@ -85,6 +85,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordItem
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private Menu $searchMenu
   @FXML private HBox $footerBox
   @FXML private Label $dictionaryNameLabel
   @FXML private Label $hitWordSizeLabel
@@ -110,6 +111,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupSearchTypeControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupDebugMenu()
     setupWordListShortcuts()
     updateDictionaryToDefault()
   }
@@ -775,6 +777,21 @@ public class MainController extends PrimitiveController<Stage> {
       item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupDebugMenu() {
+    Boolean isDebugging = Setting.getInstance().isDebugging()
+    if (isDebugging) {
+      MenuItem item = MenuItem.new()
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/script_search.png"))
+      item.setText("スクリプト検索")
+      item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(KeyCodeCombination.new(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
+      item.setOnAction() {
+        searchScript()
+      }
+      $searchMenu.getItems().add(item)
     }
   }
 
