@@ -20,6 +20,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../css/main.css"/>
     <URL value="@../css/modification.css"/>
   </stylesheets>
@@ -46,7 +47,7 @@
       <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <Label text="変更履歴:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <TextArea fx:id="$changeDataControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextArea fx:id="$changeDataControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>
