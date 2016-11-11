@@ -762,12 +762,13 @@ public class MainController extends PrimitiveController<Stage> {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $registerCurrentDictionaryMenu.getItems().clear()
     for (Integer i : 0 ..< 10) {
+      Integer j = i
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath == null) {
         item.setText("辞書${(i + 1) % 10}に登録")
         item.setOnAction() {
-          registerCurrentDictionary(i)
+          registerCurrentDictionary(j)
         }
       } else {
         item.setText("登録済み")
