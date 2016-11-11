@@ -184,6 +184,7 @@ public class SettingController extends Controller<Boolean> {
 
   private void setupRegisteredDictionaryPane() {
     for (Integer i : 0 ..< 10) {
+      Integer j = i
       Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
@@ -195,10 +196,10 @@ public class SettingController extends Controller<Boolean> {
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
       browseButton.setOnAction() {
-        browseDictionary(i)
+        browseDictionary(j)
       }
       deregisterButton.setOnAction() {
-        deregisterDictionary(i)
+        deregisterDictionary(j)
       }
       innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
       innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
