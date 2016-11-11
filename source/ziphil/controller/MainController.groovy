@@ -492,12 +492,29 @@ public class MainController extends PrimitiveController<Stage> {
       }
     }
     $dictionary = dictionary
+    updateSearchStatuses()
+    updateLoader()
+    updateOnLinkClicked()
+    updateShowIndividualSettingItem()
+    search()
+  }
+
+  private void updateSearchStatuses() {
     if ($dictionary != null) {
       $totalWordSizeLabel.setText($dictionary.totalSize().toString())
       $dictionaryNameLabel.setText($dictionary.getName())
       $wordList.setItems($dictionary.getWholeWords())
-      $searchControl.setText("")
-      $searchControl.requestFocus()
+    } else {
+      $totalWordSizeLabel.setText("0")
+      $dictionaryNameLabel.setText("")
+      $wordList.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+    }
+    $searchControl.setText("")
+    $searchControl.requestFocus()
+  }
+
+  private void updateLoader() {
+    if ($dictionary != null) {
       Task<?> loader = $dictionary.getLoader()
       $loadingBox.visibleProperty().unbind()
       $progressIndicator.progressProperty().unbind()
@@ -509,6 +526,16 @@ public class MainController extends PrimitiveController<Stage> {
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
         failUpdateDictionary()
       }
+    } else {
+      $loadingBox.visibleProperty().unbind()
+      $loadingBox.setVisible(false)
+      $progressIndicator.progressProperty().unbind()
+      $progressIndicator.setProgress(0)
+    }
+  }
+
+  private void updateOnLinkClicked() {
+    if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         $dictionary.setOnLinkClicked() { String name ->
           ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
@@ -523,24 +550,19 @@ public class MainController extends PrimitiveController<Stage> {
           searchDetailBy(parameter)
         }
       }
+    }
+  }
+
+  private void updateShowIndividualSettingItem() {
+    if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
         $showIndividualSettingItem.setDisable(false)
       } else {
         $showIndividualSettingItem.setDisable(true)
       }
     } else {
-      ObservableList<Word> emptyWords = FXCollections.observableArrayList()
-      $totalWordSizeLabel.setText("0")
-      $dictionaryNameLabel.setText("")
-      $wordList.setItems(emptyWords)
-      $searchControl.setText("")
-      $searchControl.requestFocus()
-      $loadingBox.visibleProperty().unbind()
-      $loadingBox.setVisible(false)
-      $progressIndicator.progressProperty().unbind()
-      $progressIndicator.setProgress(0)
+      $showIndividualSettingItem.setDisable(true)
     }
-    search()
   }
 
   private void updateDictionaryToDefault() {
