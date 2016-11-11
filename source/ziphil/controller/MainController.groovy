@@ -83,6 +83,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $removeWordItem
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
+  @FXML private MenuItem $showIndividualSettingItem
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $searchMenu
@@ -522,6 +523,11 @@ public class MainController extends PrimitiveController<Stage> {
           searchDetailBy(parameter)
         }
       }
+      if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
+        $showIndividualSettingItem.setDisable(false)
+      } else {
+        $showIndividualSettingItem.setDisable(true)
+      }
     } else {
       ObservableList<Word> emptyWords = FXCollections.observableArrayList()
       $totalWordSizeLabel.setText("0")
@@ -645,24 +651,17 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showIndividualSetting() {
     if ($dictionary != null) {
-      if ($dictionary instanceof SlimeDictionary || $dictionary instanceof ShaleiaDictionary) {
-        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        nextStage.initModality(Modality.WINDOW_MODAL)
-        nextStage.initOwner($stage)
-        if ($dictionary instanceof SlimeDictionary) {
-          SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-          controller.prepare($dictionary)
-        } else if ($dictionary instanceof ShaleiaDictionary) {
-          ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
-          controller.prepare($dictionary)
-        }
-        Boolean isDone = nextStage.showAndWaitResult()
-      } else {
-        Dialog dialog = Dialog.new("通知", "この辞書形式に個別設定項目はありません。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
+      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      if ($dictionary instanceof SlimeDictionary) {
+        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      } else if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
       }
+      Boolean isDone = nextStage.showAndWaitResult()
     }
   }
 
