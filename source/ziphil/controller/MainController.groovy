@@ -657,7 +657,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showOfficialSite() {
     Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new("http://ziphil.s2.adexd.net/application/download/2.html")
+    URI uri = URI.new("http://ziphil.web.fc2.com/application/download/2.html")
     desktop.browse(uri)
   }
 
