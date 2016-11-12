@@ -685,6 +685,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void showIndividualSetting() {
     if ($dictionary != null) {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary) {
@@ -695,6 +696,11 @@ public class MainController extends PrimitiveController<Stage> {
         controller.prepare($dictionary)
       }
       Boolean isDone = nextStage.showAndWaitResult()
+      if (isDone != null && isDone) {
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
+      }
     }
   }
 
