@@ -38,11 +38,32 @@ public class SlimeWord extends Word {
     $informations = informations
     $variations = variations
     $relations = relations
-    for (SlimeEquivalent equivalent : rawEquivalents) {
-      $equivalents.addAll(equivalent.getNames())
-    }
     $isChanged = true
     $isSimpleChanged = true
+    updateOthers()
+  }
+
+  public void updateOthers() {
+    updateEquivalents()
+    updateContent()
+  }
+
+  private void updateEquivalents() {
+    for (SlimeEquivalent equivalent : $rawEquivalents) {
+      $equivalents.addAll(equivalent.getNames())
+    }
+  }
+
+  private void updateContent() {
+    StringBuilder content = StringBuilder.new()
+    for (SlimeEquivalent equivalent : $rawEquivalents) {
+      for (String equivalentName : equivalent.getNames()) {
+        content.append(equivalentName).append("\n")
+      }
+    }
+    for (SlimeInformation information : $informations) {
+      content.append(information.getText()).append("\n")
+    }
   }
 
   public void createContentPane() {
@@ -106,9 +127,6 @@ public class SlimeWord extends Word {
 
   public void setRawEquivalents(List<SlimeEquivalent> rawEquivalents) {
     $rawEquivalents = rawEquivalents
-    for (SlimeEquivalent equivalent : rawEquivalents) {
-      $equivalents.addAll(equivalent.getNames())
-    }
   }
 
   public List<String> getTags() {

@@ -23,7 +23,12 @@ public class ShaleiaWord extends Word {
     $uniqueName = uniqueName
     $data = data
     $content = uniqueName + "\n" + data
-    BufferedReader reader = BufferedReader.new(StringReader.new(data))
+    $isChanged = true
+    updateEquivalents()
+  }
+
+  public void updateEquivalents() {
+    BufferedReader reader = BufferedReader.new(StringReader.new($data))
     String line
     while ((line = reader.readLine()) != null) {
       Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
@@ -34,7 +39,6 @@ public class ShaleiaWord extends Word {
       }
     }
     reader.close()
-    $isChanged = true
   }
 
   public void createContentPane() {
