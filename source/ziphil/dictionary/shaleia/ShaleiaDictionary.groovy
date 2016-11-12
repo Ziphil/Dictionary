@@ -258,7 +258,11 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
   }
 
   public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
-    return copiedWord(oldWord)
+    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    String name = oldWord.getName()
+    String data = oldWord.getData().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}")
+    ShaleiaWord newWord = ShaleiaWord.new(name, data)
+    return newWord
   }
 
   private void load() {
