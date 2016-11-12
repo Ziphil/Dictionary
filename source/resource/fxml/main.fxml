@@ -50,12 +50,12 @@
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
         <Menu fx:id="$registerCurrentDictionaryMenu" text="開いている辞書を登録"/>
         <SeparatorMenuItem/>
-        <MenuItem text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
+        <MenuItem fx:id="$saveDictionaryItem" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
             <ImageView><Image url="@../icon/save.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
+        <MenuItem fx:id="$saveAndRenameDictionaryItem" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit"/>
       </Menu>
@@ -83,10 +83,10 @@
         </MenuItem>
       </Menu>
       <Menu text="ツール">
-        <MenuItem text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
-        <MenuItem text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I"/>
-        <MenuItem text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
-        <MenuItem text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
+        <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
+        <MenuItem fx:id="$addInheritedWordItem" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I"/>
+        <MenuItem fx:id="$modifyWordItem" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
+        <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$showIndividualSettingItem" text="辞書の個別設定" onAction="#showIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
@@ -178,10 +178,10 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$addWordItem" text="新規作成"/>
-        <MenuItem fx:id="$addInheritedWordItem" text="この単語から新規作成"/>
-        <MenuItem fx:id="$modifyWordItem" text="編集"/>
-        <MenuItem fx:id="$removeWordItem" text="削除"/>        
+        <MenuItem fx:id="$addWordContextItem" text="新規作成"/>
+        <MenuItem fx:id="$addInheritedWordContextItem" text="この単語から新規作成"/>
+        <MenuItem fx:id="$modifyWordContextItem" text="編集"/>
+        <MenuItem fx:id="$removeWordContextItem" text="削除"/>        
       </items>
     </ContextMenu>
   </fx:define>

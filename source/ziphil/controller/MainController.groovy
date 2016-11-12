@@ -79,12 +79,18 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   @FXML private ContextMenu $editMenu
-  @FXML private MenuItem $modifyWordItem
-  @FXML private MenuItem $removeWordItem
+  @FXML private MenuItem $saveDictionaryItem
+  @FXML private MenuItem $saveAndRenameDictionaryItem
+  @FXML private MenuItem $searchDetailItem
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
-  @FXML private MenuItem $searchDetailItem
+  @FXML private MenuItem $modifyWordItem
+  @FXML private MenuItem $removeWordItem
   @FXML private MenuItem $showIndividualSettingItem
+  @FXML private MenuItem $addWordContextItem
+  @FXML private MenuItem $addInheritedWordContextItem
+  @FXML private MenuItem $modifyWordContextItem
+  @FXML private MenuItem $removeWordContextItem
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $searchMenu
@@ -553,6 +559,12 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateMenuItems() {
     if ($dictionary != null) {
+      $saveDictionaryItem.setDisable(false)
+      $saveAndRenameDictionaryItem.setDisable(false)
+      $addWordItem.setDisable(false)
+      $addInheritedWordItem.setDisable(false)
+      $modifyWordItem.setDisable(false)
+      $removeWordItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
         $searchDetailItem.setDisable(false)
         $showIndividualSettingItem.setDisable(false)
@@ -561,6 +573,12 @@ public class MainController extends PrimitiveController<Stage> {
         $showIndividualSettingItem.setDisable(true)
       }
     } else {
+      $saveDictionaryItem.setDisable(true)
+      $saveAndRenameDictionaryItem.setDisable(true)
+      $addWordItem.setDisable(true)
+      $addInheritedWordItem.setDisable(true)
+      $modifyWordItem.setDisable(true)
+      $removeWordItem.setDisable(true)
       $searchDetailItem.setDisable(true)
       $showIndividualSettingItem.setDisable(true)
     }
@@ -717,16 +735,16 @@ public class MainController extends PrimitiveController<Stage> {
         }
         if (event.getButton() == MouseButton.SECONDARY) {
           cell.setContextMenu($editMenu)
-          $modifyWordItem.setOnAction() {
+          $modifyWordContextItem.setOnAction() {
             modifyWord(cell.getItem())
           }
-          $removeWordItem.setOnAction() {
+          $removeWordContextItem.setOnAction() {
             removeWord(cell.getItem())
           }
-          $addWordItem.setOnAction() {
+          $addWordContextItem.setOnAction() {
             addWord()
           }
-          $addInheritedWordItem.setOnAction() {
+          $addInheritedWordContextItem.setOnAction() {
             addInheritedWord(cell.getItem())
           }
         }
