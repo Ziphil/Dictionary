@@ -30,6 +30,7 @@ public class ShaleiaWord extends Word {
   public void updateEquivalents() {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
     String line
+    $equivalents.clear()
     while ((line = reader.readLine()) != null) {
       Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
       if (matcher.matches()) {

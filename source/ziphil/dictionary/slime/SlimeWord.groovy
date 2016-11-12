@@ -49,6 +49,7 @@ public class SlimeWord extends Word {
   }
 
   private void updateEquivalents() {
+    $equivalents.clear()
     for (SlimeEquivalent equivalent : $rawEquivalents) {
       $equivalents.addAll(equivalent.getNames())
     }
