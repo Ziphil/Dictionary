@@ -80,11 +80,11 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ToggleButton $searchTypeControl
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
-  @FXML private Menu $searchMenu
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
   @FXML private MenuItem $searchDetailItem
+  @FXML private MenuItem $searchScriptItem
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
@@ -119,7 +119,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupSearchTypeControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
-    setupDebugMenu()
+    setupDebug()
     setupWordListShortcuts()
     updateDictionaryToDefault()
   }
@@ -565,6 +565,7 @@ public class MainController extends PrimitiveController<Stage> {
       $addInheritedWordItem.setDisable(false)
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
+      $searchScriptItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
         $searchDetailItem.setDisable(false)
         $showIndividualSettingItem.setDisable(false)
@@ -580,6 +581,7 @@ public class MainController extends PrimitiveController<Stage> {
       $modifyWordItem.setDisable(true)
       $removeWordItem.setDisable(true)
       $searchDetailItem.setDisable(true)
+      $searchScriptItem.setDisable(true)
       $showIndividualSettingItem.setDisable(true)
     }
   }
@@ -821,18 +823,10 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupDebugMenu() {
+  private void setupDebug() {
     Boolean isDebugging = Setting.getInstance().isDebugging()
-    if (isDebugging) {
-      MenuItem item = MenuItem.new()
-      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/script_search.png"))
-      item.setText("スクリプト検索")
-      item.setGraphic(ImageView.new(icon))
-      item.setAccelerator(KeyCodeCombination.new(KeyCode.U, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
-      item.setOnAction() {
-        searchScript()
-      }
-      $searchMenu.getItems().add(item)
+    if (!isDebugging) {
+      $searchScriptItem.setVisible(false)
     }
   }
 
