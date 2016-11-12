@@ -93,6 +93,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
     }
     for (SlimeWord word : $words) {
       word.createComparisonString($alphabetOrder)
+      word.updateOthers()
     }
     return $words
   }

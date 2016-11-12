@@ -64,6 +64,7 @@ public class SlimeWord extends Word {
     for (SlimeInformation information : $informations) {
       content.append(information.getText()).append("\n")
     }
+    $content = content.toString()
   }
 
   public void createContentPane() {
