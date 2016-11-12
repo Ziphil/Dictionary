@@ -78,6 +78,9 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
+  @FXML private Menu $openRegisteredDictionaryMenu
+  @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private Menu $searchMenu
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
@@ -91,9 +94,6 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
   @FXML private MenuItem $removeWordContextItem
-  @FXML private Menu $openRegisteredDictionaryMenu
-  @FXML private Menu $registerCurrentDictionaryMenu
-  @FXML private Menu $searchMenu
   @FXML private HBox $footerBox
   @FXML private Label $dictionaryNameLabel
   @FXML private Label $hitWordSizeLabel
