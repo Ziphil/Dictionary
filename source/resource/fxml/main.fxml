@@ -76,7 +76,7 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
+        <MenuItem fx:id="$searchDetailItem" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
             <ImageView><Image url="@../icon/detail_search.png"/></ImageView>
           </graphic>

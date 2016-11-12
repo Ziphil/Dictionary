@@ -83,6 +83,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $removeWordItem
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
+  @FXML private MenuItem $searchDetailItem
   @FXML private MenuItem $showIndividualSettingItem
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
@@ -168,11 +169,6 @@ public class MainController extends PrimitiveController<Stage> {
             $dictionary.searchDetail(parameter) 
           }
         }
-      } else {
-        Dialog dialog = Dialog.new("通知", "この辞書形式では高度な検索をすることはできません。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
       }
     }
   }
@@ -495,7 +491,7 @@ public class MainController extends PrimitiveController<Stage> {
     updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
-    updateShowIndividualSettingItem()
+    updateMenuItems()
     search()
   }
 
@@ -553,14 +549,17 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void updateShowIndividualSettingItem() {
+  private void updateMenuItems() {
     if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
+        $searchDetailItem.setDisable(false)
         $showIndividualSettingItem.setDisable(false)
       } else {
+        $searchDetailItem.setDisable(true)
         $showIndividualSettingItem.setDisable(true)
       }
     } else {
+      $searchDetailItem.setDisable(true)
       $showIndividualSettingItem.setDisable(true)
     }
   }
