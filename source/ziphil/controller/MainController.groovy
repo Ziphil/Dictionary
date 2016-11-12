@@ -255,8 +255,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void changeSearchType() {
     if (!$searchTypeControl.isDisable()) {
       $searchTypeControl.setSelected(!$searchTypeControl.isSelected())
+      search(true)
     }
-    search(true)
   }
 
   @FXML
