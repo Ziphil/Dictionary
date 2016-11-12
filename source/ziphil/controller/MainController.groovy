@@ -118,31 +118,33 @@ public class MainController extends PrimitiveController<Stage> {
     updateDictionaryToDefault()
   }
 
-  @FXML
-  private void search(KeyEvent event) {
+  private void search(Boolean forcesSearch) {
     if ($dictionary != null) {
       String search = $searchControl.getText()
       String searchMode = $searchModeControl.getValue()
       Boolean isStrict = $searchTypeControl.getText() == "完全一致"
-      if (search != $previousSearch) {
-        if (event == null || event.getCode() != KeyCode.ENTER) {
-          measureDictionaryStatus() {
-            if (searchMode == "単語") {
-              $dictionary.searchByName(search, isStrict)
-            } else if (searchMode == "訳語") {
-              $dictionary.searchByEquivalent(search, isStrict)
-            } else if (searchMode == "全文") {
-              $dictionary.searchByContent(search)
-            }
+      if (forcesSearch || search != $previousSearch) {
+        measureDictionaryStatus() {
+          if (searchMode == "単語") {
+            $dictionary.searchByName(search, isStrict)
+          } else if (searchMode == "訳語") {
+            $dictionary.searchByEquivalent(search, isStrict)
+          } else if (searchMode == "全文") {
+            $dictionary.searchByContent(search)
           }
-          $previousSearch = search
         }
+        $previousSearch = search
       }
     }
   }
 
+  @FXML
+  private void search(KeyEvent event) {
+    search(false)
+  }
+
   private void search() {
-    search(null)
+    search(false)
   }
 
   @FXML
@@ -222,7 +224,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void changeSearchMode() {
     $hitWordSizeLabel.setText($totalWordSizeLabel.getText())
     $searchControl.requestFocus()
-    search()
+    search(true)
   }
 
   @FXML
@@ -253,7 +255,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void toggleSearchType() {
     $searchControl.requestFocus()
-    search()
+    search(true)
   }
 
   private void modifyWord(Word word) {
@@ -492,7 +494,7 @@ public class MainController extends PrimitiveController<Stage> {
     updateLoader()
     updateOnLinkClicked()
     updateMenuItems()
-    search()
+    search(true)
   }
 
   private void updateSearchStatuses() {
