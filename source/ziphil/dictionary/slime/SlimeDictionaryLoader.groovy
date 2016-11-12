@@ -87,7 +87,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
           $externalData.put(topFieldName, parser.readValueAsTree())
         }
       }
-      $validMinId ++
       parser.close()
       stream.close()
     }
@@ -95,6 +94,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       word.createComparisonString($alphabetOrder)
       word.updateOthers()
     }
+    $validMinId ++
     return $words
   }
 
