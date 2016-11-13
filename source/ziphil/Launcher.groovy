@@ -8,8 +8,8 @@ import ziphil.main.MainApplication
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"
-  public static final String VERSION = "1.0.0"
-  public static final String DATE = "1742"
+  public static final String VERSION = "1.1.0"
+  public static final String DATE = "1757"
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -40,12 +40,14 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1. 1. 0 | 検索結果をシャッフルする機能を追加。
+//          | OneToMany 形式で全文検索しても何も表示されない不具合を修正。
 //  1. 0. 0 | 多くの機能の細かな挙動を改善。
 //          | 多くの細かな不具合を修正。
 //  0. 8. 1 | OneToMany 形式の読み込みや編集を高速化。
 //  0. 8. 0 | ファイルをドラッグアンドドロップで開く機能を追加。
 //          | 現在開いている辞書を登録辞書に登録する機能を追加。
-//  0. 7. 2 | 単語リストの空白部分をダブルクリックするとエラーになる不具合を修正
+//  0. 7. 2 | 単語リストの空白部分をダブルクリックするとエラーになる不具合を修正。
 //  0. 7. 1 | 単語の表示順序が正しくない不具合を修正。
 //  0. 7. 0 | OneToMany 形式の項目の順番を入れ替える機能を追加。
 //          | OneToMany 形式を表示する際のアルファベット順を設定する機能を追加。
