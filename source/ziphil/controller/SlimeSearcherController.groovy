@@ -9,8 +9,8 @@ import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeSearchParameter
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeSearchParameter
 
 
 @CompileStatic @Newify
@@ -45,7 +45,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    setupTitles()
+    setupTitleControls()
   }
 
   @FXML
@@ -78,7 +78,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     $stage.close(parameter)
   }
 
-  private void setupTitles() {
+  private void setupTitleControls() {
     $equivalentTitleControl.getItems().addAll($dictionary.getRegisteredEquivalentTitles())
     $informationTitleControl.getItems().addAll($dictionary.getRegisteredInformationTitles())
     $tagControl.getItems().addAll($dictionary.getRegisteredTags())

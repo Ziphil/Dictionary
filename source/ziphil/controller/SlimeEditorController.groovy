@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.Map.Entry
 import javafx.application.Platform
 import javafx.event.EventTarget
 import javafx.fxml.FXML
@@ -28,12 +29,12 @@ import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeEquivalent
-import ziphil.dictionary.SlimeInformation
-import ziphil.dictionary.SlimeRelation
-import ziphil.dictionary.SlimeVariation
-import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeEquivalent
+import ziphil.dictionary.slime.SlimeInformation
+import ziphil.dictionary.slime.SlimeRelation
+import ziphil.dictionary.slime.SlimeVariation
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 
 
@@ -85,21 +86,24 @@ public class SlimeEditorController extends Controller<Boolean> {
     $dictionary = dictionary
     $idControl.setText(word.getId().toString())
     $nameControl.setText(word.getName())
-    word.getTags().each() { String tag ->
+    for (String tag : word.getTags()) {
       addTagControl(tag, dictionary.getRegisteredTags())
     }
-    word.getRawEquivalents().each() { SlimeEquivalent equivalent ->
+    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
       String nameString = equivalent.getNames().join(", ")
       addEquivalentControl(equivalent.getTitle(), nameString, dictionary.getRegisteredEquivalentTitles())
     }
-    word.getInformations().each() { SlimeInformation information ->
+    for (SlimeInformation information : word.getInformations()) {
       addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
-    word.getVariations().groupBy{variation -> variation.getTitle()}.each() { String title, List<SlimeVariation> variationGroup ->
+    Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{variation -> variation.getTitle()}
+    for (Entry<String, List<SlimeVariation>> entry : groupedVariations) {
+      String title = entry.getKey()
+      List<SlimeVariation> variationGroup = entry.getValue()
       String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
       addVariationControl(title, nameString, dictionary.getRegisteredVariationTitles())
     }
-    word.getRelations().each() { SlimeRelation relation ->
+    for (SlimeRelation relation : word.getRelations()) {
       addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.getRegisteredRelationTitles())
     }
     if ($informationTextControls.isEmpty()) {
@@ -133,36 +137,36 @@ public class SlimeEditorController extends Controller<Boolean> {
         List<SlimeInformation> informations = ArrayList.new()
         List<SlimeVariation> variations = ArrayList.new()
         List<SlimeRelation> relations = ArrayList.new()
-        (0 ..< $tagControls.size()).each() { Integer i ->
+        for (Integer i : 0 ..< $tagControls.size()) {
           String tag = $tagControls[i].getValue()
           if (tag != "") {
             tags.add(tag)
           }
         }
-        (0 ..< $equivalentTitleControls.size()).each() { Integer i ->
+        for (Integer i : 0 ..< $equivalentTitleControls.size()) {
           String title = $equivalentTitleControls[i].getValue()
           List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
           if (!equivalentNames.isEmpty()) {
             rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
           }
         }
-        (0 ..< $informationTitleControls.size()).each() { Integer i ->
+        for (Integer i : 0 ..< $informationTitleControls.size()) {
           String title = $informationTitleControls[i].getValue()
           String text = $informationTextControls[i].getText()
           if (text != "") {
             informations.add(SlimeInformation.new(title, text))
           }
         }
-        (0 ..< $variationTitleControls.size()).each() { Integer i ->
+        for (Integer i : 0 ..< $variationTitleControls.size()) {
           String title = $variationTitleControls[i].getValue()
           List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
-          variationNames.each() { String variationName ->
+          for (String variationName : variationNames) {
             if (variationName != "") {
               variations.add(SlimeVariation.new(title, variationName))
             }
           }
         }
-        (0 ..< $relationTitleControls.size()).each() { Integer i ->
+        for (Integer i : 0 ..< $relationTitleControls.size()) {
           String title = $relationTitleControls[i].getValue()
           SlimeRelation relation = $relations[i]
           if (relation != null) {
@@ -669,7 +673,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     if (!showsSlimeId) {
       $gridPane.getChildren().remove($idControl)
       $gridPane.getChildren().remove($idLabel)
-      $gridPane.getChildren().each() { Node node ->
+      for (Node node : $gridPane.getChildren()) {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }

@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 
@@ -9,12 +9,12 @@ public class SlimeVariation {
   private String $title = ""
   private String $name = ""
 
-  public SlimeVariation() {
-  }
-
   public SlimeVariation(String title, String name) {
     $title = title
     $name = name
+  }
+
+  public SlimeVariation() {
   }
 
   public String getTitle() {

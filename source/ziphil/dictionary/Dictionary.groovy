@@ -1,6 +1,9 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import groovy.lang.Binding as GroovyBinding
+import groovy.lang.GroovyShell
+import groovy.lang.Script
 import java.util.concurrent.Callable
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -12,6 +15,10 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
+import ziphil.custom.ShufflableList
+import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 
@@ -24,10 +31,12 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected FilteredList<W> $filteredWords
   protected SortedList<W> $sortedWords
+  protected ShufflableList<W> $shufflableWords
   protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
   private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
+  protected Boolean $isChanged = false
 
   public Dictionary(String name, String path) {
     $name = name
@@ -43,30 +52,26 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     Boolean searchesPrefix = setting.getSearchesPrefix()
     Boolean existsSuggestion = false
     try {
-      Pattern pattern = Pattern.compile(search)
-      $suggestions.each() { S suggestion ->
+      Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
+      for (S suggestion : $suggestions) {
         suggestion.getPossibilities().clear()
+      }
+      if (checkWholeSuggestion(search, convertedSearch)) {
+        existsSuggestion = true
       }
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
-          String newName = word.getName()
-          String newSearch = search
-          if (ignoresAccent) {
-            newName = Strings.unaccent(newName)
-            newSearch = Strings.unaccent(newSearch)
-          }
-          if (ignoresCase) {
-            newName = Strings.toLowerCase(newName)
-            newSearch = Strings.toLowerCase(newSearch)
-          }
-          if (checkSuggestion(word, search)) {
+          String name = word.getName()
+          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+          if (checkSuggestion(word, search, convertedSearch)) {
             existsSuggestion = true
           }
           if (search != "") {
             if (searchesPrefix) {
-              return newName.startsWith(newSearch)
+              return convertedName.startsWith(convertedSearch)
             } else {
-              return newName == newSearch
+              return convertedName == convertedSearch
             }
           } else {
             return true
@@ -81,6 +86,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
   }
 
   public void searchByEquivalent(String search, Boolean isStrict) {
@@ -113,6 +119,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
   }
 
   public void searchByContent(String search) {
@@ -127,17 +134,58 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       }
     } catch (PatternSyntaxException exception) {
     }
+    $shufflableWords.unshuffle()
   }
 
-  protected Boolean checkSuggestion(W word, String search) {
+  public void searchScript(String script) {
+    GroovyShell shell = GroovyShell.new()
+    Script parsedScript = shell.parse(script)
+    $filteredWords.setPredicate() { W word ->
+      try {
+        GroovyBinding binding = GroovyBinding.new()
+        binding.setVariable("word", word)
+        parsedScript.setBinding(binding)
+        Object result = parsedScript.run()
+        if (result) {
+          return true
+        } else {
+          return false
+        }
+      } catch (Exception exception) {
+        return false
+      }
+    }
+    $filteredSuggestions.setPredicate() { S suggestion ->
+      return false
+    }
+    $shufflableWords.unshuffle()
+  }
+
+  public void shuffleWords() {
+    $shufflableWords.shuffle()
+  }
+
+  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
     return false
   }
 
-  public abstract void modifyWord(W oldWord, W newWord)
+  protected Boolean checkSuggestion(W word, String search, String convertedSearch) {
+    return false
+  }
 
-  public abstract void addWord(W word)
+  public void modifyWord(W oldWord, W newWord) {
+    $isChanged = true
+  }
 
-  public abstract void removeWord(W word)
+  public void addWord(W word) {
+    $words.add(word)
+    $isChanged = true
+  }
+
+  public void removeWord(W word) {
+    $words.remove(word)
+    $isChanged = true
+  }
 
   public abstract W emptyWord()
 
@@ -150,6 +198,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords)
+    $shufflableWords = ShufflableList.new($sortedWords)
     $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
   }
@@ -158,10 +207,19 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     ListChangeListener<?> listener = (ListChangeListener){ Change<?> change ->
       $wholeWords.clear()
       $wholeWords.addAll($sortedSuggestions)
-      $wholeWords.addAll($sortedWords)
+      $wholeWords.addAll($shufflableWords)
     }
     $filteredWords.addListener(listener)
     $filteredSuggestions.addListener(listener)
+    $shufflableWords.addListener(listener)
+  }
+
+  public Integer hitSize() {
+    return $shufflableWords.size()
+  }
+
+  public Integer totalSize() {
+    return $words.size()
   }
 
   public static Dictionary loadDictionary(File file) {
@@ -196,6 +254,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
+    dictionary.setChanged(true)
     return dictionary
   }
 
@@ -232,11 +291,19 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   }
 
   public ObservableList<W> getWords() {
-    return $sortedWords
+    return $shufflableWords
   }
 
   public ObservableList<W> getRawWords() {
     return $words
+  }
+
+  public Boolean isChanged() {
+    return $isChanged
+  }
+
+  public void setChanged(Boolean isChanged) {
+    $isChanged = isChanged
   }
 
   public abstract Task<?> getLoader()

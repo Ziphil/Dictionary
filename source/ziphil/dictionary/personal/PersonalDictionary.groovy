@@ -1,8 +1,10 @@
-package ziphil.dictionary
+package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Suggestion
 
 
 @CompileStatic @Newify
@@ -18,14 +20,17 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
     newWord.createContentPane()
+    $isChanged = true
   }
 
   public void addWord(PersonalWord word) {
     $words.add(word)
+    $isChanged = true
   }
 
   public void removeWord(PersonalWord word) {
     $words.remove(word)
+    $isChanged = true
   }
 
   public PersonalWord emptyWord() {
@@ -59,19 +64,22 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
   }
 
   public void save() {
-    File file = File.new($path)
-    StringBuilder output = StringBuilder.new()
-    output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
-    $words.each() { PersonalWord word ->
-      output.append("\"" + word.getName() + "\",")
-      output.append("\"" + word.getTranslation() + "\",")
-      output.append("\"" + word.getUsage() + "\",")
-      output.append(word.getLevel().toString() + ",")
-      output.append(word.getMemory().toString() + ",")
-      output.append(word.getModification().toString() + ",")
-      output.append("\"" + word.getPronunciation() + "\"\n")
+    if ($path != null) {
+      File file = File.new($path)
+      StringBuilder output = StringBuilder.new()
+      output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
+      for (PersonalWord word : $words) {
+        output.append("\"").append(word.getName()).append("\",")
+        output.append("\"").append(word.getTranslation()).append("\",")
+        output.append("\"").append(word.getUsage()).append("\",")
+        output.append(word.getLevel().toString()).append(",")
+        output.append(word.getMemory().toString()).append(",")
+        output.append(word.getModification().toString()).append(",")
+        output.append("\"").append(word.getPronunciation()).append("\"\n")
+      }
+      file.setText(output.toString(), "UTF-8")
     }
-    file.setText(output.toString(), "UTF-8")
+    $isChanged = false
   }
 
   private void setupWords() {

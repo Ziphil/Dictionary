@@ -10,7 +10,7 @@ public class IntegerStringConverter extends StringConverter<Integer> {
   public Integer fromString(String string) {
     StringBuilder result = StringBuilder.new()
     Boolean isSignAppended = false
-    (0 ..< string.length()).each() { Integer i ->
+    for (Integer i : 0 ..< string.length()) {
       String character = string[i]
       if (!isSignAppended && character == "-") {
         isSignAppended = true

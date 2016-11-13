@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 
@@ -9,12 +9,12 @@ public class SlimeEquivalent {
   private String $title = ""
   private List<String> $names = ArrayList.new()
 
-  public SlimeEquivalent() {
-  }
-
   public SlimeEquivalent(String title, List<String> names) {
     $title = title
     $names = names
+  }
+
+  public SlimeEquivalent() {
   }
 
   public String getTitle() {

@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 
@@ -10,13 +10,13 @@ public class SlimeRelation {
   private Integer $id = -1
   private String $name = ""
 
-  public SlimeRelation() {
-  }
-
   public SlimeRelation(String title, Integer id, String name) {
     $title = title
     $id = id
     $name = name
+  }
+
+  public SlimeRelation() {
   }
 
   public String getTitle() {

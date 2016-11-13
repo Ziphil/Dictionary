@@ -23,7 +23,7 @@ public class IntegerUnaryOperator implements UnaryOperator<Change> {
       } else {
         hasSign = controlText.startsWith("-")
       }
-      (0 ..< text.length()).each() { Integer i ->
+      for (Integer i : 0 ..< text.length()) {
         String character = text[i]
         if (hasSign) {
           if (change.getRangeStart() != 0 && character >= "0" && character <= "9") {

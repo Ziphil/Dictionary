@@ -7,7 +7,7 @@ import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.ShaleiaSearchParameter
+import ziphil.dictionary.shaleia.ShaleiaSearchParameter
 
 
 @CompileStatic @Newify

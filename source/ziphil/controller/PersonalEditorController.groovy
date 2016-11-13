@@ -15,7 +15,7 @@ import javafx.scene.input.KeyEvent
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.PersonalWord
+import ziphil.dictionary.personal.PersonalWord
 import ziphil.module.Setting
 
 

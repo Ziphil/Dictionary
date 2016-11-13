@@ -62,10 +62,10 @@ public class FileChooser extends VBox {
   private void initialize() {
     setupDirectoryTree()
     setupFileList()
-    setupDirectory()
-    setupFile()
+    setupDirectoryControl()
+    setupFileControl()
     setupSplitPane()
-    setupFileTypes()
+    setupFileTypeControl()
     bindSelectedFile()
   }
 
@@ -113,7 +113,7 @@ public class FileChooser extends VBox {
   @ReturnVoidClosure
   private void setupDirectoryTree() {
     DirectoryItem root = DirectoryItem.new(null)
-    File.listRoots().each() { File file ->
+    for (File file : File.listRoots()) {
       root.getChildren().add(DirectoryItem.new(file))
     }
     $directoryTree.setRoot(root)
@@ -148,7 +148,7 @@ public class FileChooser extends VBox {
       if (directory != null) {
         File[] innerFiles = $currentDirectory.get().listFiles()
         if (innerFiles != null) {
-          innerFiles.each() { File innerFile ->
+          for (File innerFile : innerFiles) {
             if ($showsHidden.get() || !innerFile.isHidden()) {
               if (innerFile.isDirectory() || $fileTypeControl.getValue().accepts(innerFile)) {
                 files.add(innerFile)
@@ -168,20 +168,20 @@ public class FileChooser extends VBox {
     $splitPane.setDividerPositions(0.3)
   }
 
-  private void setupDirectory() {
+  private void setupDirectoryControl() {
     $directoryControl.setOnAction() {
       File file = File.new($directoryControl.getText())
       changeCurrentDirectory(file)
     }
   }
 
-  private void setupFile() {
+  private void setupFileControl() {
     Platform.runLater() {
       $fileControl.requestFocus()
     }
   }
 
-  private void setupFileTypes() {
+  private void setupFileTypeControl() {
     Callable<ObservableList<ExtensionFilter>> function = (Callable){
       ObservableList<ExtensionFilter> items = FXCollections.observableArrayList()
       items.add(DEFAULT_EXTENSION_FILTER)

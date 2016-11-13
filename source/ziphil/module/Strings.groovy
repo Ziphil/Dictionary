@@ -7,8 +7,8 @@ import java.text.Normalizer
 @CompileStatic @Newify
 public class Strings {
 
-  private static final String ASCII = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
-  private static final String UNICODE = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
+  private static final String ASCII_CHARACTER = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
+  private static final String UNICODE_CHARACTER = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
 
   public static String modifyPunctuation(String string) {
     String result = string
@@ -24,7 +24,7 @@ public class Strings {
 
   public static String escapeUnicode(String string) {
     StringBuilder result = StringBuilder.new()
-    (0 ..< string.length()).each() { Integer i ->
+    for (Integer i : 0 ..< string.length()) {
       String character = string[i]
       if (!(character ==~ /^\p{ASCII}$/)) {
         String escapedCharacter = String.format("\\u%04x", string.codePointAt(i))
@@ -38,10 +38,10 @@ public class Strings {
 
   public static String unaccent(String string) {
     StringBuilder result = StringBuilder.new()
-    (0 ..< string.length()).each() { Integer i ->
-      Integer position = UNICODE.indexOf(string.codePointAt(i))
+    for (Integer i : 0 ..< string.length()) {
+      Integer position = UNICODE_CHARACTER.indexOf(string.codePointAt(i))
       if (position > -1) {
-        result.append(ASCII.charAt(position))
+        result.append(ASCII_CHARACTER.charAt(position))
       } else {
         result.append(string.charAt(i))
       }
@@ -51,6 +51,17 @@ public class Strings {
 
   public static String toLowerCase(String string) {
     String result = string.toLowerCase()
+    return result
+  }
+
+  public static String convert(String string, Boolean ignoresAccent, Boolean ignoresCase) {
+    String result = string
+    if (ignoresAccent) {
+      result = Strings.unaccent(result)
+    }
+    if (ignoresCase) {
+      result = Strings.toLowerCase(result)
+    }
     return result
   }
 

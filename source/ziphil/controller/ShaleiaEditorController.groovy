@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.ShaleiaWord
+import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
 
 

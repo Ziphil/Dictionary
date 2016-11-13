@@ -14,8 +14,8 @@
   -fx-font-weight: bold;
 }
 
-#dictionary-list .shaleia-whole-class,
-#dictionary-list .shaleia-local-class,
+#dictionary-list .shaleia-total-part,
+#dictionary-list .shaleia-part,
 #dictionary-list .slime-tag,
 #dictionary-list .slime-equivalent-title {
   -fx-font-size: 0.8em;
@@ -26,8 +26,8 @@
   -fx-margin: 0px 5px 0px 0px;
 }
 
-#dictionary-list:focused .list-cell:filled:selected .shaleia-whole-class,
-#dictionary-list:focused .list-cell:filled:selected .shaleia-local-class,
+#dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
+#dictionary-list:focused .list-cell:filled:selected .shaleia-part,
 #dictionary-list:focused .list-cell:filled:selected .slime-tag,
 #dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title {
   -fx-border-color: derive(-fx-selection-bar, 50%);

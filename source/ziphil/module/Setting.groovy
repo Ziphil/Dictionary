@@ -1,5 +1,6 @@
 package ziphil.module
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -13,6 +14,7 @@ import ziphil.Launcher
 @CompileStatic @Newify
 public class Setting {
 
+  private static final String CORRECT_PASSWORD = "fkdocwpvmdcaskex"
   private static final String SETTING_PATH = "data/setting/setting.zpdt"
   private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
   public static final String CUSTOM_STYLESHEET_URL = createCustomStylesheetURL()
@@ -34,6 +36,7 @@ public class Setting {
   private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
+  private String $password = ""
 
   public void save() {
     saveSetting()
@@ -89,6 +92,11 @@ public class Setting {
   public static String createCustomStylesheetURL() {
     URL url = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH).toURI().toURL()
     return url.toString()
+  }
+
+  @JsonIgnore
+  public Boolean isDebugging() {
+    return $password == CORRECT_PASSWORD
   }
 
   public static Setting getInstance() {
@@ -205,6 +213,14 @@ public class Setting {
 
   public void setShowsSlimeId(Boolean showsSlimeId) {
     $showsSlimeId = showsSlimeId
+  }
+
+  public String getPassword() {
+    return $password
+  }
+
+  public void setPassword(String password) {
+    $password = password
   }
 
 }

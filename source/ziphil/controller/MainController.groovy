@@ -48,17 +48,17 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.PersonalDictionary
-import ziphil.dictionary.PersonalWord
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.ShaleiaDictionary
-import ziphil.dictionary.ShaleiaSearchParameter
-import ziphil.dictionary.ShaleiaWord
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeSearchParameter
-import ziphil.dictionary.SlimeWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
+import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.personal.PersonalWord
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.shaleia.ShaleiaSearchParameter
+import ziphil.dictionary.shaleia.ShaleiaWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeSearchParameter
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 import ziphilib.transform.ReturnVoidClosure
 
@@ -78,13 +78,22 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
-  @FXML private ContextMenu $editMenu
-  @FXML private MenuItem $modifyWordItem
-  @FXML private MenuItem $removeWordItem
-  @FXML private MenuItem $addWordItem
-  @FXML private MenuItem $addInheritedWordItem
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private ContextMenu $editMenu
+  @FXML private MenuItem $saveDictionaryItem
+  @FXML private MenuItem $saveAndRenameDictionaryItem
+  @FXML private MenuItem $searchDetailItem
+  @FXML private MenuItem $searchScriptItem
+  @FXML private MenuItem $addWordItem
+  @FXML private MenuItem $addInheritedWordItem
+  @FXML private MenuItem $modifyWordItem
+  @FXML private MenuItem $removeWordItem
+  @FXML private MenuItem $showIndividualSettingItem
+  @FXML private MenuItem $addWordContextItem
+  @FXML private MenuItem $addInheritedWordContextItem
+  @FXML private MenuItem $modifyWordContextItem
+  @FXML private MenuItem $removeWordContextItem
   @FXML private HBox $footerBox
   @FXML private Label $dictionaryNameLabel
   @FXML private Label $hitWordSizeLabel
@@ -93,7 +102,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
-  private Boolean $isDictionaryChanged = false
+  private String $previousSearch
 
   public MainController(Stage nextStage) {
     super(nextStage)
@@ -107,21 +116,21 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   public void initialize() {
     setupWordList()
-    setupSearchType()
+    setupSearchTypeControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupDebug()
     setupWordListShortcuts()
     updateDictionaryToDefault()
   }
 
-  @FXML
-  private void search(KeyEvent event) {
+  private void search(Boolean forcesSearch) {
     if ($dictionary != null) {
-      if (event == null || event.getCode() != KeyCode.ENTER) {
+      String search = $searchControl.getText()
+      String searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
+      if (forcesSearch || search != $previousSearch) {
         measureDictionaryStatus() {
-          String search = $searchControl.getText()
-          String searchMode = $searchModeControl.getValue()
-          Boolean isStrict = $searchTypeControl.getText() == "完全一致"
           if (searchMode == "単語") {
             $dictionary.searchByName(search, isStrict)
           } else if (searchMode == "訳語") {
@@ -130,12 +139,18 @@ public class MainController extends PrimitiveController<Stage> {
             $dictionary.searchByContent(search)
           }
         }
+        $previousSearch = search
       }
     }
   }
 
+  @FXML
+  private void search(KeyEvent event) {
+    search(false)
+  }
+
   private void search() {
-    search(null)
+    search(false)
   }
 
   @FXML
@@ -178,24 +193,43 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
+  private void searchScript() {
+    if ($dictionary != null) {
+      UtilityStage<String> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      ScriptController controller = ScriptController.new(nextStage)
+      nextStage.initOwner($stage)
+      String script = nextStage.showAndWaitResult()
+      if (script != null) {
+        measureDictionaryStatus() {
+          $dictionary.searchScript(script)
+        }
+      }
+    }
+  }
+
+  @FXML
+  private void shuffleWords() {
+    if ($dictionary != null) {
+      $dictionary.shuffleWords()
+    }
+  }
+
   private void measureDictionaryStatus(Runnable searchFunction) {
     Long beforeTime = System.nanoTime()
     searchFunction.run()
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
-    Integer hitWordSize = $dictionary.getWords().size()
-    Integer totalWordSize = $dictionary.getRawWords().size()
     $elapsedTimeLabel.setText(elapsedTime.toString())
-    $hitWordSizeLabel.setText(hitWordSize.toString())
-    $totalWordSizeLabel.setText(totalWordSize.toString())
+    $hitWordSizeLabel.setText($dictionary.hitSize().toString())
+    $totalWordSizeLabel.setText($dictionary.totalSize().toString())
     $wordList.scrollTo(0)
   }
 
   @FXML
   private void changeSearchMode() {
-    $hitWordSizeLabel.setText($totalWordSizeLabel.getText())
     $searchControl.requestFocus()
-    search()
+    search(true)
   }
 
   @FXML
@@ -220,13 +254,14 @@ public class MainController extends PrimitiveController<Stage> {
   private void changeSearchType() {
     if (!$searchTypeControl.isDisable()) {
       $searchTypeControl.setSelected(!$searchTypeControl.isSelected())
+      search(true)
     }
   }
 
   @FXML
   private void toggleSearchType() {
     $searchControl.requestFocus()
-    search()
+    search(true)
   }
 
   private void modifyWord(Word word) {
@@ -251,9 +286,6 @@ public class MainController extends PrimitiveController<Stage> {
           $dictionary.modifyWord(oldWord, word)
           if (savesAutomatically) {
             $dictionary.save()
-            $isDictionaryChanged = false
-          } else {
-            $isDictionaryChanged = true
           }
         }
       }
@@ -273,9 +305,6 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.removeWord(word)
         if (savesAutomatically) {
           $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
         }
       }
     }
@@ -313,9 +342,6 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
-          $isDictionaryChanged = false
-        } else {
-          $isDictionaryChanged = true
         }
       }
     }
@@ -323,7 +349,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void addInheritedWord(Word word) {
     if ($dictionary != null) {
-     if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && !(word instanceof Suggestion)) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -346,9 +372,6 @@ public class MainController extends PrimitiveController<Stage> {
           $dictionary.addWord(newWord)
           if (savesAutomatically) {
             $dictionary.save()
-            $isDictionaryChanged = false
-          } else {
-            $isDictionaryChanged = true
           }
         }
       }
@@ -373,7 +396,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (file != null) {
         Dictionary dictionary = Dictionary.loadDictionary(file)
         updateDictionary(dictionary)
-        $isDictionaryChanged = false
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
@@ -392,7 +414,6 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsOpen) {
       Dictionary dictionary = Dictionary.loadDictionary(file)
       updateDictionary(dictionary)
-      $isDictionaryChanged = false
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
@@ -418,7 +439,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (file != null) {
         Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
         updateDictionary(dictionary)
-        $isDictionaryChanged = true
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
@@ -436,12 +456,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void saveDictionary() {
     if ($dictionary != null) {
       $dictionary.save()
-      $isDictionaryChanged = false
-    } else {
-      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
-      dialog.initOwner($stage)
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
     }
   }
 
@@ -459,15 +473,131 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
         $dictionaryNameLabel.setText($dictionary.getName())
-        $isDictionaryChanged = false
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       }
-    } else {
-      Dialog dialog = Dialog.new("保存エラー", "辞書が開かれていません。")
-      dialog.initOwner($stage)
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
     }
+  }
+
+  private void updateDictionary(Dictionary dictionary) {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
+    $dictionary = dictionary
+    updateSearchStatuses()
+    updateLoader()
+    updateOnLinkClicked()
+    updateMenuItems()
+    search(true)
+  }
+
+  private void updateSearchStatuses() {
+    if ($dictionary != null) {
+      $dictionaryNameLabel.setText($dictionary.getName())
+      $wordList.setItems($dictionary.getWholeWords())
+    } else {
+      $dictionaryNameLabel.setText("")
+      $wordList.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+    }
+    $searchControl.setText("")
+    $searchControl.requestFocus()
+  }
+
+  private void updateLoader() {
+    if ($dictionary != null) {
+      Task<?> loader = $dictionary.getLoader()
+      $loadingBox.visibleProperty().unbind()
+      $progressIndicator.progressProperty().unbind()
+      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+      $progressIndicator.progressProperty().bind(loader.progressProperty())
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        search(true)
+      }
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        failUpdateDictionary()
+      }
+    } else {
+      $loadingBox.visibleProperty().unbind()
+      $loadingBox.setVisible(false)
+      $progressIndicator.progressProperty().unbind()
+      $progressIndicator.setProgress(0)
+    }
+  }
+
+  private void updateOnLinkClicked() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof ShaleiaDictionary) {
+        $dictionary.setOnLinkClicked() { String name ->
+          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
+          parameter.setName(name)
+          parameter.setNameSearchType(SearchType.EXACT)
+          searchDetailBy(parameter)
+        }
+      } else if ($dictionary instanceof SlimeDictionary) {
+        $dictionary.setOnLinkClicked() { Integer id ->
+          SlimeSearchParameter parameter = SlimeSearchParameter.new()
+          parameter.setId(id)
+          searchDetailBy(parameter)
+        }
+      }
+    }
+  }
+
+  private void updateMenuItems() {
+    if ($dictionary != null) {
+      $saveDictionaryItem.setDisable(false)
+      $saveAndRenameDictionaryItem.setDisable(false)
+      $addWordItem.setDisable(false)
+      $addInheritedWordItem.setDisable(false)
+      $modifyWordItem.setDisable(false)
+      $removeWordItem.setDisable(false)
+      $searchScriptItem.setDisable(false)
+      if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
+        $searchDetailItem.setDisable(false)
+        $showIndividualSettingItem.setDisable(false)
+      } else {
+        $searchDetailItem.setDisable(true)
+        $showIndividualSettingItem.setDisable(true)
+      }
+    } else {
+      $saveDictionaryItem.setDisable(true)
+      $saveAndRenameDictionaryItem.setDisable(true)
+      $addWordItem.setDisable(true)
+      $addInheritedWordItem.setDisable(true)
+      $modifyWordItem.setDisable(true)
+      $removeWordItem.setDisable(true)
+      $searchDetailItem.setDisable(true)
+      $searchScriptItem.setDisable(true)
+      $showIndividualSettingItem.setDisable(true)
+    }
+  }
+
+  private void updateDictionaryToDefault() {
+    String filePath = Setting.getInstance().getDefaultDictionaryPath()
+    if (filePath != null) {
+      File file = File.new(filePath)
+      Dictionary dictionary = Dictionary.loadDictionary(file)
+      updateDictionary(dictionary)
+      if (dictionary == null) {
+        Setting.getInstance().setDefaultDictionaryPath(null)
+        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        dialog.initOwner($stage)
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
+    } else {
+      updateDictionary(null)
+    }
+  }
+
+  private void failUpdateDictionary() {
+    updateDictionary(null)
+    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    dialog.initOwner($stage)
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
   }
 
   private void registerCurrentDictionary(Integer i) {
@@ -488,7 +618,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private Boolean checkDictionaryChange() {
     if ($dictionary != null) {
-      if ($isDictionaryChanged) {
+      if ($dictionary.isChanged()) {
         Dialog dialog = Dialog.new("確認", "辞書データは変更されています。保存しますか?")
         dialog.initOwner($stage)
         dialog.setCommitText("保存する")
@@ -536,7 +666,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showOfficialSite() {
     Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new("http://ziphil.s2.adexd.net/application/download/2.html")
+    URI uri = URI.new("http://ziphil.web.fc2.com/application/download/2.html")
     desktop.browse(uri)
   }
 
@@ -552,23 +682,22 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showIndividualSetting() {
     if ($dictionary != null) {
+      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary) {
-        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        nextStage.initModality(Modality.WINDOW_MODAL)
-        nextStage.initOwner($stage)
-        if ($dictionary instanceof SlimeDictionary) {
-          SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-          controller.prepare($dictionary)
+        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      } else if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      }
+      Boolean isDone = nextStage.showAndWaitResult()
+      if (isDone != null && isDone) {
+        if (savesAutomatically) {
+          $dictionary.save()
         }
-        Boolean isDone = nextStage.showAndWaitResult()
-        if (isDone != null) {
-          $isDictionaryChanged = true
-        }
-      } else {
-        Dialog dialog = Dialog.new("通知", "この辞書形式に個別設定項目はありません。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
       }
     }
   }
@@ -587,86 +716,6 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void updateDictionary(Dictionary dictionary) {
-    if ($dictionary != null) {
-      Task<?> oldLoader = $dictionary.getLoader()
-      if (oldLoader.isRunning()) {
-        oldLoader.cancel()
-      }
-    }
-    $dictionary = dictionary
-    if ($dictionary != null) {
-      $totalWordSizeLabel.setText($dictionary.getRawWords().size().toString())
-      $dictionaryNameLabel.setText($dictionary.getName())
-      $wordList.setItems($dictionary.getWholeWords())
-      $searchControl.setText("")
-      $searchControl.requestFocus()
-      Task<?> loader = $dictionary.getLoader()
-      $loadingBox.visibleProperty().unbind()
-      $progressIndicator.progressProperty().unbind()
-      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
-      $progressIndicator.progressProperty().bind(loader.progressProperty())
-      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        $wordList.scrollTo(0)
-      }
-      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-        failUpdateDictionary()
-      }
-      if ($dictionary instanceof ShaleiaDictionary) {
-        $dictionary.setOnLinkClicked() { String name ->
-          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-          parameter.setName(name)
-          parameter.setNameSearchType(SearchType.EXACT)
-          searchDetailBy(parameter)
-        }
-      } else if ($dictionary instanceof SlimeDictionary) {
-        $dictionary.setOnLinkClicked() { Integer id ->
-          SlimeSearchParameter parameter = SlimeSearchParameter.new()
-          parameter.setId(id)
-          searchDetailBy(parameter)
-        }
-      }
-    } else {
-      ObservableList<Word> emptyWords = FXCollections.observableArrayList()
-      $totalWordSizeLabel.setText("0")
-      $dictionaryNameLabel.setText("")
-      $wordList.setItems(emptyWords)
-      $searchControl.setText("")
-      $searchControl.requestFocus()
-      $loadingBox.visibleProperty().unbind()
-      $loadingBox.setVisible(false)
-      $progressIndicator.progressProperty().unbind()
-      $progressIndicator.setProgress(0)
-    }
-    search()
-  }
-
-  private void updateDictionaryToDefault() {
-    String filePath = Setting.getInstance().getDefaultDictionaryPath()
-    if (filePath != null) {
-      File file = File.new(filePath)
-      Dictionary dictionary = Dictionary.loadDictionary(file)
-      updateDictionary(dictionary)
-      if (dictionary == null) {
-        Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
-        dialog.initOwner($stage)
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
-      }
-    } else {
-      updateDictionary(null)
-    }
-  }
-
-  private void failUpdateDictionary() {
-    updateDictionary(null)
-    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
-    dialog.initOwner($stage)
-    dialog.setAllowsCancel(false)
-    dialog.showAndWait()
-  }
-
   @FXML
   private void exit() {
     Platform.exit()
@@ -682,16 +731,16 @@ public class MainController extends PrimitiveController<Stage> {
         }
         if (event.getButton() == MouseButton.SECONDARY) {
           cell.setContextMenu($editMenu)
-          $modifyWordItem.setOnAction() {
+          $modifyWordContextItem.setOnAction() {
             modifyWord(cell.getItem())
           }
-          $removeWordItem.setOnAction() {
+          $removeWordContextItem.setOnAction() {
             removeWord(cell.getItem())
           }
-          $addWordItem.setOnAction() {
+          $addWordContextItem.setOnAction() {
             addWord()
           }
-          $addInheritedWordItem.setOnAction() {
+          $addInheritedWordContextItem.setOnAction() {
             addInheritedWord(cell.getItem())
           }
         }
@@ -700,7 +749,7 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupSearchType() {
+  private void setupSearchTypeControl() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }
@@ -725,7 +774,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupOpenRegisteredDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $openRegisteredDictionaryMenu.getItems().clear()
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath != null) {
@@ -748,13 +797,14 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupRegisterCurrentDictionaryMenu() {
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $registerCurrentDictionaryMenu.getItems().clear()
-    (0 ..< 10).each() { Integer i ->
+    for (Integer i : 0 ..< 10) {
+      Integer j = i
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath == null) {
         item.setText("辞書${(i + 1) % 10}に登録")
         item.setOnAction() {
-          registerCurrentDictionary(i)
+          registerCurrentDictionary(j)
         }
       } else {
         item.setText("登録済み")
@@ -764,6 +814,13 @@ public class MainController extends PrimitiveController<Stage> {
       item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupDebug() {
+    Boolean isDebugging = Setting.getInstance().isDebugging()
+    if (!isDebugging) {
+      $searchScriptItem.setVisible(false)
     }
   }
 

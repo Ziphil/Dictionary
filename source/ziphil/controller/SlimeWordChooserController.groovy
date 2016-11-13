@@ -15,8 +15,8 @@ import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
 import ziphil.custom.SimpleWordCell
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.SlimeDictionary
-import ziphil.dictionary.SlimeWord
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
 import ziphilib.transform.ReturnVoidClosure
 
@@ -43,7 +43,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
     setupWordList()
-    setupSearchType()
+    setupSearchTypeControl()
   }
 
   @FXML
@@ -96,7 +96,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     }
   }
 
-  private void setupSearchType() {
+  private void setupSearchTypeControl() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }

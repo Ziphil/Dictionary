@@ -1,25 +1,25 @@
-package ziphil.dictionary
+package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 
 
 @CompileStatic @Newify
-public class SlimePossibility {
+public class ShaleiaPossibility {
 
-  private SlimeWord $word
+  private String $name
   private String $possibilityName
 
-  public SlimePossibility(SlimeWord word, String possibilityName) {
-    $word = word
+  public ShaleiaPossibility(String name, String possibilityName) {
+    $name = name
     $possibilityName = possibilityName
   }
 
-  public SlimeWord getWord() {
-    return $word
+  public String getName() {
+    return $name
   }
 
-  public void setWord(SlimeWord word) {
-    $word = word
+  public void setName(String name) {
+    $name = name
   }
 
   public String getPossibilityName() {

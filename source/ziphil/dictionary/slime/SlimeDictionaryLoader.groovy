@@ -1,4 +1,4 @@
-package ziphil.dictionary
+package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
@@ -87,13 +87,14 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
           $externalData.put(topFieldName, parser.readValueAsTree())
         }
       }
-      $validMinId ++
       parser.close()
       stream.close()
     }
-    $words.each() { SlimeWord word ->
+    for (SlimeWord word : $words) {
       word.createComparisonString($alphabetOrder)
+      word.updateOthers()
     }
+    $validMinId ++
     return $words
   }
 
