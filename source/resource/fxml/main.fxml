@@ -57,7 +57,11 @@
         </MenuItem>
         <MenuItem fx:id="$saveAndRenameDictionaryItem" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
-        <MenuItem text="終了" onAction="#exit"/>
+        <MenuItem text="終了" onAction="#exit">
+          <graphic>
+            <ImageView><Image url="@../icon/exit.png"/></ImageView>
+          </graphic>
+        </MenuItem>
       </Menu>
       <Menu text="検索">
         <Menu text="検索範囲の変更">
@@ -88,10 +92,26 @@
         </MenuItem>
       </Menu>
       <Menu text="ツール">
-        <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N"/>
-        <MenuItem fx:id="$addInheritedWordItem" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I"/>
-        <MenuItem fx:id="$modifyWordItem" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M"/>
-        <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D"/>
+        <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
+          <graphic>
+            <ImageView><Image url="@../icon/new_word.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem fx:id="$addInheritedWordItem" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
+          <graphic>
+            <ImageView><Image url="@../icon/inherited_word.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem fx:id="$modifyWordItem" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
+          <graphic>
+            <ImageView><Image url="@../icon/modify_word.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
+          <graphic>
+            <ImageView><Image url="@../icon/remove_word.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$showIndividualSettingItem" text="辞書の個別設定" onAction="#showIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
