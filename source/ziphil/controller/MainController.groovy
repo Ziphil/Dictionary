@@ -495,11 +495,9 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateSearchStatuses() {
     if ($dictionary != null) {
-      $totalWordSizeLabel.setText($dictionary.totalSize().toString())
       $dictionaryNameLabel.setText($dictionary.getName())
       $wordList.setItems($dictionary.getWholeWords())
     } else {
-      $totalWordSizeLabel.setText("0")
       $dictionaryNameLabel.setText("")
       $wordList.setItems((ObservableList<Word>)FXCollections.observableArrayList())
     }
@@ -515,7 +513,7 @@ public class MainController extends PrimitiveController<Stage> {
       $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
       $progressIndicator.progressProperty().bind(loader.progressProperty())
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        $wordList.scrollTo(0)
+        search(true)
       }
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
         failUpdateDictionary()
