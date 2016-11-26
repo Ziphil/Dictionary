@@ -34,10 +34,12 @@ public class SettingController extends Controller<Boolean> {
 
   @FXML private ComboBox<String> $contentFontFamilyControl
   @FXML private Spinner<Integer> $contentFontSizeControl
-  @FXML private CheckBox $usesSystemContentFontControl
+  @FXML private CheckBox $usesSystemContentFontFamilyControl
+  @FXML private CheckBox $usesDefaultContentFontSizeControl
   @FXML private ComboBox<String> $editorFontFamilyControl
   @FXML private Spinner<Integer> $editorFontSizeControl
-  @FXML private CheckBox $usesSystemEditorFontControl
+  @FXML private CheckBox $usesSystemEditorFontFamilyControl
+  @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -80,18 +82,22 @@ public class SettingController extends Controller<Boolean> {
     if (contentFontFamily != null) {
       $contentFontFamilyControl.getSelectionModel().select(contentFontFamily)
     } else {
-      $usesSystemContentFontControl.setSelected(true)
+      $usesSystemContentFontFamilyControl.setSelected(true)
     }
     if (contentFontSize != null) {
       $contentFontSizeControl.getValueFactory().setValue(contentFontSize)
+    } else {
+      $usesDefaultContentFontSizeControl.setSelected(true)
     }
     if (editorFontFamily != null) {
       $editorFontFamilyControl.getSelectionModel().select(editorFontFamily)
     } else {
-      $usesSystemEditorFontControl.setSelected(true)
+      $usesSystemEditorFontFamilyControl.setSelected(true)
     }
     if (editorFontSize != null) {
       $editorFontSizeControl.getValueFactory().setValue(editorFontSize)
+    } else {
+      $usesDefaultEditorFontSizeControl.setSelected(true)
     }
     if (modifiesPunctuation) {
       $modifiesPunctuationControl.setSelected(true)
@@ -121,12 +127,14 @@ public class SettingController extends Controller<Boolean> {
 
   private void updateSettings() {
     Setting setting = Setting.getInstance()
-    String contentFontFamily = $contentFontFamilyControl.getSelectionModel().getSelectedItem()
-    Integer contentFontSize = $contentFontSizeControl.getValue()
-    Boolean usesSystemContentFont = $usesSystemContentFontControl.isSelected()
-    String editorFontFamily = $editorFontFamilyControl.getSelectionModel().getSelectedItem()
-    Integer editorFontSize = $editorFontSizeControl.getValue()
-    Boolean usesSystemEditorFont = $usesSystemEditorFontControl.isSelected()
+    Boolean usesSystemContentFontFamily = $usesSystemContentFontFamilyControl.isSelected()
+    Boolean usesDefaultContentFontSize = $usesDefaultContentFontSizeControl.isSelected()
+    String contentFontFamily = (usesSystemContentFontFamily) ? null : $contentFontFamilyControl.getSelectionModel().getSelectedItem()
+    Integer contentFontSize = (usesDefaultContentFontSize) ? null : $contentFontSizeControl.getValue()
+    Boolean usesSystemEditorFontFamily = $usesSystemEditorFontFamilyControl.isSelected()
+    Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
+    String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
+    Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -135,20 +143,10 @@ public class SettingController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
-    if (!usesSystemContentFont && contentFontFamily != null) {
-      setting.setContentFontFamily(contentFontFamily)
-      setting.setContentFontSize(contentFontSize)
-    } else {
-      setting.setContentFontFamily(null)
-      setting.setContentFontSize(null)
-    }
-    if (!usesSystemEditorFont && editorFontFamily != null) {
-      setting.setEditorFontFamily(editorFontFamily)
-      setting.setEditorFontSize(editorFontSize)
-    } else {
-      setting.setEditorFontFamily(null)
-      setting.setEditorFontSize(null)
-    }
+    setting.setContentFontFamily(contentFontFamily)
+    setting.setContentFontSize(contentFontSize)
+    setting.setEditorFontFamily(editorFontFamily)
+    setting.setEditorFontSize(editorFontSize)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
@@ -224,10 +222,10 @@ public class SettingController extends Controller<Boolean> {
   }
 
   private void setupFontDisableBindings() {
-    $contentFontFamilyControl.disableProperty().bind($usesSystemContentFontControl.selectedProperty())
-    $contentFontSizeControl.disableProperty().bind($usesSystemContentFontControl.selectedProperty())
-    $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontControl.selectedProperty())
-    $editorFontSizeControl.disableProperty().bind($usesSystemEditorFontControl.selectedProperty())
+    $contentFontFamilyControl.disableProperty().bind($usesSystemContentFontFamilyControl.selectedProperty())
+    $contentFontSizeControl.disableProperty().bind($usesDefaultContentFontSizeControl.selectedProperty())
+    $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
+    $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
   }
 
   private void setupTextBindings() {

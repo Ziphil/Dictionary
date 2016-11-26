@@ -57,7 +57,11 @@
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemContentFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="10"/></spacing>
+            <CheckBox fx:id="$usesSystemContentFontFamilyControl" text="システムフォントを用いる"/>
+            <CheckBox fx:id="$usesDefaultContentFontSizeControl" text="デフォルトサイズを用いる"/>
+          </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$editorFontFamilyControl" editable="true">
@@ -70,7 +74,11 @@
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemEditorFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <spacing><Double rpx="10"/></spacing>
+            <CheckBox fx:id="$usesSystemEditorFontFamilyControl" text="システムフォントを用いる"/>
+            <CheckBox fx:id="$usesDefaultEditorFontSizeControl" text="デフォルトサイズを用いる"/>
+          </HBox>
           <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
