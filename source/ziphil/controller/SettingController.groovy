@@ -71,13 +71,13 @@ public class SettingController extends Controller<Boolean> {
     Integer contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    Boolean savesAutomatically = setting.getSavesAutomatically()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
-    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
-    Boolean showsSlimeId = setting.getShowsSlimeId()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
+    Boolean savesAutomatically = setting.getSavesAutomatically() == true
+    Boolean ignoresAccent = setting.getIgnoresAccent() == true
+    Boolean ignoresCase = setting.getIgnoresCase() == true
+    Boolean searchesPrefix = setting.getSearchesPrefix() == true
+    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
+    Boolean showsSlimeId = setting.getShowsSlimeId() == true
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     if (contentFontFamily != null) {
       $contentFontFamilyControl.getSelectionModel().select(contentFontFamily)
@@ -99,27 +99,13 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
-    if (modifiesPunctuation) {
-      $modifiesPunctuationControl.setSelected(true)
-    }
-    if (savesAutomatically) {
-      $savesAutomaticallyControl.setSelected(true)
-    }
-    if (ignoresAccent) {
-      $ignoresAccentControl.setSelected(true)
-    }
-    if (ignoresCase) {
-      $ignoresCaseControl.setSelected(true)
-    }
-    if (searchesPrefix) {
-      $searchesPrefixControl.setSelected(true)
-    }
-    if (ignoresDuplicateSlimeId) {
-      $ignoresDuplicateSlimeIdControl.setSelected(true)
-    }
-    if (showsSlimeId) {
-      $showsSlimeIdControl.setSelected(true)
-    }
+    $modifiesPunctuationControl.setSelected(modifiesPunctuation)
+    $savesAutomaticallyControl.setSelected(savesAutomatically)
+    $ignoresAccentControl.setSelected(ignoresAccent)
+    $ignoresCaseControl.setSelected(ignoresCase)
+    $searchesPrefixControl.setSelected(searchesPrefix)
+    $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
+    $showsSlimeIdControl.setSelected(showsSlimeId)
     for (Integer i : 0 ..< 10) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
     }
