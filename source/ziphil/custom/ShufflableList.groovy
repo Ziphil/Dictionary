@@ -39,7 +39,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     }
   }
 
-  private List<Integer> updatePermutation(List<Integer> oldIndices) {
+  private void updatePermutation(List<Integer> oldIndices) {
     List<Integer> permutation = ArrayList.new($size)
     for (Integer i : 0 ..< $size) {
       permutation[oldIndices[i]] = $indices[i]
