@@ -9,9 +9,10 @@ import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
 
   private ObservableList<SlimeWord> $words = FXCollections.observableArrayList()

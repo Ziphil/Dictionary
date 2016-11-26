@@ -2,9 +2,10 @@ package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.SearchType
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeSearchParameter {
 
   private Integer $id

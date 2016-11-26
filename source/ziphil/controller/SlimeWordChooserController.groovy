@@ -18,10 +18,11 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_word_chooser.fxml"
@@ -82,7 +83,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     $stage.close(word)
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private void setupWordList() {
     $wordList.setItems($dictionary.getWords())
     $wordList.setCellFactory() { ListView<SlimeWord> list ->

@@ -36,9 +36,10 @@ import ziphil.dictionary.slime.SlimeRelation
 import ziphil.dictionary.slime.SlimeVariation
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"

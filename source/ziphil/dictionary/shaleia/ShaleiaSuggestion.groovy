@@ -3,9 +3,10 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
 
   private ShaleiaDictionary $dictionary

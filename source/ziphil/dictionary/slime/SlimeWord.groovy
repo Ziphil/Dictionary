@@ -5,9 +5,10 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeWord extends Word {
 
   private SlimeDictionary $dictionary

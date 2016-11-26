@@ -5,9 +5,10 @@ import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Suggestion
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   private PersonalDictionaryLoader $loader

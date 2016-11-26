@@ -3,9 +3,10 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeSuggestion extends Suggestion<SlimePossibility> {
 
   private SlimeDictionary $dictionary

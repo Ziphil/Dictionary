@@ -8,9 +8,10 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalWordContentPaneCreator extends ContentPaneCreator<PersonalWord, PersonalDictionary> {
 
   public PersonalWordContentPaneCreator(VBox contentPane, PersonalWord word, PersonalDictionary dictionary) {

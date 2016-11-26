@@ -13,9 +13,10 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()

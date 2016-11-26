@@ -15,9 +15,10 @@ import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
 
   private ShaleiaDictionaryLoader $loader

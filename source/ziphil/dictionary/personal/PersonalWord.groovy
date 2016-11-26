@@ -3,9 +3,10 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalWord extends Word {
 
   private PersonalDictionary $dictionary

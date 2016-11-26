@@ -6,9 +6,10 @@ import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_individual_setting.fxml"

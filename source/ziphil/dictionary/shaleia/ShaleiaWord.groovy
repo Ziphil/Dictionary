@@ -4,9 +4,10 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaWord extends Word {
 
   private String $uniqueName = ""

@@ -8,9 +8,10 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeSuggestionContentPaneCreator extends ContentPaneCreator<SlimeSuggestion, SlimeDictionary> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"

@@ -13,10 +13,11 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
@@ -109,7 +110,7 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
     box.getChildren().addAll(titleTextFlow, textFlow)
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private void addRelationNode(VBox box, String title, List<Integer> ids, List<String> names) {
     TextFlow textFlow = TextFlow.new()
     Text formerTitleText = Text.new("cf:")

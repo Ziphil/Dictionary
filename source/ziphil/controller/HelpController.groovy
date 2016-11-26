@@ -8,9 +8,10 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.web.WebView
 import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/help.fxml"

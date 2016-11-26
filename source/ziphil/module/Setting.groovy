@@ -8,10 +8,11 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.Launcher
+import ziphilib.transform.Ziphilify
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Setting {
 
   private static final String CORRECT_PASSWORD = "fkdocwpvmdcaskex"

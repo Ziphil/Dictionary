@@ -6,10 +6,11 @@ import groovy.transform.CompileStatic
 import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.TransformationList
-import ziphilib.transform.ConvertPrimitive
+import ziphilib.transform.ConvertPrimitiveArgs
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShufflableList<E> extends TransformationList<E, E> {
 
   private List<Integer> $indices
@@ -77,12 +78,12 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     endChange()
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   public Integer size() {
     return $size
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   public E get(Integer index) {
     if (index >= $size) {
       throw IndexOutOfBoundsException.new()
@@ -90,7 +91,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     return getSource()[$indices[index]]
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   public Integer getSourceIndex(Integer index) {
     return $indices[index]
   }

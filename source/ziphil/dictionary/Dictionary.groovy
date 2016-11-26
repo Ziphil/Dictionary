@@ -21,9 +21,10 @@ import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   protected String $name = ""

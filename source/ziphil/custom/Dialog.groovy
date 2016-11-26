@@ -16,9 +16,10 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import javafx.stage.StageStyle
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Dialog extends Stage {
 
   private static final String RESOURCE_PATH = "resource/fxml/dialog.fxml"

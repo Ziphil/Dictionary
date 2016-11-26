@@ -2,9 +2,10 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.util.StringConverter
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class IntegerStringConverter extends StringConverter<Integer> {
 
   public Integer fromString(String string) {

@@ -9,9 +9,10 @@ import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class DictionaryChooserController extends Controller<File> {
 
   private static final String RESOURCE_PATH = "resource/fxml/dictionary_chooser.fxml"

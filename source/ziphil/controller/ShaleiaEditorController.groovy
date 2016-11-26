@@ -13,9 +13,10 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/shaleia_editor.fxml"

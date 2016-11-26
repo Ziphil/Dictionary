@@ -60,10 +60,11 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
@@ -721,7 +722,7 @@ public class MainController extends PrimitiveController<Stage> {
     Platform.exit()
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private void setupWordList() {
     $wordList.setCellFactory() { ListView<Word> list ->
       WordCell cell = WordCell.new()

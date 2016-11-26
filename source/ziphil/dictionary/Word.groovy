@@ -3,9 +3,10 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public abstract class Word {
 
   protected String $name = ""

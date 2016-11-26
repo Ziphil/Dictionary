@@ -3,17 +3,18 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
-import ziphilib.transform.ConvertPrimitive
+import ziphilib.transform.ConvertPrimitiveArgs
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class DirectoryItem extends TreeItem<File> {
 
   public DirectoryItem(File file){
     super(file)
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   public Boolean isLeaf() {
     return false
   }

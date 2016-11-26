@@ -29,10 +29,11 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class FileChooser extends VBox {
 
   private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
@@ -110,7 +111,7 @@ public class FileChooser extends VBox {
     }
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private void setupDirectoryTree() {
     DirectoryItem root = DirectoryItem.new(null)
     for (File file : File.listRoots()) {
@@ -129,7 +130,7 @@ public class FileChooser extends VBox {
     }
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private void setupFileList() {
     $fileList.setCellFactory() { ListView<File> list ->
       FileCell cell = FileCell.new()

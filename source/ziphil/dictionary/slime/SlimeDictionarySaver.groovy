@@ -6,9 +6,10 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.Map.Entry
 import groovy.transform.CompileStatic
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeDictionarySaver implements Runnable {
 
   private String $path

@@ -2,9 +2,10 @@ package ziphil.module
 
 import groovy.transform.CompileStatic
 import java.text.Normalizer
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Strings {
 
   private static final String ASCII_CHARACTER = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"

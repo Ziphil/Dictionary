@@ -8,9 +8,10 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaSuggestionContentPaneCreator extends ContentPaneCreator<ShaleiaSuggestion, ShaleiaDictionary> {
 
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"

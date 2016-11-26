@@ -13,10 +13,11 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneCreator
 import ziphil.module.Strings
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
@@ -182,7 +183,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     box.getChildren().add(textFlow)
   }
 
-  @ReturnVoidClosure
+  @VoidClosure
   private List<Text> createRichTexts(String string) {
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()

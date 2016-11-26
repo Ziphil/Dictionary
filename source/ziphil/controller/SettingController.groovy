@@ -21,9 +21,10 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SettingController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"

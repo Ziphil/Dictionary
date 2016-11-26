@@ -2,9 +2,10 @@ package ziphil
 
 import groovy.transform.CompileStatic
 import ziphil.main.MainApplication
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"

@@ -3,9 +3,10 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import java.util.function.UnaryOperator
 import javafx.scene.control.TextFormatter.Change
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class IntegerUnaryOperator implements UnaryOperator<Change> {
 
   public Change apply(Change change) {

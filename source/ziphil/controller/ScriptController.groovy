@@ -7,9 +7,10 @@ import javafx.scene.control.TextArea
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ScriptController extends Controller<String> {
 
   private static final String RESOURCE_PATH = "resource/fxml/script.fxml"

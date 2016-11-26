@@ -8,9 +8,10 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.shaleia.ShaleiaSearchParameter
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter> {
 
   private static final String RESOURCE_PATH = "resource/fxml/shaleia_searcher.fxml"

@@ -5,10 +5,10 @@ import java.util.regex.Matcher
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import ziphil.module.ThrowMarker
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
 
   private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
