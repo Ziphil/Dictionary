@@ -173,7 +173,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
   private void addSynonymNode(VBox box, String synonym) {
     TextFlow textFlow = TextFlow.new()
     Text titleText = Text.new("cf:")
-    List<Text> synonymTexts = createRichTexts(" " + synonym)
+    List<Text> synonymTexts = createRichTexts(" " + synonym, true)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
@@ -184,7 +184,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
   }
 
   @VoidClosure
-  private List<Text> createRichTexts(String string) {
+  private List<Text> createRichTexts(String string, Boolean decoratesLink) {
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()
     StringBuilder currentString = StringBuilder.new()
@@ -203,7 +203,10 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
+          text.getStyleClass().add(SHALEIA_NAME_CLASS)
+          if (decoratesLink) {
+            text.getStyleClass().add(SHALEIA_LINK_CLASS)
+          }
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -225,7 +228,10 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
+          text.getStyleClass().add(SHALEIA_NAME_CLASS)
+          if (decoratesLink) {
+            text.getStyleClass().add(SHALEIA_LINK_CLASS)
+          }
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -249,7 +255,10 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS)
+          text.getStyleClass().add(SHALEIA_NAME_CLASS)
+          if (decoratesLink) {
+            text.getStyleClass().add(SHALEIA_LINK_CLASS)
+          }
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -259,7 +268,10 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
-          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_LINK_CLASS, SHALEIA_ITALIC_CLASS)
+          text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
+          if (decoratesLink) {
+            text.getStyleClass().add(SHALEIA_LINK_CLASS)
+          }
           unnamedTexts.add(text)
           texts.add(text)
           currentString.setLength(0)
@@ -327,6 +339,10 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     Text text = Text.new(currentString.toString())
     texts.add(text)
     return texts
+  }
+
+  private List<Text> createRichTexts(String string) {
+    return createRichTexts(string, false)
   }
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
