@@ -17,7 +17,7 @@ public class IntegerUnaryOperator implements UnaryOperator<Change> {
       Boolean hasSign
       if (change.isReplaced()) {
         if (change.getRangeStart() == 0) {
-          hasSign = change.getRangeEnd() < controlText.length() && change.getControlText()[change.getRangeEnd()] == "-"
+          hasSign = change.getRangeEnd() < controlText.length() && controlText[change.getRangeEnd()] == "-"
         } else {
           hasSign = controlText.startsWith("-")
         }
