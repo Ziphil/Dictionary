@@ -40,12 +40,12 @@ public class ShufflableList<E> extends TransformationList<E, E> {
   }
 
   private void updatePermutation(List<Integer> oldIndices) {
-    List<Integer> permutation = ArrayList.new($size)
+    Integer[] permutation = Integer[].new($size)
     for (Integer i : 0 ..< $size) {
       permutation[oldIndices[i]] = $indices[i]
     }
     beginChange()
-    nextPermutation(0, $size, (Integer[])permutation.toArray())
+    nextPermutation(0, $size, permutation)
     endChange()
   }
 
@@ -55,11 +55,11 @@ public class ShufflableList<E> extends TransformationList<E, E> {
       Integer from = change.getFrom()
       Integer to = change.getTo()
       if (change.wasPermutated()) {
-        List<Integer> permutation = ArrayList.new($size)
+        Integer[] permutation = Integer[].new($size)
         for (Integer i : 0 ..< $size) {
           permutation[i] = change.getPermutation($indices[i])
         }
-        nextPermutation(0, $size, (Integer[])permutation.toArray())
+        nextPermutation(0, $size, permutation)
       } else if (change.wasUpdated()) {
         for (Integer i : from ..< to) {
           nextUpdate($indices[i])
