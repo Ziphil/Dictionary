@@ -1,11 +1,12 @@
 package ziphil.module
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class Version {
+public class Version implements Comparable<Version> {
 
   private Integer $major = 0
   private Integer $minor = 0
@@ -30,6 +31,7 @@ public class Version {
     this(major, minor, patch, null)
   }
 
+  @ConvertPrimitiveArgs
   public Integer compareTo(Version other) {
     if ($major > other.getMajor()) {
       return 1

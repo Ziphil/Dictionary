@@ -60,6 +60,7 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
+import ziphil.module.Version
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -123,6 +124,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupDebug()
     setupWordListShortcuts()
     updateDictionaryToDefault()
+    checkVersion()
   }
 
   private void search(Boolean forcesSearch) {
@@ -720,6 +722,13 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void exit() {
     Platform.exit()
+  }
+
+  private void checkVersion() {
+    Version previousVersion = Version.new(Setting.getInstance().getVersionList())
+    if (previousVersion < Launcher.VERSION) {
+      println("Ditect update")
+    }
   }
 
   @VoidClosure
