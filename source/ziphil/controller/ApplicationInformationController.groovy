@@ -29,7 +29,7 @@ public class ApplicationInformationController extends Controller<Void> {
   }
 
   private void setupVersionLabel() {
-    String version = "version ${Launcher.VERSION}-${Launcher.DATE}"
+    String version = "version ${Launcher.VERSION}"
     $versionLabel.setText(version)
   }
 

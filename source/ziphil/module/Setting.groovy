@@ -38,6 +38,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private String $password = ""
+  private List<Integer> $versionList = []
 
   public void save() {
     saveSetting()
@@ -46,6 +47,7 @@ public class Setting {
 
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
+    $versionList = Launcher.VERSION.toList()
     $$mapper.writeValue(stream, this)
     stream.close()
   }
@@ -238,6 +240,14 @@ public class Setting {
 
   public void setPassword(String password) {
     $password = password
+  }
+
+  public List<Integer> getVersionList() {
+    return $versionList
+  }
+
+  public void setVersionList(List<Integer> versionList) {
+    $versionList = versionList
   }
 
 }

@@ -2,6 +2,7 @@ package ziphil
 
 import groovy.transform.CompileStatic
 import ziphil.main.MainApplication
+import ziphil.module.Version
 import ziphilib.transform.Ziphilify
 
 
@@ -9,8 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"
-  public static final String VERSION = "1.1.0"
-  public static final String DATE = "1757"
+  public static final Version VERSION = Version.new(1, 1, 0, 1757)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
