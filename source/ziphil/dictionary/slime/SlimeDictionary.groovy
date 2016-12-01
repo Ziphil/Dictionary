@@ -29,6 +29,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   private List<String> $registeredVariationTitles
   private List<String> $registeredRelationTitles
   private String $alphabetOrder
+  private List<String> $plainInformationTitles
   private Consumer<Integer> $onLinkClicked
   private Map<String, TreeNode> $externalData
 
@@ -269,6 +270,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       $registeredVariationTitles = $loader.getRegisteredVariationTitles()
       $registeredRelationTitles = $loader.getRegisteredRelationTitles()
       $alphabetOrder = $loader.getAlphabetOrder()
+      $plainInformationTitles = $loader.getPlainInformationTitles()
       $externalData = $loader.getExternalData()
       $words.addAll($loader.getValue())
     }
@@ -340,6 +342,15 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
+    $isChanged = true
+  }
+
+  public List<String> getPlainInformationTitles() {
+    return $plainInformationTitles
+  }
+
+  public void setPlainInformationTitles(List<String> plainInformationTitles) {
+    $plainInformationTitles = plainInformationTitles
     $isChanged = true
   }
 

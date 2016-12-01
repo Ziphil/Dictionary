@@ -43,7 +43,7 @@
       <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-      <ListSelectionView sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <ListSelectionView fx:id="$plainInformationTitlesView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
         <GridPane.margin>
           <Insets>

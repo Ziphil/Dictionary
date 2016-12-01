@@ -26,6 +26,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
+  private List<String> $plainInformationTitles = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
 
   public SlimeDictionaryLoader(String path, ObjectMapper mapper, SlimeDictionary dictionary) {
@@ -256,6 +257,10 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
 
   public String getAlphabetOrder() {
     return $alphabetOrder
+  }
+
+  public List<String> getPlainInformationTitles() {
+    return $plainInformationTitles
   }
 
   public Map<String, TreeNode> getExternalData() {

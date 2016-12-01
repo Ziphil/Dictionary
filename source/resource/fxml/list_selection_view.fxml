@@ -35,7 +35,7 @@
   <ListView fx:id="$targetsView" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
   <VBox alignment="center" GridPane.columnIndex="1" GridPane.rowIndex="1">
     <spacing><Double rpx="15"/></spacing>
-    <Button text="→"/>
-    <Button text="←"/>
+    <Button text="→" onAction="#moveToTarget"/>
+    <Button text="←" onAction="#moveToSource"/>
   </VBox>
 </fx:root>
