@@ -98,16 +98,26 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
 
   private void addInformationNode(VBox box, String title, String information) {
     String modifiedInformation = ($modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
-    TextFlow titleTextFlow = TextFlow.new()
-    TextFlow textFlow = TextFlow.new()
-    Text titleText = Text.new("【${title}】")
-    Text dammyText = Text.new(" ")
-    Text informationText = Text.new(modifiedInformation)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    informationText.getStyleClass().add(CONTENT_CLASS)
-    titleTextFlow.getChildren().addAll(titleText, dammyText)
-    textFlow.getChildren().add(informationText)
-    box.getChildren().addAll(titleTextFlow, textFlow)
+    if ($dictionary.getPlainInformationTitles().contains(title)) {
+      TextFlow textFlow = TextFlow.new()
+      Text titleText = Text.new("【${title}】 ")
+      Text informationText = Text.new(modifiedInformation)
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      informationText.getStyleClass().add(CONTENT_CLASS)
+      textFlow.getChildren().addAll(titleText, informationText)
+      box.getChildren().add(textFlow)
+    } else {
+      TextFlow titleTextFlow = TextFlow.new()
+      TextFlow textFlow = TextFlow.new()
+      Text titleText = Text.new("【${title}】")
+      Text dammyText = Text.new(" ")
+      Text informationText = Text.new(modifiedInformation)
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      informationText.getStyleClass().add(CONTENT_CLASS)
+      titleTextFlow.getChildren().addAll(titleText, dammyText)
+      textFlow.getChildren().add(informationText)
+      box.getChildren().addAll(titleTextFlow, textFlow)
+    }
   }
 
   @VoidClosure
