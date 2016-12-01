@@ -14,8 +14,8 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_individual_setting.fxml"
   private static final String TITLE = "個別設定"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
-  private static final Double DEFAULT_HEIGHT = -1
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $alphabetOrderControl
   private SlimeDictionary $dictionary

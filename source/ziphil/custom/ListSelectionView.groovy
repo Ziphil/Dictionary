@@ -15,42 +15,45 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ListSelectionView<T> extends Control {
 
-  private ObjectProperty<ObservableList<T>> $sourceList = SimpleObjectProperty.new(FXCollections.observableArrayList())
-  private ObjectProperty<ObservableList<T>> $targetList = SimpleObjectProperty.new(FXCollections.observableArrayList())
+  private ObjectProperty<ObservableList<T>> $sources = SimpleObjectProperty.new(FXCollections.observableArrayList())
+  private ObjectProperty<ObservableList<T>> $targets = SimpleObjectProperty.new(FXCollections.observableArrayList())
   private StringProperty $sourceName = SimpleStringProperty.new("候補")
   private StringProperty $targetName = SimpleStringProperty.new("選択中")
 
-  public ListSelectionView(ObservableList<T> sourceList, ObservableList<T> targetList) {
-    $sourceList.set(sourceList)
-    $targetList.set(targetList)
+  public ListSelectionView(ObservableList<T> sources, ObservableList<T> targets) {
+    $sources.set(sources)
+    $targets.set(targets)
+  }
+
+  public ListSelectionView() {
   }
 
   protected Skin<ListSelectionView<T>> createDefaultSkin() {
     return ListSelectionViewSkin.new(this)
   }
 
-  public ObservableList<T> getSourceList() {
-    return $sourceList.get()
+  public ObservableList<T> getSources() {
+    return $sources.get()
   }
 
-  public void setSourceList(ObservableList<T> sourceList) {
-    $sourceList.set(sourceList)
+  public void setSources(ObservableList<T> sources) {
+    $sources.set(sources)
   }
 
-  public ObjectProperty<ObservableList<T>> sourceListProperty() {
-    return $sourceList
+  public ObjectProperty<ObservableList<T>> sourcesProperty() {
+    return $sources
   }
 
-  public ObservableList<T> getTargetList() {
-    return $targetList.get()
+  public ObservableList<T> getTargets() {
+    return $targets.get()
   }
 
-  public void setTargetList(ObservableList<T> targetList) {
-    $targetList.set(targetList)
+  public void setTargets(ObservableList<T> targets) {
+    $targets.set(targets)
   }
 
-  public ObjectProperty<ObservableList<T>> targetListProperty() {
-    return $targetList
+  public ObjectProperty<ObservableList<T>> targetsProperty() {
+    return $targets
   }
 
   public String getSourceName() {
