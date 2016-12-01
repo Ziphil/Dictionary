@@ -81,7 +81,9 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
             String specialFieldName = parser.getCurrentName()
             parser.nextToken()
             if (specialFieldName == "alphabetOrder") {
-              $alphabetOrder = parser.getValueAsString()
+              parseAlphabetOrder(parser)
+            } else if (specialFieldName == "plainInformationTitles") {
+              parsePlainInformationTitles(parser)
             }
             updateProgress(parser, size)
           }
@@ -220,6 +222,17 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         }
       }
       word.getRelations().add(relation)
+    }
+  }
+
+  private void parseAlphabetOrder(JsonParser parser) {
+    $alphabetOrder = parser.getValueAsString()
+  }
+
+  private void parsePlainInformationTitles(JsonParser parser) {
+    while (parser.nextToken() != JsonToken.END_ARRAY) {
+      String title = parser.getValueAsString()
+      $plainInformationTitles.add(title)
     }
   }
 

@@ -52,7 +52,10 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeEndArray()
       generator.writeFieldName("zpdic")
       generator.writeStartObject()
-      generator.writeStringField("alphabetOrder", $dictionary.getAlphabetOrder())
+      generator.writeFieldName("alphabetOrder")
+      writeAlphabetOrder(generator)
+      generator.writeFieldName("plainInformationTitles")
+      writePlainInformationTitles(generator)
       generator.writeEndObject()
       for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
         String fieldName = entry.getKey()
@@ -130,6 +133,18 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeStringField("form", relation.getName())
       generator.writeEndObject()
       generator.writeEndObject()
+    }
+    generator.writeEndArray()
+  }
+
+  private void writeAlphabetOrder(JsonGenerator generator) {
+    generator.writeString($dictionary.getAlphabetOrder())
+  }
+
+  private void writePlainInformationTitles(JsonGenerator generator) {
+    generator.writeStartArray()
+    for (String title : $dictionary.getPlainInformationTitles()) {
+      generator.writeString(title)
     }
     generator.writeEndArray()
   }
