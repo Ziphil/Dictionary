@@ -30,7 +30,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
-  @FXML private ListView<SlimeWord> $wordList
+  @FXML private ListView<SlimeWord> $wordListView
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -43,8 +43,8 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    setupWordList()
-    setupSearchTypeControl()
+    setupWordListView()
+    bindSearchTypeControlProperty()
   }
 
   @FXML
@@ -60,7 +60,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
       } else if (searchMode == "全文") {
         $dictionary.searchByContent(search)
       }
-      $wordList.scrollTo(0)
+      $wordListView.scrollTo(0)
     }
   }
 
@@ -79,14 +79,14 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   @FXML
   protected void commit() {
-    SlimeWord word = $wordList.getSelectionModel().getSelectedItem()
+    SlimeWord word = $wordListView.getSelectionModel().getSelectedItem()
     $stage.close(word)
   }
 
   @VoidClosure
-  private void setupWordList() {
-    $wordList.setItems($dictionary.getWords())
-    $wordList.setCellFactory() { ListView<SlimeWord> list ->
+  private void setupWordListView() {
+    $wordListView.setItems($dictionary.getWords())
+    $wordListView.setCellFactory() { ListView<SlimeWord> list ->
       SimpleWordCell cell = SimpleWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -97,7 +97,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     }
   }
 
-  private void setupSearchTypeControl() {
+  private void bindSearchTypeControlProperty() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }

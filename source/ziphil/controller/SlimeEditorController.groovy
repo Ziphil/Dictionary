@@ -79,7 +79,6 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   private void initialize() {
     setupIdControl()
-    setupTextFormatter()
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
@@ -678,9 +677,6 @@ public class SlimeEditorController extends Controller<Boolean> {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
-  }
-
-  private void setupTextFormatter() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

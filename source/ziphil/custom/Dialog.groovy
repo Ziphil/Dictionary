@@ -54,7 +54,8 @@ public class Dialog extends Stage {
 
   @FXML
   private void initialize(){
-    setupButtons()
+    bindButtonVisibleProperties()
+    setupCommitButton()
   }
 
   public Boolean showAndWaitResult() {
@@ -84,11 +85,14 @@ public class Dialog extends Stage {
     initModality(Modality.WINDOW_MODAL)
   }
 
-  private void setupButtons() {
+  private void bindButtonVisibleProperties() {
     $negateButton.visibleProperty().bind($allowsNegate)
     $negateButton.managedProperty().bind($allowsNegate)
     $cancelButton.visibleProperty().bind($allowsCancel)
     $cancelButton.managedProperty().bind($allowsCancel)
+  }
+
+  private void setupCommitButton() {
     Platform.runLater() {
       $commitButton.requestFocus()
     }

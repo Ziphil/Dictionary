@@ -45,7 +45,7 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   @FXML
   private void initialize() {
-    setupTextFormatter()
+    setupLevelControl()
   }
 
   public void prepare(PersonalWord word, String defaultName) {
@@ -94,7 +94,7 @@ public class PersonalEditorController extends Controller<Boolean> {
     }
   }
 
-  private void setupTextFormatter() {
+  private void setupLevelControl() {
     $levelControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

@@ -24,7 +24,7 @@ public class HelpController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = 640
   private static final Double DEFAULT_HEIGHT = 480
 
-  @FXML private ListView<String> $sectionList
+  @FXML private ListView<String> $sectionListView
   @FXML private WebView $helpView
 
   public HelpController(UtilityStage<Void> stage) {
@@ -34,7 +34,7 @@ public class HelpController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupSectionList()
+    setupSectionListView()
   }
 
   private void changeHelp(String section) {
@@ -53,10 +53,10 @@ public class HelpController extends Controller<Void> {
     $helpView.getEngine().load(url)
   }
 
-  private void setupSectionList() {
-    $sectionList.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
+  private void setupSectionListView() {
+    $sectionListView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        String section = $sectionList.getSelectionModel().getSelectedItems()[0]
+        String section = $sectionListView.getSelectionModel().getSelectedItems()[0]
         changeHelp(section)
       }
     }

@@ -59,9 +59,9 @@ public class SettingController extends Controller<Boolean> {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupFontFamilyControls()
-    setupTextFormatters()
-    setupFontDisableBindings()
-    setupTextBindings()
+    setupFontSizeControls()
+    bindFontControlProperties()
+    bindOtherProperties()
     applySettings()
   }
 
@@ -202,19 +202,19 @@ public class SettingController extends Controller<Boolean> {
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
-  private void setupTextFormatters() {
+  private void setupFontSizeControls() {
     $contentFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $editorFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
-  private void setupFontDisableBindings() {
+  private void bindFontControlProperties() {
     $contentFontFamilyControl.disableProperty().bind($usesSystemContentFontFamilyControl.selectedProperty())
     $contentFontSizeControl.disableProperty().bind($usesDefaultContentFontSizeControl.selectedProperty())
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
   }
 
-  private void setupTextBindings() {
+  private void bindOtherProperties() {
     $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
     $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
     $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))

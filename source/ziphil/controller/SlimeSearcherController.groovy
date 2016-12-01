@@ -41,7 +41,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML
   private void initialize() {
-    setupTextFormatter()
+    setupIdControl()
   }
 
   public void prepare(SlimeDictionary dictionary) {
@@ -85,7 +85,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     $tagControl.getItems().addAll($dictionary.getRegisteredTags())
   }
 
-  private void setupTextFormatter() {
+  private void setupIdControl() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
