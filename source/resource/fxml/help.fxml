@@ -30,7 +30,7 @@
       </padding>
       <HBox>
         <spacing><Double rpx="5"/></spacing>
-        <ListView fx:id="$sectionList">
+        <ListView fx:id="$sectionsView">
           <prefWidth><Double rpx="150"/></prefWidth>
           <minWidth><Double rpx="150"/></minWidth>
           <String fx:value="基本操作(編集)"/>

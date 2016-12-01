@@ -76,7 +76,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<? extends Word> $wordListView
+  @FXML private ListView<? extends Word> $wordsView
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -117,10 +117,10 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   public void initialize() {
-    setupWordListView()
+    setupWordsView()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
-    setupWordListViewShortcuts()
+    setupWordsViewShortcuts()
     setupDebug()
     bindSearchTypeControlProperty()
     updateDictionaryToDefault()
@@ -226,7 +226,7 @@ public class MainController extends PrimitiveController<Stage> {
     $elapsedTimeLabel.setText(elapsedTime.toString())
     $hitWordSizeLabel.setText($dictionary.hitSize().toString())
     $totalWordSizeLabel.setText($dictionary.totalSize().toString())
-    $wordListView.scrollTo(0)
+    $wordsView.scrollTo(0)
   }
 
   @FXML
@@ -297,7 +297,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Word word = $wordListView.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     modifyWord(word)
   }
 
@@ -315,7 +315,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Word word = $wordListView.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     removeWord(word)
   }
 
@@ -383,7 +383,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Word word = $wordListView.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     addInheritedWord(word)
   }
 
@@ -499,10 +499,10 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateSearchStatuses() {
     if ($dictionary != null) {
       $dictionaryNameLabel.setText($dictionary.getName())
-      $wordListView.setItems($dictionary.getWholeWords())
+      $wordsView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordListView.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+      $wordsView.setItems((ObservableList<Word>)FXCollections.observableArrayList())
     }
     $searchControl.setText("")
     $searchControl.requestFocus()
@@ -612,10 +612,10 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void focusWordList() {
-    $wordListView.requestFocus()
-    if ($wordListView.getSelectionModel().getSelectedItems().isEmpty()) {
-      $wordListView.getSelectionModel().selectFirst()
-      $wordListView.scrollTo(0)
+    $wordsView.requestFocus()
+    if ($wordsView.getSelectionModel().getSelectedItems().isEmpty()) {
+      $wordsView.getSelectionModel().selectFirst()
+      $wordsView.scrollTo(0)
     }
   }
 
@@ -754,8 +754,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @VoidClosure
-  private void setupWordListView() {
-    $wordListView.setCellFactory() { ListView<Word> list ->
+  private void setupWordsView() {
+    $wordsView.setCellFactory() { ListView<Word> list ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -864,8 +864,8 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupWordListViewShortcuts() {
-    $wordListView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+  private void setupWordsViewShortcuts() {
+    $wordsView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
