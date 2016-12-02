@@ -1,12 +1,10 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.stage.WindowEvent
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
