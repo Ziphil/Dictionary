@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -40,13 +39,9 @@ public class ShaleiaEditorController extends Controller<Boolean> {
     $dataControl.setText(word.getData())
     if (defaultName != null) {
       $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
-      }
+      $nameControl.requestFocus()
     } else {
-      Platform.runLater() {
-        $dataControl.requestFocus()
-      }
+      $dataControl.requestFocus()
     }
   }
 

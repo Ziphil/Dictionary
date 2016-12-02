@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
@@ -59,13 +58,9 @@ public class PersonalEditorController extends Controller<Boolean> {
     $modificationControl.setSelected(word.getModification() == 1)
     if (defaultName != null) {
       $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
-      }
+      $nameControl.requestFocus()
     } else {
-      Platform.runLater() {
-        $translationControl.requestFocus()
-      }
+      $translationControl.requestFocus()
     }
   }
 

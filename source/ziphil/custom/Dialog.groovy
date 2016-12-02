@@ -1,11 +1,11 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -93,8 +93,10 @@ public class Dialog extends Stage {
   }
 
   private void setupCommitButton() {
-    Platform.runLater() {
-      $commitButton.requestFocus()
+    $commitButton.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+      if (oldValue == null && newValue != null) {
+        $commitButton.requestFocus()
+      }
     }
   }
 

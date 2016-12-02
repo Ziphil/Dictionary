@@ -2,7 +2,6 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import java.util.concurrent.Callable
-import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.value.ChangeListener
@@ -12,6 +11,7 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Control
 import javafx.scene.control.Label
@@ -25,6 +25,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
+import javafx.stage.WindowEvent
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -172,8 +173,10 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
   }
 
   private void setupFileControl() {
-    Platform.runLater() {
-      $fileControl.requestFocus()
+    $basePane.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+      if (oldValue == null && newValue != null) {
+        $fileControl.requestFocus()
+      }
     }
   }
 

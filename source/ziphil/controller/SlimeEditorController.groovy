@@ -2,12 +2,13 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.util.Map.Entry
-import javafx.application.Platform
+import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.geometry.Bounds
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
@@ -111,12 +112,16 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
     if (defaultName != null) {
       $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
+      $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null && newValue != null) {
+          $nameControl.requestFocus()
+        }
       }
     } else {
-      Platform.runLater() {
-        $informationTextControls[0].requestFocus()
+      $informationTextControls[0].sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null & newValue != null) {
+          $informationTextControls[0].requestFocus()
+        }
       }
     }
   }
