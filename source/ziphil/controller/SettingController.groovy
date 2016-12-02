@@ -151,6 +151,10 @@ public class SettingController extends Controller<Boolean> {
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
+    String currentPath = $registeredDictionaryPathControls[i].getText()
+    if (currentPath != null) {
+      controller.prepare(false, File.new(currentPath).getParentFile(), null)
+    }
     File file = nextStage.showAndWaitResult()
     if (file != null) {
       $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())

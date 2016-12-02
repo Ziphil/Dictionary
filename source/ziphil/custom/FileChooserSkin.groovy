@@ -64,7 +64,7 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     bindFileControlProperty()
     bindFileTypeControlProperty()
     bindControlProperty()
-    changeCurrentDirectoryToHome()
+    changeCurrentDirectoryToDefault()
   }
 
   private void changeCurrentFile(File file) {
@@ -97,6 +97,12 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     File parent = $control.getCurrentDirectory().getParentFile()
     if (parent != null) {
       $control.setCurrentDirectory(parent)
+    }
+  }
+
+  private void changeCurrentDirectoryToDefault() {
+    if ($control.getCurrentDirectory() == null) {
+      changeCurrentDirectoryToHome()
     }
   }
 
@@ -144,7 +150,7 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
         if (innerFiles != null) {
           for (File innerFile : innerFiles) {
             if ($control.isShowsHidden() || !innerFile.isHidden()) {
-              if (innerFile.isDirectory() || $fileTypeControl.getValue().accepts(innerFile)) {
+              if (innerFile.isDirectory() || $fileTypeControl.getValue() == null || $fileTypeControl.getValue().accepts(innerFile)) {
                 files.add(innerFile)
               }
             }
@@ -196,6 +202,9 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
       $fileView.scrollTo(0)
     }
     $control.currentDirectoryProperty().addListener(listener)
+    if ($control.getCurrentDirectory() != null) {
+      listener.changed($control.currentDirectoryProperty(), null, $control.getCurrentDirectory())
+    }
   }
 
   private void bindFileControlProperty() {
@@ -203,6 +212,9 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
       $fileControl.setText(newValue.getName())
     }
     $control.currentFileProperty().addListener(listener)
+    if ($control.getCurrentFile() != null) {
+      listener.changed($control.currentFileProperty(), null, $control.getCurrentFile())
+    }
   }
 
   private void bindFileTypeControlProperty() {
@@ -210,6 +222,9 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
       $fileTypeControl.getSelectionModel().select(newValue)
     }
     $control.currentFileTypeProperty().addListener(listener)
+    if ($control.getCurrentFileType() != null) {
+      listener.changed($control.currentFileTypeProperty(), null, $control.getCurrentFileType())
+    }
   }
 
   private void bindControlProperty() {
