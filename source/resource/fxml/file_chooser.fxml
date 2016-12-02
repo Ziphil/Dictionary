@@ -58,7 +58,7 @@
           <left><Double rpx="5"/></left>
         </Insets>
       </padding>
-      <TreeView fx:id="$directoryTree"/>
+      <TreeView fx:id="$directoryView"/>
     </VBox>
     <VBox>
       <padding>
@@ -69,7 +69,7 @@
           <left><Double rpx="3"/></left>
         </Insets>
       </padding>
-      <ListView fx:id="$fileList"/>
+      <ListView fx:id="$fileView"/>
     </VBox>
   </SplitPane>
   <HBox alignment="center">

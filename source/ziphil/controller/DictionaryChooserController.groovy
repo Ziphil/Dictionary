@@ -34,10 +34,10 @@ public class DictionaryChooserController extends Controller<File> {
 
   public void prepare(Boolean adjustsExtension, String extension) {
     if (extension != null) {
-      ComboBox<ExtensionFilter> fileTypeControl = $chooser.getFileTypeControl()
-      Integer index = fileTypeControl.getItems().findIndexOf{filter -> ((ExtensionFilter)filter).getExtension() == extension}
-      if (index >= 0) {
-        fileTypeControl.getSelectionModel().select(index)
+      List<ExtensionFilter> fileTypes = $chooser.getExtensionFilters()
+      ExtensionFilter fileType = fileTypes.find{fileType -> ((ExtensionFilter)fileType).getExtension() == extension}
+      if (fileType != null) {
+        $chooser.setCurrentFileType(fileType)
       }
     }
     $chooser.setAdjustsExtension(adjustsExtension)

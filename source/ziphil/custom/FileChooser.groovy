@@ -2,205 +2,48 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import java.util.concurrent.Callable
-import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
-import javafx.beans.binding.StringBinding
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ListProperty
 import javafx.beans.property.ObjectProperty
+import javafx.beans.property.StringProperty
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.collections.transformation.SortedList
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.control.ComboBox
-import javafx.scene.control.Label
-import javafx.scene.control.ListView
-import javafx.scene.control.SplitPane
-import javafx.scene.control.TextField
-import javafx.scene.control.TreeView
-import javafx.scene.input.MouseButton
-import javafx.scene.input.MouseEvent
-import javafx.scene.layout.HBox
-import javafx.scene.layout.VBox
-import ziphilib.transform.VoidClosure
+import javafx.scene.control.Control
+import javafx.scene.control.Skin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class FileChooser extends VBox {
+public class FileChooser extends Control {
 
-  private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
-  private static final Comparator<File> FILE_COMPARATOR = createFileComparator()
-  private static final ExtensionFilter DEFAULT_EXTENSION_FILTER = ExtensionFilter.new("全てのファイル", null)
-
-  @FXML private TreeView<File> $directoryTree
-  @FXML private ListView<File> $fileList
-  @FXML private SplitPane $splitPane
-  @FXML private TextField $directoryControl
-  @FXML private TextField $fileControl
-  @FXML private ComboBox<ExtensionFilter> $fileTypeControl
-  private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
-  private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
-  private ObjectProperty<ObservableList<File>> $currentFiles = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentDirectory = SimpleObjectProperty.new()
   private ObjectProperty<File> $currentFile = SimpleObjectProperty.new()
+  private ObjectProperty<ExtensionFilter> $currentFileType = SimpleObjectProperty.new()
+  private StringProperty $inputtedFileName = SimpleStringProperty.new()
   private ReadOnlyObjectWrapper<File> $selectedFile = ReadOnlyObjectWrapper.new()
   private ListProperty<ExtensionFilter> $extensionFilters = SimpleListProperty.new(FXCollections.observableArrayList())
+  private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
+  private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
 
   public FileChooser() {
-    loadResource()
-    changeCurrentDirectoryToHome()
-  }
-
-  @FXML
-  private void initialize() {
-    setupDirectoryTree()
-    setupFileList()
-    setupDirectoryControl()
-    setupFileControl()
-    setupSplitPane()
-    setupFileTypeControl()
     bindSelectedFile()
-  }
-
-  private void changeCurrentFile(File file) {
-    if (file != null && file.isFile()) {
-      $fileControl.setText(file.getName())
-      $currentFile.set(file)
-    }
-  }
-
-  private void changeCurrentDirectory(File file) {
-    if (file != null) {
-      if (file.isDirectory()) {
-        $directoryControl.setText(file.getAbsolutePath())
-        $currentDirectory.set(file)
-        $fileList.scrollTo(0)
-      } else if (file.isFile()) {
-        $fileControl.setText(file.getName())
-        $currentFile.set(file)
-      }
-    }
-  }
-
-  @FXML
-  private void changeCurrentDirectoryToHome() {
-    String homePath = System.getProperty("user.home")
-    File home = File.new(homePath)
-    if (home.isDirectory()) {
-      $directoryControl.setText(home.getAbsolutePath())
-      $currentDirectory.set(home)
-      $fileList.scrollTo(0)
-    }
-  }
-
-  @FXML
-  private void changeCurrentDirectoryToParent() {
-    File parent = $currentDirectory.get().getParentFile()
-    if (parent != null) {
-      $directoryControl.setText(parent.getAbsolutePath())
-      $currentDirectory.set(parent)
-      $fileList.scrollTo(0)
-    }
-  }
-
-  @VoidClosure
-  private void setupDirectoryTree() {
-    DirectoryItem root = DirectoryItem.new(null)
-    for (File file : File.listRoots()) {
-      root.getChildren().add(DirectoryItem.new(file))
-    }
-    $directoryTree.setRoot(root)
-    $directoryTree.setShowRoot(false)
-    $directoryTree.setCellFactory() { TreeView<File> tree ->
-      DirectoryCell cell = DirectoryCell.new()
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-          changeCurrentDirectory(cell.getItem())
-        }
-      }
-      return cell
-    }
-  }
-
-  @VoidClosure
-  private void setupFileList() {
-    $fileList.setCellFactory() { ListView<File> list ->
-      FileCell cell = FileCell.new()
-      cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-          changeCurrentFile(cell.getItem())
-        } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-          changeCurrentDirectory(cell.getItem())
-        }
-      }
-      return cell
-    }
-    Callable<ObservableList<File>> function = (Callable){
-      File directory = $currentDirectory.get()
-      ObservableList<File> files = FXCollections.observableArrayList()
-      if (directory != null) {
-        File[] innerFiles = $currentDirectory.get().listFiles()
-        if (innerFiles != null) {
-          for (File innerFile : innerFiles) {
-            if ($showsHidden.get() || !innerFile.isHidden()) {
-              if (innerFile.isDirectory() || $fileTypeControl.getValue().accepts(innerFile)) {
-                files.add(innerFile)
-              }
-            }
-          }
-        }
-      }
-      SortedList sortedFiles = SortedList.new(files, FILE_COMPARATOR)
-      return sortedFiles
-    }
-    ObjectBinding<ObservableList<File>> binding = Bindings.createObjectBinding(function, $currentDirectory, $showsHidden, $fileTypeControl.valueProperty())
-    $fileList.itemsProperty().bind(binding)
-  }
-
-  private void setupSplitPane() {
-    $splitPane.setDividerPositions(0.3)
-  }
-
-  private void setupDirectoryControl() {
-    $directoryControl.setOnAction() {
-      File file = File.new($directoryControl.getText())
-      changeCurrentDirectory(file)
-    }
-  }
-
-  private void setupFileControl() {
-    Platform.runLater() {
-      $fileControl.requestFocus()
-    }
-  }
-
-  private void setupFileTypeControl() {
-    Callable<ObservableList<ExtensionFilter>> function = (Callable){
-      ObservableList<ExtensionFilter> items = FXCollections.observableArrayList()
-      items.add(DEFAULT_EXTENSION_FILTER)
-      items.addAll($extensionFilters.getValue())
-      return items
-    }
-    ObjectBinding<ObservableList<ExtensionFilter>> binding = Bindings.createObjectBinding(function, $extensionFilters)
-    $fileTypeControl.itemsProperty().bind(binding)
-    $fileTypeControl.getSelectionModel().selectFirst()
   }
 
   private void bindSelectedFile() {
     Callable<File> function = (Callable){
       File directory = $currentDirectory.get()
       if (directory != null) {
-        String filePath = directory.getAbsolutePath() + File.separator + $fileControl.getText()
+        String filePath = directory.getAbsolutePath() + File.separator + $inputtedFileName.get()
         if ($adjustsExtension.get()) {
-          String additionalExtension = $fileTypeControl.getValue().getExtension()
+          String additionalExtension = $currentFileType.get().getExtension()
           if (additionalExtension != null) {
             if (!filePath.endsWith("." + additionalExtension)) {
               filePath = filePath + "." + additionalExtension
@@ -213,38 +56,80 @@ public class FileChooser extends VBox {
         return null
       }
     }
-    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $fileControl.textProperty(), $adjustsExtension, $fileTypeControl.valueProperty())
+    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $inputtedFileName, $adjustsExtension, $currentFileType)
     $selectedFile.bind(binding)
   }
 
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setRoot(this)
-    loader.setController(this)
-    loader.load()
+  protected Skin<FileChooser> createDefaultSkin() {
+    return FileChooserSkin.new(this)
   }
 
-  private static Comparator<File> createFileComparator() {
-    Comparator<File> comparator = (Comparator){ File firstFile, File secondFile ->
-      if (firstFile.isDirectory()) {
-        if (secondFile.isDirectory()) {
-          return firstFile.getName().compareToIgnoreCase(secondFile.getName())
-        } else {
-          return -1
-        }
-      } else {
-        if (secondFile.isDirectory()) {
-          return 1
-        } else {
-          return firstFile.getName().compareToIgnoreCase(secondFile.getName())
-        }
-      }
-    }
-    return comparator
+  public File getCurrentDirectory() {
+    return $currentDirectory.get()
   }
 
-  public ComboBox<ExtensionFilter> getFileTypeControl() {
-    return $fileTypeControl
+  public void setCurrentDirectory(File currentDirectory) {
+    $currentDirectory.set(currentDirectory)
+  }
+
+  public ObjectProperty<File> currentDirectoryProperty() {
+    return $currentDirectory
+  }
+
+  public File getCurrentFile() {
+    return $currentFile.get()
+  }
+
+  public void setCurrentFile(File currentFile) {
+    $currentFile.set(currentFile)
+  }
+
+  public ObjectProperty<File> currentFileProperty() {
+    return $currentFile
+  }
+
+  public ExtensionFilter getCurrentFileType() {
+    return $currentFileType.get()
+  }
+
+  public void setCurrentFileType(ExtensionFilter currentFileType) {
+    $currentFileType.set(currentFileType)
+  }
+
+  public ObjectProperty<ExtensionFilter> currentFileTypeProperty() {
+    return $currentFileType
+  }
+
+  public String getInputtedFileName() {
+    return $inputtedFileName.get()
+  }
+
+  public void setInputtedFileName(String inputtedFileName) {
+    $inputtedFileName.set(inputtedFileName)
+  }
+
+  public StringProperty inputtedFileNameProperty() {
+    return $inputtedFileName
+  }
+
+  public File getSelectedFile() {
+    return $selectedFile.get()
+  }
+
+  public ReadOnlyObjectProperty<File> selectedFileProperty() {
+    return $selectedFile.getReadOnlyProperty()
+  }
+
+  public ObservableList<ExtensionFilter> getExtensionFilters() {
+    return $extensionFilters.getValue()
+  }
+
+  public void setExtensionFilters(ObservableList<ExtensionFilter> extensionFilters) {
+    $extensionFilters.setValue(extensionFilters)
+  }
+
+  public ListProperty<ExtensionFilter> extensionFiltersProperty() {
+    return $extensionFilters
   }
 
   public Boolean isShowsHidden() {
@@ -269,50 +154,6 @@ public class FileChooser extends VBox {
 
   public BooleanProperty adjustsExtensionProperty() {
     return $adjustsExtension
-  }
-
-  public File getCurrentDirectory() {
-    return $currentDirectory.get()
-  }
-
-  public void setCurrentDirectory(File directory) {
-    $currentDirectory.set(directory)
-  }
-
-  public ObjectProperty<File> currentDirectoryProperty() {
-    return $currentDirectory
-  }
-
-  public File getCurrentFile() {
-    return $currentFile.get()
-  }
-
-  public void setCurrentFile(File directory) {
-    $currentFile.set(directory)
-  }
-
-  public ObjectProperty<File> currentFileProperty() {
-    return $currentFile
-  }
-
-  public File getSelectedFile() {
-    return $selectedFile.get()
-  }
-
-  public ReadOnlyObjectProperty<File> selectedFileProperty() {
-    return $selectedFile.getReadOnlyProperty()
-  }
-
-  public ObservableList<ExtensionFilter> getExtensionFilters() {
-    return $extensionFilters.getValue()
-  }
-
-  public void setExtensionFilters(ObservableList<ExtensionFilter> extensionFilters) {
-    $extensionFilters.setValue(extensionFilters)
-  }
-
-  public ListProperty<ExtensionFilter> extensionFiltersProperty() {
-    return $extensionFilters
   }
 
 }
