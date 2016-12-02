@@ -100,19 +100,11 @@ public class ListSelectionViewSkin<T> extends SkinBase<ListSelectionView<T>> {
       if (dragboard.hasString()) {
         String movedString = dragboard.getString()
         T movedItem = firstView.getItems().find{item -> item.toString() == movedString}
+        firstView.getItems().remove(movedItem)
         secondView.getItems().add(movedItem)
         isCompleted = true
       }
       event.setDropCompleted(isCompleted)
-      event.consume()
-    }
-    firstView.addEventHandler(DragEvent.DRAG_DONE) { DragEvent event ->
-      Dragboard dragboard = event.getDragboard()
-      if (event.getTransferMode() == TransferMode.MOVE && dragboard.hasString()) {
-        String movedString = dragboard.getString()
-        T movedItem = firstView.getItems().find{item -> item.toString() == movedString}
-        firstView.getItems().remove(movedItem)
-      }
       event.consume()
     }
   }
