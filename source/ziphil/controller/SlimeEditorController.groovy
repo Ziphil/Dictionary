@@ -125,6 +125,10 @@ public class SlimeEditorController extends Controller<Boolean> {
         }
       }
     }
+    if (!isNormal) {
+      $idControl.setDisable(true)
+      $nameControl.setDisable(true)
+    }
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord) {
