@@ -65,7 +65,7 @@
             <bottom><Double rpx="5"/></bottom>
           </Insets>
         </GridPane.margin>
-        <Text text="ここで指定した内容欄の項目は、項目名を表すラベルの後に改行が入らなくなります。&#10;文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
+        <Text text="ここで指定した内容欄の項目は、項目名のラベルの後に改行が入らなくなります。&#10;文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
       </TextFlow>
       <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
         <GridPane.margin>
