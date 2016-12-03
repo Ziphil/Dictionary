@@ -722,7 +722,11 @@ public class MainController extends PrimitiveController<Stage> {
   private void checkVersion() {
     Version previousVersion = Version.new(Setting.getInstance().getVersionList())
     if (previousVersion < Launcher.VERSION) {
-      println("Ditect update")
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UpdateInformationController controller = UpdateInformationController.new(nextStage)
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      nextStage.showAndWait()
     }
   }
 
