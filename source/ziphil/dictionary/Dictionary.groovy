@@ -255,7 +255,9 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
-    dictionary.setChanged(true)
+    if (dictionary != null) {
+      dictionary.setChanged(true)
+    }
     return dictionary
   }
 
