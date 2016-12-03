@@ -6,9 +6,10 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
 import ziphil.custom.CustomBuilderFactory
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PrimitiveController<S extends Stage> {
 
   protected S $stage

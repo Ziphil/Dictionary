@@ -18,10 +18,11 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
-import ziphilib.transform.ReturnVoidClosure
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_word_chooser.fxml"
@@ -29,7 +30,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
-  @FXML private ListView<SlimeWord> $wordList
+  @FXML private ListView<SlimeWord> $wordsView
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -42,8 +43,8 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    setupWordList()
-    setupSearchTypeControl()
+    setupWordsView()
+    bindSearchTypeControlProperty()
   }
 
   @FXML
@@ -59,7 +60,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
       } else if (searchMode == "全文") {
         $dictionary.searchByContent(search)
       }
-      $wordList.scrollTo(0)
+      $wordsView.scrollTo(0)
     }
   }
 
@@ -78,14 +79,14 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   @FXML
   protected void commit() {
-    SlimeWord word = $wordList.getSelectionModel().getSelectedItem()
+    SlimeWord word = $wordsView.getSelectionModel().getSelectedItem()
     $stage.close(word)
   }
 
-  @ReturnVoidClosure
-  private void setupWordList() {
-    $wordList.setItems($dictionary.getWords())
-    $wordList.setCellFactory() { ListView<SlimeWord> list ->
+  @VoidClosure
+  private void setupWordsView() {
+    $wordsView.setItems($dictionary.getWords())
+    $wordsView.setCellFactory() { ListView<SlimeWord> list ->
       SimpleWordCell cell = SimpleWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -96,7 +97,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     }
   }
 
-  private void setupSearchTypeControl() {
+  private void bindSearchTypeControlProperty() {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
     }

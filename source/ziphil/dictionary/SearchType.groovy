@@ -3,9 +3,10 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import java.util.regex.PatternSyntaxException
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public enum SearchType {
 
   EXACT, PREFIX, SUFFIX, PART, REGULAR_EXPRESSION, MINIMAL_PAIR

@@ -1,11 +1,11 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -16,9 +16,10 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import javafx.stage.StageStyle
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Dialog extends Stage {
 
   private static final String RESOURCE_PATH = "resource/fxml/dialog.fxml"
@@ -53,7 +54,8 @@ public class Dialog extends Stage {
 
   @FXML
   private void initialize(){
-    setupButtons()
+    bindButtonVisibleProperties()
+    setupCommitButton()
   }
 
   public Boolean showAndWaitResult() {
@@ -83,13 +85,18 @@ public class Dialog extends Stage {
     initModality(Modality.WINDOW_MODAL)
   }
 
-  private void setupButtons() {
+  private void bindButtonVisibleProperties() {
     $negateButton.visibleProperty().bind($allowsNegate)
     $negateButton.managedProperty().bind($allowsNegate)
     $cancelButton.visibleProperty().bind($allowsCancel)
     $cancelButton.managedProperty().bind($allowsCancel)
-    Platform.runLater() {
-      $commitButton.requestFocus()
+  }
+
+  private void setupCommitButton() {
+    $commitButton.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+      if (oldValue == null && newValue != null) {
+        $commitButton.requestFocus()
+      }
     }
   }
 

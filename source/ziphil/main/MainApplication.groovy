@@ -7,9 +7,10 @@ import javafx.stage.Stage
 import ziphil.Launcher
 import ziphil.controller.MainController
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class MainApplication extends Application {
 
   public void start(Stage stage) {

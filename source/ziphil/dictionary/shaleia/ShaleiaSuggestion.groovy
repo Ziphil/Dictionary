@@ -3,9 +3,10 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
 
   private ShaleiaDictionary $dictionary
@@ -20,8 +21,10 @@ public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
 
   public void createContentPane() {
     Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     ShaleiaSuggestionContentPaneCreator creator = ShaleiaSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setLineSpacing(lineSpacing)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
     $isChanged = false

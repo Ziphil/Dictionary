@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -13,9 +12,10 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/shaleia_editor.fxml"
@@ -33,24 +33,19 @@ public class ShaleiaEditorController extends Controller<Boolean> {
     setupShortcuts()
   }
 
-  public void prepare(ShaleiaWord word, String defaultName) {
+  public void prepare(ShaleiaWord word, Boolean editsEmptyWord) {
     $word = word
     $nameControl.setText(word.getUniqueName())
     $dataControl.setText(word.getData())
-    if (defaultName != null) {
-      $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
-      }
+    if (editsEmptyWord) {
+      $nameControl.requestFocus()
     } else {
-      Platform.runLater() {
-        $dataControl.requestFocus()
-      }
+      $dataControl.requestFocus()
     }
   }
 
   public void prepare(ShaleiaWord word) {
-    prepare(word, null)
+    prepare(word, false)
   }
 
   @FXML

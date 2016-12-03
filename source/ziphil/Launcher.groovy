@@ -2,14 +2,15 @@ package ziphil
 
 import groovy.transform.CompileStatic
 import ziphil.main.MainApplication
+import ziphil.module.Version
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"
-  public static final String VERSION = "1.1.0"
-  public static final String DATE = "1757"
+  public static final Version VERSION = Version.new(1, 2, 0, 1777)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -40,6 +41,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1. 2. 0 | 内容のラベルの後で改行するかを設定する機能を追加。
+//          | 単語の新規作成時のデフォルトデータを変更する機能を追加。
+//          | 単語表示欄の行間を調整する機能を追加。
 //  1. 1. 0 | 検索結果をシャッフルする機能を追加。
 //          | OneToMany 形式で全文検索しても何も表示されない不具合を修正。
 //  1. 0. 0 | 多くの機能の細かな挙動を改善。

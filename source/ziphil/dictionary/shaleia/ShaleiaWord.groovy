@@ -4,9 +4,10 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaWord extends Word {
 
   private String $uniqueName = ""
@@ -44,18 +45,21 @@ public class ShaleiaWord extends Word {
 
   public void createContentPane() {
     Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     ShaleiaWordContentPaneCreator creator = ShaleiaWordContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setLineSpacing(lineSpacing)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
     $isChanged = false
   }
 
   public void createComparisonString(String order) {
+    Boolean isApostropheCharacter = order.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $uniqueName.length()) {
       String character = $uniqueName[i]
-      if (character != "'" && character != "+" && character != "~") {
+      if ((isApostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
         Integer position = order.indexOf($uniqueName.codePointAt(i))
         if (position > -1) {
           comparisonString.appendCodePoint(position + 174)

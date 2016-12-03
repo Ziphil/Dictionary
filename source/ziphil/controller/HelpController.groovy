@@ -8,9 +8,10 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.web.WebView
 import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
@@ -23,7 +24,7 @@ public class HelpController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = 640
   private static final Double DEFAULT_HEIGHT = 480
 
-  @FXML private ListView<String> $sectionList
+  @FXML private ListView<String> $sectionsView
   @FXML private WebView $helpView
 
   public HelpController(UtilityStage<Void> stage) {
@@ -33,7 +34,7 @@ public class HelpController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupSectionList()
+    setupSectionsView()
   }
 
   private void changeHelp(String section) {
@@ -52,10 +53,10 @@ public class HelpController extends Controller<Void> {
     $helpView.getEngine().load(url)
   }
 
-  private void setupSectionList() {
-    $sectionList.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
+  private void setupSectionsView() {
+    $sectionsView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        String section = $sectionList.getSelectionModel().getSelectedItems()[0]
+        String section = $sectionsView.getSelectionModel().getSelectedItems()[0]
         changeHelp(section)
       }
     }

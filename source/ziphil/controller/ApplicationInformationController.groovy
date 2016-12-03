@@ -5,9 +5,10 @@ import javafx.fxml.FXML
 import javafx.scene.control.Label
 import ziphil.Launcher
 import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ApplicationInformationController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/application_information.fxml"
@@ -28,7 +29,7 @@ public class ApplicationInformationController extends Controller<Void> {
   }
 
   private void setupVersionLabel() {
-    String version = "version ${Launcher.VERSION}-${Launcher.DATE}"
+    String version = "version ${Launcher.VERSION}"
     $versionLabel.setText(version)
   }
 

@@ -2,16 +2,17 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
-import javafx.scene.layout.VBox
+import javafx.scene.text.TextFlow
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public abstract class Word {
 
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
-  protected VBox $contentPane = VBox.new()
+  protected TextFlow $contentPane = TextFlow.new()
   protected Boolean $isChanged = true
 
   public abstract void createContentPane()

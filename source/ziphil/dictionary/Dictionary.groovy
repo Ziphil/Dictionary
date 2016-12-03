@@ -21,9 +21,10 @@ import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   protected String $name = ""
@@ -187,7 +188,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $isChanged = true
   }
 
-  public abstract W emptyWord()
+  public abstract W emptyWord(String defaultName)
 
   public abstract W copiedWord(W oldWord)
 
@@ -254,7 +255,9 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
-    dictionary.setChanged(true)
+    if (dictionary != null) {
+      dictionary.setChanged(true)
+    }
     return dictionary
   }
 

@@ -60,10 +60,12 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
-import ziphilib.transform.ReturnVoidClosure
+import ziphil.module.Version
+import ziphilib.transform.VoidClosure
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
@@ -74,7 +76,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<? extends Word> $wordList
+  @FXML private ListView<? extends Word> $wordsView
   @FXML private TextField $searchControl
   @FXML private ComboBox<String> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -115,12 +117,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   public void initialize() {
-    setupWordList()
-    setupSearchTypeControl()
+    setupWordsView()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupWordsViewShortcuts()
     setupDebug()
-    setupWordListShortcuts()
+    bindSearchTypeControlProperty()
+    checkVersion()
     updateDictionaryToDefault()
   }
 
@@ -223,7 +226,7 @@ public class MainController extends PrimitiveController<Stage> {
     $elapsedTimeLabel.setText(elapsedTime.toString())
     $hitWordSizeLabel.setText($dictionary.hitSize().toString())
     $totalWordSizeLabel.setText($dictionary.totalSize().toString())
-    $wordList.scrollTo(0)
+    $wordsView.scrollTo(0)
   }
 
   @FXML
@@ -294,7 +297,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     modifyWord(word)
   }
 
@@ -312,7 +315,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     removeWord(word)
   }
 
@@ -326,16 +329,16 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((ShaleiaWord)newWord, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((ShaleiaWord)newWord, true)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((PersonalWord)newWord, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((PersonalWord)newWord, true)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((SlimeWord)newWord, $dictionary, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((SlimeWord)newWord, $dictionary, true)
       }
       Boolean isDone = nextStage.showAndWaitResult()
       if (isDone != null && isDone) {
@@ -380,7 +383,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Word word = $wordList.getSelectionModel().getSelectedItems()[0]
+    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
     addInheritedWord(word)
   }
 
@@ -466,7 +469,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, Dictionary.extensionOf($dictionary))
+      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionary.extensionOf($dictionary))
       File file = nextStage.showAndWaitResult()
       if (file != null) {
         $dictionary.setName(file.getName())
@@ -496,10 +499,10 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateSearchStatuses() {
     if ($dictionary != null) {
       $dictionaryNameLabel.setText($dictionary.getName())
-      $wordList.setItems($dictionary.getWholeWords())
+      $wordsView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordList.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+      $wordsView.setItems((ObservableList<Word>)FXCollections.observableArrayList())
     }
     $searchControl.setText("")
     $searchControl.requestFocus()
@@ -609,10 +612,10 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void focusWordList() {
-    $wordList.requestFocus()
-    if ($wordList.getSelectionModel().getSelectedItems().isEmpty()) {
-      $wordList.getSelectionModel().selectFirst()
-      $wordList.scrollTo(0)
+    $wordsView.requestFocus()
+    if ($wordsView.getSelectionModel().getSelectedItems().isEmpty()) {
+      $wordsView.getSelectionModel().selectFirst()
+      $wordsView.scrollTo(0)
     }
   }
 
@@ -716,14 +719,47 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void checkVersion() {
+    Version previousVersion = Version.new(Setting.getInstance().getVersionList())
+    if (previousVersion < Launcher.VERSION) {
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UpdateInformationController controller = UpdateInformationController.new(nextStage)
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      nextStage.showAndWait()
+    }
+  }
+
   @FXML
   private void exit() {
     Platform.exit()
   }
 
-  @ReturnVoidClosure
-  private void setupWordList() {
-    $wordList.setCellFactory() { ListView<Word> list ->
+  private void bindSearchTypeControlProperty() {
+    Callable<String> textFunction = (Callable){
+      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
+    }
+    Callable<Boolean> disableFunction = (Callable){
+      String searchMode = $searchModeControl.getValue()
+      if (searchMode == "単語") {
+        return false
+      } else if (searchMode == "訳語") {
+        return false
+      } else if (searchMode == "全文") {
+        return true
+      } else {
+        return true
+      }
+    }
+    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
+    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
+    $searchTypeControl.textProperty().bind(textBinding)
+    $searchTypeControl.disableProperty().bind(disableBinding)
+  }
+
+  @VoidClosure
+  private void setupWordsView() {
+    $wordsView.setCellFactory() { ListView<Word> list ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -747,28 +783,6 @@ public class MainController extends PrimitiveController<Stage> {
       }
       return cell
     }
-  }
-
-  private void setupSearchTypeControl() {
-    Callable<String> textFunction = (Callable){
-      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
-    }
-    Callable<Boolean> disableFunction = (Callable){
-      String searchMode = $searchModeControl.getValue()
-      if (searchMode == "単語") {
-        return false
-      } else if (searchMode == "訳語") {
-        return false
-      } else if (searchMode == "全文") {
-        return true
-      } else {
-        return true
-      }
-    }
-    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
-    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
-    $searchTypeControl.textProperty().bind(textBinding)
-    $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
   private void setupOpenRegisteredDictionaryMenu() {
@@ -817,18 +831,9 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupDebug() {
-    Boolean isDebugging = Setting.getInstance().isDebugging()
-    if (!isDebugging) {
-      $searchScriptItem.setVisible(false)
-    }
-  }
-
-  private void setupWordListShortcuts() {
-    $wordList.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
-      if (event.getCode() == KeyCode.ENTER) {
-        modifyWord()
-      }
+  private void setupExceptionHandler() {
+    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
+      handleException(throwable)
     }
   }
 
@@ -863,6 +868,14 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void setupWordsViewShortcuts() {
+    $wordsView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+      if (event.getCode() == KeyCode.ENTER) {
+        modifyWord()
+      }
+    }
+  }
+
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
@@ -872,9 +885,10 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupExceptionHandler() {
-    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
-      handleException(throwable)
+  private void setupDebug() {
+    Boolean isDebugging = Setting.getInstance().isDebugging()
+    if (!isDebugging) {
+      $searchScriptItem.setVisible(false)
     }
   }
 

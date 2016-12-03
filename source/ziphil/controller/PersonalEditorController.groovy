@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
@@ -17,9 +16,10 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/personal_editor.fxml"
@@ -44,10 +44,10 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   @FXML
   private void initialize() {
-    setupTextFormatter()
+    setupLevelControl()
   }
 
-  public void prepare(PersonalWord word, String defaultName) {
+  public void prepare(PersonalWord word, Boolean editsEmptyWord) {
     $word = word
     $nameControl.setText(word.getName())
     $pronunciationControl.setText(word.getPronunciation())
@@ -56,20 +56,15 @@ public class PersonalEditorController extends Controller<Boolean> {
     $levelControl.getValueFactory().setValue(word.getLevel())
     $memoryControl.setSelected(word.getMemory() == 1)
     $modificationControl.setSelected(word.getModification() == 1)
-    if (defaultName != null) {
-      $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
-      }
+    if (editsEmptyWord) {
+      $nameControl.requestFocus()
     } else {
-      Platform.runLater() {
-        $translationControl.requestFocus()
-      }
+      $translationControl.requestFocus()
     }
   }
 
   public void prepare(PersonalWord word) {
-    prepare(word, null)
+    prepare(word, false)
   }
 
   @FXML
@@ -93,7 +88,7 @@ public class PersonalEditorController extends Controller<Boolean> {
     }
   }
 
-  private void setupTextFormatter() {
+  private void setupLevelControl() {
     $levelControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

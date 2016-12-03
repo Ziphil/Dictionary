@@ -3,9 +3,10 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Word
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalWord extends Word {
 
   private PersonalDictionary $dictionary
@@ -34,8 +35,10 @@ public class PersonalWord extends Word {
 
   public void createContentPane() {
     Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     PersonalWordContentPaneCreator creator = PersonalWordContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setLineSpacing(lineSpacing)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
     $isChanged = false

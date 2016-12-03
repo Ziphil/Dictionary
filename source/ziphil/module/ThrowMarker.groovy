@@ -1,9 +1,10 @@
 package ziphil.module
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ThrowMarker extends Exception {
 
 }

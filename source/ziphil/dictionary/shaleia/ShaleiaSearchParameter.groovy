@@ -2,9 +2,10 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.SearchType
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaSearchParameter {
 
   private String $name

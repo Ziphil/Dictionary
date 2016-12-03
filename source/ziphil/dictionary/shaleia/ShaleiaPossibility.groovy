@@ -1,9 +1,10 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ShaleiaPossibility {
 
   private String $name

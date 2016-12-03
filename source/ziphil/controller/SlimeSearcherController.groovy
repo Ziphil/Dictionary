@@ -11,9 +11,10 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_searcher.fxml"
@@ -40,7 +41,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML
   private void initialize() {
-    setupTextFormatter()
+    setupIdControl()
   }
 
   public void prepare(SlimeDictionary dictionary) {
@@ -84,7 +85,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     $tagControl.getItems().addAll($dictionary.getRegisteredTags())
   }
 
-  private void setupTextFormatter() {
+  private void setupIdControl() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

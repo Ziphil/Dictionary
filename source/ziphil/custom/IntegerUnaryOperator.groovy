@@ -3,9 +3,10 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import java.util.function.UnaryOperator
 import javafx.scene.control.TextFormatter.Change
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class IntegerUnaryOperator implements UnaryOperator<Change> {
 
   public Change apply(Change change) {
@@ -16,7 +17,7 @@ public class IntegerUnaryOperator implements UnaryOperator<Change> {
       Boolean hasSign
       if (change.isReplaced()) {
         if (change.getRangeStart() == 0) {
-          hasSign = change.getRangeEnd() < controlText.length() && change.getControlText()[change.getRangeEnd()] == "-"
+          hasSign = change.getRangeEnd() < controlText.length() && controlText[change.getRangeEnd()] == "-"
         } else {
           hasSign = controlText.startsWith("-")
         }

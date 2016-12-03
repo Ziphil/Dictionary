@@ -2,12 +2,13 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.util.Map.Entry
-import javafx.application.Platform
+import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.fxml.FXML
 import javafx.geometry.Bounds
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
@@ -36,9 +37,10 @@ import ziphil.dictionary.slime.SlimeRelation
 import ziphil.dictionary.slime.SlimeVariation
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class SlimeEditorController extends Controller<Boolean> {
 
   private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"
@@ -68,6 +70,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private List<TextField> $relationNameControls = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
+  private Boolean $isNormal
 
   public SlimeEditorController(UtilityStage<Boolean> nextStage) {
     super(nextStage)
@@ -78,12 +81,12 @@ public class SlimeEditorController extends Controller<Boolean> {
   @FXML
   private void initialize() {
     setupIdControl()
-    setupTextFormatter()
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean isNormal) {
     $word = word
     $dictionary = dictionary
+    $isNormal = isNormal
     $idControl.setText(word.getId().toString())
     $nameControl.setText(word.getName())
     for (String tag : word.getTags()) {
@@ -109,20 +112,31 @@ public class SlimeEditorController extends Controller<Boolean> {
     if ($informationTextControls.isEmpty()) {
       insertInformationControl()
     }
-    if (defaultName != null) {
-      $nameControl.setText(defaultName)
-      Platform.runLater() {
-        $nameControl.requestFocus()
+    if (editsEmptyWord) {
+      $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null && newValue != null) {
+          $nameControl.requestFocus()
+        }
       }
     } else {
-      Platform.runLater() {
-        $informationTextControls[0].requestFocus()
+      $informationTextControls[0].sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null & newValue != null) {
+          $informationTextControls[0].requestFocus()
+        }
       }
+    }
+    if (!isNormal) {
+      $idControl.setDisable(true)
+      $nameControl.setDisable(true)
     }
   }
 
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord) {
+    prepare(word, dictionary, editsEmptyWord, true)
+  }
+
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
-    prepare(word, dictionary, null)
+    prepare(word, dictionary, false, true)
   }
 
   @FXML
@@ -130,7 +144,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
       Integer id = $idControl.getText().toInteger()
-      if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
+      if (ignoresDuplicateSlimeId || !$isNormal || !$dictionary.containsId(id, $word)) {
         String name = $nameControl.getText()
         List<SlimeEquivalent> rawEquivalents = ArrayList.new()
         List<String> tags = ArrayList.new()
@@ -677,9 +691,6 @@ public class SlimeEditorController extends Controller<Boolean> {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
-  }
-
-  private void setupTextFormatter() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

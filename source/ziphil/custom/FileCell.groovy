@@ -5,10 +5,11 @@ import java.util.regex.Matcher
 import javafx.scene.control.ListCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import ziphilib.transform.ConvertPrimitive
+import ziphilib.transform.ConvertPrimitiveArgs
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class FileCell extends ListCell<File> {
 
   private static final Image DIRECTORY_ICON = createIcon("resource/icon/directory.png")
@@ -21,7 +22,7 @@ public class FileCell extends ListCell<File> {
     super()
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   protected void updateItem(File file, Boolean isEmpty) {
     super.updateItem(file, isEmpty)
     if (isEmpty || file == null) {

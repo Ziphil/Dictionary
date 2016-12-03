@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <URL value="@../css/main.css"/>
+    <URL value="@../css/modification.css"/>
+  </stylesheets>
+  <center>
+    <VBox alignment="center">
+      <spacing><Double rpx="5"/></spacing>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <Label text="更新情報" styleClass="update-title"/>
+      <TextFlow styleClass="update-item-pane">
+        <Text text="内容のラベルの後で改行するかを設定する機能を追加"/>
+      </TextFlow>
+      <TextFlow styleClass="update-detail-pane">
+        <VBox.margin>
+          <Insets>
+            <left><Double rpx="10"/></left>
+          </Insets>
+        </VBox.margin>
+        <Text text="OTM形式の内容欄において、項目名のラベルの後で改行するかどうかを設定できるようになりました。&#10;"/>
+        <Text text="文章が1行だけの項目などに対して指定しておくと、単語データが見やすくなるかもしれません。&#10;"/>
+        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。"/>
+      </TextFlow>
+      <TextFlow styleClass="update-item-pane">
+        <Text text="単語の新規作成時のデフォルトデータを変更する機能を追加"/>
+      </TextFlow>
+      <TextFlow styleClass="update-detail-pane">
+        <VBox.margin>
+          <Insets>
+            <left><Double rpx="10"/></left>
+          </Insets>
+        </VBox.margin>
+        <Text text="OTM形式で単語を新規作成するときに、デフォルトで入力される内容を変更できるようになりました。&#10;"/>
+        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。"/>
+      </TextFlow>
+      <TextFlow styleClass="update-item-pane">
+        <Text text="単語表示欄の行間を調整する機能を追加"/>
+      </TextFlow>
+      <TextFlow styleClass="update-detail-pane">
+        <VBox.margin>
+          <Insets>
+            <left><Double rpx="10"/></left>
+          </Insets>
+        </VBox.margin>
+        <Text text="単語表示欄の行間をピクセル単位で調整できるようになりました。&#10;"/>
+        <Text text="設定は、メニューの「ツール」→「環境設定」の「表示」タブから行えます。"/>
+      </TextFlow>
+    </VBox>
+  </center>
+</BorderPane>
+

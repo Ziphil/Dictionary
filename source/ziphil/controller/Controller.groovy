@@ -3,9 +3,10 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Controller<T> extends PrimitiveController<UtilityStage<T>> {
 
   public Controller(UtilityStage<T> stage) {

@@ -44,7 +44,8 @@
           </padding>
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+          <Label text="行間調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -57,7 +58,11 @@
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemContentFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="10"/></spacing>
+            <CheckBox fx:id="$usesSystemContentFontFamilyControl" text="システムフォントを用いる"/>
+            <CheckBox fx:id="$usesDefaultContentFontSizeControl" text="デフォルトサイズを用いる"/>
+          </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$editorFontFamilyControl" editable="true">
@@ -70,8 +75,17 @@
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <CheckBox fx:id="$usesSystemEditorFontControl" text="システムフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="6">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <spacing><Double rpx="10"/></spacing>
+            <CheckBox fx:id="$usesSystemEditorFontFamilyControl" text="システムフォントを用いる"/>
+            <CheckBox fx:id="$usesDefaultEditorFontSizeControl" text="デフォルトサイズを用いる"/>
+          </HBox>
+          <Spinner fx:id="$lineSpacingControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+            <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
+          </Spinner>
+          <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="8">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -94,6 +108,15 @@
             <Text text="このフォントは単語データの編集時のテキストエリアで用いられます。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;指定したピクセル分だけ余分に行間が空きます。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="9">
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>

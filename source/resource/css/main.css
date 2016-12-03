@@ -73,6 +73,19 @@
   -fx-font-weight: bold;
 }
 
+.update-title {
+  -fx-font-size: 1.5em;
+}
+
+.update-item-pane Text {
+  -fx-fill: -fx-text-base-color;
+  -fx-font-size: 1.2em;
+}
+
+.update-detail-pane Text {
+  -fx-fill: -fx-text-base-color;
+}
+
 .transparent {
   -fx-background-color: transparent;
   -fx-background-insets: 0px;

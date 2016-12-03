@@ -8,10 +8,11 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.Launcher
+import ziphilib.transform.Ziphilify
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Setting {
 
   private static final String CORRECT_PASSWORD = "fkdocwpvmdcaskex"
@@ -28,6 +29,7 @@ public class Setting {
   private Integer $contentFontSize
   private String $editorFontFamily
   private Integer $editorFontSize
+  private Integer $lineSpacing = 0
   private Integer $fontRenderingType
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
@@ -37,6 +39,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private String $password = ""
+  private List<Integer> $versionList = []
 
   public void save() {
     saveSetting()
@@ -45,6 +48,7 @@ public class Setting {
 
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
+    $versionList = Launcher.VERSION.toList()
     $$mapper.writeValue(stream, this)
     stream.close()
   }
@@ -52,16 +56,32 @@ public class Setting {
   private void saveCustomStylesheet() {
     File file = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH)
     StringBuilder stylesheet = StringBuilder.new()
-    if ($contentFontFamily != null && $contentFontSize != null) {
+    if ($contentFontFamily != null || $contentFontSize != null) {
       stylesheet.append("#dictionary-list .content-pane {\n")
-      stylesheet.append("  -fx-font-family: \"${Strings.escapeUnicode($contentFontFamily)}\";\n")
-      stylesheet.append("  -fx-font-size: ${$contentFontSize};\n")
+      if ($contentFontFamily != null) {
+        stylesheet.append("  -fx-font-family: \"")
+        stylesheet.append(Strings.escapeUnicode($contentFontFamily))
+        stylesheet.append("\";\n")
+      }
+      if ($contentFontSize != null) {
+        stylesheet.append("  -fx-font-size:")
+        stylesheet.append($contentFontSize)
+        stylesheet.append(";\n")
+      }
       stylesheet.append("}\n\n")
     }
-    if ($editorFontFamily != null && $editorFontSize != null) {
+    if ($editorFontFamily != null || $editorFontSize != null) {
       stylesheet.append(".editor {\n")
-      stylesheet.append("  -fx-font-family: \"${Strings.escapeUnicode($editorFontFamily)}\";\n")
-      stylesheet.append("  -fx-font-size: ${$editorFontSize};\n")
+      if ($editorFontFamily != null) {
+        stylesheet.append("  -fx-font-family: \"")
+        stylesheet.append(Strings.escapeUnicode($editorFontFamily))
+        stylesheet.append("\";\n")
+      }
+      if ($editorFontSize != null) {
+        stylesheet.append("  -fx-font-size: ")
+        stylesheet.append($editorFontSize)
+        stylesheet.append(";\n")
+      }
       stylesheet.append("}\n\n")
     }    
     file.setText(stylesheet.toString(), "UTF-8")
@@ -151,6 +171,14 @@ public class Setting {
     $editorFontSize = editorFontSize
   }
 
+  public Integer getLineSpacing() {
+    return $lineSpacing
+  }
+
+  public void setLineSpacing(Integer lineSpacing) {
+    $lineSpacing = lineSpacing
+  }
+
   public Integer getFontRenderingType() {
     return $fontRenderingType
   }
@@ -221,6 +249,14 @@ public class Setting {
 
   public void setPassword(String password) {
     $password = password
+  }
+
+  public List<Integer> getVersionList() {
+    return $versionList
+  }
+
+  public void setVersionList(List<Integer> versionList) {
+    $versionList = versionList
   }
 
 }

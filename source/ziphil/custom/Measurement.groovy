@@ -3,9 +3,10 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.scene.text.Font
 import javafx.util.Builder
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class Measurement implements Builder<Double> {
 
   private static final Double UNIT_REM = calculateUnitRem()

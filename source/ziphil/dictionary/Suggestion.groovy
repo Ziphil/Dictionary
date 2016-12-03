@@ -1,9 +1,10 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public abstract class Suggestion<P> extends Word {
 
   protected List<P> $possibilities = ArrayList.new()

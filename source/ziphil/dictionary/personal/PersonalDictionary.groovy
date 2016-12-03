@@ -5,9 +5,10 @@ import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Suggestion
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   private PersonalDictionaryLoader $loader
@@ -33,8 +34,12 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     $isChanged = true
   }
 
-  public PersonalWord emptyWord() {
-    return PersonalWord.new("", "", "", "", 0, 0, 0)
+  public PersonalWord emptyWord(String defaultName) {
+    if (defaultName != null) {
+      return PersonalWord.new(defaultName, "", "", "", 0, 0, 0)
+    } else {
+      return PersonalWord.new("", "", "", "", 0, 0, 0)
+    }
   }
 
   public PersonalWord copiedWord(PersonalWord oldWord) {

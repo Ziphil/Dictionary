@@ -1,9 +1,10 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class ExtensionFilter {
 
   private String $name

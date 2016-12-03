@@ -3,9 +3,10 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class UtilityStage<T> extends Stage {
 
   private T $result

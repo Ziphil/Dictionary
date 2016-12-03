@@ -3,17 +3,18 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
 import ziphil.dictionary.Word
-import ziphilib.transform.ConvertPrimitive
+import ziphilib.transform.ConvertPrimitiveArgs
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class WordCell extends ListCell<Word> {
 
   public WordCell() {
     super()
   }
 
-  @ConvertPrimitive
+  @ConvertPrimitiveArgs
   protected void updateItem(Word word, Boolean isEmpty) {
     super.updateItem(word, isEmpty)
     if (isEmpty || word == null) {

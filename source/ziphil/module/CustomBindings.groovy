@@ -5,9 +5,10 @@ import java.util.concurrent.Callable
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.StringBinding
 import javafx.scene.control.ToggleButton
+import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Newify
+@CompileStatic @Ziphilify
 public class CustomBindings {
 
   public static StringBinding whichString(ToggleButton button, String trueString, String falseString) {
