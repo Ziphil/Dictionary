@@ -94,6 +94,7 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         T movedItem = firstView.getItems().find{item -> item.toString() == movedString}
         firstView.getItems().remove(movedItem)
         secondView.getItems().add(movedItem)
+        firstView.getSelectionModel().clearSelection()
         isCompleted = true
       }
       event.setDropCompleted(isCompleted)
