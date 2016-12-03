@@ -2,7 +2,7 @@ package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
-import javafx.scene.layout.VBox
+import javafx.scene.text.TextFlow
 import ziphil.dictionary.Word
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -19,7 +19,7 @@ public class SlimeWord extends Word {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private VBox $simpleContentPane = VBox.new()
+  private TextFlow $simpleContentPane = TextFlow.new()
   private Boolean $isSimpleChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,

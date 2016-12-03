@@ -17,26 +17,25 @@ public class SlimeSuggestionContentPaneCreator extends ContentPaneCreator<SlimeS
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
 
-  public SlimeSuggestionContentPaneCreator(VBox contentPane, SlimeSuggestion word, SlimeDictionary dictionary) {
+  public SlimeSuggestionContentPaneCreator(TextFlow contentPane, SlimeSuggestion word, SlimeDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
   public void create() {
-    VBox possibilityBox = VBox.new()
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(possibilityBox)
     for (SlimePossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(possibilityBox, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
+      addPossibilityNode(possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
     }
+    modifyBreak()
   }
 
-  private void addPossibilityNode(VBox box, Integer id, String name, String possibilityName) {
-    TextFlow textFlow = TextFlow.new()
+  private void addPossibilityNode(Integer id, String name, String possibilityName) {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
+    Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
         $dictionary.getOnLinkClicked().accept(id)
@@ -45,8 +44,7 @@ public class SlimeSuggestionContentPaneCreator extends ContentPaneCreator<SlimeS
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    textFlow.getChildren().addAll(prefixText, nameText, possibilityNameText)
-    box.getChildren().add(textFlow)
+    $contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
   }
 
 }

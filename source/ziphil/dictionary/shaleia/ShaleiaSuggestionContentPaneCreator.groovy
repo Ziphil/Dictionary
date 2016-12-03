@@ -17,26 +17,25 @@ public class ShaleiaSuggestionContentPaneCreator extends ContentPaneCreator<Shal
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"
 
-  public ShaleiaSuggestionContentPaneCreator(VBox contentPane, ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
+  public ShaleiaSuggestionContentPaneCreator(TextFlow contentPane, ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
   public void create() {
-    VBox possibilityBox = VBox.new()
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(possibilityBox)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(possibilityBox, possibility.getName(), possibility.getPossibilityName())
+      addPossibilityNode(possibility.getName(), possibility.getPossibilityName())
     }
+    modifyBreak()
   }
 
-  private void addPossibilityNode(VBox box, String name, String possibilityName) {
-    TextFlow textFlow = TextFlow.new()
+  private void addPossibilityNode(String name, String possibilityName) {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
+    Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
         $dictionary.getOnLinkClicked().accept(name)
@@ -45,8 +44,7 @@ public class ShaleiaSuggestionContentPaneCreator extends ContentPaneCreator<Shal
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    textFlow.getChildren().addAll(prefixText, nameText, possibilityNameText)
-    box.getChildren().add(textFlow)
+    $contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
   }
 
 }

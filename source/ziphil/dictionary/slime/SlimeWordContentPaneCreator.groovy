@@ -27,29 +27,24 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
-  public SlimeWordContentPaneCreator(VBox contentPane, SlimeWord word, SlimeDictionary dictionary) {
+  public SlimeWordContentPaneCreator(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
   public void create() {
-    HBox headBox = HBox.new()
-    VBox equivalentBox = VBox.new()
-    VBox informationBox = VBox.new()
-    VBox relationBox = VBox.new()
     Boolean hasInformation = false
     Boolean hasRelation = false
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
-    $contentPane.getChildren().addAll(headBox, equivalentBox, informationBox, relationBox)
-    addNameNode(headBox, $word.getName())
-    addTagNode(headBox, $word.getTags())
+    addNameNode($word.getName())
+    addTagNode($word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
       String equivalentString = equivalent.getNames().join(", ")
-      addEquivalentNode(equivalentBox, equivalent.getTitle(), equivalentString)
+      addEquivalentNode(equivalent.getTitle(), equivalentString)
     }
     for (SlimeInformation information : $word.getInformations()) {
-      addInformationNode(informationBox, information.getTitle(), information.getText())
+      addInformationNode(information.getTitle(), information.getText())
       hasInformation = true
     }
     Map<String, List<SlimeRelation>> groupedRelation = $word.getRelations().groupBy{relation -> relation.getTitle()}
@@ -58,76 +53,59 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       List<SlimeRelation> relationGroup = entry.getValue()
       List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
       List<String> names = relationGroup.collect{relation -> relation.getName()}
-      addRelationNode(relationBox, title, ids, names)
+      addRelationNode(title, ids, names)
       hasRelation = true
     }
-    if (hasInformation) {
-      $contentPane.setMargin(equivalentBox, Insets.new(0, 0, Measurement.rpx(3), 0))
-    }
-    if (hasRelation) {
-      $contentPane.setMargin(informationBox, Insets.new(0, 0, Measurement.rpx(3), 0))
-    }
+    modifyBreak()
   }
 
-  private void addNameNode(HBox box, String name) {
+  private void addNameNode(String name) {
     Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
-    box.getChildren().add(nameText)
-    box.setAlignment(Pos.CENTER_LEFT)
+    $contentPane.getChildren().add(nameText)
   }
 
-  private void addTagNode(HBox box, List<String> tags) {
+  private void addTagNode(List<String> tags) {
     for (String tag : tags) {
       Label tagText = Label.new(tag)
       Text spaceText = Text.new(" ")
       tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
       spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-      box.getChildren().addAll(tagText, spaceText)
+      $contentPane.getChildren().addAll(tagText, spaceText)
     }
+    Text breakText = Text.new("\n")
+    $contentPane.getChildren().add(breakText)
   }
 
-  private void addEquivalentNode(VBox box, String title, String equivalent) {
-    TextFlow textFlow = TextFlow.new()
+  private void addEquivalentNode(String title, String equivalent) {
     Label titleText = Label.new(title)
     Text equivalentText = Text.new(" " + equivalent)
+    Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    textFlow.getChildren().addAll(titleText, equivalentText)
-    box.getChildren().add(textFlow)
+    $contentPane.getChildren().addAll(titleText, equivalentText, breakText)
   }
 
-  private void addInformationNode(VBox box, String title, String information) {
+  private void addInformationNode(String title, String information) {
     String modifiedInformation = ($modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
-    if ($dictionary.getPlainInformationTitles().contains(title)) {
-      TextFlow textFlow = TextFlow.new()
-      Text titleText = Text.new("【${title}】 ")
-      Text informationText = Text.new(modifiedInformation)
-      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-      informationText.getStyleClass().add(CONTENT_CLASS)
-      textFlow.getChildren().addAll(titleText, informationText)
-      box.getChildren().add(textFlow)
-    } else {
-      TextFlow titleTextFlow = TextFlow.new()
-      TextFlow textFlow = TextFlow.new()
-      Text titleText = Text.new("【${title}】")
-      Text dammyText = Text.new(" ")
-      Text informationText = Text.new(modifiedInformation)
-      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-      informationText.getStyleClass().add(CONTENT_CLASS)
-      titleTextFlow.getChildren().addAll(titleText, dammyText)
-      textFlow.getChildren().add(informationText)
-      box.getChildren().addAll(titleTextFlow, textFlow)
-    }
+    Boolean insertsBreak = !$dictionary.getPlainInformationTitles().contains(title)
+    Text titleText = Text.new("【${title}】")
+    Text innerBreakText = Text.new((insertsBreak) ? " \n" : " ")
+    Text informationText = Text.new(modifiedInformation)
+    Text breakText = Text.new("\n")
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    innerBreakText.getStyleClass().add(CONTENT_CLASS)
+    informationText.getStyleClass().add(CONTENT_CLASS)
+    $contentPane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }
 
   @VoidClosure
-  private void addRelationNode(VBox box, String title, List<Integer> ids, List<String> names) {
-    TextFlow textFlow = TextFlow.new()
+  private void addRelationNode(String title, List<Integer> ids, List<String> names) {
     Text formerTitleText = Text.new("cf:")
     Text titleText = Text.new("〈${title}〉" + " ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    textFlow.getChildren().addAll(formerTitleText, titleText)
+    $contentPane.getChildren().addAll(formerTitleText, titleText)
     for (Integer i : 0 ..< names.size()) {
       Integer id = ids[i]
       String name = names[i]
@@ -138,14 +116,15 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
         }
       }
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-      textFlow.getChildren().add(nameText)
+      $contentPane.getChildren().add(nameText)
       if (i < names.size() - 1) {
         Text punctuationText = Text.new(", ")
         punctuationText.getStyleClass().add(CONTENT_CLASS)
-        textFlow.getChildren().add(punctuationText)
+        $contentPane.getChildren().add(punctuationText)
       }      
     }
-    box.getChildren().add(textFlow)
+    Text breakText = Text.new("\n")
+    $contentPane.getChildren().add(breakText)
   }
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
