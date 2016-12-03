@@ -70,6 +70,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private List<TextField> $relationNameControls = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
+  private Boolean $isNormal
 
   public SlimeEditorController(UtilityStage<Boolean> nextStage) {
     super(nextStage)
@@ -82,9 +83,10 @@ public class SlimeEditorController extends Controller<Boolean> {
     setupIdControl()
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName, Boolean isNormal) {
     $word = word
     $dictionary = dictionary
+    $isNormal = isNormal
     $idControl.setText(word.getId().toString())
     $nameControl.setText(word.getName())
     for (String tag : word.getTags()) {
@@ -126,8 +128,12 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
+    prepare(word, dictionary, defaultName, true)
+  }
+
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
-    prepare(word, dictionary, null)
+    prepare(word, dictionary, null, true)
   }
 
   @FXML
@@ -135,7 +141,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
       Integer id = $idControl.getText().toInteger()
-      if (ignoresDuplicateSlimeId || !$dictionary.containsId(id, $word)) {
+      if (ignoresDuplicateSlimeId || !$isNormal || !$dictionary.containsId(id, $word)) {
         String name = $nameControl.getText()
         List<SlimeEquivalent> rawEquivalents = ArrayList.new()
         List<String> tags = ArrayList.new()

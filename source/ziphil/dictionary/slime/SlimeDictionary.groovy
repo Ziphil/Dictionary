@@ -30,6 +30,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   private List<String> $registeredRelationTitles
   private String $alphabetOrder
   private List<String> $plainInformationTitles
+  private SlimeWord $defaultWord
   private Consumer<Integer> $onLinkClicked
   private Map<String, TreeNode> $externalData
 
@@ -271,6 +272,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       $registeredRelationTitles = $loader.getRegisteredRelationTitles()
       $alphabetOrder = $loader.getAlphabetOrder()
       $plainInformationTitles = $loader.getPlainInformationTitles()
+      $defaultWord = $loader.getDefaultWord()
       $externalData = $loader.getExternalData()
       $words.addAll($loader.getValue())
     }
@@ -351,6 +353,15 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setPlainInformationTitles(List<String> plainInformationTitles) {
     $plainInformationTitles = plainInformationTitles
+    $isChanged = true
+  }
+
+  public SlimeWord getDefaultWord() {
+    return $defaultWord
+  }
+
+  public void setDefaultWord(SlimeWord defaultWord) {
+    $defaultWord = defaultWord
     $isChanged = true
   }
 
