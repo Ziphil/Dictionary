@@ -34,20 +34,7 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeFieldName("words")
       generator.writeStartArray()
       for (SlimeWord word : $words) {
-        generator.writeStartObject()
-        generator.writeFieldName("entry")
-        writeEntry(generator, word)
-        generator.writeFieldName("translations")
-        writeEquivalents(generator, word)
-        generator.writeFieldName("tags")
-        writeTags(generator, word)
-        generator.writeFieldName("contents")
-        writeInformations(generator, word)
-        generator.writeFieldName("variations")
-        writeVariations(generator, word)
-        generator.writeFieldName("relations")
-        writeRelations(generator, word)
-        generator.writeEndObject()
+        writeWord(generator, word)
       }
       generator.writeEndArray()
       generator.writeFieldName("zpdic")
@@ -67,6 +54,23 @@ public class SlimeDictionarySaver implements Runnable {
       generator.close()
       stream.close()
     }
+  }
+
+  private void writeWord(JsonGenerator generator, SlimeWord word) {
+    generator.writeStartObject()
+    generator.writeFieldName("entry")
+    writeEntry(generator, word)
+    generator.writeFieldName("translations")
+    writeEquivalents(generator, word)
+    generator.writeFieldName("tags")
+    writeTags(generator, word)
+    generator.writeFieldName("contents")
+    writeInformations(generator, word)
+    generator.writeFieldName("variations")
+    writeVariations(generator, word)
+    generator.writeFieldName("relations")
+    writeRelations(generator, word)
+    generator.writeEndObject()
   }
 
   private void writeEntry(JsonGenerator generator, SlimeWord word) {

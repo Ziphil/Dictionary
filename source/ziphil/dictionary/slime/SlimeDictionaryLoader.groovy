@@ -46,32 +46,13 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String topFieldName = parser.getCurrentName()
         parser.nextToken()
-        if (isCancelled()) {
-          return null
-        }
         if (topFieldName == "words") {
           while (parser.nextToken() == JsonToken.START_OBJECT) {
             SlimeWord word = SlimeWord.new()
-            while (parser.nextToken() == JsonToken.FIELD_NAME) {
-              String wordFieldName = parser.getCurrentName()
-              parser.nextToken()
-              if (isCancelled()) {
-                return null
-              }
-              if (wordFieldName == "entry") {
-                parseEntry(parser, word)
-              } else if (wordFieldName == "translations") {
-                parseEquivalents(parser, word)
-              } else if (wordFieldName == "tags") {
-                parseTags(parser, word)
-              } else if (wordFieldName == "contents") {
-                parseInformations(parser, word)
-              } else if (wordFieldName == "variations") {
-                parseVariations(parser, word)
-              } else if (wordFieldName == "relations") {
-                parseRelations(parser, word)
-              }
+            if (isCancelled()) {
+              return null
             }
+            parseWord(parser, word)
             word.setDictionary($dictionary)
             $words.add(word)
             updateProgress(parser, size)
@@ -100,6 +81,26 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
     }
     $validMinId ++
     return $words
+  }
+
+  private void parseWord(JsonParser parser, SlimeWord word) {
+    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+      String wordFieldName = parser.getCurrentName()
+      parser.nextToken()
+      if (wordFieldName == "entry") {
+        parseEntry(parser, word)
+      } else if (wordFieldName == "translations") {
+        parseEquivalents(parser, word)
+      } else if (wordFieldName == "tags") {
+        parseTags(parser, word)
+      } else if (wordFieldName == "contents") {
+        parseInformations(parser, word)
+      } else if (wordFieldName == "variations") {
+        parseVariations(parser, word)
+      } else if (wordFieldName == "relations") {
+        parseRelations(parser, word)
+      }
+    }
   }
 
   private void parseEntry(JsonParser parser, SlimeWord word) {
