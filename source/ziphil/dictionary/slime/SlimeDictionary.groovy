@@ -222,7 +222,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   public SlimeWord emptyWord(String defaultName) {
-    SlimeWord word = SlimeWord.new()
+    SlimeWord word = copiedWord($defaultWord)
     word.setId($validMinId)
     if (defaultName != null) {
       word.setName(defaultName)
