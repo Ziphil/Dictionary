@@ -25,43 +25,17 @@ import ziphilib.transform.Ziphilify
 public class FileChooser extends Control {
 
   private ObjectProperty<File> $currentDirectory = SimpleObjectProperty.new()
-  private ObjectProperty<File> $currentFile = SimpleObjectProperty.new()
   private ObjectProperty<ExtensionFilter> $currentFileType = SimpleObjectProperty.new()
-  private StringProperty $inputtedFileName = SimpleStringProperty.new()
   private ReadOnlyObjectWrapper<File> $selectedFile = ReadOnlyObjectWrapper.new()
   private ListProperty<ExtensionFilter> $extensionFilters = SimpleListProperty.new(FXCollections.observableArrayList())
   private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
   private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
 
   public FileChooser() {
-    bindSelectedFile()
-  }
-
-  private void bindSelectedFile() {
-    Callable<File> function = (Callable){
-      File directory = $currentDirectory.get()
-      if (directory != null) {
-        String filePath = directory.getAbsolutePath() + File.separator + $inputtedFileName.get()
-        if ($adjustsExtension.get()) {
-          String additionalExtension = $currentFileType.get().getExtension()
-          if (additionalExtension != null) {
-            if (!filePath.endsWith("." + additionalExtension)) {
-              filePath = filePath + "." + additionalExtension
-            }
-          }
-        }
-        File file = File.new(filePath)
-        return file
-      } else {
-        return null
-      }
-    }
-    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $currentDirectory, $inputtedFileName, $adjustsExtension, $currentFileType)
-    $selectedFile.bind(binding)
   }
 
   protected Skin<FileChooser> createDefaultSkin() {
-    return FileChooserSkin.new(this)
+    return FileChooserSkin.new(this, $selectedFile)
   }
 
   public File getCurrentDirectory() {
@@ -76,18 +50,6 @@ public class FileChooser extends Control {
     return $currentDirectory
   }
 
-  public File getCurrentFile() {
-    return $currentFile.get()
-  }
-
-  public void setCurrentFile(File currentFile) {
-    $currentFile.set(currentFile)
-  }
-
-  public ObjectProperty<File> currentFileProperty() {
-    return $currentFile
-  }
-
   public ExtensionFilter getCurrentFileType() {
     return $currentFileType.get()
   }
@@ -98,18 +60,6 @@ public class FileChooser extends Control {
 
   public ObjectProperty<ExtensionFilter> currentFileTypeProperty() {
     return $currentFileType
-  }
-
-  public String getInputtedFileName() {
-    return $inputtedFileName.get()
-  }
-
-  public void setInputtedFileName(String inputtedFileName) {
-    $inputtedFileName.set(inputtedFileName)
-  }
-
-  public StringProperty inputtedFileNameProperty() {
-    return $inputtedFileName
   }
 
   public File getSelectedFile() {

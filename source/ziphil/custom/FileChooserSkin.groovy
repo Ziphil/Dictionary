@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.concurrent.Callable
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
+import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
@@ -45,10 +46,12 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
   @FXML private TextField $fileControl
   @FXML private ComboBox<ExtensionFilter> $fileTypeControl
   private FileChooser $control
+  private ObjectProperty<File> $selectedFile
 
-  public FileChooserSkin(FileChooser control) {
+  public FileChooserSkin(FileChooser control, ObjectProperty<File> selectedFile) {
     super(control)
     $control = control
+    $selectedFile = selectedFile
     loadResource()
     setupBasePane()
   }
@@ -62,15 +65,14 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     setupFileTypeControl()
     setupSplitPane()
     bindDirectoryControlProperty()
-    bindFileControlProperty()
     bindFileTypeControlProperty()
-    bindControlProperty()
+    bindSelectedFile()
     changeCurrentDirectoryToDefault()
   }
 
   private void changeCurrentFile(File file) {
     if (file != null && file.isFile()) {
-      $control.setCurrentFile(file)
+      $fileControl.setText(file.getName())
     }
   }
 
@@ -79,7 +81,7 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
       if (file.isDirectory()) {
         $control.setCurrentDirectory(file)
       } else if (file.isFile()) {
-        $control.setCurrentFile(file)
+        $fileControl.setText(file.getName())
       }
     }
   }
@@ -210,16 +212,6 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     }
   }
 
-  private void bindFileControlProperty() {
-    ChangeListener<File> listener = { ObservableValue<? extends File> observableValue, File oldValue, File newValue ->
-      $fileControl.setText(newValue.getName())
-    }
-    $control.currentFileProperty().addListener(listener)
-    if ($control.getCurrentFile() != null) {
-      listener.changed($control.currentFileProperty(), null, $control.getCurrentFile())
-    }
-  }
-
   private void bindFileTypeControlProperty() {
     ChangeListener<ExtensionFilter> listener = { ObservableValue<? extends ExtensionFilter> observableValue, ExtensionFilter oldValue, ExtensionFilter newValue ->
       $fileTypeControl.getSelectionModel().select(newValue)
@@ -230,8 +222,28 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     }
   }
 
-  private void bindControlProperty() {
-    $control.inputtedFileNameProperty().bind($fileControl.textProperty())
+  private void bindSelectedFile() {
+    Callable<File> function = (Callable){
+      File directory = $control.getCurrentDirectory()
+      if (directory != null) {
+        String filePath = directory.getAbsolutePath() + File.separator + $fileControl.getText()
+        if ($control.isAdjustsExtension()) {
+          String additionalExtension = $control.getCurrentFileType().getExtension()
+          if (additionalExtension != null) {
+            if (!filePath.endsWith("." + additionalExtension)) {
+              filePath = filePath + "." + additionalExtension
+            }
+          }
+        }
+        File file = File.new(filePath)
+        return file
+      } else {
+        return null
+      }
+    }
+    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $control.currentDirectoryProperty(), $control.currentFileTypeProperty(), $control.adjustsExtensionProperty(),
+                                                               $fileControl.textProperty())
+    $selectedFile.bind(binding)
   }
 
   private void loadResource() {
