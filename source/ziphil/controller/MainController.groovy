@@ -123,8 +123,8 @@ public class MainController extends PrimitiveController<Stage> {
     setupWordsViewShortcuts()
     setupDebug()
     bindSearchTypeControlProperty()
-    updateDictionaryToDefault()
     checkVersion()
+    updateDictionaryToDefault()
   }
 
   private void search(Boolean forcesSearch) {
