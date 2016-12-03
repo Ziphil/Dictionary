@@ -18,7 +18,6 @@ import javafx.scene.control.Control
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode
-import javafx.scene.control.SkinBase
 import javafx.scene.control.SplitPane
 import javafx.scene.control.TextField
 import javafx.scene.control.TreeView
@@ -32,28 +31,26 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class FileChooserSkin extends SkinBase<FileChooser> {
+public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
 
   private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
   private static final Comparator<File> FILE_COMPARATOR = createFileComparator()
   private static final ExtensionFilter DEFAULT_EXTENSION_FILTER = ExtensionFilter.new("全てのファイル", null)
 
-  @FXML private VBox $basePane = VBox.new()
   @FXML private TreeView<File> $directoryView
   @FXML private ListView<File> $fileView
   @FXML private SplitPane $splitPane
   @FXML private TextField $directoryControl
   @FXML private TextField $fileControl
   @FXML private ComboBox<ExtensionFilter> $fileTypeControl
-  private FileChooser $control
   private ObjectProperty<File> $selectedFile
 
   public FileChooserSkin(FileChooser control, ObjectProperty<File> selectedFile) {
     super(control)
-    $control = control
+    $node = VBox.new()
     $selectedFile = selectedFile
-    loadResource()
-    setupBasePane()
+    loadResource(RESOURCE_PATH)
+    setupNode()
   }
 
   @FXML
@@ -107,10 +104,6 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     if ($control.getCurrentDirectory() == null) {
       changeCurrentDirectoryToHome()
     }
-  }
-
-  private void setupBasePane() {
-    getChildren().add($basePane)
   }
 
   @VoidClosure
@@ -175,7 +168,7 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
   }
 
   private void setupFileControl() {
-    $basePane.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+    $fileControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
       if (oldValue == null && newValue != null) {
         $fileControl.requestFocus()
       }
@@ -244,13 +237,6 @@ public class FileChooserSkin extends SkinBase<FileChooser> {
     ObjectBinding<File> binding = Bindings.createObjectBinding(function, $control.currentDirectoryProperty(), $control.currentFileTypeProperty(), $control.adjustsExtensionProperty(),
                                                                $fileControl.textProperty())
     $selectedFile.bind(binding)
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setRoot($basePane)
-    loader.setController(this)
-    loader.load()
   }
 
   private static Comparator<File> createFileComparator() {
