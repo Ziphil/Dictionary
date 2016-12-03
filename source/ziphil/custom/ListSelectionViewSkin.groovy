@@ -2,7 +2,6 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.control.Control
 import javafx.scene.control.Label

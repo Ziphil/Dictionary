@@ -11,7 +11,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Control
