@@ -64,6 +64,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
     bindFileTypeControlProperty()
     bindSelectedFile()
     changeCurrentDirectoryToDefault()
+    changeCurrentFileTypeToDefault()
   }
 
   private void changeCurrentFile(File file) {
@@ -102,6 +103,12 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   private void changeCurrentDirectoryToDefault() {
     if ($control.getCurrentDirectory() == null) {
       changeCurrentDirectoryToHome()
+    }
+  }
+
+  private void changeCurrentFileTypeToDefault() {
+    if ($control.getCurrentFileType() == null) {
+      $control.setCurrentFileType($fileTypeControl.getValue())
     }
   }
 
