@@ -38,6 +38,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
+    $contentPane.setLineSpacing($lineSpacing)
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
     String line
     while ((line = reader.readLine()) != null) {

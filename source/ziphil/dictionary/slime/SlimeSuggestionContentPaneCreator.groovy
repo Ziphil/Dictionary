@@ -24,6 +24,7 @@ public class SlimeSuggestionContentPaneCreator extends ContentPaneCreator<SlimeS
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
+    $contentPane.setLineSpacing($lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
     }

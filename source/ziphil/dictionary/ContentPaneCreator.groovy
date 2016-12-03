@@ -17,6 +17,7 @@ public abstract class ContentPaneCreator<W extends Word, D extends Dictionary> {
   protected TextFlow $contentPane
   protected W $word
   protected D $dictionary
+  protected Integer $lineSpacing = 0
   protected Boolean $modifiesPunctuation = false
 
   public ContentPaneCreator(TextFlow contentPane, W word, D dictionary) {
@@ -32,6 +33,10 @@ public abstract class ContentPaneCreator<W extends Word, D extends Dictionary> {
     if (lastChild instanceof Text && lastChild.getText() == "\n") {
       $contentPane.getChildren().removeAt($contentPane.getChildren().size() - 1)
     }
+  }
+
+  public void setLineSpacing(Integer lineSpacing) {
+    $lineSpacing = lineSpacing
   }
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {

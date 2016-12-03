@@ -24,6 +24,7 @@ public class ShaleiaSuggestionContentPaneCreator extends ContentPaneCreator<Shal
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
+    $contentPane.setLineSpacing($lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(possibility.getName(), possibility.getPossibilityName())
     }

@@ -21,8 +21,10 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
 
   public void createContentPane() {
     Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     SlimeSuggestionContentPaneCreator creator = SlimeSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setLineSpacing(lineSpacing)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
     $isChanged = false

@@ -20,6 +20,7 @@ public class PersonalWordContentPaneCreator extends ContentPaneCreator<PersonalW
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
+    $contentPane.setLineSpacing($lineSpacing)
     addNameNode($word.getName())
     addOtherNode($word.getTranslation())
     addOtherNode($word.getUsage())

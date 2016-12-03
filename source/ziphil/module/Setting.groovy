@@ -29,6 +29,7 @@ public class Setting {
   private Integer $contentFontSize
   private String $editorFontFamily
   private Integer $editorFontSize
+  private Integer $lineSpacing = 0
   private Integer $fontRenderingType
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
@@ -168,6 +169,14 @@ public class Setting {
 
   public void setEditorFontSize(Integer editorFontSize) {
     $editorFontSize = editorFontSize
+  }
+
+  public Integer getLineSpacing() {
+    return $lineSpacing
+  }
+
+  public void setLineSpacing(Integer lineSpacing) {
+    $lineSpacing = lineSpacing
   }
 
   public Integer getFontRenderingType() {

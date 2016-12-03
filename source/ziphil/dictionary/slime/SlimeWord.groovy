@@ -71,8 +71,10 @@ public class SlimeWord extends Word {
 
   public void createContentPane() {
     Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     SlimeWordContentPaneCreator creator = SlimeWordContentPaneCreator.new($contentPane, this, $dictionary)
+    creator.setLineSpacing(lineSpacing)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
     $isChanged = false

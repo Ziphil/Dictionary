@@ -35,6 +35,7 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()
+    $contentPane.setLineSpacing($lineSpacing)
     addNameNode($word.getName())
     addTagNode($word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {

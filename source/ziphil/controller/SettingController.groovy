@@ -40,6 +40,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private Spinner<Integer> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
+  @FXML private Spinner<Integer> $lineSpacingControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -59,7 +60,7 @@ public class SettingController extends Controller<Boolean> {
   private void initialize() {
     setupRegisteredDictionaryPane()
     setupFontFamilyControls()
-    setupFontSizeControls()
+    setupIntegerControls()
     bindFontControlProperties()
     bindOtherProperties()
     applySettings()
@@ -71,6 +72,7 @@ public class SettingController extends Controller<Boolean> {
     Integer contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
+    Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
@@ -99,6 +101,7 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
+    $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
@@ -121,6 +124,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
+    Integer lineSpacing = $lineSpacingControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -133,6 +137,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
+    setting.setLineSpacing(lineSpacing)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
@@ -206,9 +211,10 @@ public class SettingController extends Controller<Boolean> {
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
-  private void setupFontSizeControls() {
+  private void setupIntegerControls() {
     $contentFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $editorFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $lineSpacingControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
   private void bindFontControlProperties() {
