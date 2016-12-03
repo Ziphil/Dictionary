@@ -83,7 +83,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     setupIdControl()
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName, Boolean isNormal) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean isNormal) {
     $word = word
     $dictionary = dictionary
     $isNormal = isNormal
@@ -112,8 +112,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     if ($informationTextControls.isEmpty()) {
       insertInformationControl()
     }
-    if (defaultName != null) {
-      $nameControl.setText(defaultName)
+    if (editsEmptyWord) {
       $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
         if (oldValue == null && newValue != null) {
           $nameControl.requestFocus()
@@ -128,12 +127,12 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, String defaultName) {
-    prepare(word, dictionary, defaultName, true)
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord) {
+    prepare(word, dictionary, editsEmptyWord, true)
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
-    prepare(word, dictionary, null, true)
+    prepare(word, dictionary, false, true)
   }
 
   @FXML

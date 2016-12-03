@@ -221,9 +221,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
   }
 
-  public SlimeWord emptyWord() {
+  public SlimeWord emptyWord(String defaultName) {
     SlimeWord word = SlimeWord.new()
     word.setId($validMinId)
+    if (defaultName != null) {
+      word.setName(defaultName)
+    }
     return word
   }
 

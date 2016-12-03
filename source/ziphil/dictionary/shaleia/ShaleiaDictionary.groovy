@@ -245,10 +245,14 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
   }
 
-  public ShaleiaWord emptyWord() {
+  public ShaleiaWord emptyWord(String defaultName) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     String data = "+ ${hairiaNumber} 〈不〉\n\n=〈〉"
-    return ShaleiaWord.new("", data)
+    if (defaultName != null) {
+      return ShaleiaWord.new(defaultName, data)
+    } else {
+      return ShaleiaWord.new("", data)
+    }
   }
 
   public ShaleiaWord copiedWord(ShaleiaWord oldWord) {

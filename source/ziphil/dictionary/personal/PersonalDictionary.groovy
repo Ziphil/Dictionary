@@ -34,8 +34,12 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     $isChanged = true
   }
 
-  public PersonalWord emptyWord() {
-    return PersonalWord.new("", "", "", "", 0, 0, 0)
+  public PersonalWord emptyWord(String defaultName) {
+    if (defaultName != null) {
+      return PersonalWord.new(defaultName, "", "", "", 0, 0, 0)
+    } else {
+      return PersonalWord.new("", "", "", "", 0, 0, 0)
+    }
   }
 
   public PersonalWord copiedWord(PersonalWord oldWord) {

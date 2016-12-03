@@ -33,12 +33,11 @@ public class ShaleiaEditorController extends Controller<Boolean> {
     setupShortcuts()
   }
 
-  public void prepare(ShaleiaWord word, String defaultName) {
+  public void prepare(ShaleiaWord word, Boolean editsEmptyWord) {
     $word = word
     $nameControl.setText(word.getUniqueName())
     $dataControl.setText(word.getData())
-    if (defaultName != null) {
-      $nameControl.setText(defaultName)
+    if (editsEmptyWord) {
       $nameControl.requestFocus()
     } else {
       $dataControl.requestFocus()
@@ -46,7 +45,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   }
 
   public void prepare(ShaleiaWord word) {
-    prepare(word, null)
+    prepare(word, false)
   }
 
   @FXML

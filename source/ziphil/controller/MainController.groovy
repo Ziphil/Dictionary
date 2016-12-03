@@ -329,16 +329,16 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((ShaleiaWord)newWord, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((ShaleiaWord)newWord, true)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((PersonalWord)newWord, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((PersonalWord)newWord, true)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord()
-        controller.prepare((SlimeWord)newWord, $dictionary, defaultName)
+        newWord = $dictionary.emptyWord(defaultName)
+        controller.prepare((SlimeWord)newWord, $dictionary, true)
       }
       Boolean isDone = nextStage.showAndWaitResult()
       if (isDone != null && isDone) {

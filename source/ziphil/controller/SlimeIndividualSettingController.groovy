@@ -65,7 +65,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($defaultWord, $dictionary, null, false)
+    controller.prepare($defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
   }
 
