@@ -43,6 +43,8 @@ public class SlimeDictionarySaver implements Runnable {
       writeAlphabetOrder(generator)
       generator.writeFieldName("plainInformationTitles")
       writePlainInformationTitles(generator)
+      generator.writeFieldName("defaultWord")
+      writeDefaultWord(generator)
       generator.writeEndObject()
       for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
         String fieldName = entry.getKey()
@@ -151,6 +153,10 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeString(title)
     }
     generator.writeEndArray()
+  }
+
+  private void writeDefaultWord(JsonGenerator generator) {
+    writeWord(generator, $dictionary.getDefaultWord())
   }
 
 }

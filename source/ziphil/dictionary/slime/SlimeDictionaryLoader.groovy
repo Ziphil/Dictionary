@@ -66,6 +66,8 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
               parseAlphabetOrder(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
+            } else if (specialFieldName == "defaultWord") {
+              parseDefaultWord(parser)
             }
             updateProgress(parser, size)
           }
@@ -236,6 +238,10 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       String title = parser.getValueAsString()
       $plainInformationTitles.add(title)
     }
+  }
+
+  private void parseDefaultWord(JsonParser parser) {
+    parseWord(parser, $defaultWord)
   }
 
   private void updateProgress(JsonParser parser, Integer size) {
