@@ -633,11 +633,11 @@ public class MainController extends PrimitiveController<Stage> {
         dialog.setCommitText("保存する")
         dialog.setNegateText("保存しない")
         dialog.setAllowsNegate(true)
-        Boolean result = dialog.showAndWaitResult()
-        if (result == true) {
+        dialog.showAndWait()
+        if (dialog.isCommitted()) {
           $dictionary.save()
           return true
-        } else if (result == false) {
+        } else if (dialog.isNegated()) {
           return true
         } else {
           return false

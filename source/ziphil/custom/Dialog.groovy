@@ -32,7 +32,7 @@ public class Dialog extends Stage {
   @FXML private Button $cancelButton
   private BooleanProperty $allowsNegate = SimpleBooleanProperty.new(false)
   private BooleanProperty $allowsCancel = SimpleBooleanProperty.new(true)
-  private Boolean $result = false
+  private DialogStatus $status = DialogStatus.CANCELLED
   private Scene $scene
 
   public Dialog() {
@@ -58,26 +58,21 @@ public class Dialog extends Stage {
     setupCommitButton()
   }
 
-  public Boolean showAndWaitResult() {
-    showAndWait()
-    return $result
-  }
-
   @FXML
   private void commit() {
-    $result = true
+    $status = DialogStatus.COMMITTED
     close()
   }
 
   @FXML
   private void negate() {
-    $result = false
+    $status = DialogStatus.NEGATED
     close()
   }
 
   @FXML
   private void cancel() {
-    $result = null
+    $status = DialogStatus.CANCELLED
     close()
   }
 
@@ -107,6 +102,18 @@ public class Dialog extends Stage {
     $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setScene($scene)
     sizeToScene()
+  }
+
+  public Boolean isCommitted() {
+    return $status == DialogStatus.COMMITTED
+  }
+
+  public Boolean isNegated() {
+    return $status == DialogStatus.NEGATED
+  }
+
+  public Boolean isCancelled() {
+    return $status == DialogStatus.CANCELLED
   }
 
   public String getContentText() {
