@@ -46,7 +46,7 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
       Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
       Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
       Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
-      Matcher ethymologyMatcher = line =~ /^E>\s*(.+)$/
+      Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
       Matcher usageMatcher = line =~ /^U>\s*(.+)$/
       Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
       Matcher noteMatcher = line =~ /^N>\s*(.+)$/
@@ -75,9 +75,9 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
         addOtherNode("語義", meaning)
         hasOther = true
       }
-      if (ethymologyMatcher.matches()) {
-        String ethymology = ethymologyMatcher.group(1)
-        addOtherNode("語源", ethymology)
+      if (etymologyMatcher.matches()) {
+        String etymology = etymologyMatcher.group(1)
+        addOtherNode("語源", etymology)
         hasOther = true
       }
       if (usageMatcher.matches()) {
