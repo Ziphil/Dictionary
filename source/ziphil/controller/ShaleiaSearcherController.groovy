@@ -46,7 +46,7 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
       parameter.setData($dataControl.getText())
     }
     parameter.setDataSearchType(SearchType.valueOfExplanation($dataSearchTypeControl.getValue()))
-    $stage.close(parameter)
+    $stage.commit(parameter)
   }
 
 }

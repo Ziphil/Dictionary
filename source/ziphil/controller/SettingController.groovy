@@ -160,8 +160,9 @@ public class SettingController extends Controller<Boolean> {
     if (currentPath != null) {
       controller.prepare(false, File.new(currentPath).getParentFile(), null)
     }
-    File file = nextStage.showAndWaitResult()
-    if (file != null) {
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      File file = nextStage.getResult()
       $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())
     }
   }
@@ -173,7 +174,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     updateSettings()
-    $stage.close(true)
+    $stage.commit(true)
   }
 
   private void setupRegisteredDictionaryPane() {

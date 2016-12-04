@@ -28,7 +28,7 @@ public class ScriptController extends Controller<String> {
   @FXML
   protected void commit() {
     String string = $scriptControl.getText()
-    $stage.close(string)
+    $stage.commit(string)
   }
 
 }

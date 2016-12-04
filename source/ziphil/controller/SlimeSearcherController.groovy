@@ -76,7 +76,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     if ($tagControl.getValue() != "") {
       parameter.setTag($tagControl.getValue())
     }
-    $stage.close(parameter)
+    $stage.commit(parameter)
   }
 
   private void setupTitleControls() {

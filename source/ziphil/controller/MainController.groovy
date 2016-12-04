@@ -163,8 +163,9 @@ public class MainController extends PrimitiveController<Stage> {
         UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
         ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
         nextStage.initOwner($stage)
-        ShaleiaSearchParameter parameter = nextStage.showAndWaitResult()
-        if (parameter != null) {
+        nextStage.showAndWait()
+        if (nextStage.isCommitted()) {
+          ShaleiaSearchParameter parameter = nextStage.getResult()
           measureDictionaryStatus() {
             $dictionary.searchDetail(parameter)
           }
@@ -174,8 +175,9 @@ public class MainController extends PrimitiveController<Stage> {
         SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
         nextStage.initOwner($stage)
         controller.prepare($dictionary)
-        SlimeSearchParameter parameter = nextStage.showAndWaitResult()
-        if (parameter != null) {
+        nextStage.showAndWait()
+        if (nextStage.isCommitted()) {
+          SlimeSearchParameter parameter = nextStage.getResult()
           measureDictionaryStatus() {
             $dictionary.searchDetail(parameter) 
           }
@@ -202,8 +204,9 @@ public class MainController extends PrimitiveController<Stage> {
       UtilityStage<String> nextStage = UtilityStage.new(StageStyle.UTILITY)
       ScriptController controller = ScriptController.new(nextStage)
       nextStage.initOwner($stage)
-      String script = nextStage.showAndWaitResult()
-      if (script != null) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        String script = nextStage.getResult()
         measureDictionaryStatus() {
           $dictionary.searchScript(script)
         }
@@ -284,8 +287,8 @@ public class MainController extends PrimitiveController<Stage> {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
           controller.prepare((SlimeWord)word, $dictionary)
         }
-        Boolean isDone = nextStage.showAndWaitResult()
-        if (isDone != null && isDone) {
+        nextStage.showAndWait()
+        if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
           if (savesAutomatically) {
             $dictionary.save()
@@ -340,8 +343,8 @@ public class MainController extends PrimitiveController<Stage> {
         newWord = $dictionary.emptyWord(defaultName)
         controller.prepare((SlimeWord)newWord, $dictionary, true)
       }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted() && nextStage.getResult()) {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
           $dictionary.save()
@@ -370,8 +373,8 @@ public class MainController extends PrimitiveController<Stage> {
           newWord = $dictionary.inheritedWord((SlimeWord)word)
           controller.prepare((SlimeWord)newWord, $dictionary)
         }
-        Boolean isDone = nextStage.showAndWaitResult()
-        if (isDone != null && isDone) {
+        nextStage.showAndWait()
+        if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.addWord(newWord)
           if (savesAutomatically) {
             $dictionary.save()
@@ -395,8 +398,9 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      File file = nextStage.showAndWaitResult()
-      if (file != null) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        File file = nextStage.getResult()
         Dictionary dictionary = Dictionary.loadDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
@@ -438,8 +442,9 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true)
-      File file = nextStage.showAndWaitResult()
-      if (file != null) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        File file = nextStage.getResult()
         Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
@@ -470,8 +475,9 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionary.extensionOf($dictionary))
-      File file = nextStage.showAndWaitResult()
-      if (file != null) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        File file = nextStage.getResult()
         $dictionary.setName(file.getName())
         $dictionary.setPath(file.getAbsolutePath())
         $dictionary.save()
@@ -696,8 +702,8 @@ public class MainController extends PrimitiveController<Stage> {
         ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
         controller.prepare($dictionary)
       }
-      Boolean isDone = nextStage.showAndWaitResult()
-      if (isDone != null && isDone) {
+      nextStage.showAndWait()
+      if (nextStage.isCommitted() && nextStage.getResult()) {
         if (savesAutomatically) {
           $dictionary.save()
         }
@@ -711,8 +717,8 @@ public class MainController extends PrimitiveController<Stage> {
     SettingController controller = SettingController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
-    Boolean isDone = nextStage.showAndWaitResult()
-    if (isDone != null) {
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
       Setting.getInstance().save()
       setupOpenRegisteredDictionaryMenu()
       setupRegisterCurrentDictionaryMenu()

@@ -55,7 +55,7 @@ public class DictionaryChooserController extends Controller<File> {
   @FXML
   protected void commit() {
     File file = $chooser.getSelectedFile()
-    $stage.close(file)
+    $stage.commit(file)
   }
 
   private void setupChooser() {

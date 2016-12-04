@@ -80,7 +80,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   @FXML
   protected void commit() {
     SlimeWord word = $wordsView.getSelectionModel().getSelectedItem()
-    $stage.close(word)
+    $stage.commit(word)
   }
 
   @VoidClosure

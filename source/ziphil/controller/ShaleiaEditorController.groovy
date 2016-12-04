@@ -53,7 +53,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
     String name = $nameControl.getText()
     String data = $dataControl.getText()
     $word.update(name, data)
-    $stage.close(true)
+    $stage.commit(true)
   }
 
   private void setupShortcuts() {

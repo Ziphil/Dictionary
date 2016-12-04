@@ -77,7 +77,7 @@ public class PersonalEditorController extends Controller<Boolean> {
     Integer memory = ($memoryControl.isSelected()) ? 1 : 0
     Integer modification = ($modificationControl.isSelected()) ? 1 : 0
     $word.update(name, pronunciation, translation, usage, level, memory, modification)
-    $stage.close(true)
+    $stage.commit(true)
   }
 
   private void setupShortcuts() {

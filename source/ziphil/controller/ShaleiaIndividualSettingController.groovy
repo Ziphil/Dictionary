@@ -49,7 +49,7 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     saveSettings()
-    $stage.close(true)
+    $stage.commit(true)
   }
 
 }

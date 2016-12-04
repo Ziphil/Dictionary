@@ -188,7 +188,7 @@ public class SlimeEditorController extends Controller<Boolean> {
           }
         }
         $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
-        $stage.close(true)
+        $stage.commit(true)
       } else {
         Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
         dialog.initOwner($stage)
@@ -434,8 +434,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
-    SlimeWord word = nextStage.showAndWaitResult()
-    if (word != null) {
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SlimeWord word = nextStage.getResult()
       Integer index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
