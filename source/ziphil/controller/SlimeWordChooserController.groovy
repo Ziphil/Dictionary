@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
 import ziphil.custom.SimpleWordCell
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
@@ -32,7 +33,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   @FXML private ListView<SlimeWord> $wordsView
   @FXML private TextField $searchControl
-  @FXML private ComboBox<String> $searchModeControl
+  @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   private SlimeDictionary $dictionary
 
@@ -51,13 +52,13 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private void search() {
     if ($dictionary != null) {
       String search = $searchControl.getText()
-      String searchMode = $searchModeControl.getValue()
-      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
-      if (searchMode == "単語") {
+      SearchMode searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.isSelected()
+      if (searchMode == SearchMode.NAME) {
         $dictionary.searchByName(search, isStrict)
-      } else if (searchMode == "訳語") {
+      } else if (searchMode == SearchMode.EQUIVALENT) {
         $dictionary.searchByEquivalent(search, isStrict)
-      } else if (searchMode == "全文") {
+      } else if (searchMode == SearchMode.CONTENT) {
         $dictionary.searchByContent(search)
       }
       $wordsView.scrollTo(0)
@@ -99,15 +100,15 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private void bindSearchTypeControlProperty() {
     Callable<String> textFunction = (Callable){
-      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
+      return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
     }
     Callable<Boolean> disableFunction = (Callable){
-      String searchMode = $searchModeControl.getValue()
-      if (searchMode == "単語") {
+      SearchMode searchMode = $searchModeControl.getValue()
+      if (searchMode == SearchMode.NAME) {
         return false
-      } else if (searchMode == "訳語") {
+      } else if (searchMode == SearchMode.EQUIVALENT) {
         return false
-      } else if (searchMode == "全文") {
+      } else if (searchMode == SearchMode.CONTENT) {
         return true
       } else {
         return true

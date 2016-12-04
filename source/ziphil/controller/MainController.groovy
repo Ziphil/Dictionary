@@ -48,6 +48,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
@@ -78,7 +79,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML private ListView<? extends Word> $wordsView
   @FXML private TextField $searchControl
-  @FXML private ComboBox<String> $searchModeControl
+  @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
@@ -130,15 +131,15 @@ public class MainController extends PrimitiveController<Stage> {
   private void search(Boolean forcesSearch) {
     if ($dictionary != null) {
       String search = $searchControl.getText()
-      String searchMode = $searchModeControl.getValue()
-      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
+      SearchMode searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.isSelected()
       if (forcesSearch || search != $previousSearch) {
         measureDictionaryStatus() {
-          if (searchMode == "単語") {
+          if (searchMode == SearchMode.NAME) {
             $dictionary.searchByName(search, isStrict)
-          } else if (searchMode == "訳語") {
+          } else if (searchMode == SearchMode.EQUIVALENT) {
             $dictionary.searchByEquivalent(search, isStrict)
-          } else if (searchMode == "全文") {
+          } else if (searchMode == SearchMode.CONTENT) {
             $dictionary.searchByContent(search)
           }
         }
@@ -240,19 +241,19 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void changeSearchModeToWord() {
-    $searchModeControl.setValue("単語")
+    $searchModeControl.setValue(SearchMode.NAME)
     changeSearchMode()
   }
 
   @FXML
   private void changeSearchModeToEquivalent() {
-    $searchModeControl.setValue("訳語")
+    $searchModeControl.setValue(SearchMode.EQUIVALENT)
     changeSearchMode()
   }
 
   @FXML
   private void changeSearchModeToContent() {
-    $searchModeControl.setValue("全文")
+    $searchModeControl.setValue(SearchMode.CONTENT)
     changeSearchMode()
   }
 
@@ -743,15 +744,15 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void bindSearchTypeControlProperty() {
     Callable<String> textFunction = (Callable){
-      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
+      return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
     }
     Callable<Boolean> disableFunction = (Callable){
-      String searchMode = $searchModeControl.getValue()
-      if (searchMode == "単語") {
+      SearchMode searchMode = $searchModeControl.getValue()
+      if (searchMode == SearchMode.NAME) {
         return false
-      } else if (searchMode == "訳語") {
+      } else if (searchMode == SearchMode.EQUIVALENT) {
         return false
-      } else if (searchMode == "全文") {
+      } else if (searchMode == SearchMode.CONTENT) {
         return true
       } else {
         return true
