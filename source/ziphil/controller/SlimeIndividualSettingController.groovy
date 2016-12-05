@@ -37,6 +37,11 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
+  @FXML
+  private void initialize() {
+    bindInformationTitleOrderViewProperty()
+  }
+
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
     applySettings()
@@ -116,6 +121,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   protected void commit() {
     saveSettings()
     $stage.commit(true)
+  }
+
+  private void bindInformationTitleOrderViewProperty() {
+    $informationTitleOrderView.disableProperty().bind($usesIndividualOrderControl.selectedProperty())
   }
 
 }
