@@ -77,7 +77,6 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
         T movedItem = cell.getItem()
         if (movedItem != null) {
-          println("detect")
           String movedString = movedItem.toString()
           Dragboard dragboard = cell.startDragAndDrop(TransferMode.MOVE)
           ClipboardContent content = ClipboardContent.new()
