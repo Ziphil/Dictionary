@@ -90,8 +90,8 @@
           <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
           <Button text="編集" onAction="#editDefaultWord" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <prefWidth><Double rpx="80"/></prefWidth>
-            <minWidth><Double rpx="80"/></minWidth>
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
           </Button>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
