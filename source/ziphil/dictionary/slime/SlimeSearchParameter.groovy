@@ -1,12 +1,13 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSearchParameter {
+public class SlimeSearchParameter extends DetailSearchParameter {
 
   private Integer $id
   private String $name

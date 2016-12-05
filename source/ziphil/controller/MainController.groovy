@@ -47,8 +47,12 @@ import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
+import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
+import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
@@ -105,6 +109,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
+  private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch
 
   public MainController(Stage nextStage) {
@@ -134,16 +139,13 @@ public class MainController extends PrimitiveController<Stage> {
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean isStrict = $searchTypeControl.isSelected()
       if (forcesSearch || search != $previousSearch) {
-        measureDictionaryStatus() {
-          if (searchMode == SearchMode.NAME) {
-            $dictionary.searchByName(search, isStrict)
-          } else if (searchMode == SearchMode.EQUIVALENT) {
-            $dictionary.searchByEquivalent(search, isStrict)
-          } else if (searchMode == SearchMode.CONTENT) {
-            $dictionary.searchByContent(search)
-          }
-        }
+        searchBy(search, searchMode, isStrict)
         $previousSearch = search
+        if (forcesSearch) {
+          $searchHistory.add(NormalSearchParameter.new(search, searchMode, isStrict), false)
+        } else {
+          $searchHistory.add(NormalSearchParameter.new(search, searchMode, isStrict), true)
+        }
       }
     }
   }
@@ -157,6 +159,18 @@ public class MainController extends PrimitiveController<Stage> {
     search(false)
   }
 
+  private void searchBy(String search, SearchMode searchMode, Boolean isStrict) {
+    measureDictionaryStatus() {
+      if (searchMode == SearchMode.NAME) {
+        $dictionary.searchByName(search, isStrict)
+      } else if (searchMode == SearchMode.EQUIVALENT) {
+        $dictionary.searchByEquivalent(search, isStrict)
+      } else if (searchMode == SearchMode.CONTENT) {
+        $dictionary.searchByContent(search)
+      }
+    }
+  }
+
   @FXML
   private void searchDetail() {
     if ($dictionary != null) {
@@ -167,9 +181,8 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           ShaleiaSearchParameter parameter = nextStage.getResult()
-          measureDictionaryStatus() {
-            $dictionary.searchDetail(parameter)
-          }
+          searchDetailBy(parameter)
+          $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
         UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -179,15 +192,14 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           SlimeSearchParameter parameter = nextStage.getResult()
-          measureDictionaryStatus() {
-            $dictionary.searchDetail(parameter) 
-          }
+          searchDetailBy(parameter)
+          $searchHistory.add(parameter)
         }
       }
     }
   }
 
-  private void searchDetailBy(Object parameter) {
+  private void searchDetailBy(DetailSearchParameter parameter) {
     if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
       measureDictionaryStatus() {
         $dictionary.searchDetail(parameter)
@@ -208,9 +220,37 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         String script = nextStage.getResult()
-        measureDictionaryStatus() {
-          $dictionary.searchScript(script)
-        }
+        searchScriptBy(script)
+      }
+    }
+  }
+
+  private void searchScriptBy(String script) {
+    measureDictionaryStatus() {
+      $dictionary.searchScript(script)
+    }
+  }
+
+  @FXML
+  private void searchPrevious() {
+    SearchParameter parameter = $searchHistory.previous()
+    if (parameter != null) {
+      if (parameter instanceof NormalSearchParameter) {
+        searchBy(parameter.getSearch(), parameter.getSearchMode(), parameter.isStrict())
+      } else if (parameter instanceof DetailSearchParameter) {
+        searchDetailBy(parameter)
+      }
+    }
+  }
+
+  @FXML
+  private void searchNext() {
+    SearchParameter parameter = $searchHistory.next()
+    if (parameter != null) {
+      if (parameter instanceof NormalSearchParameter) {
+        searchBy(parameter.getSearch(), parameter.getSearchMode(), parameter.isStrict())
+      } else if (parameter instanceof DetailSearchParameter) {
+        searchDetailBy(parameter)
       }
     }
   }
@@ -544,12 +584,14 @@ public class MainController extends PrimitiveController<Stage> {
           parameter.setName(name)
           parameter.setNameSearchType(SearchType.EXACT)
           searchDetailBy(parameter)
+          $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
         $dictionary.setOnLinkClicked() { Integer id ->
           SlimeSearchParameter parameter = SlimeSearchParameter.new()
           parameter.setId(id)
           searchDetailBy(parameter)
+          $searchHistory.add(parameter)
         }
       }
     }
