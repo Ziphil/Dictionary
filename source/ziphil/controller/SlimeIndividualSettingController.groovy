@@ -4,10 +4,12 @@ import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ListSelectionView
+import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
@@ -23,8 +25,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
 
-  @FXML private TextField $alphabetOrderControl
   @FXML private ListSelectionView<String> $plainInformationTitlesView
+  @FXML private PermutableListView<String> $informationTitleOrderView
+  @FXML private CheckBox $usesIndividualOrderControl
+  @FXML private TextField $alphabetOrderControl
   private SlimeWord $defaultWord
   private SlimeDictionary $dictionary
 
@@ -39,23 +43,62 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   }
 
   private void applySettings() {
+    ObservableList<String> plainInformationTitles = calculatePlainInformationTitles()
+    ObservableList<String> normalInformationTitles = calculateNormalInformationTitles()
+    ObservableList<String> informationTitleOrder = calculateInformationTitleOrder()
+    List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
     SlimeWord defaultWord = $dictionary.getDefaultWord()
-    ObservableList<String> plainInformationTitles = FXCollections.observableArrayList(registeredInformationTitles.intersect($dictionary.getPlainInformationTitles()))
-    ObservableList<String> normalInformationTitles = FXCollections.observableArrayList(registeredInformationTitles.minus($dictionary.getPlainInformationTitles()))
-    $alphabetOrderControl.setText(alphabetOrder)
     $plainInformationTitlesView.setSources(normalInformationTitles)
     $plainInformationTitlesView.setTargets(plainInformationTitles)
+    $informationTitleOrderView.setItems(informationTitleOrder)
+    if (rawInformationTitleOrder == null) {
+      $usesIndividualOrderControl.setSelected(true)
+    }
+    $alphabetOrderControl.setText(alphabetOrder)
     $defaultWord = defaultWord
   }
 
+  private ObservableList<String> calculatePlainInformationTitles() {
+    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
+    return FXCollections.observableArrayList(registeredInformationTitles.intersect($dictionary.getPlainInformationTitles()))
+  }
+
+  private ObservableList<String> calculateNormalInformationTitles() {
+    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
+    return FXCollections.observableArrayList(registeredInformationTitles.minus($dictionary.getPlainInformationTitles()))
+  }
+
+  private ObservableList<String> calculateInformationTitleOrder() {
+    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
+    List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
+    ObservableList<String> informationTitleOrder
+    if (rawInformationTitleOrder == null) {
+      informationTitleOrder = FXCollections.observableArrayList(rawInformationTitleOrder)
+    } else {
+      informationTitleOrder = FXCollections.observableArrayList()
+      for (String title : rawInformationTitleOrder) {
+        if (registeredInformationTitles.contains(title)) {
+          informationTitleOrder.add(title)
+        }
+      }
+      for (String title : registeredInformationTitles) {
+        if (!informationTitleOrder.contains(title)) {
+          informationTitleOrder.add(title)
+        }
+      }
+    }
+    return informationTitleOrder
+  }
+
   private void saveSettings() {
-    String alphabetOrder = $alphabetOrderControl.getText()
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
+    List<String> informationTitleOrder = ArrayList.new($informationTitleOrderView.getItems())
+    String alphabetOrder = $alphabetOrderControl.getText()
     SlimeWord defaultWord = $defaultWord
-    $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
+    $dictionary.setInformationTitleOrder(informationTitleOrder)
+    $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setDefaultWord(defaultWord)
   }
 
