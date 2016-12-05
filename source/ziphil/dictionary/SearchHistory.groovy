@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 public class SearchHistory {
 
   private static final Integer MAX_SIZE = 20
-  private static final Long SEPARATIVE_INTERVAL = 1000
+  private static final Long SEPARATIVE_INTERVAL = 500
 
   private List<? extends SearchParameter> $parameters = ArrayList.new()
   private Long $interval = null
