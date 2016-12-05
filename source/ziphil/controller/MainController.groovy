@@ -124,6 +124,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   public void initialize() {
     setupWordsView()
+    setupSearchControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
     setupWordsViewShortcuts()
@@ -831,6 +832,18 @@ public class MainController extends PrimitiveController<Stage> {
         }
       }
       return cell
+    }
+  }
+
+  private void setupSearchControl() {
+    $searchControl.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+      if (KeyCodeCombination.new(KeyCode.Z, KeyCombination.SHORTCUT_DOWN).match(event)) {
+        searchPrevious()
+        event.consume()
+      } else if (KeyCodeCombination.new(KeyCode.Y, KeyCombination.SHORTCUT_DOWN).match(event)) {
+        searchNext()
+        event.consume()
+      }
     }
   }
 
