@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Control
 import javafx.scene.control.Label
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode
 import javafx.scene.input.ClipboardContent
@@ -66,26 +67,34 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
   }
 
   private void setupDragAndDrop() {
-    setupSingleDragAndDrop($sourcesView, $targetsView)
-    setupSingleDragAndDrop($targetsView, $sourcesView)
+    setupUnidirectionalDragAndDrop($sourcesView, $targetsView)
+    setupUnidirectionalDragAndDrop($targetsView, $sourcesView)
   }
 
-  private void setupSingleDragAndDrop(ListView<T> firstView, ListView<T> secondView) {
-    firstView.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
-      T movedItem = firstView.getSelectionModel().getSelectedItem()
-      if (movedItem != null) {
-        String movedString = movedItem.toString()
-        Dragboard dragboard = firstView.startDragAndDrop(TransferMode.MOVE)
-        ClipboardContent content = ClipboardContent.new()
-        content.putString(movedString)
-        dragboard.setContent(content)
+  private void setupUnidirectionalDragAndDrop(ListView<T> firstView, ListView<T> secondView) {
+    firstView.setCellFactory() { ListView<T> view ->
+      ListCell<T> cell = StandardListCell.new()
+      cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
+        T movedItem = cell.getItem()
+        if (movedItem != null) {
+          println("detect")
+          String movedString = movedItem.toString()
+          Dragboard dragboard = cell.startDragAndDrop(TransferMode.MOVE)
+          ClipboardContent content = ClipboardContent.new()
+          content.putString(movedString)
+          dragboard.setContent(content)
+        }
         event.consume()
       }
+      return cell
     }
     secondView.addEventHandler(DragEvent.DRAG_OVER) { DragEvent event ->
       Dragboard dragboard = event.getDragboard()
-      if (event.getGestureSource() == firstView && dragboard.hasString()) {
-        event.acceptTransferModes(TransferMode.MOVE)
+      Object gestureSource = event.getGestureSource()
+      if (gestureSource instanceof ListCell) {
+        if (gestureSource.getListView() == firstView && dragboard.hasString()) {
+          event.acceptTransferModes(TransferMode.MOVE)
+        }
       }
       event.consume()
     }
