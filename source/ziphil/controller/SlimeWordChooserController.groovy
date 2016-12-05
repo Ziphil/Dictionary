@@ -87,7 +87,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   @VoidClosure
   private void setupWordsView() {
     $wordsView.setItems($dictionary.getWords())
-    $wordsView.setCellFactory() { ListView<SlimeWord> list ->
+    $wordsView.setCellFactory() { ListView<SlimeWord> view ->
       SimpleWordCell cell = SimpleWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

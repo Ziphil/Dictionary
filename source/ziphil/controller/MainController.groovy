@@ -809,7 +809,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @VoidClosure
   private void setupWordsView() {
-    $wordsView.setCellFactory() { ListView<Word> list ->
+    $wordsView.setCellFactory() { ListView<Word> view ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
