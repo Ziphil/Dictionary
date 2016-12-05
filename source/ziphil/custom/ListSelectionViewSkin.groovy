@@ -70,14 +70,17 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
     setupSingleDragAndDrop($targetsView, $sourcesView)
   }
 
-  private void setupSingleDragAndDrop(ListView<?> firstView, ListView<?> secondView) {
+  private void setupSingleDragAndDrop(ListView<T> firstView, ListView<T> secondView) {
     firstView.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
-      String movedString = firstView.getSelectionModel().getSelectedItem().toString()
-      Dragboard dragboard = firstView.startDragAndDrop(TransferMode.MOVE)
-      ClipboardContent content = ClipboardContent.new()
-      content.putString(movedString)
-      dragboard.setContent(content)
-      event.consume()
+      T movedItem = firstView.getSelectionModel().getSelectedItem()
+      if (movedItem != null) {
+        String movedString = movedItem.toString()
+        Dragboard dragboard = firstView.startDragAndDrop(TransferMode.MOVE)
+        ClipboardContent content = ClipboardContent.new()
+        content.putString(movedString)
+        dragboard.setContent(content)
+        event.consume()
+      }
     }
     secondView.addEventHandler(DragEvent.DRAG_OVER) { DragEvent event ->
       Dragboard dragboard = event.getDragboard()
