@@ -27,7 +27,7 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
   private List<String> $plainInformationTitles = ArrayList.new()
-  private List<String> $informationTitleOrder = ArrayList.new()
+  private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
 

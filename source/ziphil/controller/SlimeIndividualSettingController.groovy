@@ -79,7 +79,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
     ObservableList<String> informationTitleOrder
     if (rawInformationTitleOrder == null) {
-      informationTitleOrder = FXCollections.observableArrayList(rawInformationTitleOrder)
+      informationTitleOrder = FXCollections.observableArrayList(registeredInformationTitles)
     } else {
       informationTitleOrder = FXCollections.observableArrayList()
       for (String title : rawInformationTitleOrder) {
