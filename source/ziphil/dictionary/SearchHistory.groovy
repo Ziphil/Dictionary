@@ -40,6 +40,12 @@ public class SearchHistory {
     add(parameter, false)
   }
 
+  public void clear() {
+    $parameters.clear()
+    $interval = null
+    $pointer = 0
+  }
+
   public SearchParameter previous() {
     $interval = null
     if (hasPrevious()) {

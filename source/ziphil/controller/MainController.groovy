@@ -537,6 +537,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
     }
     $dictionary = dictionary
+    $searchHistory.clear()
     updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
