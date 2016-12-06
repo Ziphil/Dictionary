@@ -9,6 +9,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import ziphil.custom.SimpleTask
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
@@ -161,7 +162,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
     newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
-    addRegisteredTitles(newWord)
+    updateOthersBackground()
     $isChanged = true
   }
 
@@ -171,8 +172,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
     word.setDictionary(this)
     word.createComparisonString($alphabetOrder)
-    addRegisteredTitles(word)
     $words.add(word)
+    updateOthersBackground()
     $isChanged = true
   }
 
@@ -184,42 +185,94 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
     }
     $words.remove(word)
+    updateOthersBackground()
     $isChanged = true
   }
 
-  private void addRegisteredTitles(SlimeWord word) {
-    if (word.getId() >= $validMinId) {
-      $validMinId = word.getId() + 1
+  public void updateOthers() {
+    updateRegisteredTitles()
+    updatePlainInformationTitles()
+    updateInformationTitleOrder()
+  }
+
+  public void updateOthersBackground() {
+    Task<Void> task = SimpleTask.new() {
+      updateOthers()
     }
-    for (String tag : word.getTags()) {
-      if (!$registeredTags.contains(tag)) {
-        $registeredTags.addAll(tag)
+    Thread thread = Thread.new(task)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
+  private void updateRegisteredTitles() {
+    $validMinId = -1
+    $registeredTags.clear()
+    $registeredEquivalentTitles.clear()
+    $registeredInformationTitles.clear()
+    $registeredVariationTitles.clear()
+    $registeredRelationTitles.clear()
+    for (SlimeWord word : $words) {
+      if (word.getId() >= $validMinId) {
+        $validMinId = word.getId()
+      }
+      for (String tag : word.getTags()) {
+        if (!$registeredTags.contains(tag)) {
+          $registeredTags.addAll(tag)
+        }
+      }
+      for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
+        String title = equivalent.getTitle()
+        if (!$registeredEquivalentTitles.contains(title)) {
+          $registeredEquivalentTitles.add(title)
+        }
+      }
+      for (SlimeInformation information : word.getInformations()) {
+        String title = information.getTitle()
+        if (!$registeredInformationTitles.contains(title)) {
+          $registeredInformationTitles.add(title)
+        }
+      }
+      for (SlimeVariation variation : word.getVariations()) {
+        String title = variation.getTitle()
+        if (!$registeredVariationTitles.contains(title)) {
+          $registeredVariationTitles.add(title)
+        }
+      }
+      for (SlimeRelation relation : word.getRelations()) {
+        String title = relation.getTitle()
+        if (!$registeredRelationTitles.contains(title)) {
+          $registeredRelationTitles.add(title)
+        }
       }
     }
-    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
-      String title = equivalent.getTitle()
-      if (!$registeredEquivalentTitles.contains(title)) {
-        $registeredEquivalentTitles.add(title)
+    $validMinId ++
+  }
+
+  private void updatePlainInformationTitles() {
+    List<String> newPlainInformationTitles = ArrayList.new()
+    for (String title : $registeredInformationTitles) {
+      if ($plainInformationTitles.contains(title)) {
+        newPlainInformationTitles.add(title)
       }
     }
-    for (SlimeInformation information : word.getInformations()) {
-      String title = information.getTitle()
-      if (!$registeredInformationTitles.contains(title)) {
-        $registeredInformationTitles.add(title)
+    $plainInformationTitles = newPlainInformationTitles
+  }
+
+  private void updateInformationTitleOrder() {
+    List<String> newInformationTitleOrder = ArrayList.new()
+    if ($informationTitleOrder != null) {
+      for (String title : $informationTitleOrder) {
+        if ($registeredInformationTitles.contains(title)) {
+          newInformationTitleOrder.add(title)
+        }
+      }
+      for (String title : $registeredInformationTitles) {
+        if (!newInformationTitleOrder.contains(title)) {
+          newInformationTitleOrder.add(title)
+        }
       }
     }
-    for (SlimeVariation variation : word.getVariations()) {
-      String title = variation.getTitle()
-      if (!$registeredVariationTitles.contains(title)) {
-        $registeredVariationTitles.add(title)
-      }
-    }
-    for (SlimeRelation relation : word.getRelations()) {
-      String title = relation.getTitle()
-      if (!$registeredRelationTitles.contains(title)) {
-        $registeredRelationTitles.add(title)
-      }
-    }
+    $informationTitleOrder = newInformationTitleOrder
   }
 
   public SlimeWord emptyWord(String defaultName) {
