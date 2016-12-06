@@ -20,7 +20,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T>, GridPane> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/list_selection_view.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/custom/list_selection_view.fxml"
 
   @FXML private ListView<T> $sourcesView
   @FXML private ListView<T> $targetsView

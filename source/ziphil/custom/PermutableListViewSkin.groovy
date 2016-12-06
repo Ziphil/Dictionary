@@ -20,7 +20,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView<T>, GridPane> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/permutable_list_view.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/custom/permutable_list_view.fxml"
 
   @FXML private ListView<T> $itemsView
 
