@@ -243,6 +243,7 @@ public class MainController extends PrimitiveController<Stage> {
         $searchControl.setText(search)
         $searchModeControl.setValue(searchMode)
         $searchTypeControl.setSelected(isStrict)
+        $previousSearch = search
         searchBy(search, searchMode, isStrict)
       } else if (parameter instanceof DetailSearchParameter) {
         searchDetailBy(parameter)
@@ -261,6 +262,7 @@ public class MainController extends PrimitiveController<Stage> {
         $searchControl.setText(search)
         $searchModeControl.setValue(searchMode)
         $searchTypeControl.setSelected(isStrict)
+        $previousSearch = search
         searchBy(search, searchMode, isStrict)
       } else if (parameter instanceof DetailSearchParameter) {
         searchDetailBy(parameter)
