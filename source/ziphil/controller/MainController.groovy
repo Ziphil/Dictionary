@@ -234,38 +234,42 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void searchPrevious() {
-    SearchParameter parameter = $searchHistory.previous()
-    if (parameter != null) {
-      if (parameter instanceof NormalSearchParameter) {
-        String search = parameter.getSearch()
-        SearchMode searchMode = parameter.getSearchMode()
-        Boolean isStrict = parameter.isStrict()
-        $searchControl.setText(search)
-        $searchModeControl.setValue(searchMode)
-        $searchTypeControl.setSelected(isStrict)
-        $previousSearch = search
-        searchBy(search, searchMode, isStrict)
-      } else if (parameter instanceof DetailSearchParameter) {
-        searchDetailBy(parameter)
+    if ($dictionary != null) {
+      SearchParameter parameter = $searchHistory.previous()
+      if (parameter != null) {
+        if (parameter instanceof NormalSearchParameter) {
+          String search = parameter.getSearch()
+          SearchMode searchMode = parameter.getSearchMode()
+          Boolean isStrict = parameter.isStrict()
+          $searchControl.setText(search)
+          $searchModeControl.setValue(searchMode)
+          $searchTypeControl.setSelected(isStrict)
+          $previousSearch = search
+          searchBy(search, searchMode, isStrict)
+        } else if (parameter instanceof DetailSearchParameter) {
+          searchDetailBy(parameter)
+        }
       }
     }
   }
 
   @FXML
   private void searchNext() {
-    SearchParameter parameter = $searchHistory.next()
-    if (parameter != null) {
-      if (parameter instanceof NormalSearchParameter) {
-        String search = parameter.getSearch()
-        SearchMode searchMode = parameter.getSearchMode()
-        Boolean isStrict = parameter.isStrict()
-        $searchControl.setText(search)
-        $searchModeControl.setValue(searchMode)
-        $searchTypeControl.setSelected(isStrict)
-        $previousSearch = search
-        searchBy(search, searchMode, isStrict)
-      } else if (parameter instanceof DetailSearchParameter) {
-        searchDetailBy(parameter)
+    if ($dictionary != null) {
+      SearchParameter parameter = $searchHistory.next()
+      if (parameter != null) {
+        if (parameter instanceof NormalSearchParameter) {
+          String search = parameter.getSearch()
+          SearchMode searchMode = parameter.getSearchMode()
+          Boolean isStrict = parameter.isStrict()
+          $searchControl.setText(search)
+          $searchModeControl.setValue(searchMode)
+          $searchTypeControl.setSelected(isStrict)
+          $previousSearch = search
+          searchBy(search, searchMode, isStrict)
+        } else if (parameter instanceof DetailSearchParameter) {
+          searchDetailBy(parameter)
+        }
       }
     }
   }
