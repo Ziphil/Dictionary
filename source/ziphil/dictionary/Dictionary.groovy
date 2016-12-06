@@ -42,6 +42,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   public Dictionary(String name, String path) {
     $name = name
     $path = path
+    $isChanged = (path == null) ? true : false
     setupSortedWords()
     setupWholeWords()
   }
@@ -255,9 +256,6 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
       dictionary = SlimeDictionary.new(fileName, null)
       dictionary.setPath(filePath)
     }
-    if (dictionary != null) {
-      dictionary.setChanged(true)
-    }
     return dictionary
   }
 
@@ -303,10 +301,6 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public Boolean isChanged() {
     return $isChanged
-  }
-
-  public void setChanged(Boolean isChanged) {
-    $isChanged = isChanged
   }
 
   public abstract Task<?> getLoader()
