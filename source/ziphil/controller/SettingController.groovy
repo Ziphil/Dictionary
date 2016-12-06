@@ -27,7 +27,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SettingController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1

@@ -18,7 +18,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaEditorController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/shaleia_editor.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_editor.fxml"
   private static final String TITLE = "単語編集"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)

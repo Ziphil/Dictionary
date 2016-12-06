@@ -14,7 +14,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class HelpController extends Controller<Void> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/help.fxml"
   private static final String BASIC_EDIT_HTML_PATH = "resource/help/basic_edit.html"
   private static final String BASIC_SEARCH_HTML_PATH = "resource/help/basic_search.html"
   private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"

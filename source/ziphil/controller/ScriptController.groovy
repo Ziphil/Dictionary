@@ -13,7 +13,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ScriptController extends Controller<String> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/script.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/script.fxml"
   private static final String TITLE = "スクリプト検索"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(240)

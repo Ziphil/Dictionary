@@ -15,7 +15,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class DictionaryChooserController extends Controller<File> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/dictionary_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/dictionary_chooser.fxml"
   private static final String TITLE = "参照"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)

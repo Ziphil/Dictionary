@@ -16,7 +16,7 @@
 
 <fx:root type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <vgap><Double rpx="0"/></vgap>
   <hgap><Double rpx="5"/></hgap>

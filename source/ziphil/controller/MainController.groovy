@@ -73,7 +73,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class MainController extends PrimitiveController<Stage> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/main.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String TITLE = "ZpDIC shalnif"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
