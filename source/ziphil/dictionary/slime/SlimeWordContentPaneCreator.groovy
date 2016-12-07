@@ -42,13 +42,13 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       String equivalentString = equivalent.getNames().join(", ")
       addEquivalentNode(equivalent.getTitle(), equivalentString)
     }
-    List<SlimeInformation> sortedInformation = calculateSortedInformations()
-    for (SlimeInformation information : sortedInformation) {
+    List<SlimeInformation> sortedInformations = calculateSortedInformations()
+    for (SlimeInformation information : sortedInformations) {
       addInformationNode(information.getTitle(), information.getText())
       hasInformation = true
     }
-    Map<String, List<SlimeRelation>> groupedRelation = $word.getRelations().groupBy{relation -> relation.getTitle()}
-    for (Entry<String, List<SlimeRelation>> entry : groupedRelation) {
+    Map<String, List<SlimeRelation>> groupedRelations = $word.getRelations().groupBy{relation -> relation.getTitle()}
+    for (Entry<String, List<SlimeRelation>> entry : groupedRelations) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
       List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
