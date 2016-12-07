@@ -1,6 +1,7 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Control
@@ -33,6 +34,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
 
   @FXML
   private void initialize() {
+    setupDragAndDrop()
     bindProperties()
   }
 
@@ -51,6 +53,56 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
     if (index < $itemsView.getItems().size() - 1) {
       $itemsView.getItems().swap(index, index + 1)
       $itemsView.getSelectionModel().select(index + 1)
+    }
+  }
+
+  private void setupDragAndDrop() {
+    $itemsView.setCellFactory() { ListView<T> view ->
+      ListCell<T> cell = SimpleListCell.new()
+      cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
+        T movedItem = cell.getItem()
+        if (movedItem != null) {
+          String movedString = movedItem.toString()
+          Dragboard dragboard = cell.startDragAndDrop(TransferMode.MOVE)
+          ClipboardContent content = ClipboardContent.new()
+          content.putString(movedString)
+          dragboard.setContent(content)
+        }
+        event.consume()
+      }
+      cell.addEventHandler(DragEvent.DRAG_OVER) { DragEvent event ->
+        Dragboard dragboard = event.getDragboard()
+        Object gestureSource = event.getGestureSource()
+        if (gestureSource instanceof ListCell) {
+          if (gestureSource.getListView() == $itemsView && gestureSource != cell && cell.getItem() != null && dragboard.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE)
+          }
+        }
+        event.consume()
+      }
+      cell.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
+        Boolean isCompleted = false
+        Dragboard dragboard = event.getDragboard()
+        if (dragboard.hasString()) {
+          ObservableList<T> items = $itemsView.getItems()
+          String movedString = dragboard.getString()
+          T movedItem = items.find{item -> item.toString() == movedString}
+          Integer movedIndex = items.findIndexOf{item -> item.toString() == movedString}
+          Integer index = cell.getIndex()
+          items.add(index + 1, movedItem)
+          if (movedIndex < index + 1) {
+            items.removeAt(movedIndex)
+            $itemsView.getSelectionModel().select(index)
+          } else {
+            items.removeAt(movedIndex + 1)
+            $itemsView.getSelectionModel().select(index + 1)
+          }
+          isCompleted = true
+        }
+        event.setDropCompleted(isCompleted)
+        event.consume()
+      }
+      return cell
     }
   }
 
