@@ -48,52 +48,20 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   }
 
   private void applySettings() {
-    ObservableList<String> plainInformationTitles = calculatePlainInformationTitles()
-    ObservableList<String> normalInformationTitles = calculateNormalInformationTitles()
-    ObservableList<String> informationTitleOrder = calculateInformationTitleOrder()
+    List<String> plainInformationTitles = $dictionary.getPlainInformationTitles()
+    List<String> normalInformationTitles = $dictionary.getRegisteredInformationTitles() - $dictionary.getPlainInformationTitles()
     List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
+    List<String> informationTitleOrder = $dictionary.getInformationTitleOrder() ?: $dictionary.getRegisteredInformationTitles()
     String alphabetOrder = $dictionary.getAlphabetOrder()
     SlimeWord defaultWord = $dictionary.getDefaultWord()
-    $plainInformationTitlesView.setSources(normalInformationTitles)
-    $plainInformationTitlesView.setTargets(plainInformationTitles)
-    $informationTitleOrderView.setItems(informationTitleOrder)
+    $plainInformationTitlesView.setSources(FXCollections.observableArrayList(normalInformationTitles))
+    $plainInformationTitlesView.setTargets(FXCollections.observableArrayList(plainInformationTitles))
+    $informationTitleOrderView.setItems(FXCollections.observableArrayList(informationTitleOrder))
     if (rawInformationTitleOrder == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
     $alphabetOrderControl.setText(alphabetOrder)
     $defaultWord = defaultWord
-  }
-
-  private ObservableList<String> calculatePlainInformationTitles() {
-    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
-    return FXCollections.observableArrayList(registeredInformationTitles.intersect($dictionary.getPlainInformationTitles()))
-  }
-
-  private ObservableList<String> calculateNormalInformationTitles() {
-    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
-    return FXCollections.observableArrayList(registeredInformationTitles.minus($dictionary.getPlainInformationTitles()))
-  }
-
-  private ObservableList<String> calculateInformationTitleOrder() {
-    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
-    List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
-    ObservableList<String> informationTitleOrder
-    if (rawInformationTitleOrder == null) {
-      informationTitleOrder = FXCollections.observableArrayList(registeredInformationTitles)
-    } else {
-      informationTitleOrder = FXCollections.observableArrayList()
-      for (String title : rawInformationTitleOrder) {
-        if (registeredInformationTitles.contains(title)) {
-          informationTitleOrder.add(title)
-        }
-      }
-      for (String title : registeredInformationTitles) {
-        if (!informationTitleOrder.contains(title)) {
-          informationTitleOrder.add(title)
-        }
-      }
-    }
-    return informationTitleOrder
   }
 
   private void saveSettings() {
