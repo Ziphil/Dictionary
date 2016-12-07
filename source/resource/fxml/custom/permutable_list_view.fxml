@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.UnfocusableButton?>
 
 
 <fx:root type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
@@ -30,7 +31,7 @@
   <ListView fx:id="$itemsView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
   <VBox alignment="center" GridPane.columnIndex="1" GridPane.rowIndex="0">
     <spacing><Double rpx="15"/></spacing>
-    <Button text="↑" onAction="#exchangeUp"/>
-    <Button text="↓" onAction="#exchangeDown"/>
+    <UnfocusableButton text="↑" onAction="#exchangeUp"/>
+    <UnfocusableButton text="↓" onAction="#exchangeDown"/>
   </VBox>
 </fx:root>
