@@ -44,29 +44,35 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
   @FXML
   private void moveToTarget() {
     List<T> movedItems = ArrayList.new($sourcesView.getSelectionModel().getSelectedItems())
-    for (T movedItem : movedItems) {
-      $sourcesView.getItems().remove(movedItem)
-      $targetsView.getItems().add(movedItem)
+    if (!movedItems.isEmpty()) {
+      for (T movedItem : movedItems) {
+        $sourcesView.getItems().remove(movedItem)
+        $targetsView.getItems().add(movedItem)
+      }
+      Integer size = $targetsView.getItems().size()
+      Integer movedSize = movedItems.size()
+      $sourcesView.getSelectionModel().clearSelection()
+      $targetsView.getSelectionModel().clearSelection()
+      $targetsView.getSelectionModel().selectRange(size - movedSize, size)
+      $targetsView.requestFocus()
     }
-    Integer size = $targetsView.getItems().size()
-    Integer movedSize = movedItems.size()
-    $sourcesView.getSelectionModel().clearSelection()
-    $targetsView.getSelectionModel().selectRange(size - movedSize, size)
-    $targetsView.requestFocus()
   }
 
   @FXML
   private void moveToSource() {
     List<T> movedItems = ArrayList.new($targetsView.getSelectionModel().getSelectedItems())
-    for (T movedItem : movedItems) {
-      $targetsView.getItems().remove(movedItem)
-      $sourcesView.getItems().add(movedItem)
+    if (!movedItems.isEmpty()) {
+      for (T movedItem : movedItems) {
+        $targetsView.getItems().remove(movedItem)
+        $sourcesView.getItems().add(movedItem)
+      }
+      Integer size = $sourcesView.getItems().size()
+      Integer movedSize = movedItems.size()
+      $targetsView.getSelectionModel().clearSelection()
+      $sourcesView.getSelectionModel().clearSelection()
+      $sourcesView.getSelectionModel().selectRange(size - movedSize, size)
+      $sourcesView.requestFocus()
     }
-    Integer size = $sourcesView.getItems().size()
-    Integer movedSize = movedItems.size()
-    $targetsView.getSelectionModel().clearSelection()
-    $sourcesView.getSelectionModel().selectRange(size - movedSize, size)
-    $sourcesView.requestFocus()
   }
 
   private void setupViews() {
@@ -114,6 +120,7 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         firstView.getItems().remove(movedItem)
         secondView.getItems().add(movedItem)
         firstView.getSelectionModel().clearSelection()
+        secondView.getSelectionModel().clearSelection()
         secondView.getSelectionModel().select(movedItem)
         secondView.requestFocus()
         isCompleted = true
