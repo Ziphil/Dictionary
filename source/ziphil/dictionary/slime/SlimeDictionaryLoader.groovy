@@ -51,6 +51,8 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               parseAlphabetOrder(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
+            } else if (specialFieldName == "informationTitleOrder") {
+              parseInformationTitleOrder(parser)
             } else if (specialFieldName == "defaultWord") {
               parseDefaultWord(parser)
             }
@@ -209,6 +211,15 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String title = parser.getValueAsString()
       $dictionary.getPlainInformationTitles().add(title)
+    }
+  }
+
+  private void parseInformationTitleOrder(JsonParser parser) {
+    if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
+      while (parser.nextToken() != JsonToken.END_ARRAY) {
+        String title = parser.getValueAsString()
+        $dictionary.getPlainInformationTitles().add(title)
+      }
     }
   }
 
