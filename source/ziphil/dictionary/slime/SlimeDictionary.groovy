@@ -257,8 +257,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   private void updateInformationTitleOrder() {
-    List<String> newInformationTitleOrder = ArrayList.new()
     if ($informationTitleOrder != null) {
+      List<String> newInformationTitleOrder = ArrayList.new()
       for (String title : $informationTitleOrder) {
         if ($registeredInformationTitles.contains(title)) {
           newInformationTitleOrder.add(title)
@@ -269,8 +269,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
           newInformationTitleOrder.add(title)
         }
       }
+      $informationTitleOrder = newInformationTitleOrder
     }
-    $informationTitleOrder = newInformationTitleOrder
   }
 
   public SlimeWord emptyWord(String defaultName) {
