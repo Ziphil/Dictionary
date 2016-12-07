@@ -259,9 +259,9 @@ public class SlimeEditorController extends Controller<Boolean> {
       ComboBox<String> otherTitle = $equivalentTitleControls[otherIndex]
       $equivalentTitleControls[otherIndex] = $equivalentTitleControls[index]
       $equivalentTitleControls[index] = otherTitle
-      TextField otherText = $equivalentNameControls[otherIndex]
+      TextField otherName = $equivalentNameControls[otherIndex]
       $equivalentNameControls[otherIndex] = $equivalentNameControls[index]
-      $equivalentNameControls[index] = otherText
+      $equivalentNameControls[index] = otherName
     }
   }
 
