@@ -216,9 +216,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   private void parseInformationTitleOrder(JsonParser parser) {
     if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
+      $dictionary.setInformationTitleOrder(ArrayList.new())
       while (parser.nextToken() != JsonToken.END_ARRAY) {
         String title = parser.getValueAsString()
-        $dictionary.getPlainInformationTitles().add(title)
+        $dictionary.getInformationTitleOrder().add(title)
       }
     }
   }
