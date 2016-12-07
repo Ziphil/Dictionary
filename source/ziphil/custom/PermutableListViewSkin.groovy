@@ -50,7 +50,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
   @FXML
   private void exchangeDown() {
     Integer index = $itemsView.getSelectionModel().getSelectedIndex()
-    if (index < $itemsView.getItems().size() - 1) {
+    if (index >= 0 && index < $itemsView.getItems().size() - 1) {
       $itemsView.getItems().swap(index, index + 1)
       $itemsView.getSelectionModel().select(index + 1)
     }
