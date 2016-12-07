@@ -560,7 +560,6 @@ public class MainController extends PrimitiveController<Stage> {
     updateLoader()
     updateOnLinkClicked()
     updateMenuItems()
-    search(true)
   }
 
   private void updateSearchStatuses() {
