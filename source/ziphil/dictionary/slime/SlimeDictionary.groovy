@@ -8,7 +8,6 @@ import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphil.custom.SimpleTask
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
@@ -22,19 +21,18 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private SlimeDictionaryLoader $loader
-  private Integer $validMinId
-  private List<String> $registeredTags
-  private List<String> $registeredEquivalentTitles
-  private List<String> $registeredInformationTitles
-  private List<String> $registeredVariationTitles
-  private List<String> $registeredRelationTitles
-  private String $alphabetOrder
-  private List<String> $plainInformationTitles
-  private List<String> $informationTitleOrder
-  private SlimeWord $defaultWord
+  private Integer $validMinId = -1
+  private List<String> $registeredTags = ArrayList.new()
+  private List<String> $registeredEquivalentTitles = ArrayList.new()
+  private List<String> $registeredInformationTitles = ArrayList.new()
+  private List<String> $registeredVariationTitles = ArrayList.new()
+  private List<String> $registeredRelationTitles = ArrayList.new()
+  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
+  private List<String> $plainInformationTitles = ArrayList.new()
+  private List<String> $informationTitleOrder = null
+  private SlimeWord $defaultWord = SlimeWord.new()
+  private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
-  private Map<String, TreeNode> $externalData
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -318,27 +316,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     return $words.any{word -> word != excludedWord && word.getId() == id}
   }
 
-  private void load() {
-    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $validMinId = $loader.getValidMinId()
-      $registeredTags = $loader.getRegisteredTags()
-      $registeredEquivalentTitles = $loader.getRegisteredEquivalentTitles()
-      $registeredInformationTitles = $loader.getRegisteredInformationTitles()
-      $registeredVariationTitles = $loader.getRegisteredVariationTitles()
-      $registeredRelationTitles = $loader.getRegisteredRelationTitles()
-      $alphabetOrder = $loader.getAlphabetOrder()
-      $plainInformationTitles = $loader.getPlainInformationTitles()
-      $informationTitleOrder = $loader.getInformationTitleOrder()
-      $defaultWord = $loader.getDefaultWord()
-      $externalData = $loader.getExternalData()
-      $words.addAll($loader.getValue())
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
   public void save() {
     Runnable saver = SlimeDictionarySaver.new($path, $$mapper, $words, this)
     saver.run()
@@ -364,6 +341,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     SlimeSuggestion suggestion = SlimeSuggestion.new()
     suggestion.setDictionary(this)
     $suggestions.add(suggestion)
+  }
+
+  protected Task<?> createLoader() {
+    return SlimeDictionaryLoader.new(this, $path, $$mapper)
   }
 
   private static ObjectMapper createObjectMapper() {
@@ -442,10 +423,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-  }
-
-  public Task<?> getLoader() {
-    return $loader
   }
 
 }

@@ -2,20 +2,16 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Task
+import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionaryLoader extends Task<ObservableList<PersonalWord>> {
+public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionary, PersonalWord> {
 
-  private ObservableList<PersonalWord> $words = FXCollections.observableArrayList()
-  private String $path
-
-  public PersonalDictionaryLoader(String path) {
-    $path = path
+  public PersonalDictionaryLoader(PersonalDictionary dictionary, String path) {
+    super(dictionary, path)
   }
 
   protected ObservableList<PersonalWord> call() {

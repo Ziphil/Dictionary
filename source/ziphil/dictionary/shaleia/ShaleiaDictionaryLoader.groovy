@@ -2,24 +2,16 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Task
+import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
+public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
 
-  private ObservableList<ShaleiaWord> $words = FXCollections.observableArrayList()
-  private String $path
-  private ShaleiaDictionary $dictionary
-  private String $alphabetOrder = ""
-  private String $changeData = ""
-
-  public ShaleiaDictionaryLoader(String path, ShaleiaDictionary dictionary) {
-    $path = path
-    $dictionary = dictionary
+  public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
+    super(dictionary, path)
   }
 
   protected ObservableList<ShaleiaWord> call() {
@@ -48,9 +40,14 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
       reader.close()
     }
     for (ShaleiaWord word : $words) {
-      word.createComparisonString($alphabetOrder)
+      word.createComparisonString($dictionary.getAlphabetOrder())
     }
     return $words
+  }
+
+  protected void update() {
+    $dictionary.getRawWords().addAll($words)
+    $dictionary.updateOthers()
   }
 
   private void add(String currentName, StringBuilder currentData) {
@@ -72,19 +69,13 @@ public class ShaleiaDictionaryLoader extends Task<ObservableList<ShaleiaWord>> {
   }
 
   private void addAlphabetOrder(StringBuilder currentData) {
-    $alphabetOrder = currentData.toString().trim().replaceAll(/^\-\s*/, "")
+    String alphabetOrder = currentData.toString().trim().replaceAll(/^\-\s*/, "")
+    $dictionary.setAlphabetOrder(alphabetOrder)
   }
 
   private void addChangeData(StringBuilder currentData) {
-    $changeData = currentData.toString().replaceAll(/^\s*\n/, "")
-  }
-
-  public String getAlphabetOrder() {
-    return $alphabetOrder
-  }
-
-  private String getChangeData() {
-    return $changeData
+    String changeData = currentData.toString().replaceAll(/^\s*\n/, "")
+    $dictionary.setChangeData(changeData)
   }
 
 }

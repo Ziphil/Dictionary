@@ -6,35 +6,19 @@ import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
-import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Task
+import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
+public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, SlimeWord> {
 
-  private ObservableList<SlimeWord> $words = FXCollections.observableArrayList()
-  private String $path
   private ObjectMapper $mapper
-  private SlimeDictionary $dictionary
-  private Integer $validMinId = -1
-  private List<String> $registeredTags = ArrayList.new()
-  private List<String> $registeredEquivalentTitles = ArrayList.new()
-  private List<String> $registeredInformationTitles = ArrayList.new()
-  private List<String> $registeredVariationTitles = ArrayList.new()
-  private List<String> $registeredRelationTitles = ArrayList.new()
-  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
-  private List<String> $plainInformationTitles = ArrayList.new()
-  private List<String> $informationTitleOrder = null
-  private SlimeWord $defaultWord = SlimeWord.new()
-  private Map<String, TreeNode> $externalData = HashMap.new()
 
-  public SlimeDictionaryLoader(String path, ObjectMapper mapper, SlimeDictionary dictionary) {
-    $path = path
+  public SlimeDictionaryLoader(SlimeDictionary dictionary, String path, ObjectMapper mapper) {
+    super(dictionary, path)
     $mapper = mapper
-    $dictionary = dictionary
     updateProgress(null, null)
   }
 
@@ -73,18 +57,22 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
             updateProgress(parser, size)
           }
         } else {
-          $externalData.put(topFieldName, parser.readValueAsTree())
+          $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
         }
       }
       parser.close()
       stream.close()
     }
     for (SlimeWord word : $words) {
-      word.createComparisonString($alphabetOrder)
+      word.createComparisonString($dictionary.getAlphabetOrder())
       word.updateOthers()
     }
-    $validMinId ++
     return $words
+  }
+
+  protected void update() {
+    $dictionary.getRawWords().addAll($words)
+    $dictionary.updateOthers()
   }
 
   private void parseWord(JsonParser parser, SlimeWord word) {
@@ -114,9 +102,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
       if (entryFieldName == "id") {
         Integer id = parser.getValueAsInt()
         word.setId(id)
-        if ($validMinId < id) {
-          $validMinId = id
-        }
       } else if (entryFieldName == "form") {
         String name = parser.getValueAsString()
         word.setName(name)
@@ -133,9 +118,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         if (equivalentFieldName == "title") {
           String title = parser.getValueAsString()
           equivalent.setTitle(title)
-          if (!$registeredEquivalentTitles.contains(title)) {
-            $registeredEquivalentTitles.add(title)
-          } 
         } else if (equivalentFieldName == "forms") {
           while (parser.nextToken() != JsonToken.END_ARRAY) {
             String name = parser.getValueAsString()
@@ -152,9 +134,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String tag = parser.getValueAsString()
       word.getTags().add(tag)
-      if (!$registeredTags.contains(tag)) {
-        $registeredTags.addAll(tag)
-      }
     }
   }
 
@@ -167,9 +146,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         if (informationFieldName == "title") {
           String title = parser.getValueAsString()
           information.setTitle(title)
-          if (!$registeredInformationTitles.contains(title)) {
-            $registeredInformationTitles.add(title)
-          }
         } else if (informationFieldName == "text") {
           String text = parser.getValueAsString()
           information.setText(text)
@@ -188,9 +164,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         if (variationFieldName == "title") {
           String title = parser.getValueAsString()
           variation.setTitle(title)
-          if (!$registeredVariationTitles.contains(title)) {
-            $registeredVariationTitles.add(title)
-          }
         } else if (variationFieldName == "form") {
           String name = parser.getValueAsString()
           variation.setName(name)
@@ -209,9 +182,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
         if (relationFieldName == "title") {
           String title = parser.getValueAsString()
           relation.setTitle(title)
-          if (!$registeredRelationTitles.contains(title)) {
-            $registeredRelationTitles.add(title)
-          }
         } else if (relationFieldName == "entry") {
           while (parser.nextToken() == JsonToken.FIELD_NAME) {
             String relationEntryFieldName = parser.getCurrentName()
@@ -231,18 +201,19 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
   }
 
   private void parseAlphabetOrder(JsonParser parser) {
-    $alphabetOrder = parser.getValueAsString()
+    String alphabetOrder = parser.getValueAsString()
+    $dictionary.setAlphabetOrder(alphabetOrder) 
   }
 
   private void parsePlainInformationTitles(JsonParser parser) {
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String title = parser.getValueAsString()
-      $plainInformationTitles.add(title)
+      $dictionary.getPlainInformationTitles().add(title)
     }
   }
 
   private void parseDefaultWord(JsonParser parser) {
-    parseWord(parser, $defaultWord)
+    parseWord(parser, $dictionary.getDefaultWord())
   }
 
   private void updateProgress(JsonParser parser, Integer size) {
@@ -251,50 +222,6 @@ public class SlimeDictionaryLoader extends Task<ObservableList<SlimeWord>> {
     } else {
       updateProgress(0, 1)
     }
-  }
-
-  public Integer getValidMinId() {
-    return $validMinId
-  }
-
-  public List<String> getRegisteredTags() {
-    return $registeredTags
-  }
-
-  public List<String> getRegisteredEquivalentTitles() {
-    return $registeredEquivalentTitles
-  }
-
-  public List<String> getRegisteredInformationTitles() {
-    return $registeredInformationTitles
-  }
-
-  public List<String> getRegisteredVariationTitles() {
-    return $registeredVariationTitles
-  }
-
-  public List<String> getRegisteredRelationTitles() {
-    return $registeredRelationTitles
-  }
-
-  public String getAlphabetOrder() {
-    return $alphabetOrder
-  }
-
-  public List<String> getPlainInformationTitles() {
-    return $plainInformationTitles
-  }
-
-  public List<String> getInformationTitleOrder() {
-    return $informationTitleOrder
-  }
-
-  public SlimeWord getDefaultWord() {
-    return $defaultWord
-  }
-
-  public Map<String, TreeNode> getExternalData() {
-    return $externalData
   }
 
 }

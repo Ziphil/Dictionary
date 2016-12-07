@@ -9,7 +9,6 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
@@ -21,9 +20,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
 
-  private ShaleiaDictionaryLoader $loader
-  private String $alphabetOrder
-  private String $changeData
+  private String $alphabetOrder = ""
+  private String $changeData = ""
   private Map<String, List<String>> $changes = HashMap.new()
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
@@ -221,6 +219,11 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $isChanged = true
   }
 
+  public void updateOthers() {
+    createChanges()
+    calculateSystemWordSize()
+  }
+
   private void createChanges() {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
@@ -270,20 +273,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return newWord
   }
 
-  private void load() {
-    $loader = ShaleiaDictionaryLoader.new($path, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $changeData = $loader.getChangeData()
-      $alphabetOrder = $loader.getAlphabetOrder()
-      $words.addAll($loader.getValue())
-      createChanges()
-      calculateSystemWordSize()
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
   public void save() {
     if ($path != null) {
       File file = File.new($path)
@@ -320,6 +309,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return $words.size() - $systemWordSize
   }
 
+  public Task<?> createLoader() {
+    return ShaleiaDictionaryLoader.new(this, $path)
+  }
+
   public String getAlphabetOrder() {
     return $alphabetOrder
   }
@@ -345,10 +338,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-  }
-
-  public Task<?> getLoader() {
-    return $loader
   }
 
 }

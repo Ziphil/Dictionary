@@ -2,7 +2,6 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
@@ -10,8 +9,6 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
-
-  private PersonalDictionaryLoader $loader
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -58,16 +55,6 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     return copiedWord(oldWord)
   }
 
-  private void load() {
-    $loader = PersonalDictionaryLoader.new($path)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $words.addAll($loader.getValue())
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
   public void save() {
     if ($path != null) {
       File file = File.new($path)
@@ -93,8 +80,8 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     }
   }
 
-  public Task<?> getLoader() {
-    return $loader
+  protected Task<?> createLoader() {
+    return PersonalDictionaryLoader.new(this, $path)
   }
 
 }

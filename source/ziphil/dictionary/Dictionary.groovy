@@ -15,6 +15,7 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 import ziphil.custom.ShufflableList
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -37,12 +38,15 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
   private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
+  private Task<?> $loader
   protected Boolean $isChanged = false
+  protected Boolean $isFirstEmpty = false
 
   public Dictionary(String name, String path) {
     $name = name
     $path = path
     $isChanged = (path == null) ? true : false
+    $isFirstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
   }
@@ -195,6 +199,18 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public abstract W inheritedWord(W oldWord)
 
+  protected void load() {
+    $loader = createLoader()
+    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      if (!$isFirstEmpty) {
+        $isChanged = false
+      }
+    }
+    Thread thread = Thread.new($loader)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
   public abstract void save()
 
   private void setupSortedWords() {
@@ -223,6 +239,8 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   public Integer totalSize() {
     return $words.size()
   }
+
+  protected abstract Task<?> createLoader()
 
   public static Dictionary loadDictionary(File file) {
     if (file.exists() && file.isFile()) {
@@ -299,10 +317,12 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     return $words
   }
 
+  public Task<?> getLoader() {
+    return $loader
+  }
+
   public Boolean isChanged() {
     return $isChanged
   }
-
-  public abstract Task<?> getLoader()
 
 }
