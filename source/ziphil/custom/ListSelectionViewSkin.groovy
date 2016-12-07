@@ -48,7 +48,11 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       $sourcesView.getItems().remove(movedItem)
       $targetsView.getItems().add(movedItem)
     }
+    Integer size = $targetsView.getItems().size()
+    Integer movedSize = movedItems.size()
     $sourcesView.getSelectionModel().clearSelection()
+    $targetsView.getSelectionModel().selectRange(size - movedSize, size)
+    $targetsView.requestFocus()
   }
 
   @FXML
@@ -58,7 +62,11 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       $targetsView.getItems().remove(movedItem)
       $sourcesView.getItems().add(movedItem)
     }
+    Integer size = $sourcesView.getItems().size()
+    Integer movedSize = movedItems.size()
     $targetsView.getSelectionModel().clearSelection()
+    $sourcesView.getSelectionModel().selectRange(size - movedSize, size)
+    $sourcesView.requestFocus()
   }
 
   private void setupViews() {
@@ -106,6 +114,8 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         firstView.getItems().remove(movedItem)
         secondView.getItems().add(movedItem)
         firstView.getSelectionModel().clearSelection()
+        secondView.getSelectionModel().select(movedItem)
+        secondView.requestFocus()
         isCompleted = true
       }
       event.setDropCompleted(isCompleted)
