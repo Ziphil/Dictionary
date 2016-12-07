@@ -13,7 +13,7 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
-import ziphil.custom.SimpleWordCell
+import ziphil.custom.PlainWordCell
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.slime.SlimeDictionary
@@ -88,7 +88,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private void setupWordsView() {
     $wordsView.setItems($dictionary.getWords())
     $wordsView.setCellFactory() { ListView<SlimeWord> view ->
-      SimpleWordCell cell = SimpleWordCell.new()
+      PlainWordCell cell = PlainWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           commit()

@@ -19,8 +19,8 @@ public class SlimeWord extends Word {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private TextFlow $simpleContentPane = TextFlow.new()
-  private Boolean $isSimpleChanged = true
+  private TextFlow $plainContentPane = TextFlow.new()
+  private Boolean $isPlainChanged = true
 
   public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
                    List<SlimeRelation> relations) {
@@ -40,7 +40,7 @@ public class SlimeWord extends Word {
     $variations = variations
     $relations = relations
     $isChanged = true
-    $isSimpleChanged = true
+    $isPlainChanged = true
     updateOthers()
   }
 
@@ -80,13 +80,13 @@ public class SlimeWord extends Word {
     $isChanged = false
   }
 
-  public void createSimpleContentPane() {
+  public void createPlainContentPane() {
     Setting setting = Setting.getInstance()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeWordSimpleContentPaneCreator creator = SlimeWordSimpleContentPaneCreator.new($simpleContentPane, this, $dictionary)
+    SlimeWordPlainContentPaneCreator creator = SlimeWordPlainContentPaneCreator.new($plainContentPane, this, $dictionary)
     creator.setModifiesPunctuation(modifiesPunctuation)
     creator.create()
-    $isSimpleChanged = false
+    $isPlainChanged = false
   }
 
   public void createComparisonString(String order) {
@@ -100,10 +100,6 @@ public class SlimeWord extends Word {
       }
     }
     $comparisonString = comparisonString.toString()
-  }
-
-  public Boolean isSimpleChanged() {
-    return $isSimpleChanged
   }
 
   public SlimeDictionary getDictionary() {
@@ -170,8 +166,12 @@ public class SlimeWord extends Word {
     return $comparisonString
   }
 
-  public Pane getSimpleContentPane() {
-    return $simpleContentPane
+  public Pane getPlainContentPane() {
+    return $plainContentPane
+  }
+
+  public Boolean isPlainChanged() {
+    return $isPlainChanged
   }
 
 }

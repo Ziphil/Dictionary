@@ -73,7 +73,7 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
 
   private void setupUnidirectionalDragAndDrop(ListView<T> firstView, ListView<T> secondView) {
     firstView.setCellFactory() { ListView<T> view ->
-      ListCell<T> cell = StandardListCell.new()
+      ListCell<T> cell = SimpleListCell.new()
       cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
         T movedItem = cell.getItem()
         if (movedItem != null) {

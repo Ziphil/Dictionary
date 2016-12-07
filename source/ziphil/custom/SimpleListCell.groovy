@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class StandardListCell<T> extends ListCell<T> {
+public class SimpleListCell<T> extends ListCell<T> {
 
-  public StandardListCell() {
+  public SimpleListCell() {
     super()
   }
 

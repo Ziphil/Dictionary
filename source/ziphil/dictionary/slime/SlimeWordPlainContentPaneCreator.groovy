@@ -10,13 +10,13 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordSimpleContentPaneCreator extends ContentPaneCreator<SlimeWord, SlimeDictionary> {
+public class SlimeWordPlainContentPaneCreator extends ContentPaneCreator<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   private static final String SLIME_ID_CLASS = "slime-id"
 
-  public SlimeWordSimpleContentPaneCreator(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
+  public SlimeWordPlainContentPaneCreator(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
