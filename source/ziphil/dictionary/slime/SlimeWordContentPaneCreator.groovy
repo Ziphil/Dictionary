@@ -42,7 +42,8 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       String equivalentString = equivalent.getNames().join(", ")
       addEquivalentNode(equivalent.getTitle(), equivalentString)
     }
-    for (SlimeInformation information : $word.getInformations()) {
+    List<SlimeInformation> sortedInformation = calculateSortedInformations()
+    for (SlimeInformation information : sortedInformation) {
       addInformationNode(information.getTitle(), information.getText())
       hasInformation = true
     }
@@ -56,6 +57,33 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       hasRelation = true
     }
     modifyBreak()
+  }
+
+  private List<SlimeInformation> calculateSortedInformations() {
+    if ($dictionary.getInformationTitleOrder() != null) {
+      List<SlimeInformation> sortedInformations = $word.getInformations().toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
+        String firstTitle = firstInformation.getTitle()
+        String secondTitle = secondInformation.getTitle()
+        Integer firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
+        Integer secondIndex = $dictionary.getInformationTitleOrder().indexOf(secondTitle)
+        if (firstIndex == -1) {
+          if (secondIndex == -1) {
+            return 0
+          } else {
+            return -1
+          }
+        } else {
+          if (secondIndex == -1) {
+            return 1
+          } else {
+            return firstIndex <=> secondIndex
+          }
+        }
+      }
+      return sortedInformations
+    } else {
+      return $word.getInformations()
+    }
   }
 
   private void addNameNode(String name) {
