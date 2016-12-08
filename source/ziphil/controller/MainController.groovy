@@ -110,7 +110,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary
   private SearchHistory $searchHistory = SearchHistory.new()
-  private String $previousSearch
+  private String $previousSearch = ""
 
   public MainController(Stage nextStage) {
     super(nextStage)
@@ -556,6 +556,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
     }
     $dictionary = dictionary
+    $previousSearch = ""
     $searchHistory.clear()
     updateSearchStatuses()
     updateLoader()
