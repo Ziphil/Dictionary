@@ -80,11 +80,15 @@
             <CheckBox fx:id="$usesSystemEditorFontFamilyControl" text="システムフォントを用いる"/>
             <CheckBox fx:id="$usesDefaultEditorFontSizeControl" text="デフォルトサイズを用いる"/>
           </HBox>
-          <Spinner fx:id="$lineSpacingControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-            <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
-          </Spinner>
+          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label text="＋ "/>
+            <Spinner fx:id="$lineSpacingControl" editable="true" >
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
+            </Spinner>
+            <Label text=" px"/>
+          </HBox>
           <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="8">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
