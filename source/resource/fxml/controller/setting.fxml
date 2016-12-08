@@ -257,18 +257,35 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <ToggleButton fx:id="$savesAutomaticallyControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
+          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Spinner fx:id="$separativeIntervalControl" editable="true">
+              <prefWidth><Double rpx="80"/></prefWidth>
+              <minWidth><Double rpx="80"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="5000" initialValue="0" amountToStepBy="50"/></valueFactory>
+            </Spinner>
+            <Label text=" ms"/>
+          </HBox>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
-                <bottom><Double rpx="10"/></bottom>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
           </TextFlow>
         </GridPane>
       </Tab>

@@ -8,11 +8,18 @@ import ziphilib.transform.Ziphilify
 public class SearchHistory {
 
   private static final Integer MAX_SIZE = 20
-  private static final Long SEPARATIVE_INTERVAL = 500
 
   private List<? extends SearchParameter> $parameters = ArrayList.new()
-  private Long $interval = null
   private Integer $pointer = 0
+  private Long $interval = null
+  private Integer $separativeInterval = 0
+
+  public SearchHistory(Integer separativeInterval) {
+    $separativeInterval = separativeInterval
+  }
+
+  public SearchHistory() {
+  }
 
   public void add(SearchParameter parameter, Boolean checksTime) {
     for (Integer i : 0 ..< $pointer) {
@@ -21,7 +28,7 @@ public class SearchHistory {
     $pointer = 0
     if (checksTime) {
       Long time = System.currentTimeMillis()
-      if ($interval != null && time - $interval < SEPARATIVE_INTERVAL) {
+      if ($interval != null && time - $interval < $separativeInterval) {
         $parameters.set(0, parameter)
       } else {
         $parameters.add(0, parameter)
@@ -72,6 +79,14 @@ public class SearchHistory {
 
   public Boolean hasNext() {
     return $pointer - 1 >= 0
+  }
+
+  public Integer getSeparativeInterval() {
+    return $separativeInterval
+  }
+
+  public void setSeparativeInterval(Integer separativeInterval) {
+    $separativeInterval = separativeInterval
   }
 
 }

@@ -30,6 +30,7 @@ public class Setting {
   private String $editorFontFamily
   private Integer $editorFontSize
   private Integer $lineSpacing = 0
+  private Integer $separativeInterval = 700
   private Integer $fontRenderingType
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
@@ -177,6 +178,14 @@ public class Setting {
 
   public void setLineSpacing(Integer lineSpacing) {
     $lineSpacing = lineSpacing
+  }
+
+  public Integer getSeparativeInterval() {
+    return $separativeInterval
+  }
+
+  public void setSeparativeInterval(Integer separativeInterval) {
+    $separativeInterval = separativeInterval
   }
 
   public Integer getFontRenderingType() {

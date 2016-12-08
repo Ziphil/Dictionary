@@ -41,6 +41,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private Spinner<Integer> $lineSpacingControl
+  @FXML private Spinner<Integer> $separativeIntervalControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -73,6 +74,7 @@ public class SettingController extends Controller<Boolean> {
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
     Integer lineSpacing = setting.getLineSpacing()
+    Integer separativeInterval = setting.getSeparativeInterval()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
@@ -102,6 +104,7 @@ public class SettingController extends Controller<Boolean> {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
+    $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
@@ -125,6 +128,7 @@ public class SettingController extends Controller<Boolean> {
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
     Integer lineSpacing = $lineSpacingControl.getValue()
+    Integer separativeInterval = $separativeIntervalControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -138,6 +142,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
     setting.setLineSpacing(lineSpacing)
+    setting.setSeparativeInterval(separativeInterval)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)

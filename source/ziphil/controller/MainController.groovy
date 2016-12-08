@@ -115,6 +115,7 @@ public class MainController extends PrimitiveController<Stage> {
   public MainController(Stage nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
+    setupSearchHistory()
     setupDragAndDrop()
     setupShortcuts()
     setupCloseConfirmation()
@@ -909,6 +910,11 @@ public class MainController extends PrimitiveController<Stage> {
       item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
       $registerCurrentDictionaryMenu.getItems().add(item)
     }
+  }
+
+  private void setupSearchHistory() {
+    Integer separativeInterval = Setting.getInstance().getSeparativeInterval()
+    $searchHistory.setSeparativeInterval(separativeInterval)
   }
 
   private void setupExceptionHandler() {
