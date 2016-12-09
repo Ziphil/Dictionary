@@ -16,9 +16,8 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   private ObjectMapper $mapper
 
-  public SlimeDictionaryLoader(SlimeDictionary dictionary, String path, ObjectMapper mapper) {
+  public SlimeDictionaryLoader(SlimeDictionary dictionary, String path) {
     super(dictionary, path)
-    $mapper = mapper
     updateProgress(null, null)
   }
 
@@ -234,6 +233,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     } else {
       updateProgress(0, 1)
     }
+  }
+
+  public void setMapper(ObjectMapper mapper) {
+    $mapper = mapper
   }
 
 }

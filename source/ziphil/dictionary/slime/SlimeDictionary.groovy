@@ -338,7 +338,9 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   protected Task<?> createLoader() {
-    return SlimeDictionaryLoader.new(this, $path, $$mapper)
+    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
+    loader.setMapper($$mapper)
+    return loader
   }
 
   protected Task<?> createSaver() {

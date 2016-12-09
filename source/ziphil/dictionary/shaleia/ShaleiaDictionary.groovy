@@ -291,8 +291,9 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return $words.size() - $systemWordSize
   }
 
-  public Task<?> createLoader() {
-    return ShaleiaDictionaryLoader.new(this, $path)
+  protected Task<?> createLoader() {
+    ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
+    return loader
   }
 
   protected Task<?> createSaver() {

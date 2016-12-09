@@ -62,7 +62,8 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
   }
 
   protected Task<?> createLoader() {
-    return PersonalDictionaryLoader.new(this, $path)
+    PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
+    return loader
   }
 
   protected Task<?> createSaver() {
