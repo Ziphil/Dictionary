@@ -39,6 +39,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected SortedList<S> $sortedSuggestions
   private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
   private Task<?> $loader
+  private Task<?> $saver
   protected Boolean $isChanged = false
   protected Boolean $isFirstEmpty = false
 
@@ -211,7 +212,13 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     thread.start()
   }
 
-  public abstract void save()
+  public void save() {
+    $saver = createSaver()
+    $saver.run()
+    if ($path != null) {
+      $isChanged = false
+    }
+  }
 
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
@@ -241,6 +248,8 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   }
 
   protected abstract Task<?> createLoader()
+
+  protected abstract Task<?> createSaver()
 
   public static Dictionary loadDictionary(File file) {
     if (file.exists() && file.isFile()) {
@@ -319,6 +328,10 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
 
   public Task<?> getLoader() {
     return $loader
+  }
+
+  public Task<?> getSaver() {
+    return $saver
   }
 
   public Boolean isChanged() {

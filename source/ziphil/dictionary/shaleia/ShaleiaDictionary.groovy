@@ -273,24 +273,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return newWord
   }
 
-  public void save() {
-    if ($path != null) {
-      File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      $words.sort($sortedWords.getComparator())
-      for (ShaleiaWord word : $words) {
-        output.append("* ").append(word.getUniqueName()).append("\n")
-        output.append(word.getData().trim()).append("\n\n")
-      }
-      output.append("* META-ALPHABET-ORDER\n\n")
-      output.append("- ").append($alphabetOrder).append("\n\n")
-      output.append("* META-CHANGE\n\n")
-      output.append($changeData.trim()).append("\n\n")
-      file.setText(output.toString(), "UTF-8")
-    }
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()
@@ -311,6 +293,12 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public Task<?> createLoader() {
     return ShaleiaDictionaryLoader.new(this, $path)
+  }
+
+  protected Task<?> createSaver() {
+    ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
+    saver.setComparator($sortedWords.getComparator())
+    return saver
   }
 
   public String getAlphabetOrder() {

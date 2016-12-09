@@ -55,25 +55,6 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     return copiedWord(oldWord)
   }
 
-  public void save() {
-    if ($path != null) {
-      File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
-      for (PersonalWord word : $words) {
-        output.append("\"").append(word.getName()).append("\",")
-        output.append("\"").append(word.getTranslation()).append("\",")
-        output.append("\"").append(word.getUsage()).append("\",")
-        output.append(word.getLevel().toString()).append(",")
-        output.append(word.getMemory().toString()).append(",")
-        output.append(word.getModification().toString()).append(",")
-        output.append("\"").append(word.getPronunciation()).append("\"\n")
-      }
-      file.setText(output.toString(), "UTF-8")
-    }
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
@@ -82,6 +63,11 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
 
   protected Task<?> createLoader() {
     return PersonalDictionaryLoader.new(this, $path)
+  }
+
+  protected Task<?> createSaver() {
+    PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
+    return saver
   }
 
 }

@@ -316,12 +316,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     return $words.any{word -> word != excludedWord && word.getId() == id}
   }
 
-  public void save() {
-    Runnable saver = SlimeDictionarySaver.new($path, $$mapper, $words, this)
-    saver.run()
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Integer firstId = firstWord.getId()
@@ -345,6 +339,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   protected Task<?> createLoader() {
     return SlimeDictionaryLoader.new(this, $path, $$mapper)
+  }
+
+  protected Task<?> createSaver() {
+    SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
+    saver.setMapper($$mapper)
+    return saver
   }
 
   private static ObjectMapper createObjectMapper() {
