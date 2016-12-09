@@ -29,26 +29,15 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
 
   public void prepare(ShaleiaDictionary dictionary) {
     $dictionary = dictionary
-    applySettings()
-  }
-
-  private void applySettings() {
-    String alphabetOrder = $dictionary.getAlphabetOrder()
-    String changeData = $dictionary.getChangeData()
-    $alphabetOrderControl.setText(alphabetOrder)
-    $changeDataControl.setText(changeData)
-  }
-
-  private void saveSettings() {
-    String alphabetOrder = $alphabetOrderControl.getText()
-    String changeData = $changeDataControl.getText()
-    $dictionary.setAlphabetOrder(alphabetOrder)
-    $dictionary.setChangeData(changeData)
+    $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $changeDataControl.setText(dictionary.getChangeData())
   }
 
   @FXML
   protected void commit() {
-    saveSettings()
+    String alphabetOrder = $alphabetOrderControl.getText()
+    String changeData = $changeDataControl.getText()
+    $dictionary.update(alphabetOrder, changeData)
     $stage.commit(true)
   }
 

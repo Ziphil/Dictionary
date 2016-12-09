@@ -25,11 +25,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
 
+  @FXML private TextField $alphabetOrderControl
   @FXML private ListSelectionView<String> $plainInformationTitlesView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
-  @FXML private TextField $alphabetOrderControl
-  private SlimeWord $defaultWord
   private SlimeDictionary $dictionary
 
   public SlimeIndividualSettingController(UtilityStage<Boolean> stage) {
@@ -44,35 +43,26 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    applySettings()
-  }
-
-  private void applySettings() {
-    List<String> plainInformationTitles = $dictionary.getPlainInformationTitles()
-    List<String> normalInformationTitles = $dictionary.getRegisteredInformationTitles() - $dictionary.getPlainInformationTitles()
-    List<String> rawInformationTitleOrder = $dictionary.getInformationTitleOrder()
-    List<String> informationTitleOrder = $dictionary.getInformationTitleOrder() ?: $dictionary.getRegisteredInformationTitles()
-    String alphabetOrder = $dictionary.getAlphabetOrder()
-    SlimeWord defaultWord = $dictionary.getDefaultWord()
-    $plainInformationTitlesView.setSources(FXCollections.observableArrayList(normalInformationTitles))
-    $plainInformationTitlesView.setTargets(FXCollections.observableArrayList(plainInformationTitles))
-    $informationTitleOrderView.setItems(FXCollections.observableArrayList(informationTitleOrder))
-    if (rawInformationTitleOrder == null) {
+    List<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
+    List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
+    List<String> rawInformationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder())
+    List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
+    $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $plainInformationTitlesView.setSources(normalInformationTitles)
+    $plainInformationTitlesView.setTargets(plainInformationTitles)
+    $informationTitleOrderView.setItems(informationTitleOrder)
+    if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
-    $alphabetOrderControl.setText(alphabetOrder)
-    $defaultWord = defaultWord
   }
 
-  private void saveSettings() {
+  @FXML
+  protected void commit() {
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
     List<String> informationTitleOrder = ArrayList.new($informationTitleOrderView.getItems())
     String alphabetOrder = $alphabetOrderControl.getText()
-    SlimeWord defaultWord = $defaultWord
-    $dictionary.setPlainInformationTitles(plainInformationTitles)
-    $dictionary.setInformationTitleOrder(informationTitleOrder)
-    $dictionary.setAlphabetOrder(alphabetOrder)
-    $dictionary.setDefaultWord(defaultWord)
+    $dictionary.update(alphabetOrder, plainInformationTitles, informationTitleOrder)
+    $stage.commit(true)
   }
 
   @FXML
@@ -81,14 +71,8 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($defaultWord, $dictionary, false, false)
+    controller.prepare($dictionary.getDefaultWord(), $dictionary, false, false)
     nextStage.showAndWait()
-  }
-
-  @FXML
-  protected void commit() {
-    saveSettings()
-    $stage.commit(true)
   }
 
   private void bindInformationTitleOrderViewProperty() {

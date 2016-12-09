@@ -187,6 +187,13 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     $isChanged = true
   }
 
+  public void update(String alphabetOrder, List<String> plainInformationTitles, List<String> informationTitleOrder) {
+    $alphabetOrder = alphabetOrder
+    $plainInformationTitles = plainInformationTitles
+    $informationTitleOrder = informationTitleOrder
+    $isChanged = true
+  }
+
   public void updateOthers() {
     updateRegisteredTitles()
     updatePlainInformationTitles()
@@ -385,7 +392,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
-    $isChanged = true
   }
 
   public List<String> getPlainInformationTitles() {
@@ -394,7 +400,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setPlainInformationTitles(List<String> plainInformationTitles) {
     $plainInformationTitles = plainInformationTitles
-    $isChanged = true
   }
 
   public List<String> getInformationTitleOrder() {
@@ -403,7 +408,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setInformationTitleOrder(List<String> informationTitleOrder) {
     $informationTitleOrder = informationTitleOrder
-    $isChanged = true
   }
 
   public SlimeWord getDefaultWord() {
@@ -412,7 +416,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setDefaultWord(SlimeWord defaultWord) {
     $defaultWord = defaultWord
-    $isChanged = true
   }
 
   public Map<String, TreeNode> getExternalData() {

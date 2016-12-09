@@ -219,6 +219,13 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $isChanged = true
   }
 
+  public void update(String alphabetOrder, String changeData) {
+    $alphabetOrder = alphabetOrder
+    $changeData = changeData
+    $isChanged = true
+    createChanges()
+  }
+
   public void updateOthers() {
     createChanges()
     calculateSystemWordSize()
@@ -308,7 +315,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
-    $isChanged = true
   }
 
   public String getChangeData() {
@@ -317,8 +323,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public void setChangeData(String changeData) {
     $changeData = changeData
-    $isChanged = true
-    createChanges()
   }
 
   public Consumer<String> getOnLinkClicked() {
