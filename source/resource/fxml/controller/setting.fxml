@@ -100,7 +100,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
+            <Text text="このフォントは単語データの表示に用いられます。&#10;"/>
+            <Text text="フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
             <GridPane.margin>
@@ -118,7 +119,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;指定したピクセル分だけ余分に行間が空きます。"/>
+            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;"/>
+            <Text text="指定したピクセル分だけ余分に行間が空きます。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="9">
             <GridPane.margin>
@@ -126,7 +128,8 @@
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
+            <Text text="句読点や括弧類の周りのスペースを調整します。&#10;"/>
+            <Text text="フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -181,7 +184,8 @@
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
+            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;"/>
+            <Text text="有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -277,7 +281,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+            <Text text="単語データの編集時に自動的に変更を保存します。&#10;"/>
+            <Text text="無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>

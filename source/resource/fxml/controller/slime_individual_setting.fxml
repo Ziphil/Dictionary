@@ -58,7 +58,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="ここで指定した内容欄の項目は、項目名のラベルの後に改行が入らなくなります。&#10;文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
+            <Text text="ここで指定した内容欄の項目は、項目名のラベルの後に改行が入らなくなります。&#10;"/>
+            <Text text="文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="4">
             <GridPane.margin>
@@ -100,7 +101,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;何も入力しなかった場合はID順になります。"/>
+            <Text text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;"/>
+            <Text text="何も入力しなかった場合はID順になります。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
@@ -108,7 +110,8 @@
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="単語を新規作成するときに、ここで指定したデータが自動的に入力されます。&#10;IDと単語名の設定は無視されます。"/>
+            <Text text="単語を新規作成するときに、ここで指定したデータが自動的に入力されます。&#10;"/>
+            <Text text="IDと単語名の設定は無視されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>
