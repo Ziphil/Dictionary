@@ -45,7 +45,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     $dictionary = dictionary
     List<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
     List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
-    List<String> rawInformationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder())
+    List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
     List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $plainInformationTitlesView.setSources(normalInformationTitles)
@@ -59,7 +59,8 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
-    List<String> informationTitleOrder = ArrayList.new($informationTitleOrderView.getItems())
+    Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
+    List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     String alphabetOrder = $alphabetOrderControl.getText()
     $dictionary.update(alphabetOrder, plainInformationTitles, informationTitleOrder)
     $stage.commit(true)
