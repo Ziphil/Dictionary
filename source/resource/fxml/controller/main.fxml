@@ -81,8 +81,16 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z"/>
-        <MenuItem text="1つ後の検索結果" onAction="#searchNext" accelerator="Shortcut+Y"/>
+        <MenuItem text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
+          <graphic>
+            <ImageView><Image url="@../../icon/previous.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem text="1つ後の検索結果" onAction="#searchNext" accelerator="Shortcut+Y">
+          <graphic>
+            <ImageView><Image url="@../../icon/next.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$searchDetailItem" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
