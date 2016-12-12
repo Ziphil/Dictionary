@@ -30,7 +30,7 @@
       </padding>
       <Label text="更新情報" styleClass="update-title"/>
       <TextFlow styleClass="update-item-pane">
-        <Text text="内容のラベルの後で改行するかを設定する機能を追加"/>
+        <Text text="前の検索結果に戻る機能を追加"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -38,12 +38,11 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="OTM形式の内容欄において、項目名のラベルの後で改行するかどうかを設定できるようになりました。&#10;"/>
-        <Text text="文章が1行だけの項目などに対して指定しておくと、単語データが見やすくなるかもしれません。&#10;"/>
-        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。"/>
+        <Text text="検索履歴が保存され、メニューやショートカットキーから前の検索結果に戻れるようになりました。&#10;"/>
+        <Text text="詳しい動作については、ヘルプの「その他」の項目をご覧ください。"/>
       </TextFlow>
       <TextFlow styleClass="update-item-pane">
-        <Text text="単語の新規作成時のデフォルトデータを変更する機能を追加"/>
+        <Text text="OTM形式の内容の表示順を固定する機能を追加"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -51,11 +50,12 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="OTM形式で単語を新規作成するときに、デフォルトで入力される内容を変更できるようになりました。&#10;"/>
-        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。"/>
+        <Text text="OTM形式において、各データでの登録順に関わらず一定の順序で項目を表示させられるようになりました。&#10;"/>
+        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。&#10;"/>
+        <Text text="これまで通り、各データに登録された順番で表示させることもできます。"/>
       </TextFlow>
       <TextFlow styleClass="update-item-pane">
-        <Text text="単語表示欄の行間を調整する機能を追加"/>
+        <Text text="単語の修正時に登録ラベルが減らない不具合を修正"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -63,8 +63,7 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="単語表示欄の行間をピクセル単位で調整できるようになりました。&#10;"/>
-        <Text text="設定は、メニューの「ツール」→「環境設定」の「表示」タブから行えます。"/>
+        <Text text="OTM形式のデータを編集してどこにも登録されなくなったラベルが、ラベル一覧からも消えるようになりました。"/>
       </TextFlow>
     </VBox>
   </center>
