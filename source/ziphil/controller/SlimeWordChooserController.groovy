@@ -13,8 +13,9 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
-import ziphil.custom.SimpleWordCell
+import ziphil.custom.PlainWordCell
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
@@ -25,14 +26,14 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeWordChooserController extends Controller<SlimeWord> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/slime_word_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/slime_word_chooser.fxml"
   private static final String TITLE = "単語選択"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private ListView<SlimeWord> $wordsView
   @FXML private TextField $searchControl
-  @FXML private ComboBox<String> $searchModeControl
+  @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   private SlimeDictionary $dictionary
 
@@ -51,13 +52,13 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private void search() {
     if ($dictionary != null) {
       String search = $searchControl.getText()
-      String searchMode = $searchModeControl.getValue()
-      Boolean isStrict = $searchTypeControl.getText() == "完全一致"
-      if (searchMode == "単語") {
+      SearchMode searchMode = $searchModeControl.getValue()
+      Boolean isStrict = $searchTypeControl.isSelected()
+      if (searchMode == SearchMode.NAME) {
         $dictionary.searchByName(search, isStrict)
-      } else if (searchMode == "訳語") {
+      } else if (searchMode == SearchMode.EQUIVALENT) {
         $dictionary.searchByEquivalent(search, isStrict)
-      } else if (searchMode == "全文") {
+      } else if (searchMode == SearchMode.CONTENT) {
         $dictionary.searchByContent(search)
       }
       $wordsView.scrollTo(0)
@@ -80,14 +81,14 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   @FXML
   protected void commit() {
     SlimeWord word = $wordsView.getSelectionModel().getSelectedItem()
-    $stage.close(word)
+    $stage.commit(word)
   }
 
   @VoidClosure
   private void setupWordsView() {
     $wordsView.setItems($dictionary.getWords())
-    $wordsView.setCellFactory() { ListView<SlimeWord> list ->
-      SimpleWordCell cell = SimpleWordCell.new()
+    $wordsView.setCellFactory() { ListView<SlimeWord> view ->
+      PlainWordCell cell = PlainWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           commit()
@@ -99,15 +100,15 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   private void bindSearchTypeControlProperty() {
     Callable<String> textFunction = (Callable){
-      return ($searchTypeControl.selectedProperty().get()) ? "完全一致" : "部分一致"
+      return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
     }
     Callable<Boolean> disableFunction = (Callable){
-      String searchMode = $searchModeControl.getValue()
-      if (searchMode == "単語") {
+      SearchMode searchMode = $searchModeControl.getValue()
+      if (searchMode == SearchMode.NAME) {
         return false
-      } else if (searchMode == "訳語") {
+      } else if (searchMode == SearchMode.EQUIVALENT) {
         return false
-      } else if (searchMode == "全文") {
+      } else if (searchMode == SearchMode.CONTENT) {
         return true
       } else {
         return true

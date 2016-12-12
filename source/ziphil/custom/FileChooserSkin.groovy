@@ -32,7 +32,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/file_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/custom/file_chooser.fxml"
   private static final Comparator<File> FILE_COMPARATOR = createFileComparator()
   private static final ExtensionFilter DEFAULT_EXTENSION_FILTER = ExtensionFilter.new("全てのファイル", null)
 
@@ -120,7 +120,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
     }
     $directoryView.setRoot(root)
     $directoryView.setShowRoot(false)
-    $directoryView.setCellFactory() { TreeView<File> tree ->
+    $directoryView.setCellFactory() { TreeView<File> view ->
       DirectoryCell cell = DirectoryCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -133,7 +133,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
 
   @VoidClosure
   private void setupFileView() {
-    $fileView.setCellFactory() { ListView<File> list ->
+    $fileView.setCellFactory() { ListView<File> view ->
       FileCell cell = FileCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {

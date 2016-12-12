@@ -10,6 +10,7 @@ import ziphilib.transform.Ziphilify
 public class UtilityStage<T> extends Stage {
 
   private T $result
+  private Boolean $isCommitted = false
 
   public UtilityStage() {
     super()
@@ -19,13 +20,15 @@ public class UtilityStage<T> extends Stage {
     super(style)
   }
 
-  public T showAndWaitResult() {
-    showAndWait()
-    return $result
+  public void commit(T result) {
+    $result = result
+    $isCommitted = true
+    close()
   }
 
-  public void close(T result) {
-    $result = result
+  public void cancel() {
+    $result = null
+    $isCommitted = false
     close()
   }
 
@@ -33,8 +36,12 @@ public class UtilityStage<T> extends Stage {
     return $result
   }
 
-  public void setResult(T result) {
-    $result = result
+  public Boolean isCommitted() {
+    return $isCommitted
+  }
+
+  public Boolean isCancelled() {
+    return !$isCommitted
   }
 
 }

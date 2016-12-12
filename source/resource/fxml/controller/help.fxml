@@ -15,8 +15,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <VBox>
@@ -37,6 +37,7 @@
           <String fx:value="基本操作(検索)"/>
           <String fx:value="OneToMany形式の編集"/>
           <String fx:value="ショートカットキー"/>
+          <String fx:value="その他"/>
           <String fx:value="各形式について"/>
         </ListView>
         <WebView fx:id="$helpView"/>

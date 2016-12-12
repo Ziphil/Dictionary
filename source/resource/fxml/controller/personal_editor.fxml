@@ -25,8 +25,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <GridPane>

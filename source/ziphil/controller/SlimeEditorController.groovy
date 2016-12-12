@@ -29,6 +29,7 @@ import javafx.stage.StageStyle
 import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
+import ziphil.custom.UnfocusableButton
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeEquivalent
@@ -43,7 +44,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeEditorController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/slime_editor.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/slime_editor.fxml"
   private static final String TITLE = "単語編集"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(640)
@@ -188,7 +189,7 @@ public class SlimeEditorController extends Controller<Boolean> {
           }
         }
         $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
-        $stage.close(true)
+        $stage.commit(true)
       } else {
         Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
         dialog.initOwner($stage)
@@ -258,9 +259,9 @@ public class SlimeEditorController extends Controller<Boolean> {
       ComboBox<String> otherTitle = $equivalentTitleControls[otherIndex]
       $equivalentTitleControls[otherIndex] = $equivalentTitleControls[index]
       $equivalentTitleControls[index] = otherTitle
-      TextField otherText = $equivalentNameControls[otherIndex]
+      TextField otherName = $equivalentNameControls[otherIndex]
       $equivalentNameControls[otherIndex] = $equivalentNameControls[index]
-      $equivalentNameControls[index] = otherText
+      $equivalentNameControls[index] = otherName
     }
   }
 
@@ -434,8 +435,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
-    SlimeWord word = nextStage.showAndWaitResult()
-    if (word != null) {
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SlimeWord word = nextStage.getResult()
       Integer index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
@@ -449,9 +451,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox dammyBox = HBox.new()
     HBox exchangeBox = HBox.new()
     ComboBox<String> tagControl = ComboBox.new()
-    Button exchangeUpButton = Button.new("↑")
-    Button exchangeDownButton = Button.new("↓")
-    Button removeButton = Button.new("－")
+    Button exchangeUpButton = UnfocusableButton.new("↑")
+    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button removeButton = UnfocusableButton.new("－")
     tagControl.setEditable(true)
     tagControl.getItems().addAll(registeredTags)
     tagControl.setValue(tag)
@@ -480,9 +482,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox exchangeBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
-    Button exchangeUpButton = Button.new("↑")
-    Button exchangeDownButton = Button.new("↓")
-    Button removeButton = Button.new("－")
+    Button exchangeUpButton = UnfocusableButton.new("↑")
+    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
     titleControl.setValue(title)
@@ -515,9 +517,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox removeBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextArea textControl = TextArea.new()
-    Button exchangeUpButton = Button.new("↑")
-    Button exchangeDownButton = Button.new("↓")
-    Button removeButton = Button.new("－")
+    Button exchangeUpButton = UnfocusableButton.new("↑")
+    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button removeButton = UnfocusableButton.new("－")
     exchangeBox.setAlignment(Pos.BOTTOM_CENTER)
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     titleControl.setEditable(true)
@@ -556,9 +558,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     HBox exchangeBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
-    Button exchangeUpButton = Button.new("↑")
-    Button exchangeDownButton = Button.new("↓")
-    Button removeButton = Button.new("－")
+    Button exchangeUpButton = UnfocusableButton.new("↑")
+    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
     titleControl.setValue(title)
@@ -593,9 +595,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
     Button chooseButton = Button.new("…")
-    Button exchangeUpButton = Button.new("↑")
-    Button exchangeDownButton = Button.new("↓")
-    Button removeButton = Button.new("－")
+    Button exchangeUpButton = UnfocusableButton.new("↑")
+    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
     titleControl.setValue(title)

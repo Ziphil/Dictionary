@@ -15,12 +15,12 @@ public class Controller<T> extends PrimitiveController<UtilityStage<T>> {
 
   @FXML
   protected void commit() {
-    ((UtilityStage<T>)$stage).close(null)
+    ((UtilityStage<T>)$stage).commit(null)
   }
 
   @FXML
   protected void cancel() {
-    ((UtilityStage<T>)$stage).close(null)
+    ((UtilityStage<T>)$stage).cancel()
   }
 
 }

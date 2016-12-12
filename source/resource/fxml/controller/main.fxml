@@ -25,26 +25,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.dictionary.SearchMode?>
 <?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <top>
     <MenuBar>
       <Menu text="ファイル">
         <MenuItem text="辞書の新規作成" onAction="#createDictionary" accelerator="Shortcut+Shift+N">
           <graphic>
-            <ImageView><Image url="@../icon/new_dictionary.png"/></ImageView>
+            <ImageView><Image url="@../../icon/new_dictionary.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O">
           <graphic>
-            <ImageView><Image url="@../icon/open_file.png"/></ImageView>
+            <ImageView><Image url="@../../icon/open_file.png"/></ImageView>
           </graphic>
         </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
@@ -52,14 +53,14 @@
         <SeparatorMenuItem/>
         <MenuItem fx:id="$saveDictionaryItem" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
-            <ImageView><Image url="@../icon/save.png"/></ImageView>
+            <ImageView><Image url="@../../icon/save.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$saveAndRenameDictionaryItem" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">
           <graphic>
-            <ImageView><Image url="@../icon/exit.png"/></ImageView>
+            <ImageView><Image url="@../../icon/exit.png"/></ImageView>
           </graphic>
         </MenuItem>
       </Menu>
@@ -67,7 +68,7 @@
         <Menu text="検索範囲の変更">
           <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W">
             <graphic>
-              <ImageView><Image url="@../icon/empty.png"/></ImageView>
+              <ImageView><Image url="@../../icon/empty.png"/></ImageView>
             </graphic>
           </MenuItem>
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
@@ -76,54 +77,65 @@
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
         <MenuItem text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
           <graphic>
-            <ImageView><Image url="@../icon/shuffle.png"/></ImageView>
+            <ImageView><Image url="@../../icon/shuffle.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <SeparatorMenuItem/>
+        <MenuItem text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
+          <graphic>
+            <ImageView><Image url="@../../icon/previous.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem text="1つ後の検索結果" onAction="#searchNext" accelerator="Shortcut+Y">
+          <graphic>
+            <ImageView><Image url="@../../icon/next.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$searchDetailItem" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
-            <ImageView><Image url="@../icon/detail_search.png"/></ImageView>
+            <ImageView><Image url="@../../icon/detail_search.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$searchScriptItem" text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
           <graphic>
-            <ImageView><Image url="@../icon/script_search.png"/></ImageView>
+            <ImageView><Image url="@../../icon/script_search.png"/></ImageView>
           </graphic>
         </MenuItem>
       </Menu>
       <Menu text="ツール">
         <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
           <graphic>
-            <ImageView><Image url="@../icon/new_word.png"/></ImageView>
+            <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$addInheritedWordItem" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
           <graphic>
-            <ImageView><Image url="@../icon/inherited_word.png"/></ImageView>
+            <ImageView><Image url="@../../icon/inherited_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$modifyWordItem" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
           <graphic>
-            <ImageView><Image url="@../icon/modify_word.png"/></ImageView>
+            <ImageView><Image url="@../../icon/modify_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
           <graphic>
-            <ImageView><Image url="@../icon/remove_word.png"/></ImageView>
+            <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$showIndividualSettingItem" text="辞書の個別設定" onAction="#showIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
           <graphic>
-            <ImageView><Image url="@../icon/setting.png"/></ImageView>
+            <ImageView><Image url="@../../icon/setting.png"/></ImageView>
           </graphic>
         </MenuItem>
       </Menu>
       <Menu text="ヘルプ">
         <MenuItem text="ヘルプ" onAction="#showHelp" accelerator="F1">
           <graphic>
-            <ImageView><Image url="@../icon/help.png"/></ImageView>
+            <ImageView><Image url="@../../icon/help.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
@@ -152,12 +164,12 @@
               <minWidth><Double rpx="70"/></minWidth>
               <items>
                 <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="単語"/>
-                  <String fx:value="訳語"/>
-                  <String fx:value="全文"/>
+                  <SearchMode fx:value="NAME"/>
+                  <SearchMode fx:value="EQUIVALENT"/>
+                  <SearchMode fx:value="CONTENT"/>
                 </FXCollections>
               </items>
-              <value><String fx:value="単語"/></value>
+              <value><SearchMode fx:value="NAME"/></value>
             </ComboBox>
             <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
               <prefWidth><Double rpx="70"/></prefWidth>

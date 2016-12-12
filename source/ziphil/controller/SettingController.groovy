@@ -27,7 +27,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SettingController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/setting.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = -1
@@ -41,6 +41,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private Spinner<Integer> $lineSpacingControl
+  @FXML private Spinner<Integer> $separativeIntervalControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -73,6 +74,7 @@ public class SettingController extends Controller<Boolean> {
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
     Integer lineSpacing = setting.getLineSpacing()
+    Integer separativeInterval = setting.getSeparativeInterval()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
@@ -102,6 +104,7 @@ public class SettingController extends Controller<Boolean> {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
+    $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
@@ -125,6 +128,7 @@ public class SettingController extends Controller<Boolean> {
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
     Integer lineSpacing = $lineSpacingControl.getValue()
+    Integer separativeInterval = $separativeIntervalControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -138,6 +142,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
     setting.setLineSpacing(lineSpacing)
+    setting.setSeparativeInterval(separativeInterval)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
@@ -160,8 +165,9 @@ public class SettingController extends Controller<Boolean> {
     if (currentPath != null) {
       controller.prepare(false, File.new(currentPath).getParentFile(), null)
     }
-    File file = nextStage.showAndWaitResult()
-    if (file != null) {
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      File file = nextStage.getResult()
       $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())
     }
   }
@@ -173,7 +179,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     updateSettings()
-    $stage.close(true)
+    $stage.commit(true)
   }
 
   private void setupRegisteredDictionaryPane() {

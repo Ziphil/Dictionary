@@ -22,8 +22,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <VBox>
@@ -62,7 +62,7 @@
               <maxWidth><Double rpx="150"/></maxWidth>
             </TextField>
           </GridPane>
-          <TitledPane text="訳語">
+          <TitledPane text="訳語" animated="false">
             <VBox alignment="center_right">
               <padding>
                 <Insets>
@@ -79,7 +79,7 @@
               <Button text="＋" onAction="#insertEquivalentControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="タグ">
+          <TitledPane text="タグ" animated="false">
             <VBox alignment="center_right">
               <padding>
                 <Insets>
@@ -96,7 +96,7 @@
               <Button text="＋" onAction="#insertTagControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="内容">
+          <TitledPane text="内容" animated="false">
             <VBox alignment="center_right">
               <padding>
                 <Insets>
@@ -113,7 +113,7 @@
               <Button text="＋" onAction="#insertInformationControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="変化形">
+          <TitledPane text="変化形" animated="false">
             <VBox alignment="center_right">
               <padding>
                 <Insets>
@@ -130,7 +130,7 @@
               <Button text="＋" onAction="#insertVariationControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="関連語">
+          <TitledPane text="関連語" animated="false">
             <VBox alignment="center_right">
               <padding>
                 <Insets>

@@ -8,9 +8,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SimpleWordCell extends ListCell<SlimeWord> {
+public class PlainWordCell extends ListCell<SlimeWord> {
 
-  public SimpleWordCell() {
+  public PlainWordCell() {
     super()
   }
 
@@ -21,12 +21,12 @@ public class SimpleWordCell extends ListCell<SlimeWord> {
       setText(null)
       setGraphic(null)
     } else {
-      if (word.isSimpleChanged()) {
-        word.createSimpleContentPane()
+      if (word.isPlainChanged()) {
+        word.createPlainContentPane()
       }
-      word.getSimpleContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
+      word.getPlainContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
-      setGraphic(word.getSimpleContentPane())
+      setGraphic(word.getPlainContentPane())
     }
   }
 

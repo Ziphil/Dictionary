@@ -25,8 +25,8 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <TabPane styleClass="setting-pane">
@@ -80,11 +80,15 @@
             <CheckBox fx:id="$usesSystemEditorFontFamilyControl" text="システムフォントを用いる"/>
             <CheckBox fx:id="$usesDefaultEditorFontSizeControl" text="デフォルトサイズを用いる"/>
           </HBox>
-          <Spinner fx:id="$lineSpacingControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-            <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
-          </Spinner>
+          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label text="＋ "/>
+            <Spinner fx:id="$lineSpacingControl" editable="true" >
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
+            </Spinner>
+            <Label text=" px"/>
+          </HBox>
           <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="8">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
@@ -96,7 +100,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
+            <Text text="このフォントは単語データの表示に用いられます。&#10;"/>
+            <Text text="フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
             <GridPane.margin>
@@ -114,7 +119,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;指定したピクセル分だけ余分に行間が空きます。"/>
+            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;"/>
+            <Text text="指定したピクセル分だけ余分に行間が空きます。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="9">
             <GridPane.margin>
@@ -122,7 +128,8 @@
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
+            <Text text="句読点や括弧類の周りのスペースを調整します。&#10;"/>
+            <Text text="フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -177,7 +184,8 @@
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
+            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;"/>
+            <Text text="有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>
@@ -253,18 +261,36 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <ToggleButton fx:id="$savesAutomaticallyControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
+          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Spinner fx:id="$separativeIntervalControl" editable="true">
+              <prefWidth><Double rpx="80"/></prefWidth>
+              <minWidth><Double rpx="80"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="5000" initialValue="0" amountToStepBy="50"/></valueFactory>
+            </Spinner>
+            <Label text=" ms"/>
+          </HBox>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
-                <bottom><Double rpx="10"/></bottom>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語データの編集時に自動的に変更を保存します。&#10;"/>
+            <Text text="無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
                 <left><Double rpx="10"/></left>
               </Insets>
             </GridPane.margin>
-            <Text text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+            <Text text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
           </TextFlow>
         </GridPane>
       </Tab>

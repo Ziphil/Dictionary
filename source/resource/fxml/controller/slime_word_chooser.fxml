@@ -14,12 +14,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.dictionary.SearchMode?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <VBox alignment="center">
@@ -40,12 +41,12 @@
           <minWidth><Double rpx="70"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="単語"/>
-              <String fx:value="訳語"/>
-              <String fx:value="全文"/>
+              <SearchMode fx:value="NAME"/>
+              <SearchMode fx:value="EQUIVALENT"/>
+              <SearchMode fx:value="CONTENT"/>
             </FXCollections>
           </items>
-          <value><String fx:value="単語"/></value>
+          <value><SearchMode fx:value="NAME"/></value>
         </ComboBox>
         <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
           <prefWidth><Double rpx="70"/></prefWidth>

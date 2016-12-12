@@ -4,27 +4,22 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.util.Map.Entry
 import groovy.transform.CompileStatic
+import java.util.Map.Entry
+import ziphil.dictionary.DictionarySaver
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionarySaver implements Runnable {
+public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
 
-  private String $path
   private ObjectMapper $mapper
-  private List<SlimeWord> $words
-  private SlimeDictionary $dictionary
 
-  public SlimeDictionarySaver(String path, ObjectMapper mapper, List<SlimeWord> words, SlimeDictionary dictionary) {
-    $path = path
-    $mapper = mapper
-    $words = words
-    $dictionary = dictionary
+  public SlimeDictionarySaver(SlimeDictionary dictionary, String path) {
+    super(dictionary, path)
   }
 
-  public void run() {
+  protected Boolean call() {
     if ($path != null) {
       FileOutputStream stream = FileOutputStream.new($path)
       JsonFactory factory = $mapper.getFactory()
@@ -33,7 +28,7 @@ public class SlimeDictionarySaver implements Runnable {
       generator.writeStartObject()
       generator.writeFieldName("words")
       generator.writeStartArray()
-      for (SlimeWord word : $words) {
+      for (SlimeWord word : $dictionary.getRawWords()) {
         writeWord(generator, word)
       }
       generator.writeEndArray()
@@ -43,6 +38,8 @@ public class SlimeDictionarySaver implements Runnable {
       writeAlphabetOrder(generator)
       generator.writeFieldName("plainInformationTitles")
       writePlainInformationTitles(generator)
+      generator.writeFieldName("informationTitleOrder")
+      writeInformationTitleOrder(generator)
       generator.writeFieldName("defaultWord")
       writeDefaultWord(generator)
       generator.writeEndObject()
@@ -56,6 +53,7 @@ public class SlimeDictionarySaver implements Runnable {
       generator.close()
       stream.close()
     }
+    return true
   }
 
   private void writeWord(JsonGenerator generator, SlimeWord word) {
@@ -155,8 +153,24 @@ public class SlimeDictionarySaver implements Runnable {
     generator.writeEndArray()
   }
 
+  private void writeInformationTitleOrder(JsonGenerator generator) {
+    if ($dictionary.getInformationTitleOrder() != null) {
+      generator.writeStartArray()
+      for (String title : $dictionary.getInformationTitleOrder()) {
+        generator.writeString(title)
+      }
+      generator.writeEndArray()
+    } else {
+      generator.writeNull()
+    }
+  }
+
   private void writeDefaultWord(JsonGenerator generator) {
     writeWord(generator, $dictionary.getDefaultWord())
+  }
+
+  public void setMapper(ObjectMapper mapper) {
+    $mapper = mapper
   }
 
 }

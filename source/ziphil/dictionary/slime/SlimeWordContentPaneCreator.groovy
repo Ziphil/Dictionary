@@ -42,12 +42,13 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       String equivalentString = equivalent.getNames().join(", ")
       addEquivalentNode(equivalent.getTitle(), equivalentString)
     }
-    for (SlimeInformation information : $word.getInformations()) {
+    List<SlimeInformation> sortedInformations = calculateSortedInformations()
+    for (SlimeInformation information : sortedInformations) {
       addInformationNode(information.getTitle(), information.getText())
       hasInformation = true
     }
-    Map<String, List<SlimeRelation>> groupedRelation = $word.getRelations().groupBy{relation -> relation.getTitle()}
-    for (Entry<String, List<SlimeRelation>> entry : groupedRelation) {
+    Map<String, List<SlimeRelation>> groupedRelations = $word.getRelations().groupBy{relation -> relation.getTitle()}
+    for (Entry<String, List<SlimeRelation>> entry : groupedRelations) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
       List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
@@ -56,6 +57,33 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
       hasRelation = true
     }
     modifyBreak()
+  }
+
+  private List<SlimeInformation> calculateSortedInformations() {
+    if ($dictionary.getInformationTitleOrder() != null) {
+      List<SlimeInformation> sortedInformations = $word.getInformations().toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
+        String firstTitle = firstInformation.getTitle()
+        String secondTitle = secondInformation.getTitle()
+        Integer firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
+        Integer secondIndex = $dictionary.getInformationTitleOrder().indexOf(secondTitle)
+        if (firstIndex == -1) {
+          if (secondIndex == -1) {
+            return 0
+          } else {
+            return -1
+          }
+        } else {
+          if (secondIndex == -1) {
+            return 1
+          } else {
+            return firstIndex <=> secondIndex
+          }
+        }
+      }
+      return sortedInformations
+    } else {
+      return $word.getInformations()
+    }
   }
 
   private void addNameNode(String name) {

@@ -4,10 +4,12 @@ import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ListSelectionView
+import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.slime.SlimeDictionary
@@ -18,14 +20,15 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeIndividualSettingController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/slime_individual_setting.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/slime_individual_setting.fxml"
   private static final String TITLE = "個別設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
 
   @FXML private TextField $alphabetOrderControl
   @FXML private ListSelectionView<String> $plainInformationTitlesView
-  private SlimeWord $defaultWord
+  @FXML private PermutableListView<String> $informationTitleOrderView
+  @FXML private CheckBox $usesIndividualOrderControl
   private SlimeDictionary $dictionary
 
   public SlimeIndividualSettingController(UtilityStage<Boolean> stage) {
@@ -33,30 +36,34 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
+  @FXML
+  private void initialize() {
+    bindInformationTitleOrderViewProperty()
+  }
+
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    applySettings()
-  }
-
-  private void applySettings() {
-    String alphabetOrder = $dictionary.getAlphabetOrder()
-    List<String> registeredInformationTitles = $dictionary.getRegisteredInformationTitles()
-    SlimeWord defaultWord = $dictionary.getDefaultWord()
-    ObservableList<String> plainInformationTitles = FXCollections.observableArrayList(registeredInformationTitles.intersect($dictionary.getPlainInformationTitles()))
-    ObservableList<String> normalInformationTitles = FXCollections.observableArrayList(registeredInformationTitles.minus($dictionary.getPlainInformationTitles()))
-    $alphabetOrderControl.setText(alphabetOrder)
+    List<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
+    List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
+    List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
+    List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
+    $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $plainInformationTitlesView.setSources(normalInformationTitles)
     $plainInformationTitlesView.setTargets(plainInformationTitles)
-    $defaultWord = defaultWord
+    $informationTitleOrderView.setItems(informationTitleOrder)
+    if (dictionary.getInformationTitleOrder() == null) {
+      $usesIndividualOrderControl.setSelected(true)
+    }
   }
 
-  private void saveSettings() {
-    String alphabetOrder = $alphabetOrderControl.getText()
+  @FXML
+  protected void commit() {
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
-    SlimeWord defaultWord = $defaultWord
-    $dictionary.setAlphabetOrder(alphabetOrder)
-    $dictionary.setPlainInformationTitles(plainInformationTitles)
-    $dictionary.setDefaultWord(defaultWord)
+    Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
+    List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
+    String alphabetOrder = $alphabetOrderControl.getText()
+    $dictionary.update(alphabetOrder, plainInformationTitles, informationTitleOrder)
+    $stage.commit(true)
   }
 
   @FXML
@@ -65,14 +72,12 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.WINDOW_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($defaultWord, $dictionary, false, false)
+    controller.prepare($dictionary.getDefaultWord(), $dictionary, false, false)
     nextStage.showAndWait()
   }
 
-  @FXML
-  protected void commit() {
-    saveSettings()
-    $stage.close(true)
+  private void bindInformationTitleOrderViewProperty() {
+    $informationTitleOrderView.disableProperty().bind($usesIndividualOrderControl.selectedProperty())
   }
 
 }

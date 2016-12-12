@@ -8,7 +8,7 @@ import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
+import ziphil.custom.SimpleTask
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
@@ -21,18 +21,18 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private SlimeDictionaryLoader $loader
-  private Integer $validMinId
-  private List<String> $registeredTags
-  private List<String> $registeredEquivalentTitles
-  private List<String> $registeredInformationTitles
-  private List<String> $registeredVariationTitles
-  private List<String> $registeredRelationTitles
-  private String $alphabetOrder
-  private List<String> $plainInformationTitles
-  private SlimeWord $defaultWord
+  private Integer $validMinId = -1
+  private List<String> $registeredTags = ArrayList.new()
+  private List<String> $registeredEquivalentTitles = ArrayList.new()
+  private List<String> $registeredInformationTitles = ArrayList.new()
+  private List<String> $registeredVariationTitles = ArrayList.new()
+  private List<String> $registeredRelationTitles = ArrayList.new()
+  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
+  private List<String> $plainInformationTitles = ArrayList.new()
+  private List<String> $informationTitleOrder = null
+  private SlimeWord $defaultWord = SlimeWord.new()
+  private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
-  private Map<String, TreeNode> $externalData
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -160,7 +160,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
     newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
-    addRegisteredTitles(newWord)
+    updateOthersBackground()
     $isChanged = true
   }
 
@@ -170,8 +170,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
     word.setDictionary(this)
     word.createComparisonString($alphabetOrder)
-    addRegisteredTitles(word)
     $words.add(word)
+    updateOthersBackground()
     $isChanged = true
   }
 
@@ -183,41 +183,100 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
     }
     $words.remove(word)
+    updateOthersBackground()
     $isChanged = true
   }
 
-  private void addRegisteredTitles(SlimeWord word) {
-    if (word.getId() >= $validMinId) {
-      $validMinId = word.getId() + 1
+  public void update(String alphabetOrder, List<String> plainInformationTitles, List<String> informationTitleOrder) {
+    $alphabetOrder = alphabetOrder
+    $plainInformationTitles = plainInformationTitles
+    $informationTitleOrder = informationTitleOrder
+    $isChanged = true
+  }
+
+  public void updateOthers() {
+    updateRegisteredTitles()
+    updatePlainInformationTitles()
+    updateInformationTitleOrder()
+  }
+
+  public void updateOthersBackground() {
+    Task<Void> task = SimpleTask.new() {
+      updateOthers()
     }
-    for (String tag : word.getTags()) {
-      if (!$registeredTags.contains(tag)) {
-        $registeredTags.addAll(tag)
+    Thread thread = Thread.new(task)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
+  private void updateRegisteredTitles() {
+    $validMinId = -1
+    $registeredTags.clear()
+    $registeredEquivalentTitles.clear()
+    $registeredInformationTitles.clear()
+    $registeredVariationTitles.clear()
+    $registeredRelationTitles.clear()
+    for (SlimeWord word : $words) {
+      if (word.getId() >= $validMinId) {
+        $validMinId = word.getId()
+      }
+      for (String tag : word.getTags()) {
+        if (!$registeredTags.contains(tag)) {
+          $registeredTags.addAll(tag)
+        }
+      }
+      for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
+        String title = equivalent.getTitle()
+        if (!$registeredEquivalentTitles.contains(title)) {
+          $registeredEquivalentTitles.add(title)
+        }
+      }
+      for (SlimeInformation information : word.getInformations()) {
+        String title = information.getTitle()
+        if (!$registeredInformationTitles.contains(title)) {
+          $registeredInformationTitles.add(title)
+        }
+      }
+      for (SlimeVariation variation : word.getVariations()) {
+        String title = variation.getTitle()
+        if (!$registeredVariationTitles.contains(title)) {
+          $registeredVariationTitles.add(title)
+        }
+      }
+      for (SlimeRelation relation : word.getRelations()) {
+        String title = relation.getTitle()
+        if (!$registeredRelationTitles.contains(title)) {
+          $registeredRelationTitles.add(title)
+        }
       }
     }
-    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
-      String title = equivalent.getTitle()
-      if (!$registeredEquivalentTitles.contains(title)) {
-        $registeredEquivalentTitles.add(title)
+    $validMinId ++
+  }
+
+  private void updatePlainInformationTitles() {
+    List<String> newPlainInformationTitles = ArrayList.new()
+    for (String title : $registeredInformationTitles) {
+      if ($plainInformationTitles.contains(title)) {
+        newPlainInformationTitles.add(title)
       }
     }
-    for (SlimeInformation information : word.getInformations()) {
-      String title = information.getTitle()
-      if (!$registeredInformationTitles.contains(title)) {
-        $registeredInformationTitles.add(title)
+    $plainInformationTitles = newPlainInformationTitles
+  }
+
+  private void updateInformationTitleOrder() {
+    if ($informationTitleOrder != null) {
+      List<String> newInformationTitleOrder = ArrayList.new()
+      for (String title : $informationTitleOrder) {
+        if ($registeredInformationTitles.contains(title)) {
+          newInformationTitleOrder.add(title)
+        }
       }
-    }
-    for (SlimeVariation variation : word.getVariations()) {
-      String title = variation.getTitle()
-      if (!$registeredVariationTitles.contains(title)) {
-        $registeredVariationTitles.add(title)
+      for (String title : $registeredInformationTitles) {
+        if (!newInformationTitleOrder.contains(title)) {
+          newInformationTitleOrder.add(title)
+        }
       }
-    }
-    for (SlimeRelation relation : word.getRelations()) {
-      String title = relation.getTitle()
-      if (!$registeredRelationTitles.contains(title)) {
-        $registeredRelationTitles.add(title)
-      }
+      $informationTitleOrder = newInformationTitleOrder
     }
   }
 
@@ -264,32 +323,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     return $words.any{word -> word != excludedWord && word.getId() == id}
   }
 
-  private void load() {
-    $loader = SlimeDictionaryLoader.new($path, $$mapper, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $validMinId = $loader.getValidMinId()
-      $registeredTags = $loader.getRegisteredTags()
-      $registeredEquivalentTitles = $loader.getRegisteredEquivalentTitles()
-      $registeredInformationTitles = $loader.getRegisteredInformationTitles()
-      $registeredVariationTitles = $loader.getRegisteredVariationTitles()
-      $registeredRelationTitles = $loader.getRegisteredRelationTitles()
-      $alphabetOrder = $loader.getAlphabetOrder()
-      $plainInformationTitles = $loader.getPlainInformationTitles()
-      $defaultWord = $loader.getDefaultWord()
-      $externalData = $loader.getExternalData()
-      $words.addAll($loader.getValue())
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
-  public void save() {
-    Runnable saver = SlimeDictionarySaver.new($path, $$mapper, $words, this)
-    saver.run()
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Integer firstId = firstWord.getId()
@@ -309,6 +342,18 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     SlimeSuggestion suggestion = SlimeSuggestion.new()
     suggestion.setDictionary(this)
     $suggestions.add(suggestion)
+  }
+
+  protected Task<?> createLoader() {
+    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
+    loader.setMapper($$mapper)
+    return loader
+  }
+
+  protected Task<?> createSaver() {
+    SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
+    saver.setMapper($$mapper)
+    return saver
   }
 
   private static ObjectMapper createObjectMapper() {
@@ -347,7 +392,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
-    $isChanged = true
   }
 
   public List<String> getPlainInformationTitles() {
@@ -356,7 +400,14 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setPlainInformationTitles(List<String> plainInformationTitles) {
     $plainInformationTitles = plainInformationTitles
-    $isChanged = true
+  }
+
+  public List<String> getInformationTitleOrder() {
+    return $informationTitleOrder
+  }
+
+  public void setInformationTitleOrder(List<String> informationTitleOrder) {
+    $informationTitleOrder = informationTitleOrder
   }
 
   public SlimeWord getDefaultWord() {
@@ -365,7 +416,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setDefaultWord(SlimeWord defaultWord) {
     $defaultWord = defaultWord
-    $isChanged = true
   }
 
   public Map<String, TreeNode> getExternalData() {
@@ -378,10 +428,6 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-  }
-
-  public Task<?> getLoader() {
-    return $loader
   }
 
 }

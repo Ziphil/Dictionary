@@ -14,11 +14,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class HelpController extends Controller<Void> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/help.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/help.fxml"
   private static final String BASIC_EDIT_HTML_PATH = "resource/help/basic_edit.html"
   private static final String BASIC_SEARCH_HTML_PATH = "resource/help/basic_search.html"
   private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"
   private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
+  private static final String OTHER_HTML_PATH = "resource/help/other.html"
   private static final String DICTIONARY_TYPE_HTML_PATH = "resource/help/dictionary_type.html"
   private static final String TITLE = "ヘルプ"
   private static final Double DEFAULT_WIDTH = 640
@@ -47,6 +48,8 @@ public class HelpController extends Controller<Void> {
       url = getClass().getClassLoader().getResource(SLIME_EDIT_HTML_PATH).toExternalForm()
     } else if (section == "ショートカットキー") {
       url = getClass().getClassLoader().getResource(SHORTCUT_HTML_PATH).toExternalForm()
+    } else if (section == "その他") {
+      url = getClass().getClassLoader().getResource(OTHER_HTML_PATH).toExternalForm()
     } else if (section == "各形式について") {
       url = getClass().getClassLoader().getResource(DICTIONARY_TYPE_HTML_PATH).toExternalForm()
     }

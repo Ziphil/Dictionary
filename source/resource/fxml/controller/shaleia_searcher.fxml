@@ -21,8 +21,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
-    <URL value="@../css/main.css"/>
-    <URL value="@../css/modification.css"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
     <GridPane>
@@ -40,16 +40,10 @@
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
-      <Label text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-      <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-      <TextField fx:id="$idControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <prefWidth><Double rpx="70"/></prefWidth>
-        <maxWidth><Double rpx="70"/></maxWidth>
-      </TextField>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$nameSearchTypeControl">
@@ -65,16 +59,12 @@
               <String fx:value="最小対語"/>
             </FXCollections>
           </items>
-          <value><String fx:value="完全一致"/></value>
+          <value><String fx:value="最小対語"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
         <spacing><Double rpx="5"/></spacing>
-        <ComboBox fx:id="$equivalentTitleControl" editable="true">
-          <prefWidth><Double rpx="120"/></prefWidth>
-          <minWidth><Double rpx="120"/></minWidth>
-        </ComboBox>
-        <TextField fx:id="$equivalentNameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$equivalentControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$equivalentSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -90,14 +80,10 @@
           <value><String fx:value="完全一致"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
-        <ComboBox fx:id="$informationTitleControl" editable="true">
-          <prefWidth><Double rpx="120"/></prefWidth>
-          <minWidth><Double rpx="120"/></minWidth>
-        </ComboBox>
-        <TextField fx:id="$informationTextControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ComboBox fx:id="$informationSearchTypeControl">
+        <TextField fx:id="$dataControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$dataSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
           <items>
@@ -109,10 +95,6 @@
           <value><String fx:value="部分一致"/></value>
         </ComboBox>
       </HBox>
-      <ComboBox fx:id="$tagControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <prefWidth><Double rpx="120"/></prefWidth>
-        <minWidth><Double rpx="120"/></minWidth>
-      </ComboBox>
     </GridPane>
   </center>
   <bottom>

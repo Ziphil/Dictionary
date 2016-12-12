@@ -2,7 +2,6 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
@@ -10,8 +9,6 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
-
-  private PersonalDictionaryLoader $loader
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -58,43 +55,20 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     return copiedWord(oldWord)
   }
 
-  private void load() {
-    $loader = PersonalDictionaryLoader.new($path)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $words.addAll($loader.getValue())
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
-  public void save() {
-    if ($path != null) {
-      File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
-      for (PersonalWord word : $words) {
-        output.append("\"").append(word.getName()).append("\",")
-        output.append("\"").append(word.getTranslation()).append("\",")
-        output.append("\"").append(word.getUsage()).append("\",")
-        output.append(word.getLevel().toString()).append(",")
-        output.append(word.getMemory().toString()).append(",")
-        output.append(word.getModification().toString()).append(",")
-        output.append("\"").append(word.getPronunciation()).append("\"\n")
-      }
-      file.setText(output.toString(), "UTF-8")
-    }
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
   }
 
-  public Task<?> getLoader() {
-    return $loader
+  protected Task<?> createLoader() {
+    PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
+    return loader
+  }
+
+  protected Task<?> createSaver() {
+    PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
+    return saver
   }
 
 }

@@ -9,7 +9,6 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.Suggestion
@@ -21,9 +20,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
 
-  private ShaleiaDictionaryLoader $loader
-  private String $alphabetOrder
-  private String $changeData
+  private String $alphabetOrder = ""
+  private String $changeData = ""
   private Map<String, List<String>> $changes = HashMap.new()
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
@@ -221,6 +219,18 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $isChanged = true
   }
 
+  public void update(String alphabetOrder, String changeData) {
+    $alphabetOrder = alphabetOrder
+    $changeData = changeData
+    $isChanged = true
+    createChanges()
+  }
+
+  public void updateOthers() {
+    createChanges()
+    calculateSystemWordSize()
+  }
+
   private void createChanges() {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
@@ -270,38 +280,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return newWord
   }
 
-  private void load() {
-    $loader = ShaleiaDictionaryLoader.new($path, this)
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $changeData = $loader.getChangeData()
-      $alphabetOrder = $loader.getAlphabetOrder()
-      $words.addAll($loader.getValue())
-      createChanges()
-      calculateSystemWordSize()
-    }
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
-  public void save() {
-    if ($path != null) {
-      File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      $words.sort($sortedWords.getComparator())
-      for (ShaleiaWord word : $words) {
-        output.append("* ").append(word.getUniqueName()).append("\n")
-        output.append(word.getData().trim()).append("\n\n")
-      }
-      output.append("* META-ALPHABET-ORDER\n\n")
-      output.append("- ").append($alphabetOrder).append("\n\n")
-      output.append("* META-CHANGE\n\n")
-      output.append($changeData.trim()).append("\n\n")
-      file.setText(output.toString(), "UTF-8")
-    }
-    $isChanged = false
-  }
-
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()
@@ -320,13 +298,23 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     return $words.size() - $systemWordSize
   }
 
+  protected Task<?> createLoader() {
+    ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
+    return loader
+  }
+
+  protected Task<?> createSaver() {
+    ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
+    saver.setComparator($sortedWords.getComparator())
+    return saver
+  }
+
   public String getAlphabetOrder() {
     return $alphabetOrder
   }
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
-    $isChanged = true
   }
 
   public String getChangeData() {
@@ -335,8 +323,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public void setChangeData(String changeData) {
     $changeData = changeData
-    $isChanged = true
-    createChanges()
   }
 
   public Consumer<String> getOnLinkClicked() {
@@ -345,10 +331,6 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public void setOnLinkClicked(Consumer<String> onLinkClicked) {
     $onLinkClicked = onLinkClicked
-  }
-
-  public Task<?> getLoader() {
-    return $loader
   }
 
 }
