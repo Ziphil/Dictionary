@@ -192,6 +192,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   public void updateMinimum() {
+    updateComparisonString()
     $isChanged = true
   }
 
@@ -272,6 +273,12 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         }
       }
       $informationTitleOrder = newInformationTitleOrder
+    }
+  }
+
+  private void updateComparisonString() {
+    for (SlimeWord word : $words) {
+      word.createComparisonString($alphabetOrder)
     }
   }
 
