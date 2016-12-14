@@ -45,11 +45,6 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     return $words
   }
 
-  protected void update() {
-    $dictionary.getRawWords().addAll($words)
-    $dictionary.updateOthers()
-  }
-
   private void add(String currentName, StringBuilder currentData) {
     if (currentName != null) {
       if (currentName == "META-ALPHABET-ORDER") {
@@ -63,8 +58,11 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
   }
 
   private void addWord(String currentName, StringBuilder currentData) {
-    ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+    ShaleiaWord word = ShaleiaWord.new()
+    word.setUniqueName(currentName)
+    word.setData(currentData.toString())
     word.setDictionary($dictionary)
+    word.update()
     $words.add(word)
   }
 

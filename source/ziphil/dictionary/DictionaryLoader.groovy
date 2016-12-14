@@ -25,6 +25,7 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
 
   protected void update() {
     $dictionary.getRawWords().addAll($words)
+    $dictionary.update()
   }
 
   private void setupEventHandler() {

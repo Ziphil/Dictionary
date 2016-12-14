@@ -17,6 +17,8 @@ public abstract class Word {
 
   public abstract void createContentPane()
 
+  public abstract void update()
+
   public void change() {
     $isChanged = true
   }
@@ -25,12 +27,24 @@ public abstract class Word {
     return $name
   }
 
+  public void setName(String name) {
+    $name = name
+  }
+
   public List<String> getEquivalents() {
     return $equivalents
   }
 
+  public void setEquivalents(List<String> equivalents) {
+    $equivalents = equivalents
+  }
+
   public String getContent() {
     return $content
+  }
+
+  public void setContent(String content) {
+    $content = content
   }
 
   public Pane getContentPane() {

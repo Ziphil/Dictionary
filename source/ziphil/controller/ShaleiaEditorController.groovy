@@ -50,9 +50,9 @@ public class ShaleiaEditorController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
-    String name = $nameControl.getText()
-    String data = $dataControl.getText()
-    $word.update(name, data)
+    $word.setUniqueName($nameControl.getText())
+    $word.setData($dataControl.getText())
+    $word.update()
     $stage.commit(true)
   }
 

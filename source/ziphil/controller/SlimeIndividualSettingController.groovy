@@ -58,11 +58,14 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
+    String alphabetOrder = $alphabetOrderControl.getText()
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
-    String alphabetOrder = $alphabetOrderControl.getText()
-    $dictionary.update(alphabetOrder, plainInformationTitles, informationTitleOrder)
+    $dictionary.setAlphabetOrder(alphabetOrder)
+    $dictionary.setPlainInformationTitles(plainInformationTitles)
+    $dictionary.setInformationTitleOrder(informationTitleOrder)
+    $dictionary.updateMinimum()
     $stage.commit(true)
   }
 

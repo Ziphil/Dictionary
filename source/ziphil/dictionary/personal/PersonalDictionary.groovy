@@ -31,23 +31,31 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
     $isChanged = true
   }
 
+  public void update() {
+    $isChanged = true
+  }
+
+  public void updateMinimum() {
+    $isChanged = true
+  }
+
   public PersonalWord emptyWord(String defaultName) {
-    if (defaultName != null) {
-      return PersonalWord.new(defaultName, "", "", "", 0, 0, 0)
-    } else {
-      return PersonalWord.new("", "", "", "", 0, 0, 0)
-    }
+    PersonalWord word = PersonalWord.new()
+    word.setName(defaultName ?: "")
+    word.update()
+    return word
   }
 
   public PersonalWord copiedWord(PersonalWord oldWord) {
-    String name = oldWord.getName()
-    String pronunciation = oldWord.getPronunciation()
-    String translation = oldWord.getTranslation()
-    String usage = oldWord.getUsage()
-    Integer level = oldWord.getLevel()
-    Integer memory = oldWord.getMemory()
-    Integer modification = oldWord.getModification()
-    PersonalWord newWord = PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+    PersonalWord newWord = PersonalWord.new()
+    newWord.setName(oldWord.getName())
+    newWord.setPronunciation(oldWord.getPronunciation())
+    newWord.setTranslation(oldWord.getTranslation())
+    newWord.setUsage(oldWord.getUsage())
+    newWord.setLevel(oldWord.getLevel())
+    newWord.setMemory(oldWord.getMemory())
+    newWord.setModification(oldWord.getModification())
+    newWord.update()
     return newWord
   }
 

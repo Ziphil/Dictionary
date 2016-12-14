@@ -15,20 +15,18 @@ public class ShaleiaWord extends Word {
   private String $comparisonString = ""
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaWord(String uniqueName, String data) {
-    update(uniqueName, data)
-  }
-
-  public void update(String uniqueName, String data) {
-    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
-    $uniqueName = uniqueName
-    $data = data
-    $content = uniqueName + "\n" + data
-    $isChanged = true
+  public void update() {
+    updateName()
     updateEquivalents()
+    updateContent()
+    $isChanged = true
   }
 
-  public void updateEquivalents() {
+  private void updateName() {
+    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
+  }
+
+  private void updateEquivalents() {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
     String line
     $equivalents.clear()
@@ -41,6 +39,10 @@ public class ShaleiaWord extends Word {
       }
     }
     reader.close()
+  }
+
+  private void updateContent() {
+    $content = uniqueName + "\n" + data
   }
 
   public void createContentPane() {
@@ -83,8 +85,16 @@ public class ShaleiaWord extends Word {
     return $uniqueName
   }
 
+  public void setUniqueName(String uniqueName) {
+    $uniqueName = uniqueName
+  }
+
   public String getData() {
     return $data
+  }
+
+  public void setData(String data) {
+    $data = data
   }
 
   public String getComparisonString() {

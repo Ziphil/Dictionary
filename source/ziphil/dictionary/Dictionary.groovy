@@ -194,6 +194,8 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $isChanged = true
   }
 
+  public abstract void update()
+
   public abstract W emptyWord(String defaultName)
 
   public abstract W copiedWord(W oldWord)

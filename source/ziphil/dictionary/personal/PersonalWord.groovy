@@ -17,20 +17,13 @@ public class PersonalWord extends Word {
   private Integer $memory = 0
   private Integer $modification = 0
 
-  public PersonalWord(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
-    update(name, pronunciation, translation, usage, level, memory, modification)
+  public void update() {
+    updateContent()
+    $isChanged = true
   }
 
-  public void update(String name, String pronunciation, String translation, String usage, Integer level, Integer memory, Integer modification) {
-    $name = name
-    $pronunciation = pronunciation
-    $translation = translation
-    $usage = usage
-    $level = level
-    $memory = memory
-    $modification = modification
+  private void updateContent() {
     $content = name + "\n" + translation + "\n" + usage
-    $isChanged = true
   }
 
   public void createContentPane() {
@@ -56,24 +49,48 @@ public class PersonalWord extends Word {
     return $pronunciation
   }
 
+  public void setPronunciation(String pronunciation) {
+    $pronunciation = pronunciation
+  }
+
   public String getTranslation() {
     return $translation
+  }
+
+  public void setTranslation(String translation) {
+    $translation = translation
   }
 
   public String getUsage() {
     return $usage
   }
 
+  public void setUsage(String usage) {
+    $usage = usage
+  }
+
   public Integer getLevel() {
     return $level
+  }
+
+  public void setLevel(Integer level) {
+    $level = level
   }
 
   public Integer getMemory() {
     return $memory
   }
 
+  public void setMemory(Integer memory) {
+    $memory = memory
+  }
+
   public Integer getModification() {
     return $modification
+  }
+
+  public void setModification(Integer modification) {
+    $modification = modification
   }
 
 }

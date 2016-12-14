@@ -11,10 +11,6 @@ public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
 
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaSuggestion() {
-    update()
-  }
-
   public void update() {
     $isChanged = true
   }

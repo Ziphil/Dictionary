@@ -22,31 +22,11 @@ public class SlimeWord extends Word {
   private TextFlow $plainContentPane = TextFlow.new()
   private Boolean $isPlainChanged = true
 
-  public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
-                   List<SlimeRelation> relations) {
-    update(id, name, rawEquivalents, tags, informations, variations, relations)
-  }
-
-  public SlimeWord() {
-  }
-
-  public void update(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
-                     List<SlimeRelation> relations) {
-    $id = id
-    $name = name
-    $rawEquivalents = rawEquivalents
-    $tags = tags
-    $informations = informations
-    $variations = variations
-    $relations = relations
-    $isChanged = true
-    $isPlainChanged = true
-    updateOthers()
-  }
-
-  public void updateOthers() {
+  public void update() {
     updateEquivalents()
     updateContent()
+    $isChanged = true
+    $isPlainChanged = true
   }
 
   private void updateEquivalents() {

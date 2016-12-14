@@ -11,10 +11,6 @@ public class SlimeSuggestion extends Suggestion<SlimePossibility> {
 
   private SlimeDictionary $dictionary
 
-  public SlimeSuggestion() {
-    update()
-  }
-
   public void update() {
     $isChanged = true
   }

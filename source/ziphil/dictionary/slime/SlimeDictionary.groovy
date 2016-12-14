@@ -160,8 +160,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     }
     newWord.createComparisonString($alphabetOrder)
     newWord.createContentPane()
-    updateOthersBackground()
-    $isChanged = true
+    updateOnBackground()
   }
 
   public void addWord(SlimeWord word) {
@@ -171,8 +170,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
     word.setDictionary(this)
     word.createComparisonString($alphabetOrder)
     $words.add(word)
-    updateOthersBackground()
-    $isChanged = true
+    updateOnBackground()
   }
 
   public void removeWord(SlimeWord word) {
@@ -183,26 +181,23 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       }
     }
     $words.remove(word)
-    updateOthersBackground()
-    $isChanged = true
+    updateOnBackground()
   }
 
-  public void update(String alphabetOrder, List<String> plainInformationTitles, List<String> informationTitleOrder) {
-    $alphabetOrder = alphabetOrder
-    $plainInformationTitles = plainInformationTitles
-    $informationTitleOrder = informationTitleOrder
-    $isChanged = true
-  }
-
-  public void updateOthers() {
+  public void update() {
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
+    $isChanged = true
   }
 
-  public void updateOthersBackground() {
+  public void updateMinimum() {
+    $isChanged = true
+  }
+
+  private void updateOnBackground() {
     Task<Void> task = SimpleTask.new() {
-      updateOthers()
+      update()
     }
     Thread thread = Thread.new(task)
     thread.setDaemon(true)
@@ -281,35 +276,36 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
   }
 
   public SlimeWord emptyWord(String defaultName) {
-    SlimeWord word = copiedWord($defaultWord)
+    SlimeWord word = copiedWordBase($defaultWord, false)
     word.setId($validMinId)
-    if (defaultName != null) {
-      word.setName(defaultName)
-    }
+    word.setName(defaultName ?: "")
+    word.update()
     return word
   }
 
-  public SlimeWord copiedWord(SlimeWord oldWord) {
-    Integer id = oldWord.getId()
-    String name = oldWord.getName()
-    List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
-    List<String> tags = oldWord.getTags()
-    List<SlimeInformation> informations = oldWord.getInformations()
-    List<SlimeVariation> variations = oldWord.getVariations()
-    List<SlimeRelation> relations = oldWord.getRelations()
-    SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
+  private SlimeWord copiedWordBase(SlimeWord oldWord, Boolean updates) {
+    SlimeWord newWord = SlimeWord.new()
+    newWord.setId(oldWord.getId())
+    newWord.setName(oldWord.getName())
+    newWord.setRawEquivalents(oldWord.getRawEquivalents())
+    newWord.setTags(oldWord.getTags())
+    newWord.setInformations(oldWord.getInformations())
+    newWord.setVariations(oldWord.getVariations())
+    newWord.setRelations(oldWord.getRelations())
+    if (updates) {
+      newWord.update()
+    }
     return newWord
   }
 
+  public SlimeWord copiedWord(SlimeWord oldWord) {
+    return copiedWordBase(oldWord, true)
+  }
+
   public SlimeWord inheritedWord(SlimeWord oldWord) {
-    Integer id = $validMinId
-    String name = oldWord.getName()
-    List<SlimeEquivalent> rawEquivalents = oldWord.getRawEquivalents()
-    List<String> tags = oldWord.getTags()
-    List<SlimeInformation> informations = oldWord.getInformations()
-    List<SlimeVariation> variations = oldWord.getVariations()
-    List<SlimeRelation> relations = oldWord.getRelations()
-    SlimeWord newWord = SlimeWord.new(id, name, rawEquivalents, tags, informations, variations, relations)
+    SlimeWord newWord = copiedWordBase(oldWord, false)
+    newWord.setId($validMinId)
+    newWord.update()
     return newWord
   }
 
@@ -420,6 +416,10 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   public Map<String, TreeNode> getExternalData() {
     return $externalData
+  }
+
+  public void setExternalData(Map<String, TreeNode> externalData) {
+    $externalData = externalData
   }
 
   public Consumer<Integer> getOnLinkClicked() {

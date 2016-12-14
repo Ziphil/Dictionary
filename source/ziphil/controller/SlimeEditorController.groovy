@@ -188,7 +188,14 @@ public class SlimeEditorController extends Controller<Boolean> {
             relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
           }
         }
-        $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
+        $word.setId(id)
+        $word.setName(name)
+        $word.setRawEquivalents(rawEquivalents)
+        $word.setTags(tags)
+        $word.setInformations(informations)
+        $word.setVariations(variations)
+        $word.setRelations(relations)
+        $word.update()
         $stage.commit(true)
       } else {
         Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
