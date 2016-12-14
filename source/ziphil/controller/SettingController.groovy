@@ -45,6 +45,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
+  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomaticallyControl
   @FXML private ToggleButton $ignoresAccentControl
   @FXML private ToggleButton $ignoresCaseControl
@@ -83,6 +84,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
     Boolean showsSlimeId = setting.getShowsSlimeId() == true
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
+    List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
       $contentFontFamilyControl.getSelectionModel().select(contentFontFamily)
     } else {
@@ -114,6 +116,7 @@ public class SettingController extends Controller<Boolean> {
     $showsSlimeIdControl.setSelected(showsSlimeId)
     for (Integer i : 0 ..< 10) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
+      $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
     }
   }
 
@@ -136,7 +139,8 @@ public class SettingController extends Controller<Boolean> {
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
-    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
+    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{control -> control.getText()}
+    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{control -> control.getText()}
     setting.setContentFontFamily(contentFontFamily)
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)
@@ -152,7 +156,9 @@ public class SettingController extends Controller<Boolean> {
     setting.setShowsSlimeId(showsSlimeId)
     for (Integer i : 0 ..< 10) {
       String path = registeredDictionaryPaths[i]
+      String name = registeredDictionaryNames[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
+      setting.getRegisteredDictionaryNames()[i] = (name != "") ? name : null
     }
   }
 
@@ -174,6 +180,7 @@ public class SettingController extends Controller<Boolean> {
 
   private void deregisterDictionary(Integer i) {
     $registeredDictionaryPathControls[i].setText("")
+    $registeredDictionaryNameControls[i].setText("")
   }
 
   @FXML
@@ -189,9 +196,12 @@ public class SettingController extends Controller<Boolean> {
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
       TextField dictionaryPathControl = TextField.new()
+      TextField dictionaryNameControl = TextField.new()
       Button browseButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
       dictionaryPathControl.getStyleClass().add("left-pill")
+      dictionaryNameControl.setPrefWidth(Measurement.rpx(150))
+      dictionaryNameControl.setMinWidth(Measurement.rpx(150))
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
@@ -203,9 +213,10 @@ public class SettingController extends Controller<Boolean> {
       }
       innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
       innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
-      box.getChildren().addAll(innerBox, deregisterButton)
+      box.getChildren().addAll(dictionaryNameControl, innerBox, deregisterButton)
       box.setHgrow(innerBox, Priority.ALWAYS)
       $registeredDictionaryPathControls[i] = dictionaryPathControl
+      $registeredDictionaryNameControls[i] = dictionaryNameControl
       $registeredDictionaryPane.add(numberLabel, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }

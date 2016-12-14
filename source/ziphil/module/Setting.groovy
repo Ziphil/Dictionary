@@ -24,6 +24,7 @@ public class Setting {
   private static Setting $$instance = createInstance()
 
   private List<String> $registeredDictionaryPaths = ArrayList.new()
+  private List<String> $registeredDictionaryNames = ArrayList.new()
   private String $defaultDictionaryPath
   private String $contentFontFamily
   private Integer $contentFontSize
@@ -130,6 +131,14 @@ public class Setting {
 
   public void setRegisteredDictionaryPaths(List<String> registeredDictionaryPaths) {
     $registeredDictionaryPaths = registeredDictionaryPaths
+  }
+
+  public List<String> getRegisteredDictionaryNames() {
+    return $registeredDictionaryNames
+  }
+
+  public void setRegisteredDictionaryNames(List<String> registeredDictionaryNames) {
+    $registeredDictionaryNames = registeredDictionaryNames
   }
 
   public String getDefaultDictionaryPath() {
