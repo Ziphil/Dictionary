@@ -205,6 +205,15 @@
             <ColumnConstraints hgrow="never"/>
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="左側の入力欄に辞書の名前を入れておくと、その名前がメニューに表示されます。&#10;"/>
+            <Text text="空欄にするとファイル名が表示されます。"/>
+          </TextFlow>
         </GridPane>
       </Tab>
       <Tab text="OTM形式" closable="false">
