@@ -868,14 +868,17 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupOpenRegisteredDictionaryMenu() {
-    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
+    Setting setting = Setting.getInstance()
+    List<String> dictionaryPaths = setting.getRegisteredDictionaryPaths()
+    List<String> dictionaryNames = setting.getRegisteredDictionaryNames()
     $openRegisteredDictionaryMenu.getItems().clear()
     for (Integer i : 0 ..< 10) {
       String dictionaryPath = dictionaryPaths[i]
+      String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath != null) {
         File file = File.new(dictionaryPath)
-        item.setText(file.getName())
+        item.setText(dictionaryName ?: file.getName())
         item.setOnAction() {
           openRegisteredDictionary(file)
         }
