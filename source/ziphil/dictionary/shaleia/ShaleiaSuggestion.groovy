@@ -16,14 +16,16 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
   }
 
   public void updateContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    ShaleiaSuggestionContentPaneMaker maker = ShaleiaSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
-    maker.setLineSpacing(lineSpacing)
-    maker.setModifiesPunctuation(modifiesPunctuation)
-    maker.make()
-    $isChanged = false
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      ShaleiaSuggestionContentPaneMaker maker = ShaleiaSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isChanged = false
+    }
   }
 
   public ShaleiaDictionary getDictionary() {
