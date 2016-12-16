@@ -37,7 +37,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
   protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
-  private ObservableList<? extends Word> $wholeWords = FXCollections.observableArrayList()
+  private ObservableList<Element> $wholeWords = FXCollections.observableArrayList()
   private Task<?> $loader
   private Task<?> $saver
   protected Boolean $isChanged = false
@@ -316,7 +316,7 @@ public abstract class Dictionary<W extends Word, S extends Suggestion> {
     $path = path
   }
 
-  public ObservableList<? extends Word> getWholeWords() {
+  public ObservableList<Element> getWholeWords() {
     return $wholeWords
   }
 

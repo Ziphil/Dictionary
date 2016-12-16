@@ -1,13 +1,13 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.Word
+import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWord extends Word {
+public class PersonalWord extends WordBase {
 
   private PersonalDictionary $dictionary
   private String $pronunciation = ""

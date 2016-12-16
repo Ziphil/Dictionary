@@ -49,6 +49,7 @@ import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Element
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
@@ -81,7 +82,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<? extends Word> $wordsView
+  @FXML private ListView<Element> $wordsView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -331,9 +332,9 @@ public class MainController extends PrimitiveController<Stage> {
     search(true)
   }
 
-  private void modifyWord(Word word) {
+  private void modifyWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         Word oldWord = $dictionary.copiedWord(word)
@@ -361,13 +362,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     modifyWord(word)
   }
 
-  private void removeWord(Word word) {
+  private void removeWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         $dictionary.removeWord(word)
         if (savesAutomatically) {
@@ -379,7 +380,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     removeWord(word)
   }
 
@@ -414,9 +415,9 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void addInheritedWord(Word word) {
+  private void addInheritedWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -447,7 +448,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     addInheritedWord(word)
   }
 
@@ -570,7 +571,7 @@ public class MainController extends PrimitiveController<Stage> {
       $wordsView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordsView.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+      $wordsView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
     }
     $searchControl.setText("")
     $searchControl.requestFocus()
@@ -829,7 +830,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @VoidClosure
   private void setupWordsView() {
-    $wordsView.setCellFactory() { ListView<Word> view ->
+    $wordsView.setCellFactory() { ListView<Element> view ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

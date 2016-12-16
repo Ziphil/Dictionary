@@ -1,13 +1,13 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.Suggestion
+import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
+public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
 
   private ShaleiaDictionary $dictionary
 

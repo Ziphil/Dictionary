@@ -8,19 +8,19 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class ContentPaneCreator<W extends Word, D extends Dictionary> {
+public abstract class ContentPaneCreator<E extends Element, D extends Dictionary> {
 
   public static final String CONTENT_CLASS = "content"
   public static final String CONTENT_PANE_CLASS = "content-pane"
   public static final String HEAD_NAME_CLASS = "head-name"
 
   protected TextFlow $contentPane
-  protected W $word
+  protected E $word
   protected D $dictionary
   protected Integer $lineSpacing = 0
   protected Boolean $modifiesPunctuation = false
 
-  public ContentPaneCreator(TextFlow contentPane, W word, D dictionary) {
+  public ContentPaneCreator(TextFlow contentPane, E word, D dictionary) {
     $contentPane = contentPane
     $word = word
     $dictionary = dictionary

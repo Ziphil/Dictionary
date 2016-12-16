@@ -1,13 +1,13 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.Suggestion
+import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestion extends Suggestion<SlimePossibility> {
+public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
 
   private SlimeDictionary $dictionary
 

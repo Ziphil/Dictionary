@@ -2,13 +2,13 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.Word
+import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWord extends Word {
+public class ShaleiaWord extends WordBase {
 
   private String $uniqueName = ""
   private String $data = ""

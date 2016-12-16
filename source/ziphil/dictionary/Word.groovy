@@ -2,57 +2,21 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
-import javafx.scene.text.TextFlow
-import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Ziphilify
-public abstract class Word {
+@CompileStatic
+public interface Word extends Element {
 
-  protected String $name = ""
-  protected List<String> $equivalents = ArrayList.new()
-  protected String $content = ""
-  protected TextFlow $contentPane = TextFlow.new()
-  protected Boolean $isChanged = true
+  public String getName()
 
-  public abstract void createContentPane()
+  public void setName(String name)
 
-  public abstract void update()
+  public List<String> getEquivalents()
 
-  public void change() {
-    $isChanged = true
-  }
+  public void setEquivalents(List<String> equivalents)
 
-  public String getName() {
-    return $name
-  }
+  public String getContent()
 
-  public void setName(String name) {
-    $name = name
-  }
-
-  public List<String> getEquivalents() {
-    return $equivalents
-  }
-
-  public void setEquivalents(List<String> equivalents) {
-    $equivalents = equivalents
-  }
-
-  public String getContent() {
-    return $content
-  }
-
-  public void setContent(String content) {
-    $content = content
-  }
-
-  public Pane getContentPane() {
-    return $contentPane
-  }
-
-  public Boolean isChanged() {
-    return $isChanged
-  }
+  public void setContent(String content)
 
 }

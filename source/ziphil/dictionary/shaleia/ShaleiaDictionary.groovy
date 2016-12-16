@@ -11,7 +11,6 @@ import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -195,7 +194,7 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
       }
       return predicate
     }
-    $filteredSuggestions.setPredicate() { Suggestion suggestion ->
+    $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
       return false
     }
     $shufflableWords.unshuffle()

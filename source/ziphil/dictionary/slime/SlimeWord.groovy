@@ -3,13 +3,13 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.Word
+import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWord extends Word {
+public class SlimeWord extends WordBase {
 
   private SlimeDictionary $dictionary
   private Integer $id = -1
