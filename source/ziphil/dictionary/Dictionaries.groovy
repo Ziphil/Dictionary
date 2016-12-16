@@ -1,0 +1,60 @@
+package ziphil.dictionary
+
+import groovy.transform.CompileStatic
+import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.slime.SlimeDictionary
+import ziphilib.transform.Ziphilify
+
+
+@CompileStatic @Ziphilify 
+public class Dictionaries {
+
+  public static Dictionary loadDictionary(File file) {
+    if (file.exists() && file.isFile()) {
+      Dictionary dictionary
+      String fileName = file.getName()
+      String filePath = file.getPath()
+      if (filePath.endsWith(".xdc")) {
+        dictionary = ShaleiaDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".csv")) {
+        dictionary = PersonalDictionary.new(fileName, filePath)
+      } else if (filePath.endsWith(".json")) {
+        dictionary = SlimeDictionary.new(fileName, filePath)
+      }
+      return dictionary
+    } else {
+      return null
+    }
+  }
+
+  public static Dictionary loadEmptyDictionary(File file) {
+    Dictionary dictionary
+    String fileName = file.getName()
+    String filePath = file.getPath()
+    if (filePath.endsWith(".xdc")) {
+      dictionary = ShaleiaDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
+    } else if (filePath.endsWith(".csv")) {
+      dictionary = PersonalDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
+    } else if (filePath.endsWith(".json")) {
+      dictionary = SlimeDictionary.new(fileName, null)
+      dictionary.setPath(filePath)
+    }
+    return dictionary
+  }
+
+  public static String extensionOf(Dictionary dictionary) {
+    if (dictionary instanceof ShaleiaDictionary) {
+      return "xdc"
+    } else if (dictionary instanceof PersonalDictionary) {
+      return "csv"
+    } else if (dictionary instanceof SlimeDictionary) {
+      return "json"
+    } else {
+      return null
+    }
+  }
+
+}

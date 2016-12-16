@@ -9,7 +9,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphil.custom.SimpleTask
-import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +17,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 

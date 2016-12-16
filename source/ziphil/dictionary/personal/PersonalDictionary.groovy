@@ -2,13 +2,13 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
-import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
+public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)

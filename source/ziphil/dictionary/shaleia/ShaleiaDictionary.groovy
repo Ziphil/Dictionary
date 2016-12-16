@@ -9,7 +9,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
-import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +17,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> {
 
   private String $alphabetOrder = ""
   private String $changeData = ""

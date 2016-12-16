@@ -49,6 +49,7 @@ import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Element
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchHistory
@@ -463,7 +464,7 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionary.loadDictionary(file)
+        Dictionary dictionary = Dictionaries.loadDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -481,7 +482,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void openRegisteredDictionary(File file) {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
-      Dictionary dictionary = Dictionary.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -507,7 +508,7 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
+        Dictionary dictionary = Dictionaries.loadEmptyDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -536,7 +537,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionary.extensionOf($dictionary))
+      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionaries.extensionOf($dictionary))
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -652,7 +653,7 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionary.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary == null) {
         Setting.getInstance().setDefaultDictionaryPath(null)
