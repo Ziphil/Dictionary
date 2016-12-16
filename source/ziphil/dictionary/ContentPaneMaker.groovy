@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class ContentPaneCreator<E extends Element, D extends Dictionary> {
+public abstract class ContentPaneMaker<E extends Element, D extends Dictionary> {
 
   public static final String CONTENT_CLASS = "content"
   public static final String CONTENT_PANE_CLASS = "content-pane"
@@ -20,13 +20,13 @@ public abstract class ContentPaneCreator<E extends Element, D extends Dictionary
   protected Integer $lineSpacing = 0
   protected Boolean $modifiesPunctuation = false
 
-  public ContentPaneCreator(TextFlow contentPane, E word, D dictionary) {
+  public ContentPaneMaker(TextFlow contentPane, E word, D dictionary) {
     $contentPane = contentPane
     $word = word
     $dictionary = dictionary
   }
 
-  public abstract void create()
+  public abstract void make()
 
   protected void modifyBreak() {
     Node lastChild = $contentPane.getChildren().last()

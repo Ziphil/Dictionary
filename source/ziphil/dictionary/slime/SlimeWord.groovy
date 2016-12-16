@@ -54,31 +54,31 @@ public class SlimeWord extends WordBase {
     $content = content.toString()
   }
 
-  public void createContentPane() {
+  public void updateContentPane() {
     if ($isChanged) {
       Setting setting = Setting.getInstance()
       Integer lineSpacing = setting.getLineSpacing()
       Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      SlimeWordContentPaneCreator creator = SlimeWordContentPaneCreator.new($contentPane, this, $dictionary)
-      creator.setLineSpacing(lineSpacing)
-      creator.setModifiesPunctuation(modifiesPunctuation)
-      creator.create()
+      SlimeWordContentPaneMaker maker = SlimeWordContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
       $isChanged = false
     }
   }
 
-  public void createPlainContentPane() {
+  public void updatePlainContentPane() {
     if ($isPlainChanged) {
       Setting setting = Setting.getInstance()
       Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      SlimeWordPlainContentPaneCreator creator = SlimeWordPlainContentPaneCreator.new($plainContentPane, this, $dictionary)
-      creator.setModifiesPunctuation(modifiesPunctuation)
-      creator.create()
+      SlimeWordPlainContentPaneMaker maker = SlimeWordPlainContentPaneMaker.new($plainContentPane, this, $dictionary)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
       $isPlainChanged = false
     }
   }
 
-  public void createComparisonString(String order) {
+  public void updateComparisonString(String order) {
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $name.length()) {
       Integer position = order.indexOf($name.codePointAt(i))

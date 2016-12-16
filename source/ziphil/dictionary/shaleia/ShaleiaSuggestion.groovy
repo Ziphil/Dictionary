@@ -15,14 +15,14 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
     $isChanged = true
   }
 
-  public void createContentPane() {
+  public void updateContentPane() {
     Setting setting = Setting.getInstance()
     Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    ShaleiaSuggestionContentPaneCreator creator = ShaleiaSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
+    ShaleiaSuggestionContentPaneMaker maker = ShaleiaSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
+    maker.setLineSpacing(lineSpacing)
+    maker.setModifiesPunctuation(modifiesPunctuation)
+    maker.make()
     $isChanged = false
   }
 

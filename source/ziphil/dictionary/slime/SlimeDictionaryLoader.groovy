@@ -65,7 +65,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       stream.close()
     }
     for (SlimeWord word : $words) {
-      word.createComparisonString($dictionary.getAlphabetOrder())
+      word.updateComparisonString($dictionary.getAlphabetOrder())
       word.update()
     }
     return $words

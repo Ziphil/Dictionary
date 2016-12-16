@@ -201,14 +201,14 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    newWord.createComparisonString($alphabetOrder)
-    newWord.createContentPane()
+    newWord.updateComparisonString($alphabetOrder)
+    newWord.updateContentPane()
     $isChanged = true
   }
 
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
-    word.createComparisonString($alphabetOrder)
+    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     $isChanged = true
   }
@@ -219,17 +219,17 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
   }
 
   public void update() {
-    createChanges()
+    parseChanges()
     calculateSystemWordSize()
     $isChanged = true
   }
 
   public void updateMinimum() {
-    createChanges()
+    parseChanges()
     $isChanged = true
   }
 
-  private void createChanges() {
+  private void parseChanges() {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()

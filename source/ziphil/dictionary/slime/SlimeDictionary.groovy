@@ -158,8 +158,8 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
         }
       }
     }
-    newWord.createComparisonString($alphabetOrder)
-    newWord.createContentPane()
+    newWord.updateComparisonString($alphabetOrder)
+    newWord.updateContentPane()
     updateOnBackground()
   }
 
@@ -168,7 +168,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
       word.setId($validMinId)
     }
     word.setDictionary(this)
-    word.createComparisonString($alphabetOrder)
+    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     updateOnBackground()
   }
@@ -278,7 +278,7 @@ public class SlimeDictionary extends Dictionary<SlimeWord, SlimeSuggestion> {
 
   private void updateComparisonStrings() {
     for (SlimeWord word : $words) {
-      word.createComparisonString($alphabetOrder)
+      word.updateComparisonString($alphabetOrder)
     }
   }
 

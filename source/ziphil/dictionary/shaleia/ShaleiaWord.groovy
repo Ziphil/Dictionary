@@ -45,20 +45,20 @@ public class ShaleiaWord extends WordBase {
     $content = uniqueName + "\n" + data
   }
 
-  public void createContentPane() {
+  public void updateContentPane() {
     if ($isChanged) {
       Setting setting = Setting.getInstance()
       Integer lineSpacing = setting.getLineSpacing()
       Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      ShaleiaWordContentPaneCreator creator = ShaleiaWordContentPaneCreator.new($contentPane, this, $dictionary)
-      creator.setLineSpacing(lineSpacing)
-      creator.setModifiesPunctuation(modifiesPunctuation)
-      creator.create()
+      ShaleiaWordContentPaneMaker maker = ShaleiaWordContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
       $isChanged = false
     }
   }
 
-  public void createComparisonString(String order) {
+  public void updateComparisonString(String order) {
     Boolean isApostropheCharacter = order.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $uniqueName.length()) {

@@ -4,19 +4,19 @@ import groovy.transform.CompileStatic
 import javafx.scene.control.Label
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneCreator
+import ziphil.dictionary.ContentPaneMaker
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWordContentPaneCreator extends ContentPaneCreator<PersonalWord, PersonalDictionary> {
+public class PersonalWordContentPaneMaker extends ContentPaneMaker<PersonalWord, PersonalDictionary> {
 
-  public PersonalWordContentPaneCreator(TextFlow contentPane, PersonalWord word, PersonalDictionary dictionary) {
+  public PersonalWordContentPaneMaker(TextFlow contentPane, PersonalWord word, PersonalDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
-  public void create() {
+  public void make() {
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()

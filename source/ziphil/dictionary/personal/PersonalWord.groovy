@@ -26,15 +26,15 @@ public class PersonalWord extends WordBase {
     $content = name + "\n" + translation + "\n" + usage
   }
 
-  public void createContentPane() {
+  public void updateContentPane() {
     if ($isChanged) {
       Setting setting = Setting.getInstance()
       Integer lineSpacing = setting.getLineSpacing()
       Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      PersonalWordContentPaneCreator creator = PersonalWordContentPaneCreator.new($contentPane, this, $dictionary)
-      creator.setLineSpacing(lineSpacing)
-      creator.setModifiesPunctuation(modifiesPunctuation)
-      creator.create()
+      PersonalWordContentPaneMaker maker = PersonalWordContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
       $isChanged = false
     }
   }

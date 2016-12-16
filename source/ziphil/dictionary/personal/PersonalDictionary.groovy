@@ -17,7 +17,7 @@ public class PersonalDictionary extends Dictionary<PersonalWord, Suggestion> {
   }
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
-    newWord.createContentPane()
+    newWord.updateContentPane()
     $isChanged = true
   }
 

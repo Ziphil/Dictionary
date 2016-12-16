@@ -13,9 +13,9 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
   protected TextFlow $contentPane = TextFlow.new()
   protected Boolean $isChanged = true
 
-  public abstract void createContentPane()
-
   public abstract void update()
+
+  public abstract void updateContentPane()
 
   public List<P> getPossibilities() {
     return $possibilities

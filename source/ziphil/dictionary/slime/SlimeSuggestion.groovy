@@ -15,14 +15,14 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
     $isChanged = true
   }
 
-  public void createContentPane() {
+  public void updateContentPane() {
     Setting setting = Setting.getInstance()
     Integer lineSpacing = setting.getLineSpacing()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeSuggestionContentPaneCreator creator = SlimeSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
+    SlimeSuggestionContentPaneMaker maker = SlimeSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
+    maker.setLineSpacing(lineSpacing)
+    maker.setModifiesPunctuation(modifiesPunctuation)
+    maker.make()
     $isChanged = false
   }
 

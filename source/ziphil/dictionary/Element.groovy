@@ -9,7 +9,7 @@ public interface Element {
 
   public void update()
 
-  public void createContentPane()
+  public void updateContentPane()
 
   public Pane getContentPane()
 

@@ -4,23 +4,23 @@ import groovy.transform.CompileStatic
 import javafx.geometry.Pos
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneCreator
+import ziphil.dictionary.ContentPaneMaker
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordPlainContentPaneCreator extends ContentPaneCreator<SlimeWord, SlimeDictionary> {
+public class SlimeWordPlainContentPaneMaker extends ContentPaneMaker<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   private static final String SLIME_ID_CLASS = "slime-id"
 
-  public SlimeWordPlainContentPaneCreator(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
+  public SlimeWordPlainContentPaneMaker(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
-  public void create() {
+  public void make() {
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()

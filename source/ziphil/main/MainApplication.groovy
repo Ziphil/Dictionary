@@ -14,7 +14,7 @@ import ziphilib.transform.Ziphilify
 public class MainApplication extends Application {
 
   public void start(Stage stage) {
-    createDirectories()
+    makeDirectories()
     setupFontRendering()
     load(stage)
     setupStylesheet()
@@ -29,7 +29,7 @@ public class MainApplication extends Application {
     Setting.getInstance().save()
   }
 
-  private void createDirectories() {
+  private void makeDirectories() {
     File.new(Launcher.BASE_PATH + "data/setting").mkdirs()
     File.new(Launcher.BASE_PATH + "data/log").mkdirs()
   }

@@ -15,9 +15,9 @@ public abstract class WordBase implements Word {
   protected TextFlow $contentPane = TextFlow.new()
   protected Boolean $isChanged = true
 
-  public abstract void createContentPane()
-
   public abstract void update()
+
+  public abstract void updateContentPane()
 
   public String getName() {
     return $name

@@ -9,14 +9,14 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneCreator
+import ziphil.dictionary.ContentPaneMaker
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
@@ -28,11 +28,11 @@ public class ShaleiaWordContentPaneCreator extends ContentPaneCreator<ShaleiaWor
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
 
-  public ShaleiaWordContentPaneCreator(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
+  public ShaleiaWordContentPaneMaker(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
-  public void create() {
+  public void make() {
     Boolean hasOther = false
     Boolean hasSynonym = false
     $contentPane.getStyleClass().clear()
