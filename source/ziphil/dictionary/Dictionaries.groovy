@@ -45,16 +45,4 @@ public class Dictionaries {
     return dictionary
   }
 
-  public static String extensionOf(Dictionary dictionary) {
-    if (dictionary instanceof ShaleiaDictionary) {
-      return "xdc"
-    } else if (dictionary instanceof PersonalDictionary) {
-      return "csv"
-    } else if (dictionary instanceof SlimeDictionary) {
-      return "json"
-    } else {
-      return null
-    }
-  }
-
 }

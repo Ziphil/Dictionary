@@ -54,6 +54,8 @@ public interface Dictionary<W extends Word> {
 
   public ObservableList<W> getRawWords()
 
+  public String getExtension()
+
   public Task<?> getLoader()
 
   public Task<?> getSaver()

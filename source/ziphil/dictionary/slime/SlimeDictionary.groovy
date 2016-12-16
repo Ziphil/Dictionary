@@ -365,6 +365,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return mapper
   }
 
+  public String getExtension() {
+    return "json"
+  }
+
   public Integer getValidMinId() {
     return $validMinId
   }

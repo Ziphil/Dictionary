@@ -288,6 +288,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $saver
   }
 
+  public abstract String getExtension()
+
   public Boolean isChanged() {
     return $isChanged
   }
