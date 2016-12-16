@@ -19,10 +19,6 @@ public abstract class WordBase implements Word {
 
   public abstract void update()
 
-  public void change() {
-    $isChanged = true
-  }
-
   public String getName() {
     return $name
   }
@@ -49,10 +45,6 @@ public abstract class WordBase implements Word {
 
   public Pane getContentPane() {
     return $contentPane
-  }
-
-  public Boolean isChanged() {
-    return $isChanged
   }
 
 }

@@ -29,6 +29,11 @@ public class SlimeWord extends WordBase {
     $isPlainChanged = true
   }
 
+  public void change() {
+    $isChanged = true
+    $isPlainChanged = true
+  }
+
   private void updateEquivalents() {
     $equivalents.clear()
     for (SlimeEquivalent equivalent : $rawEquivalents) {
@@ -50,23 +55,27 @@ public class SlimeWord extends WordBase {
   }
 
   public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeWordContentPaneCreator creator = SlimeWordContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      SlimeWordContentPaneCreator creator = SlimeWordContentPaneCreator.new($contentPane, this, $dictionary)
+      creator.setLineSpacing(lineSpacing)
+      creator.setModifiesPunctuation(modifiesPunctuation)
+      creator.create()
+      $isChanged = false
+    }
   }
 
   public void createPlainContentPane() {
-    Setting setting = Setting.getInstance()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeWordPlainContentPaneCreator creator = SlimeWordPlainContentPaneCreator.new($plainContentPane, this, $dictionary)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isPlainChanged = false
+    if ($isPlainChanged) {
+      Setting setting = Setting.getInstance()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      SlimeWordPlainContentPaneCreator creator = SlimeWordPlainContentPaneCreator.new($plainContentPane, this, $dictionary)
+      creator.setModifiesPunctuation(modifiesPunctuation)
+      creator.create()
+      $isPlainChanged = false
+    }
   }
 
   public void createComparisonString(String order) {

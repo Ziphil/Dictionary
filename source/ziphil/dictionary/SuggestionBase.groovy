@@ -17,10 +17,6 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   public abstract void update()
 
-  public void change() {
-    $isChanged = true
-  }
-
   public List<P> getPossibilities() {
     return $possibilities
   }
@@ -31,10 +27,6 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   public Pane getContentPane() {
     return $contentPane
-  }
-
-  public Boolean isChanged() {
-    return $isChanged
   }
 
 }

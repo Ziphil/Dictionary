@@ -21,9 +21,7 @@ public class WordCell extends ListCell<Element> {
       setText(null)
       setGraphic(null)
     } else {
-      if (word.isChanged()) {
-        word.createContentPane()
-      }
+      word.createContentPane()
       word.getContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(word.getContentPane())

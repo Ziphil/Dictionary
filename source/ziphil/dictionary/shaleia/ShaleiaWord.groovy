@@ -46,14 +46,16 @@ public class ShaleiaWord extends WordBase {
   }
 
   public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    ShaleiaWordContentPaneCreator creator = ShaleiaWordContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      ShaleiaWordContentPaneCreator creator = ShaleiaWordContentPaneCreator.new($contentPane, this, $dictionary)
+      creator.setLineSpacing(lineSpacing)
+      creator.setModifiesPunctuation(modifiesPunctuation)
+      creator.create()
+      $isChanged = false
+    }
   }
 
   public void createComparisonString(String order) {
