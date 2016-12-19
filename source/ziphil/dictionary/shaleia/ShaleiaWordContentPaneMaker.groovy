@@ -27,6 +27,13 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
+  private static final String NAME_BEGIN_CHARACTER = "["
+  private static final String NAME_END_CHARACTER = "]"
+  private static final String LINK_BEGIN_CHARACTER = "{"
+  private static final String LINK_END_CHARACTER = "}"
+  private static final String ITALIC_BEGIN_CHARACTER = "/"
+  private static final String ITALIC_END_CHARACTER = "/"
+  private static final String PUNCTUATIONS = " .,?!-"
 
   public ShaleiaWordContentPaneMaker(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(contentPane, word, dictionary)
@@ -179,17 +186,17 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     List<Text> unnamedTexts = ArrayList.new()
     StringBuilder currentString = StringBuilder.new()
     StringBuilder currentName = StringBuilder.new()
-    Integer currentMode = 0
+    TextMode currentMode = TextMode.NORMAL
     for (String character : string) {
-      if (currentMode == 0 && character == "{") {
+      if (currentMode == TextMode.NORMAL && character == LINK_BEGIN_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
         }
-        currentMode = 1
-      } else if ((currentMode == 1 || currentMode == 11) && character == "}") {
+        currentMode = TextMode.LINK
+      } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && character == LINK_END_CHARACTER) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -213,8 +220,8 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           currentName.setLength(0)
           unnamedTexts.clear()
         }
-        currentMode = 0
-      } else if ((currentMode == 1 || currentMode == 11) && (character == " " || character == "." || character == "," || character == "?" || character == "-")) {
+        currentMode = TextMode.NORMAL
+      } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && PUNCTUATIONS.indexOf(character) >= 0) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -241,7 +248,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
         Text characterText = Text.new(character)
         characterText.getStyleClass().add(SHALEIA_NAME_CLASS)
         texts.add(characterText)    
-      } else if (currentMode == 1 && character == "/") {
+      } else if (currentMode == TextMode.LINK && character == ITALIC_BEGIN_CHARACTER) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -253,8 +260,8 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           texts.add(text)
           currentString.setLength(0)
         }
-        currentMode = 11
-      } else if (currentMode == 11 && character == "/") {
+        currentMode = TextMode.LINK_ITALIC
+      } else if (currentMode == TextMode.LINK_ITALIC && character == ITALIC_END_CHARACTER) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -266,16 +273,16 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           texts.add(text)
           currentString.setLength(0)
         }
-        currentMode = 1
-      } else if (currentMode == 0 && character == "[") {
+        currentMode = TextMode.LINK
+      } else if (currentMode == TextMode.NORMAL && character == NAME_BEGIN_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
         }      
-        currentMode = 2
-      } else if ((currentMode == 2 || currentName == 12) && character == "]") {
+        currentMode = TextMode.NAME
+      } else if ((currentMode == TextMode.NAME || currentName == TextMode.NAME_ITALIC) && character == NAME_END_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
@@ -283,8 +290,8 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           currentString.setLength(0)
           currentName.setLength(0)
         }
-        currentMode = 0
-      } else if (currentMode == 2 && character == "/") {
+        currentMode = TextMode.NORMAL
+      } else if (currentMode == TextMode.NAME && character == ITALIC_BEGIN_CHARACTER) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -293,8 +300,8 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           currentString.setLength(0)
           currentName.setLength(0)
         }
-        currentMode = 12
-      } else if (currentMode == 12 && character == "/") {
+        currentMode = TextMode.NAME_ITALIC
+      } else if (currentMode == TextMode.NAME_ITALIC && character == ITALIC_END_CHARACTER) {
         if (currentString.length() > 0) {
           String partName = currentString.toString()
           Text text = Text.new(partName)
@@ -303,16 +310,16 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           currentString.setLength(0)
           currentName.setLength(0)
         }      
-        currentMode = 2
-      } else if (currentMode == 0 && character == "/") {
+        currentMode = TextMode.NAME
+      } else if (currentMode == TextMode.NORMAL && character == ITALIC_BEGIN_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           texts.add(text)
           currentString.setLength(0)
           currentName.setLength(0)
         }
-        currentMode = 3
-      } else if (currentMode == 3 && character == "/") {
+        currentMode = TextMode.NORMAL_ITALIC
+      } else if (currentMode == TextMode.NORMAL_ITALIC && character == ITALIC_END_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_ITALIC_CLASS)
@@ -320,7 +327,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
           currentString.setLength(0)
           currentName.setLength(0)
         }
-        currentMode = 0
+        currentMode = TextMode.NORMAL
       } else {
         currentString.append(character)
         currentName.append(character)
@@ -338,5 +345,13 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
     $modifiesPunctuation = modifiesPunctuation
   }
+
+}
+
+
+@InnerClass(ShaleiaWordContentPaneMaker)
+private static enum TextMode {
+
+  NORMAL, NORMAL_ITALIC, NAME, NAME_ITALIC, LINK, LINK_ITALIC
 
 }
