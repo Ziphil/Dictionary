@@ -42,12 +42,10 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   @FXML private TextField $directoryControl
   @FXML private TextField $fileControl
   @FXML private ComboBox<ExtensionFilter> $fileTypeControl
-  private ObjectProperty<File> $selectedFile
 
-  public FileChooserSkin(FileChooser control, ObjectProperty<File> selectedFile) {
+  public FileChooserSkin(FileChooser control) {
     super(control)
     $node = VBox.new()
-    $selectedFile = selectedFile
     loadResource(RESOURCE_PATH)
     setupNode()
   }
@@ -61,10 +59,9 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
     setupFileTypeControl()
     setupSplitPane()
     bindDirectoryControlProperty()
+    bindFileControlProperty()
     bindFileTypeControlProperty()
-    bindSelectedFile()
-    changeCurrentDirectoryToDefault()
-    changeCurrentFileTypeToDefault()
+    applyDefaultValues()
   }
 
   private void changeCurrentFile(File file) {
@@ -84,32 +81,13 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   }
 
   @FXML
-  private void changeCurrentDirectoryToHome() {
-    String homePath = System.getProperty("user.home")
-    File home = File.new(homePath)
-    if (home.isDirectory()) {
-      $control.setCurrentDirectory(home)
-    }
+  private void moveToHome() {
+    $control.moveToHome()
   }
 
   @FXML
-  private void changeCurrentDirectoryToParent() {
-    File parent = $control.getCurrentDirectory().getParentFile()
-    if (parent != null) {
-      $control.setCurrentDirectory(parent)
-    }
-  }
-
-  private void changeCurrentDirectoryToDefault() {
-    if ($control.getCurrentDirectory() == null) {
-      changeCurrentDirectoryToHome()
-    }
-  }
-
-  private void changeCurrentFileTypeToDefault() {
-    if ($control.getCurrentFileType() == null) {
-      $control.setCurrentFileType($fileTypeControl.getValue())
-    }
+  private void moveToParent() {
+    $control.moveToParent()
   }
 
   @VoidClosure
@@ -206,9 +184,10 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
       $fileView.scrollTo(0)
     }
     $control.currentDirectoryProperty().addListener(listener)
-    if ($control.getCurrentDirectory() != null) {
-      listener.changed($control.currentDirectoryProperty(), null, $control.getCurrentDirectory())
-    }
+  }
+
+  private void bindFileControlProperty() {
+    $fileControl.textProperty().bindBidirectional($control.inputtedFileNameProperty())
   }
 
   private void bindFileTypeControlProperty() {
@@ -216,33 +195,20 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
       $fileTypeControl.getSelectionModel().select(newValue)
     }
     $control.currentFileTypeProperty().addListener(listener)
-    if ($control.getCurrentFileType() != null) {
-      listener.changed($control.currentFileTypeProperty(), null, $control.getCurrentFileType())
-    }
   }
 
-  private void bindSelectedFile() {
-    Callable<File> function = (Callable){
-      File directory = $control.getCurrentDirectory()
-      if (directory != null) {
-        String filePath = directory.getAbsolutePath() + File.separator + $fileControl.getText()
-        if ($control.isAdjustsExtension()) {
-          String additionalExtension = $control.getCurrentFileType().getExtension()
-          if (additionalExtension != null) {
-            if (!filePath.endsWith("." + additionalExtension)) {
-              filePath = filePath + "." + additionalExtension
-            }
-          }
-        }
-        File file = File.new(filePath)
-        return file
-      } else {
-        return null
-      }
+  private void applyDefaultValues() {
+    if ($control.getCurrentDirectory() != null) {
+      $directoryControl.setText($control.getCurrentDirectory().getAbsolutePath())
+      $fileView.scrollTo(0)
+    } else {
+      moveToHome()
     }
-    ObjectBinding<File> binding = Bindings.createObjectBinding(function, $control.currentDirectoryProperty(), $control.currentFileTypeProperty(), $control.adjustsExtensionProperty(),
-                                                               $fileControl.textProperty())
-    $selectedFile.bind(binding)
+    if ($control.getCurrentFileType() != null) {
+      $fileTypeControl.getSelectionModel().select($control.getCurrentFileType())
+    } else {
+      $control.setCurrentFileType($fileTypeControl.getValue())
+    }
   }
 
   private static Comparator<File> createFileComparator() {
