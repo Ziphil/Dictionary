@@ -33,6 +33,8 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
   private static final String LINK_END_CHARACTER = "}"
   private static final String ITALIC_BEGIN_CHARACTER = "/"
   private static final String ITALIC_END_CHARACTER = "/"
+  private static final String ESCAPE_BEGIN_CHARACTER = "&"
+  private static final String ESCAPE_END_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
   public ShaleiaWordContentPaneMaker(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
@@ -185,6 +187,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()
     StringBuilder currentString = StringBuilder.new()
+    StringBuilder currentEscapeString = StringBuilder.new()
     StringBuilder currentName = StringBuilder.new()
     TextMode currentMode = TextMode.NORMAL
     for (String character : string) {
@@ -329,8 +332,21 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
         }
         currentMode = TextMode.NORMAL
       } else {
-        currentString.append(character)
-        currentName.append(character)
+        if (character == ESCAPE_BEGIN_CHARACTER || currentEscapeString.length() > 0) {
+          currentEscapeString.append(character)
+          if (character == ESCAPE_END_CHARACTER && currentEscapeString.length() > 0) {
+            Matcher matcher = currentEscapeString.toString() =~ /^&#x([0-9A-Fa-f]+);$/
+            if (matcher.matches()) {
+              String convertedEscapeString = Character.toChars(Integer.parseInt(matcher.group(1), 16))[0]
+              currentString.append(convertedEscapeString)
+              currentName.append(convertedEscapeString)
+              currentEscapeString.setLength(0)
+            }
+          }
+        } else {
+          currentString.append(character)
+          currentName.append(character)
+        }
       }
     }
     Text text = Text.new(currentString.toString())
