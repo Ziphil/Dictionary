@@ -470,8 +470,10 @@ public class MainController extends PrimitiveController<Stage> {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
           Setting.getInstance().setDefaultDictionaryPath(null)
-          Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
+          dialog.setTitle("読み込みエラー")
+          dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
@@ -488,8 +490,10 @@ public class MainController extends PrimitiveController<Stage> {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
         Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("読み込みエラー")
+        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
       }
@@ -514,8 +518,10 @@ public class MainController extends PrimitiveController<Stage> {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
           Setting.getInstance().setDefaultDictionaryPath(null)
-          Dialog dialog = Dialog.new("新規作成エラー", "辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
+          dialog.setTitle("新規作成エラー")
+          dialog.setTitle("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
@@ -657,8 +663,10 @@ public class MainController extends PrimitiveController<Stage> {
       updateDictionary(dictionary)
       if (dictionary == null) {
         Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("読み込みエラー")
+        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
       }
@@ -669,8 +677,10 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void failUpdateDictionary() {
     updateDictionary(null)
-    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    Dialog dialog = Dialog.new(StageStyle.UTILITY)
     dialog.initOwner($stage)
+    dialog.setTitle("読み込みエラー")
+    dialog.setContentText("辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
     dialog.setAllowsCancel(false)
     dialog.showAndWait()
   }
@@ -694,8 +704,10 @@ public class MainController extends PrimitiveController<Stage> {
   private Boolean checkDictionaryChange() {
     if ($dictionary != null) {
       if ($dictionary.isChanged()) {
-        Dialog dialog = Dialog.new("確認", "辞書データは変更されています。保存しますか?")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("確認")
+        dialog.setContentText("辞書データは変更されています。保存しますか?")
         dialog.setCommitText("保存する")
         dialog.setNegateText("保存しない")
         dialog.setAllowsNegate(true)
@@ -719,8 +731,10 @@ public class MainController extends PrimitiveController<Stage> {
   private void handleException(Throwable throwable) {
     PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new("エラー", "エラーが発生しました(${name})。詳細はエラーログを確認してください。")
+    Dialog dialog = Dialog.new(StageStyle.UTILITY)
     dialog.initOwner($stage)
+    dialog.setTitle("エラー")
+    dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
     dialog.setAllowsCancel(false)
     throwable.printStackTrace()
     throwable.printStackTrace(stream)
