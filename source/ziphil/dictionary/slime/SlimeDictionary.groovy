@@ -27,7 +27,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $registeredInformationTitles = ArrayList.new()
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
-  private String $alphabetOrder = "abcdefghijklmnopqrstuvwxyz"
+  private String $alphabetOrder = null
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()

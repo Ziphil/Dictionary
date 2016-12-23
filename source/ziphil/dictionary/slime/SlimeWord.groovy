@@ -79,16 +79,20 @@ public class SlimeWord extends WordBase {
   }
 
   public void updateComparisonString(String order) {
-    StringBuilder comparisonString = StringBuilder.new()
-    for (Integer i : 0 ..< $name.length()) {
-      Integer position = order.indexOf($name.codePointAt(i))
-      if (position > -1) {
-        comparisonString.appendCodePoint(position + 174)
-      } else {
-        comparisonString.appendCodePoint(10000)
+    if (order != null) {
+      StringBuilder comparisonString = StringBuilder.new()
+      for (Integer i : 0 ..< $name.length()) {
+        Integer position = order.indexOf($name.codePointAt(i))
+        if (position > -1) {
+          comparisonString.appendCodePoint(position + 174)
+        } else {
+          comparisonString.appendCodePoint(10000)
+        }
       }
+      $comparisonString = comparisonString.toString()
+    } else {
+      $comparisonString = $name
     }
-    $comparisonString = comparisonString.toString()
   }
 
   public SlimeDictionary getDictionary() {
