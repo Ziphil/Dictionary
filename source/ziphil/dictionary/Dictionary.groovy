@@ -28,11 +28,11 @@ public interface Dictionary<W extends Word> {
 
   public void updateMinimum()
 
-  public abstract W emptyWord(String defaultName)
+  public W emptyWord(String defaultName)
 
-  public abstract W copiedWord(W oldWord)
+  public W copiedWord(W oldWord)
 
-  public abstract W inheritedWord(W oldWord)
+  public W inheritedWord(W oldWord)
 
   public void save()
 
