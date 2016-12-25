@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Version implements Comparable<Version> {
 
-  private Integer $major = 0
+  private Integer $major = -1
   private Integer $minor = 0
   private Integer $patch = 0
   private Integer $date = null
