@@ -6,6 +6,7 @@ import javafx.application.Platform
 import javafx.stage.Stage
 import ziphil.Launcher
 import ziphil.controller.MainController
+import ziphil.module.FontRenderingType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -35,11 +36,13 @@ public class MainApplication extends Application {
   }
 
   private void setupFontRendering() {
-    Setting setting = Setting.getInstance()
-    if (setting.getFontRenderingType() == 1) {
+    FontRenderingType fontRenderingType = Setting.getInstance().getFontRenderingType()
+    if (fontRenderingType == FontRenderingType.DEFAULT_GRAY) {
+      System.setProperty("prism.lcdtext", "false")
+    } else if (fontRenderingType == FontRenderingType.PRISM_LCD) {
       System.setProperty("prism.lcdtext", "true")
       System.setProperty("prism.text", "t2k")
-    } else if (setting.getFontRenderingType() == 2) {
+    } else if (fontRenderingType == FontRenderingType.PRISM_GRAY) {
       System.setProperty("prism.lcdtext", "false")
       System.setProperty("prism.text", "t2k")
     }

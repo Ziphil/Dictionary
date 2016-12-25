@@ -86,7 +86,14 @@ public class Setting {
         stylesheet.append(";\n")
       }
       stylesheet.append("}\n\n")
-    }    
+    }
+    if ($systemFontFamily != null) {
+      stylesheet.append(".root {\n")
+      stylesheet.append("  -fx-font-family: \"")
+      stylesheet.append(Strings.escapeUnicode($systemFontFamily))
+      stylesheet.append("\";\n")
+      stylesheet.append("}\n\n")
+    }
     file.setText(stylesheet.toString(), "UTF-8")
   }
 
