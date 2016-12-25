@@ -23,10 +23,12 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <?import ziphil.module.FontRenderingType?>
+<?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../../css/main/main.css"/>
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
