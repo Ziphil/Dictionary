@@ -98,7 +98,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
   @FXML private MenuItem $removeWordItem
-  @FXML private MenuItem $showIndividualSettingItem
+  @FXML private MenuItem $editDictionarySettingItem
   @FXML private MenuItem $addWordContextItem
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
@@ -454,6 +454,29 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void editDictionarySetting() {
+    if ($dictionary != null) {
+      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      if ($dictionary instanceof SlimeDictionary) {
+        SlimeSettingController controller = SlimeSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      } else if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaSettingController controller = ShaleiaSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      }
+      nextStage.showAndWait()
+      if (nextStage.isCommitted() && nextStage.getResult()) {
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
+      }
+    }
+  }
+
+  @FXML
   private void openDictionary() {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
@@ -637,10 +660,10 @@ public class MainController extends PrimitiveController<Stage> {
       $searchScriptItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
         $searchDetailItem.setDisable(false)
-        $showIndividualSettingItem.setDisable(false)
+        $editDictionarySettingItem.setDisable(false)
       } else {
         $searchDetailItem.setDisable(true)
-        $showIndividualSettingItem.setDisable(true)
+        $editDictionarySettingItem.setDisable(true)
       }
     } else {
       $saveDictionaryItem.setDisable(true)
@@ -651,7 +674,7 @@ public class MainController extends PrimitiveController<Stage> {
       $removeWordItem.setDisable(true)
       $searchDetailItem.setDisable(true)
       $searchScriptItem.setDisable(true)
-      $showIndividualSettingItem.setDisable(true)
+      $editDictionarySettingItem.setDisable(true)
     }
   }
 
@@ -728,19 +751,18 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void handleException(Throwable throwable) {
-    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new(StageStyle.UTILITY)
-    dialog.initOwner($stage)
-    dialog.setTitle("エラー")
-    dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
-    dialog.setAllowsCancel(false)
-    throwable.printStackTrace()
-    throwable.printStackTrace(stream)
-    stream.close()
-    dialog.showAndWait()
-    Platform.exit()
+  @FXML
+  private void editSetting() {
+    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    SettingController controller = SettingController.new(nextStage)
+    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      Setting.getInstance().save()
+      setupOpenRegisteredDictionaryMenu()
+      setupRegisterCurrentDictionaryMenu()
+    }
   }
 
   @FXML
@@ -768,43 +790,6 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
   }
 
-  @FXML
-  private void showIndividualSetting() {
-    if ($dictionary != null) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initModality(Modality.WINDOW_MODAL)
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof SlimeDictionary) {
-        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      } else if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      }
-      nextStage.showAndWait()
-      if (nextStage.isCommitted() && nextStage.getResult()) {
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
-      }
-    }
-  }
-
-  @FXML
-  private void showSetting() {
-    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    SettingController controller = SettingController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
-    nextStage.initOwner($stage)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      Setting.getInstance().save()
-      setupOpenRegisteredDictionaryMenu()
-      setupRegisterCurrentDictionaryMenu()
-    }
-  }
-
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
     if (previousVersion < Launcher.VERSION) {
@@ -814,6 +799,21 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       nextStage.showAndWait()
     }
+  }
+
+  private void handleException(Throwable throwable) {
+    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    String name = throwable.getClass().getSimpleName()
+    Dialog dialog = Dialog.new(StageStyle.UTILITY)
+    dialog.initOwner($stage)
+    dialog.setTitle("エラー")
+    dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
+    dialog.setAllowsCancel(false)
+    throwable.printStackTrace()
+    throwable.printStackTrace(stream)
+    stream.close()
+    dialog.showAndWait()
+    Platform.exit()
   }
 
   @FXML
