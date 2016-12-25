@@ -124,9 +124,8 @@
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$editDictionarySettingItem" text="辞書データの編集" onAction="#editDictionarySetting" accelerator="Shortcut+P"/>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="" text="個別設定"/>
+        <MenuItem fx:id="$editDictionarySettingItem" text="辞書の個別設定" onAction="#editDictionarySetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../../icon/setting.png"/></ImageView>
