@@ -114,8 +114,8 @@ public class MainController extends PrimitiveController<Stage> {
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
 
-  public MainController(Stage nextStage) {
-    super(nextStage)
+  public MainController(Stage stage) {
+    super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
     setupSearchHistory()
     setupDragAndDrop()
