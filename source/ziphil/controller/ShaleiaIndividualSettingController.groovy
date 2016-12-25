@@ -11,9 +11,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSettingController extends Controller<Boolean> {
+public class ShaleiaIndividualSettingController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_setting.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_individual_setting.fxml"
   private static final String TITLE = "個別設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
@@ -22,7 +22,7 @@ public class ShaleiaSettingController extends Controller<Boolean> {
   @FXML private TextArea $changeDataControl
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaSettingController(UtilityStage<Boolean> stage) {
+  public ShaleiaIndividualSettingController(UtilityStage<Boolean> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

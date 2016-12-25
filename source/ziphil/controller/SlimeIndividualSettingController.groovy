@@ -18,9 +18,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSettingController extends Controller<Boolean> {
+public class SlimeIndividualSettingController extends Controller<Boolean> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/controller/slime_setting.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/slime_individual_setting.fxml"
   private static final String TITLE = "個別設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
@@ -31,7 +31,7 @@ public class SlimeSettingController extends Controller<Boolean> {
   @FXML private CheckBox $usesIndividualOrderControl
   private SlimeDictionary $dictionary
 
-  public SlimeSettingController(UtilityStage<Boolean> stage) {
+  public SlimeIndividualSettingController(UtilityStage<Boolean> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

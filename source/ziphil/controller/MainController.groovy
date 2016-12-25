@@ -98,7 +98,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
   @FXML private MenuItem $removeWordItem
-  @FXML private MenuItem $editDictionarySettingItem
+  @FXML private MenuItem $editIndividualSettingItem
   @FXML private MenuItem $addWordContextItem
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
@@ -454,29 +454,6 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void editDictionarySetting() {
-    if ($dictionary != null) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initModality(Modality.WINDOW_MODAL)
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof SlimeDictionary) {
-        SlimeSettingController controller = SlimeSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      } else if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaSettingController controller = ShaleiaSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      }
-      nextStage.showAndWait()
-      if (nextStage.isCommitted() && nextStage.getResult()) {
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
-      }
-    }
-  }
-
-  @FXML
   private void openDictionary() {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
@@ -660,10 +637,10 @@ public class MainController extends PrimitiveController<Stage> {
       $searchScriptItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
         $searchDetailItem.setDisable(false)
-        $editDictionarySettingItem.setDisable(false)
+        $editIndividualSettingItem.setDisable(false)
       } else {
         $searchDetailItem.setDisable(true)
-        $editDictionarySettingItem.setDisable(true)
+        $editIndividualSettingItem.setDisable(true)
       }
     } else {
       $saveDictionaryItem.setDisable(true)
@@ -674,7 +651,7 @@ public class MainController extends PrimitiveController<Stage> {
       $removeWordItem.setDisable(true)
       $searchDetailItem.setDisable(true)
       $searchScriptItem.setDisable(true)
-      $editDictionarySettingItem.setDisable(true)
+      $editIndividualSettingItem.setDisable(true)
     }
   }
 
@@ -748,6 +725,29 @@ public class MainController extends PrimitiveController<Stage> {
       }
     } else {
       return true
+    }
+  }
+
+  @FXML
+  private void editIndividualSetting() {
+    if ($dictionary != null) {
+      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      if ($dictionary instanceof SlimeDictionary) {
+        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      } else if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      }
+      nextStage.showAndWait()
+      if (nextStage.isCommitted() && nextStage.getResult()) {
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
+      }
     }
   }
 

@@ -125,7 +125,7 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$editDictionarySettingItem" text="辞書の個別設定" onAction="#editDictionarySetting" accelerator="Shortcut+P"/>
+        <MenuItem fx:id="$editIndividualSettingItem" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../../icon/setting.png"/></ImageView>
