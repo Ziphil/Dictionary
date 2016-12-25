@@ -30,9 +30,10 @@ public class Setting {
   private Integer $contentFontSize
   private String $editorFontFamily
   private Integer $editorFontSize
+  private String $systemFontFamily
   private Integer $lineSpacing = 0
   private Integer $separativeInterval = 700
-  private Integer $fontRenderingType
+  private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
@@ -181,6 +182,14 @@ public class Setting {
     $editorFontSize = editorFontSize
   }
 
+  public String getSystemFontFamily() {
+    return $systemFontFamily
+  }
+
+  public void setSystemFontFamily(String systemFontFamily) {
+    $systemFontFamily = systemFontFamily
+  }
+
   public Integer getLineSpacing() {
     return $lineSpacing
   }
@@ -197,11 +206,11 @@ public class Setting {
     $separativeInterval = separativeInterval
   }
 
-  public Integer getFontRenderingType() {
+  public FontRenderingType getFontRenderingType() {
     return $fontRenderingType
   }
 
-  public void setFontRenderingType(Integer fontRenderingType) {
+  public void setFontRenderingType(FontRenderingType fontRenderingType) {
     $fontRenderingType = fontRenderingType
   }
 
