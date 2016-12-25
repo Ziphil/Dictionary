@@ -75,12 +75,12 @@
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
+        <SeparatorMenuItem/>
         <MenuItem text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
           <graphic>
             <ImageView><Image url="@../../icon/shuffle.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <SeparatorMenuItem/>
         <MenuItem text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
           <graphic>
             <ImageView><Image url="@../../icon/previous.png"/></ImageView>
