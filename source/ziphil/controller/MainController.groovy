@@ -560,12 +560,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionary(Dictionary dictionary) {
-    if ($dictionary != null) {
-      Task<?> oldLoader = $dictionary.getLoader()
-      if (oldLoader.isRunning()) {
-        oldLoader.cancel()
-      }
-    }
+    cancelLoadDictionary()
     $dictionary = dictionary
     $previousSearch = ""
     $searchHistory.clear()
@@ -574,6 +569,15 @@ public class MainController extends PrimitiveController<Stage> {
     updateLoader()
     updateOnLinkClicked()
     updateMenuItems()
+  }
+
+  private void cancelLoadDictionary() {
+    if ($dictionary != null) {
+      Task<?> oldLoader = $dictionary.getLoader()
+      if (oldLoader.isRunning()) {
+        oldLoader.cancel()
+      }
+    }
   }
 
   private void updateIndividualSetting() {
