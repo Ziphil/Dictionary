@@ -117,7 +117,7 @@
         </GridPane>
       </Tab>
       <Tab text="検索" closable="false">
-        <GridPane fx:id="$searchParameterPane">
+        <GridPane fx:id="$registeredParameterPane">
           <vgap><Double rpx="5"/></vgap>
           <hgap><Double rpx="5"/></hgap>
           <padding>

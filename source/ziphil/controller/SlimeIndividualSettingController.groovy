@@ -36,10 +36,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private ListSelectionView<String> $plainInformationTitlesView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
-  @FXML private GridPane $searchParameterPane
-  @FXML private List<TextField> $searchParameterStringControls = ArrayList.new(10)
-  @FXML private List<TextField> $searchParameterNameControls = ArrayList.new(10)
-  private List<SlimeSearchParameter> $searchParameters
+  @FXML private GridPane $registeredParameterPane
+  @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
+  @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
+  private List<SlimeSearchParameter> $registeredParameters
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
@@ -61,9 +61,9 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
     List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
     List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
-    List<SlimeSearchParameter> searchParameters = ArrayList.new(individualSetting.getSearchParameters())
-    List<String> searchParameterStrings = searchParameters.collect{searchParameter -> (searchParameter != null) ? searchParameter.toString() : ""}
-    List<String> searchParameterNames = ArrayList.new(individualSetting.getSearchParameterNames())
+    List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
+    List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
+    List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $plainInformationTitlesView.setSources(normalInformationTitles)
     $plainInformationTitlesView.setTargets(plainInformationTitles)
@@ -71,10 +71,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
-    $searchParameters = searchParameters
+    $registeredParameters = registeredParameters
     for (Integer i : 0 ..< 10) {
-      $searchParameterStringControls[i].setText(searchParameterStrings[i])
-      $searchParameterNameControls[i].setText(searchParameterNames[i])
+      $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
+      $registeredParameterNameControls[i].setText(registeredParameterNames[i])
     }
   }
 
@@ -84,13 +84,13 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
-    List<SlimeSearchParameter> searchParameters = $searchParameters
-    List<String> searchParameterNames = $searchParameterNameControls.collect{control -> control.getText()}
+    List<SlimeSearchParameter> registeredParameters = $registeredParameters
+    List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
-    $individualSetting.setSearchParameters(searchParameters)
-    $individualSetting.setSearchParameterNames(searchParameterNames)
+    $individualSetting.setRegisteredParameters(registeredParameters)
+    $individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $dictionary.updateMinimum()
     $stage.commit(true)
   }
@@ -109,19 +109,19 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary, $searchParameters[i])
+    controller.prepare($dictionary, $registeredParameters[i])
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SlimeSearchParameter parameter = nextStage.getResult()
-      $searchParameters[i] = parameter
-      $searchParameterStringControls[i].setText(parameter.toString())
+      $registeredParameters[i] = parameter
+      $registeredParameterStringControls[i].setText(parameter.toString())
     }
   }
 
   private void deregisterSearchParameter(Integer i) {
-    $searchParameters[i] = (SlimeSearchParameter)null
-    $searchParameterStringControls[i].setText("")
-    $searchParameterNameControls[i].setText("")
+    $registeredParameters[i] = (SlimeSearchParameter)null
+    $registeredParameterStringControls[i].setText("")
+    $registeredParameterNameControls[i].setText("")
   }
 
   private void setupSearchParameterPane() {
@@ -130,14 +130,14 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       Label numberLabel = Label.new("検索条件${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
-      TextField searchParameterStringControl = TextField.new()
-      TextField searchParameterNameControl = TextField.new()
+      TextField registeredParameterStringControl = TextField.new()
+      TextField registeredParameterNameControl = TextField.new()
       Button editButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
-      searchParameterStringControl.setEditable(false)
-      searchParameterStringControl.getStyleClass().add("left-pill")
-      searchParameterNameControl.setPrefWidth(Measurement.rpx(120))
-      searchParameterNameControl.setMinWidth(Measurement.rpx(120))
+      registeredParameterStringControl.setEditable(false)
+      registeredParameterStringControl.getStyleClass().add("left-pill")
+      registeredParameterNameControl.setPrefWidth(Measurement.rpx(120))
+      registeredParameterNameControl.setMinWidth(Measurement.rpx(120))
       editButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
@@ -147,14 +147,14 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       deregisterButton.setOnAction() {
         deregisterSearchParameter(j)
       }
-      innerBox.getChildren().addAll(searchParameterStringControl, editButton)
-      innerBox.setHgrow(searchParameterStringControl, Priority.ALWAYS)
-      box.getChildren().addAll(searchParameterNameControl, innerBox, deregisterButton)
+      innerBox.getChildren().addAll(registeredParameterStringControl, editButton)
+      innerBox.setHgrow(registeredParameterStringControl, Priority.ALWAYS)
+      box.getChildren().addAll(registeredParameterNameControl, innerBox, deregisterButton)
       box.setHgrow(innerBox, Priority.ALWAYS)
-      $searchParameterStringControls[i] = searchParameterStringControl
-      $searchParameterNameControls[i] = searchParameterNameControl
-      $searchParameterPane.add(numberLabel, 0, i)
-      $searchParameterPane.add(box, 1, i)
+      $registeredParameterStringControls[i] = registeredParameterStringControl
+      $registeredParameterNameControls[i] = registeredParameterNameControl
+      $registeredParameterPane.add(numberLabel, 0, i)
+      $registeredParameterPane.add(box, 1, i)
     }
   }
 

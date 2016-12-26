@@ -19,8 +19,8 @@ public class SlimeIndividualSetting extends IndividualSetting {
   private static ObjectMapper $$mapper = createObjectMapper()
 
   private String $path = ""
-  private List<SlimeSearchParameter> $searchParameters = ArrayList.new()
-  private List<String> $searchParameterNames = ArrayList.new()
+  private List<SlimeSearchParameter> $registeredParameters = ArrayList.new()
+  private List<String> $registeredParameterNames = ArrayList.new()
 
   private SlimeIndividualSetting() {
   }
@@ -77,20 +77,20 @@ public class SlimeIndividualSetting extends IndividualSetting {
     $path = path
   }
 
-  public List<SlimeSearchParameter> getSearchParameters() {
-    return $searchParameters
+  public List<SlimeSearchParameter> getRegisteredParameters() {
+    return $registeredParameters
   }
 
-  public void setSearchParameters(List<SlimeSearchParameter> searchParameters) {
-    $searchParameters = searchParameters
+  public void setRegisteredParameters(List<SlimeSearchParameter> registeredParameters) {
+    $registeredParameters = registeredParameters
   }
 
-  public List<String> getSearchParameterNames() {
-    return $searchParameterNames
+  public List<String> getRegisteredParameterNames() {
+    return $registeredParameterNames
   }
 
-  public void setSearchParameterNames(List<String> searchParameterNames) {
-    $searchParameterNames = searchParameterNames
+  public void setRegisteredParameterNames(List<String> registeredParameterNames) {
+    $registeredParameterNames = registeredParameterNames
   } 
 
 }

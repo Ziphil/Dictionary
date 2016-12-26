@@ -974,8 +974,8 @@ public class MainController extends PrimitiveController<Stage> {
     $searchRegisteredParameterMenu.getItems().clear()
     if ($individualSetting != null) {
       if ($individualSetting instanceof SlimeIndividualSetting) {
-        List<SlimeSearchParameter> parameters = $individualSetting.getSearchParameters()
-        List<String> parameterNames = $individualSetting.getSearchParameterNames()
+        List<SlimeSearchParameter> parameters = $individualSetting.getRegisteredParameters()
+        List<String> parameterNames = $individualSetting.getRegisteredParameterNames()
         for (Integer i : 0 ..< 10) {
           SlimeSearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
