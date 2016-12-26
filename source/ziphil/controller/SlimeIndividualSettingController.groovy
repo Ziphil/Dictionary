@@ -10,6 +10,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ListSelectionView
@@ -36,6 +37,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
   @FXML private GridPane $searchParameterPane
+  @FXML private List<TextField> $searchParameterStringControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $searchParameters
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
@@ -67,6 +69,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       $usesIndividualOrderControl.setSelected(true)
     }
     $searchParameters = searchParameters
+    for (Integer i : 0 ..< 10) {
+      String searchParameterString = (searchParameters[i] != null) ? searchParameters[i].toString() : ""
+      $searchParameterStringControls[i].setText(searchParameterString)
+    }
   }
 
   @FXML
@@ -103,11 +109,13 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     if (nextStage.isCommitted()) {
       SlimeSearchParameter parameter = nextStage.getResult()
       $searchParameters[i] = parameter
+      $searchParameterStringControls[i].setText(parameter.toString())
     }
   }
 
   private void deregisterSearchParameter(Integer i) {
     $searchParameters[i] = (SlimeSearchParameter)null
+    $searchParameterStringControls[i].setText("")
   }
 
   private void setupSearchParameterPane() {
@@ -115,10 +123,13 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       Integer j = i
       Label numberLabel = Label.new("検索条件${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
-      Button editButton = Button.new("編集")
+      HBox innerBox = HBox.new()
+      TextField searchParameterStringControl = TextField.new()
+      Button editButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
-      editButton.setPrefWidth(Measurement.rpx(70))
-      editButton.setMinWidth(Measurement.rpx(70))
+      searchParameterStringControl.setEditable(false)
+      searchParameterStringControl.getStyleClass().add("left-pill")
+      editButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
       editButton.setOnAction() {
@@ -127,7 +138,11 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       deregisterButton.setOnAction() {
         deregisterSearchParameter(j)
       }
-      box.getChildren().addAll(editButton, deregisterButton)
+      innerBox.getChildren().addAll(searchParameterStringControl, editButton)
+      innerBox.setHgrow(searchParameterStringControl, Priority.ALWAYS)
+      box.getChildren().addAll(innerBox, deregisterButton)
+      box.setHgrow(innerBox, Priority.ALWAYS)
+      $searchParameterStringControls[i] = searchParameterStringControl
       $searchParameterPane.add(numberLabel, 0, i)
       $searchParameterPane.add(box, 1, i)
     }

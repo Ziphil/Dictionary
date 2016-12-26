@@ -20,21 +20,34 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   private SearchType $informationSearchType
   private String $tag
 
-  public SlimeSearchParameter(Integer id, String name, SearchType nameSearchType, String equivalentName, String equivalentTitle, SearchType equivalentSearchType, String informationText,
-                              String informationTitle, SearchType informationSearchType, String tag) {
-    $id = id
-    $name = name
-    $nameSearchType = nameSearchType
-    $equivalentName = equivalentName
-    $equivalentTitle = equivalentTitle
-    $equivalentSearchType = equivalentSearchType
-    $informationText = informationText
-    $informationTitle = informationTitle
-    $informationSearchType = informationSearchType
-    $tag = tag
-  }
-
-  public SlimeSearchParameter() {
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    if ($id != null) {
+      string.append("ID[")
+      string.append($id).append("], ")
+    }
+    if ($name != null) {
+      string.append("単語[")
+      string.append($name).append("], ")
+    }
+    if ($equivalentName != null || $equivalentTitle != null) {
+      string.append("訳語[")
+      string.append($equivalentTitle ?: "").append(":")
+      string.append($equivalentName ?: "").append("], ")
+    }
+    if ($informationText != null || $informationTitle != null) {
+      string.append("内容[")
+      string.append($informationTitle ?: "").append(":")
+      string.append($informationText ?: "").append("], ")
+    }
+    if ($tag != null) {
+      string.append("タグ[")
+      string.append($tag).append("], ")
+    }
+    if (string.length() >= 2) {
+      string.setLength(string.length() - 2)
+    }
+    return string.toString()
   }
 
   public Integer getId() {
