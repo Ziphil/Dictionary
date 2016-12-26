@@ -116,6 +116,24 @@
           </TextFlow>
         </GridPane>
       </Tab>
+      <Tab text="検索" closable="false">
+        <GridPane fx:id="$searchParameterPane">
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <columnConstraints>
+            <ColumnConstraints hgrow="never"/>
+            <ColumnConstraints hgrow="always"/>
+          </columnConstraints>
+        </GridPane>
+      </Tab>
     </TabPane>
   </center>
   <bottom>

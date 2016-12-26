@@ -5,6 +5,8 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class IndividualSetting {
+public abstract class IndividualSetting {
+
+  public abstract void save()
 
 }

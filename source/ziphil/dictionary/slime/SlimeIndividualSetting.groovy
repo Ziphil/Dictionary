@@ -19,7 +19,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
   private static ObjectMapper $$mapper = createObjectMapper()
 
   private String $path = ""
-  private List<SlimeSearchParameter> $searchParameters = ArrayList.new(10)
+  private List<SlimeSearchParameter> $searchParameters = ArrayList.new()
 
   private SlimeIndividualSetting() {
   }
@@ -27,6 +27,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void save() {
     String compressedPath = createCompressedPath($path)
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+    println(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
     $$mapper.writeValue(stream, this)
     stream.close()
   }
@@ -41,16 +42,24 @@ public class SlimeIndividualSetting extends IndividualSetting {
         stream.close()
         return instance
       } catch (JsonParseException exception) {
-        return SlimeIndividualSetting.new()
+        SlimeIndividualSetting instance = SlimeIndividualSetting.new()
+        instance.setPath(dictionary.getPath())
+        return instance
       }
     } else {
-      return SlimeIndividualSetting.new()
+      SlimeIndividualSetting instance = SlimeIndividualSetting.new()
+      instance.setPath(dictionary.getPath())
+      return instance
     }
   }
 
   private static String createCompressedPath(String path) {
     String separator = File.separator.replaceAll("\\\\", "\\\\\\\\")
-    String compressedPath = path.replaceAll(/\$/, "\\\$-").replaceAll(separator, "\\\$\\\$")
+    String compressedPath = path
+    compressedPath = compressedPath.replaceAll(/\.json$/, ".zpdt")
+    compressedPath = compressedPath.replaceAll(/\$/, "\\\$d")
+    compressedPath = compressedPath.replaceAll(/:/, "\\\$c")
+    compressedPath = compressedPath.replaceAll(separator, "\\\$\\\$")
     return compressedPath
   }
 

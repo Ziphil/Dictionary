@@ -9,7 +9,13 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum SearchType {
 
-  EXACT, PREFIX, SUFFIX, PART, REGULAR_EXPRESSION, MINIMAL_PAIR
+  EXACT("完全一致"), PREFIX("前方一致"), SUFFIX("後方一致"), PART("部分一致"), REGULAR_EXPRESSION("正規表現"), MINIMAL_PAIR("最小対語")
+
+  private String $string = ""
+
+  private SearchType(String string) {
+    $string = string
+  }
 
   public static SearchType valueOfExplanation(String explanation) {
     if (explanation == "完全一致") {
@@ -58,6 +64,10 @@ public enum SearchType {
     } catch (PatternSyntaxException exception) {
       return false
     }
+  }
+
+  public String toString() {
+    return $string
   }
 
 }

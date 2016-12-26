@@ -32,6 +32,7 @@ public class MainApplication extends Application {
 
   private void makeDirectories() {
     File.new(Launcher.BASE_PATH + "data/setting").mkdirs()
+    File.new(Launcher.BASE_PATH + "data/setting/individual").mkdirs()
     File.new(Launcher.BASE_PATH + "data/log").mkdirs()
   }
 

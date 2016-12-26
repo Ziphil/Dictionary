@@ -755,9 +755,9 @@ public class MainController extends PrimitiveController<Stage> {
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      if ($dictionary instanceof SlimeDictionary) {
+      if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
         SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-        controller.prepare($dictionary)
+        controller.prepare($dictionary, $individualSetting)
       } else if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
         controller.prepare($dictionary)
@@ -766,6 +766,9 @@ public class MainController extends PrimitiveController<Stage> {
       if (nextStage.isCommitted() && nextStage.getResult()) {
         if (savesAutomatically) {
           $dictionary.save()
+        }
+        if ($individualSetting != null) {
+          $individualSetting.save()
         }
       }
     }
