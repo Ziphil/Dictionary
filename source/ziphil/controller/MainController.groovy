@@ -51,6 +51,7 @@ import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Element
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
@@ -64,6 +65,7 @@ import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaSearchParameter
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
@@ -110,7 +112,8 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
-  private Dictionary $dictionary
+  private Dictionary $dictionary = null
+  private IndividualSetting $individualSetting = null
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
 
@@ -566,10 +569,23 @@ public class MainController extends PrimitiveController<Stage> {
     $dictionary = dictionary
     $previousSearch = ""
     $searchHistory.clear()
+    updateIndividualSetting()
     updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
     updateMenuItems()
+  }
+
+  private void updateIndividualSetting() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof SlimeDictionary) {
+        $individualSetting = SlimeIndividualSetting.create($dictionary)
+      } else {
+        $individualSetting = null
+      }
+    } else {
+      $individualSetting = null
+    }
   }
 
   private void updateSearchStatuses() {
