@@ -27,7 +27,6 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void save() {
     String compressedPath = createCompressedPath($path)
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
-    println(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
     $$mapper.writeValue(stream, this)
     stream.close()
   }
