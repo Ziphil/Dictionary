@@ -785,6 +785,7 @@ public class MainController extends PrimitiveController<Stage> {
         if ($individualSetting != null) {
           $individualSetting.save()
         }
+        setupSearchRegisteredParameterMenu()
       }
     }
   }
