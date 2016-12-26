@@ -91,6 +91,8 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ToggleButton $searchTypeControl
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private Menu $searchRegisteredParameterMenu
+  @FXML private MenuItem $searchRegisteredParameterItem
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
@@ -569,6 +571,7 @@ public class MainController extends PrimitiveController<Stage> {
     updateLoader()
     updateOnLinkClicked()
     updateMenuItems()
+    setupSearchRegisteredParameterMenu()
   }
 
   private void cancelLoadDictionary() {
@@ -655,12 +658,24 @@ public class MainController extends PrimitiveController<Stage> {
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
       $searchScriptItem.setDisable(false)
-      if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
+      if ($dictionary instanceof ShaleiaDictionary) {
         $searchDetailItem.setDisable(false)
         $editIndividualSettingItem.setDisable(false)
-      } else {
+        $searchRegisteredParameterMenu.setVisible(false)
+        $searchRegisteredParameterMenu.setDisable(true)
+        $searchRegisteredParameterItem.setVisible(true)
+      } else if ($dictionary instanceof PersonalDictionary) {
         $searchDetailItem.setDisable(true)
         $editIndividualSettingItem.setDisable(true)
+        $searchRegisteredParameterMenu.setVisible(false)
+        $searchRegisteredParameterMenu.setDisable(true)
+        $searchRegisteredParameterItem.setVisible(true)
+      } else if ($dictionary instanceof SlimeDictionary) {
+        $searchDetailItem.setDisable(false)
+        $editIndividualSettingItem.setDisable(false)
+        $searchRegisteredParameterMenu.setVisible(true)
+        $searchRegisteredParameterMenu.setDisable(false)
+        $searchRegisteredParameterItem.setVisible(false)
       }
     } else {
       $saveDictionaryItem.setDisable(true)
@@ -950,8 +965,33 @@ public class MainController extends PrimitiveController<Stage> {
       }
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
-      item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupSearchRegisteredParameterMenu() {
+    $searchRegisteredParameterMenu.getItems().clear()
+    if ($individualSetting != null) {
+      if ($individualSetting instanceof SlimeIndividualSetting) {
+        for (Integer i : 0 ..< 10) {
+          SlimeSearchParameter parameter = $individualSetting.getSearchParameters()[i]
+          MenuItem item = MenuItem.new()
+          if (parameter != null) {
+            item.setText("検索条件${(i + 1) % 10}")
+            item.setOnAction() {
+              searchDetailBy(parameter)
+              $searchHistory.add(parameter)
+            }
+          } else {
+            item.setText("未登録")
+            item.setDisable(true)
+          }
+          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+          item.setGraphic(ImageView.new(icon))
+          item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
+          $searchRegisteredParameterMenu.getItems().add(item)
+        }
+      }
     }
   }
 

@@ -102,6 +102,8 @@
             <ImageView><Image url="@../../icon/script_search.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <Menu fx:id="$searchRegisteredParameterMenu" text="登録条件で検索"/>
+        <MenuItem fx:id="$searchRegisteredParameterItem" text="登録条件で検索" disable="true"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
