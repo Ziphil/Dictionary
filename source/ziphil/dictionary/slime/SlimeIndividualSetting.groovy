@@ -20,6 +20,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
 
   private String $path = ""
   private List<SlimeSearchParameter> $searchParameters = ArrayList.new()
+  private List<String> $searchParameterNames = ArrayList.new()
 
   private SlimeIndividualSetting() {
   }
@@ -83,5 +84,13 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void setSearchParameters(List<SlimeSearchParameter> searchParameters) {
     $searchParameters = searchParameters
   }
+
+  public List<String> getSearchParameterNames() {
+    return $searchParameterNames
+  }
+
+  public void setSearchParameterNames(List<String> searchParameterNames) {
+    $searchParameterNames = searchParameterNames
+  } 
 
 }

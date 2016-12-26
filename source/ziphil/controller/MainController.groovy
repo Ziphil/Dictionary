@@ -974,11 +974,14 @@ public class MainController extends PrimitiveController<Stage> {
     $searchRegisteredParameterMenu.getItems().clear()
     if ($individualSetting != null) {
       if ($individualSetting instanceof SlimeIndividualSetting) {
+        List<SlimeSearchParameter> parameters = $individualSetting.getSearchParameters()
+        List<String> parameterNames = $individualSetting.getSearchParameterNames()
         for (Integer i : 0 ..< 10) {
-          SlimeSearchParameter parameter = $individualSetting.getSearchParameters()[i]
+          SlimeSearchParameter parameter = parameters[i]
+          String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
           if (parameter != null) {
-            item.setText("検索条件${(i + 1) % 10}")
+            item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
               searchDetailBy(parameter)
               $searchHistory.add(parameter)
