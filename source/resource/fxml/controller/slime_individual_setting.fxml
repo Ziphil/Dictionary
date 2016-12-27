@@ -132,6 +132,15 @@
             <ColumnConstraints hgrow="never"/>
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="左側の入力欄に検索条件の名前を入れておくと、その名前がメニューに表示されます。&#10;"/>
+            <Text text="検索条件は辞書ファイルとは別に保存されます。"/>
+          </TextFlow>
         </GridPane>
       </Tab>
     </TabPane>
