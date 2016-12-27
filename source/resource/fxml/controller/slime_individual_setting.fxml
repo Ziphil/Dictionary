@@ -49,8 +49,14 @@
           </columnConstraints>
           <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ListSelectionView fx:id="$plainInformationTitlesView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-          <PermutableListView fx:id="$informationTitleOrderView" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <ListSelectionView fx:id="$plainInformationTitlesView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefHeight><Double rpx="120"/></prefHeight>
+            <minHeight><Double rpx="120"/></minHeight>
+          </ListSelectionView>
+          <PermutableListView fx:id="$informationTitleOrderView" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefHeight><Double rpx="120"/></prefHeight>
+            <minHeight><Double rpx="120"/></minHeight>
+          </PermutableListView>
           <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>

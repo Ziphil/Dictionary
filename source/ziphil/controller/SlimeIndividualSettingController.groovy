@@ -30,7 +30,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_individual_setting.fxml"
   private static final String TITLE = "個別設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
+  private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
   @FXML private ListSelectionView<String> $plainInformationTitlesView
