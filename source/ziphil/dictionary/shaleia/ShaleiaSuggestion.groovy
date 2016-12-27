@@ -1,33 +1,31 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.Suggestion
+import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestion extends Suggestion<ShaleiaPossibility> {
+public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
 
   private ShaleiaDictionary $dictionary
-
-  public ShaleiaSuggestion() {
-    update()
-  }
 
   public void update() {
     $isChanged = true
   }
 
-  public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    ShaleiaSuggestionContentPaneCreator creator = ShaleiaSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
+  public void updateContentPane() {
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      ShaleiaSuggestionContentPaneMaker maker = ShaleiaSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isChanged = false
+    }
   }
 
   public ShaleiaDictionary getDictionary() {

@@ -1,5 +1,7 @@
 package ziphil.module
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 import groovy.transform.CompileStatic
 import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
@@ -8,7 +10,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Version implements Comparable<Version> {
 
-  private Integer $major = 0
+  private Integer $major = -1
   private Integer $minor = 0
   private Integer $patch = 0
   private Integer $date = null
@@ -20,15 +22,16 @@ public class Version implements Comparable<Version> {
     $date = date
   }
 
+  public Version(Integer major, Integer minor, Integer patch) {
+    this(major, minor, patch, null)
+  }
+
+  @JsonCreator
   public Version(List<Integer> versionList) {
     $major = versionList[0] ?: -1
     $minor = versionList[1] ?: 0
     $patch = versionList[2] ?: 0
     $date = versionList[3]
-  }
-
-  public Version(Integer major, Integer minor, Integer patch) {
-    this(major, minor, patch, null)
   }
 
   @ConvertPrimitiveArgs
@@ -62,6 +65,7 @@ public class Version implements Comparable<Version> {
     }
   }
 
+  @JsonValue
   public List<Integer> toList() {
     return [$major, $minor, $patch]
   }

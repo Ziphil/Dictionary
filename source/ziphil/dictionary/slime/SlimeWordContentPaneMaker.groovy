@@ -9,14 +9,14 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneCreator
+import ziphil.dictionary.ContentPaneMaker
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, SlimeDictionary> {
+public class SlimeWordContentPaneMaker extends ContentPaneMaker<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_TAG_CLASS = "slime-tag"
@@ -25,11 +25,11 @@ public class SlimeWordContentPaneCreator extends ContentPaneCreator<SlimeWord, S
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
-  public SlimeWordContentPaneCreator(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
+  public SlimeWordContentPaneMaker(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
     super(contentPane, word, dictionary)
   }
 
-  public void create() {
+  public void make() {
     Boolean hasInformation = false
     Boolean hasRelation = false
     $contentPane.getStyleClass().clear()

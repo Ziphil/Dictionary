@@ -24,15 +24,16 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML private TextField $idControl
   @FXML private TextField $nameControl
-  @FXML private ComboBox<String> $nameSearchTypeControl
+  @FXML private ComboBox<SearchType> $nameSearchTypeControl
   @FXML private TextField $equivalentNameControl
   @FXML private ComboBox<String> $equivalentTitleControl
-  @FXML private ComboBox<String> $equivalentSearchTypeControl
+  @FXML private ComboBox<SearchType> $equivalentSearchTypeControl
   @FXML private TextField $informationTextControl
   @FXML private ComboBox<String> $informationTitleControl
-  @FXML private ComboBox<String> $informationSearchTypeControl
+  @FXML private ComboBox<SearchType> $informationSearchTypeControl
   @FXML private ComboBox<String> $tagControl
   private SlimeDictionary $dictionary
+  private SlimeSearchParameter $searchParameter
 
   public SlimeSearcherController(UtilityStage<SlimeSearchParameter> stage) {
     super(stage)
@@ -44,9 +45,56 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     setupIdControl()
   }
 
-  public void prepare(SlimeDictionary dictionary) {
+  public void prepare(SlimeDictionary dictionary, SlimeSearchParameter searchParameter) {
     $dictionary = dictionary
-    setupTitleControls()
+    $searchParameter = searchParameter
+    applyDictionary()
+    applySearchParameter()
+  }
+
+  public void prepare(SlimeDictionary dictionary) {
+    prepare(dictionary, null)
+  }
+
+  private void applyDictionary() {
+    $equivalentTitleControl.getItems().addAll($dictionary.getRegisteredEquivalentTitles())
+    $informationTitleControl.getItems().addAll($dictionary.getRegisteredInformationTitles())
+    $tagControl.getItems().addAll($dictionary.getRegisteredTags())
+  }
+
+  private void applySearchParameter() {
+    if ($searchParameter != null) {
+      if ($searchParameter.getId() != null) {
+        $idControl.setText($searchParameter.getId().toString())
+      }
+      if ($searchParameter.getName() != null) {
+        $nameControl.setText($searchParameter.getName())
+      }
+      if ($searchParameter.getNameSearchType() != null) {
+        $nameSearchTypeControl.setValue($searchParameter.getNameSearchType())
+      }
+      if ($searchParameter.getEquivalentName() != null) {
+        $equivalentNameControl.setText($searchParameter.getEquivalentName())
+      }
+      if ($searchParameter.getEquivalentTitle() != null) {
+        $equivalentTitleControl.setValue($searchParameter.getEquivalentTitle())
+      }
+      if ($searchParameter.getEquivalentSearchType() != null) {
+        $equivalentSearchTypeControl.setValue($searchParameter.getEquivalentSearchType())
+      }
+      if ($searchParameter.getInformationText() != null) {
+        $informationTextControl.setText($searchParameter.getInformationText())
+      }
+      if ($searchParameter.getInformationTitle() != null) {
+        $informationTitleControl.setValue($searchParameter.getInformationTitle())
+      }
+      if ($searchParameter.getInformationSearchType() != null) {
+        $informationSearchTypeControl.setValue($searchParameter.getInformationSearchType())
+      }
+      if ($searchParameter.getTag() != null) {
+        $tagControl.setValue($searchParameter.getTag())
+      }
+    }
   }
 
   @FXML
@@ -58,31 +106,25 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     if ($nameControl.getText() != "") {
       parameter.setName($nameControl.getText())
     }
-    parameter.setNameSearchType(SearchType.valueOfExplanation($nameSearchTypeControl.getValue()))
+    parameter.setNameSearchType($nameSearchTypeControl.getValue())
     if ($equivalentNameControl.getText() != "") {
       parameter.setEquivalentName($equivalentNameControl.getText())
     }
     if ($equivalentTitleControl.getValue() != "") {
       parameter.setEquivalentTitle($equivalentTitleControl.getValue())
     } 
-    parameter.setEquivalentSearchType(SearchType.valueOfExplanation($equivalentSearchTypeControl.getValue()))
+    parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     if ($informationTextControl.getText() != "") {
       parameter.setInformationText($informationTextControl.getText())
     }
     if ($informationTitleControl.getValue() != "") {
       parameter.setInformationTitle($informationTitleControl.getValue())
     }
-    parameter.setInformationSearchType(SearchType.valueOfExplanation($informationSearchTypeControl.getValue()))
+    parameter.setInformationSearchType($informationSearchTypeControl.getValue())
     if ($tagControl.getValue() != "") {
       parameter.setTag($tagControl.getValue())
     }
     $stage.commit(parameter)
-  }
-
-  private void setupTitleControls() {
-    $equivalentTitleControl.getItems().addAll($dictionary.getRegisteredEquivalentTitles())
-    $informationTitleControl.getItems().addAll($dictionary.getRegisteredInformationTitles())
-    $tagControl.getItems().addAll($dictionary.getRegisteredTags())
   }
 
   private void setupIdControl() {

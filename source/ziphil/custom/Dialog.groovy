@@ -5,16 +5,7 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import javafx.beans.value.ObservableValue
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.Label
 import javafx.stage.Stage
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphilib.transform.Ziphilify
 
@@ -22,146 +13,93 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Dialog extends Stage {
 
-  private static final String RESOURCE_PATH = "resource/fxml/custom/dialog.fxml"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(360)
-  private static final Double DEFAULT_HEIGHT = -1
-
-  @FXML private Label $contentLabel
-  @FXML private Button $commitButton
-  @FXML private Button $negateButton
-  @FXML private Button $cancelButton
+  private StringProperty $contentText = SimpleStringProperty.new("")
+  private StringProperty $commitText = SimpleStringProperty.new("OK")
+  private StringProperty $negateText = SimpleStringProperty.new("NG")
+  private StringProperty $cancelText = SimpleStringProperty.new("キャンセル")
   private BooleanProperty $allowsNegate = SimpleBooleanProperty.new(false)
   private BooleanProperty $allowsCancel = SimpleBooleanProperty.new(true)
-  private DialogStatus $status = DialogStatus.CANCELLED
-  private Scene $scene
+  private Status $status = Status.CANCELLED
 
-  public Dialog() {
-    super(StageStyle.UTILITY)
-    loadResource()
-    setupStage()
+  public Dialog(StageStyle style) {
+    super(style)
+    makeManager()
   }
 
-  public Dialog(String title) {
-    this()
-    setTitle(title)
+  private void makeManager() {
+    DialogManager manager = DialogManager.new(this)
   }
 
-  public Dialog(String title, String contentText) {
-    this()
-    setTitle(title)
-    setContentText(contentText)
+  public void commit() {
+    $status = Status.COMMITTED
   }
 
-  @FXML
-  private void initialize(){
-    bindButtonVisibleProperties()
-    setupCommitButton()
+  public void negate() {
+    $status = Status.NEGATED
   }
 
-  @FXML
-  private void commit() {
-    $status = DialogStatus.COMMITTED
-    close()
-  }
-
-  @FXML
-  private void negate() {
-    $status = DialogStatus.NEGATED
-    close()
-  }
-
-  @FXML
-  private void cancel() {
-    $status = DialogStatus.CANCELLED
-    close()
-  }
-
-  private void setupStage() {
-    initModality(Modality.WINDOW_MODAL)
-  }
-
-  private void bindButtonVisibleProperties() {
-    $negateButton.visibleProperty().bind($allowsNegate)
-    $negateButton.managedProperty().bind($allowsNegate)
-    $cancelButton.visibleProperty().bind($allowsCancel)
-    $cancelButton.managedProperty().bind($allowsCancel)
-  }
-
-  private void setupCommitButton() {
-    $commitButton.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
-      if (oldValue == null && newValue != null) {
-        $commitButton.requestFocus()
-      }
-    }
-  }
-
-  private void loadResource() {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(RESOURCE_PATH), null, CustomBuilderFactory.new())
-    loader.setController(this)
-    Parent root = (Parent)loader.load()
-    $scene = Scene.new(root, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    setScene($scene)
-    sizeToScene()
+  public void cancel() {
+    $status = Status.CANCELLED
   }
 
   public Boolean isCommitted() {
-    return $status == DialogStatus.COMMITTED
+    return $status == Status.COMMITTED
   }
 
   public Boolean isNegated() {
-    return $status == DialogStatus.NEGATED
+    return $status == Status.NEGATED
   }
 
   public Boolean isCancelled() {
-    return $status == DialogStatus.CANCELLED
+    return $status == Status.CANCELLED
   }
 
   public String getContentText() {
-    return $contentLabel.getText()
+    return $contentText.get()
   }
 
   public void setContentText(String contentText) {
-    $contentLabel.setText(contentText)
+    $contentText.set(contentText)
   }
 
   public StringProperty contentTextProperty() {
-    return $contentLabel.textProperty()
+    return $contentText
   }
 
   public String getCommitText() {
-    return $commitButton.getText()
+    return $commitText.get()
   }
 
   public void setCommitText(String commitText) {
-    $commitButton.setText(commitText)
+    $commitText.set(commitText)
   }
 
   public StringProperty commitTextProperty() {
-    return $commitButton.textProperty()
+    return $commitText
   }
 
   public String getNegateText() {
-    return $negateButton.getText()
+    return $negateText.get()
   }
 
   public void setNegateText(String negateText) {
-    $negateButton.setText(negateText)
+    $negateText.set(negateText)
   }
 
   public StringProperty negateTextProperty() {
-    return $negateButton.textProperty()
+    return $negateText
   }
 
   public String getCancelText() {
-    return $cancelButton.getText()
+    return $cancelText.get()
   }
 
   public void setCancelText(String cancelText) {
-    $cancelButton.setText(cancelText)
+    $cancelText.set(cancelText)
   }
 
   public StringProperty cancelTextProperty() {
-    return $cancelButton.textProperty()
+    return $cancelText
   }
 
   public Boolean isAllowsNegate() {
@@ -187,5 +125,13 @@ public class Dialog extends Stage {
   public BooleanProperty allowsCancelProperty() {
     return $allowsCancel
   }
+
+}
+
+
+@InnerClass(Dialog)
+private static enum Status {
+
+  COMMITTED, NEGATED, CANCELLED
 
 }

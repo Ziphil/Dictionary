@@ -20,6 +20,7 @@ import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
+import ziphil.module.FontRenderingType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -40,11 +41,15 @@ public class SettingController extends Controller<Boolean> {
   @FXML private Spinner<Integer> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
+  @FXML private ComboBox<String> $systemFontFamilyControl
+  @FXML private CheckBox $usesDefaultSystemFontFamilyControl
   @FXML private Spinner<Integer> $lineSpacingControl
   @FXML private Spinner<Integer> $separativeIntervalControl
+  @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
+  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
   @FXML private ToggleButton $savesAutomaticallyControl
   @FXML private ToggleButton $ignoresAccentControl
   @FXML private ToggleButton $ignoresCaseControl
@@ -73,8 +78,10 @@ public class SettingController extends Controller<Boolean> {
     Integer contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Integer editorFontSize = setting.getEditorFontSize()
+    String systemFontFamily = setting.getSystemFontFamily()
     Integer lineSpacing = setting.getLineSpacing()
     Integer separativeInterval = setting.getSeparativeInterval()
+    FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
@@ -83,6 +90,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
     Boolean showsSlimeId = setting.getShowsSlimeId() == true
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
+    List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
       $contentFontFamilyControl.getSelectionModel().select(contentFontFamily)
     } else {
@@ -103,8 +111,14 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
+    if (systemFontFamily != null) {
+      $systemFontFamilyControl.getSelectionModel().select(systemFontFamily)
+    } else {
+      $usesDefaultSystemFontFamilyControl.setSelected(true)
+    }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
+    $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
@@ -114,6 +128,7 @@ public class SettingController extends Controller<Boolean> {
     $showsSlimeIdControl.setSelected(showsSlimeId)
     for (Integer i : 0 ..< 10) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
+      $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
     }
   }
 
@@ -127,8 +142,11 @@ public class SettingController extends Controller<Boolean> {
     Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
+    Boolean usesDefaultSystemFontFamily = $usesDefaultSystemFontFamilyControl.isSelected()
+    String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getSelectionModel().getSelectedItem()
     Integer lineSpacing = $lineSpacingControl.getValue()
     Integer separativeInterval = $separativeIntervalControl.getValue()
+    FontRenderingType fontRenderingType = $fontRenderingTypeControl.getSelectionModel().getSelectedItem()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -136,13 +154,16 @@ public class SettingController extends Controller<Boolean> {
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
-    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{path -> path.getText()}
+    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{control -> control.getText()}
+    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{control -> control.getText()}
     setting.setContentFontFamily(contentFontFamily)
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
+    setting.setSystemFontFamily(systemFontFamily)
     setting.setLineSpacing(lineSpacing)
     setting.setSeparativeInterval(separativeInterval)
+    setting.setFontRenderingType(fontRenderingType)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
@@ -152,7 +173,9 @@ public class SettingController extends Controller<Boolean> {
     setting.setShowsSlimeId(showsSlimeId)
     for (Integer i : 0 ..< 10) {
       String path = registeredDictionaryPaths[i]
+      String name = registeredDictionaryNames[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
+      setting.getRegisteredDictionaryNames()[i] = (name != "") ? name : null
     }
   }
 
@@ -174,6 +197,7 @@ public class SettingController extends Controller<Boolean> {
 
   private void deregisterDictionary(Integer i) {
     $registeredDictionaryPathControls[i].setText("")
+    $registeredDictionaryNameControls[i].setText("")
   }
 
   @FXML
@@ -189,9 +213,12 @@ public class SettingController extends Controller<Boolean> {
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
       TextField dictionaryPathControl = TextField.new()
+      TextField dictionaryNameControl = TextField.new()
       Button browseButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
       dictionaryPathControl.getStyleClass().add("left-pill")
+      dictionaryNameControl.setPrefWidth(Measurement.rpx(150))
+      dictionaryNameControl.setMinWidth(Measurement.rpx(150))
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
@@ -203,9 +230,10 @@ public class SettingController extends Controller<Boolean> {
       }
       innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
       innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
-      box.getChildren().addAll(innerBox, deregisterButton)
+      box.getChildren().addAll(dictionaryNameControl, innerBox, deregisterButton)
       box.setHgrow(innerBox, Priority.ALWAYS)
       $registeredDictionaryPathControls[i] = dictionaryPathControl
+      $registeredDictionaryNameControls[i] = dictionaryNameControl
       $registeredDictionaryPane.add(numberLabel, 0, i)
       $registeredDictionaryPane.add(box, 1, i)
     }
@@ -215,6 +243,7 @@ public class SettingController extends Controller<Boolean> {
     List<String> fontFamilies = Font.getFamilies()
     $contentFontFamilyControl.getItems().addAll(fontFamilies)
     $editorFontFamilyControl.getItems().addAll(fontFamilies)
+    $systemFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
   private void setupIntegerControls() {
@@ -228,6 +257,7 @@ public class SettingController extends Controller<Boolean> {
     $contentFontSizeControl.disableProperty().bind($usesDefaultContentFontSizeControl.selectedProperty())
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
+    $systemFontFamilyControl.disableProperty().bind($usesDefaultSystemFontFamilyControl.selectedProperty())
   }
 
   private void bindOtherProperties() {

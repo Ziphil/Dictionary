@@ -1,12 +1,12 @@
-package ziphil.custom
+package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public enum DialogStatus {
+public abstract class IndividualSetting {
 
-  COMMITTED, NEGATED, CANCELLED
+  public abstract void save()
 
 }

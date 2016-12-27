@@ -65,15 +65,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       stream.close()
     }
     for (SlimeWord word : $words) {
-      word.createComparisonString($dictionary.getAlphabetOrder())
-      word.updateOthers()
+      word.updateComparisonString($dictionary.getAlphabetOrder())
+      word.update()
     }
     return $words
-  }
-
-  protected void update() {
-    $dictionary.getRawWords().addAll($words)
-    $dictionary.updateOthers()
   }
 
   private void parseWord(JsonParser parser, SlimeWord word) {

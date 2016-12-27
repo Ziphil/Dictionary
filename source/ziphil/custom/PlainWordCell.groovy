@@ -21,9 +21,7 @@ public class PlainWordCell extends ListCell<SlimeWord> {
       setText(null)
       setGraphic(null)
     } else {
-      if (word.isPlainChanged()) {
-        word.createPlainContentPane()
-      }
+      word.updatePlainContentPane()
       word.getPlainContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(word.getPlainContentPane())

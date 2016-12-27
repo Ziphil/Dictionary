@@ -75,12 +75,12 @@
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem text="検索方式の変更" onAction="#changeSearchType" accelerator="Shortcut+T"/>
+        <SeparatorMenuItem/>
         <MenuItem text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
           <graphic>
             <ImageView><Image url="@../../icon/shuffle.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <SeparatorMenuItem/>
         <MenuItem text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
           <graphic>
             <ImageView><Image url="@../../icon/previous.png"/></ImageView>
@@ -102,6 +102,8 @@
             <ImageView><Image url="@../../icon/script_search.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <Menu fx:id="$searchRegisteredParameterMenu" text="登録条件で検索"/>
+        <MenuItem fx:id="$searchRegisteredParameterItem" text="登録条件で検索" disable="true"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
@@ -125,8 +127,8 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$showIndividualSettingItem" text="辞書の個別設定" onAction="#showIndividualSetting" accelerator="Shortcut+P"/>
-        <MenuItem text="環境設定" onAction="#showSetting" accelerator="Shortcut+Shift+P">
+        <MenuItem fx:id="$editIndividualSettingItem" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
+        <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../../icon/setting.png"/></ImageView>
           </graphic>

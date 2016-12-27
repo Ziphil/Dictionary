@@ -40,14 +40,9 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       reader.close()
     }
     for (ShaleiaWord word : $words) {
-      word.createComparisonString($dictionary.getAlphabetOrder())
+      word.updateComparisonString($dictionary.getAlphabetOrder())
     }
     return $words
-  }
-
-  protected void update() {
-    $dictionary.getRawWords().addAll($words)
-    $dictionary.updateOthers()
   }
 
   private void add(String currentName, StringBuilder currentData) {
@@ -63,8 +58,11 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
   }
 
   private void addWord(String currentName, StringBuilder currentData) {
-    ShaleiaWord word = ShaleiaWord.new(currentName, currentData.toString())
+    ShaleiaWord word = ShaleiaWord.new()
+    word.setUniqueName(currentName)
+    word.setData(currentData.toString())
     word.setDictionary($dictionary)
+    word.update()
     $words.add(word)
   }
 

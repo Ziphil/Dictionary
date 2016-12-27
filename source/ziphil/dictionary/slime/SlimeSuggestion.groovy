@@ -1,33 +1,31 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.Suggestion
+import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestion extends Suggestion<SlimePossibility> {
+public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
 
   private SlimeDictionary $dictionary
-
-  public SlimeSuggestion() {
-    update()
-  }
 
   public void update() {
     $isChanged = true
   }
 
-  public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeSuggestionContentPaneCreator creator = SlimeSuggestionContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
+  public void updateContentPane() {
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      SlimeSuggestionContentPaneMaker maker = SlimeSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isChanged = false
+    }
   }
 
   public SlimeDictionary getDictionary() {

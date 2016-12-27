@@ -35,9 +35,9 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
-    String alphabetOrder = $alphabetOrderControl.getText()
-    String changeData = $changeDataControl.getText()
-    $dictionary.update(alphabetOrder, changeData)
+    $dictionary.setAlphabetOrder($alphabetOrderControl.getText())
+    $dictionary.setChangeData($changeDataControl.getText())
+    $dictionary.updateMinimum()
     $stage.commit(true)
   }
 

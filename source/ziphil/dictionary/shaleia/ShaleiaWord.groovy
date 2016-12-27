@@ -2,33 +2,31 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.Word
+import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWord extends Word {
+public class ShaleiaWord extends WordBase {
 
   private String $uniqueName = ""
   private String $data = ""
   private String $comparisonString = ""
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaWord(String uniqueName, String data) {
-    update(uniqueName, data)
-  }
-
-  public void update(String uniqueName, String data) {
-    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
-    $uniqueName = uniqueName
-    $data = data
-    $content = uniqueName + "\n" + data
-    $isChanged = true
+  public void update() {
+    updateName()
     updateEquivalents()
+    updateContent()
+    $isChanged = true
   }
 
-  public void updateEquivalents() {
+  private void updateName() {
+    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
+  }
+
+  private void updateEquivalents() {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
     String line
     $equivalents.clear()
@@ -43,18 +41,24 @@ public class ShaleiaWord extends Word {
     reader.close()
   }
 
-  public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    ShaleiaWordContentPaneCreator creator = ShaleiaWordContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
+  private void updateContent() {
+    $content = uniqueName + "\n" + data
   }
 
-  public void createComparisonString(String order) {
+  public void updateContentPane() {
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      ShaleiaWordContentPaneMaker maker = ShaleiaWordContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isChanged = false
+    }
+  }
+
+  public void updateComparisonString(String order) {
     Boolean isApostropheCharacter = order.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $uniqueName.length()) {
@@ -83,8 +87,16 @@ public class ShaleiaWord extends Word {
     return $uniqueName
   }
 
+  public void setUniqueName(String uniqueName) {
+    $uniqueName = uniqueName
+  }
+
   public String getData() {
     return $data
+  }
+
+  public void setData(String data) {
+    $data = data
   }
 
   public String getComparisonString() {

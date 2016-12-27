@@ -69,14 +69,14 @@ public class PersonalEditorController extends Controller<Boolean> {
 
   @FXML
   protected void commit() {
-    String name = $nameControl.getText()
-    String pronunciation = $pronunciationControl.getText()
-    String translation = $translationControl.getText()
-    String usage = $usageControl.getText()
-    Integer level = $levelControl.getValue()
-    Integer memory = ($memoryControl.isSelected()) ? 1 : 0
-    Integer modification = ($modificationControl.isSelected()) ? 1 : 0
-    $word.update(name, pronunciation, translation, usage, level, memory, modification)
+    $word.setName($nameControl.getText())
+    $word.setPronunciation($pronunciationControl.getText())
+    $word.setTranslation($translationControl.getText())
+    $word.setUsage($usageControl.getText())
+    $word.setLevel($levelControl.getValue())
+    $word.setMemory(($memoryControl.isSelected()) ? 1 : 0)
+    $word.setModification(($modificationControl.isSelected()) ? 1 : 0)
+    $word.update()
     $stage.commit(true)
   }
 

@@ -25,6 +25,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../../css/main/main.css"/>
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
@@ -48,8 +49,14 @@
           </columnConstraints>
           <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ListSelectionView fx:id="$plainInformationTitlesView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-          <PermutableListView fx:id="$informationTitleOrderView" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <ListSelectionView fx:id="$plainInformationTitlesView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefHeight><Double rpx="120"/></prefHeight>
+            <minHeight><Double rpx="120"/></minHeight>
+          </ListSelectionView>
+          <PermutableListView fx:id="$informationTitleOrderView" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefHeight><Double rpx="120"/></prefHeight>
+            <minHeight><Double rpx="120"/></minHeight>
+          </PermutableListView>
           <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
@@ -112,6 +119,33 @@
             </GridPane.margin>
             <Text text="単語を新規作成するときに、ここで指定したデータが自動的に入力されます。&#10;"/>
             <Text text="IDと単語名の設定は無視されます。"/>
+          </TextFlow>
+        </GridPane>
+      </Tab>
+      <Tab text="検索" closable="false">
+        <GridPane fx:id="$registeredParameterPane">
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <columnConstraints>
+            <ColumnConstraints hgrow="never"/>
+            <ColumnConstraints hgrow="always"/>
+          </columnConstraints>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="左側の入力欄に検索条件の名前を入れておくと、その名前がメニューに表示されます。&#10;"/>
+            <Text text="検索条件は辞書ファイルとは別に保存されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>

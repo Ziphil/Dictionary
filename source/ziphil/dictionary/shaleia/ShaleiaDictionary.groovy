@@ -9,16 +9,15 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
-import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> {
 
   private String $alphabetOrder = ""
   private String $changeData = ""
@@ -195,21 +194,21 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
       }
       return predicate
     }
-    $filteredSuggestions.setPredicate() { Suggestion suggestion ->
+    $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
       return false
     }
     $shufflableWords.unshuffle()
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    newWord.createComparisonString($alphabetOrder)
-    newWord.createContentPane()
+    newWord.updateComparisonString($alphabetOrder)
+    newWord.updateContentPane()
     $isChanged = true
   }
 
   public void addWord(ShaleiaWord word) {
     word.setDictionary(this)
-    word.createComparisonString($alphabetOrder)
+    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     $isChanged = true
   }
@@ -219,19 +218,18 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     $isChanged = true
   }
 
-  public void update(String alphabetOrder, String changeData) {
-    $alphabetOrder = alphabetOrder
-    $changeData = changeData
-    $isChanged = true
-    createChanges()
-  }
-
-  public void updateOthers() {
-    createChanges()
+  public void update() {
+    parseChanges()
     calculateSystemWordSize()
+    $isChanged = true
   }
 
-  private void createChanges() {
+  public void updateMinimum() {
+    parseChanges()
+    $isChanged = true
+  }
+
+  private void parseChanges() {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -257,26 +255,32 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
 
   public ShaleiaWord emptyWord(String defaultName) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
-    String data = "+ ${hairiaNumber} 〈不〉\n\n=〈〉"
-    if (defaultName != null) {
-      return ShaleiaWord.new(defaultName, data)
-    } else {
-      return ShaleiaWord.new("", data)
+    ShaleiaWord word = ShaleiaWord.new()
+    word.setUniqueName(defaultName ?: "")
+    word.setData("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
+    word.update()
+    return word
+  }
+
+  private ShaleiaWord copiedWordBase(ShaleiaWord oldWord, Boolean updates) {
+    ShaleiaWord newWord = ShaleiaWord.new()
+    newWord.setUniqueName(oldWord.getUniqueName())
+    newWord.setData(oldWord.getData())
+    if (updates) {
+      newWord.update()
     }
+    return newWord
   }
 
   public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
-    String name = oldWord.getName()
-    String data = oldWord.getData()
-    ShaleiaWord newWord = ShaleiaWord.new(name, data)
-    return newWord
+    return copiedWordBase(oldWord, true)
   }
 
   public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
-    String name = oldWord.getName()
-    String data = oldWord.getData().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}")
-    ShaleiaWord newWord = ShaleiaWord.new(name, data)
+    ShaleiaWord newWord = copiedWordBase(oldWord, false)
+    newWord.setData(oldWord.getData().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
+    newWord.update()
     return newWord
   }
 
@@ -307,6 +311,10 @@ public class ShaleiaDictionary extends Dictionary<ShaleiaWord, ShaleiaSuggestion
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
     saver.setComparator($sortedWords.getComparator())
     return saver
+  }
+
+  public String getExtension() {
+    return "xdc"
   }
 
   public String getAlphabetOrder() {

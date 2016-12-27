@@ -82,6 +82,10 @@
   -fx-font-size: 1.2em;
 }
 
+.update-detail-pane {
+  -fx-line-spacing: 1px;
+}
+
 .update-detail-pane Text {
   -fx-fill: -fx-text-base-color;
 }

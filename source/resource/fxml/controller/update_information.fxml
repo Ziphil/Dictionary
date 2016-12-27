@@ -10,10 +10,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import ziphil.module.Setting?>
 
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
     <URL value="@../../css/main/main.css"/>
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
@@ -30,7 +32,7 @@
       </padding>
       <Label text="更新情報" styleClass="update-title"/>
       <TextFlow styleClass="update-item-pane">
-        <Text text="前の検索結果に戻る機能を追加"/>
+        <Text text="登録辞書の表示名を変更する機能を追加"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -38,11 +40,11 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="検索履歴が保存され、メニューやショートカットキーから前の検索結果に戻れるようになりました。&#10;"/>
-        <Text text="詳しい動作については、ヘルプの「その他」の項目をご覧ください。"/>
+        <Text text="メニューに表示される登録辞書の名称を好きなものに変えられるようになりました。&#10;"/>
+        <Text text="設定は、メニューの「ツール」→「環境設定」から行えます。"/>
       </TextFlow>
       <TextFlow styleClass="update-item-pane">
-        <Text text="OTM形式の内容の表示順を固定する機能を追加"/>
+        <Text text="検索条件を保存してメニューから呼び出す機能を追加"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -50,20 +52,9 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="OTM形式において、各データでの登録順に関わらず一定の順序で項目を表示させられるようになりました。&#10;"/>
+        <Text text="OTM形式における高度な検索の条件を保存し、メニューから呼び出せるようになりました。&#10;"/>
         <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。&#10;"/>
-        <Text text="これまで通り、各データに登録された順番で表示させることもできます。"/>
-      </TextFlow>
-      <TextFlow styleClass="update-item-pane">
-        <Text text="単語の修正時に登録ラベルが減らない不具合を修正"/>
-      </TextFlow>
-      <TextFlow styleClass="update-detail-pane">
-        <VBox.margin>
-          <Insets>
-            <left><Double rpx="10"/></left>
-          </Insets>
-        </VBox.margin>
-        <Text text="OTM形式のデータを編集してどこにも登録されなくなったラベルが、ラベル一覧からも消えるようになりました。"/>
+        <Text text="なお、一部のショートカットキー(Ctrl/Command＋Shift＋0～9)の機能が変更されています。"/>
       </TextFlow>
     </VBox>
   </center>

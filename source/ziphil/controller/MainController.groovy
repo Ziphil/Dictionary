@@ -49,6 +49,9 @@ import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Dictionaries
+import ziphil.dictionary.Element
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
@@ -62,6 +65,7 @@ import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaSearchParameter
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
@@ -81,12 +85,14 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<? extends Word> $wordsView
+  @FXML private ListView<Element> $wordsView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private Menu $searchRegisteredParameterMenu
+  @FXML private MenuItem $searchRegisteredParameterItem
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
@@ -96,7 +102,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
   @FXML private MenuItem $removeWordItem
-  @FXML private MenuItem $showIndividualSettingItem
+  @FXML private MenuItem $editIndividualSettingItem
   @FXML private MenuItem $addWordContextItem
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
@@ -108,12 +114,13 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
-  private Dictionary $dictionary
+  private Dictionary $dictionary = null
+  private IndividualSetting $individualSetting = null
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
 
-  public MainController(Stage nextStage) {
-    super(nextStage)
+  public MainController(Stage stage) {
+    super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
     setupSearchHistory()
     setupDragAndDrop()
@@ -331,9 +338,9 @@ public class MainController extends PrimitiveController<Stage> {
     search(true)
   }
 
-  private void modifyWord(Word word) {
+  private void modifyWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         Word oldWord = $dictionary.copiedWord(word)
@@ -361,13 +368,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     modifyWord(word)
   }
 
-  private void removeWord(Word word) {
+  private void removeWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         $dictionary.removeWord(word)
         if (savesAutomatically) {
@@ -379,7 +386,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     removeWord(word)
   }
 
@@ -414,9 +421,9 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void addInheritedWord(Word word) {
+  private void addInheritedWord(Element word) {
     if ($dictionary != null) {
-      if (word != null && !(word instanceof Suggestion)) {
+      if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -447,7 +454,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Word word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
     addInheritedWord(word)
   }
 
@@ -462,14 +469,16 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionary.loadDictionary(file)
+        Dictionary dictionary = Dictionaries.loadDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
           Setting.getInstance().setDefaultDictionaryPath(null)
-          Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
+          dialog.setTitle("読み込みエラー")
+          dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
@@ -480,14 +489,16 @@ public class MainController extends PrimitiveController<Stage> {
   private void openRegisteredDictionary(File file) {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
-      Dictionary dictionary = Dictionary.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
         Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("読み込みエラー")
+        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
       }
@@ -506,14 +517,16 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionary.loadEmptyDictionary(file)
+        Dictionary dictionary = Dictionaries.loadEmptyDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
           Setting.getInstance().setDefaultDictionaryPath(null)
-          Dialog dialog = Dialog.new("新規作成エラー", "辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
+          dialog.setTitle("新規作成エラー")
+          dialog.setTitle("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }
@@ -535,7 +548,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionary.extensionOf($dictionary))
+      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), $dictionary.getExtension())
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -549,19 +562,37 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionary(Dictionary dictionary) {
+    cancelLoadDictionary()
+    $dictionary = dictionary
+    $previousSearch = ""
+    $searchHistory.clear()
+    updateIndividualSetting()
+    updateSearchStatuses()
+    updateLoader()
+    updateOnLinkClicked()
+    updateMenuItems()
+    setupSearchRegisteredParameterMenu()
+  }
+
+  private void cancelLoadDictionary() {
     if ($dictionary != null) {
       Task<?> oldLoader = $dictionary.getLoader()
       if (oldLoader.isRunning()) {
         oldLoader.cancel()
       }
     }
-    $dictionary = dictionary
-    $previousSearch = ""
-    $searchHistory.clear()
-    updateSearchStatuses()
-    updateLoader()
-    updateOnLinkClicked()
-    updateMenuItems()
+  }
+
+  private void updateIndividualSetting() {
+    if ($dictionary != null) {
+      if ($dictionary instanceof SlimeDictionary) {
+        $individualSetting = SlimeIndividualSetting.create($dictionary)
+      } else {
+        $individualSetting = null
+      }
+    } else {
+      $individualSetting = null
+    }
   }
 
   private void updateSearchStatuses() {
@@ -570,7 +601,7 @@ public class MainController extends PrimitiveController<Stage> {
       $wordsView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordsView.setItems((ObservableList<Word>)FXCollections.observableArrayList())
+      $wordsView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
     }
     $searchControl.setText("")
     $searchControl.requestFocus()
@@ -627,12 +658,24 @@ public class MainController extends PrimitiveController<Stage> {
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
       $searchScriptItem.setDisable(false)
-      if ($dictionary instanceof ShaleiaDictionary || $dictionary instanceof SlimeDictionary) {
+      if ($dictionary instanceof ShaleiaDictionary) {
         $searchDetailItem.setDisable(false)
-        $showIndividualSettingItem.setDisable(false)
-      } else {
+        $editIndividualSettingItem.setDisable(false)
+        $searchRegisteredParameterMenu.setVisible(false)
+        $searchRegisteredParameterMenu.setDisable(true)
+        $searchRegisteredParameterItem.setVisible(true)
+      } else if ($dictionary instanceof PersonalDictionary) {
         $searchDetailItem.setDisable(true)
-        $showIndividualSettingItem.setDisable(true)
+        $editIndividualSettingItem.setDisable(true)
+        $searchRegisteredParameterMenu.setVisible(false)
+        $searchRegisteredParameterMenu.setDisable(true)
+        $searchRegisteredParameterItem.setVisible(true)
+      } else if ($dictionary instanceof SlimeDictionary) {
+        $searchDetailItem.setDisable(false)
+        $editIndividualSettingItem.setDisable(false)
+        $searchRegisteredParameterMenu.setVisible(true)
+        $searchRegisteredParameterMenu.setDisable(false)
+        $searchRegisteredParameterItem.setVisible(false)
       }
     } else {
       $saveDictionaryItem.setDisable(true)
@@ -643,7 +686,10 @@ public class MainController extends PrimitiveController<Stage> {
       $removeWordItem.setDisable(true)
       $searchDetailItem.setDisable(true)
       $searchScriptItem.setDisable(true)
-      $showIndividualSettingItem.setDisable(true)
+      $editIndividualSettingItem.setDisable(true)
+      $searchRegisteredParameterMenu.setVisible(false)
+      $searchRegisteredParameterMenu.setDisable(true)
+      $searchRegisteredParameterItem.setVisible(true)
     }
   }
 
@@ -651,12 +697,14 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionary.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary == null) {
         Setting.getInstance().setDefaultDictionaryPath(null)
-        Dialog dialog = Dialog.new("読み込みエラー", "辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("読み込みエラー")
+        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
       }
@@ -667,8 +715,10 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void failUpdateDictionary() {
     updateDictionary(null)
-    Dialog dialog = Dialog.new("読み込みエラー", "辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    Dialog dialog = Dialog.new(StageStyle.UTILITY)
     dialog.initOwner($stage)
+    dialog.setTitle("読み込みエラー")
+    dialog.setContentText("辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
     dialog.setAllowsCancel(false)
     dialog.showAndWait()
   }
@@ -692,8 +742,10 @@ public class MainController extends PrimitiveController<Stage> {
   private Boolean checkDictionaryChange() {
     if ($dictionary != null) {
       if ($dictionary.isChanged()) {
-        Dialog dialog = Dialog.new("確認", "辞書データは変更されています。保存しますか?")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("確認")
+        dialog.setContentText("辞書データは変更されています。保存しますか?")
         dialog.setCommitText("保存する")
         dialog.setNegateText("保存しない")
         dialog.setAllowsNegate(true)
@@ -714,17 +766,45 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void handleException(Throwable throwable) {
-    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new("エラー", "エラーが発生しました(${name})。詳細はエラーログを確認してください。")
-    dialog.initOwner($stage)
-    dialog.setAllowsCancel(false)
-    throwable.printStackTrace()
-    throwable.printStackTrace(stream)
-    stream.close()
-    dialog.showAndWait()
-    Platform.exit()
+  @FXML
+  private void editIndividualSetting() {
+    if ($dictionary != null) {
+      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initOwner($stage)
+      if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
+        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary, $individualSetting)
+      } else if ($dictionary instanceof ShaleiaDictionary) {
+        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
+        controller.prepare($dictionary)
+      }
+      nextStage.showAndWait()
+      if (nextStage.isCommitted() && nextStage.getResult()) {
+        if (savesAutomatically) {
+          $dictionary.save()
+        }
+        if ($individualSetting != null) {
+          $individualSetting.save()
+        }
+        setupSearchRegisteredParameterMenu()
+      }
+    }
+  }
+
+  @FXML
+  private void editSetting() {
+    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    SettingController controller = SettingController.new(nextStage)
+    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      Setting.getInstance().save()
+      setupOpenRegisteredDictionaryMenu()
+      setupRegisterCurrentDictionaryMenu()
+    }
   }
 
   @FXML
@@ -752,45 +832,8 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
   }
 
-  @FXML
-  private void showIndividualSetting() {
-    if ($dictionary != null) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initModality(Modality.WINDOW_MODAL)
-      nextStage.initOwner($stage)
-      if ($dictionary instanceof SlimeDictionary) {
-        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      } else if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
-        controller.prepare($dictionary)
-      }
-      nextStage.showAndWait()
-      if (nextStage.isCommitted() && nextStage.getResult()) {
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
-      }
-    }
-  }
-
-  @FXML
-  private void showSetting() {
-    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    SettingController controller = SettingController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
-    nextStage.initOwner($stage)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      Setting.getInstance().save()
-      setupOpenRegisteredDictionaryMenu()
-      setupRegisterCurrentDictionaryMenu()
-    }
-  }
-
   private void checkVersion() {
-    Version previousVersion = Version.new(Setting.getInstance().getVersionList())
+    Version previousVersion = Setting.getInstance().getVersion()
     if (previousVersion < Launcher.VERSION) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       UpdateInformationController controller = UpdateInformationController.new(nextStage)
@@ -798,6 +841,21 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       nextStage.showAndWait()
     }
+  }
+
+  private void handleException(Throwable throwable) {
+    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    String name = throwable.getClass().getSimpleName()
+    Dialog dialog = Dialog.new(StageStyle.UTILITY)
+    dialog.initOwner($stage)
+    dialog.setTitle("エラー")
+    dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
+    dialog.setAllowsCancel(false)
+    throwable.printStackTrace()
+    throwable.printStackTrace(stream)
+    stream.close()
+    dialog.showAndWait()
+    Platform.exit()
   }
 
   @FXML
@@ -829,7 +887,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @VoidClosure
   private void setupWordsView() {
-    $wordsView.setCellFactory() { ListView<Word> view ->
+    $wordsView.setCellFactory() { ListView<Element> view ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -868,14 +926,17 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupOpenRegisteredDictionaryMenu() {
-    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $openRegisteredDictionaryMenu.getItems().clear()
+    Setting setting = Setting.getInstance()
+    List<String> dictionaryPaths = setting.getRegisteredDictionaryPaths()
+    List<String> dictionaryNames = setting.getRegisteredDictionaryNames()
     for (Integer i : 0 ..< 10) {
       String dictionaryPath = dictionaryPaths[i]
+      String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath != null) {
         File file = File.new(dictionaryPath)
-        item.setText(file.getName())
+        item.setText(dictionaryName ?: file.getName())
         item.setOnAction() {
           openRegisteredDictionary(file)
         }
@@ -891,8 +952,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupRegisterCurrentDictionaryMenu() {
-    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     $registerCurrentDictionaryMenu.getItems().clear()
+    List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
     for (Integer i : 0 ..< 10) {
       Integer j = i
       String dictionaryPath = dictionaryPaths[i]
@@ -908,8 +969,36 @@ public class MainController extends PrimitiveController<Stage> {
       }
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
-      item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupSearchRegisteredParameterMenu() {
+    $searchRegisteredParameterMenu.getItems().clear()
+    if ($individualSetting != null) {
+      if ($individualSetting instanceof SlimeIndividualSetting) {
+        List<SlimeSearchParameter> parameters = $individualSetting.getRegisteredParameters()
+        List<String> parameterNames = $individualSetting.getRegisteredParameterNames()
+        for (Integer i : 0 ..< 10) {
+          SlimeSearchParameter parameter = parameters[i]
+          String parameterName = parameterNames[i]
+          MenuItem item = MenuItem.new()
+          if (parameter != null) {
+            item.setText(parameterNames[i] ?: "")
+            item.setOnAction() {
+              searchDetailBy(parameter)
+              $searchHistory.add(parameter)
+            }
+          } else {
+            item.setText("未登録")
+            item.setDisable(true)
+          }
+          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+          item.setGraphic(ImageView.new(icon))
+          item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
+          $searchRegisteredParameterMenu.getItems().add(item)
+        }
+      }
     }
   }
 

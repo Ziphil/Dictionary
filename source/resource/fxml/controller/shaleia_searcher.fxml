@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.dictionary.SearchType?>
 <?import ziphil.module.Setting?>
 
 
@@ -51,15 +52,15 @@
           <minWidth><Double rpx="100"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="完全一致"/>
-              <String fx:value="前方一致"/>
-              <String fx:value="後方一致"/>
-              <String fx:value="部分一致"/>
-              <String fx:value="正規表現"/>
-              <String fx:value="最小対語"/>
+              <SearchType fx:value="EXACT"/>
+              <SearchType fx:value="PREFIX"/>
+              <SearchType fx:value="SUFFIX"/>
+              <SearchType fx:value="PART"/>
+              <SearchType fx:value="REGULAR_EXPRESSION"/>
+              <SearchType fx:value="MINIMAL_PAIR"/>
             </FXCollections>
           </items>
-          <value><String fx:value="最小対語"/></value>
+          <value><SearchType fx:value="MINIMAL_PAIR"/></value>
         </ComboBox>
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -70,14 +71,14 @@
           <minWidth><Double rpx="100"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="完全一致"/>
-              <String fx:value="前方一致"/>
-              <String fx:value="後方一致"/>
-              <String fx:value="部分一致"/>
-              <String fx:value="正規表現"/>
+              <SearchType fx:value="EXACT"/>
+              <SearchType fx:value="PREFIX"/>
+              <SearchType fx:value="SUFFIX"/>
+              <SearchType fx:value="PART"/>
+              <SearchType fx:value="REGULAR_EXPRESSION"/>
             </FXCollections>
           </items>
-          <value><String fx:value="完全一致"/></value>
+          <value><SearchType fx:value="EXACT"/></value>
         </ComboBox>
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -88,11 +89,11 @@
           <minWidth><Double rpx="100"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="部分一致"/>
-              <String fx:value="正規表現"/>
+              <SearchType fx:value="PART"/>
+              <SearchType fx:value="REGULAR_EXPRESSION"/>
             </FXCollections>
           </items>
-          <value><String fx:value="部分一致"/></value>
+          <value><SearchType fx:value="PART"/></value>
         </ComboBox>
       </HBox>
     </GridPane>

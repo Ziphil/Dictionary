@@ -188,17 +188,28 @@ public class SlimeEditorController extends Controller<Boolean> {
             relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
           }
         }
-        $word.update(id, name, rawEquivalents, tags, informations, variations, relations)
+        $word.setId(id)
+        $word.setName(name)
+        $word.setRawEquivalents(rawEquivalents)
+        $word.setTags(tags)
+        $word.setInformations(informations)
+        $word.setVariations(variations)
+        $word.setRelations(relations)
+        $word.update()
         $stage.commit(true)
       } else {
-        Dialog dialog = Dialog.new("重複IDエラー", "このIDはすでに利用されています。別のIDを指定してください。")
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
+        dialog.setTitle("重複IDエラー")
+        dialog.setContentText("このIDはすでに利用されています。別のIDを指定してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
       }
     } catch (NumberFormatException exception) {
-      Dialog dialog = Dialog.new("フォーマットエラー", "IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
       dialog.initOwner($stage)
+      dialog.setTitle("フォーマットエラー")
+      dialog.setContentText("IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
     }

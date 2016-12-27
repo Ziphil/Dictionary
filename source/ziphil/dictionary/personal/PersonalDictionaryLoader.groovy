@@ -23,14 +23,15 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
         if (isCancelled()) {
           return null
         }
-        String name = matcher.group(1)
-        String pronunciation = matcher.group(7)
-        String translation = matcher.group(2)
-        String usage = matcher.group(3)
-        Integer level = matcher.group(4).toInteger()
-        Integer memory = matcher.group(5).toInteger()
-        Integer modification = matcher.group(6).toInteger()
-        PersonalWord word = PersonalWord.new(name, pronunciation, translation, usage, level, memory, modification)
+        PersonalWord word = PersonalWord.new()
+        word.setName(matcher.group(1))
+        word.setPronunciation(matcher.group(7))
+        word.setTranslation(matcher.group(2))
+        word.setUsage(matcher.group(3))
+        word.setLevel(matcher.group(4).toInteger())
+        word.setMemory(matcher.group(5).toInteger())
+        word.setModification(matcher.group(6).toInteger())
+        word.update()
         $words.add(word)
       }
     }

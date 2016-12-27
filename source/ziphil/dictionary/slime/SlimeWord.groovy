@@ -3,13 +3,13 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import javafx.scene.layout.Pane
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.Word
+import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWord extends Word {
+public class SlimeWord extends WordBase {
 
   private SlimeDictionary $dictionary
   private Integer $id = -1
@@ -22,31 +22,16 @@ public class SlimeWord extends Word {
   private TextFlow $plainContentPane = TextFlow.new()
   private Boolean $isPlainChanged = true
 
-  public SlimeWord(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
-                   List<SlimeRelation> relations) {
-    update(id, name, rawEquivalents, tags, informations, variations, relations)
-  }
-
-  public SlimeWord() {
-  }
-
-  public void update(Integer id, String name, List<SlimeEquivalent> rawEquivalents, List<String> tags, List<SlimeInformation> informations, List<SlimeVariation> variations,
-                     List<SlimeRelation> relations) {
-    $id = id
-    $name = name
-    $rawEquivalents = rawEquivalents
-    $tags = tags
-    $informations = informations
-    $variations = variations
-    $relations = relations
-    $isChanged = true
-    $isPlainChanged = true
-    updateOthers()
-  }
-
-  public void updateOthers() {
+  public void update() {
     updateEquivalents()
     updateContent()
+    $isChanged = true
+    $isPlainChanged = true
+  }
+
+  public void change() {
+    $isChanged = true
+    $isPlainChanged = true
   }
 
   private void updateEquivalents() {
@@ -69,37 +54,45 @@ public class SlimeWord extends Word {
     $content = content.toString()
   }
 
-  public void createContentPane() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeWordContentPaneCreator creator = SlimeWordContentPaneCreator.new($contentPane, this, $dictionary)
-    creator.setLineSpacing(lineSpacing)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isChanged = false
-  }
-
-  public void createPlainContentPane() {
-    Setting setting = Setting.getInstance()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    SlimeWordPlainContentPaneCreator creator = SlimeWordPlainContentPaneCreator.new($plainContentPane, this, $dictionary)
-    creator.setModifiesPunctuation(modifiesPunctuation)
-    creator.create()
-    $isPlainChanged = false
-  }
-
-  public void createComparisonString(String order) {
-    StringBuilder comparisonString = StringBuilder.new()
-    for (Integer i : 0 ..< $name.length()) {
-      Integer position = order.indexOf($name.codePointAt(i))
-      if (position > -1) {
-        comparisonString.appendCodePoint(position + 174)
-      } else {
-        comparisonString.appendCodePoint(10000)
-      }
+  public void updateContentPane() {
+    if ($isChanged) {
+      Setting setting = Setting.getInstance()
+      Integer lineSpacing = setting.getLineSpacing()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      SlimeWordContentPaneMaker maker = SlimeWordContentPaneMaker.new($contentPane, this, $dictionary)
+      maker.setLineSpacing(lineSpacing)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isChanged = false
     }
-    $comparisonString = comparisonString.toString()
+  }
+
+  public void updatePlainContentPane() {
+    if ($isPlainChanged) {
+      Setting setting = Setting.getInstance()
+      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+      SlimeWordPlainContentPaneMaker maker = SlimeWordPlainContentPaneMaker.new($plainContentPane, this, $dictionary)
+      maker.setModifiesPunctuation(modifiesPunctuation)
+      maker.make()
+      $isPlainChanged = false
+    }
+  }
+
+  public void updateComparisonString(String order) {
+    if (order != null) {
+      StringBuilder comparisonString = StringBuilder.new()
+      for (Integer i : 0 ..< $name.length()) {
+        Integer position = order.indexOf($name.codePointAt(i))
+        if (position > -1) {
+          comparisonString.appendCodePoint(position + 174)
+        } else {
+          comparisonString.appendCodePoint(10000)
+        }
+      }
+      $comparisonString = comparisonString.toString()
+    } else {
+      $comparisonString = $name
+    }
   }
 
   public SlimeDictionary getDictionary() {

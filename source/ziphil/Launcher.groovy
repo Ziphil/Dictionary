@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"
-  public static final Version VERSION = Version.new(1, 3, 0, 1786)
+  public static final Version VERSION = Version.new(1, 4, 0, 1801)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -41,11 +41,14 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1. 4. 0 | 登録辞書の表示名を変更する機能を追加。
+//          | 検索条件を保存してメニューから呼び出す機能を追加。
+//          | GUI フォントを設定する機能を追加。
 //  1. 3. 0 | 前の検索結果に戻る機能を追加。
 //          | OneToMany 形式の内容の表示順を固定する機能を追加。
 //          | OneToMany 形式の単語の修正時に登録ラベルが減らない不具合を修正。
 //  1. 2. 0 | 内容のラベルの後で改行するかを設定する機能を追加。
-//          | 単語の新規作成時のデフォルトデータを変更する機能を追加。
+//          | OneToMany 形式の単語の新規作成時のデフォルトデータを変更する機能を追加。
 //          | 単語表示欄の行間を調整する機能を追加。
 //  1. 1. 0 | 検索結果をシャッフルする機能を追加。
 //          | OneToMany 形式で全文検索しても何も表示されない不具合を修正。

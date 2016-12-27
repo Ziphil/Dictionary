@@ -24,14 +24,16 @@ public class Setting {
   private static Setting $$instance = createInstance()
 
   private List<String> $registeredDictionaryPaths = ArrayList.new()
+  private List<String> $registeredDictionaryNames = ArrayList.new()
   private String $defaultDictionaryPath
   private String $contentFontFamily
   private Integer $contentFontSize
   private String $editorFontFamily
   private Integer $editorFontSize
+  private String $systemFontFamily
   private Integer $lineSpacing = 0
   private Integer $separativeInterval = 700
-  private Integer $fontRenderingType
+  private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
@@ -40,7 +42,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private String $password = ""
-  private List<Integer> $versionList = []
+  private Version $version = Version.new(-1, 0, 0)
 
   public void save() {
     saveSetting()
@@ -49,7 +51,7 @@ public class Setting {
 
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
-    $versionList = Launcher.VERSION.toList()
+    $version = Launcher.VERSION
     $$mapper.writeValue(stream, this)
     stream.close()
   }
@@ -84,7 +86,14 @@ public class Setting {
         stylesheet.append(";\n")
       }
       stylesheet.append("}\n\n")
-    }    
+    }
+    if ($systemFontFamily != null) {
+      stylesheet.append(".root {\n")
+      stylesheet.append("  -fx-font-family: \"")
+      stylesheet.append(Strings.escapeUnicode($systemFontFamily))
+      stylesheet.append("\";\n")
+      stylesheet.append("}\n\n")
+    }
     file.setText(stylesheet.toString(), "UTF-8")
   }
 
@@ -132,6 +141,14 @@ public class Setting {
     $registeredDictionaryPaths = registeredDictionaryPaths
   }
 
+  public List<String> getRegisteredDictionaryNames() {
+    return $registeredDictionaryNames
+  }
+
+  public void setRegisteredDictionaryNames(List<String> registeredDictionaryNames) {
+    $registeredDictionaryNames = registeredDictionaryNames
+  }
+
   public String getDefaultDictionaryPath() {
     return $defaultDictionaryPath
   }
@@ -172,6 +189,14 @@ public class Setting {
     $editorFontSize = editorFontSize
   }
 
+  public String getSystemFontFamily() {
+    return $systemFontFamily
+  }
+
+  public void setSystemFontFamily(String systemFontFamily) {
+    $systemFontFamily = systemFontFamily
+  }
+
   public Integer getLineSpacing() {
     return $lineSpacing
   }
@@ -188,11 +213,11 @@ public class Setting {
     $separativeInterval = separativeInterval
   }
 
-  public Integer getFontRenderingType() {
+  public FontRenderingType getFontRenderingType() {
     return $fontRenderingType
   }
 
-  public void setFontRenderingType(Integer fontRenderingType) {
+  public void setFontRenderingType(FontRenderingType fontRenderingType) {
     $fontRenderingType = fontRenderingType
   }
 
@@ -260,12 +285,12 @@ public class Setting {
     $password = password
   }
 
-  public List<Integer> getVersionList() {
-    return $versionList
+  public Version getVersion() {
+    return $version
   }
 
-  public void setVersionList(List<Integer> versionList) {
-    $versionList = versionList
+  public void setVersion(Version version) {
+    $version = version
   }
 
 }
