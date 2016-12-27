@@ -35,7 +35,7 @@
       </VBox>
       <HBox>
         <spacing><Double rpx="10"/></spacing>
-        <Label text="Copyright © 2016"/>
+        <Label fx:id="$copyrightLabel"/>
         <Label text="Ziphil Aleshlas"/>
       </HBox>
     </VBox>
