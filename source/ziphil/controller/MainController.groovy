@@ -687,6 +687,9 @@ public class MainController extends PrimitiveController<Stage> {
       $searchDetailItem.setDisable(true)
       $searchScriptItem.setDisable(true)
       $editIndividualSettingItem.setDisable(true)
+      $searchRegisteredParameterMenu.setVisible(false)
+      $searchRegisteredParameterMenu.setDisable(true)
+      $searchRegisteredParameterItem.setVisible(true)
     }
   }
 
