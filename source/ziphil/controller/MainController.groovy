@@ -564,8 +564,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateDictionary(Dictionary dictionary) {
     cancelLoadDictionary()
     $dictionary = dictionary
-    $previousSearch = ""
-    $searchHistory.clear()
     updateIndividualSetting()
     updateSearchStatuses()
     updateLoader()
@@ -603,8 +601,10 @@ public class MainController extends PrimitiveController<Stage> {
       $dictionaryNameLabel.setText("")
       $wordsView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
     }
+    $previousSearch = ""
     $searchControl.setText("")
     $searchControl.requestFocus()
+    $searchHistory.clear()
   }
 
   private void updateLoader() {
