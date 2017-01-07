@@ -17,7 +17,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
   protected ObservableList<PersonalWord> call() {
     if ($path != null) {
       File file = File.new($path)
-      String input = file.getText()
+      String input = file.getText().replaceAll(/\r/, "")
       Matcher matcher = input =~ /(?s)"(.*?)","(.*?)","(.*?)",(\d*?),(\d*?),(\d*?),"(.*?)"/
       while (matcher.find()) {
         if (isCancelled()) {
