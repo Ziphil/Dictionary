@@ -147,13 +147,14 @@ public class MainController extends PrimitiveController<Stage> {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean isStrict = $searchTypeControl.isSelected()
+      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, isStrict)
       if (forcesSearch || search != $previousSearch) {
-        searchBy(search, searchMode, isStrict)
+        doSearch(parameter)
         $previousSearch = search
         if (forcesSearch) {
-          $searchHistory.add(NormalSearchParameter.new(search, searchMode, isStrict), false)
+          $searchHistory.add(parameter, false)
         } else {
-          $searchHistory.add(NormalSearchParameter.new(search, searchMode, isStrict), true)
+          $searchHistory.add(parameter, true)
         }
       }
     }
@@ -168,7 +169,10 @@ public class MainController extends PrimitiveController<Stage> {
     search(false)
   }
 
-  private void searchBy(String search, SearchMode searchMode, Boolean isStrict) {
+  private void doSearch(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
+    SearchMode searchMode = parameter.getSearchMode()
+    Boolean isStrict = parameter.isStrict()
     measureDictionaryStatus() {
       if (searchMode == SearchMode.NAME) {
         $dictionary.searchByName(search, isStrict)
@@ -190,7 +194,7 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           ShaleiaSearchParameter parameter = nextStage.getResult()
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
@@ -201,14 +205,14 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           SlimeSearchParameter parameter = nextStage.getResult()
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
           $searchHistory.add(parameter)
         }
       }
     }
   }
 
-  private void searchDetailBy(DetailSearchParameter parameter) {
+  private void doSearchDetail(DetailSearchParameter parameter) {
     if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
       measureDictionaryStatus() {
         $dictionary.searchDetail(parameter)
@@ -229,12 +233,12 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         String script = nextStage.getResult()
-        searchScriptBy(script)
+        doSearchScript(script)
       }
     }
   }
 
-  private void searchScriptBy(String script) {
+  private void doSearchScript(String script) {
     measureDictionaryStatus() {
       $dictionary.searchScript(script)
     }
@@ -253,9 +257,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(isStrict)
           $previousSearch = search
-          searchBy(search, searchMode, isStrict)
+          doSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
         }
       }
     }
@@ -274,9 +278,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(isStrict)
           $previousSearch = search
-          searchBy(search, searchMode, isStrict)
+          doSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
         }
       }
     }
@@ -635,14 +639,14 @@ public class MainController extends PrimitiveController<Stage> {
           ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
           parameter.setName(name)
           parameter.setNameSearchType(SearchType.EXACT)
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
         $dictionary.setOnLinkClicked() { Integer id ->
           SlimeSearchParameter parameter = SlimeSearchParameter.new()
           parameter.setId(id)
-          searchDetailBy(parameter)
+          doSearchDetail(parameter)
           $searchHistory.add(parameter)
         }
       }
@@ -986,7 +990,7 @@ public class MainController extends PrimitiveController<Stage> {
           if (parameter != null) {
             item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
-              searchDetailBy(parameter)
+              doSearchDetail(parameter)
               $searchHistory.add(parameter)
             }
           } else {
