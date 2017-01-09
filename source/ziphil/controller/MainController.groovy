@@ -53,6 +53,7 @@ import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.ScriptSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
@@ -227,18 +228,19 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void searchScript() {
     if ($dictionary != null) {
-      UtilityStage<String> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<ScriptSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
       ScriptController controller = ScriptController.new(nextStage)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        String script = nextStage.getResult()
+        ScriptSearchParameter script = nextStage.getResult()
         doSearchScript(script)
       }
     }
   }
 
-  private void doSearchScript(String script) {
+  private void doSearchScript(ScriptSearchParameter parameter) {
+    String script = parameter.getScript()
     measureDictionaryStatus() {
       $dictionary.searchScript(script)
     }
