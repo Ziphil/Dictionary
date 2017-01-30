@@ -30,8 +30,7 @@ public class ShaleiaWord extends WordBase {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
     try {
       $equivalents.clear()
-      String line
-      while ((line = reader.readLine()) != null) {
+      for (String line ; (line = reader.readLine()) != null ;) {
         Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
         if (matcher.matches()) {
           String equivalent = matcher.group(2)

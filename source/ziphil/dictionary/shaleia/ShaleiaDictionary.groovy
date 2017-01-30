@@ -236,8 +236,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     BufferedReader reader = BufferedReader.new(StringReader.new($changeData))
     try {
       $changes.clear()
-      String line
-      while ((line = reader.readLine()) != null) {
+      for (String line ; (line = reader.readLine()) != null ;) {
         Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
         if (matcher.matches()) {
           String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)

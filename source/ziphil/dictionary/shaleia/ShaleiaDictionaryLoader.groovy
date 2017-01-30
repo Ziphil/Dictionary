@@ -21,8 +21,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       try {
         String currentName = null
         StringBuilder currentData = StringBuilder.new()
-        String line
-        while ((line = reader.readLine()) != null) {
+        for (String line ; (line = reader.readLine()) != null ;) {
           if (isCancelled()) {
             reader.close()
             return null

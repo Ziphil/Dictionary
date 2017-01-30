@@ -50,8 +50,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     $contentPane.setLineSpacing($lineSpacing)
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
     try {
-      String line
-      while ((line = reader.readLine()) != null) {
+      for (String line ; (line = reader.readLine()) != null ;) {
         Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
         Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
         Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
