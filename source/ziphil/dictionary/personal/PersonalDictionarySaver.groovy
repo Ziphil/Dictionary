@@ -17,18 +17,26 @@ public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary>
   protected Boolean call() {
     if ($path != null) {
       File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      output.append("word,trans,exp,level,memory,modify,pron,filelink\n")
+      BufferedWriter writer = file.newWriter("UTF-8")
+      writer.write("word,trans,exp,level,memory,modify,pron,filelink\n")
       for (PersonalWord word : $dictionary.getRawWords()) {
-        output.append("\"").append(word.getName()).append("\",")
-        output.append("\"").append(word.getTranslation()).append("\",")
-        output.append("\"").append(word.getUsage()).append("\",")
-        output.append(word.getLevel().toString()).append(",")
-        output.append(word.getMemory().toString()).append(",")
-        output.append(word.getModification().toString()).append(",")
-        output.append("\"").append(word.getPronunciation()).append("\"\n")
+        writer.write("\"")
+        writer.write(word.getName())
+        writer.write("\",\"")
+        writer.write(word.getTranslation())
+        writer.write("\",\"")
+        writer.write(word.getUsage())
+        writer.write("\",")
+        writer.write(word.getLevel().toString())
+        writer.write(",")
+        writer.write(word.getMemory().toString())
+        writer.write(",")
+        writer.write(word.getModification().toString())
+        writer.write(",\"")
+        writer.write(word.getPronunciation())
+        writer.write("\"\n")
       }
-      file.setText(output.toString(), "UTF-8")
+      writer.close()
     }
     return true
   }
