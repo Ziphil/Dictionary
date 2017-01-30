@@ -27,42 +27,45 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       JsonFactory factory = $mapper.getFactory()
       JsonParser parser = factory.createParser(stream)
       Integer size = stream.available()
-      parser.nextToken()
-      while (parser.nextToken() == JsonToken.FIELD_NAME) {
-        String topFieldName = parser.getCurrentName()
+      try {
         parser.nextToken()
-        if (topFieldName == "words") {
-          while (parser.nextToken() == JsonToken.START_OBJECT) {
-            SlimeWord word = SlimeWord.new()
-            if (isCancelled()) {
-              return null
+        while (parser.nextToken() == JsonToken.FIELD_NAME) {
+          String topFieldName = parser.getCurrentName()
+          parser.nextToken()
+          if (topFieldName == "words") {
+            while (parser.nextToken() == JsonToken.START_OBJECT) {
+              SlimeWord word = SlimeWord.new()
+              if (isCancelled()) {
+                return null
+              }
+              parseWord(parser, word)
+              word.setDictionary($dictionary)
+              $words.add(word)
+              updateProgress(parser, size)
             }
-            parseWord(parser, word)
-            word.setDictionary($dictionary)
-            $words.add(word)
-            updateProgress(parser, size)
-          }
-        } else if (topFieldName == "zpdic") {
-          while (parser.nextToken() == JsonToken.FIELD_NAME) {
-            String specialFieldName = parser.getCurrentName()
-            parser.nextToken()
-            if (specialFieldName == "alphabetOrder") {
-              parseAlphabetOrder(parser)
-            } else if (specialFieldName == "plainInformationTitles") {
-              parsePlainInformationTitles(parser)
-            } else if (specialFieldName == "informationTitleOrder") {
-              parseInformationTitleOrder(parser)
-            } else if (specialFieldName == "defaultWord") {
-              parseDefaultWord(parser)
+          } else if (topFieldName == "zpdic") {
+            while (parser.nextToken() == JsonToken.FIELD_NAME) {
+              String specialFieldName = parser.getCurrentName()
+              parser.nextToken()
+              if (specialFieldName == "alphabetOrder") {
+                parseAlphabetOrder(parser)
+              } else if (specialFieldName == "plainInformationTitles") {
+                parsePlainInformationTitles(parser)
+              } else if (specialFieldName == "informationTitleOrder") {
+                parseInformationTitleOrder(parser)
+              } else if (specialFieldName == "defaultWord") {
+                parseDefaultWord(parser)
+              }
+              updateProgress(parser, size)
             }
-            updateProgress(parser, size)
+          } else {
+            $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
           }
-        } else {
-          $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
         }
+      } finally {
+        parser.close()
+        stream.close()
       }
-      parser.close()
-      stream.close()
     }
     for (SlimeWord word : $words) {
       word.updateComparisonString($dictionary.getAlphabetOrder())

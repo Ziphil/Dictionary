@@ -28,17 +28,20 @@ public class ShaleiaWord extends WordBase {
 
   private void updateEquivalents() {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
-    String line
-    $equivalents.clear()
-    while ((line = reader.readLine()) != null) {
-      Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
-      if (matcher.matches()) {
-        String equivalent = matcher.group(2)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
+    try {
+      $equivalents.clear()
+      String line
+      while ((line = reader.readLine()) != null) {
+        Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
+        if (matcher.matches()) {
+          String equivalent = matcher.group(2)
+          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+          $equivalents.addAll(equivalents)
+        }
       }
+    } finally {
+      reader.close()
     }
-    reader.close()
   }
 
   private void updateContent() {

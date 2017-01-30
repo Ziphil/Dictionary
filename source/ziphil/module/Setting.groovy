@@ -52,8 +52,11 @@ public class Setting {
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
     $version = Launcher.VERSION
-    $$mapper.writeValue(stream, this)
-    stream.close()
+    try {
+      $$mapper.writeValue(stream, this)
+    } finally {
+      stream.close()
+    }
   }
 
   private void saveCustomStylesheet() {
@@ -100,16 +103,19 @@ public class Setting {
   private static Setting createInstance() {
     File file = File.new(Launcher.BASE_PATH + SETTING_PATH)
     if (file.exists()) {
+      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
+      Setting instance
       try {
-        FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
-        Setting instance = $$mapper.readValue(stream, Setting)
-        stream.close()
-        return instance
+        instance = $$mapper.readValue(stream, Setting)
       } catch (JsonParseException exception) {
-        return Setting.new()
+        instance = Setting.new()
+      } finally {
+        stream.close()
       }
+      return instance
     } else {
-      return Setting.new()
+      Setting instance = Setting.new()
+      return instance
     }
   }
 

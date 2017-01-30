@@ -20,22 +20,25 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
     if ($path != null) {
       File file = File.new($path)
       BufferedWriter writer = file.newWriter("UTF-8")
-      List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted((Comparator<ShaleiaWord>)$comparator)
-      for (ShaleiaWord word : sortedWord) {
-        writer.write("* ")
-        writer.write(word.getUniqueName())
-        writer.write("\n")
-        writer.write(word.getData().trim())
+      try {
+        List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted((Comparator<ShaleiaWord>)$comparator)
+        for (ShaleiaWord word : sortedWord) {
+          writer.write("* ")
+          writer.write(word.getUniqueName())
+          writer.write("\n")
+          writer.write(word.getData().trim())
+          writer.write("\n\n")
+        }
+        writer.write("* META-ALPHABET-ORDER\n\n")
+        writer.write("- ")
+        writer.write($dictionary.getAlphabetOrder())
         writer.write("\n\n")
+        writer.write("* META-CHANGE\n\n")
+        writer.write($dictionary.getChangeData().trim())
+        writer.write("\n\n")
+      } finally {
+        println("closed")
       }
-      writer.write("* META-ALPHABET-ORDER\n\n")
-      writer.write("- ")
-      writer.write($dictionary.getAlphabetOrder())
-      writer.write("\n\n")
-      writer.write("* META-CHANGE\n\n")
-      writer.write($dictionary.getChangeData().trim())
-      writer.write("\n\n")
-      writer.close()
     }
     return true
   }

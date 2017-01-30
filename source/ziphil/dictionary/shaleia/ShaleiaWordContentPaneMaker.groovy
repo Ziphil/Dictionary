@@ -49,79 +49,82 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     $contentPane.getChildren().clear()
     $contentPane.setLineSpacing($lineSpacing)
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
-    String line
-    while ((line = reader.readLine()) != null) {
-      Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
-      Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
-      Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
-      Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
-      Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
-      Matcher usageMatcher = line =~ /^U>\s*(.+)$/
-      Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
-      Matcher noteMatcher = line =~ /^N>\s*(.+)$/
-      Matcher taskMatcher = line =~ /^O>\s*(.+)$/
-      Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
-      Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
-      if ($contentPane.getChildren().isEmpty()) {
-        String name = $word.getName()
-        addNameNode(name)
+    try {
+      String line
+      while ((line = reader.readLine()) != null) {
+        Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
+        Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
+        Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
+        Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
+        Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
+        Matcher usageMatcher = line =~ /^U>\s*(.+)$/
+        Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
+        Matcher noteMatcher = line =~ /^N>\s*(.+)$/
+        Matcher taskMatcher = line =~ /^O>\s*(.+)$/
+        Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
+        Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
+        if ($contentPane.getChildren().isEmpty()) {
+          String name = $word.getName()
+          addNameNode(name)
+        }
+        if (creationDateMatcher.matches()) {
+          String creationDate = creationDateMatcher.group(1)
+          String totalPart = creationDateMatcher.group(2)
+          addCreationDateNode(totalPart, creationDate)
+        }
+        if (equivalentMatcher.matches()) {
+          String part = equivalentMatcher.group(1)
+          String equivalent = equivalentMatcher.group(2)
+          addEquivalentNode(part, equivalent)
+        }
+        if (hiddenEquivalentMatcher.matches()) {
+          String equivalent = hiddenEquivalentMatcher.group(1)
+        }
+        if (meaningMatcher.matches()) {
+          String meaning = meaningMatcher.group(1)
+          addOtherNode("語義", meaning)
+          hasOther = true
+        }
+        if (etymologyMatcher.matches()) {
+          String etymology = etymologyMatcher.group(1)
+          addOtherNode("語源", etymology)
+          hasOther = true
+        }
+        if (usageMatcher.matches()) {
+          String usage = usageMatcher.group(1)
+          addOtherNode("語法", usage)
+          hasOther = true
+        }
+        if (phraseMatcher.matches()) {
+          String phrase = phraseMatcher.group(1)
+          addOtherNode("成句", phrase)
+          hasOther = true
+        }
+        if (noteMatcher.matches()) {
+          String note = noteMatcher.group(1)
+          addOtherNode("備考", note)
+          hasOther = true
+        }
+        if (taskMatcher.matches()) {
+          String task = taskMatcher.group(1)
+          addOtherNode("タスク", task)
+          hasOther = true
+        }
+        if (exampleMatcher.matches()) {
+          String example = exampleMatcher.group(1)
+          addOtherNode("例文", example)
+          hasOther = true
+        }
+        if (synonymMatcher.matches()) {
+          String synonym = synonymMatcher.group(1)
+          addSynonymNode(synonym)
+          hasSynonym = true
+        }
       }
-      if (creationDateMatcher.matches()) {
-        String creationDate = creationDateMatcher.group(1)
-        String totalPart = creationDateMatcher.group(2)
-        addCreationDateNode(totalPart, creationDate)
-      }
-      if (equivalentMatcher.matches()) {
-        String part = equivalentMatcher.group(1)
-        String equivalent = equivalentMatcher.group(2)
-        addEquivalentNode(part, equivalent)
-      }
-      if (hiddenEquivalentMatcher.matches()) {
-        String equivalent = hiddenEquivalentMatcher.group(1)
-      }
-      if (meaningMatcher.matches()) {
-        String meaning = meaningMatcher.group(1)
-        addOtherNode("語義", meaning)
-        hasOther = true
-      }
-      if (etymologyMatcher.matches()) {
-        String etymology = etymologyMatcher.group(1)
-        addOtherNode("語源", etymology)
-        hasOther = true
-      }
-      if (usageMatcher.matches()) {
-        String usage = usageMatcher.group(1)
-        addOtherNode("語法", usage)
-        hasOther = true
-      }
-      if (phraseMatcher.matches()) {
-        String phrase = phraseMatcher.group(1)
-        addOtherNode("成句", phrase)
-        hasOther = true
-      }
-      if (noteMatcher.matches()) {
-        String note = noteMatcher.group(1)
-        addOtherNode("備考", note)
-        hasOther = true
-      }
-      if (taskMatcher.matches()) {
-        String task = taskMatcher.group(1)
-        addOtherNode("タスク", task)
-        hasOther = true
-      }
-      if (exampleMatcher.matches()) {
-        String example = exampleMatcher.group(1)
-        addOtherNode("例文", example)
-        hasOther = true
-      }
-      if (synonymMatcher.matches()) {
-        String synonym = synonymMatcher.group(1)
-        addSynonymNode(synonym)
-        hasSynonym = true
-      }
+      modifyBreak()
+    } finally {
+      reader.close()
     }
-    modifyBreak()
-    reader.close()
   }
 
   private void addNameNode(String name) {

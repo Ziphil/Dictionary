@@ -18,26 +18,29 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     if ($path != null) {
       File file = File.new($path)
       BufferedReader reader = file.newReader("UTF-8")
-      String currentName = null
-      StringBuilder currentData = StringBuilder.new()
-      String line
-      while ((line = reader.readLine()) != null) {
-        if (isCancelled()) {
-          reader.close()
-          return null
+      try {
+        String currentName = null
+        StringBuilder currentData = StringBuilder.new()
+        String line
+        while ((line = reader.readLine()) != null) {
+          if (isCancelled()) {
+            reader.close()
+            return null
+          }
+          Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+          if (matcher.matches()) {
+            add(currentName, currentData)
+            currentName = matcher.group(1)
+            currentData.setLength(0)
+          } else {
+            currentData.append(line)
+            currentData.append("\n")
+          }
         }
-        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-        if (matcher.matches()) {
-          add(currentName, currentData)
-          currentName = matcher.group(1)
-          currentData.setLength(0)
-        } else {
-          currentData.append(line)
-          currentData.append("\n")
-        }
+        add(currentName, currentData)
+      } finally {
+        reader.close()
       }
-      add(currentName, currentData)
-      reader.close()
     }
     for (ShaleiaWord word : $words) {
       word.updateComparisonString($dictionary.getAlphabetOrder())

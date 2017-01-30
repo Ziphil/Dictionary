@@ -234,19 +234,22 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     BufferedReader reader = BufferedReader.new(StringReader.new($changeData))
-    String line
-    $changes.clear()
-    while ((line = reader.readLine()) != null) {
-      Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
-      if (matcher.matches()) {
-        String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
-        if (!$changes.containsKey(oldName)) {
-          $changes[oldName] = ArrayList.new()
+    try {
+      $changes.clear()
+      String line
+      while ((line = reader.readLine()) != null) {
+        Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
+        if (matcher.matches()) {
+          String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
+          if (!$changes.containsKey(oldName)) {
+            $changes[oldName] = ArrayList.new()
+          }
+          $changes[oldName].add(matcher.group(3))
         }
-        $changes[oldName].add(matcher.group(3))
       }
+    } finally {
+      reader.close()
     }
-    reader.close()
   }
 
   private void calculateSystemWordSize() {
