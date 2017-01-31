@@ -23,7 +23,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateName() {
-    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
+    $name = ($uniqueName.startsWith("\$")) ? "" : $uniqueName.replaceAll(/\+|~/, "")
   }
 
   private void updateEquivalents() {
