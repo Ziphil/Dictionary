@@ -23,7 +23,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
+public abstract class DictionaryBase<W extends Word, S extends Suggestion, P extends DetailSearchParameter> implements Dictionary<W> {
 
   protected String $name = ""
   protected String $path = ""
@@ -53,37 +53,16 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-      for (S suggestion : $suggestions) {
-        suggestion.getPossibilities().clear()
-        suggestion.setDisplayed(false)
-      }
+      resetSuggestions()
       checkWholeSuggestion(search, convertedSearch)
       $filteredWords.setPredicate() { W word ->
-        if (word.isDisplayed()) {
-          if (isStrict) {
-            String name = word.getName()
-            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            checkSuggestion(word, search, convertedSearch)
-            if (search != "") {
-              if (searchesPrefix) {
-                return convertedName.startsWith(convertedSearch)
-              } else {
-                return convertedName == convertedSearch
-              }
-            } else {
-              return true
-            }
-          } else {
-            Matcher matcher = pattern.matcher(word.getName())
-            return matcher.find()
-          }
-        } else {
-          return false
+        if (isStrict) {
+          checkSuggestion(word, search, convertedSearch)
         }
+        return word.isDisplayed() && doSearchByName(word, search, convertedSearch, pattern, isStrict)
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
         return suggestion.isDisplayed()
@@ -94,31 +73,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   public void searchByEquivalent(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
-        if (word.isDisplayed()) {
-          if (isStrict) {
-            if (search != "") {
-              return word.getEquivalents().any() { String equivalent ->
-                if (searchesPrefix) {
-                  return equivalent.startsWith(search)
-                } else {
-                  return equivalent == search
-                }
-              }
-            } else {
-              return true
-            }
-          } else {
-            return word.getEquivalents().any() { String equivalent ->
-              Matcher matcher = pattern.matcher(equivalent)
-              return matcher.find()
-            }
-          }
-        }
+        return word.isDisplayed() && doSearchByEquivalent(word, search, pattern, isStrict)
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
         return false
@@ -132,12 +90,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
-        if (word.isDisplayed()) {
-          Matcher matcher = pattern.matcher(word.getContent())
-          return matcher.find()
-        } else {
-          return false
-        }
+        return word.isDisplayed() && doSearchByContent(word, search, pattern)
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
         return false
@@ -151,19 +104,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     GroovyShell shell = GroovyShell.new()
     Script parsedScript = shell.parse(script)
     $filteredWords.setPredicate() { W word ->
-      try {
-        GroovyBinding binding = GroovyBinding.new()
-        binding.setVariable("word", word)
-        parsedScript.setBinding(binding)
-        Object result = parsedScript.run()
-        if (result) {
-          return true
-        } else {
-          return false
-        }
-      } catch (Exception exception) {
-        return false
-      }
+      return word.isDisplayed() && doSearchScript(word, parsedScript)
     }
     $filteredSuggestions.setPredicate() { S suggestion ->
       return false
@@ -171,14 +112,104 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.unshuffle()
   }
 
-  public void shuffleWords() {
-    $shufflableWords.shuffle()
+  public void searchDetail(P parameter) {
+    $filteredWords.setPredicate() { W word ->
+      return word.isDisplayed() && doSearchDetail(word, parameter)
+    }
+    $filteredSuggestions.setPredicate() { S suggestion ->
+      return false
+    }
+    $shufflableWords.unshuffle()
+  }
+
+  protected Boolean doSearchByName(W word, String search, String convertedSearch, Pattern pattern, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    if (isStrict) {
+      String name = word.getName()
+      String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+      if (search != "") {
+        if (searchesPrefix) {
+          return convertedName.startsWith(convertedSearch)
+        } else {
+          return convertedName == convertedSearch
+        }
+      } else {
+        return true
+      }
+    } else {
+      Matcher matcher = pattern.matcher(word.getName())
+      return matcher.find()
+    }
+  }
+
+  protected Boolean doSearchByEquivalent(W word, String search, Pattern pattern, Boolean isStrict) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    if (isStrict) {
+      if (search != "") {
+        return word.getEquivalents().any() { String equivalent ->
+          if (searchesPrefix) {
+            return equivalent.startsWith(search)
+          } else {
+            return equivalent == search
+          }
+        }
+      } else {
+        return true
+      }
+    } else {
+      return word.getEquivalents().any() { String equivalent ->
+        Matcher matcher = pattern.matcher(equivalent)
+        return matcher.find()
+      }
+    }
+  }
+
+  protected Boolean doSearchByContent(W word, String search, Pattern pattern) {
+    Matcher matcher = pattern.matcher(word.getContent())
+    return matcher.find()
+  }
+
+  protected Boolean doSearchScript(W word, Script parsedScript) {
+    try {
+      GroovyBinding binding = GroovyBinding.new()
+      binding.setVariable("word", word)
+      parsedScript.setBinding(binding)
+      Object result = parsedScript.run()
+      if (result) {
+        return true
+      } else {
+        return false
+      }
+    } catch (Exception exception) {
+      return false
+    }
+  }
+
+  protected Boolean doSearchDetail(W word, P parameter) {
+    return false
+  }
+
+  private void resetSuggestions() {
+    for (S suggestion : $suggestions) {
+      suggestion.getPossibilities().clear()
+      suggestion.setDisplayed(false)
+    }
   }
 
   protected void checkWholeSuggestion(String search, String convertedSearch) {
   }
 
   protected void checkSuggestion(W word, String search, String convertedSearch) {
+  }
+
+  public void shuffleWords() {
+    $shufflableWords.shuffle()
   }
 
   public void modifyWord(W oldWord, W newWord) {

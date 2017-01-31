@@ -214,13 +214,13 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void doSearchDetail(DetailSearchParameter parameter) {
-    if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
+    if ($dictionary instanceof ShaleiaDictionary) {
       measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
+        $dictionary.searchDetail((ShaleiaSearchParameter)parameter)
       }
-    } else if ($dictionary instanceof SlimeDictionary && parameter instanceof SlimeSearchParameter) {
+    } else if ($dictionary instanceof SlimeDictionary) {
       measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
+        $dictionary.searchDetail((SlimeSearchParameter)parameter)
       }
     }
   }

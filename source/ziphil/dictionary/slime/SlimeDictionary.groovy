@@ -17,7 +17,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, SlimeSearchParameter> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -48,6 +48,76 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     setupSuggestions()
   }
 
+  public Boolean doSearchDetail(SlimeWord word, SlimeSearchParameter parameter) {
+    Boolean predicate = true
+    Integer searchId = parameter.getId()
+    String searchName = parameter.getName()
+    SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalentName = parameter.getEquivalentName()
+    String searchEquivalentTitle = parameter.getEquivalentTitle()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchInformationText = parameter.getInformationText()
+    String searchInformationTitle = parameter.getInformationTitle()
+    SearchType informationSearchType = parameter.getInformationSearchType()
+    String searchTag = parameter.getTag()      
+    Integer id = word.getId()
+    String name = word.getName()
+    List<SlimeEquivalent> equivalents = word.getRawEquivalents()
+    List<SlimeInformation> informations = word.getInformations()
+    List<String> tags = word.getTags()
+    if (searchId != null) {
+      if (id != searchId) {
+        predicate = false
+      }
+    }
+    if (searchName != null) {
+      if (!SearchType.matches(nameSearchType, name, searchName)) {
+        predicate = false
+      }
+    }
+    if (searchEquivalentName != null || searchEquivalentTitle != null) {
+      Boolean equivalentPredicate = false
+      searchEquivalentName = searchEquivalentName ?: ""
+      for (SlimeEquivalent equivalent : equivalents) {
+        String equivalentTitle = equivalent.getTitle()
+        for (String equivalentName : equivalent.getNames()) {
+          if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+            equivalentPredicate = true
+          }
+        }
+      }
+      if (!equivalentPredicate) {
+        predicate = false
+      }
+    }
+    if (searchInformationText != null || searchInformationTitle != null) {
+      Boolean informationPredicate = false
+      searchInformationText = searchInformationText ?: ""
+      for (SlimeInformation information : informations) {
+        String informationText = information.getText()
+        String informationTitle = information.getTitle()
+        if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+          informationPredicate = true
+        }
+      }
+      if (!informationPredicate) {
+        predicate = false
+      }
+    }
+    if (searchTag != null) {
+      Boolean tagPredicate = false
+      for (String tag : tags) {
+        if (tag == searchTag) {
+          tagPredicate = true
+        }
+      }
+      if (!tagPredicate) {
+        predicate = false
+      }
+    }
+    return predicate
+  }
+
   protected void checkSuggestion(SlimeWord word, String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
@@ -63,82 +133,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         $suggestions[0].update()
       }
     }
-  }
-
-  public void searchDetail(SlimeSearchParameter parameter) {
-    Integer searchId = parameter.getId()
-    String searchName = parameter.getName()
-    SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalentName = parameter.getEquivalentName()
-    String searchEquivalentTitle = parameter.getEquivalentTitle()
-    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchInformationText = parameter.getInformationText()
-    String searchInformationTitle = parameter.getInformationTitle()
-    SearchType informationSearchType = parameter.getInformationSearchType()
-    String searchTag = parameter.getTag()
-    $filteredWords.setPredicate() { SlimeWord word ->
-      Boolean predicate = true
-      Integer id = word.getId()
-      String name = word.getName()
-      List<SlimeEquivalent> equivalents = word.getRawEquivalents()
-      List<SlimeInformation> informations = word.getInformations()
-      List<String> tags = word.getTags()
-      if (searchId != null) {
-        if (id != searchId) {
-          predicate = false
-        }
-      }
-      if (searchName != null) {
-        if (!SearchType.matches(nameSearchType, name, searchName)) {
-          predicate = false
-        }
-      }
-      if (searchEquivalentName != null || searchEquivalentTitle != null) {
-        Boolean equivalentPredicate = false
-        searchEquivalentName = searchEquivalentName ?: ""
-        for (SlimeEquivalent equivalent : equivalents) {
-          String equivalentTitle = equivalent.getTitle()
-          for (String equivalentName : equivalent.getNames()) {
-            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
-              equivalentPredicate = true
-            }
-          }
-        }
-        if (!equivalentPredicate) {
-          predicate = false
-        }
-      }
-      if (searchInformationText != null || searchInformationTitle != null) {
-        Boolean informationPredicate = false
-        searchInformationText = searchInformationText ?: ""
-        for (SlimeInformation information : informations) {
-          String informationText = information.getText()
-          String informationTitle = information.getTitle()
-          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
-            informationPredicate = true
-          }
-        }
-        if (!informationPredicate) {
-          predicate = false
-        }
-      }
-      if (searchTag != null) {
-        Boolean tagPredicate = false
-        for (String tag : tags) {
-          if (tag == searchTag) {
-            tagPredicate = true
-          }
-        }
-        if (!tagPredicate) {
-          predicate = false
-        }
-      }
-      return predicate
-    }
-    $filteredSuggestions.setPredicate() { SlimeSuggestion suggestion ->
-      return false
-    }
-    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {

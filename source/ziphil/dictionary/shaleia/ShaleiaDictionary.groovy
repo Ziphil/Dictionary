@@ -17,7 +17,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion, ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
   private String $changeData = ""
@@ -32,6 +32,41 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     setupSuggestions()
   }
 
+  protected Boolean doSearchDetail(ShaleiaWord word, ShaleiaSearchParameter parameter) {
+    Boolean predicate = true
+    String searchName = parameter.getName()
+    SearchType nameSearchType = parameter.getNameSearchType()
+    String searchEquivalent = parameter.getEquivalent()
+    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
+    String searchData = parameter.getData()
+    SearchType dataSearchType = parameter.getDataSearchType()
+    String name = word.getName()
+    List<String> equivalents = word.getEquivalents()
+    String data = word.getData()
+    if (searchName != null) {
+      if (!SearchType.matches(nameSearchType, name, searchName)) {
+        predicate = false
+      }
+    }
+    if (searchEquivalent != null) {
+      Boolean equivalentPredicate = false
+      for (String equivalent : equivalents) {
+        if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
+          equivalentPredicate = true
+        }
+      }
+      if (!equivalentPredicate) {
+        predicate = false
+      }
+    }
+    if (searchData != null) {
+      if (!SearchType.matches(dataSearchType, data, searchData)) {
+        predicate = false
+      }
+    }
+    return predicate
+  }
+
   protected void checkWholeSuggestion(String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
@@ -44,47 +79,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
         $suggestions[0].update()
       }
     }
-  }
-
-  public void searchDetail(ShaleiaSearchParameter parameter) {
-    String searchName = parameter.getName()
-    SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalent = parameter.getEquivalent()
-    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchData = parameter.getData()
-    SearchType dataSearchType = parameter.getDataSearchType()
-    $filteredWords.setPredicate() { ShaleiaWord word ->
-      Boolean predicate = true
-      String name = word.getName()
-      List<String> equivalents = word.getEquivalents()
-      String data = word.getData()
-      if (searchName != null) {
-        if (!SearchType.matches(nameSearchType, name, searchName)) {
-          predicate = false
-        }
-      }
-      if (searchEquivalent != null) {
-        Boolean equivalentPredicate = false
-        for (String equivalent : equivalents) {
-          if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
-            equivalentPredicate = true
-          }
-        }
-        if (!equivalentPredicate) {
-          predicate = false
-        }
-      }
-      if (searchData != null) {
-        if (!SearchType.matches(dataSearchType, data, searchData)) {
-          predicate = false
-        }
-      }
-      return predicate
-    }
-    $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-      return false
-    }
-    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
