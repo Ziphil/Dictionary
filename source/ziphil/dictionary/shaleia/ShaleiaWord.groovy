@@ -44,7 +44,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateContent() {
-    $content = uniqueName + "\n" + data
+    $content = $uniqueName + "\n" + $data
   }
 
   public void updateContentPane() {
