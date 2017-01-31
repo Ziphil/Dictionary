@@ -63,22 +63,26 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       }
       checkWholeSuggestion(search, convertedSearch)
       $filteredWords.setPredicate() { W word ->
-        if (isStrict) {
-          String name = word.getName()
-          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          checkSuggestion(word, search, convertedSearch)
-          if (search != "") {
-            if (searchesPrefix) {
-              return convertedName.startsWith(convertedSearch)
+        if (word.isDisplayed()) {
+          if (isStrict) {
+            String name = word.getName()
+            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+            checkSuggestion(word, search, convertedSearch)
+            if (search != "") {
+              if (searchesPrefix) {
+                return convertedName.startsWith(convertedSearch)
+              } else {
+                return convertedName == convertedSearch
+              }
             } else {
-              return convertedName == convertedSearch
+              return true
             }
           } else {
-            return true
+            Matcher matcher = pattern.matcher(word.getName())
+            return matcher.find()
           }
         } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
+          return false
         }
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
@@ -95,22 +99,24 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
-        if (isStrict) {
-          if (search != "") {
-            return word.getEquivalents().any() { String equivalent ->
-              if (searchesPrefix) {
-                return equivalent.startsWith(search)
-              } else {
-                return equivalent == search
+        if (word.isDisplayed()) {
+          if (isStrict) {
+            if (search != "") {
+              return word.getEquivalents().any() { String equivalent ->
+                if (searchesPrefix) {
+                  return equivalent.startsWith(search)
+                } else {
+                  return equivalent == search
+                }
               }
+            } else {
+              return true
             }
           } else {
-            return true
-          }
-        } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
+            return word.getEquivalents().any() { String equivalent ->
+              Matcher matcher = pattern.matcher(equivalent)
+              return matcher.find()
+            }
           }
         }
       }
@@ -126,8 +132,12 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     try {
       Pattern pattern = Pattern.compile(search)
       $filteredWords.setPredicate() { W word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
+        if (word.isDisplayed()) {
+          Matcher matcher = pattern.matcher(word.getContent())
+          return matcher.find()
+        } else {
+          return false
+        }
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
         return false

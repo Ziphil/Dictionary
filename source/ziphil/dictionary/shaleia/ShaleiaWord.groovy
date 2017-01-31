@@ -77,6 +77,10 @@ public class ShaleiaWord extends WordBase {
     $comparisonString = comparisonString.toString()
   }
 
+  public Boolean isDisplayed() {
+    return !$uniqueName.startsWith("\$")
+  }
+
   public ShaleiaDictionary getDictionary() {
     return $dictionary
   }

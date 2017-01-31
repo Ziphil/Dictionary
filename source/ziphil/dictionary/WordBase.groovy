@@ -19,6 +19,10 @@ public abstract class WordBase implements Word {
 
   public abstract void updateContentPane()
 
+  public Boolean isDisplayed() {
+    return true
+  }
+
   public String getName() {
     return $name
   }
