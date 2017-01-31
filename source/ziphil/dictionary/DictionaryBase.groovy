@@ -54,23 +54,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
-    Boolean existsSuggestion = false
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       for (S suggestion : $suggestions) {
         suggestion.getPossibilities().clear()
+        suggestion.setDisplayed(false)
       }
-      if (checkWholeSuggestion(search, convertedSearch)) {
-        existsSuggestion = true
-      }
+      checkWholeSuggestion(search, convertedSearch)
       $filteredWords.setPredicate() { W word ->
         if (isStrict) {
           String name = word.getName()
           String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          if (checkSuggestion(word, search, convertedSearch)) {
-            existsSuggestion = true
-          }
+          checkSuggestion(word, search, convertedSearch)
           if (search != "") {
             if (searchesPrefix) {
               return convertedName.startsWith(convertedSearch)
@@ -86,7 +82,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
         }
       }
       $filteredSuggestions.setPredicate() { S suggestion ->
-        return existsSuggestion
+        return suggestion.isDisplayed()
       }
     } catch (PatternSyntaxException exception) {
     }
@@ -169,12 +165,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.shuffle()
   }
 
-  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
-    return false
+  protected void checkWholeSuggestion(String search, String convertedSearch) {
   }
 
-  protected Boolean checkSuggestion(W word, String search, String convertedSearch) {
-    return false
+  protected void checkSuggestion(W word, String search, String convertedSearch) {
   }
 
   public void modifyWord(W oldWord, W newWord) {

@@ -37,24 +37,20 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
-    Boolean existsSuggestion = false
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       for (ShaleiaSuggestion suggestion : $suggestions) {
         suggestion.getPossibilities().clear()
+        suggestion.setDisplayed(false)
       }
-      if (checkWholeSuggestion(search, convertedSearch)) {
-        existsSuggestion = true
-      }
+      checkWholeSuggestion(search, convertedSearch)
       $filteredWords.setPredicate() { ShaleiaWord word ->
         if (isStrict) {
           if (!word.getUniqueName().startsWith("\$")) {
             String name = word.getName()
             String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            if (checkSuggestion(word, search, convertedSearch)) {
-              existsSuggestion = true
-            }
+            checkSuggestion(word, search, convertedSearch)
             if (search != "") {
               if (searchesPrefix) {
                 return convertedName.startsWith(convertedSearch)
@@ -77,7 +73,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
         }
       }
       $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-        return existsSuggestion
+        return suggestion.isDisplayed()
       }
     } catch (PatternSyntaxException exception) {
     }
@@ -144,7 +140,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $shufflableWords.unshuffle()
   }
 
-  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
+  protected void checkWholeSuggestion(String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -152,11 +148,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       for (String newName : $changes[convertedSearch]) {
         ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
         $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].setDisplayed(true)
         $suggestions[0].update()
       }
-      return true
     }
-    return false
   }
 
   public void searchDetail(ShaleiaSearchParameter parameter) {

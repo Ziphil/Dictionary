@@ -11,11 +11,20 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
   protected TextFlow $contentPane = TextFlow.new()
+  protected Boolean $isDisplayed = false
   protected Boolean $isChanged = true
 
   public abstract void update()
 
   public abstract void updateContentPane()
+
+  public Boolean isDisplayed() {
+    return $isDisplayed
+  }
+
+  public void setDisplayed(Boolean isDisplayed) {
+    $isDisplayed = isDisplayed
+  }
 
   public List<P> getPossibilities() {
     return $possibilities
