@@ -104,7 +104,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, P ext
     GroovyShell shell = GroovyShell.new()
     Script parsedScript = shell.parse(script)
     $filteredWords.setPredicate() { W word ->
-      return word.isDisplayed() && doSearchScript(word, parsedScript)
+      return doSearchScript(word, parsedScript)
     }
     $filteredSuggestions.setPredicate() { S suggestion ->
       return false
@@ -114,7 +114,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, P ext
 
   public void searchDetail(P parameter) {
     $filteredWords.setPredicate() { W word ->
-      return word.isDisplayed() && doSearchDetail(word, parameter)
+      return doSearchDetail(word, parameter)
     }
     $filteredSuggestions.setPredicate() { S suggestion ->
       return false
