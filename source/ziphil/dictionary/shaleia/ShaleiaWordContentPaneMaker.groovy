@@ -51,7 +51,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
     try {
       for (String line ; (line = reader.readLine()) != null ;) {
-        Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
+        Matcher creationDateMatcher = line =~ /^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/
         Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
         Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
         Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
