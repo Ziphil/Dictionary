@@ -37,7 +37,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
         writer.write($dictionary.getChangeData().trim())
         writer.write("\n\n")
       } finally {
-        println("closed")
+        writer.close()
       }
     }
     return true
