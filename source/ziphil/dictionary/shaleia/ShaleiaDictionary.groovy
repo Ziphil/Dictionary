@@ -9,7 +9,9 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
+import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +19,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion, ShaleiaSearchParameter> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
   private String $changeData = ""
@@ -32,39 +34,42 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     setupSuggestions()
   }
 
-  protected Boolean doSearchDetail(ShaleiaWord word, ShaleiaSearchParameter parameter) {
-    Boolean predicate = true
+  public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
     String searchEquivalent = parameter.getEquivalent()
     SearchType equivalentSearchType = parameter.getEquivalentSearchType()
     String searchData = parameter.getData()
     SearchType dataSearchType = parameter.getDataSearchType()
-    String name = word.getName()
-    List<String> equivalents = word.getEquivalents()
-    String data = word.getData()
-    if (searchName != null) {
-      if (!SearchType.matches(nameSearchType, name, searchName)) {
-        predicate = false
-      }
-    }
-    if (searchEquivalent != null) {
-      Boolean equivalentPredicate = false
-      for (String equivalent : equivalents) {
-        if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
-          equivalentPredicate = true
+    resetSuggestions()
+    updateWordPredicate() { ShaleiaWord word ->
+      Boolean predicate = true
+      String name = word.getName()
+      List<String> equivalents = word.getEquivalents()
+      String data = word.getData()
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
         }
       }
-      if (!equivalentPredicate) {
-        predicate = false
+      if (searchEquivalent != null) {
+        Boolean equivalentPredicate = false
+        for (String equivalent : equivalents) {
+          if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
+            equivalentPredicate = true
+          }
+        }
+        if (!equivalentPredicate) {
+          predicate = false
+        }
       }
-    }
-    if (searchData != null) {
-      if (!SearchType.matches(dataSearchType, data, searchData)) {
-        predicate = false
+      if (searchData != null) {
+        if (!SearchType.matches(dataSearchType, data, searchData)) {
+          predicate = false
+        }
       }
+      return predicate
     }
-    return predicate
   }
 
   protected void checkWholeSuggestion(String search, String convertedSearch) {

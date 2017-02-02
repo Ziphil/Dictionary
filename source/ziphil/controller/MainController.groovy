@@ -47,9 +47,11 @@ import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
+import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Dictionaries
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
@@ -187,7 +189,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void searchDetail() {
-    if ($dictionary != null) {
+    if ($dictionary != null && $dictionary instanceof DetailDictionary) {
       if ($dictionary instanceof ShaleiaDictionary) {
         UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
         ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
@@ -345,7 +347,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void modifyWord(Element word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -379,7 +381,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void removeWord(Element word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         $dictionary.removeWord(word)
@@ -398,7 +400,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addWord() {
-    if ($dictionary != null) {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
@@ -428,7 +430,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addInheritedWord(Element word) {
-    if ($dictionary != null) {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)

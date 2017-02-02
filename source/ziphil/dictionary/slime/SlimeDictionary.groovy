@@ -9,7 +9,9 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphil.custom.SimpleTask
+import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +19,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, SlimeSearchParameter> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord>, DetailDictionary<SlimeSearchParameter> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -48,8 +50,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, 
     setupSuggestions()
   }
 
-  public Boolean doSearchDetail(SlimeWord word, SlimeSearchParameter parameter) {
-    Boolean predicate = true
+  public void searchDetail(SlimeSearchParameter parameter) {
     Integer searchId = parameter.getId()
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
@@ -59,63 +60,67 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, 
     String searchInformationText = parameter.getInformationText()
     String searchInformationTitle = parameter.getInformationTitle()
     SearchType informationSearchType = parameter.getInformationSearchType()
-    String searchTag = parameter.getTag()      
-    Integer id = word.getId()
-    String name = word.getName()
-    List<SlimeEquivalent> equivalents = word.getRawEquivalents()
-    List<SlimeInformation> informations = word.getInformations()
-    List<String> tags = word.getTags()
-    if (searchId != null) {
-      if (id != searchId) {
-        predicate = false
+    String searchTag = parameter.getTag()
+    resetSuggestions()
+    updateWordPredicate() { SlimeWord word ->   
+      Boolean predicate = true
+      Integer id = word.getId()
+      String name = word.getName()
+      List<SlimeEquivalent> equivalents = word.getRawEquivalents()
+      List<SlimeInformation> informations = word.getInformations()
+      List<String> tags = word.getTags()
+      if (searchId != null) {
+        if (id != searchId) {
+          predicate = false
+        }
       }
-    }
-    if (searchName != null) {
-      if (!SearchType.matches(nameSearchType, name, searchName)) {
-        predicate = false
+      if (searchName != null) {
+        if (!SearchType.matches(nameSearchType, name, searchName)) {
+          predicate = false
+        }
       }
-    }
-    if (searchEquivalentName != null || searchEquivalentTitle != null) {
-      Boolean equivalentPredicate = false
-      searchEquivalentName = searchEquivalentName ?: ""
-      for (SlimeEquivalent equivalent : equivalents) {
-        String equivalentTitle = equivalent.getTitle()
-        for (String equivalentName : equivalent.getNames()) {
-          if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
-            equivalentPredicate = true
+      if (searchEquivalentName != null || searchEquivalentTitle != null) {
+        Boolean equivalentPredicate = false
+        searchEquivalentName = searchEquivalentName ?: ""
+        for (SlimeEquivalent equivalent : equivalents) {
+          String equivalentTitle = equivalent.getTitle()
+          for (String equivalentName : equivalent.getNames()) {
+            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+              equivalentPredicate = true
+            }
           }
         }
-      }
-      if (!equivalentPredicate) {
-        predicate = false
-      }
-    }
-    if (searchInformationText != null || searchInformationTitle != null) {
-      Boolean informationPredicate = false
-      searchInformationText = searchInformationText ?: ""
-      for (SlimeInformation information : informations) {
-        String informationText = information.getText()
-        String informationTitle = information.getTitle()
-        if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
-          informationPredicate = true
+        if (!equivalentPredicate) {
+          predicate = false
         }
       }
-      if (!informationPredicate) {
-        predicate = false
-      }
-    }
-    if (searchTag != null) {
-      Boolean tagPredicate = false
-      for (String tag : tags) {
-        if (tag == searchTag) {
-          tagPredicate = true
+      if (searchInformationText != null || searchInformationTitle != null) {
+        Boolean informationPredicate = false
+        searchInformationText = searchInformationText ?: ""
+        for (SlimeInformation information : informations) {
+          String informationText = information.getText()
+          String informationTitle = information.getTitle()
+          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+            informationPredicate = true
+          }
+        }
+        if (!informationPredicate) {
+          predicate = false
         }
       }
-      if (!tagPredicate) {
-        predicate = false
+      if (searchTag != null) {
+        Boolean tagPredicate = false
+        for (String tag : tags) {
+          if (tag == searchTag) {
+            tagPredicate = true
+          }
+        }
+        if (!tagPredicate) {
+          predicate = false
+        }
       }
+      return predicate
     }
-    return predicate
   }
 
   protected void checkSuggestion(SlimeWord word, String search, String convertedSearch) {

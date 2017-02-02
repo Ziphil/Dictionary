@@ -2,6 +2,7 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
@@ -9,7 +10,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion, DetailSearchParameter> {
+public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
