@@ -19,7 +19,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   }
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
-    newWord.updateContentPane()
+    newWord.getContentPaneFactory().create()
     $isChanged = true
   }
 

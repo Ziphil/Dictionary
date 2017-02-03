@@ -9,14 +9,14 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordContentPaneFactory extends ContentPaneFactory<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
@@ -37,11 +37,11 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
   private static final String END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
-  public ShaleiaWordContentPaneMaker(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
+  protected void update() {
     Boolean hasOther = false
     Boolean hasSynonym = false
     $contentPane.getStyleClass().clear()
@@ -367,7 +367,7 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
 }
 
 
-@InnerClass(ShaleiaWordContentPaneMaker)
+@InnerClass(ShaleiaWordContentPaneFactory)
 private static enum TextMode {
 
   NORMAL, NORMAL_ITALIC, NAME, NAME_ITALIC, LINK, LINK_ITALIC

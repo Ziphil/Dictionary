@@ -5,22 +5,22 @@ import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestionContentPaneMaker extends ContentPaneMaker<ShaleiaSuggestion, ShaleiaDictionary> {
+public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactory<ShaleiaSuggestion, ShaleiaDictionary> {
 
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"
 
-  public ShaleiaSuggestionContentPaneMaker(TextFlow contentPane, ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public ShaleiaSuggestionContentPaneFactory(ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
+  protected void update() {
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()

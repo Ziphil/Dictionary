@@ -19,7 +19,7 @@ public class ShaleiaWord extends WordBase {
     updateName()
     updateEquivalents()
     updateContent()
-    $isChanged = true
+    changeContentPaneFactory()
   }
 
   private void updateName() {
@@ -47,19 +47,6 @@ public class ShaleiaWord extends WordBase {
     $content = $uniqueName + "\n" + $data
   }
 
-  public void updateContentPane() {
-    if ($isChanged) {
-      Setting setting = Setting.getInstance()
-      Integer lineSpacing = setting.getLineSpacing()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      ShaleiaWordContentPaneMaker maker = ShaleiaWordContentPaneMaker.new($contentPane, this, $dictionary)
-      maker.setLineSpacing(lineSpacing)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isChanged = false
-    }
-  }
-
   public void updateComparisonString(String order) {
     Boolean isApostropheCharacter = order.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
@@ -75,6 +62,15 @@ public class ShaleiaWord extends WordBase {
       }
     }
     $comparisonString = comparisonString.toString()
+  }
+
+  protected void makeContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
+    $contentPaneFactory.setLineSpacing(lineSpacing)
+    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public Boolean isDisplayed() {

@@ -2,6 +2,7 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
+import javafx.scene.layout.Pane
 import ziphil.dictionary.Element
 import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
@@ -21,10 +22,10 @@ public class WordCell extends ListCell<Element> {
       setText(null)
       setGraphic(null)
     } else {
-      word.updateContentPane()
-      word.getContentPane().prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
+      Pane graphic = word.getContentPaneFactory().create()
+      graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
-      setGraphic(word.getContentPane())
+      setGraphic(graphic)
     }
   }
 

@@ -10,13 +10,18 @@ import ziphilib.transform.Ziphilify
 public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
-  protected TextFlow $contentPane = TextFlow.new()
+  protected ContentPaneFactory $contentPaneFactory
   protected Boolean $isDisplayed = false
-  protected Boolean $isChanged = true
 
   public abstract void update()
 
-  public abstract void updateContentPane()
+  protected abstract void makeContentPaneFactory()
+
+  protected void changeContentPaneFactory() {
+    if ($contentPaneFactory != null) {
+      $contentPaneFactory.change()
+    }
+  }
 
   public Boolean isDisplayed() {
     return $isDisplayed
@@ -34,8 +39,11 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
     $possibilities = possibilities
   }
 
-  public Pane getContentPane() {
-    return $contentPane
+  public ContentPaneFactory getContentPaneFactory() {
+    if ($contentPaneFactory == null) {
+      makeContentPaneFactory()
+    }
+    return $contentPaneFactory
   }
 
 }

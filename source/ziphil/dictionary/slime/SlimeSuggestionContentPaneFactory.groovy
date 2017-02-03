@@ -5,22 +5,22 @@ import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestionContentPaneMaker extends ContentPaneMaker<SlimeSuggestion, SlimeDictionary> {
+public class SlimeSuggestionContentPaneFactory extends ContentPaneFactory<SlimeSuggestion, SlimeDictionary> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
 
-  public SlimeSuggestionContentPaneMaker(TextFlow contentPane, SlimeSuggestion word, SlimeDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public SlimeSuggestionContentPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
+  protected void update() {
     $contentPane.getStyleClass().clear()
     $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     $contentPane.getChildren().clear()

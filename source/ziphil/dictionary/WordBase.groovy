@@ -12,12 +12,17 @@ public abstract class WordBase implements Word {
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
-  protected TextFlow $contentPane = TextFlow.new()
-  protected Boolean $isChanged = true
+  protected ContentPaneFactory $contentPaneFactory
 
   public abstract void update()
 
-  public abstract void updateContentPane()
+  protected abstract void makeContentPaneFactory()
+
+  protected void changeContentPaneFactory() {
+    if ($contentPaneFactory != null) {
+      $contentPaneFactory.change()
+    }
+  }
 
   public Boolean isDisplayed() {
     return true
@@ -47,8 +52,11 @@ public abstract class WordBase implements Word {
     $content = content
   }
 
-  public Pane getContentPane() {
-    return $contentPane
+  public ContentPaneFactory getContentPaneFactory() {
+    if ($contentPaneFactory == null) {
+      makeContentPaneFactory()
+    }
+    return $contentPaneFactory
   }
 
 }

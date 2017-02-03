@@ -88,7 +88,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
     newWord.updateComparisonString($alphabetOrder)
-    newWord.updateContentPane()
+    newWord.getContentPaneFactory().create()
     $isChanged = true
   }
 

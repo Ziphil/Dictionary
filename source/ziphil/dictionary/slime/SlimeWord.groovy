@@ -1,8 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import javafx.scene.layout.Pane
-import javafx.scene.text.TextFlow
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -19,19 +18,18 @@ public class SlimeWord extends WordBase {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private TextFlow $plainContentPane = TextFlow.new()
-  private Boolean $isPlainChanged = true
+  private ContentPaneFactory $plainContentPaneFactory
 
   public void update() {
     updateEquivalents()
     updateContent()
-    $isChanged = true
-    $isPlainChanged = true
+    changeContentPaneFactory()
+    changePlainContentPaneFactory()
   }
 
   public void change() {
-    $isChanged = true
-    $isPlainChanged = true
+    changeContentPaneFactory()
+    changePlainContentPaneFactory()
   }
 
   private void updateEquivalents() {
@@ -54,30 +52,6 @@ public class SlimeWord extends WordBase {
     $content = content.toString()
   }
 
-  public void updateContentPane() {
-    if ($isChanged) {
-      Setting setting = Setting.getInstance()
-      Integer lineSpacing = setting.getLineSpacing()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      SlimeWordContentPaneMaker maker = SlimeWordContentPaneMaker.new($contentPane, this, $dictionary)
-      maker.setLineSpacing(lineSpacing)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isChanged = false
-    }
-  }
-
-  public void updatePlainContentPane() {
-    if ($isPlainChanged) {
-      Setting setting = Setting.getInstance()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      SlimeWordPlainContentPaneMaker maker = SlimeWordPlainContentPaneMaker.new($plainContentPane, this, $dictionary)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isPlainChanged = false
-    }
-  }
-
   public void updateComparisonString(String order) {
     if (order != null) {
       StringBuilder comparisonString = StringBuilder.new()
@@ -93,6 +67,28 @@ public class SlimeWord extends WordBase {
     } else {
       $comparisonString = $name
     }
+  }
+
+  private void changePlainContentPaneFactory() {
+    if ($plainContentPaneFactory != null) {
+      $plainContentPaneFactory.change()
+    }
+  }
+
+  protected void makeContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
+    $contentPaneFactory.setLineSpacing(lineSpacing)
+    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
+  }
+
+  protected void makePlainContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $plainContentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
+    $plainContentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public SlimeDictionary getDictionary() {
@@ -159,12 +155,11 @@ public class SlimeWord extends WordBase {
     return $comparisonString
   }
 
-  public Pane getPlainContentPane() {
-    return $plainContentPane
-  }
-
-  public Boolean isPlainChanged() {
-    return $isPlainChanged
+  public ContentPaneFactory getPlainContentPaneFactory() {
+    if ($plainContentPaneFactory == null) {
+      makePlainContentPaneFactory()
+    }
+    return $plainContentPaneFactory
   }
 
 }

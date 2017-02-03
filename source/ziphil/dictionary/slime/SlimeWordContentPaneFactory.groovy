@@ -9,14 +9,14 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordContentPaneMaker extends ContentPaneMaker<SlimeWord, SlimeDictionary> {
+public class SlimeWordContentPaneFactory extends ContentPaneFactory<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_TAG_CLASS = "slime-tag"
@@ -25,11 +25,11 @@ public class SlimeWordContentPaneMaker extends ContentPaneMaker<SlimeWord, Slime
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
-  public SlimeWordContentPaneMaker(TextFlow contentPane, SlimeWord word, SlimeDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
+  protected void update() {
     Boolean hasInformation = false
     Boolean hasRelation = false
     $contentPane.getStyleClass().clear()
@@ -152,10 +152,6 @@ public class SlimeWordContentPaneMaker extends ContentPaneMaker<SlimeWord, Slime
     }
     Text breakText = Text.new("\n")
     $contentPane.getChildren().add(breakText)
-  }
-
-  public void setModifiesPunctuation(Boolean modifiesPunctuation) {
-    $modifiesPunctuation = modifiesPunctuation
   }
 
 }

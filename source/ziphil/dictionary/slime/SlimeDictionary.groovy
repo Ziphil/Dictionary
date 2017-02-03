@@ -156,7 +156,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     newWord.updateComparisonString($alphabetOrder)
-    newWord.updateContentPane()
+    newWord.getContentPaneFactory().create()
     updateOnBackground()
   }
 
