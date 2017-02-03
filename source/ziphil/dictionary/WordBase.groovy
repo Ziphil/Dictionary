@@ -12,7 +12,7 @@ public abstract class WordBase implements Word {
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
-  protected ContentPaneFactory $contentPaneFactory
+  protected ContentPaneFactoryBase $contentPaneFactory
 
   public abstract void update()
 

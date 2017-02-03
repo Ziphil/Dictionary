@@ -9,14 +9,14 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordContentPaneFactory extends ContentPaneFactory<SlimeWord, SlimeDictionary> {
+public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_TAG_CLASS = "slime-tag"

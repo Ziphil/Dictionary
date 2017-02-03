@@ -5,13 +5,13 @@ import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestionContentPaneFactory extends ContentPaneFactory<SlimeSuggestion, SlimeDictionary> {
+public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<SlimeSuggestion, SlimeDictionary> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"

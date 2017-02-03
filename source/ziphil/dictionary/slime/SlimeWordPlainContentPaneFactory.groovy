@@ -4,13 +4,13 @@ import groovy.transform.CompileStatic
 import javafx.geometry.Pos
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordPlainContentPaneFactory extends ContentPaneFactory<SlimeWord, SlimeDictionary> {
+public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"

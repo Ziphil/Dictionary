@@ -5,13 +5,13 @@ import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactory<ShaleiaSuggestion, ShaleiaDictionary> {
+public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<ShaleiaSuggestion, ShaleiaDictionary> {
 
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"

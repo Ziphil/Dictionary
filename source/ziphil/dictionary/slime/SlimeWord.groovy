@@ -2,6 +2,7 @@ package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -18,7 +19,7 @@ public class SlimeWord extends WordBase {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private ContentPaneFactory $plainContentPaneFactory
+  private ContentPaneFactoryBase $plainContentPaneFactory
 
   public void update() {
     updateEquivalents()

@@ -4,13 +4,13 @@ import groovy.transform.CompileStatic
 import javafx.scene.control.Label
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWordContentPaneFactory extends ContentPaneFactory<PersonalWord, PersonalDictionary> {
+public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<PersonalWord, PersonalDictionary> {
 
   public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
     super(word, dictionary)
