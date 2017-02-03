@@ -77,14 +77,6 @@ public class ShaleiaWord extends WordBase {
     return !$uniqueName.startsWith("\$")
   }
 
-  public ShaleiaDictionary getDictionary() {
-    return $dictionary
-  }
-
-  public void setDictionary(ShaleiaDictionary dictionary) {
-    $dictionary = dictionary
-  }
-
   public String getUniqueName() {
     return $uniqueName
   }
@@ -99,6 +91,14 @@ public class ShaleiaWord extends WordBase {
 
   public void setData(String data) {
     $data = data
+  }
+
+  public ShaleiaDictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(ShaleiaDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public String getComparisonString() {
