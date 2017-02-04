@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
+import java.util.function.Consumer
 import javafx.concurrent.Task
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
@@ -19,6 +20,8 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
   private static ObjectMapper $$mapper = createObjectMapper()
 
   private Connection $connection = null
+  private List<String> $plainInformationTitles = ArrayList.new()
+  private Consumer<Integer> $onLinkClicked
 
   public DatabaseDictionary(String name, String path) {
     super(name, path)
@@ -88,6 +91,22 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
 
   public void setConnection(Connection connection) {
     $connection = connection
+  }
+
+  public List<String> getPlainInformationTitles() {
+    return $plainInformationTitles
+  }
+
+  public void setPlainInformationTitles(List<String> plainInformationTitles) {
+    $plainInformationTitles = plainInformationTitles
+  }
+
+  public Consumer<Integer> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
   public String getExtension() {
