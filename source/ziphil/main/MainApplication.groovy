@@ -14,9 +14,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class MainApplication extends Application {
 
+  private static final String DATABASE_LOG_PATH = "data/log/derby.log"
+
   public void start(Stage stage) {
     makeDirectories()
     setupFontRendering()
+    setupDatabaseLogPath()
     load(stage)
     setupStylesheet()
   }
@@ -47,6 +50,10 @@ public class MainApplication extends Application {
       System.setProperty("prism.lcdtext", "false")
       System.setProperty("prism.text", "t2k")
     }
+  }
+
+  private void setupDatabaseLogPath() {
+    System.setProperty("derby.stream.error.file", Launcher.BASE_PATH + DATABASE_LOG_PATH)
   }
 
   private void setupStylesheet() {
