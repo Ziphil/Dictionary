@@ -3,7 +3,11 @@ package ziphil.dictionary.database
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
 import javafx.concurrent.Task
+import ziphil.Launcher
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
 import ziphil.module.Setting
@@ -11,12 +15,17 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion> {
+public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion> implements Closeable {
+
+  private static final String DATABASE_DIRECTORY = "temp/database"
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
+  private Connection $connection
+
   public DatabaseDictionary(String name, String path) {
     super(name, path)
+    setupConnection()
     load()
     setupWords()
   }
@@ -27,6 +36,20 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
 
   public void updateMinimum() {
     $isChanged = true
+  }
+
+  public void close() {
+    $connection.close()
+    try {
+      DriverManager.getConnection("jdbc:derby:;shutdown=true")
+      throw SQLException.new("Shutdown not completed")
+    } catch (SQLException exception) {
+      if (exception.getSQLState() != "XJ015") {
+        throw exception
+      } else {
+        println("Database successfully closed")
+      }
+    }
   }
 
   private void setupWords() {
@@ -44,9 +67,15 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
     }
   }
 
+  private void setupConnection() {
+    $connection = DriverManager.getConnection("jdbc:derby:${Launcher.BASE_PATH + DATABASE_DIRECTORY};create=true")
+    $connection.setAutoCommit(false)
+  }
+
   protected Task<?> createLoader() {
     DatabaseDictionaryLoader loader = DatabaseDictionaryLoader.new(this, $path)
     loader.setMapper($$mapper)
+    loader.setConnection($connection)
     return loader
   }
 

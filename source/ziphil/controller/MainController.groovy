@@ -571,6 +571,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateDictionary(Dictionary dictionary) {
     cancelLoadDictionary()
+    closeDictionary()
     $dictionary = dictionary
     updateIndividualSetting()
     updateSearchStatuses()
@@ -586,6 +587,12 @@ public class MainController extends PrimitiveController<Stage> {
       if (oldLoader.isRunning()) {
         oldLoader.cancel()
       }
+    }
+  }
+
+  private void closeDictionary() {
+    if ($dictionary != null && $dictionary instanceof Closeable) {
+      $dictionary.close()
     }
   }
 
@@ -1063,7 +1070,9 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
-      if (!allowsClose) {
+      if (allowsClose) {
+        closeDictionary()
+      } else {
         event.consume()
       }
     }
