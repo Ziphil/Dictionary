@@ -468,6 +468,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
+    Setting setting = Setting.getInstance()
+    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -477,7 +479,7 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionaries.loadDictionary(file)
+        Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -709,10 +711,12 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionaryToDefault() {
-    String filePath = Setting.getInstance().getDefaultDictionaryPath()
+    Setting setting = Setting.getInstance()
+    String filePath = setting.getDefaultDictionaryPath()
+    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
       updateDictionary(dictionary)
       if (dictionary == null) {
         Setting.getInstance().setDefaultDictionaryPath(null)
