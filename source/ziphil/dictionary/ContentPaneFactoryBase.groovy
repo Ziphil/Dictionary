@@ -11,7 +11,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictionary> implements ContentPaneFactory {
 
-  protected TextFlow $contentPane = TextFlow.new()
   protected E $word
   protected D $dictionary
   protected Boolean $isChanged = true
@@ -23,24 +22,16 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
     $dictionary = dictionary
   }
 
-  public Pane create() {
-    if ($isChanged) {
-      update()
-      $isChanged = false
-    }
-    return $contentPane
-  }
-
-  protected abstract void update()
+  public abstract Pane create()
 
   public void change() {
     $isChanged = true
   }
 
-  protected void modifyBreak() {
-    Node lastChild = $contentPane.getChildren().last()
+  protected void modifyBreak(TextFlow contentPane) {
+    Node lastChild = contentPane.getChildren().last()
     if (lastChild instanceof Text && lastChild.getText() == "\n") {
-      $contentPane.getChildren().removeAt($contentPane.getChildren().size() - 1)
+      contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
     }
   }
 

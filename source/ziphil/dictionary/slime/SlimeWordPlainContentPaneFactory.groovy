@@ -2,6 +2,7 @@ package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import javafx.geometry.Pos
+import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
@@ -20,29 +21,29 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
     super(word, dictionary)
   }
 
-  protected void update() {
-    $contentPane.getStyleClass().clear()
-    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    $contentPane.getChildren().clear()
-    addNameNode($word.getName(), $word.getId())
-    addEquivalentNode($word.getEquivalents().join(", "))
-    modifyBreak()
+  public Pane create() {
+    TextFlow contentPane = TextFlow.new()
+    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    addNameNode(contentPane, $word.getName(), $word.getId())
+    addEquivalentNode(contentPane, $word.getEquivalents().join(", "))
+    modifyBreak(contentPane)
+    return contentPane
   }
 
-  private void addNameNode(String name, Integer id) {
+  private void addNameNode(TextFlow contentPane, String name, Integer id) {
     Text nameText = Text.new(name + " ")
     Text idText = Text.new("#${id}")
     Text breakText = Text.new("\n")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
-    $contentPane.getChildren().addAll(nameText, idText, breakText)
+    contentPane.getChildren().addAll(nameText, idText, breakText)
   }
 
-  private void addEquivalentNode(String equivalent) {
+  private void addEquivalentNode(TextFlow contentPane, String equivalent) {
     Text equivalentText = Text.new(equivalent)
     Text breakText = Text.new("\n")
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    $contentPane.getChildren().addAll(equivalentText, breakText)
+    contentPane.getChildren().addAll(equivalentText, breakText)
   }
 
 }

@@ -3,6 +3,7 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
@@ -20,18 +21,18 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     super(word, dictionary)
   }
 
-  protected void update() {
-    $contentPane.getStyleClass().clear()
-    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    $contentPane.getChildren().clear()
-    $contentPane.setLineSpacing($lineSpacing)
+  public Pane create() {
+    TextFlow contentPane = TextFlow.new()
+    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    contentPane.setLineSpacing($lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
+      addPossibilityNode(contentPane, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
     }
-    modifyBreak()
+    modifyBreak(contentPane)
+    return contentPane
   }
 
-  private void addPossibilityNode(Integer id, String name, String possibilityName) {
+  private void addPossibilityNode(TextFlow contentPane, Integer id, String name, String possibilityName) {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
@@ -44,7 +45,7 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    $contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
+    contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
   }
 
 }
