@@ -81,8 +81,4 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return saver
   }
 
-  public String getExtension() {
-    return "csv"
-  }
-
 }

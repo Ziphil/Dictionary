@@ -201,10 +201,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return saver
   }
 
-  public String getExtension() {
-    return "xdc"
-  }
-
   public String getAlphabetOrder() {
     return $alphabetOrder
   }

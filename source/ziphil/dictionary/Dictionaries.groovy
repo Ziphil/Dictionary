@@ -45,4 +45,16 @@ public class Dictionaries {
     return dictionary
   }
 
+  public static String getExtension(Dictionary dictionary) {
+    String extension
+    if (dictionary instanceof ShaleiaDictionary) {
+      extension = "xdc"
+    } else if (dictionary instanceof PersonalDictionary) {
+      extension = "csv"
+    } else if (dictionary instanceof SlimeDictionary) {
+      extension = "json"
+    }
+    return extension
+  }
+
 }

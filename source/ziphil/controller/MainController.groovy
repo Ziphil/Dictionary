@@ -556,7 +556,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.WINDOW_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), $dictionary.getExtension())
+      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionaries.getExtension($dictionary))
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
