@@ -497,9 +497,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void openRegisteredDictionary(File file) {
+    Setting setting = Setting.getInstance()
+    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
+      Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
       updateDictionary(dictionary)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
