@@ -11,10 +11,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictionary> implements ContentPaneFactory {
 
-  public static final String CONTENT_CLASS = "content"
-  public static final String CONTENT_PANE_CLASS = "content-pane"
-  public static final String HEAD_NAME_CLASS = "head-name"
-
   protected TextFlow $contentPane = TextFlow.new()
   protected E $word
   protected D $dictionary
