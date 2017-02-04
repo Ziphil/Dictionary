@@ -28,13 +28,6 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
 
   private static final String DATABASE_DIRECTORY = "temp/database/"
 
-  private PreparedStatement $entryStatement
-  private PreparedStatement $equivalentStatement
-  private PreparedStatement $equivalentNameStatement
-  private PreparedStatement $tagStatement
-  private PreparedStatement $informationStatement
-  private PreparedStatement $variationStatement
-  private PreparedStatement $relationStatement
   private ObjectMapper $mapper
   private Connection $connection
 
@@ -46,13 +39,14 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
   protected ObservableList<DatabaseWord> call() {
     if ($path != null) {
       FileInputStream stream = FileInputStream.new($path)
+      StatementGroup statementGroup = StatementGroup.new()
       JsonFactory factory = $mapper.getFactory()
       JsonParser parser = factory.createParser(stream)
       Integer size = stream.available()
       try {
         setupConnection()
         setupTables()
-        setupStatements()
+        setupStatementGroup(statementGroup)
         parser.nextToken()
         while (parser.nextToken() == JsonToken.FIELD_NAME) {
           String topFieldName = parser.getCurrentName()
@@ -65,7 +59,7 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
                 return null
               }
               parseWord(parser, temporaryWord)
-              insertWord(temporaryWord)
+              insertWord(statementGroup, temporaryWord)
               word.setId(temporaryWord.getId())
               word.setName(temporaryWord.getName())
               word.setDictionary($dictionary)
@@ -91,7 +85,7 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
             println("Extension data will not be saved")
           }
         }
-        insert()
+        insert(statementGroup)
       } finally {
         parser.close()
         stream.close()
@@ -134,42 +128,43 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     }
   }
 
-  private void setupStatements() {
-    $entryStatement = $connection.prepareStatement("INSERT INTO entry (id, form) VALUES (?, ?)")
-    $equivalentStatement = $connection.prepareStatement("INSERT INTO translation_main (id, entry_id, title) VALUES (?, ?, ?)")
-    $equivalentNameStatement = $connection.prepareStatement("INSERT INTO translation_form (translation_id, entry_id, form) VALUES (?, ?, ?)")
-    $tagStatement = $connection.prepareStatement("INSERT INTO tag (entry_id, form) VALUES (?, ?)")
-    $informationStatement = $connection.prepareStatement("INSERT INTO content (entry_id, title, text) VALUES (?, ?, ?)")
-    $variationStatement = $connection.prepareStatement("INSERT INTO variation (entry_id, title, form) VALUES (?, ?, ?)")
-    $relationStatement = $connection.prepareStatement("INSERT INTO relation (entry_id, title, referrence_id) VALUES (?, ?, ?)")
+  private void setupStatementGroup(StatementGroup statementGroup) {
+    PreparedStatement entryStatement = $connection.prepareStatement("INSERT INTO entry (id, form) VALUES (?, ?)")
+    PreparedStatement equivalentStatement = $connection.prepareStatement("INSERT INTO translation_main (id, entry_id, title) VALUES (?, ?, ?)")
+    PreparedStatement equivalentNameStatement = $connection.prepareStatement("INSERT INTO translation_form (translation_id, entry_id, form) VALUES (?, ?, ?)")
+    PreparedStatement tagStatement = $connection.prepareStatement("INSERT INTO tag (entry_id, form) VALUES (?, ?)")
+    PreparedStatement informationStatement = $connection.prepareStatement("INSERT INTO content (entry_id, title, text) VALUES (?, ?, ?)")
+    PreparedStatement variationStatement = $connection.prepareStatement("INSERT INTO variation (entry_id, title, form) VALUES (?, ?, ?)")
+    PreparedStatement relationStatement = $connection.prepareStatement("INSERT INTO relation (entry_id, title, referrence_id) VALUES (?, ?, ?)")
+    statementGroup.setEntryStatement(entryStatement)
+    statementGroup.setEquivalentStatement(equivalentStatement)
+    statementGroup.setEquivalentNameStatement(equivalentNameStatement)
+    statementGroup.setTagStatement(tagStatement)
+    statementGroup.setInformationStatement(informationStatement)
+    statementGroup.setVariationStatement(variationStatement)
+    statementGroup.setRelationStatement(relationStatement)
   }
 
-  private void insert() {
+  private void insert(StatementGroup statementGroup) {
     try {
       try {
         updateProgressByBatch(0, 7)
-        $entryStatement.executeBatch()
+        statementGroup.getEntryStatement().executeBatch()
         updateProgressByBatch(1, 7)
-        $equivalentStatement.executeBatch()
+        statementGroup.getEquivalentStatement().executeBatch()
         updateProgressByBatch(2, 7)
-        $equivalentNameStatement.executeBatch()
+        statementGroup.getEquivalentNameStatement().executeBatch()
         updateProgressByBatch(3, 7)
-        $tagStatement.executeBatch()
+        statementGroup.getTagStatement().executeBatch()
         updateProgressByBatch(4, 7)
-        $informationStatement.executeBatch()
+        statementGroup.getInformationStatement().executeBatch()
         updateProgressByBatch(5, 7)
-        $variationStatement.executeBatch()
+        statementGroup.getVariationStatement().executeBatch()
         updateProgressByBatch(6, 7)
-        $relationStatement.executeBatch()
+        statementGroup.getRelationStatement().executeBatch()
         updateProgressByBatch(7, 7)
       } finally {
-        $entryStatement.close()
-        $equivalentStatement.close()
-        $equivalentNameStatement.close()
-        $tagStatement.close()
-        $informationStatement.close()
-        $variationStatement.close()
-        $relationStatement.close()
+        statementGroup.close()
       }
       $connection.commit()
     } catch (SQLException exception) {
@@ -177,81 +172,88 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     }
   }
 
-  private void insertWord(SlimeWord word) {
-    insertEntry(word)
-    insertEquivalents(word)
-    insertTags(word)
-    insertInformations(word)
-    insertVariations(word)
-    insertRelations(word)
+  private void insertWord(StatementGroup statementGroup, SlimeWord word) {
+    insertEntry(statementGroup, word)
+    insertEquivalents(statementGroup, word)
+    insertTags(statementGroup, word)
+    insertInformations(statementGroup, word)
+    insertVariations(statementGroup, word)
+    insertRelations(statementGroup, word)
   }
 
-  private void insertEntry(SlimeWord word) {
-    $entryStatement.setInt(1, word.getId())
-    $entryStatement.setString(2, word.getName())
-    $entryStatement.addBatch()
+  private void insertEntry(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getEntryStatement()
+    statement.setInt(1, word.getId())
+    statement.setString(2, word.getName())
+    statement.addBatch()
   }
 
-  private void insertEquivalents(SlimeWord word) {
+  private void insertEquivalents(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getEquivalentStatement()
+    PreparedStatement nameStatement = statementGroup.getEquivalentNameStatement()
     Integer id = word.getId()
     Integer translationId = 0
     for (Integer i : 0 ..< word.getRawEquivalents().size()) {
       SlimeEquivalent equivalent = word.getRawEquivalents()[i]
-      $equivalentStatement.setInt(1, translationId)
-      $equivalentStatement.setInt(2, id)
-      $equivalentStatement.setString(3, equivalent.getTitle())
-      $equivalentStatement.addBatch()
+      statement.setInt(1, translationId)
+      statement.setInt(2, id)
+      statement.setString(3, equivalent.getTitle())
+      statement.addBatch()
       for (Integer j : 0 ..< equivalent.getNames().size()) {
         String name = equivalent.getNames()[j]
-        $equivalentNameStatement.setInt(1, translationId)
-        $equivalentNameStatement.setInt(2, id)
-        $equivalentNameStatement.setString(3, name)
-        $equivalentNameStatement.addBatch()
+        nameStatement.setInt(1, translationId)
+        nameStatement.setInt(2, id)
+        nameStatement.setString(3, name)
+        nameStatement.addBatch()
       }
       translationId ++
     }
   }
 
-  private void insertTags(SlimeWord word) {
+  private void insertTags(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getTagStatement()
     Integer id = word.getId()
     for (Integer i : 0 ..< word.getTags().size()) {
       String tag = word.getTags()[i]
-      $tagStatement.setInt(1, id)
-      $tagStatement.setString(2, tag)
-      $tagStatement.addBatch()
+      statement.setInt(1, id)
+      statement.setString(2, tag)
+      statement.addBatch()
     }
   }
 
-  private void insertInformations(SlimeWord word) {
+  private void insertInformations(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getInformationStatement()
     Integer id = word.getId()
     for (Integer i : 0 ..< word.getInformations().size()) {
       SlimeInformation information = word.getInformations()[i]
-      $informationStatement.setInt(1, id)
-      $informationStatement.setString(2, information.getTitle())
-      $informationStatement.setString(3, information.getText())
-      $informationStatement.addBatch()
+      statement.setInt(1, id)
+      statement.setString(2, information.getTitle())
+      statement.setString(3, information.getText())
+      statement.addBatch()
     }
   }
 
-  private void insertVariations(SlimeWord word) {
+  private void insertVariations(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getVariationStatement()
     Integer id = word.getId()
     for (Integer i : 0 ..< word.getVariations().size()) {
       SlimeVariation variation = word.getVariations()[i]
-      $variationStatement.setInt(1, id)
-      $variationStatement.setString(2, variation.getTitle())
-      $variationStatement.setString(3, variation.getName())
-      $variationStatement.addBatch()
+      statement.setInt(1, id)
+      statement.setString(2, variation.getTitle())
+      statement.setString(3, variation.getName())
+      statement.addBatch()
     }
   }
 
-  private void insertRelations(SlimeWord word) {
+  private void insertRelations(StatementGroup statementGroup, SlimeWord word) {
+    PreparedStatement statement = statementGroup.getRelationStatement()
     Integer id = word.getId()
     for (Integer i : 0 ..< word.getRelations().size()) {
       SlimeRelation variation = word.getRelations()[i]
-      $relationStatement.setInt(1, id)
-      $relationStatement.setString(2, variation.getTitle())
-      $relationStatement.setInt(3, variation.getId())
-      $relationStatement.addBatch()
+      statement.setInt(1, id)
+      statement.setString(2, variation.getTitle())
+      statement.setInt(3, variation.getId())
+      statement.addBatch()
     }
   }
 
