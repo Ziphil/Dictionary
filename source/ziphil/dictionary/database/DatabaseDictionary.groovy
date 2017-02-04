@@ -10,6 +10,7 @@ import javafx.concurrent.Task
 import ziphil.Launcher
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
+import ziphil.module.CustomFiles
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -68,7 +69,9 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
   }
 
   private void setupConnection() {
-    $connection = DriverManager.getConnection("jdbc:derby:${Launcher.BASE_PATH + DATABASE_DIRECTORY};create=true")
+    String path = Launcher.BASE_PATH + DATABASE_DIRECTORY
+    CustomFiles.deleteAll(File.new(path))
+    $connection = DriverManager.getConnection("jdbc:derby:${path};create=true")
     $connection.setAutoCommit(false)
   }
 
