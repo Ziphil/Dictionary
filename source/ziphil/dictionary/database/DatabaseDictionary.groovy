@@ -19,6 +19,7 @@ import ziphilib.transform.Ziphilify
 public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion> implements Closeable {
 
   private static final String DATABASE_DIRECTORY = "temp/database"
+  private static final String LOG_PATH = "data/log/derby.log"
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -71,6 +72,7 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
   private void setupConnection() {
     String path = Launcher.BASE_PATH + DATABASE_DIRECTORY
     CustomFiles.deleteAll(File.new(path))
+    System.setProperty("derby.stream.error.file", Launcher.BASE_PATH + LOG_PATH)
     $connection = DriverManager.getConnection("jdbc:derby:${path};create=true")
     $connection.setAutoCommit(false)
   }
