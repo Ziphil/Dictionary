@@ -111,12 +111,12 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
       Statement statement = $connection.createStatement()
       try {
         statement.addBatch("CREATE TABLE entry (id INT, form VARCHAR(512))")
-        statement.addBatch("CREATE TABLE translation_main (id INT, entry_id INT, title VARCHAR(512))")
-        statement.addBatch("CREATE TABLE translation_form (translation_id INT, entry_id INT, form LONG VARCHAR)")
-        statement.addBatch("CREATE TABLE tag (entry_id INT, form VARCHAR(512))")
-        statement.addBatch("CREATE TABLE content (entry_id INT, title VARCHAR(512), text LONG VARCHAR)")
-        statement.addBatch("CREATE TABLE variation (entry_id INT, title VARCHAR(512), form VARCHAR(512))")
-        statement.addBatch("CREATE TABLE relation (entry_id INT, title VARCHAR(512), referrence_id INT)")
+        statement.addBatch("CREATE TABLE translation_main (id INT, entry_id INT, index INT, title VARCHAR(512))")
+        statement.addBatch("CREATE TABLE translation_form (translation_id INT, entry_id INT, index INT, form LONG VARCHAR)")
+        statement.addBatch("CREATE TABLE tag (entry_id INT, index INT, form VARCHAR(512))")
+        statement.addBatch("CREATE TABLE content (entry_id INT, index INT, title VARCHAR(512), text LONG VARCHAR)")
+        statement.addBatch("CREATE TABLE variation (entry_id INT, index INT, title VARCHAR(512), form VARCHAR(512))")
+        statement.addBatch("CREATE TABLE relation (entry_id INT, index INT, title VARCHAR(512), referrence_id INT)")
         statement.executeBatch()
       } finally {
         statement.close()
@@ -130,12 +130,12 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
 
   private void setupStatementGroup(StatementGroup statementGroup) {
     PreparedStatement entryStatement = $connection.prepareStatement("INSERT INTO entry (id, form) VALUES (?, ?)")
-    PreparedStatement equivalentStatement = $connection.prepareStatement("INSERT INTO translation_main (id, entry_id, title) VALUES (?, ?, ?)")
-    PreparedStatement equivalentNameStatement = $connection.prepareStatement("INSERT INTO translation_form (translation_id, entry_id, form) VALUES (?, ?, ?)")
-    PreparedStatement tagStatement = $connection.prepareStatement("INSERT INTO tag (entry_id, form) VALUES (?, ?)")
-    PreparedStatement informationStatement = $connection.prepareStatement("INSERT INTO content (entry_id, title, text) VALUES (?, ?, ?)")
-    PreparedStatement variationStatement = $connection.prepareStatement("INSERT INTO variation (entry_id, title, form) VALUES (?, ?, ?)")
-    PreparedStatement relationStatement = $connection.prepareStatement("INSERT INTO relation (entry_id, title, referrence_id) VALUES (?, ?, ?)")
+    PreparedStatement equivalentStatement = $connection.prepareStatement("INSERT INTO translation_main (id, entry_id, index, title) VALUES (?, ?, ?, ?)")
+    PreparedStatement equivalentNameStatement = $connection.prepareStatement("INSERT INTO translation_form (translation_id, entry_id, index, form) VALUES (?, ?, ?, ?)")
+    PreparedStatement tagStatement = $connection.prepareStatement("INSERT INTO tag (entry_id, index, form) VALUES (?, ?, ?)")
+    PreparedStatement informationStatement = $connection.prepareStatement("INSERT INTO content (entry_id, index, title, text) VALUES (?, ?, ?, ?)")
+    PreparedStatement variationStatement = $connection.prepareStatement("INSERT INTO variation (entry_id, index, title, form) VALUES (?, ?, ?, ?)")
+    PreparedStatement relationStatement = $connection.prepareStatement("INSERT INTO relation (entry_id, index, title, referrence_id) VALUES (?, ?, ?, ?)")
     statementGroup.setEntryStatement(entryStatement)
     statementGroup.setEquivalentStatement(equivalentStatement)
     statementGroup.setEquivalentNameStatement(equivalentNameStatement)
@@ -197,13 +197,15 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
       SlimeEquivalent equivalent = word.getRawEquivalents()[i]
       statement.setInt(1, translationId)
       statement.setInt(2, id)
-      statement.setString(3, equivalent.getTitle())
+      statement.setInt(3, i)
+      statement.setString(4, equivalent.getTitle())
       statement.addBatch()
       for (Integer j : 0 ..< equivalent.getNames().size()) {
         String name = equivalent.getNames()[j]
         nameStatement.setInt(1, translationId)
         nameStatement.setInt(2, id)
-        nameStatement.setString(3, name)
+        nameStatement.setInt(3, j)
+        nameStatement.setString(4, name)
         nameStatement.addBatch()
       }
       translationId ++
@@ -216,7 +218,8 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     for (Integer i : 0 ..< word.getTags().size()) {
       String tag = word.getTags()[i]
       statement.setInt(1, id)
-      statement.setString(2, tag)
+      statement.setInt(2, i)
+      statement.setString(3, tag)
       statement.addBatch()
     }
   }
@@ -227,8 +230,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     for (Integer i : 0 ..< word.getInformations().size()) {
       SlimeInformation information = word.getInformations()[i]
       statement.setInt(1, id)
-      statement.setString(2, information.getTitle())
-      statement.setString(3, information.getText())
+      statement.setInt(2, i)
+      statement.setString(3, information.getTitle())
+      statement.setString(4, information.getText())
       statement.addBatch()
     }
   }
@@ -239,8 +243,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     for (Integer i : 0 ..< word.getVariations().size()) {
       SlimeVariation variation = word.getVariations()[i]
       statement.setInt(1, id)
-      statement.setString(2, variation.getTitle())
-      statement.setString(3, variation.getName())
+      statement.setInt(2, i)
+      statement.setString(3, variation.getTitle())
+      statement.setString(4, variation.getName())
       statement.addBatch()
     }
   }
@@ -251,8 +256,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     for (Integer i : 0 ..< word.getRelations().size()) {
       SlimeRelation variation = word.getRelations()[i]
       statement.setInt(1, id)
-      statement.setString(2, variation.getTitle())
-      statement.setInt(3, variation.getId())
+      statement.setInt(2, i)
+      statement.setString(3, variation.getTitle())
+      statement.setInt(4, variation.getId())
       statement.addBatch()
     }
   }
