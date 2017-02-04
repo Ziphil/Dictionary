@@ -361,10 +361,6 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     return createRichTexts(string, false)
   }
 
-  public void setModifiesPunctuation(Boolean modifiesPunctuation) {
-    $modifiesPunctuation = modifiesPunctuation
-  }
-
 }
 
 
