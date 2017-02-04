@@ -11,6 +11,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeWord extends WordBase {
 
+  private SlimeDictionary $dictionary
   private Integer $id = -1
   private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
@@ -19,7 +20,6 @@ public class SlimeWord extends WordBase {
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
   private ContentPaneFactoryBase $plainContentPaneFactory
-  private SlimeDictionary $dictionary
 
   public void update() {
     updateEquivalents()
@@ -92,6 +92,14 @@ public class SlimeWord extends WordBase {
     $plainContentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
+  public SlimeDictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(SlimeDictionary dictionary) {
+    $dictionary = dictionary
+  }
+
   public Integer getId() {
     return $id
   }
@@ -142,14 +150,6 @@ public class SlimeWord extends WordBase {
 
   public void setRelations(List<SlimeRelation> relations) {
     $relations = relations
-  }
-
-  public SlimeDictionary getDictionary() {
-    return $dictionary
-  }
-
-  public void setDictionary(SlimeDictionary dictionary) {
-    $dictionary = dictionary
   }
 
   public String getComparisonString() {

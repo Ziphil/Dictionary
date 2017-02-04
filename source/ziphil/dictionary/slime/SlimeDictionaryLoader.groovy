@@ -18,7 +18,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   public SlimeDictionaryLoader(SlimeDictionary dictionary, String path) {
     super(dictionary, path)
-    updateProgress(-1, 1)
+    updateProgress(null, null)
   }
 
   protected ObservableList<SlimeWord> call() {
@@ -41,7 +41,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               parseWord(parser, word)
               word.setDictionary($dictionary)
               $words.add(word)
-              updateProgressByParser(parser, size)
+              updateProgress(parser, size)
             }
           } else if (topFieldName == "zpdic") {
             while (parser.nextToken() == JsonToken.FIELD_NAME) {
@@ -56,7 +56,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               } else if (specialFieldName == "defaultWord") {
                 parseDefaultWord(parser)
               }
-              updateProgressByParser(parser, size)
+              updateProgress(parser, size)
             }
           } else {
             $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
@@ -225,7 +225,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     parseWord(parser, $dictionary.getDefaultWord())
   }
 
-  private void updateProgressByParser(JsonParser parser, Integer size) {
+  private void updateProgress(JsonParser parser, Integer size) {
     if (parser != null) {
       updateProgress(parser.getCurrentLocation().getByteOffset(), size)
     } else {

@@ -1,7 +1,6 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.database.DatabaseDictionary
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -11,7 +10,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify 
 public class Dictionaries {
 
-  public static Dictionary loadDictionary(File file, Boolean usesDatabase) {
+  public static Dictionary loadDictionary(File file) {
     if (file.exists() && file.isFile()) {
       Dictionary dictionary
       String fileName = file.getName()
@@ -21,20 +20,12 @@ public class Dictionaries {
       } else if (filePath.endsWith(".csv")) {
         dictionary = PersonalDictionary.new(fileName, filePath)
       } else if (filePath.endsWith(".json")) {
-        if (usesDatabase) {
-          dictionary = DatabaseDictionary.new(fileName, filePath)
-        } else {
-          dictionary = SlimeDictionary.new(fileName, filePath)
-        }
+        dictionary = SlimeDictionary.new(fileName, filePath)
       }
       return dictionary
     } else {
       return null
     }
-  }
-
-  public static Dictionary loadDictionary(File file) {
-    loadDictionary(file, false)
   }
 
   public static Dictionary loadEmptyDictionary(File file) {

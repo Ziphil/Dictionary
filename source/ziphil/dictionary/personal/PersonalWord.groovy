@@ -9,13 +9,13 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalWord extends WordBase {
 
+  private PersonalDictionary $dictionary
   private String $pronunciation = ""
   private String $translation = ""
   private String $usage = ""
   private Integer $level = 0
   private Integer $memory = 0
   private Integer $modification = 0
-  private PersonalDictionary $dictionary
 
   public void update() {
     updateContent()
@@ -33,6 +33,14 @@ public class PersonalWord extends WordBase {
     $contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
     $contentPaneFactory.setLineSpacing(lineSpacing)
     $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
+  }
+
+  public PersonalDictionary getDictionary() {
+    return $dictionary
+  }
+
+  public void setDictionary(PersonalDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public String getPronunciation() {
@@ -81,14 +89,6 @@ public class PersonalWord extends WordBase {
 
   public void setModification(Integer modification) {
     $modification = modification
-  }
-
-  public PersonalDictionary getDictionary() {
-    return $dictionary
-  }
-
-  public void setDictionary(PersonalDictionary dictionary) {
-    $dictionary = dictionary
   }
 
 }

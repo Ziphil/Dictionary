@@ -468,8 +468,6 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    Setting setting = Setting.getInstance()
-    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -479,7 +477,7 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
+        Dictionary dictionary = Dictionaries.loadDictionary(file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -497,11 +495,9 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void openRegisteredDictionary(File file) {
-    Setting setting = Setting.getInstance()
-    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {
-      Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -575,7 +571,6 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateDictionary(Dictionary dictionary) {
     cancelLoadDictionary()
-    closeDictionary()
     $dictionary = dictionary
     updateIndividualSetting()
     updateSearchStatuses()
@@ -591,12 +586,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (oldLoader.isRunning()) {
         oldLoader.cancel()
       }
-    }
-  }
-
-  private void closeDictionary() {
-    if ($dictionary != null && $dictionary instanceof Closeable) {
-      $dictionary.close()
     }
   }
 
@@ -713,12 +702,10 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateDictionaryToDefault() {
-    Setting setting = Setting.getInstance()
-    String filePath = setting.getDefaultDictionaryPath()
-    Boolean usesDatabase = setting.getUsesDatabase() && setting.isDebugging()
+    String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionaries.loadDictionary(file, usesDatabase)
+      Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary == null) {
         Setting.getInstance().setDefaultDictionaryPath(null)
@@ -1076,9 +1063,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
-      if (allowsClose) {
-        closeDictionary()
-      } else {
+      if (!allowsClose) {
         event.consume()
       }
     }

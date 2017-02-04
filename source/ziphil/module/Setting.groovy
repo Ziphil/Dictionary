@@ -41,7 +41,6 @@ public class Setting {
   private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
-  private Boolean $usesDatabase = false
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
 
@@ -282,14 +281,6 @@ public class Setting {
 
   public void setShowsSlimeId(Boolean showsSlimeId) {
     $showsSlimeId = showsSlimeId
-  }
-
-  public Boolean getUsesDatabase() {
-    return $usesDatabase
-  }
-
-  public void setUsesDatabase(Boolean usesDatabase) {
-    $usesDatabase = usesDatabase
   }
 
   public String getPassword() {
