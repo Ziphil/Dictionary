@@ -191,33 +191,31 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
   private void insertEquivalents(StatementGroup statementGroup, SlimeWord word) {
     PreparedStatement statement = statementGroup.getEquivalentStatement()
     PreparedStatement nameStatement = statementGroup.getEquivalentNameStatement()
-    Integer id = word.getId()
-    Integer translationId = 0
+    Integer equivalentId = 0
     for (Integer i : 0 ..< word.getRawEquivalents().size()) {
       SlimeEquivalent equivalent = word.getRawEquivalents()[i]
-      statement.setInt(1, translationId)
-      statement.setInt(2, id)
+      statement.setInt(1, equivalentId)
+      statement.setInt(2, word.getId())
       statement.setInt(3, i)
       statement.setString(4, equivalent.getTitle())
       statement.addBatch()
       for (Integer j : 0 ..< equivalent.getNames().size()) {
         String name = equivalent.getNames()[j]
-        nameStatement.setInt(1, translationId)
-        nameStatement.setInt(2, id)
+        nameStatement.setInt(1, equivalentId)
+        nameStatement.setInt(2, word.getId())
         nameStatement.setInt(3, j)
         nameStatement.setString(4, name)
         nameStatement.addBatch()
       }
-      translationId ++
+      equivalentId ++
     }
   }
 
   private void insertTags(StatementGroup statementGroup, SlimeWord word) {
     PreparedStatement statement = statementGroup.getTagStatement()
-    Integer id = word.getId()
     for (Integer i : 0 ..< word.getTags().size()) {
       String tag = word.getTags()[i]
-      statement.setInt(1, id)
+      statement.setInt(1, word.getId())
       statement.setInt(2, i)
       statement.setString(3, tag)
       statement.addBatch()
@@ -226,10 +224,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
 
   private void insertInformations(StatementGroup statementGroup, SlimeWord word) {
     PreparedStatement statement = statementGroup.getInformationStatement()
-    Integer id = word.getId()
     for (Integer i : 0 ..< word.getInformations().size()) {
       SlimeInformation information = word.getInformations()[i]
-      statement.setInt(1, id)
+      statement.setInt(1, word.getId())
       statement.setInt(2, i)
       statement.setString(3, information.getTitle())
       statement.setString(4, information.getText())
@@ -239,10 +236,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
 
   private void insertVariations(StatementGroup statementGroup, SlimeWord word) {
     PreparedStatement statement = statementGroup.getVariationStatement()
-    Integer id = word.getId()
     for (Integer i : 0 ..< word.getVariations().size()) {
       SlimeVariation variation = word.getVariations()[i]
-      statement.setInt(1, id)
+      statement.setInt(1, word.getId())
       statement.setInt(2, i)
       statement.setString(3, variation.getTitle())
       statement.setString(4, variation.getName())
@@ -252,10 +248,9 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
 
   private void insertRelations(StatementGroup statementGroup, SlimeWord word) {
     PreparedStatement statement = statementGroup.getRelationStatement()
-    Integer id = word.getId()
     for (Integer i : 0 ..< word.getRelations().size()) {
       SlimeRelation variation = word.getRelations()[i]
-      statement.setInt(1, id)
+      statement.setInt(1, word.getId())
       statement.setInt(2, i)
       statement.setString(3, variation.getTitle())
       statement.setInt(4, variation.getId())

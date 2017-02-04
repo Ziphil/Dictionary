@@ -55,10 +55,9 @@ public class DatabaseWordContentPaneFactory implements ContentPaneFactory {
 
   private void manageTags() {
     Statement statement = $dictionary.getConnection().createStatement()
-    Integer id = $word.getId()
     try {
       List<String> tags = ArrayList.new()
-      ResultSet result = statement.executeQuery("SELECT form FROM tag WHERE entry_id=${id} ORDER BY index")
+      ResultSet result = statement.executeQuery("SELECT form FROM tag WHERE entry_id=${$word.getId()} ORDER BY index")
       try {
         while (result.next()) {
           tags.add(result.getString("form"))
@@ -74,11 +73,10 @@ public class DatabaseWordContentPaneFactory implements ContentPaneFactory {
 
   private void manageEquivalents() {
     Statement statement = $dictionary.getConnection().createStatement()
-    Integer id = $word.getId()
     try {
       List<Integer> equivalentIds = ArrayList.new()
       List<String> equivalentTitles = ArrayList.new()
-      ResultSet result = statement.executeQuery("SELECT id, title FROM translation_main WHERE entry_id=${id} ORDER BY index")
+      ResultSet result = statement.executeQuery("SELECT id, title FROM translation_main WHERE entry_id=${$word.getId()} ORDER BY index")
       try {
         while (result.next()) {
           equivalentIds.add(result.getInt("id"))
@@ -89,7 +87,7 @@ public class DatabaseWordContentPaneFactory implements ContentPaneFactory {
       }
       for (Integer i : 0 ..< equivalentIds.size()) {
         StringBuilder equivalentString = StringBuilder.new()
-        ResultSet nameResult = statement.executeQuery("SELECT form FROM translation_form WHERE entry_id=${id} AND translation_id=${equivalentIds[i]} ORDER BY index")
+        ResultSet nameResult = statement.executeQuery("SELECT form FROM translation_form WHERE entry_id=${$word.getId()} AND translation_id=${equivalentIds[i]} ORDER BY index")
         try {
           while (nameResult.next()) {
             equivalentString.append(nameResult.getString("form"))
@@ -108,9 +106,8 @@ public class DatabaseWordContentPaneFactory implements ContentPaneFactory {
 
   private void manageInformations() {
     Statement statement = $dictionary.getConnection().createStatement()
-    Integer id = $word.getId()
     try {
-      ResultSet result = statement.executeQuery("SELECT title, text FROM content WHERE entry_id=${id} ORDER BY index")
+      ResultSet result = statement.executeQuery("SELECT title, text FROM content WHERE entry_id=${$word.getId()} ORDER BY index")
       try {
         while (result.next()) {
           addInformationNode(result.getString("title"), result.getString("text"))
@@ -125,10 +122,9 @@ public class DatabaseWordContentPaneFactory implements ContentPaneFactory {
 
   private void manageRelations() {
     Statement statement = $dictionary.getConnection().createStatement()
-    Integer id = $word.getId()
     try {
       Map<String, List<Integer>> relations = HashMap.new()
-      ResultSet result = statement.executeQuery("SELECT title, referrence_id FROM relation WHERE entry_id=${id} ORDER BY index")
+      ResultSet result = statement.executeQuery("SELECT title, referrence_id FROM relation WHERE entry_id=${$word.getId()} ORDER BY index")
       try {
         while (result.next()) {
           String title = result.getString("title")
