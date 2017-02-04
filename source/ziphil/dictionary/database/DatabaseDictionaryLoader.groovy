@@ -6,13 +6,19 @@ import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import java.sql.Connection
+import java.sql.DriverManager
 import javafx.collections.ObservableList
+import org.apache.derby.jdbc.EmbeddedDriver
+import ziphil.Launcher
 import ziphil.dictionary.DictionaryLoader
+import ziphil.module.CustomFiles
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionary, DatabaseWord> {
+
+  private static final String DATABASE_DIRECTORY = "temp/database/"
 
   private ObjectMapper $mapper
   private Connection $connection
@@ -29,6 +35,7 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
       JsonParser parser = factory.createParser(stream)
       Integer size = stream.available()
       try {
+        setupConnection()
         parser.nextToken()
         while (parser.nextToken() == JsonToken.FIELD_NAME) {
           String topFieldName = parser.getCurrentName()
@@ -69,6 +76,18 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
       }
     }
     return $words
+  }
+
+  private void setupConnection() {
+    if ($connection == null) {
+      String path = Launcher.BASE_PATH + DATABASE_DIRECTORY
+      CustomFiles.deleteAll(File.new(path))
+      DriverManager.registerDriver(EmbeddedDriver.new())
+      $connection = DriverManager.getConnection("jdbc:derby:${path};create=true")
+      $connection.setAutoCommit(false)
+      $dictionary.setConnection($connection)
+    }
+    updateProgress(0, 1)
   }
 
   private void parseWord(JsonParser parser, DatabaseWord word) {
@@ -202,7 +221,7 @@ public class DatabaseDictionaryLoader extends DictionaryLoader<DatabaseDictionar
     if (parser != null) {
       updateProgress(parser.getCurrentLocation().getByteOffset(), size)
     } else {
-      updateProgress(0, 1)
+      updateProgress(-1, 1)
     }
   }
 

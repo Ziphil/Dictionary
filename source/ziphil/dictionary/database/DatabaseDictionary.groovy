@@ -7,10 +7,8 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 import javafx.concurrent.Task
-import ziphil.Launcher
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
-import ziphil.module.CustomFiles
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -18,15 +16,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion> implements Closeable {
 
-  private static final String DATABASE_DIRECTORY = "temp/database"
-
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Connection $connection
+  private Connection $connection = null
 
   public DatabaseDictionary(String name, String path) {
     super(name, path)
-    setupConnection()
     load()
     setupWords()
   }
@@ -68,13 +63,6 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
     }
   }
 
-  private void setupConnection() {
-    String path = Launcher.BASE_PATH + DATABASE_DIRECTORY
-    CustomFiles.deleteAll(File.new(path))
-    $connection = DriverManager.getConnection("jdbc:derby:${path};create=true")
-    $connection.setAutoCommit(false)
-  }
-
   protected Task<?> createLoader() {
     DatabaseDictionaryLoader loader = DatabaseDictionaryLoader.new(this, $path)
     loader.setMapper($$mapper)
@@ -92,6 +80,14 @@ public class DatabaseDictionary extends DictionaryBase<DatabaseWord, Suggestion>
     ObjectMapper mapper = ObjectMapper.new()
     mapper.enable(SerializationFeature.INDENT_OUTPUT)
     return mapper
+  }
+
+  public Connection getConnection() {
+    return $connection
+  }
+
+  public void setConnection(Connection connection) {
+    $connection = connection
   }
 
   public String getExtension() {
