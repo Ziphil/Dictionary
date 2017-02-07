@@ -45,6 +45,7 @@ import javafx.stage.WindowEvent
 import ziphil.Launcher
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
+import ziphil.custom.UpdatableListViewSkin
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailDictionary
@@ -366,6 +367,7 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
+          ((UpdatableListViewSkin)$wordsView.getSkin()).refresh()
           if (savesAutomatically) {
             $dictionary.save()
           }
@@ -919,6 +921,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       return cell
     }
+    $wordsView.setSkin(UpdatableListViewSkin.new($wordsView))
   }
 
   private void setupSearchControl() {
