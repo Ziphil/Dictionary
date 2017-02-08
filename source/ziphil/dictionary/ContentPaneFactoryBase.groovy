@@ -29,9 +29,11 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
   }
 
   protected void modifyBreak(TextFlow contentPane) {
-    Node lastChild = contentPane.getChildren().last()
-    if (lastChild instanceof Text && lastChild.getText() == "\n") {
-      contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
+    if (contentPane.getChildren().size() >= 1) {
+      Node lastChild = contentPane.getChildren().last()
+      if (lastChild instanceof Text && lastChild.getText() == "\n") {
+        contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
+      }
     }
   }
 
