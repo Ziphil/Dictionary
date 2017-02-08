@@ -863,6 +863,7 @@ public class MainController extends PrimitiveController<Stage> {
     dialog.setAllowsCancel(false)
     throwable.printStackTrace()
     throwable.printStackTrace(stream)
+    stream.flush()
     stream.close()
     dialog.showAndWait()
     Platform.exit()
