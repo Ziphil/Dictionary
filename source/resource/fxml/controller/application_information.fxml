@@ -5,6 +5,8 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -30,7 +32,7 @@
         </Insets>
       </padding>
       <VBox alignment="center"> 
-        <Label text="ZpDIC" styleClass="application-name"/>
+        <ImageView><Image url="@../../icon/logo.png"/></ImageView>
         <Label fx:id="$versionLabel" styleClass="application-version"/>
       </VBox>
       <HBox>

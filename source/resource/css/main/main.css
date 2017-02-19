@@ -71,6 +71,7 @@
 .application-version {
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
+  -fx-text-fill: rgb(25, 77, 31);
 }
 
 .update-title {
