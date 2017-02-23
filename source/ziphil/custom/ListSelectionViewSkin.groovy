@@ -22,8 +22,8 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
 
   private static final String RESOURCE_PATH = "resource/fxml/custom/list_selection_view.fxml"
 
-  @FXML private ListView<T> $sourcesView
-  @FXML private ListView<T> $targetsView
+  @FXML private ListView<T> $sourceView
+  @FXML private ListView<T> $targetView
   @FXML private Label $sourceNameControl
   @FXML private Label $targetNameControl
 
@@ -43,46 +43,46 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
 
   @FXML
   private void moveToTarget() {
-    List<T> movedItems = ArrayList.new($sourcesView.getSelectionModel().getSelectedItems())
+    List<T> movedItems = ArrayList.new($sourceView.getSelectionModel().getSelectedItems())
     if (!movedItems.isEmpty()) {
       for (T movedItem : movedItems) {
-        $sourcesView.getItems().remove(movedItem)
-        $targetsView.getItems().add(movedItem)
+        $sourceView.getItems().remove(movedItem)
+        $targetView.getItems().add(movedItem)
       }
-      Integer size = $targetsView.getItems().size()
+      Integer size = $targetView.getItems().size()
       Integer movedSize = movedItems.size()
-      $sourcesView.getSelectionModel().clearSelection()
-      $targetsView.getSelectionModel().clearSelection()
-      $targetsView.getSelectionModel().selectRange(size - movedSize, size)
-      $targetsView.requestFocus()
+      $sourceView.getSelectionModel().clearSelection()
+      $targetView.getSelectionModel().clearSelection()
+      $targetView.getSelectionModel().selectRange(size - movedSize, size)
+      $targetView.requestFocus()
     }
   }
 
   @FXML
   private void moveToSource() {
-    List<T> movedItems = ArrayList.new($targetsView.getSelectionModel().getSelectedItems())
+    List<T> movedItems = ArrayList.new($targetView.getSelectionModel().getSelectedItems())
     if (!movedItems.isEmpty()) {
       for (T movedItem : movedItems) {
-        $targetsView.getItems().remove(movedItem)
-        $sourcesView.getItems().add(movedItem)
+        $targetView.getItems().remove(movedItem)
+        $sourceView.getItems().add(movedItem)
       }
-      Integer size = $sourcesView.getItems().size()
+      Integer size = $sourceView.getItems().size()
       Integer movedSize = movedItems.size()
-      $targetsView.getSelectionModel().clearSelection()
-      $sourcesView.getSelectionModel().clearSelection()
-      $sourcesView.getSelectionModel().selectRange(size - movedSize, size)
-      $sourcesView.requestFocus()
+      $targetView.getSelectionModel().clearSelection()
+      $sourceView.getSelectionModel().clearSelection()
+      $sourceView.getSelectionModel().selectRange(size - movedSize, size)
+      $sourceView.requestFocus()
     }
   }
 
   private void setupViews() {
-    $sourcesView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
-    $targetsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
+    $sourceView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
+    $targetView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
   }
 
   private void setupDragAndDrop() {
-    setupUnidirectionalDragAndDrop($sourcesView, $targetsView)
-    setupUnidirectionalDragAndDrop($targetsView, $sourcesView)
+    setupUnidirectionalDragAndDrop($sourceView, $targetView)
+    setupUnidirectionalDragAndDrop($targetView, $sourceView)
   }
 
   private void setupUnidirectionalDragAndDrop(ListView<T> firstView, ListView<T> secondView) {
@@ -131,8 +131,8 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
   }
 
   private void bindProperties() {
-    $sourcesView.itemsProperty().bindBidirectional(((ListSelectionView<T>)$control).sourcesProperty())
-    $targetsView.itemsProperty().bindBidirectional(((ListSelectionView<T>)$control).targetsProperty())
+    $sourceView.itemsProperty().bindBidirectional(((ListSelectionView<T>)$control).sourcesProperty())
+    $targetView.itemsProperty().bindBidirectional(((ListSelectionView<T>)$control).targetsProperty())
     $sourceNameControl.textProperty().bind(((ListSelectionView<T>)$control).sourceNameProperty())
     $targetNameControl.textProperty().bind(((ListSelectionView<T>)$control).targetNameProperty())
   }

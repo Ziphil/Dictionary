@@ -23,7 +23,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
 
   private static final String RESOURCE_PATH = "resource/fxml/custom/permutable_list_view.fxml"
 
-  @FXML private ListView<T> $itemsView
+  @FXML private ListView<T> $itemView
 
   public PermutableListViewSkin(PermutableListView<T> control) {
     super(control)
@@ -40,24 +40,24 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
 
   @FXML
   private void exchangeUp() {
-    Integer index = $itemsView.getSelectionModel().getSelectedIndex()
+    Integer index = $itemView.getSelectionModel().getSelectedIndex()
     if (index > 0) {
-      $itemsView.getItems().swap(index, index - 1)
-      $itemsView.getSelectionModel().select(index - 1)
+      $itemView.getItems().swap(index, index - 1)
+      $itemView.getSelectionModel().select(index - 1)
     }
   }
 
   @FXML
   private void exchangeDown() {
-    Integer index = $itemsView.getSelectionModel().getSelectedIndex()
-    if (index >= 0 && index < $itemsView.getItems().size() - 1) {
-      $itemsView.getItems().swap(index, index + 1)
-      $itemsView.getSelectionModel().select(index + 1)
+    Integer index = $itemView.getSelectionModel().getSelectedIndex()
+    if (index >= 0 && index < $itemView.getItems().size() - 1) {
+      $itemView.getItems().swap(index, index + 1)
+      $itemView.getSelectionModel().select(index + 1)
     }
   }
 
   private void setupDragAndDrop() {
-    $itemsView.setCellFactory() { ListView<T> view ->
+    $itemView.setCellFactory() { ListView<T> view ->
       ListCell<T> cell = SimpleListCell.new()
       cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
         T movedItem = cell.getItem()
@@ -74,7 +74,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
         Dragboard dragboard = event.getDragboard()
         Object gestureSource = event.getGestureSource()
         if (gestureSource instanceof ListCell) {
-          if (gestureSource.getListView() == $itemsView && gestureSource != cell && cell.getItem() != null && dragboard.hasString()) {
+          if (gestureSource.getListView() == $itemView && gestureSource != cell && cell.getItem() != null && dragboard.hasString()) {
             event.acceptTransferModes(TransferMode.MOVE)
           }
         }
@@ -84,7 +84,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
         Boolean isCompleted = false
         Dragboard dragboard = event.getDragboard()
         if (dragboard.hasString()) {
-          ObservableList<T> items = $itemsView.getItems()
+          ObservableList<T> items = $itemView.getItems()
           String movedString = dragboard.getString()
           T movedItem = items.find{item -> item.toString() == movedString}
           Integer movedIndex = items.findIndexOf{item -> item.toString() == movedString}
@@ -92,10 +92,10 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
           items.add(index + 1, movedItem)
           if (movedIndex < index + 1) {
             items.removeAt(movedIndex)
-            $itemsView.getSelectionModel().select(index)
+            $itemView.getSelectionModel().select(index)
           } else {
             items.removeAt(movedIndex + 1)
-            $itemsView.getSelectionModel().select(index + 1)
+            $itemView.getSelectionModel().select(index + 1)
           }
           isCompleted = true
         }
@@ -107,7 +107,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
   }
 
   private void bindProperties() {
-    $itemsView.itemsProperty().bindBidirectional(((PermutableListView<T>)$control).itemsProperty())
+    $itemView.itemsProperty().bindBidirectional(((PermutableListView<T>)$control).itemsProperty())
   }
 
 }

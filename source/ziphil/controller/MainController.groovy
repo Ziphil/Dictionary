@@ -89,7 +89,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<Element> $wordsView
+  @FXML private ListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -135,11 +135,11 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   public void initialize() {
-    setupWordsView()
+    setupWordView()
     setupSearchControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
-    setupWordsViewShortcuts()
+    setupWordViewShortcuts()
     setupDebug()
     bindSearchTypeControlProperty()
     checkVersion()
@@ -306,7 +306,7 @@ public class MainController extends PrimitiveController<Stage> {
     $elapsedTimeLabel.setText(elapsedTime.toString())
     $hitWordSizeLabel.setText($dictionary.hitSize().toString())
     $totalWordSizeLabel.setText($dictionary.totalSize().toString())
-    $wordsView.scrollTo(0)
+    $wordView.scrollTo(0)
   }
 
   @FXML
@@ -367,7 +367,7 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
-          ((UpdatableListViewSkin)$wordsView.getSkin()).refresh()
+          ((UpdatableListViewSkin)$wordView.getSkin()).refresh()
           if (savesAutomatically) {
             $dictionary.save()
           }
@@ -378,7 +378,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
     modifyWord(word)
   }
 
@@ -396,7 +396,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
     removeWord(word)
   }
 
@@ -464,7 +464,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Element word = $wordsView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
     addInheritedWord(word)
   }
 
@@ -606,10 +606,10 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateSearchStatuses() {
     if ($dictionary != null) {
       $dictionaryNameLabel.setText($dictionary.getName())
-      $wordsView.setItems($dictionary.getWholeWords())
+      $wordView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordsView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
+      $wordView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
     }
     $previousSearch = ""
     $searchControl.setText("")
@@ -742,10 +742,10 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void focusWordList() {
-    $wordsView.requestFocus()
-    if ($wordsView.getSelectionModel().getSelectedItems().isEmpty()) {
-      $wordsView.getSelectionModel().selectFirst()
-      $wordsView.scrollTo(0)
+    $wordView.requestFocus()
+    if ($wordView.getSelectionModel().getSelectedItems().isEmpty()) {
+      $wordView.getSelectionModel().selectFirst()
+      $wordView.scrollTo(0)
     }
   }
 
@@ -897,8 +897,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @VoidClosure
-  private void setupWordsView() {
-    $wordsView.setCellFactory() { ListView<Element> view ->
+  private void setupWordView() {
+    $wordView.setCellFactory() { ListView<Element> view ->
       WordCell cell = WordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -922,7 +922,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       return cell
     }
-    $wordsView.setSkin(UpdatableListViewSkin.new($wordsView))
+    $wordView.setSkin(UpdatableListViewSkin.new($wordView))
   }
 
   private void setupSearchControl() {
@@ -1056,8 +1056,8 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void setupWordsViewShortcuts() {
-    $wordsView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+  private void setupWordViewShortcuts() {
+    $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWord()
       }
