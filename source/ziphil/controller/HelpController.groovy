@@ -20,6 +20,7 @@ public class HelpController extends Controller<Void> {
   private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"
   private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
   private static final String OTHER_HTML_PATH = "resource/help/other.html"
+  private static final String LICENSE_HTML_PATH = "resource/help/license.html"
   private static final String DICTIONARY_TYPE_HTML_PATH = "resource/help/dictionary_type.html"
   private static final String TITLE = "ヘルプ"
   private static final Double DEFAULT_WIDTH = 640
@@ -50,6 +51,8 @@ public class HelpController extends Controller<Void> {
       url = getClass().getClassLoader().getResource(SHORTCUT_HTML_PATH).toExternalForm()
     } else if (section == "その他") {
       url = getClass().getClassLoader().getResource(OTHER_HTML_PATH).toExternalForm()
+    } else if (section == "ライセンス") {
+      url = getClass().getClassLoader().getResource(LICENSE_HTML_PATH).toExternalForm()
     } else if (section == "各形式について") {
       url = getClass().getClassLoader().getResource(DICTIONARY_TYPE_HTML_PATH).toExternalForm()
     }
