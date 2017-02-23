@@ -15,18 +15,11 @@ import ziphilib.transform.Ziphilify
 public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/help.fxml"
-  private static final String BASIC_EDIT_HTML_PATH = "resource/help/basic_edit.html"
-  private static final String BASIC_SEARCH_HTML_PATH = "resource/help/basic_search.html"
-  private static final String SLIME_EDIT_HTML_PATH = "resource/help/slime_edit.html"
-  private static final String SHORTCUT_HTML_PATH = "resource/help/shortcut.html"
-  private static final String OTHER_HTML_PATH = "resource/help/other.html"
-  private static final String LICENSE_HTML_PATH = "resource/help/license.html"
-  private static final String DICTIONARY_TYPE_HTML_PATH = "resource/help/dictionary_type.html"
   private static final String TITLE = "ヘルプ"
   private static final Double DEFAULT_WIDTH = 640
   private static final Double DEFAULT_HEIGHT = 480
 
-  @FXML private ListView<String> $sectionsView
+  @FXML private ListView<HelpItem> $sectionsView
   @FXML private WebView $helpView
 
   public HelpController(UtilityStage<Void> stage) {
@@ -39,33 +32,53 @@ public class HelpController extends Controller<Void> {
     setupSectionsView()
   }
 
-  private void changeHelp(String section) {
-    String url = ""
-    if (section == "基本操作(編集)") {
-      url = getClass().getClassLoader().getResource(BASIC_EDIT_HTML_PATH).toExternalForm()
-    } else if (section == "基本操作(検索)") {
-      url = getClass().getClassLoader().getResource(BASIC_SEARCH_HTML_PATH).toExternalForm()
-    } else if (section == "OneToMany形式の編集") {
-      url = getClass().getClassLoader().getResource(SLIME_EDIT_HTML_PATH).toExternalForm()
-    } else if (section == "ショートカットキー") {
-      url = getClass().getClassLoader().getResource(SHORTCUT_HTML_PATH).toExternalForm()
-    } else if (section == "その他") {
-      url = getClass().getClassLoader().getResource(OTHER_HTML_PATH).toExternalForm()
-    } else if (section == "ライセンス") {
-      url = getClass().getClassLoader().getResource(LICENSE_HTML_PATH).toExternalForm()
-    } else if (section == "各形式について") {
-      url = getClass().getClassLoader().getResource(DICTIONARY_TYPE_HTML_PATH).toExternalForm()
-    }
+  private void changeHelp(HelpItem item) {
+    String path = item.getAbsolutePath()
+    String url = getClass().getClassLoader().getResource(path).toExternalForm()
     $helpView.getEngine().load(url)
   }
 
   private void setupSectionsView() {
     $sectionsView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        String section = $sectionsView.getSelectionModel().getSelectedItems()[0]
-        changeHelp(section)
+        HelpItem item = $sectionsView.getSelectionModel().getSelectedItem()
+        changeHelp(item)
       }
     }
+    for (HelpItem item : HelpItem.values()) {
+      $sectionsView.getItems().add(item)
+    }
+  }
+
+}
+
+
+@InnerClass(HelpController)
+private static enum HelpItem {
+
+  BASIC_EDIT("基本操作(編集)", "basic_edit"), BASIC_SEARCH("基本操作(検索)", "basic_search"), SLIME_EDIT("OneToMany形式の編集", "slime_edit"), SHORTCUT("ショートカットキー", "shortcut"),
+  OTHER("その他", "other"), LICENSE("ライセンス", "license"), DICTIONARY_TYPE("各形式について", "dictionary_type")
+
+  private static final String RESOURCE_DIRECTORY = "resource/help/"
+
+  private String $name = ""
+  private String $path = ""
+
+  private HelpItem(String name, String path) {
+    $name = name
+    $path = path
+  }
+
+  public String toString() {
+    return $name
+  }
+
+  public String getPath() {
+    return $path + ".html"
+  }
+
+  public String getAbsolutePath() {
+    return RESOURCE_DIRECTORY + $path + ".html"
   }
 
 }
