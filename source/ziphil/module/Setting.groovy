@@ -33,6 +33,7 @@ public class Setting {
   private String $systemFontFamily
   private Integer $lineSpacing = 0
   private Integer $separativeInterval = 700
+  private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
@@ -220,6 +221,14 @@ public class Setting {
 
   public void setSeparativeInterval(Integer separativeInterval) {
     $separativeInterval = separativeInterval
+  }
+
+  public String getScriptName() {
+    return $scriptName
+  }
+
+  public void setScriptName(String scriptName) {
+    $scriptName = scriptName
   }
 
   public FontRenderingType getFontRenderingType() {

@@ -203,6 +203,7 @@
           <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <Label text="前方一致検索:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="スクリプト言語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <ToggleButton fx:id="$ignoresAccentControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
@@ -215,6 +216,10 @@
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
+          <ComboBox fx:id="$scriptControl" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <prefWidth><Double rpx="300"/></prefWidth>
+            <minWidth><Double rpx="300"/></minWidth>
+          </ComboBox>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
               <Insets>
@@ -237,10 +242,20 @@
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;"/>
             <Text text="有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="スクリプト検索で利用する言語を設定できます。&#10;"/>
+            <Text text="libraryフォルダにjarファイルを追加することで、利用できる言語を増やすことができます。"/>
           </TextFlow>
         </GridPane>
       </Tab>

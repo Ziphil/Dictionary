@@ -140,13 +140,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   public void searchScript(String script) {
-    ScriptEngineManager engineManager = ScriptEngineManager.new()
-    ScriptEngine engine = engineManager.getEngineByName("groovy")
+    String scriptName = Setting.getInstance().getScriptName()
+    ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
+    ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
     resetSuggestions()
     updateWordPredicate() { Word word ->
       try {
-        engine.put("word", word)
-        Object result = engine.eval(script)
+        scriptEngine.put("word", word)
+        Object result = scriptEngine.eval(script)
         return (result) ? true : false
       } catch (ScriptException exception) {
         return false
