@@ -30,15 +30,15 @@ def name = word.name
 name.startsWith("s") && name.endsWith("i")
 </pre>
 <p>
-また、以下は、「noun」という品詞で5文字以上の訳語が含まれている単語のみを表示するGroovyスクリプトの例です。
+また、以下は、「noun」という品詞で5文字以上の訳語が含まれている単語のみを表示するJRubyスクリプトの例です。
 </p>
 <pre>
-word.equivalents.any() { equivalent ->
+word.equivalents.any? do |equivalent|
   equivalent.title == "noun" &&
-  equivalent.names.any() { name ->
-    name.length() >= 5
-  }
-}
+  equivalent.names.any? do |name|
+    name.size >= 5
+  end
+end
 </pre>
 <h1>使用する言語の変更</h1>
 <p>
