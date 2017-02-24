@@ -85,6 +85,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
+  private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
   private static final String TITLE = "ZpDIC shalnif"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
@@ -242,11 +243,15 @@ public class MainController extends PrimitiveController<Stage> {
           ScriptSearchParameter script = nextStage.getResult()
           doSearchScript(script)
         } catch (ScriptException exception) {
+          PrintStream stream = PrintStream.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("実行エラー")
           dialog.setContentText("スクリプト実行中にエラーが発生しました。")
           dialog.setAllowsCancel(false)
+          exception.printStackTrace(stream)
+          stream.flush()
+          stream.close()
           dialog.showAndWait()
         } catch (NoSuchScriptEngineException exception) {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
