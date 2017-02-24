@@ -157,8 +157,8 @@
           </ComboBox>
           <CheckBox fx:id="$usesDefaultSystemFontFamilyControl" text="デフォルトフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <ComboBox fx:id="$fontRenderingTypeControl" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <prefWidth><Double rpx="200"/></prefWidth>
-            <minWidth><Double rpx="200"/></minWidth>
+            <prefWidth><Double rpx="180"/></prefWidth>
+            <minWidth><Double rpx="180"/></minWidth>
             <items>
               <FXCollections fx:factory="observableArrayList">
                 <FontRenderingType fx:value="DEFAULT_LCD"/>
@@ -217,8 +217,8 @@
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
           <ComboBox fx:id="$scriptControl" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <prefWidth><Double rpx="300"/></prefWidth>
-            <minWidth><Double rpx="300"/></minWidth>
+            <prefWidth><Double rpx="250"/></prefWidth>
+            <minWidth><Double rpx="250"/></minWidth>
           </ComboBox>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
