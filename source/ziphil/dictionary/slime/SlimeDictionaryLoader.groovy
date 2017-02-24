@@ -67,10 +67,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
         parser.close()
         stream.close()
       }
-    }
-    for (SlimeWord word : $words) {
-      word.updateComparisonString($dictionary.getAlphabetOrder())
-      word.update()
+      for (SlimeWord word : $words) {
+        word.updateComparisonString($dictionary.getAlphabetOrder())
+        word.update()
+      }
     }
     return $words
   }

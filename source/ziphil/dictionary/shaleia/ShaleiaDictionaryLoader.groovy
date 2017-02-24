@@ -47,9 +47,9 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       } finally {
         reader.close()
       }
-    }
-    for (ShaleiaWord word : $words) {
-      word.updateComparisonString($dictionary.getAlphabetOrder())
+      for (ShaleiaWord word : $words) {
+        word.updateComparisonString($dictionary.getAlphabetOrder())
+      }
     }
     return $words
   }
