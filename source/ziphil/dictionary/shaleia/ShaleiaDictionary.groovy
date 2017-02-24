@@ -171,6 +171,14 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return newWord
   }
 
+  public Object plainWord(ShaleiaWord oldWord) {
+    ShaleiaPlainWord newWord = ShaleiaPlainWord.new()
+    newWord.setName(oldWord.getName())
+    newWord.setUniqueName(oldWord.getUniqueName())
+    newWord.setData(oldWord.getData())
+    return newWord
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()

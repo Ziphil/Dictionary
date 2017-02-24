@@ -64,6 +64,18 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return copiedWord(oldWord)
   }
 
+  public Object plainWord(PersonalWord oldWord) {
+    PersonalPlainWord newWord = PersonalPlainWord.new()
+    newWord.setName(oldWord.getName())
+    newWord.setPronunciation(oldWord.getPronunciation())
+    newWord.setTranslation(oldWord.getTranslation())
+    newWord.setUsage(oldWord.getUsage())
+    newWord.setLevel(oldWord.getLevel())
+    newWord.setMemory(oldWord.getMemory())
+    newWord.setModification(oldWord.getModification())
+    return newWord
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
