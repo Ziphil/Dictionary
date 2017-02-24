@@ -31,8 +31,8 @@
       <HBox>
         <spacing><Double rpx="5"/></spacing>
         <ListView fx:id="$sectionView">
-          <prefWidth><Double rpx="150"/></prefWidth>
-          <minWidth><Double rpx="150"/></minWidth>
+          <prefWidth><Double rpx="180"/></prefWidth>
+          <minWidth><Double rpx="180"/></minWidth>
         </ListView>
         <WebView fx:id="$helpView"/>
       </HBox>

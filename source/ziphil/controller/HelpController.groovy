@@ -7,6 +7,7 @@ import javafx.scene.control.ListView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.web.WebView
+import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
@@ -16,8 +17,8 @@ public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/help.fxml"
   private static final String TITLE = "ヘルプ"
-  private static final Double DEFAULT_WIDTH = 640
-  private static final Double DEFAULT_HEIGHT = 480
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private ListView<HelpItem> $sectionView
   @FXML private WebView $helpView
