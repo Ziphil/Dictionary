@@ -17,6 +17,7 @@ public class MainApplication extends Application {
   public void start(Stage stage) {
     makeDirectories()
     setupFontRendering()
+    setupScriptProperty()
     load(stage)
     setupStylesheet()
   }
@@ -47,6 +48,10 @@ public class MainApplication extends Application {
       System.setProperty("prism.lcdtext", "false")
       System.setProperty("prism.text", "t2k")
     }
+  }
+
+  private void setupScriptProperty() {
+    System.setProperty("org.jruby.embed.localvariable.behavior", "persistent")
   }
 
   private void setupStylesheet() {
