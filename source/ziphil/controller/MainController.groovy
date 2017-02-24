@@ -1093,9 +1093,6 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupDebug() {
     Boolean isDebugging = Setting.getInstance().isDebugging()
-    if (!isDebugging) {
-      $searchScriptItem.setVisible(false)
-    }
   }
 
 }
