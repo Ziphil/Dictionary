@@ -203,9 +203,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.shuffle()
   }
 
-  public Object plainWord(W word) {
-    return word
-  }
+  public abstract Object plainWord(W word)
 
   public abstract void update()
 
