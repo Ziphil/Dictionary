@@ -312,6 +312,50 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
+  public Object plainWord(SlimeWord oldWord) {
+    SlimePlainWord newWord = SlimePlainWord.new()
+    Integer newId = oldWord.getId()
+    String newName = oldWord.getName()
+    List<SlimeEquivalent> newEquivalents = ArrayList.new()
+    for (SlimeEquivalent equivalent : oldWord.getRawEquivalents()) {
+      SlimeEquivalent newEquivalent = SlimeEquivalent.new()
+      newEquivalent.setTitle(equivalent.getTitle())
+      newEquivalent.setNames((List<String>)((ArrayList<String>)equivalent.getNames()).clone())
+      newEquivalents.add(newEquivalent)
+    }
+    List<String> newTags = (List<String>)((ArrayList<String>)oldWord.getTags()).clone()
+    List<SlimeInformation> newInformations = ArrayList.new()
+    for (SlimeInformation information : oldWord.getInformations()) {
+      SlimeInformation newInformation = SlimeInformation.new()
+      newInformation.setTitle(information.getTitle())
+      newInformation.setText(information.getText())
+      newInformations.add(newInformation)
+    }
+    List<SlimeVariation> newVariations = ArrayList.new()
+    for (SlimeVariation variation : oldWord.getVariations()) {
+      SlimeVariation newVariation = SlimeVariation.new()
+      newVariation.setTitle(variation.getTitle())
+      newVariation.setName(variation.getName())
+      newVariations.add(newVariation)
+    }
+    List<SlimeRelation> newRelations = ArrayList.new()
+    for (SlimeRelation relation : oldWord.getRelations()) {
+      SlimeRelation newRelation = SlimeRelation.new()
+      newRelation.setTitle(relation.getTitle())
+      newRelation.setId(relation.getId())
+      newRelation.setName(relation.getName())
+      newRelations.add(newRelation)
+    }
+    newWord.setId(newId)
+    newWord.setName(newName)
+    newWord.setEquivalents(newEquivalents)
+    newWord.setTags(newTags)
+    newWord.setInformations(newInformations)
+    newWord.setVariations(newVariations)
+    newWord.setRelations(newRelations)
+    return newWord
+  }
+
   public SlimeDictionary copy() {
     ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
     SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)

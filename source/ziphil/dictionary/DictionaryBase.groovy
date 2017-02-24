@@ -146,7 +146,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     resetSuggestions()
     updateWordPredicate() { Word word ->
       try {
-        scriptEngine.put("word", word)
+        scriptEngine.put("word", plainWord(word))
         Object result = scriptEngine.eval(script)
         return (result) ? true : false
       } catch (ScriptException exception) {
@@ -178,6 +178,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public void shuffleWords() {
     $shufflableWords.shuffle()
+  }
+
+  public Object plainWord(W word) {
+    return word
   }
 
   public abstract void update()
