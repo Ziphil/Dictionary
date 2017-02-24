@@ -18,6 +18,7 @@ import javax.script.ScriptEngineManager
 import javax.script.ScriptEngine
 import javax.script.ScriptException
 import ziphil.custom.ShufflableList
+import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -144,14 +145,36 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
     ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
     resetSuggestions()
-    updateWordPredicate() { Word word ->
-      try {
-        scriptEngine.put("word", plainWord(word))
-        Object result = scriptEngine.eval(script)
-        return (result) ? true : false
-      } catch (ScriptException exception) {
+    if (scriptEngine != null) {
+      String exceptionMessage
+      String exceptionFileName = ""
+      Integer exceptionLineNumber = 0
+      Integer exceptionColumnNumber = 0
+      updateWordPredicate() { Word word ->
+        try {
+          if (exceptionMessage == null) {
+            scriptEngine.put("word", plainWord(word))
+            Object result = scriptEngine.eval(script)
+            return (result) ? true : false
+          } else {
+            return false
+          }
+        } catch (ScriptException exception) {
+          exceptionMessage = exception.getMessage()
+          exceptionFileName = exception.getFileName()
+          exceptionLineNumber = exception.getLineNumber()
+          exceptionColumnNumber = exception.getColumnNumber()
+          return false
+        }
+      }
+      if (exceptionMessage != null) {
+        throw ScriptException.new(exceptionMessage, exceptionFileName, exceptionLineNumber, exceptionColumnNumber)
+      }
+    } else {
+      updateWordPredicate() { Word word ->
         return false
       }
+      throw NoSuchScriptEngineException.new(scriptName)
     }
   }
 

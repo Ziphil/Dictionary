@@ -42,6 +42,7 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import javafx.stage.WindowEvent
+import javax.script.ScriptException
 import ziphil.Launcher
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
@@ -72,6 +73,7 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
+import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphil.module.Version
 import ziphilib.transform.VoidClosure
@@ -236,8 +238,24 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        ScriptSearchParameter script = nextStage.getResult()
-        doSearchScript(script)
+        try {
+          ScriptSearchParameter script = nextStage.getResult()
+          doSearchScript(script)
+        } catch (ScriptException exception) {
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("実行エラー")
+          dialog.setContentText("スクリプト実行中にエラーが発生しました。")
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
+        } catch (NoSuchScriptEngineException exception) {
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("スクリプトエンジンエラー")
+          dialog.setContentText("指定されたスクリプトエンジンが見つかりません。実行用のjarファイルがライブラリに追加されているか確認してください。")
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
+        }
       }
     }
   }
