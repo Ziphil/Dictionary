@@ -1,9 +1,6 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import groovy.lang.Binding as GroovyBinding
-import groovy.lang.GroovyShell
-import groovy.lang.Script
 import java.util.concurrent.Callable
 import java.util.function.Predicate
 import java.util.regex.Matcher
@@ -17,6 +14,9 @@ import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import javax.script.ScriptEngineManager
+import javax.script.ScriptEngine
+import javax.script.ScriptException
 import ziphil.custom.ShufflableList
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -140,21 +140,15 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   public void searchScript(String script) {
-    GroovyShell shell = GroovyShell.new()
-    Script parsedScript = shell.parse(script)
+    ScriptEngineManager engineManager = ScriptEngineManager.new()
+    ScriptEngine engine = engineManager.getEngineByName("groovy")
     resetSuggestions()
     updateWordPredicate() { Word word ->
       try {
-        GroovyBinding binding = GroovyBinding.new()
-        binding.setVariable("word", word)
-        parsedScript.setBinding(binding)
-        Object result = parsedScript.run()
-        if (result) {
-          return true
-        } else {
-          return false
-        }
-      } catch (Exception exception) {
+        engine.put("word", word)
+        Object result = engine.eval(script)
+        return (result) ? true : false
+      } catch (ScriptException exception) {
         return false
       }
     }
