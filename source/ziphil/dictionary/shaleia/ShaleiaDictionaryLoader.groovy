@@ -4,20 +4,25 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
+import ziphilib.transform.ConvertPrimitives
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimLong
 
 
-@CompileStatic @Ziphilify
+@CompileStatic @Ziphilify @ConvertPrimitives
 public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
 
   public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
     super(dictionary, path)
+    updateProgress(0, 1)
   }
 
   protected ObservableList<ShaleiaWord> call() {
     if ($path != null) {
       File file = File.new($path)
       BufferedReader reader = file.newReader("UTF-8")
+      PrimLong size = file.length()
+      PrimLong offset = 0L
       try {
         String currentName = null
         StringBuilder currentData = StringBuilder.new()
@@ -35,6 +40,8 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
             currentData.append(line)
             currentData.append("\n")
           }
+          offset += line.getBytes("UTF-8").length + 1
+          updateProgress(offset, size)
         }
         add(currentName, currentData)
       } finally {

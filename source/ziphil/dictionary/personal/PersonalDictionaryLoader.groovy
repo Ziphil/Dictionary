@@ -17,6 +17,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
 
   public PersonalDictionaryLoader(PersonalDictionary dictionary, String path) {
     super(dictionary, path)
+    updateProgress(0, 1)
   }
 
   protected ObservableList<PersonalWord> call() {
