@@ -10,19 +10,20 @@ body {
 
 h1 {
   margin: 10px 0px 5px 0px;
-  padding: 0px 3px;
+  padding: 2px 5px;
   font-size: 16px;
   font-weight: normal;
   line-height: 20px;
-  border-bottom: rgb(200,200,200) 1px solid;
+  border: rgb(200,200,200) 3px double;
 }
 
 h2 {
   margin: 8px 0px 4px 0px;
-  padding: 0px;
+  padding: 0px 3px;
   font-size: 14px;
   font-weight: normal;
   line-height: 17px;
+  border-bottom: rgb(200,200,200) 1px solid;
 }
 
 h2:before {
@@ -34,6 +35,24 @@ h2:before {
 p {
   margin: 5px 0px;
   padding: 0px;
+  line-height: 17px;
+}
+
+pre {
+  font-family: monospaced;
+  margin: 5px 0px;
+  padding: 1px 3px;
+  line-height: 17px;
+  border-top: rgb(200,200,200) 1px solid;
+  border-bottom: rgb(200,200,200) 1px solid;
+}
+
+span.monospaced {
+  font-family: monospaced;
+}
+
+a {
+  color: rgb(0,150,201);
 }
 
 table {

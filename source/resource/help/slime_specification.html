@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="help.css">
+</head>
+<body>
+<h1 id="SlimePlainWord"><span class="monospaced">SlimePlainWord</span></h1>
+<h2><span class="monospaced">Integer</span> <span class="monospaced">getId()</span></h2>
+<p>
+IDを返します。
+JSONファイルにおける<span class="monospaced">entry</span>キーのオブジェクトの<span class="monospaced">id</span>キーの値です。
+</p>
+<h2><span class="monospaced">String</span> <span class="monospaced">getName()</span></h2>
+<p>
+名前を返します。
+JSONファイルにおける<span class="monospaced">entry</span>キーのオブジェクトの<span class="monospaced">form</span>キーの値です。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+<h2><span class="monospaced">ArrayList&lt;<a href="#SlimeEquivalent">SlimeEquivalent</a>&gt;</span> <span class="monospaced">getEquivalents()</span></h2>
+<p>
+訳語データの配列を返します。
+訳語データは<span class="monospaced">SlimeEquivalent</span>オブジェクトです。
+JSONファイルにおける<span class="monospaced">translations</span>キーに対応しています。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+<h2><span class="monospaced">ArrayList&lt;String&gt;</span> <span class="monospaced">getTags()</span></h2>
+<p>
+タグの配列を返します。
+JSONファイルにおける<span class="monospaced">tags</span>キーの配列です。
+</p>
+<h2><span class="monospaced">ArrayList&lt;<a href="#SlimeInformation">SlimeInformation</a>&gt;</span> <span class="monospaced">getInformations()</span></h2>
+<p>
+内容データの配列を返します。
+内容データは<span class="monospaced">SlimeInformation</span>オブジェクトです。
+JSONファイルにおける<span class="monospaced">contents</span>キーに対応しています。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+<h2><span class="monospaced">ArrayList&lt;<a href="#SlimeVariation">SlimeVariation</a>&gt;</span> <span class="monospaced">getVariations()</span></h2>
+<p>
+変化形データの配列を返します。
+変化形データは<span class="monospaced">SlimeVariation</span>オブジェクトです。
+JSONファイルにおける<span class="monospaced">variations</span>キーに対応しています。
+</p>
+<h2><span class="monospaced">ArrayList&lt;<a href="#SlimeRelation">SlimeRelation</a>&gt;</span> <span class="monospaced">getRelations()</span></h2>
+<p>
+関連語データの配列を返します。
+関連語データは<span class="monospaced">SlimeRelation</span>オブジェクトです。
+JSONファイルにおける<span class="monospaced">relations</span>キーに対応しています。
+</p>
+<h1 id="SlimeEquivalent"><span class="monospaced">SlimeEquivalent</span></h1>
+<h2><span class="monospaced">String</span> <span class="monospaced">getTitle()</span></h2>
+<p>
+訳語タイプを返します。
+通常は品詞などが記載されています。
+JSONファイルにおける<span class="monospaced">title</span>キーの値です。
+</p>
+<h2><span class="monospaced">ArrayList&lt;String&gt;</span> <span class="monospaced">getNames()</span></h2>
+<p>
+訳語の配列を返します。
+JSONファイルにおける<span class="monospaced">forms</span>キーの配列です。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+<h1 id="SlimeInformation"><span class="monospaced">SlimeInformation</span></h1>
+<h2><span class="monospaced">String</span> <span class="monospaced">getTitle()</span></h2>
+<p>
+内容タイプを返します。
+通常は品詞などが記載されています。
+JSONファイルにおける<span class="monospaced">title</span>キーの値です。
+</p>
+<h2><span class="monospaced">String</span> <span class="monospaced">getText()</span></h2>
+<p>
+内容のテキストを返します。
+JSONファイルにおける<span class="monospaced">text</span>キーの値です。
+</p>
+<h1 id="SlimeVariation"><span class="monospaced">SlimeVariation</span></h1>
+<h2><span class="monospaced">String</span> <span class="monospaced">getTitle()</span></h2>
+<p>
+変化形タイプを返します。
+JSONファイルにおける<span class="monospaced">title</span>キーの値です。
+</p>
+<h2><span class="monospaced">String</span> <span class="monospaced">getName()</span></h2>
+<p>
+変化形を返します。
+JSONファイルにおける<span class="monospaced">form</span>キーの値です。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+<h1 id="SlimeRelation"><span class="monospaced">SlimeRelation</span></h1>
+<h2><span class="monospaced">String</span> <span class="monospaced">getTitle()</span></h2>
+<p>
+関連語タイプを返します。
+JSONファイルにおける<span class="monospaced">title</span>キーの値です。
+</p>
+<h2><span class="monospaced">Integer</span> <span class="monospaced">getId()</span></h2>
+<p>
+関連語のIDを返します。
+JSONファイルにおける<span class="monospaced">entry</span>キーのオブジェクトの<span class="monospaced">id</span>キーの値です。
+</p>
+<h2><span class="monospaced">String</span> <span class="monospaced">getName()</span></h2>
+<p>
+関連語の名前を返します。
+JSONファイルにおける<span class="monospaced">entry</span>キーのオブジェクトの<span class="monospaced">form</span>キーの値です。
+JSONファイルのキー名とメソッド名が異なるので注意してください。
+</p>
+</body>
+</html>
