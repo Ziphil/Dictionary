@@ -23,10 +23,11 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   protected ObservableList<SlimeWord> call() {
     if ($path != null) {
+      File file = File.new($path)
       FileInputStream stream = FileInputStream.new($path)
       JsonFactory factory = $mapper.getFactory()
       JsonParser parser = factory.createParser(stream)
-      Integer size = stream.available()
+      Long size = file.length()
       try {
         parser.nextToken()
         while (parser.nextToken() == JsonToken.FIELD_NAME) {
@@ -225,7 +226,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     parseWord(parser, $dictionary.getDefaultWord())
   }
 
-  private void updateProgressByParser(JsonParser parser, Integer size) {
+  private void updateProgressByParser(JsonParser parser, Long size) {
     if (parser != null) {
       updateProgress(parser.getCurrentLocation().getByteOffset(), size)
     } else {
