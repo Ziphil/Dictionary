@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC shalnif"
-  public static final Version VERSION = Version.new(1, 4, 0, 1801)
+  public static final Version VERSION = Version.new(1, 5, 0, 1861)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -41,6 +41,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1. 5. 0 | スクリプト検索機能を追加
 //  1. 4. 0 | 登録辞書の表示名を変更する機能を追加。
 //          | 検索条件を保存してメニューから呼び出す機能を追加。
 //          | GUI フォントを設定する機能を追加。
