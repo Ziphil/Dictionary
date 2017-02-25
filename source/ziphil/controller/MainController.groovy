@@ -249,7 +249,7 @@ public class MainController extends PrimitiveController<Stage> {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("実行エラー")
-          dialog.setContentText("スクリプト実行中にエラーが発生しました。")
+          dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
           dialog.setAllowsCancel(false)
           exception.printStackTrace(stream)
           stream.flush()
