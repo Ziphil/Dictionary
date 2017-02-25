@@ -276,6 +276,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Permissions permissions = Permissions.new()
     permissions.add(PropertyPermission.new("*", "read"))
     permissions.add(RuntimePermission.new("accessDeclaredMembers"))
+    permissions.add(RuntimePermission.new("createClassLoader"))
+    permissions.add(RuntimePermission.new("getProtectionDomain"))
     ProtectionDomain domain = ProtectionDomain.new(codeSource, permissions)
     ProtectionDomain[] domains = [domain]
     AccessControlContext context = AccessControlContext.new(domains)
