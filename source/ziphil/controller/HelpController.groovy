@@ -1,12 +1,23 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.awt.Desktop
 import javafx.fxml.FXML
+import javafx.beans.value.ObservableValue
+import javafx.concurrent.Worker
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.web.WebView
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
+import org.w3c.dom.events.Event
+import org.w3c.dom.events.EventListener
+import org.w3c.dom.events.EventTarget
+import org.w3c.dom.html.HTMLAnchorElement
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
@@ -31,6 +42,7 @@ public class HelpController extends Controller<Void> {
   @FXML
   private void initialize() {
     setupSectionView()
+    setupHelpView()
   }
 
   private void changeHelp(HelpItem item) {
@@ -48,6 +60,29 @@ public class HelpController extends Controller<Void> {
     }
     for (HelpItem item : HelpItem.values()) {
       $sectionView.getItems().add(item)
+    }
+  }
+
+  private void setupHelpView() {
+    $helpView.getEngine().getLoadWorker().stateProperty().addListener() { ObservableValue<? extends Worker.State> observableValue, Worker.State oldValue, Worker.State newValue ->
+      if (newValue == Worker.State.SUCCEEDED) {
+        Document document = $helpView.getEngine().getDocument()
+        NodeList nodeList = document.getElementsByTagName("a");
+        for (Integer i : 0 ..< nodeList.getLength()) {
+          Node node = nodeList.item(i)
+          String styleClass = ((Element)node).getAttribute("class")
+          if (styleClass == "blank") {
+            EventListener eventListener = { Event innerEvent ->
+              HTMLAnchorElement target = (HTMLAnchorElement)innerEvent.getCurrentTarget()
+              URI uri = URI.new(target.getHref())
+              Desktop desktop = Desktop.getDesktop()
+              desktop.browse(uri)
+              innerEvent.preventDefault()
+            }
+            ((EventTarget)node).addEventListener("click", eventListener, false)
+          }
+        }
+      }
     }
   }
 
