@@ -47,14 +47,6 @@ end
 デフォルトでは、選択できる言語はECMAScriptとGroovyだけですが、以下に記載する方法で選択できる言語を増やすことができます。
 </p>
 <h1>使用する言語の追加</h1>
-<h2>JRuby</h2>
-<p>
-<a href="http://jruby.org/download" class="blank">JRubyダウンロードページ</a>から「JRuby Complete .jar」をダウンロードしてください。
-その後、ダウンロードしたjarファイルを、ZpDIC本体が置かれている場所と同じディレクトリにある「library」というフォルダの中に置いてください。
-</p>
-<p>
-JRuby9.1.7.0で正常に動作することを確認しています。
-</p>
 <h2>Jython</h2>
 <p>
 <a href="http://www.jython.org/downloads.html" class="blank">Jythonダウンロードページ</a>から「Standalone Jar」をダウンロードしてください。
@@ -68,6 +60,10 @@ Jython2.5.4rc1で正常に動作することを確認しています。
 <p>
 JavaのJSR-223仕様で実装されている言語であれば、上と同様にしてjarランタイムをフォルダ内に置くことで利用することができます。
 このとき、別途スクリプトエンジン用のjarファイルが必要になる場合があります。
+</p>
+<p>
+なお、JRubyは現状ではスクリプト検索に利用することができません。
+これについては現在調査中です。
 </p>
 <h1>注意点</h1>
 <p>
