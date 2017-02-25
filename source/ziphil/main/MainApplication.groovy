@@ -1,11 +1,13 @@
 package ziphil.main
 
 import groovy.transform.CompileStatic
+import java.security.Policy
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.stage.Stage
 import ziphil.Launcher
 import ziphil.controller.MainController
+import ziphil.module.AllPermissionPolicy
 import ziphil.module.FontRenderingType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -16,6 +18,7 @@ public class MainApplication extends Application {
 
   public void start(Stage stage) {
     makeDirectories()
+    setupSecurityManager()
     setupFontRendering()
     setupScriptProperty()
     load(stage)
@@ -35,6 +38,11 @@ public class MainApplication extends Application {
     File.new(Launcher.BASE_PATH + "data/setting").mkdirs()
     File.new(Launcher.BASE_PATH + "data/setting/individual").mkdirs()
     File.new(Launcher.BASE_PATH + "data/log").mkdirs()
+  }
+
+  private void setupSecurityManager() {
+    Policy.setPolicy(AllPermissionPolicy.new())
+    System.setSecurityManager(SecurityManager.new())
   }
 
   private void setupFontRendering() {

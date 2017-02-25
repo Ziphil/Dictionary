@@ -1,6 +1,13 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.security.AccessController
+import java.security.AccessControlContext
+import java.security.CodeSource
+import java.security.Permissions
+import java.security.PrivilegedExceptionAction
+import java.security.ProtectionDomain
+import java.security.cert.Certificate
 import java.util.concurrent.Callable
 import java.util.function.Predicate
 import java.util.regex.Matcher
@@ -26,6 +33,8 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
+
+  private static final AccessControlContext ACCESS_CONTROL_CONTEXT = createAccessControlContext()
 
   protected String $name = ""
   protected String $path = ""
@@ -146,29 +155,31 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
     resetSuggestions()
     if (scriptEngine != null) {
-      String exceptionMessage
-      String exceptionFileName = ""
-      Integer exceptionLineNumber = 0
-      Integer exceptionColumnNumber = 0
+      Exception suppressedException
       updateWordPredicate() { Word word ->
         try {
-          if (exceptionMessage == null) {
-            scriptEngine.put("word", plainWord(word))
-            Object result = scriptEngine.eval(script)
-            return (result) ? true : false
-          } else {
-            return false
+          PrivilegedExceptionAction<Boolean> action = (PrivilegedExceptionAction<Boolean>){
+            try {
+              if (suppressedException == null) {
+                scriptEngine.put("word", plainWord(word))
+                Object result = scriptEngine.eval(script)
+                return (result) ? true : false
+              } else {
+                return false
+              }
+            } catch (Exception exception) {
+              suppressedException = exception
+              return false
+            }
           }
-        } catch (ScriptException exception) {
-          exceptionMessage = exception.getMessage()
-          exceptionFileName = exception.getFileName()
-          exceptionLineNumber = exception.getLineNumber()
-          exceptionColumnNumber = exception.getColumnNumber()
+          return AccessController.doPrivileged(action, ACCESS_CONTROL_CONTEXT)
+        } catch (Exception exception) {
+          suppressedException = exception
           return false
         }
       }
-      if (exceptionMessage != null) {
-        throw ScriptException.new(exceptionMessage, exceptionFileName, exceptionLineNumber, exceptionColumnNumber)
+      if (suppressedException != null) {
+        throw suppressedException
       }
     } else {
       updateWordPredicate() { Word word ->
@@ -259,6 +270,17 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected abstract Task<?> createLoader()
 
   protected abstract Task<?> createSaver()
+
+  private static AccessControlContext createAccessControlContext() {
+    CodeSource codeSource = CodeSource.new(null, (Certificate[])null)
+    Permissions permissions = Permissions.new()
+    permissions.add(PropertyPermission.new("*", "read"))
+    permissions.add(RuntimePermission.new("accessDeclaredMembers"))
+    ProtectionDomain domain = ProtectionDomain.new(codeSource, permissions)
+    ProtectionDomain[] domains = [domain]
+    AccessControlContext context = AccessControlContext.new(domains)
+    return context
+  }
 
   public String getName() {
     return $name

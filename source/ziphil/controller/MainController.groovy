@@ -3,6 +3,8 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import java.awt.Desktop
 import java.lang.Thread.UncaughtExceptionHandler
+import java.security.AccessControlException
+import java.security.PrivilegedActionException
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
@@ -242,7 +244,7 @@ public class MainController extends PrimitiveController<Stage> {
         try {
           ScriptSearchParameter script = nextStage.getResult()
           doSearchScript(script)
-        } catch (ScriptException exception) {
+        } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
           PrintStream stream = PrintStream.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
