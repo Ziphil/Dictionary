@@ -31,7 +31,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
-  @FXML private ListView<SlimeWord> $wordsView
+  @FXML private ListView<SlimeWord> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -44,7 +44,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    setupWordsView()
+    setupWordView()
     bindSearchTypeControlProperty()
   }
 
@@ -61,7 +61,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
       } else if (searchMode == SearchMode.CONTENT) {
         $dictionary.searchByContent(search)
       }
-      $wordsView.scrollTo(0)
+      $wordView.scrollTo(0)
     }
   }
 
@@ -80,14 +80,14 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
 
   @FXML
   protected void commit() {
-    SlimeWord word = $wordsView.getSelectionModel().getSelectedItem()
+    SlimeWord word = $wordView.getSelectionModel().getSelectedItem()
     $stage.commit(word)
   }
 
   @VoidClosure
-  private void setupWordsView() {
-    $wordsView.setItems($dictionary.getWords())
-    $wordsView.setCellFactory() { ListView<SlimeWord> view ->
+  private void setupWordView() {
+    $wordView.setItems($dictionary.getWords())
+    $wordView.setCellFactory() { ListView<SlimeWord> view ->
       PlainWordCell cell = PlainWordCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

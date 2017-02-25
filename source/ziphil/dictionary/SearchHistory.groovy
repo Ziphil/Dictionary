@@ -9,7 +9,7 @@ public class SearchHistory {
 
   private static final Integer MAX_SIZE = 20
 
-  private List<? extends SearchParameter> $parameters = ArrayList.new()
+  private List<SearchParameter> $parameters = ArrayList.new()
   private Integer $pointer = 0
   private Long $interval = null
   private Integer $separativeInterval = 0

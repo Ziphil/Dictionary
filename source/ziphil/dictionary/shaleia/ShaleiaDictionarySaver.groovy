@@ -19,17 +19,26 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
   protected Boolean call() {
     if ($path != null) {
       File file = File.new($path)
-      StringBuilder output = StringBuilder.new()
-      List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted((Comparator<ShaleiaWord>)$comparator)
-      for (ShaleiaWord word : sortedWord) {
-        output.append("* ").append(word.getUniqueName()).append("\n")
-        output.append(word.getData().trim()).append("\n\n")
+      BufferedWriter writer = file.newWriter("UTF-8")
+      try {
+        List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted((Comparator<ShaleiaWord>)$comparator)
+        for (ShaleiaWord word : sortedWord) {
+          writer.write("* ")
+          writer.write(word.getUniqueName())
+          writer.write("\n")
+          writer.write(word.getData().trim())
+          writer.write("\n\n")
+        }
+        writer.write("* META-ALPHABET-ORDER\n\n")
+        writer.write("- ")
+        writer.write($dictionary.getAlphabetOrder())
+        writer.write("\n\n")
+        writer.write("* META-CHANGE\n\n")
+        writer.write($dictionary.getChangeData().trim())
+        writer.write("\n\n")
+      } finally {
+        writer.close()
       }
-      output.append("* META-ALPHABET-ORDER\n\n")
-      output.append("- ").append($dictionary.getAlphabetOrder()).append("\n\n")
-      output.append("* META-CHANGE\n\n")
-      output.append($dictionary.getChangeData().trim()).append("\n\n")
-      file.setText(output.toString(), "UTF-8")
     }
     return true
   }

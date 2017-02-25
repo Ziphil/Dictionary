@@ -9,7 +9,9 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphil.custom.SimpleTask
+import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +19,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord>, DetailDictionary<SlimeSearchParameter> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -48,25 +50,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     setupSuggestions()
   }
 
-  protected Boolean checkSuggestion(SlimeWord word, String search, String convertedSearch) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean existsSuggestion = false
-    for (SlimeVariation variation : word.getVariations()) {
-      String variationTitle = variation.getTitle()
-      String variationName = variation.getName()
-      String convertedVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
-      if (convertedVariationName == convertedSearch) {
-        SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
-        $suggestions[0].getPossibilities().add(possibility)
-        $suggestions[0].update()
-        existsSuggestion = true
-      }
-    }
-    return existsSuggestion
-  }
-
   public void searchDetail(SlimeSearchParameter parameter) {
     Integer searchId = parameter.getId()
     String searchName = parameter.getName()
@@ -78,7 +61,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     String searchInformationTitle = parameter.getInformationTitle()
     SearchType informationSearchType = parameter.getInformationSearchType()
     String searchTag = parameter.getTag()
-    $filteredWords.setPredicate() { SlimeWord word ->
+    resetSuggestions()
+    updateWordPredicate() { SlimeWord word ->   
       Boolean predicate = true
       Integer id = word.getId()
       String name = word.getName()
@@ -137,10 +121,23 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
       return predicate
     }
-    $filteredSuggestions.setPredicate() { SlimeSuggestion suggestion ->
-      return false
+  }
+
+  protected void checkSuggestion(SlimeWord word, String search, String convertedSearch) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    for (SlimeVariation variation : word.getVariations()) {
+      String variationTitle = variation.getTitle()
+      String variationName = variation.getName()
+      String convertedVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
+      if (convertedVariationName == convertedSearch) {
+        SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
+        $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].setDisplayed(true)
+        $suggestions[0].update()
+      }
     }
-    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
@@ -159,7 +156,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     newWord.updateComparisonString($alphabetOrder)
-    newWord.updateContentPane()
     updateOnBackground()
   }
 
@@ -316,6 +312,50 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
+  public Object plainWord(SlimeWord oldWord) {
+    SlimePlainWord newWord = SlimePlainWord.new()
+    Integer newId = oldWord.getId()
+    String newName = oldWord.getName()
+    List<SlimeEquivalent> newEquivalents = ArrayList.new()
+    for (SlimeEquivalent equivalent : oldWord.getRawEquivalents()) {
+      SlimeEquivalent newEquivalent = SlimeEquivalent.new()
+      newEquivalent.setTitle(equivalent.getTitle())
+      newEquivalent.setNames((List<String>)((ArrayList<String>)equivalent.getNames()).clone())
+      newEquivalents.add(newEquivalent)
+    }
+    List<String> newTags = (List<String>)((ArrayList<String>)oldWord.getTags()).clone()
+    List<SlimeInformation> newInformations = ArrayList.new()
+    for (SlimeInformation information : oldWord.getInformations()) {
+      SlimeInformation newInformation = SlimeInformation.new()
+      newInformation.setTitle(information.getTitle())
+      newInformation.setText(information.getText())
+      newInformations.add(newInformation)
+    }
+    List<SlimeVariation> newVariations = ArrayList.new()
+    for (SlimeVariation variation : oldWord.getVariations()) {
+      SlimeVariation newVariation = SlimeVariation.new()
+      newVariation.setTitle(variation.getTitle())
+      newVariation.setName(variation.getName())
+      newVariations.add(newVariation)
+    }
+    List<SlimeRelation> newRelations = ArrayList.new()
+    for (SlimeRelation relation : oldWord.getRelations()) {
+      SlimeRelation newRelation = SlimeRelation.new()
+      newRelation.setTitle(relation.getTitle())
+      newRelation.setId(relation.getId())
+      newRelation.setName(relation.getName())
+      newRelations.add(newRelation)
+    }
+    newWord.setId(newId)
+    newWord.setName(newName)
+    newWord.setEquivalents(newEquivalents)
+    newWord.setTags(newTags)
+    newWord.setInformations(newInformations)
+    newWord.setVariations(newVariations)
+    newWord.setRelations(newRelations)
+    return newWord
+  }
+
   public SlimeDictionary copy() {
     ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
     SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
@@ -363,10 +403,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     ObjectMapper mapper = ObjectMapper.new()
     mapper.enable(SerializationFeature.INDENT_OUTPUT)
     return mapper
-  }
-
-  public String getExtension() {
-    return "json"
   }
 
   public Integer getValidMinId() {

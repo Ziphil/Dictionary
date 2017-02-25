@@ -28,24 +28,28 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void save() {
     String compressedPath = createCompressedPath($path)
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
-    $$mapper.writeValue(stream, this)
-    stream.close()
+    try {
+      $$mapper.writeValue(stream, this)
+    } finally {
+      stream.close()
+    }
   }
 
   public static SlimeIndividualSetting create(SlimeDictionary dictionary) {
     String compressedPath = createCompressedPath(dictionary.getPath())
     File file = File.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
     if (file.exists()) {
+      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+      SlimeIndividualSetting instance
       try {
-        FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
-        SlimeIndividualSetting instance = $$mapper.readValue(stream, SlimeIndividualSetting)
-        stream.close()
-        return instance
+        instance = $$mapper.readValue(stream, SlimeIndividualSetting)
       } catch (JsonParseException exception) {
-        SlimeIndividualSetting instance = SlimeIndividualSetting.new()
+        instance = SlimeIndividualSetting.new()
         instance.setPath(dictionary.getPath())
-        return instance
+      } finally {
+        stream.close()
       }
+      return instance
     } else {
       SlimeIndividualSetting instance = SlimeIndividualSetting.new()
       instance.setPath(dictionary.getPath())

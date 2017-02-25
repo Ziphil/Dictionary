@@ -12,20 +12,16 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
   private SlimeDictionary $dictionary
 
   public void update() {
-    $isChanged = true
+    changeContentPaneFactory()
   }
 
-  public void updateContentPane() {
-    if ($isChanged) {
-      Setting setting = Setting.getInstance()
-      Integer lineSpacing = setting.getLineSpacing()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      SlimeSuggestionContentPaneMaker maker = SlimeSuggestionContentPaneMaker.new($contentPane, this, $dictionary)
-      maker.setLineSpacing(lineSpacing)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isChanged = false
-    }
+  protected void makeContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $contentPaneFactory = SlimeSuggestionContentPaneFactory.new(this, $dictionary)
+    $contentPaneFactory.setLineSpacing(lineSpacing)
+    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public SlimeDictionary getDictionary() {

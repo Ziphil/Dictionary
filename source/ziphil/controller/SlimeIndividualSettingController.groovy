@@ -33,7 +33,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
-  @FXML private ListSelectionView<String> $plainInformationTitlesView
+  @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
   @FXML private GridPane $registeredParameterPane
@@ -65,8 +65,8 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
-    $plainInformationTitlesView.setSources(normalInformationTitles)
-    $plainInformationTitlesView.setTargets(plainInformationTitles)
+    $plainInformationTitleView.setSources(normalInformationTitles)
+    $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
     if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
@@ -81,7 +81,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
-    List<String> plainInformationTitles = ArrayList.new($plainInformationTitlesView.getTargets())
+    List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters

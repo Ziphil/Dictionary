@@ -32,7 +32,7 @@
       </padding>
       <Label text="更新情報" styleClass="update-title"/>
       <TextFlow styleClass="update-item-pane">
-        <Text text="登録辞書の表示名を変更する機能を追加"/>
+        <Text text="スクリプト検索機能を追加"/>
       </TextFlow>
       <TextFlow styleClass="update-detail-pane">
         <VBox.margin>
@@ -40,21 +40,8 @@
             <left><Double rpx="10"/></left>
           </Insets>
         </VBox.margin>
-        <Text text="メニューに表示される登録辞書の名称を好きなものに変えられるようになりました。&#10;"/>
-        <Text text="設定は、メニューの「ツール」→「環境設定」から行えます。"/>
-      </TextFlow>
-      <TextFlow styleClass="update-item-pane">
-        <Text text="検索条件を保存してメニューから呼び出す機能を追加"/>
-      </TextFlow>
-      <TextFlow styleClass="update-detail-pane">
-        <VBox.margin>
-          <Insets>
-            <left><Double rpx="10"/></left>
-          </Insets>
-        </VBox.margin>
-        <Text text="OTM形式における高度な検索の条件を保存し、メニューから呼び出せるようになりました。&#10;"/>
-        <Text text="設定は、メニューの「ツール」→「辞書の個別設定」から行えます。&#10;"/>
-        <Text text="なお、一部のショートカットキー(Ctrl/Command＋Shift＋0～9)の機能が変更されています。"/>
+        <Text text="メニューの「検索」→「スクリプト検索」からスクリプト言語を用いた検索ができるようになりました。&#10;"/>
+        <Text text="詳しい使い方についてはヘルプをご覧ください。"/>
       </TextFlow>
     </VBox>
   </center>

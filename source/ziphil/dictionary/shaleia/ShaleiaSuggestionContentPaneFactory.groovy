@@ -3,35 +3,36 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestionContentPaneMaker extends ContentPaneMaker<ShaleiaSuggestion, ShaleiaDictionary> {
+public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<ShaleiaSuggestion, ShaleiaDictionary> {
 
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"
 
-  public ShaleiaSuggestionContentPaneMaker(TextFlow contentPane, ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public ShaleiaSuggestionContentPaneFactory(ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
-    $contentPane.getStyleClass().clear()
-    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    $contentPane.getChildren().clear()
-    $contentPane.setLineSpacing($lineSpacing)
+  public Pane create() {
+    TextFlow contentPane = TextFlow.new()
+    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    contentPane.setLineSpacing($lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(possibility.getName(), possibility.getPossibilityName())
+      addPossibilityNode(contentPane, possibility.getName(), possibility.getPossibilityName())
     }
-    modifyBreak()
+    modifyBreak(contentPane)
+    return contentPane
   }
 
-  private void addPossibilityNode(String name, String possibilityName) {
+  private void addPossibilityNode(TextFlow contentPane, String name, String possibilityName) {
     Text prefixText = Text.new("もしかして: ")
     Text nameText = Text.new(name)
     Text possibilityNameText = Text.new(" の${possibilityName}?")
@@ -44,7 +45,7 @@ public class ShaleiaSuggestionContentPaneMaker extends ContentPaneMaker<ShaleiaS
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
     possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    $contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
+    contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
   }
 
 }

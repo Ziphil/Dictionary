@@ -33,6 +33,7 @@ public class Setting {
   private String $systemFontFamily
   private Integer $lineSpacing = 0
   private Integer $separativeInterval = 700
+  private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
   private Boolean $savesAutomatically = false
@@ -52,64 +53,73 @@ public class Setting {
   private void saveSetting() {
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_PATH)
     $version = Launcher.VERSION
-    $$mapper.writeValue(stream, this)
-    stream.close()
+    try {
+      $$mapper.writeValue(stream, this)
+    } finally {
+      stream.close()
+    }
   }
 
   private void saveCustomStylesheet() {
     File file = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH)
-    StringBuilder stylesheet = StringBuilder.new()
-    if ($contentFontFamily != null || $contentFontSize != null) {
-      stylesheet.append("#dictionary-list .content-pane {\n")
-      if ($contentFontFamily != null) {
-        stylesheet.append("  -fx-font-family: \"")
-        stylesheet.append(Strings.escapeUnicode($contentFontFamily))
-        stylesheet.append("\";\n")
+    BufferedWriter writer = file.newWriter("UTF-8")
+    try {
+      if ($contentFontFamily != null || $contentFontSize != null) {
+        writer.write("#dictionary-list .content-pane {\n")
+        if ($contentFontFamily != null) {
+          writer.write("  -fx-font-family: \"")
+          writer.write(Strings.escapeUnicode($contentFontFamily))
+          writer.write("\";\n")
+        }
+        if ($contentFontSize != null) {
+          writer.write("  -fx-font-size: ")
+          writer.write($contentFontSize.toString())
+          writer.write(";\n")
+        }
+        writer.write("}\n\n")
       }
-      if ($contentFontSize != null) {
-        stylesheet.append("  -fx-font-size:")
-        stylesheet.append($contentFontSize)
-        stylesheet.append(";\n")
+      if ($editorFontFamily != null || $editorFontSize != null) {
+        writer.write(".editor {\n")
+        if ($editorFontFamily != null) {
+          writer.write("  -fx-font-family: \"")
+          writer.write(Strings.escapeUnicode($editorFontFamily))
+          writer.write("\";\n")
+        }
+        if ($editorFontSize != null) {
+          writer.write("  -fx-font-size: ")
+          writer.write($editorFontSize.toString())
+          writer.write(";\n")
+        }
+        writer.write("}\n\n")
       }
-      stylesheet.append("}\n\n")
+      if ($systemFontFamily != null) {
+        writer.write(".root {\n")
+        writer.write("  -fx-font-family: \"")
+        writer.write(Strings.escapeUnicode($systemFontFamily))
+        writer.write("\";\n")
+        writer.write("}\n\n")
+      }
+    } finally {
+      writer.close()
     }
-    if ($editorFontFamily != null || $editorFontSize != null) {
-      stylesheet.append(".editor {\n")
-      if ($editorFontFamily != null) {
-        stylesheet.append("  -fx-font-family: \"")
-        stylesheet.append(Strings.escapeUnicode($editorFontFamily))
-        stylesheet.append("\";\n")
-      }
-      if ($editorFontSize != null) {
-        stylesheet.append("  -fx-font-size: ")
-        stylesheet.append($editorFontSize)
-        stylesheet.append(";\n")
-      }
-      stylesheet.append("}\n\n")
-    }
-    if ($systemFontFamily != null) {
-      stylesheet.append(".root {\n")
-      stylesheet.append("  -fx-font-family: \"")
-      stylesheet.append(Strings.escapeUnicode($systemFontFamily))
-      stylesheet.append("\";\n")
-      stylesheet.append("}\n\n")
-    }
-    file.setText(stylesheet.toString(), "UTF-8")
   }
 
   private static Setting createInstance() {
     File file = File.new(Launcher.BASE_PATH + SETTING_PATH)
     if (file.exists()) {
+      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
+      Setting instance
       try {
-        FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_PATH)
-        Setting instance = $$mapper.readValue(stream, Setting)
-        stream.close()
-        return instance
+        instance = $$mapper.readValue(stream, Setting)
       } catch (JsonParseException exception) {
-        return Setting.new()
+        instance = Setting.new()
+      } finally {
+        stream.close()
       }
+      return instance
     } else {
-      return Setting.new()
+      Setting instance = Setting.new()
+      return instance
     }
   }
 
@@ -211,6 +221,14 @@ public class Setting {
 
   public void setSeparativeInterval(Integer separativeInterval) {
     $separativeInterval = separativeInterval
+  }
+
+  public String getScriptName() {
+    return $scriptName
+  }
+
+  public void setScriptName(String scriptName) {
+    $scriptName = scriptName
   }
 
   public FontRenderingType getFontRenderingType() {

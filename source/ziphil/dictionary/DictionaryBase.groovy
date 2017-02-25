@@ -1,10 +1,15 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import groovy.lang.Binding as GroovyBinding
-import groovy.lang.GroovyShell
-import groovy.lang.Script
+import java.security.AccessController
+import java.security.AccessControlContext
+import java.security.CodeSource
+import java.security.Permissions
+import java.security.PrivilegedExceptionAction
+import java.security.ProtectionDomain
+import java.security.cert.Certificate
 import java.util.concurrent.Callable
+import java.util.function.Predicate
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -16,7 +21,11 @@ import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import javax.script.ScriptEngineManager
+import javax.script.ScriptEngine
+import javax.script.ScriptException
 import ziphil.custom.ShufflableList
+import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -24,6 +33,8 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
+
+  private static final AccessControlContext ACCESS_CONTROL_CONTEXT = createAccessControlContext()
 
   protected String $name = ""
   protected String $path = ""
@@ -54,152 +65,160 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
-    Boolean existsSuggestion = false
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-      for (S suggestion : $suggestions) {
-        suggestion.getPossibilities().clear()
-      }
-      if (checkWholeSuggestion(search, convertedSearch)) {
-        existsSuggestion = true
-      }
-      $filteredWords.setPredicate() { W word ->
-        if (isStrict) {
-          String name = word.getName()
-          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          if (checkSuggestion(word, search, convertedSearch)) {
-            existsSuggestion = true
-          }
-          if (search != "") {
-            if (searchesPrefix) {
-              return convertedName.startsWith(convertedSearch)
+      resetSuggestions()
+      checkWholeSuggestion(search, convertedSearch)
+      updateWordPredicate() { Word word ->
+        if (word.isDisplayed()) {
+          if (isStrict) {
+            String name = word.getName()
+            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+            checkSuggestion(word, search, convertedSearch)
+            if (search != "") {
+              if (searchesPrefix) {
+                return convertedName.startsWith(convertedSearch)
+              } else {
+                return convertedName == convertedSearch
+              }
             } else {
-              return convertedName == convertedSearch
+              return true
             }
           } else {
-            return true
+            Matcher matcher = pattern.matcher(word.getName())
+            return matcher.find()
           }
         } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
+          return false
         }
-      }
-      $filteredSuggestions.setPredicate() { S suggestion ->
-        return existsSuggestion
       }
     } catch (PatternSyntaxException exception) {
     }
-    $shufflableWords.unshuffle()
   }
 
   public void searchByEquivalent(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { W word ->
-        if (isStrict) {
-          if (search != "") {
-            return word.getEquivalents().any() { String equivalent ->
-              if (searchesPrefix) {
-                return equivalent.startsWith(search)
-              } else {
-                return equivalent == search
+      resetSuggestions()
+      updateWordPredicate() { Word word ->
+        if (word.isDisplayed()) {
+          if (isStrict) {
+            if (search != "") {
+              return word.getEquivalents().any() { String equivalent ->
+                if (searchesPrefix) {
+                  return equivalent.startsWith(search)
+                } else {
+                  return equivalent == search
+                }
               }
+            } else {
+              return true
             }
           } else {
-            return true
+            return word.getEquivalents().any() { String equivalent ->
+              Matcher matcher = pattern.matcher(equivalent)
+              return matcher.find()
+            }
           }
         } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
-          }
+          return false
         }
-      }
-      $filteredSuggestions.setPredicate() { S suggestion ->
-        return false
       }
     } catch (PatternSyntaxException exception) {
     }
-    $shufflableWords.unshuffle()
   }
 
   public void searchByContent(String search) {
     try {
       Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { W word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
-      }
-      $filteredSuggestions.setPredicate() { S suggestion ->
-        return false
+      resetSuggestions()
+      updateWordPredicate() { Word word ->
+        if (word.isDisplayed()) {
+          Matcher matcher = pattern.matcher(word.getContent())
+          return matcher.find()
+        } else {
+          return false
+        }
       }
     } catch (PatternSyntaxException exception) {
+    }
+  }
+
+  public void searchScript(String script) {
+    String scriptName = Setting.getInstance().getScriptName()
+    ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
+    ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
+    resetSuggestions()
+    if (scriptEngine != null) {
+      Exception suppressedException
+      updateWordPredicate() { Word word ->
+        try {
+          PrivilegedExceptionAction<Boolean> action = (PrivilegedExceptionAction<Boolean>){
+            try {
+              if (suppressedException == null) {
+                scriptEngine.put("word", plainWord(word))
+                Object result = scriptEngine.eval(script)
+                return (result) ? true : false
+              } else {
+                return false
+              }
+            } catch (Exception exception) {
+              suppressedException = exception
+              return false
+            }
+          }
+          return AccessController.doPrivileged(action, ACCESS_CONTROL_CONTEXT)
+        } catch (Exception exception) {
+          suppressedException = exception
+          return false
+        }
+      }
+      if (suppressedException != null) {
+        throw suppressedException
+      }
+    } else {
+      updateWordPredicate() { Word word ->
+        return false
+      }
+      throw NoSuchScriptEngineException.new(scriptName)
+    }
+  }
+
+  protected void updateWordPredicate(Predicate<? super W> predicate) {
+    $filteredWords.setPredicate(predicate)
+    $filteredSuggestions.setPredicate() { Suggestion suggestion ->
+      return suggestion.isDisplayed()
     }
     $shufflableWords.unshuffle()
   }
 
-  public void searchScript(String script) {
-    GroovyShell shell = GroovyShell.new()
-    Script parsedScript = shell.parse(script)
-    $filteredWords.setPredicate() { W word ->
-      try {
-        GroovyBinding binding = GroovyBinding.new()
-        binding.setVariable("word", word)
-        parsedScript.setBinding(binding)
-        Object result = parsedScript.run()
-        if (result) {
-          return true
-        } else {
-          return false
-        }
-      } catch (Exception exception) {
-        return false
-      }
+  protected void resetSuggestions() {
+    for (Suggestion suggestion : $suggestions) {
+      suggestion.getPossibilities().clear()
+      suggestion.setDisplayed(false)
     }
-    $filteredSuggestions.setPredicate() { S suggestion ->
-      return false
-    }
-    $shufflableWords.unshuffle()
+  }
+
+  protected void checkWholeSuggestion(String search, String convertedSearch) {
+  }
+
+  protected void checkSuggestion(W word, String search, String convertedSearch) {
   }
 
   public void shuffleWords() {
     $shufflableWords.shuffle()
   }
 
-  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
-    return false
-  }
-
-  protected Boolean checkSuggestion(W word, String search, String convertedSearch) {
-    return false
-  }
-
-  public void modifyWord(W oldWord, W newWord) {
-    $isChanged = true
-  }
-
-  public void addWord(W word) {
-    $words.add(word)
-    $isChanged = true
-  }
-
-  public void removeWord(W word) {
-    $words.remove(word)
-    $isChanged = true
-  }
+  public abstract Object plainWord(W word)
 
   public abstract void update()
 
   public abstract void updateMinimum()
-
-  public abstract W emptyWord(String defaultName)
-
-  public abstract W copiedWord(W oldWord)
-
-  public abstract W inheritedWord(W oldWord)
 
   protected void load() {
     $loader = createLoader()
@@ -252,6 +271,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract Task<?> createSaver()
 
+  private static AccessControlContext createAccessControlContext() {
+    CodeSource codeSource = CodeSource.new(null, (Certificate[])null)
+    Permissions permissions = Permissions.new()
+    permissions.add(PropertyPermission.new("*", "read"))
+    permissions.add(RuntimePermission.new("accessDeclaredMembers"))
+    permissions.add(RuntimePermission.new("createClassLoader"))
+    permissions.add(RuntimePermission.new("getProtectionDomain"))
+    ProtectionDomain domain = ProtectionDomain.new(codeSource, permissions)
+    ProtectionDomain[] domains = [domain]
+    AccessControlContext context = AccessControlContext.new(domains)
+    return context
+  }
+
   public String getName() {
     return $name
   }
@@ -287,8 +319,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public Task<?> getSaver() {
     return $saver
   }
-
-  public abstract String getExtension()
 
   public Boolean isChanged() {
     return $isChanged

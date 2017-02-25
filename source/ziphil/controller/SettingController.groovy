@@ -6,6 +6,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
+import javafx.scene.control.ListView
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
@@ -16,8 +17,11 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import javax.script.ScriptEngineFactory
+import javax.script.ScriptEngineManager
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
+import ziphil.custom.ScriptEngineFactoryCell
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
 import ziphil.module.FontRenderingType
@@ -45,6 +49,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private CheckBox $usesDefaultSystemFontFamilyControl
   @FXML private Spinner<Integer> $lineSpacingControl
   @FXML private Spinner<Integer> $separativeIntervalControl
+  @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private ToggleButton $modifiesPunctuationControl
   @FXML private GridPane $registeredDictionaryPane
@@ -64,6 +69,7 @@ public class SettingController extends Controller<Boolean> {
 
   @FXML
   private void initialize() {
+    setupScriptControl()
     setupRegisteredDictionaryPane()
     setupFontFamilyControls()
     setupIntegerControls()
@@ -81,6 +87,7 @@ public class SettingController extends Controller<Boolean> {
     String systemFontFamily = setting.getSystemFontFamily()
     Integer lineSpacing = setting.getLineSpacing()
     Integer separativeInterval = setting.getSeparativeInterval()
+    String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
@@ -116,6 +123,11 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesDefaultSystemFontFamilyControl.setSelected(true)
     }
+    for (ScriptEngineFactory scriptEngineFactory : $scriptControl.getItems()) {
+      if (scriptEngineFactory.getNames().contains(scriptName)) {
+        $scriptControl.getSelectionModel().select(scriptEngineFactory)
+      }
+    }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
@@ -136,17 +148,18 @@ public class SettingController extends Controller<Boolean> {
     Setting setting = Setting.getInstance()
     Boolean usesSystemContentFontFamily = $usesSystemContentFontFamilyControl.isSelected()
     Boolean usesDefaultContentFontSize = $usesDefaultContentFontSizeControl.isSelected()
-    String contentFontFamily = (usesSystemContentFontFamily) ? null : $contentFontFamilyControl.getSelectionModel().getSelectedItem()
+    String contentFontFamily = (usesSystemContentFontFamily) ? null : $contentFontFamilyControl.getValue()
     Integer contentFontSize = (usesDefaultContentFontSize) ? null : $contentFontSizeControl.getValue()
     Boolean usesSystemEditorFontFamily = $usesSystemEditorFontFamilyControl.isSelected()
     Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
-    String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getSelectionModel().getSelectedItem()
+    String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getValue()
     Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
     Boolean usesDefaultSystemFontFamily = $usesDefaultSystemFontFamilyControl.isSelected()
-    String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getSelectionModel().getSelectedItem()
+    String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getValue()
     Integer lineSpacing = $lineSpacingControl.getValue()
     Integer separativeInterval = $separativeIntervalControl.getValue()
-    FontRenderingType fontRenderingType = $fontRenderingTypeControl.getSelectionModel().getSelectedItem()
+    String scriptName = $scriptControl.getValue().getNames()[0]
+    FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -163,6 +176,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setSystemFontFamily(systemFontFamily)
     setting.setLineSpacing(lineSpacing)
     setting.setSeparativeInterval(separativeInterval)
+    setting.setScriptName(scriptName)
     setting.setFontRenderingType(fontRenderingType)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setSavesAutomatically(savesAutomatically)
@@ -204,6 +218,15 @@ public class SettingController extends Controller<Boolean> {
   protected void commit() {
     updateSettings()
     $stage.commit(true)
+  }
+
+  private void setupScriptControl() {
+    ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
+    $scriptControl.getItems().addAll(scriptEngineManager.getEngineFactories())
+    $scriptControl.setButtonCell(ScriptEngineFactoryCell.new())
+    $scriptControl.setCellFactory() { ListView<ScriptEngineFactory> view ->
+      return ScriptEngineFactoryCell.new()
+    }
   }
 
   private void setupRegisteredDictionaryPane() {

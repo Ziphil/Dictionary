@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.time.LocalDateTime
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import ziphil.Launcher
@@ -17,6 +18,7 @@ public class ApplicationInformationController extends Controller<Void> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private Label $versionLabel
+  @FXML private Label $copyrightLabel
 
   public ApplicationInformationController(UtilityStage<Void> stage) {
     super(stage)
@@ -26,11 +28,18 @@ public class ApplicationInformationController extends Controller<Void> {
   @FXML
   private void initialize() {
     setupVersionLabel()
+    setupCopyrightLabel()
   }
 
   private void setupVersionLabel() {
     String version = "version ${Launcher.VERSION}"
     $versionLabel.setText(version)
+  }
+
+  private void setupCopyrightLabel() {
+    Integer year = LocalDateTime.now().getYear()
+    String copyright = "Copyright © 2016–${year}"
+    $copyrightLabel.setText(copyright)
   }
 
 }

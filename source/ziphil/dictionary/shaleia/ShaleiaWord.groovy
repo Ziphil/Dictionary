@@ -19,43 +19,32 @@ public class ShaleiaWord extends WordBase {
     updateName()
     updateEquivalents()
     updateContent()
-    $isChanged = true
+    changeContentPaneFactory()
   }
 
   private void updateName() {
-    $name = (uniqueName.startsWith("\$")) ? "" : uniqueName.replaceAll(/\+|~/, "")
+    $name = ($uniqueName.startsWith("\$")) ? "" : $uniqueName.replaceAll(/\+|~/, "")
   }
 
   private void updateEquivalents() {
     BufferedReader reader = BufferedReader.new(StringReader.new($data))
-    String line
-    $equivalents.clear()
-    while ((line = reader.readLine()) != null) {
-      Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
-      if (matcher.matches()) {
-        String equivalent = matcher.group(2)
-        List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
-        $equivalents.addAll(equivalents)
+    try {
+      $equivalents.clear()
+      for (String line ; (line = reader.readLine()) != null ;) {
+        Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
+        if (matcher.matches()) {
+          String equivalent = matcher.group(2)
+          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+          $equivalents.addAll(equivalents)
+        }
       }
+    } finally {
+      reader.close()
     }
-    reader.close()
   }
 
   private void updateContent() {
-    $content = uniqueName + "\n" + data
-  }
-
-  public void updateContentPane() {
-    if ($isChanged) {
-      Setting setting = Setting.getInstance()
-      Integer lineSpacing = setting.getLineSpacing()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      ShaleiaWordContentPaneMaker maker = ShaleiaWordContentPaneMaker.new($contentPane, this, $dictionary)
-      maker.setLineSpacing(lineSpacing)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isChanged = false
-    }
+    $content = $uniqueName + "\n" + $data
   }
 
   public void updateComparisonString(String order) {
@@ -73,6 +62,19 @@ public class ShaleiaWord extends WordBase {
       }
     }
     $comparisonString = comparisonString.toString()
+  }
+
+  protected void makeContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
+    $contentPaneFactory.setLineSpacing(lineSpacing)
+    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
+  }
+
+  public Boolean isDisplayed() {
+    return !$uniqueName.startsWith("\$")
   }
 
   public ShaleiaDictionary getDictionary() {

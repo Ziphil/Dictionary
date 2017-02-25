@@ -6,17 +6,18 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneMaker
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
@@ -37,109 +38,111 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
   private static final String END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
-  public ShaleiaWordContentPaneMaker(TextFlow contentPane, ShaleiaWord word, ShaleiaDictionary dictionary) {
-    super(contentPane, word, dictionary)
+  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
   }
 
-  public void make() {
+  public Pane create() {
+    TextFlow contentPane = TextFlow.new()
     Boolean hasOther = false
     Boolean hasSynonym = false
-    $contentPane.getStyleClass().clear()
-    $contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    $contentPane.getChildren().clear()
-    $contentPane.setLineSpacing($lineSpacing)
+    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
+    contentPane.setLineSpacing($lineSpacing)
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
-    String line
-    while ((line = reader.readLine()) != null) {
-      Matcher creationDateMatcher = line =~ /^\+\s*(\d+)\s*〈(.+)〉\s*$/
-      Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
-      Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
-      Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
-      Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
-      Matcher usageMatcher = line =~ /^U>\s*(.+)$/
-      Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
-      Matcher noteMatcher = line =~ /^N>\s*(.+)$/
-      Matcher taskMatcher = line =~ /^O>\s*(.+)$/
-      Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
-      Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
-      if ($contentPane.getChildren().isEmpty()) {
-        String name = $word.getName()
-        addNameNode(name)
+    try {
+      for (String line ; (line = reader.readLine()) != null ;) {
+        Matcher creationDateMatcher = line =~ /^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/
+        Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
+        Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
+        Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
+        Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
+        Matcher usageMatcher = line =~ /^U>\s*(.+)$/
+        Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
+        Matcher noteMatcher = line =~ /^N>\s*(.+)$/
+        Matcher taskMatcher = line =~ /^O>\s*(.+)$/
+        Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
+        Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
+        if (contentPane.getChildren().isEmpty()) {
+          String name = $word.getName()
+          addNameNode(contentPane, name)
+        }
+        if (creationDateMatcher.matches()) {
+          String creationDate = creationDateMatcher.group(1)
+          String totalPart = creationDateMatcher.group(2)
+          addCreationDateNode(contentPane, totalPart, creationDate)
+        }
+        if (equivalentMatcher.matches()) {
+          String part = equivalentMatcher.group(1)
+          String equivalent = equivalentMatcher.group(2)
+          addEquivalentNode(contentPane, part, equivalent)
+        }
+        if (hiddenEquivalentMatcher.matches()) {
+          String equivalent = hiddenEquivalentMatcher.group(1)
+        }
+        if (meaningMatcher.matches()) {
+          String meaning = meaningMatcher.group(1)
+          addOtherNode(contentPane, "語義", meaning)
+          hasOther = true
+        }
+        if (etymologyMatcher.matches()) {
+          String etymology = etymologyMatcher.group(1)
+          addOtherNode(contentPane, "語源", etymology)
+          hasOther = true
+        }
+        if (usageMatcher.matches()) {
+          String usage = usageMatcher.group(1)
+          addOtherNode(contentPane, "語法", usage)
+          hasOther = true
+        }
+        if (phraseMatcher.matches()) {
+          String phrase = phraseMatcher.group(1)
+          addOtherNode(contentPane, "成句", phrase)
+          hasOther = true
+        }
+        if (noteMatcher.matches()) {
+          String note = noteMatcher.group(1)
+          addOtherNode(contentPane, "備考", note)
+          hasOther = true
+        }
+        if (taskMatcher.matches()) {
+          String task = taskMatcher.group(1)
+          addOtherNode(contentPane, "タスク", task)
+          hasOther = true
+        }
+        if (exampleMatcher.matches()) {
+          String example = exampleMatcher.group(1)
+          addOtherNode(contentPane, "例文", example)
+          hasOther = true
+        }
+        if (synonymMatcher.matches()) {
+          String synonym = synonymMatcher.group(1)
+          addSynonymNode(contentPane, synonym)
+          hasSynonym = true
+        }
       }
-      if (creationDateMatcher.matches()) {
-        String creationDate = creationDateMatcher.group(1)
-        String totalPart = creationDateMatcher.group(2)
-        addCreationDateNode(totalPart, creationDate)
-      }
-      if (equivalentMatcher.matches()) {
-        String part = equivalentMatcher.group(1)
-        String equivalent = equivalentMatcher.group(2)
-        addEquivalentNode(part, equivalent)
-      }
-      if (hiddenEquivalentMatcher.matches()) {
-        String equivalent = hiddenEquivalentMatcher.group(1)
-      }
-      if (meaningMatcher.matches()) {
-        String meaning = meaningMatcher.group(1)
-        addOtherNode("語義", meaning)
-        hasOther = true
-      }
-      if (etymologyMatcher.matches()) {
-        String etymology = etymologyMatcher.group(1)
-        addOtherNode("語源", etymology)
-        hasOther = true
-      }
-      if (usageMatcher.matches()) {
-        String usage = usageMatcher.group(1)
-        addOtherNode("語法", usage)
-        hasOther = true
-      }
-      if (phraseMatcher.matches()) {
-        String phrase = phraseMatcher.group(1)
-        addOtherNode("成句", phrase)
-        hasOther = true
-      }
-      if (noteMatcher.matches()) {
-        String note = noteMatcher.group(1)
-        addOtherNode("備考", note)
-        hasOther = true
-      }
-      if (taskMatcher.matches()) {
-        String task = taskMatcher.group(1)
-        addOtherNode("タスク", task)
-        hasOther = true
-      }
-      if (exampleMatcher.matches()) {
-        String example = exampleMatcher.group(1)
-        addOtherNode("例文", example)
-        hasOther = true
-      }
-      if (synonymMatcher.matches()) {
-        String synonym = synonymMatcher.group(1)
-        addSynonymNode(synonym)
-        hasSynonym = true
-      }
+      modifyBreak(contentPane)
+    } finally {
+      reader.close()
     }
-    modifyBreak()
-    reader.close()
+    return contentPane
   }
 
-  private void addNameNode(String name) {
+  private void addNameNode(TextFlow contentPane, String name) {
     Text nameText = Text.new(name + "  ")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
-    $contentPane.getChildren().add(nameText)
+    contentPane.getChildren().add(nameText)
   }
  
-  private void addCreationDateNode(String totalPart, String creationDate) {
+  private void addCreationDateNode(TextFlow contentPane, String totalPart, String creationDate) {
     Label totalPartText = Label.new(totalPart)
     Text creationDateText = Text.new(" " + creationDate)
     Text breakText = Text.new("\n")
     totalPartText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TOTAL_PART_CLASS)
     creationDateText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CREATION_DATE_CLASS)
-    $contentPane.getChildren().addAll(totalPartText, creationDateText, breakText)
+    contentPane.getChildren().addAll(totalPartText, creationDateText, breakText)
   }
 
-  private void addEquivalentNode(String part, String equivalent) {
+  private void addEquivalentNode(TextFlow contentPane, String part, String equivalent) {
     Label partText = Label.new(part)
     Text breakText = Text.new("\n")
     List<Text> equivalentTexts = createRichTexts(" " + equivalent)
@@ -147,12 +150,12 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     for (Text equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
-    $contentPane.getChildren().add(partText)
-    $contentPane.getChildren().addAll(equivalentTexts)
-    $contentPane.getChildren().add(breakText)
+    contentPane.getChildren().add(partText)
+    contentPane.getChildren().addAll(equivalentTexts)
+    contentPane.getChildren().add(breakText)
   }
 
-  private void addOtherNode(String title, String other) {
+  private void addOtherNode(TextFlow contentPane, String title, String other) {
     String modifiedOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" \n")
@@ -163,12 +166,12 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     for (Text otherText : otherTexts) {
       otherText.getStyleClass().add(CONTENT_CLASS)
     }
-    $contentPane.getChildren().addAll(titleText, dammyText)
-    $contentPane.getChildren().addAll(otherTexts)
-    $contentPane.getChildren().add(breakText)
+    contentPane.getChildren().addAll(titleText, dammyText)
+    contentPane.getChildren().addAll(otherTexts)
+    contentPane.getChildren().add(breakText)
   }
 
-  private void addSynonymNode(String synonym) {
+  private void addSynonymNode(TextFlow contentPane, String synonym) {
     TextFlow textFlow = TextFlow.new()
     Text titleText = Text.new("cf:")
     Text breakText = Text.new("\n")
@@ -177,9 +180,9 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    $contentPane.getChildren().add(titleText)
-    $contentPane.getChildren().addAll(synonymTexts)
-    $contentPane.getChildren().add(breakText)
+    contentPane.getChildren().add(titleText)
+    contentPane.getChildren().addAll(synonymTexts)
+    contentPane.getChildren().add(breakText)
   }
 
   @VoidClosure
@@ -358,14 +361,10 @@ public class ShaleiaWordContentPaneMaker extends ContentPaneMaker<ShaleiaWord, S
     return createRichTexts(string, false)
   }
 
-  public void setModifiesPunctuation(Boolean modifiesPunctuation) {
-    $modifiesPunctuation = modifiesPunctuation
-  }
-
 }
 
 
-@InnerClass(ShaleiaWordContentPaneMaker)
+@InnerClass(ShaleiaWordContentPaneFactory)
 private static enum TextMode {
 
   NORMAL, NORMAL_ITALIC, NAME, NAME_ITALIC, LINK, LINK_ITALIC

@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="help.css">
+</head>
+<body>
+<h1>スクリプト検索について</h1>
+<p>
+スクリプト言語を用いて単語データの検索ができます。
+メニューバーから「検索」→「スクリプト検索」を選択するか、Ctrl/Command＋Shift＋Uキーを押すことで、スクリプト検索が可能です。
+</p>
+<p>
+<span class="monospaced">word</span>という変数に単語データが渡されます。
+渡される単語データは、開いている辞書形式によって以下のようなクラスのオブジェクトになります。
+各クラスのメソッドなどは、左のヘルプメニューの「API」から見ることができます。
+</p>
+<table>
+<tr><td>OneToMany-JSON形式</td><td><span class="monospaced">SlimePlainWord</span>オブジェクト</td></tr>
+<tr><td>PDIC-CSV形式</td><td><span class="monospaced">PersonalPlainWord</span>オブジェクト</td></tr>
+<tr><td>シャレイア語辞典形式</td><td><span class="monospaced">ShaleiaPlainWord</span>オブジェクト</td></tr>
+</table>
+<p>
+各単語データに対して入力されたスクリプトを実行し、実行結果が真であったデータのみが表示されます。
+</p>
+<p>
+以下は、「s」で始まり「i」で終わる単語のみを表示するGroovyスクリプトの例です。
+</p>
+<pre>
+def name = word.name
+name.startsWith("s") && name.endsWith("i")
+</pre>
+<p>
+また、以下は、「noun」という品詞で5文字以上の訳語が含まれている単語のみを表示するJRubyスクリプトの例です。
+</p>
+<pre>
+word.equivalents.any? do |equivalent|
+  equivalent.title == "noun" &&
+  equivalent.names.any? do |name|
+    name.size >= 5
+  end
+end
+</pre>
+<h1>使用する言語の変更</h1>
+<p>
+メニューバーから「ツール」→「環境設定」を選択するか、Ctrl/Command＋Shift＋Pキーを押してください。
+「検索」タブに「スクリプト言語」という項目があるので、スクリプト検索で利用したい言語を選択してください。
+デフォルトでは、選択できる言語はECMAScriptとGroovyだけですが、以下に記載する方法で選択できる言語を増やすことができます。
+</p>
+<h1>使用する言語の追加</h1>
+<h2>Jython</h2>
+<p>
+<a href="http://www.jython.org/downloads.html" class="blank">Jythonダウンロードページ</a>から「Standalone Jar」をダウンロードしてください。
+なお、最新版のJythonではスクリプトエンジンが見つからない不具合があるため、古いバージョンである2.5.4をダウンロードしてください。
+その後、ダウンロードしたjarファイルを、ZpDIC本体が置かれている場所と同じディレクトリにある「library」というフォルダの中に置いてください。
+</p>
+<p>
+Jython2.5.4rc1で正常に動作することを確認しています。
+</p>
+<h2>その他の言語</h2>
+<p>
+JavaのJSR-223仕様で実装されている言語であれば、上と同様にしてjarランタイムをフォルダ内に置くことで利用することができます。
+このとき、別途スクリプトエンジン用のjarファイルが必要になる場合があります。
+</p>
+<p>
+なお、JRubyは現状ではスクリプト検索に利用することができません。
+これについては現在調査中です。
+</p>
+<h1>注意点</h1>
+<p>
+スクリプト検索は単の検索に比べて時間がかかります。
+ECMAScriptやGroovyでは比較的高速に検索ができることを確認していますが、それ以外の言語では検索結果が表示されるまで10秒以上かかる可能性があります。
+</p>
+</body>
+</html>

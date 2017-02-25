@@ -31,8 +31,8 @@
   </rowConstraints>
   <Label fx:id="$sourceNameControl" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
   <Label fx:id="$targetNameControl" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-  <ListView fx:id="$sourcesView" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-  <ListView fx:id="$targetsView" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+  <ListView fx:id="$sourceView" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+  <ListView fx:id="$targetView" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
   <VBox alignment="center" GridPane.columnIndex="1" GridPane.rowIndex="1">
     <spacing><Double rpx="15"/></spacing>
     <UnfocusableButton text="→" onAction="#moveToTarget"/>

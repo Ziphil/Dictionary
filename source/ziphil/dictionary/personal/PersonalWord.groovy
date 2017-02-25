@@ -19,24 +19,20 @@ public class PersonalWord extends WordBase {
 
   public void update() {
     updateContent()
-    $isChanged = true
+    changeContentPaneFactory()
   }
 
   private void updateContent() {
     $content = name + "\n" + translation + "\n" + usage
   }
 
-  public void updateContentPane() {
-    if ($isChanged) {
-      Setting setting = Setting.getInstance()
-      Integer lineSpacing = setting.getLineSpacing()
-      Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-      PersonalWordContentPaneMaker maker = PersonalWordContentPaneMaker.new($contentPane, this, $dictionary)
-      maker.setLineSpacing(lineSpacing)
-      maker.setModifiesPunctuation(modifiesPunctuation)
-      maker.make()
-      $isChanged = false
-    }
+  protected void makeContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Integer lineSpacing = setting.getLineSpacing()
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    $contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
+    $contentPaneFactory.setLineSpacing(lineSpacing)
+    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public PersonalDictionary getDictionary() {

@@ -18,21 +18,9 @@ public interface Dictionary<W extends Word> {
 
   public void shuffleWords()
 
-  public void modifyWord(W oldWord, W newWord)
-
-  public void addWord(W word)
-
-  public void removeWord(W word)
-
   public void update()
 
   public void updateMinimum()
-
-  public W emptyWord(String defaultName)
-
-  public W copiedWord(W oldWord)
-
-  public W inheritedWord(W oldWord)
 
   public void save()
 
@@ -53,8 +41,6 @@ public interface Dictionary<W extends Word> {
   public ObservableList<W> getWords()
 
   public ObservableList<W> getRawWords()
-
-  public String getExtension()
 
   public Task<?> getLoader()
 

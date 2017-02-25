@@ -2,13 +2,15 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
+import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> {
+public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -17,7 +19,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   }
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
-    newWord.updateContentPane()
     $isChanged = true
   }
 
@@ -63,6 +64,18 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return copiedWord(oldWord)
   }
 
+  public Object plainWord(PersonalWord oldWord) {
+    PersonalPlainWord newWord = PersonalPlainWord.new()
+    newWord.setName(oldWord.getName())
+    newWord.setPronunciation(oldWord.getPronunciation())
+    newWord.setTranslation(oldWord.getTranslation())
+    newWord.setUsage(oldWord.getUsage())
+    newWord.setLevel(oldWord.getLevel())
+    newWord.setMemory(oldWord.getMemory())
+    newWord.setModification(oldWord.getModification())
+    return newWord
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
@@ -77,10 +90,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   protected Task<?> createSaver() {
     PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
     return saver
-  }
-
-  public String getExtension() {
-    return "csv"
   }
 
 }

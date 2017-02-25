@@ -27,7 +27,7 @@
   <rowConstraints>
     <RowConstraints vgrow="always"/>
   </rowConstraints>
-  <ListView fx:id="$itemsView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+  <ListView fx:id="$itemView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
   <VBox alignment="center" GridPane.columnIndex="1" GridPane.rowIndex="0">
     <spacing><Double rpx="15"/></spacing>
     <UnfocusableButton text="↑" onAction="#exchangeUp"/>

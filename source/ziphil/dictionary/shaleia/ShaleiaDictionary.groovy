@@ -9,7 +9,9 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
+import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -17,7 +19,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
   private String $changeData = ""
@@ -32,133 +34,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     setupSuggestions()
   }
 
-  public void searchByName(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
-    Boolean existsSuggestion = false
-    try {
-      Pattern pattern = (isStrict) ? null : Pattern.compile(search)
-      String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-      for (ShaleiaSuggestion suggestion : $suggestions) {
-        suggestion.getPossibilities().clear()
-      }
-      if (checkWholeSuggestion(search, convertedSearch)) {
-        existsSuggestion = true
-      }
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        if (isStrict) {
-          if (!word.getUniqueName().startsWith("\$")) {
-            String name = word.getName()
-            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            if (checkSuggestion(word, search, convertedSearch)) {
-              existsSuggestion = true
-            }
-            if (search != "") {
-              if (searchesPrefix) {
-                return convertedName.startsWith(convertedSearch)
-              } else {
-                return convertedName == convertedSearch
-              }
-            } else {
-              return true
-            }
-          } else {
-            return search == "\$"
-          }
-        } else {
-          if (!word.getUniqueName().startsWith("\$")) {
-            Matcher matcher = pattern.matcher(word.getName())
-            return matcher.find()
-          } else {
-            return false
-          }
-        }
-      }
-      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-        return existsSuggestion
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-    $shufflableWords.unshuffle()
-  }
-
-  public void searchByEquivalent(String search, Boolean isStrict) {
-    Setting setting = Setting.getInstance()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        if (isStrict) {
-          if (!word.getUniqueName().startsWith("\$")) {
-            if (search != "") {
-              return word.getEquivalents().any() { String equivalent ->
-                if (searchesPrefix) {
-                  return equivalent.startsWith(search)
-                } else {
-                  return equivalent == search
-                }
-              }
-            } else {
-              return true
-            }
-          } else {
-            return false
-          }
-        } else {
-          if (!word.getUniqueName().startsWith("\$")) {
-            return word.getEquivalents().any() { String equivalent ->
-              Matcher matcher = pattern.matcher(equivalent)
-              return matcher.find()
-            }
-          } else {
-            return false
-          }
-        }
-      }
-      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-        return false
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-    $shufflableWords.unshuffle()
-  }
-
-  public void searchByContent(String search) {
-    try {
-      Pattern pattern = Pattern.compile(search)
-      $filteredWords.setPredicate() { ShaleiaWord word ->
-        if (!word.getUniqueName().startsWith("\$")) {     
-          Matcher matcher = pattern.matcher(word.getContent())
-          return matcher.find()
-        } else {
-          return false
-        }
-      }
-      $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-        return false
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-    $shufflableWords.unshuffle()
-  }
-
-  protected Boolean checkWholeSuggestion(String search, String convertedSearch) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    if ($changes.containsKey(convertedSearch)) {
-      for (String newName : $changes[convertedSearch]) {
-        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
-        $suggestions[0].getPossibilities().add(possibility)
-        $suggestions[0].update()
-      }
-      return true
-    }
-    return false
-  }
-
   public void searchDetail(ShaleiaSearchParameter parameter) {
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
@@ -166,7 +41,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     SearchType equivalentSearchType = parameter.getEquivalentSearchType()
     String searchData = parameter.getData()
     SearchType dataSearchType = parameter.getDataSearchType()
-    $filteredWords.setPredicate() { ShaleiaWord word ->
+    resetSuggestions()
+    updateWordPredicate() { ShaleiaWord word ->
       Boolean predicate = true
       String name = word.getName()
       List<String> equivalents = word.getEquivalents()
@@ -194,15 +70,24 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       }
       return predicate
     }
-    $filteredSuggestions.setPredicate() { ShaleiaSuggestion suggestion ->
-      return false
+  }
+
+  protected void checkWholeSuggestion(String search, String convertedSearch) {
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    if ($changes.containsKey(convertedSearch)) {
+      for (String newName : $changes[convertedSearch]) {
+        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
+        $suggestions[0].getPossibilities().add(possibility)
+        $suggestions[0].setDisplayed(true)
+        $suggestions[0].update()
+      }
     }
-    $shufflableWords.unshuffle()
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
     newWord.updateComparisonString($alphabetOrder)
-    newWord.updateContentPane()
     $isChanged = true
   }
 
@@ -234,19 +119,21 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     BufferedReader reader = BufferedReader.new(StringReader.new($changeData))
-    String line
-    $changes.clear()
-    while ((line = reader.readLine()) != null) {
-      Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
-      if (matcher.matches()) {
-        String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
-        if (!$changes.containsKey(oldName)) {
-          $changes[oldName] = ArrayList.new()
+    try {
+      $changes.clear()
+      for (String line ; (line = reader.readLine()) != null ;) {
+        Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
+        if (matcher.matches()) {
+          String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
+          if (!$changes.containsKey(oldName)) {
+            $changes[oldName] = ArrayList.new()
+          }
+          $changes[oldName].add(matcher.group(3))
         }
-        $changes[oldName].add(matcher.group(3))
       }
+    } finally {
+      reader.close()
     }
-    reader.close()
   }
 
   private void calculateSystemWordSize() {
@@ -284,6 +171,14 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return newWord
   }
 
+  public Object plainWord(ShaleiaWord oldWord) {
+    ShaleiaPlainWord newWord = ShaleiaPlainWord.new()
+    newWord.setName(oldWord.getName())
+    newWord.setUniqueName(oldWord.getUniqueName())
+    newWord.setData(oldWord.getData())
+    return newWord
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()
@@ -311,10 +206,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
     saver.setComparator($sortedWords.getComparator())
     return saver
-  }
-
-  public String getExtension() {
-    return "xdc"
   }
 
   public String getAlphabetOrder() {

@@ -4,43 +4,52 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
+import ziphilib.transform.ConvertPrimitives
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimLong
 
 
-@CompileStatic @Ziphilify
+@CompileStatic @Ziphilify @ConvertPrimitives
 public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
 
   public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
     super(dictionary, path)
+    updateProgress(0, 1)
   }
 
   protected ObservableList<ShaleiaWord> call() {
     if ($path != null) {
       File file = File.new($path)
       BufferedReader reader = file.newReader("UTF-8")
-      String currentName = null
-      StringBuilder currentData = StringBuilder.new()
-      String line
-      while ((line = reader.readLine()) != null) {
-        if (isCancelled()) {
-          reader.close()
-          return null
+      PrimLong size = file.length()
+      PrimLong offset = 0L
+      try {
+        String currentName = null
+        StringBuilder currentData = StringBuilder.new()
+        for (String line ; (line = reader.readLine()) != null ;) {
+          if (isCancelled()) {
+            reader.close()
+            return null
+          }
+          Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+          if (matcher.matches()) {
+            add(currentName, currentData)
+            currentName = matcher.group(1)
+            currentData.setLength(0)
+          } else {
+            currentData.append(line)
+            currentData.append("\n")
+          }
+          offset += line.getBytes("UTF-8").length + 1
+          updateProgress(offset, size)
         }
-        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-        if (matcher.matches()) {
-          add(currentName, currentData)
-          currentName = matcher.group(1)
-          currentData.setLength(0)
-        } else {
-          currentData.append(line)
-          currentData.append("\n")
-        }
+        add(currentName, currentData)
+      } finally {
+        reader.close()
       }
-      add(currentName, currentData)
-      reader.close()
-    }
-    for (ShaleiaWord word : $words) {
-      word.updateComparisonString($dictionary.getAlphabetOrder())
+      for (ShaleiaWord word : $words) {
+        word.updateComparisonString($dictionary.getAlphabetOrder())
+      }
     }
     return $words
   }

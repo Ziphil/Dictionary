@@ -6,12 +6,13 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.ScriptSearchParameter
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ScriptController extends Controller<String> {
+public class ScriptController extends Controller<ScriptSearchParameter> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/script.fxml"
   private static final String TITLE = "スクリプト検索"
@@ -20,7 +21,7 @@ public class ScriptController extends Controller<String> {
 
   @FXML private TextArea $scriptControl
 
-  public ScriptController(UtilityStage<String> stage) {
+  public ScriptController(UtilityStage<ScriptSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -28,7 +29,8 @@ public class ScriptController extends Controller<String> {
   @FXML
   protected void commit() {
     String string = $scriptControl.getText()
-    $stage.commit(string)
+    ScriptSearchParameter parameter = ScriptSearchParameter.new(string)
+    $stage.commit(parameter)
   }
 
 }
