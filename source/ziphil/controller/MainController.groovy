@@ -401,7 +401,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void modifyWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItem()
     modifyWord(word)
   }
 
@@ -419,7 +419,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void removeWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItem()
     removeWord(word)
   }
 
@@ -487,7 +487,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void addInheritedWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItems()[0]
+    Element word = $wordView.getSelectionModel().getSelectedItem()
     addInheritedWord(word)
   }
 
