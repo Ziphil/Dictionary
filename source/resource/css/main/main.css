@@ -84,7 +84,7 @@
 }
 
 .update-detail-pane {
-  -fx-line-spacing: 1px;
+  -fx-line-spacing: 2px;
 }
 
 .update-detail-pane Text {
