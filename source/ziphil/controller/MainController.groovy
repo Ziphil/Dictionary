@@ -881,7 +881,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
-    if (previousVersion < Launcher.VERSION) {
+    if (false && previousVersion < Launcher.VERSION) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       UpdateInformationController controller = UpdateInformationController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
