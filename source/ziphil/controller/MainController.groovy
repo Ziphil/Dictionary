@@ -127,6 +127,7 @@ public class MainController extends PrimitiveController<Stage> {
   private IndividualSetting $individualSetting = null
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
+  private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
   public MainController(Stage stage) {
     super(stage)
@@ -389,7 +390,9 @@ public class MainController extends PrimitiveController<Stage> {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
           controller.prepare((SlimeWord)word, $dictionary)
         }
+        $openStages.add(nextStage)
         nextStage.showAndWait()
+        $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
           ((UpdatableListViewSkin)$wordView.getSkin()).refresh()
@@ -446,7 +449,9 @@ public class MainController extends PrimitiveController<Stage> {
         newWord = $dictionary.emptyWord(defaultName)
         controller.prepare((SlimeWord)newWord, $dictionary, true)
       }
+      $openStages.add(nextStage)
       nextStage.showAndWait()
+      $openStages.remove(nextStage)
       if (nextStage.isCommitted() && nextStage.getResult()) {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
@@ -476,7 +481,9 @@ public class MainController extends PrimitiveController<Stage> {
           newWord = $dictionary.inheritedWord((SlimeWord)word)
           controller.prepare((SlimeWord)newWord, $dictionary)
         }
+        $openStages.add(nextStage)
         nextStage.showAndWait()
+        $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.addWord(newWord)
           if (savesAutomatically) {
@@ -598,6 +605,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateDictionary(Dictionary dictionary) {
     cancelLoadDictionary()
+    closeOpenStages()
     $dictionary = dictionary
     updateIndividualSetting()
     updateSearchStatuses()
@@ -614,6 +622,13 @@ public class MainController extends PrimitiveController<Stage> {
         oldLoader.cancel()
       }
     }
+  }
+
+  private void closeOpenStages() {
+    for (Stage stage : $openStages) {
+      stage.close()
+    }
+    $openStages.clear()
   }
 
   private void updateIndividualSetting() {
