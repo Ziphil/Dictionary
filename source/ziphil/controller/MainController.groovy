@@ -379,7 +379,6 @@ public class MainController extends PrimitiveController<Stage> {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         Word oldWord = $dictionary.copiedWord(word)
-        nextStage.initOwner($stage)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           controller.prepare((ShaleiaWord)word)
@@ -435,7 +434,6 @@ public class MainController extends PrimitiveController<Stage> {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       String defaultName = $searchControl.getText()
-      nextStage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
         newWord = $dictionary.emptyWord(defaultName)
@@ -467,7 +465,6 @@ public class MainController extends PrimitiveController<Stage> {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-        nextStage.initOwner($stage)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           newWord = $dictionary.inheritedWord((ShaleiaWord)word)
