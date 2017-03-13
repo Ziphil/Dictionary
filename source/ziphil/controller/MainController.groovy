@@ -127,6 +127,7 @@ public class MainController extends PrimitiveController<Stage> {
   private IndividualSetting $individualSetting = null
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
+  private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
   public MainController(Stage stage) {
     super(stage)
@@ -378,7 +379,6 @@ public class MainController extends PrimitiveController<Stage> {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         Word oldWord = $dictionary.copiedWord(word)
-        nextStage.initOwner($stage)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           controller.prepare((ShaleiaWord)word)
@@ -389,7 +389,9 @@ public class MainController extends PrimitiveController<Stage> {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
           controller.prepare((SlimeWord)word, $dictionary)
         }
+        $openStages.add(nextStage)
         nextStage.showAndWait()
+        $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
           ((UpdatableListViewSkin)$wordView.getSkin()).refresh()
@@ -432,7 +434,6 @@ public class MainController extends PrimitiveController<Stage> {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       String defaultName = $searchControl.getText()
-      nextStage.initOwner($stage)
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
         newWord = $dictionary.emptyWord(defaultName)
@@ -446,7 +447,9 @@ public class MainController extends PrimitiveController<Stage> {
         newWord = $dictionary.emptyWord(defaultName)
         controller.prepare((SlimeWord)newWord, $dictionary, true)
       }
+      $openStages.add(nextStage)
       nextStage.showAndWait()
+      $openStages.remove(nextStage)
       if (nextStage.isCommitted() && nextStage.getResult()) {
         $dictionary.addWord(newWord)
         if (savesAutomatically) {
@@ -462,7 +465,6 @@ public class MainController extends PrimitiveController<Stage> {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-        nextStage.initOwner($stage)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           newWord = $dictionary.inheritedWord((ShaleiaWord)word)
@@ -476,7 +478,9 @@ public class MainController extends PrimitiveController<Stage> {
           newWord = $dictionary.inheritedWord((SlimeWord)word)
           controller.prepare((SlimeWord)newWord, $dictionary)
         }
+        $openStages.add(nextStage)
         nextStage.showAndWait()
+        $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.addWord(newWord)
           if (savesAutomatically) {
@@ -499,7 +503,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsOpen) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
@@ -546,7 +550,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsCreate) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true)
       nextStage.showAndWait()
@@ -581,7 +585,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionaries.getExtension($dictionary))
       nextStage.showAndWait()
@@ -598,6 +602,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateDictionary(Dictionary dictionary) {
     cancelLoadDictionary()
+    closeOpenStages()
     $dictionary = dictionary
     updateIndividualSetting()
     updateSearchStatuses()
@@ -614,6 +619,13 @@ public class MainController extends PrimitiveController<Stage> {
         oldLoader.cancel()
       }
     }
+  }
+
+  private void closeOpenStages() {
+    for (Stage stage : $openStages) {
+      stage.close()
+    }
+    $openStages.clear()
   }
 
   private void updateIndividualSetting() {
@@ -806,7 +818,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
         SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
@@ -832,7 +844,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void editSetting() {
     UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -846,7 +858,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
@@ -862,17 +874,17 @@ public class MainController extends PrimitiveController<Stage> {
   private void showApplicationInformation() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
 
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
-    if (previousVersion < Launcher.VERSION) {
+    if (false && previousVersion < Launcher.VERSION) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       UpdateInformationController controller = UpdateInformationController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
     }

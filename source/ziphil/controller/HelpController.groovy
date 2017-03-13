@@ -67,7 +67,7 @@ public class HelpController extends Controller<Void> {
     $helpView.getEngine().getLoadWorker().stateProperty().addListener() { ObservableValue<? extends Worker.State> observableValue, Worker.State oldValue, Worker.State newValue ->
       if (newValue == Worker.State.SUCCEEDED) {
         Document document = $helpView.getEngine().getDocument()
-        NodeList nodeList = document.getElementsByTagName("a");
+        NodeList nodeList = document.getElementsByTagName("a")
         for (Integer i : 0 ..< nodeList.getLength()) {
           Node node = nodeList.item(i)
           String styleClass = ((Element)node).getAttribute("class")
