@@ -1104,7 +1104,9 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
-      if (!allowsClose) {
+      if (allowsClose) {
+        closeOpenStages()
+      } else {
         event.consume()
       }
     }
