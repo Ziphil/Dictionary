@@ -196,7 +196,7 @@ public class SettingController extends Controller<Boolean> {
   private void browseDictionary(Integer i) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     String currentPath = $registeredDictionaryPathControls[i].getText()
     if (currentPath != null) {

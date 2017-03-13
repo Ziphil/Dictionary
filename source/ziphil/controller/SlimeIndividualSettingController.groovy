@@ -99,7 +99,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private void editDefaultWord() {
     UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.getDefaultWord(), $dictionary, false, false)
     nextStage.showAndWait()

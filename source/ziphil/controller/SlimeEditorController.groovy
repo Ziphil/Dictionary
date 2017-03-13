@@ -443,7 +443,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void chooseRelation(HBox box) {
     UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
     nextStage.showAndWait()

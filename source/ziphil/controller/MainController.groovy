@@ -506,7 +506,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsOpen) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
@@ -553,7 +553,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (allowsCreate) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true)
       nextStage.showAndWait()
@@ -588,7 +588,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionaries.getExtension($dictionary))
       nextStage.showAndWait()
@@ -821,7 +821,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
         SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
@@ -847,7 +847,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void editSetting() {
     UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -861,7 +861,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
@@ -877,7 +877,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void showApplicationInformation() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     ApplicationInformationController controller = ApplicationInformationController.new(nextStage)
-    nextStage.initModality(Modality.WINDOW_MODAL)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
@@ -887,7 +887,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (previousVersion < Launcher.VERSION) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       UpdateInformationController controller = UpdateInformationController.new(nextStage)
-      nextStage.initModality(Modality.WINDOW_MODAL)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
     }

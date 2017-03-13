@@ -60,7 +60,7 @@ public class DialogManager {
   }
 
   private void setupStage() {
-    $stage.initModality(Modality.WINDOW_MODAL)
+    $stage.initModality(Modality.APPLICATION_MODAL)
   }
 
   private void bindButtonTextProperties() {
