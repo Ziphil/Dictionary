@@ -50,6 +50,7 @@
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="行間調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -97,6 +98,10 @@
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
+          <ToggleButton fx:id="$keepsEditorOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
               <Insets>
@@ -130,10 +135,19 @@
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="句読点や括弧類の周りのスペースを調整します。&#10;"/>
             <Text text="フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="11">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
           </TextFlow>
         </GridPane>
       </Tab>

@@ -377,7 +377,12 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Setting setting = Setting.getInstance()
+        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+        Boolean savesAutomatically = setting.getSavesAutomatically()
+        if (keepsEditorOnTop) {
+          nextStage.initOwner($stage)
+        }
         Word oldWord = $dictionary.copiedWord(word)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
@@ -432,7 +437,12 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      Setting setting = Setting.getInstance()
+      Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+      Boolean savesAutomatically = setting.getSavesAutomatically()
+      if (keepsEditorOnTop) {
+        nextStage.initOwner($stage)
+      }
       String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
@@ -464,7 +474,12 @@ public class MainController extends PrimitiveController<Stage> {
       if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Setting setting = Setting.getInstance()
+        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+        Boolean savesAutomatically = setting.getSavesAutomatically()
+        if (keepsEditorOnTop) {
+          nextStage.initOwner($stage)
+        }
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           newWord = $dictionary.inheritedWord((ShaleiaWord)word)
