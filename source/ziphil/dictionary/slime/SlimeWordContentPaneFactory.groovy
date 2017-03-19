@@ -136,7 +136,11 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    contentPane.getChildren().addAll(formerTitleText, titleText, spaceText)
+    if (title != "") {
+      contentPane.getChildren().addAll(formerTitleText, titleText, spaceText)
+    } else {
+      contentPane.getChildren().addAll(formerTitleText, spaceText)
+    }
     for (Integer i : 0 ..< names.size()) {
       Integer id = ids[i]
       String name = names[i]
