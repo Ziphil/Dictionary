@@ -22,6 +22,7 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
+  private String $version = ""
   private String $changeData = ""
   private Map<String, List<String>> $changes = HashMap.new()
   private Integer $systemWordSize = 0
@@ -214,6 +215,14 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
+  }
+
+  public String getVersion() {
+    return $version
+  }
+
+  public void setVersion(String version) {
+    $version = version
   }
 
   public String getChangeData() {

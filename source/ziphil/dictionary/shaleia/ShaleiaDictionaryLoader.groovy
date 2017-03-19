@@ -56,10 +56,14 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
 
   private void add(String currentName, StringBuilder currentData) {
     if (currentName != null) {
-      if (currentName == "META-ALPHABET-ORDER") {
-        addAlphabetOrder(currentData)
-      } else if (currentName == "META-CHANGE") {
-        addChangeData(currentData)
+      if (currentName.startsWith("META-")) {
+        if (currentName == "META-ALPHABET-ORDER") {
+          addAlphabetOrder(currentData)
+        } else if (currentName == "META-VERSION") {
+          addVersion(currentData)
+        } else if (currentName == "META-CHANGE") {
+          addChangeData(currentData)
+        }
       } else {
         addWord(currentName, currentData)
       }
@@ -78,6 +82,11 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
   private void addAlphabetOrder(StringBuilder currentData) {
     String alphabetOrder = currentData.toString().trim().replaceAll(/^\-\s*/, "")
     $dictionary.setAlphabetOrder(alphabetOrder)
+  }
+
+  private void addVersion(StringBuilder currentData) {
+    String version = currentData.toString().trim().replaceAll(/^\-\s*/, "")
+    $dictionary.setVersion(version)
   }
 
   private void addChangeData(StringBuilder currentData) {
