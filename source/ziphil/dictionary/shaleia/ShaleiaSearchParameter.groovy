@@ -16,18 +16,6 @@ public class ShaleiaSearchParameter extends DetailSearchParameter {
   private String $description
   private SearchType $descriptionSearchType
 
-  public ShaleiaSearchParameter(String name, SearchType nameSearchType, String equivalent, SearchType equivalentSearchType, String description, SearchType descriptionSearchType) {
-    $name = name
-    $nameSearchType = nameSearchType
-    $equivalent = equivalent
-    $equivalentSearchType = equivalentSearchType
-    $description = description
-    $descriptionSearchType = descriptionSearchType
-  }
-
-  public ShaleiaSearchParameter() {
-  }
-
   public String getName() {
     return $name
   }
