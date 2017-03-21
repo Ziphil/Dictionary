@@ -23,9 +23,9 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
-  private String $version = ""
   private String $changeDescription = ""
   private Map<String, List<String>> $changes = HashMap.new()
+  private String $version = ""
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
 
@@ -176,9 +176,11 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void setupSuggestions() {
-    ShaleiaSuggestion suggestion = ShaleiaSuggestion.new()
-    suggestion.setDictionary(this)
-    $suggestions.add(suggestion)
+    ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
+    ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
+    conjugationSuggestion.setDictionary(this)
+    changeSuggestion.setDictionary(this)
+    $suggestions.addAll(conjugationSuggestion, changeSuggestion)
   }
 
   public Integer totalSize() {
@@ -186,7 +188,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   protected ConjugationResolver createConjugationResolver() {
-    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes)
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
     return conjugationResolver
   }
 
