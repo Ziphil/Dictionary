@@ -694,10 +694,11 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         $dictionary.setOnLinkClicked() { String name ->
-          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-          parameter.setName(name)
-          parameter.setNameSearchType(SearchType.EXACT)
-          doSearchDetail(parameter)
+          NormalSearchParameter parameter = NormalSearchParameter.new()
+          parameter.setSearch(name)
+          parameter.setSearchMode(SearchMode.NAME)
+          parameter.setStrict(true)
+          doSearch(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
