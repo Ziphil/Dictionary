@@ -67,15 +67,20 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      ConjugationResolver conjugationResolver = createConjugationResolver()
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
-      checkWholeSuggestion(search, convertedSearch)
+      if (conjugationResolver != null) {
+        conjugationResolver.precheck(search, convertedSearch)
+      }
       updateWordPredicate() { Word word ->
         if (word.isDisplayed()) {
           if (isStrict) {
             String name = word.getName()
             String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            checkSuggestion(word, search, convertedSearch)
+            if (conjugationResolver != null) {
+              conjugationResolver.check(word, search, convertedSearch)
+            }
             if (search != "") {
               if (searchesPrefix) {
                 return convertedName.startsWith(convertedSearch)
@@ -204,12 +209,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void checkWholeSuggestion(String search, String convertedSearch) {
-  }
-
-  protected void checkSuggestion(W word, String search, String convertedSearch) {
-  }
-
   public void shuffleWords() {
     $shufflableWords.shuffle()
   }
@@ -265,6 +264,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public Integer totalSize() {
     return $words.size()
+  }
+
+  protected ConjugationResolver createConjugationResolver() {
+    return null
   }
 
   protected abstract Task<?> createLoader()

@@ -9,6 +9,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
+import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.EditableDictionary
@@ -70,20 +71,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
         }
       }
       return predicate
-    }
-  }
-
-  protected void checkWholeSuggestion(String search, String convertedSearch) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    if ($changes.containsKey(convertedSearch)) {
-      for (String newName : $changes[convertedSearch]) {
-        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
-        $suggestions[0].getPossibilities().add(possibility)
-        $suggestions[0].setDisplayed(true)
-        $suggestions[0].update()
-      }
     }
   }
 
@@ -196,6 +183,11 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public Integer totalSize() {
     return $words.size() - $systemWordSize
+  }
+
+  protected ConjugationResolver createConjugationResolver() {
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes)
+    return conjugationResolver
   }
 
   protected Task<?> createLoader() {
