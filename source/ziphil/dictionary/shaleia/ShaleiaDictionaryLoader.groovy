@@ -62,7 +62,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
         } else if (currentName == "META-VERSION") {
           addVersion(currentData)
         } else if (currentName == "META-CHANGE") {
-          addChangeData(currentData)
+          addChangeDescription(currentData)
         }
       } else {
         addWord(currentName, currentData)
@@ -73,7 +73,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
   private void addWord(String currentName, StringBuilder currentData) {
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(currentName)
-    word.setData(currentData.toString())
+    word.setDescription(currentData.toString())
     word.setDictionary($dictionary)
     word.update()
     $words.add(word)
@@ -89,9 +89,9 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     $dictionary.setVersion(version)
   }
 
-  private void addChangeData(StringBuilder currentData) {
-    String changeData = currentData.toString().replaceAll(/^\s*\n/, "")
-    $dictionary.setChangeData(changeData)
+  private void addChangeDescription(StringBuilder currentData) {
+    String changeDescription = currentData.toString().replaceAll(/^\s*\n/, "")
+    $dictionary.setChangeDescription(changeDescription)
   }
 
 }

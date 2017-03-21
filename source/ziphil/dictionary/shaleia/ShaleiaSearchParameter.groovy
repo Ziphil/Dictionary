@@ -13,16 +13,16 @@ public class ShaleiaSearchParameter extends DetailSearchParameter {
   private SearchType $nameSearchType
   private String $equivalent
   private SearchType $equivalentSearchType
-  private String $data
-  private SearchType $dataSearchType
+  private String $description
+  private SearchType $descriptionSearchType
 
-  public ShaleiaSearchParameter(String name, SearchType nameSearchType, String equivalent, SearchType equivalentSearchType, String data, SearchType dataSearchType) {
+  public ShaleiaSearchParameter(String name, SearchType nameSearchType, String equivalent, SearchType equivalentSearchType, String description, SearchType descriptionSearchType) {
     $name = name
     $nameSearchType = nameSearchType
     $equivalent = equivalent
     $equivalentSearchType = equivalentSearchType
-    $data = data
-    $dataSearchType = dataSearchType
+    $description = description
+    $descriptionSearchType = descriptionSearchType
   }
 
   public ShaleiaSearchParameter() {
@@ -60,20 +60,20 @@ public class ShaleiaSearchParameter extends DetailSearchParameter {
     $equivalentSearchType = equivalentSearchType
   }
 
-  public String getData() {
-    return $data
+  public String getDescription() {
+    return $description
   }
 
-  public void setData(String data) {
-    $data = data
+  public void setDescription(String description) {
+    $description = description
   }
 
-  public SearchType getDataSearchType() {
-    return $dataSearchType
+  public SearchType getDescriptionSearchType() {
+    return $descriptionSearchType
   }
 
-  public void setDataSearchType(SearchType dataSearchType) {
-    $dataSearchType = dataSearchType
+  public void setDescriptionSearchType(SearchType descriptionSearchType) {
+    $descriptionSearchType = descriptionSearchType
   }
 
 }

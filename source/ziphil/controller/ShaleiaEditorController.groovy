@@ -24,7 +24,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $nameControl
-  @FXML private TextArea $dataControl
+  @FXML private TextArea $descriptionControl
   private ShaleiaWord $word
 
   public ShaleiaEditorController(UtilityStage<Boolean> stage) {
@@ -36,11 +36,11 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   public void prepare(ShaleiaWord word, Boolean editsEmptyWord) {
     $word = word
     $nameControl.setText(word.getUniqueName())
-    $dataControl.setText(word.getData())
+    $descriptionControl.setText(word.getDescription())
     if (editsEmptyWord) {
       $nameControl.requestFocus()
     } else {
-      $dataControl.requestFocus()
+      $descriptionControl.requestFocus()
     }
   }
 
@@ -51,7 +51,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     $word.setUniqueName($nameControl.getText())
-    $word.setData($dataControl.getText())
+    $word.setDescription($descriptionControl.getText())
     $word.update()
     $stage.commit(true)
   }

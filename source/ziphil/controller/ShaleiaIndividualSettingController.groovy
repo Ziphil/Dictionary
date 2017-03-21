@@ -20,7 +20,7 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
 
   @FXML private TextField $alphabetOrderControl
   @FXML private TextField $versionControl
-  @FXML private TextArea $changeDataControl
+  @FXML private TextArea $changeDescriptionControl
   private ShaleiaDictionary $dictionary
 
   public ShaleiaIndividualSettingController(UtilityStage<Boolean> stage) {
@@ -32,14 +32,14 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
     $dictionary = dictionary
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $versionControl.setText(dictionary.getVersion())
-    $changeDataControl.setText(dictionary.getChangeData())
+    $changeDescriptionControl.setText(dictionary.getChangeDescription())
   }
 
   @FXML
   protected void commit() {
     $dictionary.setAlphabetOrder($alphabetOrderControl.getText())
     $dictionary.setVersion($versionControl.getText())
-    $dictionary.setChangeData($changeDataControl.getText())
+    $dictionary.setChangeDescription($changeDescriptionControl.getText())
     $dictionary.updateMinimum()
     $stage.commit(true)
   }

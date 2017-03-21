@@ -49,7 +49,7 @@
       <Label text="バージョン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <TextField fx:id="$versionControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <Label text="変更履歴:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-      <TextArea fx:id="$changeDataControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <TextArea fx:id="$changeDescriptionControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </GridPane>
   </center>
   <bottom>

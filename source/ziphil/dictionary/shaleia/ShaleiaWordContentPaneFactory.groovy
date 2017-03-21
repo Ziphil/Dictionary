@@ -48,7 +48,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     Boolean hasSynonym = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing($lineSpacing)
-    BufferedReader reader = BufferedReader.new(StringReader.new($word.getData()))
+    BufferedReader reader = BufferedReader.new(StringReader.new($word.getDescription()))
     try {
       for (String line ; (line = reader.readLine()) != null ;) {
         Matcher creationDateMatcher = line =~ /^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/

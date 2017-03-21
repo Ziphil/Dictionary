@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaWord extends WordBase {
 
   private String $uniqueName = ""
-  private String $data = ""
+  private String $description = ""
   private String $comparisonString = ""
   private ShaleiaDictionary $dictionary
 
@@ -27,7 +27,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateEquivalents() {
-    BufferedReader reader = BufferedReader.new(StringReader.new($data))
+    BufferedReader reader = BufferedReader.new(StringReader.new($description))
     try {
       $equivalents.clear()
       for (String line ; (line = reader.readLine()) != null ;) {
@@ -44,7 +44,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateContent() {
-    $content = $uniqueName + "\n" + $data
+    $content = $uniqueName + "\n" + $description
   }
 
   public void updateComparisonString(String order) {
@@ -93,12 +93,12 @@ public class ShaleiaWord extends WordBase {
     $uniqueName = uniqueName
   }
 
-  public String getData() {
-    return $data
+  public String getDescription() {
+    return $description
   }
 
-  public void setData(String data) {
-    $data = data
+  public void setDescription(String description) {
+    $description = description
   }
 
   public String getComparisonString() {

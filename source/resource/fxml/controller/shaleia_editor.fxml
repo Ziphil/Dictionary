@@ -52,7 +52,7 @@
         <minWidth><Double rpx="150"/></minWidth>
         <maxWidth><Double rpx="150"/></maxWidth>
       </TextField>
-      <TextArea fx:id="$dataControl" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextArea fx:id="$descriptionControl" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>

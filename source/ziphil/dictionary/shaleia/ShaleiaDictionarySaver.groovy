@@ -26,7 +26,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
           writer.write("* ")
           writer.write(word.getUniqueName())
           writer.write("\n")
-          writer.write(word.getData().trim())
+          writer.write(word.getDescription().trim())
           writer.write("\n\n")
         }
         writer.write("* META-ALPHABET-ORDER\n\n")
@@ -38,7 +38,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
         writer.write($dictionary.getVersion())
         writer.write("\n\n")
         writer.write("* META-CHANGE\n\n")
-        writer.write($dictionary.getChangeData().trim())
+        writer.write($dictionary.getChangeDescription().trim())
         writer.write("\n\n")
       } finally {
         writer.close()

@@ -23,8 +23,8 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   @FXML private ComboBox<SearchType> $nameSearchTypeControl
   @FXML private TextField $equivalentControl
   @FXML private ComboBox<SearchType> $equivalentSearchTypeControl
-  @FXML private TextField $dataControl
-  @FXML private ComboBox<SearchType> $dataSearchTypeControl
+  @FXML private TextField $descriptionControl
+  @FXML private ComboBox<SearchType> $descriptionSearchTypeControl
 
   public ShaleiaSearcherController(UtilityStage<ShaleiaSearchParameter> stage) {
     super(stage)
@@ -42,10 +42,10 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
       parameter.setEquivalent($equivalentControl.getText())
     }
     parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
-    if ($dataControl.getText() != "") {
-      parameter.setData($dataControl.getText())
+    if ($descriptionControl.getText() != "") {
+      parameter.setDescription($descriptionControl.getText())
     }
-    parameter.setDataSearchType($dataSearchTypeControl.getValue())
+    parameter.setDescriptionSearchType($descriptionSearchTypeControl.getValue())
     $stage.commit(parameter)
   }
 
