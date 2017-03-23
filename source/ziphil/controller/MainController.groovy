@@ -88,6 +88,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
+  private static final String OFFICIAL_SITE_URL = "http://ziphil.web.fc2.com/application/download/2.html"
   private static final String TITLE = "ZpDIC shalnif"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
@@ -902,7 +903,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showOfficialSite() {
     Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new("http://ziphil.web.fc2.com/application/download/2.html")
+    URI uri = URI.new(OFFICIAL_SITE_URL)
     desktop.browse(uri)
   }
 
