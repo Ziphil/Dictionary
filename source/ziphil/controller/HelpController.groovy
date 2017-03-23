@@ -9,6 +9,7 @@ import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.web.WebEngine
 import javafx.scene.web.WebView
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -20,6 +21,7 @@ import org.w3c.dom.events.EventTarget
 import org.w3c.dom.html.HTMLAnchorElement
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
@@ -64,7 +66,8 @@ public class HelpController extends Controller<Void> {
   }
 
   private void setupHelpView() {
-    $helpView.getEngine().getLoadWorker().stateProperty().addListener() { ObservableValue<? extends Worker.State> observableValue, Worker.State oldValue, Worker.State newValue ->
+    WebEngine engine = $helpView.getEngine()
+    engine.getLoadWorker().stateProperty().addListener() { ObservableValue<? extends Worker.State> observableValue, Worker.State oldValue, Worker.State newValue ->
       if (newValue == Worker.State.SUCCEEDED) {
         Document document = $helpView.getEngine().getDocument()
         NodeList nodeList = document.getElementsByTagName("a")
@@ -83,6 +86,10 @@ public class HelpController extends Controller<Void> {
           }
         }
       }
+    }
+    File stylesheetFile = File.new(URL.new(Setting.CUSTOM_WEB_VIEW_STYLESHEET_URL).toURI())
+    if (stylesheetFile.exists()) {
+      engine.setUserStyleSheetLocation(Setting.CUSTOM_WEB_VIEW_STYLESHEET_URL)
     }
   }
 

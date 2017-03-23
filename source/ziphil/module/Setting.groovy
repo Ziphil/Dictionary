@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
+import javafx.scene.text.Font
 import ziphil.Launcher
 import ziphilib.transform.Ziphilify
 
@@ -18,7 +19,9 @@ public class Setting {
   private static final String CORRECT_PASSWORD = "fkdocwpvmdcaskex"
   private static final String SETTING_PATH = "data/setting/setting.zpdt"
   private static final String CUSTOM_STYLESHEET_PATH = "data/setting/custom.css"
+  private static final String CUSTOM_WEB_VIEW_STYLESHEET_PATH = "data/setting/web_custom.css"
   public static final String CUSTOM_STYLESHEET_URL = createCustomStylesheetURL()
+  public static final String CUSTOM_WEB_VIEW_STYLESHEET_URL = createCustomWebViewStylesheetURL()
 
   private static ObjectMapper $$mapper = createObjectMapper()
   private static Setting $$instance = createInstance()
@@ -49,6 +52,7 @@ public class Setting {
   public void save() {
     saveSetting()
     saveCustomStylesheet()
+    saveCustomWebViewStylesheet()
   }
 
   private void saveSetting() {
@@ -105,6 +109,25 @@ public class Setting {
     }
   }
 
+  private void saveCustomWebViewStylesheet() {
+    File file = File.new(Launcher.BASE_PATH + CUSTOM_WEB_VIEW_STYLESHEET_PATH)
+    BufferedWriter writer = file.newWriter("UTF-8")
+    try {
+      writer.write("body {\n")
+      writer.write("  font-family: \"")
+      if ($systemFontFamily != null) {
+        writer.write(Strings.escapeUnicode($systemFontFamily))
+      } else {
+        String defaultSystemFontFamily = Font.getDefault().getFamily()
+        writer.write(Strings.escapeUnicode(defaultSystemFontFamily))
+      }
+      writer.write("\";\n")
+      writer.write("}\n\n")
+    } finally {
+      writer.close()
+    }
+  }
+
   private static Setting createInstance() {
     File file = File.new(Launcher.BASE_PATH + SETTING_PATH)
     if (file.exists()) {
@@ -132,6 +155,11 @@ public class Setting {
 
   public static String createCustomStylesheetURL() {
     URL url = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH).toURI().toURL()
+    return url.toString()
+  }
+
+  public static String createCustomWebViewStylesheetURL() {
+    URL url = File.new(Launcher.BASE_PATH + CUSTOM_WEB_VIEW_STYLESHEET_PATH).toURI().toURL()
     return url.toString()
   }
 
