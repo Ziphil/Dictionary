@@ -9,7 +9,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Launcher {
 
-  public static final String TITLE = "ZpDIC shalnif"
+  public static final String TITLE = "ZpDIC fetith"
   public static final Version VERSION = Version.new(1, 5, 2, 1877)
   public static final String BASE_PATH = createBasePath()
 
