@@ -89,7 +89,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
   private static final String OFFICIAL_SITE_URI = "http://ziphil.web.fc2.com/application/download/2.html"
-  private static final String TITLE = "ZpDIC shalnif"
+  private static final String TITLE = "ZpDIC fetith"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
