@@ -1076,7 +1076,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupExceptionHandler() {
-    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
+    Thread.setDefaultUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
       handleException(throwable)
     }
   }
