@@ -871,6 +871,26 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void executeHahCompression() {
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    HahCompressionExecutorController controller = HahCompressionExecutorController.new(nextStage)
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
+    if ($dictionary instanceof ShaleiaDictionary) {
+      controller.prepare($dictionary.getAlphabetOrder())
+    } else if ($dictionary instanceof SlimeDictionary) {
+      controller.prepare($dictionary.getAlphabetOrder())
+    } else {
+      controller.prepare(null)
+    }
+    $openStages.add(nextStage)
+    nextStage.showAndWait()
+    $openStages.remove(nextStage)
+  }
+
+  @FXML
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)
