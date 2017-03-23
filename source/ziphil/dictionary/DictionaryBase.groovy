@@ -239,6 +239,15 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
+  public void saveBackup() {
+    DictionarySaver saver = createSaver()
+    if (saver.getPath() != null) {
+      String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
+      saver.setPath(newPath)
+      saver.run()
+    }
+  }
+
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords)
@@ -272,7 +281,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract Task<?> createLoader()
 
-  protected abstract Task<?> createSaver()
+  protected abstract DictionarySaver createSaver()
 
   private static AccessControlContext createAccessControlContext() {
     CodeSource codeSource = CodeSource.new(null, (Certificate[])null)

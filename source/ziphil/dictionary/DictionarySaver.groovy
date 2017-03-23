@@ -21,4 +21,12 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
 
   protected abstract Boolean call()
 
+  public String getPath() {
+    return $path
+  }
+
+  public void setPath(String path) {
+    $path = path
+  }
+
 }

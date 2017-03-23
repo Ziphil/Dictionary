@@ -910,6 +910,9 @@ public class MainController extends PrimitiveController<Stage> {
     PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
     Dialog dialog = Dialog.new(StageStyle.UTILITY)
+    if ($dictionary != null) {
+      $dictionary.saveBackup()
+    }
     dialog.initOwner($stage)
     dialog.setTitle("エラー")
     dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")

@@ -12,6 +12,7 @@ import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
@@ -197,7 +198,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return loader
   }
 
-  protected Task<?> createSaver() {
+  protected DictionarySaver createSaver() {
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
     saver.setComparator($sortedWords.getComparator())
     return saver

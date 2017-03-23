@@ -5,6 +5,7 @@ import javafx.concurrent.Task
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
 
@@ -87,7 +88,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return loader
   }
 
-  protected Task<?> createSaver() {
+  protected DictionarySaver createSaver() {
     PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
     return saver
   }
