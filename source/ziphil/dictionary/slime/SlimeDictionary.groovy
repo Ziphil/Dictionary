@@ -9,8 +9,11 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphil.custom.SimpleTask
+import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
@@ -120,23 +123,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
       return predicate
-    }
-  }
-
-  protected void checkSuggestion(SlimeWord word, String search, String convertedSearch) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    for (SlimeVariation variation : word.getVariations()) {
-      String variationTitle = variation.getTitle()
-      String variationName = variation.getName()
-      String convertedVariationName = Strings.convert(variationName, ignoresAccent, ignoresCase)
-      if (convertedVariationName == convertedSearch) {
-        SlimePossibility possibility = SlimePossibility.new(word, variationTitle)
-        $suggestions[0].getPossibilities().add(possibility)
-        $suggestions[0].setDisplayed(true)
-        $suggestions[0].update()
-      }
     }
   }
 
@@ -387,13 +373,18 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $suggestions.add(suggestion)
   }
 
-  protected Task<?> createLoader() {
+  protected ConjugationResolver createConjugationResolver() {
+    SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
+    return conjugationResolver
+  }
+
+  protected DictionaryLoader createLoader() {
     SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
     loader.setMapper($$mapper)
     return loader
   }
 
-  protected Task<?> createSaver() {
+  protected DictionarySaver createSaver() {
     SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
     saver.setMapper($$mapper)
     return saver

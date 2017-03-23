@@ -8,11 +8,11 @@ import ziphilib.transform.Ziphilify
 public class SlimePossibility {
 
   private SlimeWord $word
-  private String $possibilityName
+  private String $title
 
-  public SlimePossibility(SlimeWord word, String possibilityName) {
+  public SlimePossibility(SlimeWord word, String title) {
     $word = word
-    $possibilityName = possibilityName
+    $title = title
   }
 
   public SlimeWord getWord() {
@@ -23,12 +23,12 @@ public class SlimePossibility {
     $word = word
   }
 
-  public String getPossibilityName() {
-    return $possibilityName
+  public String getTitle() {
+    return $title
   }
 
-  public void setPossibilityName(String possibilityName) {
-    $possibilityName = possibilityName
+  public void setTitle(String title) {
+    $title = title
   }
 
 }

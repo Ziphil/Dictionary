@@ -67,15 +67,20 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
       Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      ConjugationResolver conjugationResolver = createConjugationResolver()
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
-      checkWholeSuggestion(search, convertedSearch)
+      if (conjugationResolver != null) {
+        conjugationResolver.precheck(search, convertedSearch)
+      }
       updateWordPredicate() { Word word ->
         if (word.isDisplayed()) {
           if (isStrict) {
             String name = word.getName()
             String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            checkSuggestion(word, search, convertedSearch)
+            if (conjugationResolver != null) {
+              conjugationResolver.check(word, search, convertedSearch)
+            }
             if (search != "") {
               if (searchesPrefix) {
                 return convertedName.startsWith(convertedSearch)
@@ -204,12 +209,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void checkWholeSuggestion(String search, String convertedSearch) {
-  }
-
-  protected void checkSuggestion(W word, String search, String convertedSearch) {
-  }
-
   public void shuffleWords() {
     $shufflableWords.shuffle()
   }
@@ -221,22 +220,33 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public abstract void updateMinimum()
 
   protected void load() {
-    $loader = createLoader()
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+    DictionaryLoader loader = createLoader()
+    loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       if (!$isFirstEmpty) {
         $isChanged = false
       }
     }
-    Thread thread = Thread.new($loader)
+    $loader = loader
+    Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()
   }
 
   public void save() {
-    $saver = createSaver()
-    $saver.run()
-    if ($path != null) {
+    DictionarySaver saver = createSaver()
+    $saver = saver
+    saver.run()
+    if (saver.getPath() != null) {
       $isChanged = false
+    }
+  }
+
+  public void saveBackup() {
+    DictionarySaver saver = createSaver()
+    if (saver.getPath() != null) {
+      String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
+      saver.setPath(newPath)
+      saver.run()
     }
   }
 
@@ -267,9 +277,13 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected abstract Task<?> createLoader()
+  protected ConjugationResolver createConjugationResolver() {
+    return null
+  }
 
-  protected abstract Task<?> createSaver()
+  protected abstract DictionaryLoader createLoader()
+
+  protected abstract DictionarySaver createSaver()
 
   private static AccessControlContext createAccessControlContext() {
     CodeSource codeSource = CodeSource.new(null, (Certificate[])null)

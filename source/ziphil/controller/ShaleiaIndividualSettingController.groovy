@@ -19,7 +19,8 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $alphabetOrderControl
-  @FXML private TextArea $changeDataControl
+  @FXML private TextField $versionControl
+  @FXML private TextArea $changeDescriptionControl
   private ShaleiaDictionary $dictionary
 
   public ShaleiaIndividualSettingController(UtilityStage<Boolean> stage) {
@@ -30,13 +31,15 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
   public void prepare(ShaleiaDictionary dictionary) {
     $dictionary = dictionary
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
-    $changeDataControl.setText(dictionary.getChangeData())
+    $versionControl.setText(dictionary.getVersion())
+    $changeDescriptionControl.setText(dictionary.getChangeDescription())
   }
 
   @FXML
   protected void commit() {
     $dictionary.setAlphabetOrder($alphabetOrderControl.getText())
-    $dictionary.setChangeData($changeDataControl.getText())
+    $dictionary.setVersion($versionControl.getText())
+    $dictionary.setChangeDescription($changeDescriptionControl.getText())
     $dictionary.updateMinimum()
     $stage.commit(true)
   }

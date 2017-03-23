@@ -26,16 +26,17 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing($lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(contentPane, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getPossibilityName())
+      addPossibilityNode(contentPane, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getTitle())
     }
     modifyBreak(contentPane)
     return contentPane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, Integer id, String name, String possibilityName) {
-    Text prefixText = Text.new("もしかして: ")
+  private void addPossibilityNode(TextFlow contentPane, Integer id, String name, String title) {
+    Text prefixText = Text.new("もしかして:")
+    Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
-    Text possibilityNameText = Text.new(" の${possibilityName}?")
+    Text titleText = Text.new(" の${title}?")
     Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
@@ -43,9 +44,10 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
-    possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
+    titleText.getStyleClass().add(CONTENT_CLASS)
+    contentPane.getChildren().addAll(prefixText, spaceText, nameText, titleText, breakText)
   }
 
 }

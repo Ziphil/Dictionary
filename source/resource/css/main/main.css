@@ -17,7 +17,8 @@
 #dictionary-list .shaleia-total-part,
 #dictionary-list .shaleia-part,
 #dictionary-list .slime-tag,
-#dictionary-list .slime-equivalent-title {
+#dictionary-list .slime-equivalent-title,
+#dictionary-list .slime-relation-title {
   -fx-font-size: 0.8em;
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
@@ -29,12 +30,14 @@
 #dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
 #dictionary-list:focused .list-cell:filled:selected .shaleia-part,
 #dictionary-list:focused .list-cell:filled:selected .slime-tag,
-#dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title {
+#dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title,
+#dictionary-list:focused .list-cell:filled:selected .slime-relation-title {
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
 #dictionary-list .shaleia-creation-date,
 #dictionary-list .shaleia-title,
+#dictionary-list .shaleia-possibility,
 #dictionary-list .slime-title,
 #dictionary-list .slime-id,
 #dictionary-list .slime-possibility {

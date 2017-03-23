@@ -105,7 +105,7 @@
         <Menu fx:id="$searchRegisteredParameterMenu" text="登録条件で検索"/>
         <MenuItem fx:id="$searchRegisteredParameterItem" text="登録条件で検索" disable="true"/>
       </Menu>
-      <Menu text="ツール">
+      <Menu text="編集">
         <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
           <graphic>
             <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
@@ -124,6 +124,13 @@
         <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
           <graphic>
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+      </Menu>
+      <Menu text="ツール">
+        <MenuItem text="hah圧縮" onAction="#executeHahCompression" accelerator="Shortcut+Alt+H">
+          <graphic>
+            <ImageView><Image url="@../../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>

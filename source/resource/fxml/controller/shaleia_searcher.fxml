@@ -83,8 +83,8 @@
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$dataControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <ComboBox fx:id="$dataSearchTypeControl">
+        <TextField fx:id="$descriptionControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="$descriptionSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
           <items>

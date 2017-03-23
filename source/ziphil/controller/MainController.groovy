@@ -88,7 +88,8 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
-  private static final String TITLE = "ZpDIC shalnif"
+  private static final String OFFICIAL_SITE_URI = "http://ziphil.web.fc2.com/application/download/2.html"
+  private static final String TITLE = "ZpDIC fetith"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
@@ -377,7 +378,12 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Setting setting = Setting.getInstance()
+        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+        Boolean savesAutomatically = setting.getSavesAutomatically()
+        if (keepsEditorOnTop) {
+          nextStage.initOwner($stage)
+        }
         Word oldWord = $dictionary.copiedWord(word)
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
@@ -432,7 +438,12 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+      Setting setting = Setting.getInstance()
+      Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+      Boolean savesAutomatically = setting.getSavesAutomatically()
+      if (keepsEditorOnTop) {
+        nextStage.initOwner($stage)
+      }
       String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
@@ -464,7 +475,12 @@ public class MainController extends PrimitiveController<Stage> {
       if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+        Setting setting = Setting.getInstance()
+        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+        Boolean savesAutomatically = setting.getSavesAutomatically()
+        if (keepsEditorOnTop) {
+          nextStage.initOwner($stage)
+        }
         if ($dictionary instanceof ShaleiaDictionary) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           newWord = $dictionary.inheritedWord((ShaleiaWord)word)
@@ -679,10 +695,11 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         $dictionary.setOnLinkClicked() { String name ->
-          ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-          parameter.setName(name)
-          parameter.setNameSearchType(SearchType.EXACT)
-          doSearchDetail(parameter)
+          NormalSearchParameter parameter = NormalSearchParameter.new()
+          parameter.setSearch(name)
+          parameter.setSearchMode(SearchMode.NAME)
+          parameter.setStrict(true)
+          doSearch(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
@@ -855,6 +872,26 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void executeHahCompression() {
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    HahCompressionExecutorController controller = HahCompressionExecutorController.new(nextStage)
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
+    if ($dictionary instanceof ShaleiaDictionary) {
+      controller.prepare($dictionary.getAlphabetOrder())
+    } else if ($dictionary instanceof SlimeDictionary) {
+      controller.prepare($dictionary.getAlphabetOrder())
+    } else {
+      controller.prepare(null)
+    }
+    $openStages.add(nextStage)
+    nextStage.showAndWait()
+    $openStages.remove(nextStage)
+  }
+
+  @FXML
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)
@@ -866,7 +903,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showOfficialSite() {
     Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new("http://ziphil.web.fc2.com/application/download/2.html")
+    URI uri = URI.new(OFFICIAL_SITE_URI)
     desktop.browse(uri)
   }
 
@@ -894,6 +931,9 @@ public class MainController extends PrimitiveController<Stage> {
     PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
     Dialog dialog = Dialog.new(StageStyle.UTILITY)
+    if ($dictionary != null) {
+      $dictionary.saveBackup()
+    }
     dialog.initOwner($stage)
     dialog.setTitle("エラー")
     dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
@@ -1057,7 +1097,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupExceptionHandler() {
-    Thread.currentThread().setUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
+    Thread.setDefaultUncaughtExceptionHandler() { Thread thread, Throwable throwable ->
       handleException(throwable)
     }
   }

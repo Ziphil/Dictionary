@@ -23,6 +23,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   private static final String SLIME_TAG_CLASS = "slime-tag"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   private static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
+  private static final String SLIME_RELATION_TITLE_CLASS = "slime-relation-title"
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
@@ -130,10 +131,16 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   @VoidClosure
   private void addRelationNode(TextFlow contentPane, String title, List<Integer> ids, List<String> names) {
     Text formerTitleText = Text.new("cf:")
-    Text titleText = Text.new("〈${title}〉" + " ")
+    Label titleText = Label.new(title)
+    Text spaceText = Text.new(" ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    contentPane.getChildren().addAll(formerTitleText, titleText)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    if (title != "") {
+      contentPane.getChildren().addAll(formerTitleText, titleText, spaceText)
+    } else {
+      contentPane.getChildren().addAll(formerTitleText, spaceText)
+    }
     for (Integer i : 0 ..< names.size()) {
       Integer id = ids[i]
       String name = names[i]

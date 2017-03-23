@@ -52,6 +52,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private ToggleButton $modifiesPunctuationControl
+  @FXML private ToggleButton $keepsEditorOnTopControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
@@ -90,6 +91,7 @@ public class SettingController extends Controller<Boolean> {
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
+    Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
     Boolean ignoresCase = setting.getIgnoresCase() == true
@@ -132,6 +134,7 @@ public class SettingController extends Controller<Boolean> {
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
+    $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
     $ignoresCaseControl.setSelected(ignoresCase)
@@ -161,6 +164,7 @@ public class SettingController extends Controller<Boolean> {
     String scriptName = $scriptControl.getValue().getNames()[0]
     FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
+    Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
@@ -179,6 +183,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setScriptName(scriptName)
     setting.setFontRenderingType(fontRenderingType)
     setting.setModifiesPunctuation(modifiesPunctuation)
+    setting.setKeepsEditorOnTop(keepsEditorOnTop)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
@@ -285,6 +290,7 @@ public class SettingController extends Controller<Boolean> {
 
   private void bindOtherProperties() {
     $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
+    $keepsEditorOnTopControl.textProperty().bind(CustomBindings.whichString($keepsEditorOnTopControl, "有効", "無効"))
     $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
     $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
     $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))

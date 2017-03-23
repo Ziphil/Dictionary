@@ -9,8 +9,11 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
+import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
@@ -22,8 +25,9 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
 
   private String $alphabetOrder = ""
-  private String $changeData = ""
+  private String $changeDescription = ""
   private Map<String, List<String>> $changes = HashMap.new()
+  private String $version = ""
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
 
@@ -39,14 +43,14 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     SearchType nameSearchType = parameter.getNameSearchType()
     String searchEquivalent = parameter.getEquivalent()
     SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchData = parameter.getData()
-    SearchType dataSearchType = parameter.getDataSearchType()
+    String searchDescription = parameter.getDescription()
+    SearchType descriptionSearchType = parameter.getDescriptionSearchType()
     resetSuggestions()
     updateWordPredicate() { ShaleiaWord word ->
       Boolean predicate = true
       String name = word.getName()
       List<String> equivalents = word.getEquivalents()
-      String data = word.getData()
+      String description = word.getDescription()
       if (searchName != null) {
         if (!SearchType.matches(nameSearchType, name, searchName)) {
           predicate = false
@@ -63,26 +67,12 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
           predicate = false
         }
       }
-      if (searchData != null) {
-        if (!SearchType.matches(dataSearchType, data, searchData)) {
+      if (searchDescription != null) {
+        if (!SearchType.matches(descriptionSearchType, description, searchDescription)) {
           predicate = false
         }
       }
       return predicate
-    }
-  }
-
-  protected void checkWholeSuggestion(String search, String convertedSearch) {
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    if ($changes.containsKey(convertedSearch)) {
-      for (String newName : $changes[convertedSearch]) {
-        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
-        $suggestions[0].getPossibilities().add(possibility)
-        $suggestions[0].setDisplayed(true)
-        $suggestions[0].update()
-      }
     }
   }
 
@@ -118,7 +108,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    BufferedReader reader = BufferedReader.new(StringReader.new($changeData))
+    BufferedReader reader = BufferedReader.new(StringReader.new($changeDescription))
     try {
       $changes.clear()
       for (String line ; (line = reader.readLine()) != null ;) {
@@ -144,7 +134,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
-    word.setData("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
+    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
     word.update()
     return word
   }
@@ -152,7 +142,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private ShaleiaWord copiedWordBase(ShaleiaWord oldWord, Boolean updates) {
     ShaleiaWord newWord = ShaleiaWord.new()
     newWord.setUniqueName(oldWord.getUniqueName())
-    newWord.setData(oldWord.getData())
+    newWord.setDescription(oldWord.getDescription())
     if (updates) {
       newWord.update()
     }
@@ -166,7 +156,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     ShaleiaWord newWord = copiedWordBase(oldWord, false)
-    newWord.setData(oldWord.getData().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
+    newWord.setDescription(oldWord.getDescription().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
     newWord.update()
     return newWord
   }
@@ -175,7 +165,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaPlainWord newWord = ShaleiaPlainWord.new()
     newWord.setName(oldWord.getName())
     newWord.setUniqueName(oldWord.getUniqueName())
-    newWord.setData(oldWord.getData())
+    newWord.setData(oldWord.getDescription())
     return newWord
   }
 
@@ -188,21 +178,28 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void setupSuggestions() {
-    ShaleiaSuggestion suggestion = ShaleiaSuggestion.new()
-    suggestion.setDictionary(this)
-    $suggestions.add(suggestion)
+    ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
+    ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
+    conjugationSuggestion.setDictionary(this)
+    changeSuggestion.setDictionary(this)
+    $suggestions.addAll(conjugationSuggestion, changeSuggestion)
   }
 
   public Integer totalSize() {
     return $words.size() - $systemWordSize
   }
 
-  protected Task<?> createLoader() {
+  protected ConjugationResolver createConjugationResolver() {
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
+    return conjugationResolver
+  }
+
+  protected DictionaryLoader createLoader() {
     ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
     return loader
   }
 
-  protected Task<?> createSaver() {
+  protected DictionarySaver createSaver() {
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
     saver.setComparator($sortedWords.getComparator())
     return saver
@@ -216,12 +213,20 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $alphabetOrder = alphabetOrder
   }
 
-  public String getChangeData() {
-    return $changeData
+  public String getVersion() {
+    return $version
   }
 
-  public void setChangeData(String changeData) {
-    $changeData = changeData
+  public void setVersion(String version) {
+    $version = version
+  }
+
+  public String getChangeDescription() {
+    return $changeDescription
+  }
+
+  public void setChangeDescription(String changeDescription) {
+    $changeDescription = changeDescription
   }
 
   public Consumer<String> getOnLinkClicked() {

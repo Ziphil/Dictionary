@@ -17,6 +17,9 @@ public class NormalSearchParameter extends SearchParameter {
     $isStrict = isStrict
   }
 
+  public NormalSearchParameter() {
+  }
+
   public String getSearch() {
     return $search
   }

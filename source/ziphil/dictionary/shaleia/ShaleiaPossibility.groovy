@@ -8,11 +8,11 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaPossibility {
 
   private String $name
-  private String $possibilityName
+  private String $explanation
 
-  public ShaleiaPossibility(String name, String possibilityName) {
+  public ShaleiaPossibility(String name, String explanation) {
     $name = name
-    $possibilityName = possibilityName
+    $explanation = explanation
   }
 
   public String getName() {
@@ -23,12 +23,12 @@ public class ShaleiaPossibility {
     $name = name
   }
 
-  public String getPossibilityName() {
-    return $possibilityName
+  public String getExplanation() {
+    return $explanation
   }
 
-  public void setPossibilityName(String possibilityName) {
-    $possibilityName = possibilityName
+  public void setExplanation(String explanation) {
+    $explanation = explanation
   }
 
 }

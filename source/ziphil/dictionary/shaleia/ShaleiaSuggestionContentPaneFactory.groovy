@@ -26,16 +26,17 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing($lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(contentPane, possibility.getName(), possibility.getPossibilityName())
+      addPossibilityNode(contentPane, possibility.getName(), possibility.getExplanation())
     }
     modifyBreak(contentPane)
     return contentPane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, String name, String possibilityName) {
-    Text prefixText = Text.new("もしかして: ")
+  private void addPossibilityNode(TextFlow contentPane, String name, String explanation) {
+    Text prefixText = Text.new("もしかして:")
+    Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
-    Text possibilityNameText = Text.new(" の${possibilityName}?")
+    Text explanationText = Text.new(" の${explanation}?")
     Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
@@ -43,9 +44,10 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
-    possibilityNameText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(prefixText, nameText, possibilityNameText, breakText)
+    explanationText.getStyleClass().add(CONTENT_CLASS)
+    contentPane.getChildren().addAll(prefixText, spaceText, nameText, explanationText, breakText)
   }
 
 }

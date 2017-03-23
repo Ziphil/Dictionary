@@ -1,10 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphilib.transform.Ziphilify
 
 
@@ -20,5 +17,13 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
   }
 
   protected abstract Boolean call()
+
+  public String getPath() {
+    return $path
+  }
+
+  public void setPath(String path) {
+    $path = path
+  }
 
 }
