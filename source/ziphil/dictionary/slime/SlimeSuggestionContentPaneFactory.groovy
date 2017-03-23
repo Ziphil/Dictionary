@@ -33,7 +33,8 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
   }
 
   private void addPossibilityNode(TextFlow contentPane, Integer id, String name, String title) {
-    Text prefixText = Text.new("もしかして: ")
+    Text prefixText = Text.new("もしかして:")
+    Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
     Text titleText = Text.new(" の${title}?")
     Text breakText = Text.new("\n")
@@ -43,9 +44,10 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     titleText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(prefixText, nameText, titleText, breakText)
+    contentPane.getChildren().addAll(prefixText, spaceText, nameText, titleText, breakText)
   }
 
 }

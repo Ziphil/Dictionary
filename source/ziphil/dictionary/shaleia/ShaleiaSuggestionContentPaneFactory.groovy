@@ -33,7 +33,8 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
   }
 
   private void addPossibilityNode(TextFlow contentPane, String name, String explanation) {
-    Text prefixText = Text.new("もしかして: ")
+    Text prefixText = Text.new("もしかして:")
+    Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
     Text explanationText = Text.new(" の${explanation}?")
     Text breakText = Text.new("\n")
@@ -43,9 +44,10 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
     explanationText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(prefixText, nameText, explanationText, breakText)
+    contentPane.getChildren().addAll(prefixText, spaceText, nameText, explanationText, breakText)
   }
 
 }
