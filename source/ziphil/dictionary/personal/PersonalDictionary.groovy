@@ -5,6 +5,7 @@ import javafx.concurrent.Task
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
@@ -83,7 +84,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     }
   }
 
-  protected Task<?> createLoader() {
+  protected DictionaryLoader createLoader() {
     PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
     return loader
   }

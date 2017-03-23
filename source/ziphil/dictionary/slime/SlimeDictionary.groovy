@@ -12,6 +12,7 @@ import ziphil.custom.SimpleTask
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
@@ -377,7 +378,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return conjugationResolver
   }
 
-  protected Task<?> createLoader() {
+  protected DictionaryLoader createLoader() {
     SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
     loader.setMapper($$mapper)
     return loader

@@ -220,21 +220,23 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public abstract void updateMinimum()
 
   protected void load() {
-    $loader = createLoader()
-    $loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+    DictionaryLoader loader = createLoader()
+    loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       if (!$isFirstEmpty) {
         $isChanged = false
       }
     }
-    Thread thread = Thread.new($loader)
+    $loader = loader
+    Thread thread = Thread.new(loader)
     thread.setDaemon(true)
     thread.start()
   }
 
   public void save() {
-    $saver = createSaver()
-    $saver.run()
-    if ($path != null) {
+    DictionarySaver saver = createSaver()
+    $saver = saver
+    saver.run()
+    if (saver.getPath() != null) {
       $isChanged = false
     }
   }
@@ -279,7 +281,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return null
   }
 
-  protected abstract Task<?> createLoader()
+  protected abstract DictionaryLoader createLoader()
 
   protected abstract DictionarySaver createSaver()
 

@@ -12,6 +12,7 @@ import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
@@ -193,7 +194,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return conjugationResolver
   }
 
-  protected Task<?> createLoader() {
+  protected DictionaryLoader createLoader() {
     ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
     return loader
   }
