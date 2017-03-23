@@ -1,10 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphilib.transform.Ziphilify
 
 
