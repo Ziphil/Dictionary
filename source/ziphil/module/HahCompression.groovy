@@ -22,7 +22,7 @@ public class HahCompression {
       element.updateComparisonIndex($alphabetOrder)
       elements.add(element)
     }
-    if ($type == HahCompressionType.RANDOM) {
+    if ($type == HahCompressionType.RANDOM || $type == HahCompressionType.RANDOM_SORT) {
       Collections.shuffle(elements)
     } else if ($type == HahCompressionType.SORT) {
       Collections.sort(elements) { SortElement firstElement, SortElement secondElement ->
@@ -41,7 +41,7 @@ public class HahCompression {
         }
       }
     }
-    if ($type == HahCompressionType.SORT) {
+    if ($type == HahCompressionType.RANDOM_SORT || $type == HahCompressionType.SORT) {
       Collections.sort(compressedElements) { SortElement firstElement, SortElement secondElement ->
         return firstElement.getIndex() - secondElement.getIndex()
       }
