@@ -34,7 +34,7 @@ public class ShaleiaWord extends WordBase {
         Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
         if (matcher.matches()) {
           String equivalent = matcher.group(2)
-          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|～|\s)/, "").split(/,/).toList()
           $equivalents.addAll(equivalents)
         }
       }
