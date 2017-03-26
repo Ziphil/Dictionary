@@ -77,10 +77,6 @@ public class ShaleiaWord extends WordBase {
     $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
-  public Boolean isDisplayed() {
-    return true
-  }
-
   public ShaleiaDictionary getDictionary() {
     return $dictionary
   }

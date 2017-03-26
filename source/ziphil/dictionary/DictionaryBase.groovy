@@ -74,28 +74,24 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
         conjugationResolver.precheck(search, convertedSearch)
       }
       updateWordPredicate() { Word word ->
-        if (word.isDisplayed()) {
-          if (isStrict) {
-            String name = word.getName()
-            String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-            if (conjugationResolver != null) {
-              conjugationResolver.check(word, search, convertedSearch)
-            }
-            if (search != "") {
-              if (searchesPrefix) {
-                return convertedName.startsWith(convertedSearch)
-              } else {
-                return convertedName == convertedSearch
-              }
+        if (isStrict) {
+          String name = word.getName()
+          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
+          if (conjugationResolver != null) {
+            conjugationResolver.check(word, search, convertedSearch)
+          }
+          if (search != "") {
+            if (searchesPrefix) {
+              return convertedName.startsWith(convertedSearch)
             } else {
-              return true
+              return convertedName == convertedSearch
             }
           } else {
-            Matcher matcher = pattern.matcher(word.getName())
-            return matcher.find()
+            return true
           }
         } else {
-          return false
+          Matcher matcher = pattern.matcher(word.getName())
+          return matcher.find()
         }
       }
     } catch (PatternSyntaxException exception) {
@@ -111,27 +107,23 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
       updateWordPredicate() { Word word ->
-        if (word.isDisplayed()) {
-          if (isStrict) {
-            if (search != "") {
-              return word.getEquivalents().any() { String equivalent ->
-                if (searchesPrefix) {
-                  return equivalent.startsWith(search)
-                } else {
-                  return equivalent == search
-                }
+        if (isStrict) {
+          if (search != "") {
+            return word.getEquivalents().any() { String equivalent ->
+              if (searchesPrefix) {
+                return equivalent.startsWith(search)
+              } else {
+                return equivalent == search
               }
-            } else {
-              return true
             }
           } else {
-            return word.getEquivalents().any() { String equivalent ->
-              Matcher matcher = pattern.matcher(equivalent)
-              return matcher.find()
-            }
+            return true
           }
         } else {
-          return false
+          return word.getEquivalents().any() { String equivalent ->
+            Matcher matcher = pattern.matcher(equivalent)
+            return matcher.find()
+          }
         }
       }
     } catch (PatternSyntaxException exception) {
@@ -143,12 +135,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
       updateWordPredicate() { Word word ->
-        if (word.isDisplayed()) {
-          Matcher matcher = pattern.matcher(word.getContent())
-          return matcher.find()
-        } else {
-          return false
-        }
+        Matcher matcher = pattern.matcher(word.getContent())
+        return matcher.find()
       }
     } catch (PatternSyntaxException exception) {
     }

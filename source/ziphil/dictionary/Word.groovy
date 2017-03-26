@@ -7,8 +7,6 @@ import javafx.scene.layout.Pane
 @CompileStatic
 public interface Word extends Element {
 
-  public Boolean isDisplayed()
-
   public String getName()
 
   public void setName(String name)
