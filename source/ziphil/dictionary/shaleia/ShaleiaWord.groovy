@@ -23,7 +23,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateName() {
-    $name = ($uniqueName.startsWith("\$")) ? "" : $uniqueName.replaceAll(/\+|~/, "")
+    $name = ($uniqueName.startsWith("\$")) ? "\$" : $uniqueName.replaceAll(/\+|~/, "")
   }
 
   private void updateEquivalents() {
@@ -53,11 +53,15 @@ public class ShaleiaWord extends WordBase {
     for (Integer i : 0 ..< $uniqueName.length()) {
       String character = $uniqueName[i]
       if ((isApostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
-        Integer position = order.indexOf($uniqueName.codePointAt(i))
-        if (position > -1) {
-          comparisonString.appendCodePoint(position + 174)
+        if (character != "\$") {
+          Integer position = order.indexOf($uniqueName.codePointAt(i))
+          if (position > -1) {
+            comparisonString.appendCodePoint(position + 174)
+          } else {
+            comparisonString.appendCodePoint(10000)
+          }
         } else {
-          comparisonString.appendCodePoint(10000)
+          comparisonString.appendCodePoint(11000)
         }
       }
     }
@@ -74,7 +78,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   public Boolean isDisplayed() {
-    return !$uniqueName.startsWith("\$")
+    return true
   }
 
   public ShaleiaDictionary getDictionary() {
