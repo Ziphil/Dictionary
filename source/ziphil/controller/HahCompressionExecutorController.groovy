@@ -13,8 +13,8 @@ import javafx.scene.control.TextFormatter
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.module.HahCompression
-import ziphil.module.HahCompressionType
+import ziphil.module.hah.HahCompression
+import ziphil.module.hah.HahCompressionType
 import ziphilib.transform.Ziphilify
 
 

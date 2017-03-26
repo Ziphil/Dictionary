@@ -1,4 +1,4 @@
-package ziphil.module
+package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
