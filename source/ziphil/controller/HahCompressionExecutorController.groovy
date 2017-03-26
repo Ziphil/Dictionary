@@ -54,10 +54,10 @@ public class HahCompressionExecutorController extends Controller<Void> {
 
   @FXML
   private void execute() {
-    HahCompressionType type = $typeControl.getValue()
     Boolean usesDictionaryAlphabetOrder = $usesDictionaryAlphabetOrderControl.isSelected()
     Boolean usesUnicodeOrder = $usesUnicodeOrderControl.isSelected()
-    HahCompression compression = HahCompression.new(type)
+    HahCompression compression = HahCompression.new()
+    compression.setType($typeControl.getValue())
     compression.setInterval($intervalControl.getValue())
     if (usesDictionaryAlphabetOrder) {
       compression.setAlphabetOrder($dictionaryAlphabetOrder)
