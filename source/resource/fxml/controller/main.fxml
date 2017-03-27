@@ -133,6 +133,7 @@
             <ImageView><Image url="@../../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <MenuItem text="akrantiain" onAction="#executeAkrantiain" accelerator="Shortcut+Alt+A"/>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$editIndividualSettingItem" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">

@@ -892,6 +892,19 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void executeAkrantiain() {
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    AkrantiainExecutorController controller = AkrantiainExecutorController.new(nextStage)
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
+    $openStages.add(nextStage)
+    nextStage.showAndWait()
+    $openStages.remove(nextStage)
+  }
+
+  @FXML
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)
