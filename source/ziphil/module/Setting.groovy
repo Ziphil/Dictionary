@@ -96,6 +96,16 @@ public class Setting {
           writer.write(";\n")
         }
         writer.write("}\n\n")
+        writer.write(".editor * {\n")
+        writer.write("  -fx-font-family: \"")
+        if ($systemFontFamily != null) {
+          writer.write(Strings.escapeUnicode($systemFontFamily))
+        } else {
+          String defaultSystemFontFamily = Font.getDefault().getFamily()
+          writer.write(Strings.escapeUnicode(defaultSystemFontFamily))
+        }
+        writer.write("\";\n")
+        writer.write("}\n\n")
       }
       if ($systemFontFamily != null) {
         writer.write(".root {\n")

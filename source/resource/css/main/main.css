@@ -57,7 +57,7 @@
   -fx-fill: -fx-text-base-color;
 }
 
-.editor > * {
+.editor * {
   -fx-font-size: 1em;
 }
 
