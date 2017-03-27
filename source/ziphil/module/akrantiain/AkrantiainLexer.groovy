@@ -9,7 +9,8 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private Reader $reader
   private String $version
-  private Boolean $isAfterSemicolon = true
+  private Boolean $isFirst = true
+  private Boolean $isAfterSemicolon = false
 
   public AkrantiainLexer(Reader reader, String version) {
     $reader = reader
@@ -26,7 +27,8 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
   public AkrantiainToken nextToken() {
     Boolean isNextLine = skipBlank()
     AkrantiainToken token = null
-    if ($isAfterSemicolon || !isNextLine) {
+    if ($isFirst || $isAfterSemicolon || !isNextLine) {
+      $isFirst = false
       $reader.mark(3)
       Integer codePoint = $reader.read()
       if (codePoint == '"') {
@@ -60,17 +62,23 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
       } else if (codePoint == ')') {
         token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")")
       } else if (codePoint == ';') {
-        $isAfterSemicolon = true
         token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";")
+      } else if (AkrantiainLexer.isLetter(codePoint)) {
+        $reader.reset()
+        token = nextIdentifier()
       } else if (codePoint == -1) {
-        token = null
+        if (!$isAfterSemicolon) {
+          token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";")
+        } else {
+          token = null
+        }
       } else {
         throw AkrantiainParseException.new()
       }
     } else {
-      $isAfterSemicolon = true
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";")
     }
+    $isAfterSemicolon = token != null && token.getType() == AkrantiainTokenType.SEMICOLON
     return token
   }
 
