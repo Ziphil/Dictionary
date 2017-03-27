@@ -9,6 +9,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private Reader $reader
   private String $version
+  private Boolean $isAfterSemicolon = true
 
   public AkrantiainLexer(Reader reader, String version) {
     $reader = reader
@@ -23,62 +24,158 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
   }
 
   public AkrantiainToken nextToken() {
-    return null
+    Boolean isNextLine = skipBlank()
+    AkrantiainToken token = null
+    if ($isAfterSemicolon || !isNextLine) {
+      $reader.mark(3)
+      Integer codePoint = $reader.read()
+      if (codePoint == '"') {
+        $reader.reset()
+        token = nextStringLiteral('"')
+      } else if (codePoint == '/') {
+        $reader.reset()
+        token = nextStringLiteral('/')
+      } else if (codePoint == '@') {
+        $reader.reset()
+        token = nextEnvironmentLiteral()
+      } else if (codePoint == '=') {
+        token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=")
+      } else if (codePoint == '-') {
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '>') {
+          token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->")
+        } else {
+          throw AkrantiainParseException.new("Invalid symbol")
+        }
+      } else if (codePoint == '|') {
+        token = AkrantiainToken.new(AkrantiainTokenType.VERTICAL, "|")
+      } else if (codePoint == '^') {
+        token = AkrantiainToken.new(AkrantiainTokenType.CIRCUMFLEX, "^")
+      } else if (codePoint == '$') {
+        token = AkrantiainToken.new(AkrantiainTokenType.DOLLAR, "\$")
+      } else if (codePoint == '!') {
+        token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!")
+      } else if (codePoint == '(') {
+        token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(")
+      } else if (codePoint == ')') {
+        token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")")
+      } else if (codePoint == ';') {
+        $isAfterSemicolon = true
+        token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";")
+      } else if (codePoint == -1) {
+        token = null
+      } else {
+        throw AkrantiainParseException.new()
+      }
+    } else {
+      $isAfterSemicolon = true
+      token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";")
+    }
+    return token
   }
 
-  private String nextQuoteLiteral() {
+  private AkrantiainToken nextIdentifier() {
+    StringBuilder currentName = StringBuilder.new()
+    while (true) {
+      $reader.mark(1)
+      Integer codePoint = $reader.read()
+      if (AkrantiainLexer.isLetter(codePoint)) {
+        currentName.appendCodePoint(codePoint)
+      } else {
+        $reader.reset()
+        break
+      }
+    }
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.IDENTIFIER, currentName.toString())
+    return token
+  }
+
+  private AkrantiainToken nextStringLiteral(String separator) {
     StringBuilder currentContent = StringBuilder.new()
     Boolean isInside = false
-    for (Integer codePoint = -1 ; (codePoint = $reader.read()) != -1 ;) {
+    while (true) {
+      Integer codePoint = $reader.read()
       if (isInside) {
         if (codePoint == '\\') {
           Integer nextCodePoint = $reader.read()
-          if (nextCodePoint == '"' || nextCodePoint == '\\') {
+          if (nextCodePoint == separator || nextCodePoint == '\\') {
             currentContent.appendCodePoint(nextCodePoint)
           } else {
             throw AkrantiainParseException.new("Invalid escape sequence")
           }
-        } else if (codePoint == '"') {
+        } else if (codePoint == -1) {
+          throw AkrantiainParseException.new("The file ended before a string literal is closed")
+        } else if (codePoint == separator) {
           break
         } else {
           currentContent.appendCodePoint(codePoint)
         }
       } else {
-        if (codePoint == '"') {
+        if (codePoint == separator) {
           isInside = true
+        } else if (codePoint == -1) {
+          break
         }
       }
     }
-    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, currentContent.toString())
+    AkrantiainToken token = null
+    if (separator == '"') {
+      token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, currentContent.toString())
+    } else if (separator == '/') {
+      token = AkrantiainToken.new(AkrantiainTokenType.SLASH_LITERAL, currentContent.toString())
+    }
     return token
   }
 
-  private String skipBlank() {
+  private AkrantiainToken nextEnvironmentLiteral() {
+    StringBuilder currentContent = StringBuilder.new()
+    Boolean isInside = false
+    while (true) {
+      $reader.mark(1)
+      Integer codePoint = $reader.read()
+      if (isInside) {
+        if (AkrantiainLexer.isLetter(codePoint)) {
+          currentContent.appendCodePoint(codePoint)
+        } else {
+          $reader.reset()
+          break
+        }
+      } else {
+        if (codePoint == '@') {
+          isInside = true
+        } else if (codePoint == -1) {
+          break
+        }
+      }
+    }
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.ENVIRONMENT_LITERAL, currentContent.toString())
+    return token
+  }
+
+  private Boolean skipBlank() {
     Boolean isInComment = false
+    Boolean isNextLine = false
     while (true) {
       if (isInComment) {
         Integer codePoint = $reader.read()
         if (codePoint == '\n') {
           isInComment = false
+          isNextLine = true
         }
       } else {
         $reader.mark(1)
         Integer codePoint = $reader.read()
         if (codePoint == '#') {
           isInComment = true
+        } else if (codePoint == '\n') {
+          isNextLine = true
         } else if (!AkrantiainLexer.isWhitespace(codePoint)) {
           $reader.reset()
           break
         }
       }
     }
-  }
-
-  private Integer awaitingCodePoint() {
-    $reader.mark(1)
-    Integer appendCodePoint = $reader.read()
-    $reader.reset()
-    return appendCodePoint
+    return isNextLine
   }
 
   private static Boolean isWhitespace(Integer codePoint) {
