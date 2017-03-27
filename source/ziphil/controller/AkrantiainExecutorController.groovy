@@ -41,6 +41,8 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void execute() {
+    String output = $akrantiain.convert($inputControl.getText())
+    $outputControl.setText(output)
   }
 
   @FXML
