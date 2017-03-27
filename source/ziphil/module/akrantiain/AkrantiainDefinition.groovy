@@ -8,19 +8,13 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainDefinition {
 
   private AkrantiainToken $identifier
-  private List<AkrantiainToken> $literals = ArrayList.new()
+  private AkrantiainDisjunctionGroup $group
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append($identifier)
-    string.append(" = [")
-    for (Integer i : 0 ..< $literals.size()) {
-      string.append($literals[i])
-      if (i < $literals.size() - 1) {
-        string.append(", ")
-      }
-    }
-    string.append("]")
+    string.append(" = ")
+    string.append($group)
     return string.toString()
   }
 
@@ -32,12 +26,12 @@ public class AkrantiainDefinition {
     $identifier = identifier
   }
 
-  public List<AkrantiainToken> getLiterals() {
-    return $literals
+  public AkrantiainDisjunctionGroup getGroup() {
+    return $group
   }
 
-  public void setLiterals(List<AkrantiainToken> literals) {
-    $literals = literals
+  public void setGroup(AkrantiainDisjunctionGroup group) {
+    $group = group
   }
 
 }

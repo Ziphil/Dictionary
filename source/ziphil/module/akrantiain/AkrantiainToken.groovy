@@ -16,7 +16,12 @@ public class AkrantiainToken {
   }
 
   public String toString() {
-    return "<${$type}: \"${$text}\">"
+    StringBuilder string = StringBuilder.new()
+    string.append($type)
+    string.append("<")
+    string.append($text)
+    string.append(">")
+    return string.toString()
   }
 
   public AkrantiainTokenType getType() {

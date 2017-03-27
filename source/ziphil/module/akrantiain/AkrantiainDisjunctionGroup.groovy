@@ -5,10 +5,10 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainRuleGroup {
+public class AkrantiainDisjunctionGroup {
 
   private Boolean $isNegated = false
-  private List<AkrantiainToken> $tokens = ArrayList.new()
+  private List<AkrantiainTokenGroup> $groups = ArrayList.new()
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
@@ -16,9 +16,9 @@ public class AkrantiainRuleGroup {
       string.append("!")
     }
     string.append("(")
-    for (Integer i : 0 ..< $tokens.size()) {
-      string.append($tokens[i])
-      if (i < $tokens.size() - 1) {
+    for (Integer i : 0 ..< $groups.size()) {
+      string.append($groups[i])
+      if (i < $groups.size() - 1) {
         string.append(", ")
       }
     }
@@ -27,7 +27,7 @@ public class AkrantiainRuleGroup {
   }
 
   public Boolean isSingleton() {
-    return $tokens.size() == 1
+    return $groups.size() == 1
   }
 
   public Boolean isNegated() {
@@ -38,16 +38,16 @@ public class AkrantiainRuleGroup {
     $isNegated = isNegated
   }
 
-  public AkrantiainToken getToken() {
-    return $tokens[0]
+  public AkrantiainTokenGroup getGroup() {
+    return $groups[0]
   }
 
-  public List<AkrantiainToken> getTokens() {
-    return $tokens
+  public List<AkrantiainTokenGroup> getGroups() {
+    return $groups
   }
 
-  public void setTokens(List<AkrantiainToken> tokens) {
-    $tokens = tokens
+  public void setGroups(List<AkrantiainTokenGroup> groups) {
+    $groups = groups
   }
 
 }

@@ -28,17 +28,17 @@ public class AkrantiainSentenceParser {
   }
 
   public AkrantiainDefinition fetchDefinition() {
-    if ($tokens.size() >= 3 && $tokens.size() % 2 == 1 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
+    if ($tokens.size() >= 3 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
       AkrantiainToken identifier = $tokens[0]
-      List<AkrantiainToken> disjunctionTokens = nextLiteralDisjunction()
+      AkrantiainDisjunctionGroup group = nextDisjunctionGroup()
       definition.setIdentifier(identifier)
-      definition.setLiterals(disjunctionTokens)
+      definition.setGroup(group)
       if ($tokens[$pointer] == null) {
         return definition
       } else {
-        throw AkrantiainParseException.new("Invalid sentence")
+        throw AkrantiainParseException.new("Invalid identifier definition sentence")
       }
     } else {
       throw AkrantiainParseException.new("Invalid identifier definition sentence")
@@ -48,14 +48,15 @@ public class AkrantiainSentenceParser {
   public AkrantiainRule fetchRule() {
     Boolean isBeforeArrow = true
     AkrantiainRule rule = AkrantiainRule.new()
-    for (AkrantiainToken token ; (token = $tokens[$pointer ++]) != null ;) {
-      AkrantiainTokenType tokenType = token.getType()
+    while (true) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
       if (isBeforeArrow) {
         if (tokenType == AkrantiainTokenType.ARROW) {
           isBeforeArrow = false
         } else {
           $pointer --
-          AkrantiainRuleGroup selection = nextSelection()
+          AkrantiainDisjunctionGroup selection = nextSelection()
           if (selection.isNegated()) {
             if (!rule.hasSelection() && !rule.hasLeftCondition()) {
               rule.setLeftCondition(selection)
@@ -75,6 +76,8 @@ public class AkrantiainSentenceParser {
       } else {
         if (tokenType == AkrantiainTokenType.SLASH_LITERAL || tokenType == AkrantiainTokenType.DOLLAR) {
           rule.getPhonemes().add(token)
+        } else if (tokenType == null) {
+          break
         } else {
           throw AkrantiainParseException.new("Only slash literals can be at the right hand of a rule definition sentence")
         }
@@ -89,39 +92,44 @@ public class AkrantiainSentenceParser {
     return rule
   }
 
-  private List<AkrantiainToken> nextLiteralDisjunction() {
+  private AkrantiainDisjunctionGroup nextDisjunctionGroup() {
     Integer firstPointer = $pointer
-    List<AkrantiainToken> disjunctionTokens = ArrayList.new()
-    for (AkrantiainToken token ; (token = $tokens[$pointer ++]) != null ;) {
-      AkrantiainTokenType tokenType = token.getType()
+    AkrantiainDisjunctionGroup disjunctionGroup = AkrantiainDisjunctionGroup.new()
+    AkrantiainTokenGroup currentTokenGroup = AkrantiainTokenGroup.new()
+    while (true) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
       if (tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
-        if (($pointer - firstPointer) % 2 == 1) {
-          disjunctionTokens.add(token)
+        currentTokenGroup.getTokens().add(token)
+      } else if (tokenType == AkrantiainTokenType.VERTICAL) {
+        if (currentTokenGroup.hasLiteral()) {
+          disjunctionGroup.getGroups().add(currentTokenGroup)
+          currentTokenGroup = AkrantiainTokenGroup.new()
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
         }
-      } else if (tokenType == AkrantiainTokenType.VERTICAL) {
-        if (($pointer - firstPointer) % 2 != 0) {
-          throw AkrantiainParseException.new("Invalid sentence")
-        }
       } else {
-        if (($pointer - firstPointer) % 2 == 0) {
+        if (currentTokenGroup.hasLiteral()) {
           $pointer --
+          disjunctionGroup.getGroups().add(currentTokenGroup)
           break
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
         }
       }
     }
-    return disjunctionTokens
+    return disjunctionGroup
   }
 
-  private AkrantiainRuleGroup nextSelection() {
-    AkrantiainRuleGroup selection = AkrantiainRuleGroup.new()
-    for (AkrantiainToken token ; (token = $tokens[$pointer ++]) != null ;) {
-      AkrantiainTokenType tokenType = token.getType()
+  private AkrantiainDisjunctionGroup nextSelection() {
+    AkrantiainDisjunctionGroup selection = AkrantiainDisjunctionGroup.new()
+    while (true) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
       if (tokenType == AkrantiainTokenType.CIRCUMFLEX || tokenType == AkrantiainTokenType.IDENTIFIER || tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
-        selection.getTokens().add(token)
+        AkrantiainTokenGroup tokenGroup = AkrantiainTokenGroup.new()
+        tokenGroup.getTokens().add(token)
+        selection.getGroups().add(tokenGroup)
         break
       } else if (tokenType == AkrantiainTokenType.EXCLAMATION) {
         if (!selection.isNegated()) {
@@ -130,11 +138,11 @@ public class AkrantiainSentenceParser {
           throw AkrantiainParseException.new("Duplicate negation")
         }
       } else if (tokenType == AkrantiainTokenType.OPEN_PAREN) {
-        List<AkrantiainToken> disjunctionTokens = nextLiteralDisjunction()
+        AkrantiainDisjunctionGroup disjunctionGroup = nextDisjunctionGroup()
         AkrantiainToken nextToken = $tokens[$pointer ++]
-        AkrantiainTokenType nextTokenType = nextToken.getType()
+        AkrantiainTokenType nextTokenType = (nextToken != null) ? nextToken.getType() : null
         if (nextTokenType == AkrantiainTokenType.CLOSE_PAREN) {
-          selection.setTokens(disjunctionTokens)
+          selection.setGroups(disjunctionGroup.getGroups())
           break
         } else {
           throw AkrantiainParseException.new("Invalid sentence")

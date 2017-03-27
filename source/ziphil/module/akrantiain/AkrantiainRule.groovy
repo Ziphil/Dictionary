@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainRule {
 
-  private List<AkrantiainRuleGroup> $selections = ArrayList.new()
-  private AkrantiainRuleGroup $leftCondition = null
-  private AkrantiainRuleGroup $rightCondition = null
+  private List<AkrantiainDisjunctionGroup> $selections = ArrayList.new()
+  private AkrantiainDisjunctionGroup $leftCondition = null
+  private AkrantiainDisjunctionGroup $rightCondition = null
   private List<AkrantiainToken> $phonemes = ArrayList.new()
 
   public String toString() {
@@ -24,8 +24,7 @@ public class AkrantiainRule {
     }
     string.append("] ")
     string.append($rightCondition)
-    string.append(" -> ")
-    string.append(" [")
+    string.append(" -> [")
     for (Integer i : 0 ..< $phonemes.size()) {
       string.append($phonemes[i])
       if (i < $phonemes.size() - 1) {
@@ -39,8 +38,8 @@ public class AkrantiainRule {
   public Boolean isSizeValid() {
     Integer phonemeSize = $phonemes.size()
     Integer concreteSelectionSize = 0
-    for (AkrantiainRuleGroup selection : $selections) {
-      if (!selection.isSingleton() || selection.getToken().getType() != AkrantiainTokenType.CIRCUMFLEX) {
+    for (AkrantiainDisjunctionGroup selection : $selections) {
+      if (!selection.isSingleton() || !selection.getGroup().isSingleton() || selection.getGroup().getToken().getType() != AkrantiainTokenType.CIRCUMFLEX) {
         concreteSelectionSize ++
       }
     }
@@ -59,27 +58,27 @@ public class AkrantiainRule {
     return $rightCondition != null
   }
 
-  public List<AkrantiainRuleGroup> getSelections() {
+  public List<AkrantiainDisjunctionGroup> getSelections() {
     return $selections
   }
 
-  public void setSelections(List<AkrantiainRuleGroup> selections) {
+  public void setSelections(List<AkrantiainDisjunctionGroup> selections) {
     $selections = selections
   }
 
-  public AkrantiainRuleGroup getLeftCondition() {
+  public AkrantiainDisjunctionGroup getLeftCondition() {
     return $leftCondition
   }
 
-  public void setLeftCondition(AkrantiainRuleGroup leftCondition) {
+  public void setLeftCondition(AkrantiainDisjunctionGroup leftCondition) {
     $leftCondition = leftCondition
   }
 
-  public AkrantiainRuleGroup getRightCondition() {
+  public AkrantiainDisjunctionGroup getRightCondition() {
     return $rightCondition
   }
 
-  public void setRightCondition(AkrantiainRuleGroup rightCondition) {
+  public void setRightCondition(AkrantiainDisjunctionGroup rightCondition) {
     $rightCondition = rightCondition
   }
 
