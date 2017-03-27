@@ -166,7 +166,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     while (true) {
       if (isInComment) {
         Integer codePoint = $reader.read()
-        if (codePoint == '\n') {
+        if (codePoint == '\n' || codePoint == -1) {
           isInComment = false
           isNextLine = true
         }

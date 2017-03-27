@@ -15,6 +15,10 @@ public class AkrantiainToken {
     $text = text
   }
 
+  public String toString() {
+    return "<${$type}: \"${$text}\">"
+  }
+
   public AkrantiainTokenType getType() {
     return $type
   }
