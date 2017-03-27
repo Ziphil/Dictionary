@@ -1,7 +1,9 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
+import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
@@ -66,7 +68,11 @@ public class AkrantiainExecutorController extends Controller<Void> {
   }
 
   private void setupInputControl() {
-    $inputControl.requestFocus()
+    $inputControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+      if (oldValue == null && newValue != null) {
+        $inputControl.requestFocus()
+      }
+    }
   }
 
 }
