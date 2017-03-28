@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.Scene
-import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
@@ -27,7 +26,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $snojPathControl
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
-  @FXML private TextArea $logControl
+  @FXML private TextField $logControl
 
   private Akrantiain $akrantiain = null
 
