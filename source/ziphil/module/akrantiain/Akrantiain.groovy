@@ -8,9 +8,7 @@ import ziphilib.transform.Ziphilify
 public class Akrantiain {
 
   private String $version = ""
-  private EnumSet<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
-  private List<AkrantiainDefinition> $definitions = ArrayList.new()
-  private List<AkrantiainRule> $rules = ArrayList.new()
+  private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
     BufferedReader reader = file.newReader("UTF-8")
@@ -32,13 +30,13 @@ public class Akrantiain {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
         if (parser.isEnvironmentSentence()) {
           AkrantiainEnvironment environment = parser.fetchEnvironment()
-          $environments.add(environment)
+          $setting.getEnvironments().add(environment)
         } else if (parser.isDefinitionSentence()) {
           AkrantiainDefinition definition = parser.fetchDefinition()
-          $definitions.add(definition)
+          $setting.getDefinitions().add(definition)
         } else if (parser.isRuleSentence()) {
           AkrantiainRule rule = parser.fetchRule()
-          $rules.add(rule)
+          $setting.getRules().add(rule)
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
         }
@@ -50,6 +48,14 @@ public class Akrantiain {
   }
 
   public String convert(String input) {
+    List<AkrantiainElement> currentElements = ArrayList.new()
+    for (String character : input) {
+      AkrantiainElement element = AkrantiainElement.new(character)
+      currentElements.add(element)
+    }
+    for (AkrantiainRule rule : $setting.getRules()) {
+      currentElements = rule.apply(currentElements, $setting)
+    }
     return input
   }
 

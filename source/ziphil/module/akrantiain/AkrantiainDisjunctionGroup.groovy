@@ -7,8 +7,50 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainDisjunctionGroup {
 
+  public static AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
+
   private Boolean $isNegated = false
   private List<AkrantiainTokenGroup> $groups = ArrayList.new()
+
+  // 通常の条件として、ちょうど from で与えられた位置から右にマッチするかどうかを調べます。
+  // マッチした場合はマッチした範囲の右端のインデックス (範囲にそのインデックス自体は含まない) を返します。
+  // マッチしなかった場合は null を返します。
+  public Integer matchSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+    if (!$groups.isEmpty()) {
+      for (Integer i : $groups.size() - 1 .. 0) {
+        AkrantiainTokenGroup group = $groups[i]
+        Integer to = group.matchSelection(elements, from, setting)
+        if (to != null) {
+          return to
+        }
+      }
+      return null
+    } else {
+      return null
+    }
+  }
+
+  // 左条件として、ちょうど to で与えられた位置から左にマッチするかどうかを調べます。
+  // なお、マッチした範囲は与えられた AkrantiainElement オブジェクトの途中までである可能性があることに注意してください。
+  // 例えば、elements が「ab」と「c」の 2 つから成る場合、「"bc"」というパターンはこれにマッチします。
+  // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
+  public Boolean matchLeftCondition(List<AkrantiainElement> elements, Integer to, AkrantiainSetting setting) {
+    return true
+  }
+
+  // 右条件として、ちょうど from で与えられた位置から右にマッチするかどうかを調べます。
+  // なお、マッチした範囲は与えられた AkrantiainElement オブジェクトの途中までである可能性があることに注意してください。
+  // 例えば、elements が「a」と「bc」の 2 つから成る場合、「"ab"」というパターンはこれにマッチします。
+  // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
+  public Boolean matchRightCondition(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+    return true
+  }
+
+  // この選言グループが変換先をもつならば true を返し、そうでなければ false を返します。
+  // ver 0.4.2 の時点では、これに該当するのは「^」のみです。
+  public Boolean isConcrete() {
+    return $groups.size() > 1 || !$groups[0].isSingleton() || $groups[0].getToken().getType() != AkrantiainTokenType.CIRCUMFLEX
+  }
 
   public String toString() {
     StringBuilder string = StringBuilder.new()

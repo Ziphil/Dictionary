@@ -7,7 +7,26 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainTokenGroup {
 
+  public static AkrantiainTokenGroup EMPTY_GROUP = AkrantiainTokenGroup.new()
+
   private List<AkrantiainToken> $tokens = ArrayList.new()
+
+  public Integer matchSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+    if (!$tokens.isEmpty()) {
+      Integer pointer = from
+      for (AkrantiainToken token : $tokens) {
+        Integer to = token.matchSelection(elements, pointer, setting)
+        if (to != null) {
+          pointer = to
+        } else {
+          return null
+        }
+      }
+      return pointer
+    } else {
+      return null
+    }
+  }
 
   public String toString() {
     StringBuilder string = StringBuilder.new()

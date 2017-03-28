@@ -186,11 +186,20 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     return isNextLine
   }
 
-  private static Boolean isWhitespace(Integer codePoint) {
+  public static Boolean isWhitespace(Integer codePoint) {
     return Character.isWhitespace(codePoint)
   }
 
-  private static Boolean isLetter(Integer codePoint) {
+  public static Boolean isAllWhitespace(String string) {
+    for (Integer i : 0 ..< string.length()) {
+      if (!Character.isWhitespace(string.charAt(i))) {
+        return false
+      }
+    }
+    return true
+  }
+
+  public static Boolean isLetter(Integer codePoint) {
     return (codePoint >= 48 && codePoint <= 57) || (codePoint >= 65 && codePoint <= 90) || (codePoint >= 97 && codePoint <= 122) || codePoint == 95
   }
 
