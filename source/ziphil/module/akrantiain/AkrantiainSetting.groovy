@@ -22,7 +22,7 @@ public class AkrantiainSetting {
 
   public AkrantiainDisjunctionGroup findPunctuationRight() {
     for (AkrantiainDefinition definition : $definitions) {
-      if (definition.getIdentifier().getText() == "PUNCTUATION") {
+      if (definition.getIdentifier().getText() == Akrantiain.PUNCTUATION_IDENTIIER_NAME) {
         return definition.getRight()
       }
     }

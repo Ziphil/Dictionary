@@ -7,6 +7,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Akrantiain {
 
+  public static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
+
   private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
