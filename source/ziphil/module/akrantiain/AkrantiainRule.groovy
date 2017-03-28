@@ -43,7 +43,7 @@ public class AkrantiainRule {
             addedElement.setResult(phoneme.getText())
             addedElements.add(addedElement)
           } else if (phonemeType == AkrantiainTokenType.DOLLAR) {
-            for (Integer i : from ..< to) {
+            for (Integer i : pointer ..< to) {
               addedElements.add(group.getElements()[i])
             }
           }
