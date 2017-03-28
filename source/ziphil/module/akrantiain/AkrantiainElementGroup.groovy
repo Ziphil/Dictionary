@@ -29,18 +29,18 @@ public class AkrantiainElementGroup {
     return AkrantiainElement.new(mergedPart.toString())
   }
 
-  public Boolean isValid(AkrantiainSetting setting) {
-    for (AkrantiainElement elements : $elements) {
-      if (!elements.isValid(setting)) {
-        return false
+  public AkrantiainElement firstInvalidElement(AkrantiainSetting setting) {
+    for (AkrantiainElement element : $elements) {
+      if (!element.isValid(setting)) {
+        return element
       }
     }
-    return true
+    return null
   }
 
   // 各要素の変換後の文字列を連結し、出力文字列を作成します。
   // 変換がなされていない要素が含まれていた場合は、代わりに変換前の文字列を連結します。
-  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを isValid() で確認してください。
+  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを firstInvalidElement() などで確認してください。
   public String createOutput() {
     StringBuilder output = StringBuilder.new()
     for (AkrantiainElement element : $elements) {
