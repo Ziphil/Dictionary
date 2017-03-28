@@ -28,13 +28,13 @@ public class Akrantiain {
       } else {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
         if (parser.isEnvironmentSentence()) {
-          AkrantiainEnvironment environment = parser.fetchEnvironment()
+          AkrantiainEnvironment environment = parser.parseEnvironment()
           $setting.getEnvironments().add(environment)
         } else if (parser.isDefinitionSentence()) {
-          AkrantiainDefinition definition = parser.fetchDefinition()
+          AkrantiainDefinition definition = parser.parseDefinition()
           $setting.getDefinitions().add(definition)
         } else if (parser.isRuleSentence()) {
-          AkrantiainRule rule = parser.fetchRule()
+          AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
         } else {
           throw AkrantiainParseException.new("Invalid sentence")

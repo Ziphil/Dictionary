@@ -39,7 +39,7 @@ public class AkrantiainTokenGroup {
     return string.toString()
   }
 
-  public Boolean hasLiteral() {
+  public Boolean hasToken() {
     return !$tokens.isEmpty()
   }
 

@@ -14,7 +14,7 @@ public class AkrantiainSentenceParser {
     $tokens = tokens
   }
 
-  public AkrantiainEnvironment fetchEnvironment() {
+  public AkrantiainEnvironment parseEnvironment() {
     if ($tokens.size() == 1 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
       try {
         AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf($tokens[0].getText())
@@ -27,7 +27,7 @@ public class AkrantiainSentenceParser {
     }
   }
 
-  public AkrantiainDefinition fetchDefinition() {
+  public AkrantiainDefinition parseDefinition() {
     if ($tokens.size() >= 3 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
@@ -45,7 +45,7 @@ public class AkrantiainSentenceParser {
     }
   }
 
-  public AkrantiainRule fetchRule() {
+  public AkrantiainRule parseRule() {
     Boolean isBeforeArrow = true
     AkrantiainRule rule = AkrantiainRule.new()
     while (true) {
@@ -102,14 +102,14 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
         currentTokenGroup.getTokens().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
-        if (currentTokenGroup.hasLiteral()) {
+        if (currentTokenGroup.hasToken()) {
           disjunctionGroup.getGroups().add(currentTokenGroup)
           currentTokenGroup = AkrantiainTokenGroup.new()
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
         }
       } else {
-        if (currentTokenGroup.hasLiteral()) {
+        if (currentTokenGroup.hasToken()) {
           $pointer --
           disjunctionGroup.getGroups().add(currentTokenGroup)
           break
