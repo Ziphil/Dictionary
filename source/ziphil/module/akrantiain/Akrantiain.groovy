@@ -51,11 +51,15 @@ public class Akrantiain {
   }
 
   public String convert(String input) {
-    AkrantiainElementGroup currentElements = AkrantiainElementGroup.create(input)
+    AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
     for (AkrantiainRule rule : $setting.getRules()) {
-      currentElements = rule.apply(currentElements, $setting)
+      currentGroup = rule.apply(currentGroup, $setting)
     }
-    return input
+    if (currentGroup.isValid($setting)) {
+      return currentGroup.createOutput()
+    } else {
+      throw AkrantiainException.new("No rules for some characters")
+    }
   }
 
 }
