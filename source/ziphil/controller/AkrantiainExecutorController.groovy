@@ -4,12 +4,15 @@ import groovy.transform.CompileStatic
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.Scene
+import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainException
+import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -24,6 +27,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $snojPathControl
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
+  @FXML private TextArea $logControl
 
   private Akrantiain $akrantiain = null
 
@@ -39,8 +43,19 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void execute() {
-    String output = $akrantiain.convert($inputControl.getText())
-    $outputControl.setText(output)
+    if ($akrantiain != null) {
+      try {
+        String output = $akrantiain.convert($inputControl.getText())
+        $outputControl.setText(output)
+        $logControl.setText("")
+      } catch (AkrantiainException exception) {
+        $outputControl.setText("")
+        $logControl.setText(exception.getMessage())
+      }
+    } else {
+      $outputControl.setText("")
+      $logControl.setText("")
+    }
   }
 
   @FXML
@@ -55,13 +70,24 @@ public class AkrantiainExecutorController extends Controller<Void> {
       if (result instanceof File) {
         $snojPathControl.setText(result.getAbsolutePath())
         $akrantiain = Akrantiain.new()
-        $akrantiain.load(result)
+        try {
+          $akrantiain.load(result)
+          $logControl.setText("")
+        } catch (AkrantiainParseException exception) {
+          $logControl.setText(exception.getMessage())
+        }
       } else if (result instanceof String) {
         $snojPathControl.setText("[テキスト]")
         $akrantiain = Akrantiain.new()
-        $akrantiain.load(result)
+        try {
+          $akrantiain.load(result)
+          $logControl.setText("")
+        } catch (AkrantiainParseException exception) {
+          $logControl.setText(exception.getMessage())
+        }
       } else {
         $snojPathControl.setText("")
+        $logControl.setText("")
         $akrantiain = null
       }
     }
