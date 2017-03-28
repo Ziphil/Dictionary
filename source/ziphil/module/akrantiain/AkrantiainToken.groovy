@@ -33,7 +33,7 @@ public class AkrantiainToken {
     for (Integer i = from ; i < group.getElements().size() ; i ++) {
       AkrantiainElement element = group.getElements()[i]
       String elementPart = element.getPart()
-      if (!element.isConverted() && matchedLength + elementPart.length() <= $text.length()) {
+      if (matchedLength + elementPart.length() <= $text.length()) {
         if ($text.substring(matchedLength, matchedLength + elementPart.length()) == elementPart) {
           matchedLength += elementPart.length()
           if (matchedLength == $text.length()) {
@@ -55,7 +55,7 @@ public class AkrantiainToken {
     Boolean isMatched = false
     for (Integer i = from ; i <= group.getElements().size() ;) {
       AkrantiainElement element = group.getElements()[i]
-      if (element != null && !element.isConverted()) {
+      if (element != null) {
         String elementPart = element.getPart()
         Integer punctuationTo
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
@@ -65,15 +65,13 @@ public class AkrantiainToken {
           isMatched = true
           i = punctuationTo
         } else {
-          if (isMatched) {
+          if (isMatched || from == 0) {
             to = i
           }
           break
         }
       } else {
-        if (isMatched) {
-          to = i
-        }
+        to = i
         break
       }
     }

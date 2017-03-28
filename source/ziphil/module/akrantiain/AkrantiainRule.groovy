@@ -39,15 +39,30 @@ public class AkrantiainRule {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
           AkrantiainTokenType phonemeType = phoneme.getType()
           if (phonemeType == AkrantiainTokenType.SLASH_LITERAL) {
-            AkrantiainElement addedElement = group.merge(pointer, to)
-            addedElement.setResult(phoneme.getText())
-            addedElements.add(addedElement)
+            Boolean isNoneConverted = true
+            for (Integer i : pointer ..< to) {
+              if (group.getElements()[i].isConverted()) {
+                isNoneConverted = false
+              }
+            }
+            if (isNoneConverted) {
+              AkrantiainElement addedElement = group.merge(pointer, to)
+              addedElement.setResult(phoneme.getText())
+              addedElements.add(addedElement)
+            } else {
+              appliedGroup.getElements().add(group.getElements()[from])
+              return from + 1
+            }
           } else if (phonemeType == AkrantiainTokenType.DOLLAR) {
             for (Integer i : pointer ..< to) {
               addedElements.add(group.getElements()[i])
             }
           }
           phonemeIndex ++
+        } else {
+          for (Integer i : pointer ..< to) {
+            addedElements.add(group.getElements()[i])
+          }
         }
         pointer = to
       } else {
