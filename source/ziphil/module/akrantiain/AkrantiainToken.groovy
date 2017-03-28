@@ -34,7 +34,10 @@ public class AkrantiainToken {
       AkrantiainElement element = group.getElements()[i]
       String elementPart = element.getPart()
       if (matchedLength + elementPart.length() <= $text.length()) {
-        if ($text.substring(matchedLength, matchedLength + elementPart.length()) == elementPart) {
+        String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
+        String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+        String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+        if (adjustedTextSubstring == adjustedElementPart) {
           matchedLength += elementPart.length()
           if (matchedLength == $text.length()) {
             to = i + 1
