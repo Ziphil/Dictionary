@@ -45,6 +45,8 @@ public class Akrantiain {
         currentTokens.clear()
       }
     }
+    reader.close()
+    lexer.close()
   }
 
   public String convert(String input) {
