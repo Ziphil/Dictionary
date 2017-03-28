@@ -37,17 +37,6 @@ public class AkrantiainElement {
     }
   }
 
-  // 与えられた配列 group において、インデックスが from から to まで (to は含まない) のオブジェクトを 1 つに合成したオブジェクトを返します。
-  // 返されるオブジェクトの part の値は、合成前の part をインデックス順に繋げたものになります。
-  // 返されるオブジェクトの result の値は、合成前の各オブジェクトの result の値に関わらず null になります。
-  public static AkrantiainElement merge(AkrantiainElementGroup group, Integer from, Integer to) {
-    StringBuilder mergedPart = StringBuilder.new()
-    for (Integer i : from ..< to) {
-      mergedPart.append(group.getElements()[i].getPart())
-    }
-    return AkrantiainElement.new(mergedPart.toString())
-  }
-
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("(")

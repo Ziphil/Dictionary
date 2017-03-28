@@ -18,6 +18,17 @@ public class AkrantiainElementGroup {
     return group
   }
 
+  // インデックスが from から to まで (to は含まない) のオブジェクトを 1 つに合成したオブジェクトを返します。
+  // 返されるオブジェクトの part の値は、合成前の part をインデックス順に繋げたものになります。
+  // 返されるオブジェクトの result の値は、合成前の各オブジェクトの result の値に関わらず null になります。
+  public AkrantiainElement merge(Integer from, Integer to) {
+    StringBuilder mergedPart = StringBuilder.new()
+    for (Integer i : from ..< to) {
+      mergedPart.append($elements[i].getPart())
+    }
+    return AkrantiainElement.new(mergedPart.toString())
+  }
+
   public Boolean isValid(AkrantiainSetting setting) {
     for (AkrantiainElement elements : $elements) {
       if (!elements.isValid(setting)) {

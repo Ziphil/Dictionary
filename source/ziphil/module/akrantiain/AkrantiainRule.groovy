@@ -39,7 +39,7 @@ public class AkrantiainRule {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
           AkrantiainTokenType phonemeType = phoneme.getType()
           if (phonemeType == AkrantiainTokenType.SLASH_LITERAL) {
-            AkrantiainElement addedElement = AkrantiainElement.merge(group, pointer, to)
+            AkrantiainElement addedElement = group.merge(pointer, to)
             addedElement.setResult(phoneme.getText())
             addedElements.add(addedElement)
           } else if (phonemeType == AkrantiainTokenType.DOLLAR) {
