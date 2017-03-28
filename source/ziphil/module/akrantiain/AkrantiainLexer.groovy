@@ -167,7 +167,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           isNextLine = true
         }
       } else {
-        $reader.mark(1)
+        $reader.mark(2)
         Integer codePoint = $reader.read()
         if (codePoint == '#') {
           isInComment = true

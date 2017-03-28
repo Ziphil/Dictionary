@@ -12,7 +12,7 @@ public class Akrantiain {
   private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
-    LineNumberReader reader = LineNumberReader.new(FileReader.new(file))
+    LineNumberReader reader = LineNumberReader.new(InputStreamReader.new(FileInputStream.new(file), "UTF-8"))
     parse(reader)
   }
 
