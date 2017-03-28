@@ -7,7 +7,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class Akrantiain {
 
-  private String $version = ""
   private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
@@ -21,7 +20,7 @@ public class Akrantiain {
   }
 
   private void parse(BufferedReader reader) {
-    AkrantiainLexer lexer = AkrantiainLexer.new(reader, $version)
+    AkrantiainLexer lexer = AkrantiainLexer.new(reader)
     List<AkrantiainToken> currentTokens = ArrayList.new()
     for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {
       if (token.getType() != AkrantiainTokenType.SEMICOLON) {
@@ -57,10 +56,6 @@ public class Akrantiain {
       currentElements = rule.apply(currentElements, $setting)
     }
     return input
-  }
-
-  public void setVersion(String version) {
-    $version = version
   }
 
 }

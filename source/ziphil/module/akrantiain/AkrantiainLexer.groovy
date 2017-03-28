@@ -8,13 +8,11 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private Reader $reader
-  private String $version
   private Boolean $isFirst = true
   private Boolean $isAfterSemicolon = false
 
-  public AkrantiainLexer(Reader reader, String version) {
+  public AkrantiainLexer(Reader reader) {
     $reader = reader
-    $version = version
     checkReader()
   }
 
