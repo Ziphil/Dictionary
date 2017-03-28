@@ -35,7 +35,18 @@ public class AkrantiainDisjunctionGroup {
   // 例えば、group が「ab」と「c」の 2 つから成る場合、「"bc"」というパターンはこれにマッチします。
   // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
   public Boolean matchLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    return true
+    Boolean isMatched = false
+    if (!$tokenGroups.isEmpty()) {
+      for (Integer i : $tokenGroups.size() - 1 .. 0) {
+        AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
+        Boolean isPartMatched = tokenGroup.matchLeftCondition(group, to, setting)
+        if (isPartMatched) {
+          isMatched = true
+          break
+        }
+      }
+    }
+    return $isNegated ^ isMatched
   }
 
   // 右条件として、ちょうど from で与えられた位置から右にマッチするかどうかを調べます。
@@ -43,7 +54,18 @@ public class AkrantiainDisjunctionGroup {
   // 例えば、group が「a」と「bc」の 2 つから成る場合、「"ab"」というパターンはこれにマッチします。
   // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
   public Boolean matchRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    return true
+    Boolean isMatched = false
+    if (!$tokenGroups.isEmpty()) {
+      for (Integer i : $tokenGroups.size() - 1 .. 0) {
+        AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
+        Boolean isPartMatched = tokenGroup.matchRightCondition(group, from, setting)
+        if (isPartMatched) {
+          isMatched = true
+          break
+        }
+      }
+    }
+    return $isNegated ^ isMatched
   }
 
   // この選言グループが変換先をもつならば true を返し、そうでなければ false を返します。
