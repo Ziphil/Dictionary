@@ -50,7 +50,7 @@ public class AkrantiainToken {
     return to
   }
 
-  private Integer matchCircumflexSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting)  {
+  private Integer matchCircumflexSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Boolean isMatched = false
     for (Integer i = from ; i <= group.getElements().size() ;) {
