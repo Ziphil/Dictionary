@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainTokenGroup {
 
-  public static AkrantiainTokenGroup EMPTY_GROUP = AkrantiainTokenGroup.new()
+  public static final AkrantiainTokenGroup EMPTY_GROUP = AkrantiainTokenGroup.new()
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 

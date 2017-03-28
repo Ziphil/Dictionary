@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainDisjunctionGroup {
 
-  public static AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
+  public static final AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
   public static final AkrantiainDisjunctionGroup SINGLE_CIRCUMFLEX_GROUP = createSingleCircumflexGroup()
 
   private Boolean $isNegated = false
