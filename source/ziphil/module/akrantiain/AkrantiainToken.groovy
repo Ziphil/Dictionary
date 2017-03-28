@@ -9,10 +9,12 @@ public class AkrantiainToken {
 
   private AkrantiainTokenType $type
   private String $text
+  private Integer $lineNumber
 
-  public AkrantiainToken(AkrantiainTokenType type, String text) {
+  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber) {
     $type = type
     $text = text
+    $lineNumber = lineNumber
   }
 
   public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
@@ -101,6 +103,10 @@ public class AkrantiainToken {
 
   public String getText() {
     return $text
+  }
+
+  public Integer getLineNumber() {
+    return $lineNumber
   }
 
 }

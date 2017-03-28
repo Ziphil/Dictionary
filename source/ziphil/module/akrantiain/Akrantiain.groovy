@@ -10,16 +10,16 @@ public class Akrantiain {
   private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
-    BufferedReader reader = file.newReader("UTF-8")
+    LineNumberReader reader = LineNumberReader.new(FileReader.new(file))
     parse(reader)
   }
 
   public void load(String string) {
-    BufferedReader reader = BufferedReader.new(StringReader.new(string))
+    LineNumberReader reader = LineNumberReader.new(StringReader.new(string))
     parse(reader)
   }
 
-  private void parse(BufferedReader reader) {
+  private void parse(LineNumberReader reader) {
     AkrantiainLexer lexer = AkrantiainLexer.new(reader)
     List<AkrantiainToken> currentTokens = ArrayList.new()
     for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {
@@ -35,13 +35,15 @@ public class Akrantiain {
           if (!$setting.containsIdentifier(definition.getIdentifier())) {
             $setting.getDefinitions().add(definition)
           } else {
-            throw AkrantiainParseException.new("Duplicate identifier")
+            Integer lineNumber = currentTokens[0].getLineNumber()
+            throw AkrantiainParseException.new("Duplicate identifier", lineNumber)
           }
         } else if (parser.isRuleSentence()) {
           AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
         } else {
-          throw AkrantiainParseException.new("Invalid sentence")
+          Integer lineNumber = (!currentTokens.isEmpty()) ? currentTokens[0].getLineNumber() : null
+          throw AkrantiainParseException.new("Invalid sentence", lineNumber)
         }
         currentTokens.clear()
       }

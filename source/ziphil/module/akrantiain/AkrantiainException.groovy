@@ -7,12 +7,19 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainException extends Exception {
 
+  private String $plainMessage = ""
+
   public AkrantiainException() {
     super()
   }
 
-  public AkrantiainException(String message) {
-    super(message)
+  public AkrantiainException(String plainMessage) {
+    super()
+    $plainMessage = plainMessage
+  }
+
+  public String getMessage() {
+    return $plainMessage
   }
 
 }
