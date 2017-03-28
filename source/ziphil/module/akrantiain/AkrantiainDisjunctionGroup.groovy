@@ -8,6 +8,7 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainDisjunctionGroup {
 
   public static AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
+  public static final AkrantiainDisjunctionGroup SINGLE_CIRCUMFLEX_GROUP = createSingleCircumflexGroup()
 
   private Boolean $isNegated = false
   private List<AkrantiainTokenGroup> $groups = ArrayList.new()
@@ -66,6 +67,15 @@ public class AkrantiainDisjunctionGroup {
     }
     string.append(")")
     return string.toString()
+  }
+
+  public static AkrantiainDisjunctionGroup createSingleCircumflexGroup() {
+    AkrantiainDisjunctionGroup group = AkrantiainDisjunctionGroup.new()
+    AkrantiainTokenGroup tokenGroup = AkrantiainTokenGroup.new()
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.CIRCUMFLEX, "^")
+    tokenGroup.getTokens().add(token)
+    group.getGroups().add(tokenGroup)
+    return group
   }
 
   public Boolean isSingleton() {
