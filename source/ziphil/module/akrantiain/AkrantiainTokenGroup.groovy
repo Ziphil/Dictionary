@@ -11,11 +11,11 @@ public class AkrantiainTokenGroup {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 
-  public Integer matchSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+  public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     if (!$tokens.isEmpty()) {
       Integer pointer = from
       for (AkrantiainToken token : $tokens) {
-        Integer to = token.matchSelection(elements, pointer, setting)
+        Integer to = token.matchSelection(group, pointer, setting)
         if (to != null) {
           pointer = to
         } else {

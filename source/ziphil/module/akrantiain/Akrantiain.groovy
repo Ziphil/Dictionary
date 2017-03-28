@@ -51,11 +51,7 @@ public class Akrantiain {
   }
 
   public String convert(String input) {
-    List<AkrantiainElement> currentElements = ArrayList.new()
-    for (String character : input) {
-      AkrantiainElement element = AkrantiainElement.new(character)
-      currentElements.add(element)
-    }
+    AkrantiainElementGroup currentElements = AkrantiainElementGroup.create(input)
     for (AkrantiainRule rule : $setting.getRules()) {
       currentElements = rule.apply(currentElements, $setting)
     }

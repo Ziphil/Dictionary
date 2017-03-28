@@ -15,23 +15,23 @@ public class AkrantiainToken {
     $text = text
   }
 
-  public Integer matchSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+  public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
-      to = matchQuoteLiteralSelection(elements, from, setting)
+      to = matchQuoteLiteralSelection(group, from, setting)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
-      to = matchCircumflexSelection(elements, from, setting)
+      to = matchCircumflexSelection(group, from, setting)
     } else if ($type == AkrantiainTokenType.IDENTIFIER) {
-      to = matchIdentifierSelection(elements, from, setting)
+      to = matchIdentifierSelection(group, from, setting)
     }
     return to
   }
 
-  private Integer matchQuoteLiteralSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
+  private Integer matchQuoteLiteralSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Integer matchedLength = 0
-    for (Integer i = from ; i < elements.size() ; i ++) {
-      AkrantiainElement element = elements[i]
+    for (Integer i = from ; i < group.getElements().size() ; i ++) {
+      AkrantiainElement element = group.getElements()[i]
       String elementPart = element.getPart()
       if (!element.isConverted() && matchedLength + elementPart.length() <= $text.length()) {
         if ($text.substring(matchedLength, matchedLength + elementPart.length()) == elementPart) {
@@ -50,18 +50,18 @@ public class AkrantiainToken {
     return to
   }
 
-  private Integer matchCircumflexSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting)  {
+  private Integer matchCircumflexSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting)  {
     Integer to = null
     Boolean isMatched = false
-    for (Integer i = from ; i <= elements.size() ;) {
-      AkrantiainElement element = elements[i]
+    for (Integer i = from ; i <= group.getElements().size() ;) {
+      AkrantiainElement element = group.getElements()[i]
       if (element != null && !element.isConverted()) {
         String elementPart = element.getPart()
         Integer punctuationTo
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
           i += 1
-        } else if ((punctuationTo = setting.findPunctuationGroup().matchSelection(elements, i, setting)) != null) {
+        } else if ((punctuationTo = setting.findPunctuationRight().matchSelection(group, i, setting)) != null) {
           isMatched = true
           i = punctuationTo
         } else {
@@ -80,8 +80,8 @@ public class AkrantiainToken {
     return to
   }
 
-  private Integer matchIdentifierSelection(List<AkrantiainElement> elements, Integer from, AkrantiainSetting setting) {
-    Integer to = setting.findGroupOf($text).matchSelection(elements, from, setting)
+  private Integer matchIdentifierSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    Integer to = setting.findRightOf($text).matchSelection(group, from, setting)
     return to
   }
 

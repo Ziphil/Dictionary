@@ -32,9 +32,9 @@ public class AkrantiainSentenceParser {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
       AkrantiainToken identifier = $tokens[0]
-      AkrantiainDisjunctionGroup group = nextDisjunctionGroup()
+      AkrantiainDisjunctionGroup right = nextDisjunctionGroup()
       definition.setIdentifier(identifier)
-      definition.setGroup(group)
+      definition.setRight(right)
       if ($tokens[$pointer] == null) {
         return definition
       } else {
@@ -103,7 +103,7 @@ public class AkrantiainSentenceParser {
         currentTokenGroup.getTokens().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
         if (currentTokenGroup.hasToken()) {
-          disjunctionGroup.getGroups().add(currentTokenGroup)
+          disjunctionGroup.getTokenGroups().add(currentTokenGroup)
           currentTokenGroup = AkrantiainTokenGroup.new()
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
@@ -111,7 +111,7 @@ public class AkrantiainSentenceParser {
       } else {
         if (currentTokenGroup.hasToken()) {
           $pointer --
-          disjunctionGroup.getGroups().add(currentTokenGroup)
+          disjunctionGroup.getTokenGroups().add(currentTokenGroup)
           break
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
@@ -129,7 +129,7 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.CIRCUMFLEX || tokenType == AkrantiainTokenType.IDENTIFIER || tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
         AkrantiainTokenGroup tokenGroup = AkrantiainTokenGroup.new()
         tokenGroup.getTokens().add(token)
-        selection.getGroups().add(tokenGroup)
+        selection.getTokenGroups().add(tokenGroup)
         break
       } else if (tokenType == AkrantiainTokenType.EXCLAMATION) {
         if (!selection.isNegated()) {
@@ -142,7 +142,7 @@ public class AkrantiainSentenceParser {
         AkrantiainToken nextToken = $tokens[$pointer ++]
         AkrantiainTokenType nextTokenType = (nextToken != null) ? nextToken.getType() : null
         if (nextTokenType == AkrantiainTokenType.CLOSE_PAREN) {
-          selection.setGroups(disjunctionGroup.getGroups())
+          selection.setTokenGroups(disjunctionGroup.getTokenGroups())
           break
         } else {
           throw AkrantiainParseException.new("Invalid sentence")
