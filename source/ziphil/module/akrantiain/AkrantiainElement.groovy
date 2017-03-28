@@ -28,10 +28,17 @@ public class AkrantiainElement {
   // ただし、変換前の文字列が句読点かスペースのみで構成されている場合は、変換されいてるかどうかにかかわらず true を返します。
   public Boolean isValid(AkrantiainSetting setting) {
     if ($result == null) {
-      AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.CIRCUMFLEX, "^")
-      AkrantiainElementGroup group = AkrantiainElementGroup.new()
-      group.getElements().add(this)
-      return token.matchSelection(group, 0, setting) != null
+      if (AkrantiainLexer.isAllWhitespace($part)) {
+        return true
+      } else {
+        AkrantiainElementGroup group = AkrantiainElementGroup.new()
+        group.getElements().add(this)
+        if (setting.findPunctuationRight().matchSelection(group, 0, setting) != null) {
+          return true
+        } else {
+          return false
+        }
+      }
     } else {
       return true
     }
