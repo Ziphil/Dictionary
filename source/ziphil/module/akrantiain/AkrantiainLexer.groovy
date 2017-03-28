@@ -22,6 +22,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     }
   }
 
+  // 次のトークンを取得します。
+  // ファイルの終わりに達した場合は null を返します。
+  // スペースとコメントは無視されます。
+  // もともとの入力で改行前のセミコロンが省略されている場合でも、自動的にセミコロンを補って動作します。
   public AkrantiainToken nextToken() {
     Boolean isNextLine = skipBlank()
     AkrantiainToken token = null
