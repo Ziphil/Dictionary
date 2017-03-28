@@ -33,6 +33,15 @@ public class AkrantiainSetting {
     return $environments.contains(environment)
   } 
 
+  public Boolean containsIdentifier(AkrantiainToken identifier) {
+    for (AkrantiainDefinition definition : $definitions) {
+      if (definition.getIdentifier().getText() == identifier.getText()) {
+        return true
+      }
+    }
+    return false
+  }
+
   public EnumSet<AkrantiainEnvironment> getEnvironments() {
     return $environments
   }

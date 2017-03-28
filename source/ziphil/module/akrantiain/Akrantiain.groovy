@@ -32,7 +32,11 @@ public class Akrantiain {
           $setting.getEnvironments().add(environment)
         } else if (parser.isDefinitionSentence()) {
           AkrantiainDefinition definition = parser.parseDefinition()
-          $setting.getDefinitions().add(definition)
+          if (!$setting.containsIdentifier(definition.getIdentifier())) {
+            $setting.getDefinitions().add(definition)
+          } else {
+            throw AkrantiainParseException.new("Duplicate identifier")
+          }
         } else if (parser.isRuleSentence()) {
           AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
