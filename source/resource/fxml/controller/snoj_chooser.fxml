@@ -36,10 +36,10 @@
       </padding>
       <HBox>
         <spacing><Double rpx="10"/></spacing>
-        <RadioButton fx:id="$loadsFromFileControl" text="ファイルから" selected="true">
+        <RadioButton fx:id="$isFileSelectedControl" text="ファイルから" selected="true">
           <toggleGroup><ToggleGroup fx:id="sourceTypeGroup"/></toggleGroup>
         </RadioButton>
-        <RadioButton fx:id="$loadsFromStringControl" text="テキストから" toggleGroup="$sourceTypeGroup"/>
+        <RadioButton fx:id="$isStringSelectedControl" text="テキストから" toggleGroup="$sourceTypeGroup"/>
       </HBox>
       <StackPane>
         <VBox fx:id="$stringBox">

@@ -29,6 +29,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $logControl
 
   private Akrantiain $akrantiain = null
+  private SnojChooserController.Result $result = null
 
   public AkrantiainExecutorController(UtilityStage<Void> stage) {
     super(stage)
@@ -59,35 +60,40 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void openSnoj() {
-    UtilityStage<Object> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<SnojChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SnojChooserController controller = SnojChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
+    controller.prepare($result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
-      Object result = nextStage.getResult()
-      if (result instanceof File) {
-        $snojPathControl.setText(result.getAbsolutePath())
-        $akrantiain = Akrantiain.new()
-        try {
-          $akrantiain.load(result)
+      $result = nextStage.getResult()
+      if ($result.isFileSelected()) {
+        File file = $result.getFile()
+        if (file != null) {
+          $snojPathControl.setText(file.getAbsolutePath())
+          $akrantiain = Akrantiain.new()
+          try {
+            $akrantiain.load(file)
+            $logControl.setText("")
+          } catch (AkrantiainParseException exception) {
+            $logControl.setText(exception.getMessage())
+          }
+        } else {
+          $snojPathControl.setText("")
           $logControl.setText("")
-        } catch (AkrantiainParseException exception) {
-          $logControl.setText(exception.getMessage())
+          $akrantiain = null
         }
-      } else if (result instanceof String) {
+      } else {
+        String string = $result.getString()
         $snojPathControl.setText("[テキスト]")
         $akrantiain = Akrantiain.new()
         try {
-          $akrantiain.load(result)
+          $akrantiain.load(string)
           $logControl.setText("")
         } catch (AkrantiainParseException exception) {
           $logControl.setText(exception.getMessage())
         }
-      } else {
-        $snojPathControl.setText("")
-        $logControl.setText("")
-        $akrantiain = null
       }
     }
   }
