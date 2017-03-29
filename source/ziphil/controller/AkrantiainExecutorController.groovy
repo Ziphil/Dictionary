@@ -54,7 +54,6 @@ public class AkrantiainExecutorController extends Controller<Void> {
       }
     } else {
       $outputControl.setText("")
-      $logControl.setText("")
     }
   }
 
@@ -78,6 +77,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
             $logControl.setText("")
           } catch (AkrantiainParseException exception) {
             $logControl.setText(exception.getMessage())
+            $akrantiain = null
           }
         } else {
           $snojPathControl.setText("")
@@ -93,6 +93,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $logControl.setText("")
         } catch (AkrantiainParseException exception) {
           $logControl.setText(exception.getMessage())
+          $akrantiain = null
         }
       }
     }
