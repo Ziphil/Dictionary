@@ -107,8 +107,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           } else {
             throw AkrantiainParseException.new("Invalid escape sequence", $reader.getLineNumber())
           }
+        } else if (codePoint == '\n') {
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", $reader.getLineNumber() - 1)
         } else if (codePoint == -1) {
-          throw AkrantiainParseException.new("The file ended before a string literal is closed", $reader.getLineNumber())
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", $reader.getLineNumber())
         } else if (codePoint == separator) {
           break
         } else {
