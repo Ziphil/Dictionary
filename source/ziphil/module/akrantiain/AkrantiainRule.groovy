@@ -16,20 +16,25 @@ public class AkrantiainRule {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
     while (pointer < group.getElements().size()) {
-      pointer = applySingle(group, appliedGroup, pointer, setting)
+      ApplicationResult result  = applySingle(group, pointer, setting)
+      if (result != null) {
+        appliedGroup.getElements().addAll(result.getAddedElements())
+        pointer = result.getTo()
+      } else {
+        pointer ++
+      }
     }
     return appliedGroup
   }
 
-  // ちょうど from で与えられた位置から規則を適用し、適用した結果を appliedGroup に追加します。
-  // 規則がマッチして適用できた場合はマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
-  // そもそも規則にマッチせず適用できなかった場合は from の次の位置を返します。
-  private Integer applySingle(AkrantiainElementGroup group, AkrantiainElementGroup appliedGroup, Integer from, AkrantiainSetting setting) {
+  // ちょうど from で与えられた位置から規則を適用します。
+  // 規則がマッチして適用できた場合は、変化後の要素のリストとマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
+  // そもそも規則にマッチせず適用できなかった場合は null を返します。
+  private ApplicationResult applySingle(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     List<AkrantiainElement> addedElements = ArrayList.new()
     Integer pointer = from
     if ($leftCondition != null && !$leftCondition.matchLeftCondition(group, pointer, setting)) {
-      appliedGroup.getElements().add(group.getElements()[from])
-      return from + 1
+      return null
     }
     Integer phonemeIndex = 0
     for (AkrantiainDisjunctionGroup selection : $selections) {
@@ -50,8 +55,7 @@ public class AkrantiainRule {
               addedElement.setResult(phoneme.getText())
               addedElements.add(addedElement)
             } else {
-              appliedGroup.getElements().add(group.getElements()[from])
-              return from + 1
+              return null
             }
           } else if (phonemeType == AkrantiainTokenType.DOLLAR) {
             for (Integer i : pointer ..< to) {
@@ -60,22 +64,17 @@ public class AkrantiainRule {
           }
           phonemeIndex ++
         } else {
-          for (Integer i : pointer ..< to) {
-            addedElements.add(group.getElements()[i])
-          }
+          return null
         }
         pointer = to
       } else {
-        appliedGroup.getElements().add(group.getElements()[from])
-        return from + 1
+        return null
       }
     }
     if ($rightCondition != null && !$rightCondition.matchRightCondition(group, pointer, setting)) {
-      appliedGroup.getElements().add(group.getElements()[from])
-      return from + 1
+      return null
     }
-    appliedGroup.getElements().addAll(addedElements)
-    return pointer
+    return ApplicationResult.new(addedElements, pointer)
   }
 
   public String toString() {
@@ -155,5 +154,27 @@ public class AkrantiainRule {
   public void setPhonemes(List<AkrantiainToken> phonemes) {
     $phonemes = phonemes
   } 
+
+}
+
+
+@InnerClass(AkrantiainRule)
+private static class ApplicationResult {
+
+  private List<AkrantiainElement> $addedElements
+  private Integer $to
+
+  public ApplicationResult(List<AkrantiainElement> addedElements, Integer to) {
+    $addedElements = addedElements
+    $to = to
+  }
+
+  public List<AkrantiainElement> getAddedElements() {
+    return $addedElements
+  }
+
+  public Integer getTo() {
+    return $to
+  }
 
 }
