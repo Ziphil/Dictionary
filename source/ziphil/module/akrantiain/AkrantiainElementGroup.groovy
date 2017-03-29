@@ -39,7 +39,7 @@ public class AkrantiainElementGroup {
   }
 
   // 各要素の変換後の文字列を連結し、出力文字列を作成します。
-  // 変換がなされていない要素が含まれていた場合は、代わりに変換前の文字列を連結します。
+  // 変換がなされていない要素が含まれていた場合は、代わりにスペース 1 つを連結します。
   // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを firstInvalidElement() などで確認してください。
   public String createOutput() {
     StringBuilder output = StringBuilder.new()
@@ -47,7 +47,7 @@ public class AkrantiainElementGroup {
       if (element.getResult() != null) {
         output.append(element.getResult())
       } else {
-        output.append(element.getPart())
+        output.append(" ")
       }
     }
     return output.toString()
