@@ -68,6 +68,7 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   private void setupChooser() {
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
     $fileChooser.getExtensionFilters().add(filter)
+    $fileChooser.setCurrentFileType(filter)
     $fileChooser.setAdjustsExtension(false)
   }
 
