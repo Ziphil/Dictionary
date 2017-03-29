@@ -16,11 +16,12 @@ public class AkrantiainRule {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
     while (pointer < group.getElements().size()) {
-      ApplicationResult result  = applySingle(group, pointer, setting)
+      ApplicationResult result = applySingle(group, pointer, setting)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
         pointer = result.getTo()
       } else {
+        appliedGroup.getElements().add(group.getElements()[pointer])
         pointer ++
       }
     }
