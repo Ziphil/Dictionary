@@ -25,7 +25,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       PrimLong offset = 0L
       try {
         String currentName = null
-        StringBuilder currentData = StringBuilder.new()
+        StringBuilder currentDescription = StringBuilder.new()
         for (String line ; (line = reader.readLine()) != null ;) {
           if (isCancelled()) {
             reader.close()
@@ -33,17 +33,17 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
           }
           Matcher matcher = line =~ /^\*\s*(.+)\s*$/
           if (matcher.matches()) {
-            add(currentName, currentData)
+            add(currentName, currentDescription)
             currentName = matcher.group(1)
-            currentData.setLength(0)
+            currentDescription.setLength(0)
           } else {
-            currentData.append(line)
-            currentData.append("\n")
+            currentDescription.append(line)
+            currentDescription.append("\n")
           }
           offset += line.getBytes("UTF-8").length + 1
           updateProgress(offset, size)
         }
-        add(currentName, currentData)
+        add(currentName, currentDescription)
       } finally {
         reader.close()
       }
@@ -54,43 +54,43 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     return $words
   }
 
-  private void add(String currentName, StringBuilder currentData) {
+  private void add(String currentName, StringBuilder currentDescription) {
     if (currentName != null) {
       if (currentName.startsWith("META-")) {
         if (currentName == "META-ALPHABET-ORDER") {
-          addAlphabetOrder(currentData)
+          addAlphabetOrder(currentDescription)
         } else if (currentName == "META-VERSION") {
-          addVersion(currentData)
+          addVersion(currentDescription)
         } else if (currentName == "META-CHANGE") {
-          addChangeDescription(currentData)
+          addChangeDescription(currentDescription)
         }
       } else {
-        addWord(currentName, currentData)
+        addWord(currentName, currentDescription)
       }
     }
   }
 
-  private void addWord(String currentName, StringBuilder currentData) {
+  private void addWord(String currentName, StringBuilder currentDescription) {
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(currentName)
-    word.setDescription(currentData.toString())
+    word.setDescription(currentDescription.toString())
     word.setDictionary($dictionary)
     word.update()
     $words.add(word)
   }
 
-  private void addAlphabetOrder(StringBuilder currentData) {
-    String alphabetOrder = currentData.toString().trim().replaceAll(/^\-\s*/, "")
+  private void addAlphabetOrder(StringBuilder currentDescription) {
+    String alphabetOrder = currentDescription.toString().trim().replaceAll(/^\-\s*/, "")
     $dictionary.setAlphabetOrder(alphabetOrder)
   }
 
-  private void addVersion(StringBuilder currentData) {
-    String version = currentData.toString().trim().replaceAll(/^\-\s*/, "")
+  private void addVersion(StringBuilder currentDescription) {
+    String version = currentDescription.toString().trim().replaceAll(/^\-\s*/, "")
     $dictionary.setVersion(version)
   }
 
-  private void addChangeDescription(StringBuilder currentData) {
-    String changeDescription = currentData.toString().replaceAll(/^\s*\n/, "")
+  private void addChangeDescription(StringBuilder currentDescription) {
+    String changeDescription = currentDescription.toString().replaceAll(/^\s*\n/, "")
     $dictionary.setChangeDescription(changeDescription)
   }
 

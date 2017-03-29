@@ -1,4 +1,4 @@
-package ziphil.module
+package ziphil.module.hah
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
@@ -7,13 +7,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class HahCompression {
 
-  private HahCompressionType $type
+  private HahCompressionType $type = HahCompressionType.NORMAL
   private Integer $interval = 4
   private String $alphabetOrder = null
-
-  public HahCompression(HahCompressionType type) {
-    $type = type
-  }
 
   public String compress(String input) {
     List<SortElement> elements = ArrayList.new()
@@ -22,7 +18,7 @@ public class HahCompression {
       element.updateComparisonIndex($alphabetOrder)
       elements.add(element)
     }
-    if ($type == HahCompressionType.RANDOM) {
+    if ($type == HahCompressionType.RANDOM || $type == HahCompressionType.RANDOM_SORT) {
       Collections.shuffle(elements)
     } else if ($type == HahCompressionType.SORT) {
       Collections.sort(elements) { SortElement firstElement, SortElement secondElement ->
@@ -41,7 +37,7 @@ public class HahCompression {
         }
       }
     }
-    if ($type == HahCompressionType.SORT) {
+    if ($type == HahCompressionType.RANDOM_SORT || $type == HahCompressionType.SORT) {
       Collections.sort(compressedElements) { SortElement firstElement, SortElement secondElement ->
         return firstElement.getIndex() - secondElement.getIndex()
       }
@@ -51,6 +47,10 @@ public class HahCompression {
       output.append(element.getCharacter())
     }
     return output.toString()
+  }
+
+  public void setType(HahCompressionType type) {
+    $type = type
   }
 
   public void setInterval(Integer interval) {

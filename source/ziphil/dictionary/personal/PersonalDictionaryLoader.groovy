@@ -10,11 +10,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionary, PersonalWord> {
 
-  private static final Integer QUOTATION = 34
-  private static final Integer COMMA = 44
-  private static final Integer LINE_BREAK = 10
-  private static final Integer CARRIAGE_RETURN = 13
-
   public PersonalDictionaryLoader(PersonalDictionary dictionary, String path) {
     super(dictionary, path)
     updateProgress(0, 1)
@@ -33,16 +28,16 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
       Boolean isQuoted = false
       try {
         for (Integer codePoint = -1 ; (codePoint = reader.read()) != -1 ;) {
-          if (codePoint == CARRIAGE_RETURN) {
+          if (codePoint == '\r') {
             continue
           }
           if (isReadingValue) {
             if (isQuoted) {
-              if (codePoint == QUOTATION) {
+              if (codePoint == '"') {
                 Integer nextCodePoint = reader.read()
-                if (nextCodePoint == QUOTATION) {
+                if (nextCodePoint == '"') {
                   currentValue.appendCodePoint(codePoint)
-                } else if (nextCodePoint == COMMA) {
+                } else if (nextCodePoint == ',') {
                   if (isFirstLine) {
                     fillHeaderData(headerData, index, currentValue)
                   } else {
@@ -51,7 +46,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                   currentValue.setLength(0)
                   index ++
                   isReadingValue = false
-                } else if (nextCodePoint == LINE_BREAK || nextCodePoint == -1) {
+                } else if (nextCodePoint == '\n' || nextCodePoint == -1) {
                   if (isFirstLine) {
                     fillHeaderData(headerData, index, currentValue)
                   } else {
@@ -70,7 +65,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                 currentValue.appendCodePoint(codePoint)
               }
             } else {
-              if (codePoint == COMMA) {
+              if (codePoint == ',') {
                 if (isFirstLine) {
                   fillHeaderData(headerData, index, currentValue)
                 } else {
@@ -79,7 +74,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                 currentValue.setLength(0)
                 index ++
                 isReadingValue = false
-              } else if (codePoint == LINE_BREAK) {
+              } else if (codePoint == '\n') {
                 if (isFirstLine) {
                   fillHeaderData(headerData, index, currentValue)
                 } else {
@@ -98,13 +93,13 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
               }
             }
           } else {
-            if (codePoint == QUOTATION) {
+            if (codePoint == '"') {
               isReadingValue = true
               isQuoted = true
-            } else if (codePoint == COMMA) {
+            } else if (codePoint == ',') {
               currentValue.setLength(0)
               index ++
-            } else if (codePoint == LINE_BREAK) {
+            } else if (codePoint == '\n') {
               word = PersonalWord.new()
               currentValue.setLength(0)
               index = 0

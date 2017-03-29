@@ -23,7 +23,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateName() {
-    $name = ($uniqueName.startsWith("\$")) ? "" : $uniqueName.replaceAll(/\+|~/, "")
+    $name = ($uniqueName.startsWith("\$")) ? "\$" : $uniqueName.replaceAll(/\+|~/, "")
   }
 
   private void updateEquivalents() {
@@ -34,7 +34,7 @@ public class ShaleiaWord extends WordBase {
         Matcher matcher = line =~ /^\=(?:\:)?\s*(?:〈(.+)〉)?\s*(.+)$/
         if (matcher.matches()) {
           String equivalent = matcher.group(2)
-          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|\s)/, "").split(/,/).toList()
+          List<String> equivalents = equivalent.replaceAll(/(\(.+\)|\{|\}|\/|～|\s)/, "").split(/,/).toList()
           $equivalents.addAll(equivalents)
         }
       }
@@ -53,11 +53,15 @@ public class ShaleiaWord extends WordBase {
     for (Integer i : 0 ..< $uniqueName.length()) {
       String character = $uniqueName[i]
       if ((isApostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
-        Integer position = order.indexOf($uniqueName.codePointAt(i))
-        if (position > -1) {
-          comparisonString.appendCodePoint(position + 174)
+        if (character != "\$") {
+          Integer position = order.indexOf($uniqueName.codePointAt(i))
+          if (position > -1) {
+            comparisonString.appendCodePoint(position + 174)
+          } else {
+            comparisonString.appendCodePoint(10000)
+          }
         } else {
-          comparisonString.appendCodePoint(10000)
+          comparisonString.appendCodePoint(11000)
         }
       }
     }
@@ -71,10 +75,6 @@ public class ShaleiaWord extends WordBase {
     $contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
     $contentPaneFactory.setLineSpacing(lineSpacing)
     $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
-  }
-
-  public Boolean isDisplayed() {
-    return !$uniqueName.startsWith("\$")
   }
 
   public ShaleiaDictionary getDictionary() {

@@ -63,7 +63,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
         Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
         if (contentPane.getChildren().isEmpty()) {
-          String name = $word.getName()
+          String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
           addNameNode(contentPane, name)
         }
         if (creationDateMatcher.matches()) {

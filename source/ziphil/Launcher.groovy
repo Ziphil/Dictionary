@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 6, 0, 1887)
+  public static final Version VERSION = Version.new(1, 7, 0, 1893)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -41,7 +41,9 @@ public class Launcher {
 
 // ◆ Version History
 //
-//  1. 6. 0 | hah圧縮を行う機能を追加。
+//  1. 7. 0 | akrantiain を実行する機能を追加。
+//          | シャッフル後にソートするタイプの hah 圧縮を行う機能を追加。
+//  1. 6. 0 | hah 圧縮を行う機能を追加。
 //          | シャレイア語辞典形式での活用サジェストに対応。
 //          | エラーが発生したときにバックアップを保存するよう変更。
 //  1. 5. 2 | メインウィンドウを閉じたときに単語編集ウィンドウが閉じない不具合を修正。

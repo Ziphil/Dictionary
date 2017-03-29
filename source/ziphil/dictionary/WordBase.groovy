@@ -24,10 +24,6 @@ public abstract class WordBase implements Word {
     }
   }
 
-  public Boolean isDisplayed() {
-    return true
-  }
-
   public String getName() {
     return $name
   }

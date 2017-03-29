@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import ziphil.module.HahCompressionType?>
+<?import ziphil.module.hah.HahCompressionType?>
 <?import ziphil.module.Setting?>
 
 
@@ -50,12 +50,13 @@
       <Label text="結果:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
       <TextField fx:id="$inputControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <ComboBox fx:id="$typeControl" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <prefWidth><Double rpx="100"/></prefWidth>
-        <minWidth><Double rpx="100"/></minWidth>
+        <prefWidth><Double rpx="150"/></prefWidth>
+        <minWidth><Double rpx="150"/></minWidth>
         <items>
           <FXCollections fx:factory="observableArrayList">
             <HahCompressionType fx:value="NORMAL"/>
             <HahCompressionType fx:value="RANDOM"/>
+            <HahCompressionType fx:value="RANDOM_SORT"/>
             <HahCompressionType fx:value="SORT"/>
           </FXCollections>
         </items>
