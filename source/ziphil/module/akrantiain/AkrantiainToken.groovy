@@ -33,6 +33,8 @@ public class AkrantiainToken {
     Integer from = null
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
       from = matchLeftQuoteLiteral(group, to, setting)
+    } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
+      from = matchLeftCircumflex(group, to, setting)
     } else if ($type == AkrantiainTokenType.IDENTIFIER) {
       from = matchLeftIdentifier(group, to, setting)
     }
@@ -122,6 +124,35 @@ public class AkrantiainToken {
       }
     }
     return to
+  }
+
+  private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    Integer from = null
+    Boolean isMatched = false
+    Integer pointer = to - 1
+    while (pointer >= -1) {
+      AkrantiainElement element = (pointer >= 0) ? group.getElements()[pointer] : null
+      if (element != null) {
+        String elementPart = element.getPart()
+        Integer punctuationFrom = null
+        if (AkrantiainLexer.isAllWhitespace(elementPart)) {
+          isMatched = true
+          pointer --
+        } else if ((punctuationFrom = setting.findPunctuationContent().matchLeft(group, pointer, setting)) != null) {
+          isMatched = true
+          pointer = punctuationFrom
+        } else {
+          if (isMatched || to == group.getElements().size()) {
+            from = pointer + 1
+          }
+          break
+        }
+      } else {
+        from = pointer + 1
+        break
+      }
+    }
+    return from
   }
 
   private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
