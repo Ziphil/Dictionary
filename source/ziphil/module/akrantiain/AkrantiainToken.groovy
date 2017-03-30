@@ -32,8 +32,9 @@ public class AkrantiainToken {
   private Integer matchQuoteLiteralSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Integer matchedLength = 0
-    for (Integer i = from ; i < group.getElements().size() ; i ++) {
-      AkrantiainElement element = group.getElements()[i]
+    Integer pointer = from
+    while (pointer < group.getElements().size()) {
+      AkrantiainElement element = group.getElements()[pointer]
       String elementPart = element.getPart()
       if (matchedLength + elementPart.length() <= $text.length()) {
         String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
@@ -42,7 +43,7 @@ public class AkrantiainToken {
         if (adjustedTextSubstring == adjustedElementPart) {
           matchedLength += elementPart.length()
           if (matchedLength == $text.length()) {
-            to = i + 1
+            to = pointer + 1
             break
           }
         } else {
@@ -51,6 +52,7 @@ public class AkrantiainToken {
       } else {
         break
       }
+      pointer ++
     }
     return to
   }
@@ -58,25 +60,26 @@ public class AkrantiainToken {
   private Integer matchCircumflexSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Boolean isMatched = false
-    for (Integer i = from ; i <= group.getElements().size() ;) {
-      AkrantiainElement element = group.getElements()[i]
+    Integer pointer = from
+    while (pointer <= group.getElements().size()) {
+      AkrantiainElement element = group.getElements()[pointer]
       if (element != null) {
         String elementPart = element.getPart()
-        Integer punctuationTo
+        Integer punctuationTo = null
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
-          i += 1
-        } else if ((punctuationTo = setting.findPunctuationRight().matchSelection(group, i, setting)) != null) {
+          pointer ++
+        } else if ((punctuationTo = setting.findPunctuationRight().matchSelection(group, pointer, setting)) != null) {
           isMatched = true
-          i = punctuationTo
+          pointer = punctuationTo
         } else {
           if (isMatched || from == 0) {
-            to = i
+            to = pointer
           }
           break
         }
       } else {
-        to = i
+        to = pointer
         break
       }
     }
