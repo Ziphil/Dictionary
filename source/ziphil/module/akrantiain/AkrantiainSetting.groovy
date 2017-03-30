@@ -17,7 +17,7 @@ public class AkrantiainSetting {
         return definition.getContent()
       }
     }
-    throw AkrantiainException.new("No such identifier \"${identifierName}\"")
+    return null
   }
 
   public AkrantiainDisjunctionGroup findPunctuationContent() {

@@ -156,13 +156,23 @@ public class AkrantiainToken implements AkrantiainMatchable {
   }
 
   private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    Integer to = setting.findContentOf($text).matchRight(group, from, setting)
-    return to
+    AkrantiainDisjunctionGroup content = setting.findContentOf($text)
+    if (content != null) {
+      Integer to = content.matchRight(group, from, setting)
+      return to
+    } else {
+      throw AkrantiainException.new("No such identifier \"${$text}\"")
+    }
   }
 
   private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    Integer from = setting.findContentOf($text).matchLeft(group, to, setting)
-    return from
+    AkrantiainDisjunctionGroup content = setting.findContentOf($text)
+    if (content != null) {
+      Integer from = content.matchLeft(group, to, setting)
+      return from
+    } else {
+      throw AkrantiainException.new("No such identifier \"${$text}\"")
+    }
   }
 
   public Boolean isConcrete() {

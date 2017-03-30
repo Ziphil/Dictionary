@@ -101,7 +101,7 @@ public class AkrantiainSentenceParser {
     while (true) {
       AkrantiainToken token = $tokens[$pointer ++]
       AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
-      if (tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
+      if (tokenType == AkrantiainTokenType.QUOTE_LITERAL || tokenType == AkrantiainTokenType.IDENTIFIER) {
         currentTokenGroup.getTokens().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
         if (currentTokenGroup.hasToken()) {
