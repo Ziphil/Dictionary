@@ -16,7 +16,7 @@ public class AkrantiainRule {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
     while (pointer < group.getElements().size()) {
-      ApplicationResult result = applySingle(group, pointer, setting)
+      ApplicationResult result = applyOnce(group, pointer, setting)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
         pointer = result.getTo()
@@ -31,13 +31,27 @@ public class AkrantiainRule {
   // ちょうど from で与えられた位置から規則を適用します。
   // 規則がマッチして適用できた場合は、変化後の要素のリストとマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
   // そもそも規則にマッチせず適用できなかった場合は null を返します。
-  private ApplicationResult applySingle(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    List<AkrantiainElement> addedElements = ArrayList.new()
-    Integer pointer = from
-    AkrantiainElementGroup leftDevidedGroup = group.devide(0, from)
-    if ($leftCondition != null && $leftCondition.matchLeft(leftDevidedGroup, leftDevidedGroup.getElements().size(), setting) == null) {
+  private ApplicationResult applyOnce(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    if (checkLeftCondition(group, from, setting)) {
+      ApplicationResult result = applyOnceSelections(group, from, setting)
+      if (result != null) {
+        Integer to = result.getTo()
+        if (checkRightCondition(group, to, setting)) {
+          return result
+        } else {
+          return null
+        }
+      } else {
+        return null
+      }
+    } else {
       return null
     }
+  }
+
+  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    List<AkrantiainElement> addedElements = ArrayList.new()
+    Integer pointer = from
     Integer phonemeIndex = 0
     for (AkrantiainDisjunctionGroup selection : $selections) {
       Integer to = selection.matchRight(group, pointer, setting)
@@ -75,11 +89,17 @@ public class AkrantiainRule {
         return null
       }
     }
-    AkrantiainElementGroup rightDevidedGroup = group.devide(pointer, group.getElements().size())
-    if ($rightCondition != null && $rightCondition.matchRight(rightDevidedGroup, 0, setting) == null) {
-      return null
-    }
     return ApplicationResult.new(addedElements, pointer)
+  }
+
+  private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    AkrantiainElementGroup devidedGroup = group.devide(0, to)
+    return $leftCondition == null || $leftCondition.matchLeft(devidedGroup, devidedGroup.getElements().size(), setting) != null
+  }
+
+  private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    AkrantiainElementGroup devidedGroup = group.devide(from, group.getElements().size())
+    return $rightCondition == null || $rightCondition.matchRight(devidedGroup, 0, setting) != null
   }
 
   public String toString() {
