@@ -63,6 +63,28 @@ public class AkrantiainElementGroup {
     return output.toString()
   }
 
+  public Boolean isAllConverted(Integer from, Integer to) {
+    Boolean isAllConverted = true
+    for (Integer i : from ..< to) {
+      if (!$elements[i].isConverted()) {
+        isAllConverted = false
+        break
+      }
+    }
+    return isAllConverted
+  }
+
+  public Boolean isNoneConverted(Integer from, Integer to) {
+    Boolean isNoneConverted = true
+    for (Integer i : from ..< to) {
+      if ($elements[i].isConverted()) {
+        isNoneConverted = false
+        break
+      }
+    }
+    return isNoneConverted
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("[")

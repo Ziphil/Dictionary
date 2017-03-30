@@ -60,13 +60,7 @@ public class AkrantiainRule {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
           AkrantiainTokenType phonemeType = phoneme.getType()
           if (phonemeType == AkrantiainTokenType.SLASH_LITERAL) {
-            Boolean isNoneConverted = true
-            for (Integer i : pointer ..< to) {
-              if (group.getElements()[i].isConverted()) {
-                isNoneConverted = false
-              }
-            }
-            if (isNoneConverted) {
+            if (group.isNoneConverted(pointer, to)) {
               AkrantiainElement addedElement = group.merge(pointer, to)
               addedElement.setResult(phoneme.getText())
               addedElements.add(addedElement)
