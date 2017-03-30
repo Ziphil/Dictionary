@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainRule {
 
-  private List<AkrantiainDisjunctionGroup> $selections = ArrayList.new()
-  private AkrantiainDisjunctionGroup $leftCondition = null
-  private AkrantiainDisjunctionGroup $rightCondition = null
+  private List<AkrantiainMatchable> $selections = ArrayList.new()
+  private AkrantiainMatchable $leftCondition = null
+  private AkrantiainMatchable $rightCondition = null
   private List<AkrantiainToken> $phonemes = ArrayList.new()
 
   public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainSetting setting) {
@@ -53,7 +53,7 @@ public class AkrantiainRule {
     List<AkrantiainElement> addedElements = ArrayList.new()
     Integer pointer = from
     Integer phonemeIndex = 0
-    for (AkrantiainDisjunctionGroup selection : $selections) {
+    for (AkrantiainMatchable selection : $selections) {
       Integer to = selection.matchRight(group, pointer, setting)
       if (to != null) {
         if (selection.isConcrete()) {
@@ -122,7 +122,7 @@ public class AkrantiainRule {
   public Boolean isSizeValid() {
     Integer phonemeSize = $phonemes.size()
     Integer concreteSelectionSize = 0
-    for (AkrantiainDisjunctionGroup selection : $selections) {
+    for (AkrantiainMatchable selection : $selections) {
       if (selection.isConcrete()) {
         concreteSelectionSize ++
       }
@@ -142,27 +142,27 @@ public class AkrantiainRule {
     return $rightCondition != null
   }
 
-  public List<AkrantiainDisjunctionGroup> getSelections() {
+  public List<AkrantiainMatchable> getSelections() {
     return $selections
   }
 
-  public void setSelections(List<AkrantiainDisjunctionGroup> selections) {
+  public void setSelections(List<AkrantiainMatchable> selections) {
     $selections = selections
   }
 
-  public AkrantiainDisjunctionGroup getLeftCondition() {
+  public AkrantiainMatchable getLeftCondition() {
     return $leftCondition
   }
 
-  public void setLeftCondition(AkrantiainDisjunctionGroup leftCondition) {
+  public void setLeftCondition(AkrantiainMatchable leftCondition) {
     $leftCondition = leftCondition
   }
 
-  public AkrantiainDisjunctionGroup getRightCondition() {
+  public AkrantiainMatchable getRightCondition() {
     return $rightCondition
   }
 
-  public void setRightCondition(AkrantiainDisjunctionGroup rightCondition) {
+  public void setRightCondition(AkrantiainMatchable rightCondition) {
     $rightCondition = rightCondition
   }
 

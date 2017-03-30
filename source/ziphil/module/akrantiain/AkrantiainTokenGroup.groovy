@@ -5,7 +5,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainTokenGroup {
+public class AkrantiainTokenGroup implements AkrantiainMatchable {
 
   public static final AkrantiainTokenGroup EMPTY_GROUP = AkrantiainTokenGroup.new()
 
@@ -45,6 +45,10 @@ public class AkrantiainTokenGroup {
     } else {
       return null
     }
+  }
+
+  public Boolean isConcrete() {
+    return $tokens.size() >= 2 || ($tokens.size() >= 1 && $tokens[0].isConcrete())
   }
 
   public String toString() {

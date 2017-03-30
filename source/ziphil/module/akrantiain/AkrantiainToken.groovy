@@ -5,7 +5,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainToken {
+public class AkrantiainToken implements AkrantiainMatchable {
 
   private AkrantiainTokenType $type
   private String $text
@@ -163,6 +163,10 @@ public class AkrantiainToken {
   private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
     Integer from = setting.findContentOf($text).matchLeft(group, to, setting)
     return from
+  }
+
+  public Boolean isConcrete() {
+    return $type != AkrantiainTokenType.CIRCUMFLEX
   }
 
   public String toString() {

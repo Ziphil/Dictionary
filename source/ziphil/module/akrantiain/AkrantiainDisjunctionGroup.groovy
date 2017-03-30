@@ -5,16 +5,13 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainDisjunctionGroup {
+public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
 
   public static final AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
 
   private Boolean $isNegated = false
   private List<AkrantiainTokenGroup> $tokenGroups = ArrayList.new()
 
-  // ちょうど from で与えられた位置から右向きにマッチするかどうかを調べます。
-  // マッチした場合はマッチした範囲の右端のインデックス (範囲にそのインデックス自体は含まない) を返します。
-  // マッチしなかった場合は null を返します。
   public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     if (!$tokenGroups.isEmpty()) {
@@ -34,9 +31,6 @@ public class AkrantiainDisjunctionGroup {
     }
   }
 
-  // ちょうど to で与えられた位置から左向きにマッチするかどうかを調べます。
-  // マッチした場合はマッチした範囲の左端のインデックス (範囲にそのインデックス自体を含む) を返します。
-  // マッチしなかった場合は null を返します。
   public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
     Integer from = null
     if (!$tokenGroups.isEmpty()) {
@@ -56,10 +50,8 @@ public class AkrantiainDisjunctionGroup {
     }
   }
 
-  // この選言グループが変換先をもつならば true を返し、そうでなければ false を返します。
-  // ver 0.4.2 の時点では、これに該当するのは「^」のみです。
   public Boolean isConcrete() {
-    return $tokenGroups.size() > 1 || !$tokenGroups[0].isSingleton() || $tokenGroups[0].getToken().getType() != AkrantiainTokenType.CIRCUMFLEX
+    return $tokenGroups.size() >= 2 || ($tokenGroups.size() >= 1 && $tokenGroups[0].isConcrete())
   }
 
   public String toString() {
