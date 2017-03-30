@@ -65,7 +65,9 @@ public class AkrantiainRule {
           }
           phonemeIndex ++
         } else {
-          return null
+          for (Integer i : pointer ..< to) {
+            addedElements.add(group.getElements()[i])
+          }
         }
         pointer = to
       } else {
