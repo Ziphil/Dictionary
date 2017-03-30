@@ -34,9 +34,9 @@ public class AkrantiainSentenceParser {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
       AkrantiainToken identifier = $tokens[0]
-      AkrantiainDisjunctionGroup right = nextDisjunctionGroup()
+      AkrantiainDisjunctionGroup content = nextDisjunctionGroup()
       definition.setIdentifier(identifier)
-      definition.setRight(right)
+      definition.setContent(content)
       if ($tokens[$pointer] == null) {
         return definition
       } else {

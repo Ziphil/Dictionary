@@ -69,7 +69,7 @@ public class AkrantiainToken {
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
           pointer ++
-        } else if ((punctuationTo = setting.findPunctuationRight().matchSelection(group, pointer, setting)) != null) {
+        } else if ((punctuationTo = setting.findPunctuationContent().matchSelection(group, pointer, setting)) != null) {
           isMatched = true
           pointer = punctuationTo
         } else {
@@ -87,7 +87,7 @@ public class AkrantiainToken {
   }
 
   private Integer matchIdentifierSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    Integer to = setting.findRightOf($text).matchSelection(group, from, setting)
+    Integer to = setting.findContentOf($text).matchSelection(group, from, setting)
     return to
   }
 

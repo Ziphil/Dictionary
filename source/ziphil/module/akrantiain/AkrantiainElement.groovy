@@ -33,7 +33,7 @@ public class AkrantiainElement {
       } else {
         AkrantiainElementGroup group = AkrantiainElementGroup.new()
         group.getElements().add(this)
-        if (setting.findPunctuationRight().matchSelection(group, 0, setting) != null) {
+        if (setting.findPunctuationContent().matchSelection(group, 0, setting) != null) {
           return true
         } else {
           return false

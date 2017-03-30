@@ -37,7 +37,7 @@ public class AkrantiainTokenGroup {
         }
         return group.merge(0, to).getPart().endsWith(mergedText.toString())
       } else {
-        return setting.findRightOf($tokens[0].getText()).matchLeftCondition(group, to, setting)
+        return setting.findContentOf($tokens[0].getText()).matchLeftCondition(group, to, setting)
       }
     } else {
       return true
@@ -53,7 +53,7 @@ public class AkrantiainTokenGroup {
         }
         return group.merge(from, group.getElements().size()).getPart().startsWith(mergedText.toString())
       } else {
-        return setting.findRightOf($tokens[0].getText()).matchRightCondition(group, from, setting)
+        return setting.findContentOf($tokens[0].getText()).matchRightCondition(group, from, setting)
       }
     } else {
       return true

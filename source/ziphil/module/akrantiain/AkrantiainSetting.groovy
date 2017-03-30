@@ -11,19 +11,19 @@ public class AkrantiainSetting {
   private List<AkrantiainDefinition> $definitions = ArrayList.new()
   private List<AkrantiainRule> $rules = ArrayList.new()
 
-  public AkrantiainDisjunctionGroup findRightOf(String identifierName) {
+  public AkrantiainDisjunctionGroup findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {
-        return definition.getRight()
+        return definition.getContent()
       }
     }
     throw AkrantiainException.new("No such identifier \"${identifierName}\"")
   }
 
-  public AkrantiainDisjunctionGroup findPunctuationRight() {
+  public AkrantiainDisjunctionGroup findPunctuationContent() {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == Akrantiain.PUNCTUATION_IDENTIIER_NAME) {
-        return definition.getRight()
+        return definition.getContent()
       }
     }
     return AkrantiainDisjunctionGroup.EMPTY_GROUP
