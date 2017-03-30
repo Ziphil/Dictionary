@@ -18,15 +18,25 @@ public class AkrantiainElementGroup {
     return group
   }
 
-  // インデックスが from から to まで (to は含まない) のオブジェクトを 1 つに合成したオブジェクトを返します。
-  // 返されるオブジェクトの part の値は、合成前の part をインデックス順に繋げたものになります。
-  // 返されるオブジェクトの result の値は、合成前の各オブジェクトの result の値に関わらず null になります。
+  // インデックスが from から to まで (to は含まない) の要素を 1 つに合成した要素を返します。
+  // 返される要素の part の値は、合成前の part をインデックス順に繋げたものになります。
+  // 返される要素の result の値は、合成前の各要素の result の値に関わらず null になります。
   public AkrantiainElement merge(Integer from, Integer to) {
     StringBuilder mergedPart = StringBuilder.new()
     for (Integer i : from ..< to) {
       mergedPart.append($elements[i].getPart())
     }
     return AkrantiainElement.new(mergedPart.toString())
+  }
+
+  // インデックスが from から to まで (to は含まない) の要素を 1 文字ごとに分割した要素グループを返します。
+  // 返される要素グループに含まれる全ての要素の result の値は、常に null になります。
+  public AkrantiainElementGroup devide(Integer from, Integer to) {
+    AkrantiainElementGroup group = AkrantiainElementGroup.new()
+    for (Integer i : from ..< to) {
+      group.getElements().addAll($elements[i].devide().getElements())
+    }
+    return group
   }
 
   public AkrantiainElement firstInvalidElement(AkrantiainSetting setting) {

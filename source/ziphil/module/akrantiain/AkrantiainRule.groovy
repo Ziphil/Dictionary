@@ -34,12 +34,13 @@ public class AkrantiainRule {
   private ApplicationResult applySingle(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     List<AkrantiainElement> addedElements = ArrayList.new()
     Integer pointer = from
-    if ($leftCondition != null && !$leftCondition.matchLeftCondition(group, pointer, setting)) {
+    AkrantiainElementGroup leftDevidedGroup = group.devide(0, from)
+    if ($leftCondition != null && $leftCondition.matchLeft(leftDevidedGroup, leftDevidedGroup.getElements().size(), setting) == null) {
       return null
     }
     Integer phonemeIndex = 0
     for (AkrantiainDisjunctionGroup selection : $selections) {
-      Integer to = selection.matchSelection(group, pointer, setting)
+      Integer to = selection.matchRight(group, pointer, setting)
       if (to != null) {
         if (selection.isConcrete()) {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
@@ -74,7 +75,8 @@ public class AkrantiainRule {
         return null
       }
     }
-    if ($rightCondition != null && !$rightCondition.matchRightCondition(group, pointer, setting)) {
+    AkrantiainElementGroup rightDevidedGroup = group.devide(pointer, group.getElements().size())
+    if ($rightCondition != null && $rightCondition.matchRight(rightDevidedGroup, 0, setting) == null) {
       return null
     }
     return ApplicationResult.new(addedElements, pointer)

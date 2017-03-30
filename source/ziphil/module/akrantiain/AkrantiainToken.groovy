@@ -17,19 +17,29 @@ public class AkrantiainToken {
     $lineNumber = lineNumber
   }
 
-  public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
-      to = matchQuoteLiteralSelection(group, from, setting)
+      to = matchRightQuoteLiteral(group, from, setting)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
-      to = matchCircumflexSelection(group, from, setting)
+      to = matchRightCircumflex(group, from, setting)
     } else if ($type == AkrantiainTokenType.IDENTIFIER) {
-      to = matchIdentifierSelection(group, from, setting)
+      to = matchRightIdentifier(group, from, setting)
     }
     return to
   }
 
-  private Integer matchQuoteLiteralSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    Integer from = null
+    if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
+      from = matchLeftQuoteLiteral(group, to, setting)
+    } else if ($type == AkrantiainTokenType.IDENTIFIER) {
+      from = matchLeftIdentifier(group, to, setting)
+    }
+    return from
+  }
+
+  private Integer matchRightQuoteLiteral(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Integer matchedLength = 0
     Integer pointer = from
@@ -57,7 +67,35 @@ public class AkrantiainToken {
     return to
   }
 
-  private Integer matchCircumflexSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  private Integer matchLeftQuoteLiteral(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    Integer from = null
+    Integer matchedLength = 0
+    Integer pointer = to - 1
+    while (pointer >= 0) {
+      AkrantiainElement element = group.getElements()[pointer]
+      String elementPart = element.getPart()
+      if (matchedLength + elementPart.length() <= $text.length()) {
+        String textSubstring = $text.substring($text.length() - elementPart.length() - matchedLength, $text.length() - matchedLength)
+        String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+        String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+        if (adjustedTextSubstring == adjustedElementPart) {
+          matchedLength += elementPart.length()
+          if (matchedLength == $text.length()) {
+            from = pointer
+            break
+          }
+        } else {
+          break
+        }
+      } else {
+        break
+      }
+      pointer --
+    }
+    return from
+  }
+
+  private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
     Boolean isMatched = false
     Integer pointer = from
@@ -69,7 +107,7 @@ public class AkrantiainToken {
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
           pointer ++
-        } else if ((punctuationTo = setting.findPunctuationContent().matchSelection(group, pointer, setting)) != null) {
+        } else if ((punctuationTo = setting.findPunctuationContent().matchRight(group, pointer, setting)) != null) {
           isMatched = true
           pointer = punctuationTo
         } else {
@@ -86,9 +124,14 @@ public class AkrantiainToken {
     return to
   }
 
-  private Integer matchIdentifierSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    Integer to = setting.findContentOf($text).matchSelection(group, from, setting)
+  private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    Integer to = setting.findContentOf($text).matchRight(group, from, setting)
     return to
+  }
+
+  private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    Integer from = setting.findContentOf($text).matchLeft(group, to, setting)
+    return from
   }
 
   public String toString() {

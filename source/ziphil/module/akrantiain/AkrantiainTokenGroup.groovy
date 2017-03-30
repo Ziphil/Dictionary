@@ -11,11 +11,12 @@ public class AkrantiainTokenGroup {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 
-  public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     if (!$tokens.isEmpty()) {
       Integer pointer = from
-      for (AkrantiainToken token : $tokens) {
-        Integer to = token.matchSelection(group, pointer, setting)
+      for (Integer i : 0 ..< $tokens.size()) {
+        AkrantiainToken token = $tokens[i]
+        Integer to = token.matchRight(group, pointer, setting)
         if (to != null) {
           pointer = to
         } else {
@@ -28,35 +29,21 @@ public class AkrantiainTokenGroup {
     }
   }
 
-  public Boolean matchLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
     if (!$tokens.isEmpty()) {
-      if ($tokens.size() > 1 || $tokens[0].getType() == AkrantiainTokenType.QUOTE_LITERAL) {
-        StringBuilder mergedText = StringBuilder.new()
-        for (AkrantiainToken token : $tokens) {
-          mergedText.append(token.getText())
+      Integer pointer = to
+      for (Integer i : $tokens.size() - 1 .. 0) {
+        AkrantiainToken token = $tokens[i]
+        Integer from = token.matchLeft(group, pointer, setting)
+        if (from != null) {
+          pointer = from
+        } else {
+          return null
         }
-        return group.merge(0, to).getPart().endsWith(mergedText.toString())
-      } else {
-        return setting.findContentOf($tokens[0].getText()).matchLeftCondition(group, to, setting)
       }
+      return pointer
     } else {
-      return true
-    }
-  }
-
-  public Boolean matchRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    if (!$tokens.isEmpty()) {
-      if ($tokens.size() > 1 || $tokens[0].getType() == AkrantiainTokenType.QUOTE_LITERAL) {
-        StringBuilder mergedText = StringBuilder.new()
-        for (AkrantiainToken token : $tokens) {
-          mergedText.append(token.getText())
-        }
-        return group.merge(from, group.getElements().size()).getPart().startsWith(mergedText.toString())
-      } else {
-        return setting.findContentOf($tokens[0].getText()).matchRightCondition(group, from, setting)
-      }
-    } else {
-      return true
+      return null
     }
   }
 
