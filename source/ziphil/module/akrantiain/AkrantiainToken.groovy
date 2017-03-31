@@ -156,7 +156,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
   }
 
   private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    AkrantiainDisjunctionGroup content = setting.findContentOf($text)
+    AkrantiainMatchable content = setting.findContentOf($text)
     if (content != null) {
       Integer to = content.matchRight(group, from, setting)
       return to
@@ -166,7 +166,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
   }
 
   private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    AkrantiainDisjunctionGroup content = setting.findContentOf($text)
+    AkrantiainMatchable content = setting.findContentOf($text)
     if (content != null) {
       Integer from = content.matchLeft(group, to, setting)
       return from

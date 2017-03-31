@@ -11,7 +11,7 @@ public class AkrantiainSetting {
   private List<AkrantiainDefinition> $definitions = ArrayList.new()
   private List<AkrantiainRule> $rules = ArrayList.new()
 
-  public AkrantiainDisjunctionGroup findContentOf(String identifierName) {
+  public AkrantiainMatchable findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {
         return definition.getContent()
@@ -20,7 +20,7 @@ public class AkrantiainSetting {
     return null
   }
 
-  public AkrantiainDisjunctionGroup findPunctuationContent() {
+  public AkrantiainMatchable findPunctuationContent() {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == Akrantiain.PUNCTUATION_IDENTIIER_NAME) {
         return definition.getContent()

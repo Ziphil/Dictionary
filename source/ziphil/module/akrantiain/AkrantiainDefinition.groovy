@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainDefinition {
 
   private AkrantiainToken $identifier
-  private AkrantiainDisjunctionGroup $content
+  private AkrantiainMatchable $content
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
@@ -26,11 +26,11 @@ public class AkrantiainDefinition {
     $identifier = identifier
   }
 
-  public AkrantiainDisjunctionGroup getContent() {
+  public AkrantiainMatchable getContent() {
     return $content
   }
 
-  public void setContent(AkrantiainDisjunctionGroup content) {
+  public void setContent(AkrantiainMatchable content) {
     $content = content
   }
 
