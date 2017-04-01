@@ -12,16 +12,16 @@ public class Akrantiain {
   private AkrantiainSetting $setting = AkrantiainSetting.new()
 
   public void load(File file) {
-    LineNumberReader reader = LineNumberReader.new(InputStreamReader.new(FileInputStream.new(file), "UTF-8"))
+    Reader reader = InputStreamReader.new(FileInputStream.new(file), "UTF-8")
     parse(reader)
   }
 
   public void load(String string) {
-    LineNumberReader reader = LineNumberReader.new(StringReader.new(string))
+    Reader reader = StringReader.new(string)
     parse(reader)
   }
 
-  private void parse(LineNumberReader reader) {
+  private void parse(Reader reader) {
     AkrantiainLexer lexer = AkrantiainLexer.new(reader)
     List<AkrantiainToken> currentTokens = ArrayList.new()
     for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {

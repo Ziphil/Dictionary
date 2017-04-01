@@ -11,8 +11,8 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
   private Boolean $isFirst = true
   private Boolean $isAfterSemicolon = false
 
-  public AkrantiainLexer(LineNumberReader reader) {
-    $reader = reader
+  public AkrantiainLexer(Reader reader) {
+    $reader = LineNumberReader.new(reader)
     setupReader()
   }
 
