@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import java.util.Map.Entry
 import ziphil.dictionary.DictionarySaver
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.Ziphilify
 
 
@@ -44,6 +45,8 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
         generator.writeFieldName("defaultWord")
         writeDefaultWord(generator)
         generator.writeEndObject()
+        generator.writeFieldName("snoj")
+        writeSnoj(generator)
         for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
           String fieldName = entry.getKey()
           TreeNode node = entry.getValue()
@@ -170,6 +173,15 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
 
   private void writeDefaultWord(JsonGenerator generator) {
     writeWord(generator, $dictionary.getDefaultWord())
+  }
+
+  private void writeSnoj(JsonGenerator generator) {
+    Akrantiain akrantiain = $dictionary.getAkrantiain()
+    if (akrantiain != null) {
+      generator.writeString(akrantiain.getSource())
+    } else {
+      generator.writeNull()
+    }
   }
 
   public void setMapper(ObjectMapper mapper) {

@@ -18,6 +18,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.Ziphilify
 
 
@@ -36,6 +37,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
+  private Akrantiain $akrantiain = null
   private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
 
@@ -450,6 +452,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setDefaultWord(SlimeWord defaultWord) {
     $defaultWord = defaultWord
+  }
+
+  public Akrantiain getAkrantiain() {
+    return $akrantiain
+  }
+
+  public void setAkrantiain(Akrantiain akrantiain) {
+    $akrantiain = akrantiain
   }
 
   public Map<String, TreeNode> getExternalData() {
