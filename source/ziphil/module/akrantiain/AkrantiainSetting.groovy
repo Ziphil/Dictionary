@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainSetting {
 
-  private EnumSet<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
+  private Set<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
 
@@ -42,11 +42,11 @@ public class AkrantiainSetting {
     return false
   }
 
-  public EnumSet<AkrantiainEnvironment> getEnvironments() {
+  public Set<AkrantiainEnvironment> getEnvironments() {
     return $environments
   }
 
-  public void setEnvironments(EnumSet<AkrantiainEnvironment> environments) {
+  public void setEnvironments(Set<AkrantiainEnvironment> environments) {
     $environments = environments
   }
 
