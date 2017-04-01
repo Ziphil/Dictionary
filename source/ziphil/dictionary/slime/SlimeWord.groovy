@@ -5,8 +5,6 @@ import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
-import ziphil.module.akrantiain.Akrantiain
-import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.Ziphilify
 
 
@@ -20,14 +18,12 @@ public class SlimeWord extends WordBase {
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
-  private String $pronunciation = null
   private String $comparisonString = ""
   private ContentPaneFactoryBase $plainContentPaneFactory
 
   public void update() {
     updateEquivalents()
     updateContent()
-    updatePronunciation()
     updateComparisonString()
     changeContentPaneFactory()
     changePlainContentPaneFactory()
@@ -56,19 +52,6 @@ public class SlimeWord extends WordBase {
       content.append(information.getText()).append("\n")
     }
     $content = content.toString()
-  }
-
-  private void updatePronunciation() {
-    Akrantiain akrantiain = $dictionary.getAkrantiain()
-    if (akrantiain != null) {
-      try {
-        $pronunciation = akrantiain.convert($name)
-      } catch (AkrantiainException exception) {
-        $pronunciation = null
-      }
-    } else {
-      $pronunciation = null
-    }
   }
 
   public void updateComparisonString() {
@@ -169,10 +152,6 @@ public class SlimeWord extends WordBase {
 
   public void setRelations(List<SlimeRelation> relations) {
     $relations = relations
-  }
-
-  public String getPronunciation() {
-    return $pronunciation
   }
 
   public String getComparisonString() {

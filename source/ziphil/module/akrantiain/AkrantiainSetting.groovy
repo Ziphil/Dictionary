@@ -8,8 +8,8 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainSetting {
 
   private EnumSet<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
-  private List<AkrantiainDefinition> $definitions = ArrayList.new()
-  private List<AkrantiainRule> $rules = ArrayList.new()
+  private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
+  private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
 
   public AkrantiainMatchable findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
