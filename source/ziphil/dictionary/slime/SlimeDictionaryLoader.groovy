@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
-import ziphil.module.akrantiain.Akrantiain
-import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -62,7 +60,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               updateProgressByParser(parser, size)
             }
           } else if (topFieldName == "snoj") {
-            parseSnoj(parser)
+            parseAkrantiainSource(parser)
           } else {
             $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
           }
@@ -230,16 +228,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     parseWord(parser, $dictionary.getDefaultWord())
   }
 
-  private void parseSnoj(JsonParser parser) {
+  private void parseAkrantiainSource(JsonParser parser) {
     if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
-      try {
-        String string = parser.getValueAsString()
-        Akrantiain akrantiain = Akrantiain.new()
-        akrantiain.load(string, true)
-        $dictionary.setAkrantiain(akrantiain)
-      } catch (AkrantiainParseException exception) {
-        $dictionary.setAkrantiain(null)
-      }
+      String akrantiainSource = parser.getValueAsString()
+      $dictionary.setAkrantiainSource(akrantiainSource)
     }
   }
 

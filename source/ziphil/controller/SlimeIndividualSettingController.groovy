@@ -40,6 +40,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $registeredParameters
+  private String $akrantiainSource
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
@@ -72,6 +73,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       $usesIndividualOrderControl.setSelected(true)
     }
     $registeredParameters = registeredParameters
+    $akrantiainSource = dictionary.getAkrantiainSource()
     for (Integer i : 0 ..< 10) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
@@ -81,18 +83,47 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
+    String akrantiainSource = $akrantiainSource
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
+    $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
     $individualSetting.setRegisteredParameters(registeredParameters)
     $individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $dictionary.updateMinimum()
     $stage.commit(true)
+  }
+
+  @FXML
+  private void editSnoj() {
+    UtilityStage<SnojChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    SnojChooserController controller = SnojChooserController.new(nextStage)
+    SnojChooserController.Result previousResult = SnojChooserController.Result.new(null, $akrantiainSource, false)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)     
+    controller.prepare(previousResult)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SnojChooserController.Result result = nextStage.getResult()
+      if (result.isFileSelected()) {
+        File file = result.getFile()
+        if (file != null) {
+          $akrantiainSource = file.getText()
+        }
+      } else {
+        $akrantiainSource = result.getString()
+      }
+    }
+  }
+
+  @FXML
+  private void removeSnoj() {
+    $akrantiainSource = null
   }
 
   @FXML

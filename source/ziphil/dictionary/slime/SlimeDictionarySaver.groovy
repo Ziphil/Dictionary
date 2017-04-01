@@ -46,7 +46,7 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
         writeDefaultWord(generator)
         generator.writeEndObject()
         generator.writeFieldName("snoj")
-        writeSnoj(generator)
+        writeAkrantiainSource(generator)
         for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
           String fieldName = entry.getKey()
           TreeNode node = entry.getValue()
@@ -175,10 +175,9 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
     writeWord(generator, $dictionary.getDefaultWord())
   }
 
-  private void writeSnoj(JsonGenerator generator) {
-    Akrantiain akrantiain = $dictionary.getAkrantiain()
-    if (akrantiain != null) {
-      generator.writeString(akrantiain.getSource())
+  private void writeAkrantiainSource(JsonGenerator generator) {
+    if ($dictionary.getAkrantiainSource() != null) {
+      generator.writeString($dictionary.getAkrantiainSource())
     } else {
       generator.writeNull()
     }

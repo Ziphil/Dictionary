@@ -19,6 +19,7 @@ import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -38,6 +39,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
   private Akrantiain $akrantiain = null
+  private String $akrantiainSource = null
   private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
 
@@ -177,6 +179,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void updateMinimum() {
     updateComparisonStrings()
+    updateAkrantiain()
     $isChanged = true
   }
 
@@ -263,6 +266,19 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private void updateComparisonStrings() {
     for (SlimeWord word : $words) {
       word.updateComparisonString($alphabetOrder)
+    }
+  }
+
+  private void updateAkrantiain() {
+    if ($akrantiainSource != null) {
+      try {
+        $akrantiain = Akrantiain.new()
+        $akrantiain.load($akrantiainSource)
+      } catch (AkrantiainParseException exception) {
+        $akrantiain = null
+      }
+    } else {
+      $akrantiain = null
     }
   }
 
@@ -458,8 +474,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return $akrantiain
   }
 
-  public void setAkrantiain(Akrantiain akrantiain) {
-    $akrantiain = akrantiain
+  public String getAkrantiainSource() {
+    return $akrantiainSource
+  }
+
+  public void setAkrantiainSource(String akrantiainSource) {
+    $akrantiainSource = akrantiainSource
   }
 
   public Map<String, TreeNode> getExternalData() {

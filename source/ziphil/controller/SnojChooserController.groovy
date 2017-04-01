@@ -49,6 +49,11 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
         $stringControl.setText(string)
       }
     }
+    if (previousResult.isFileSelected()) {
+      $isFileSelectedControl.setSelected(true)
+    } else {
+      $isStringSelectedControl.setSelected(true)
+    }
   }
 
   @FXML

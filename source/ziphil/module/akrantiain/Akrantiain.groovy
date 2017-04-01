@@ -10,30 +10,15 @@ public class Akrantiain {
   public static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
 
   private AkrantiainSetting $setting = AkrantiainSetting.new()
-  private String $source = null
 
-  public void load(File file, Boolean keepsSource) {
-    if (keepsSource) {
-      $source = file.getText()
-    }
+  public void load(File file) {
     Reader reader = InputStreamReader.new(FileInputStream.new(file), "UTF-8")
     parse(reader)
   }
 
-  public void load(String string, Boolean keepsSource) {
-    if (keepsSource) {
-      $source = string
-    }
+  public void load(String string) {
     Reader reader = StringReader.new(string)
     parse(reader)
-  }
-
-  public void load(File file) {
-    load(file, false)
-  }
-
-  public void load(String string) {
-    load(string, false)
   }
 
   private void parse(Reader reader) {
@@ -80,10 +65,6 @@ public class Akrantiain {
     } else {
       throw AkrantiainException.new("No rules that can handle \"${invalidElement.getPart()}\"")
     }
-  }
-
-  public String getSource() {
-    return $source
   }
 
 }
