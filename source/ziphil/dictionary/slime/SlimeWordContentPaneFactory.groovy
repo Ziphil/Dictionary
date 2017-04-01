@@ -12,8 +12,6 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
-import ziphil.module.akrantiain.Akrantiain
-import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -40,7 +38,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     Boolean hasRelation = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing($lineSpacing)
-    addNameNode(contentPane, $word.getName())
+    addNameNode(contentPane, $word.getName(), $word.getPronunciation())
     addTagNode(contentPane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
       String equivalentString = equivalent.getNames().join(", ")
@@ -91,16 +89,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     }
   }
 
-  private void addNameNode(TextFlow contentPane, String name) {
-    Akrantiain akrantiain = $dictionary.getAkrantiain()
-    String pronunciation = null
-    if (akrantiain != null) {
-      try {
-        pronunciation = akrantiain.convert(name)
-      } catch (AkrantiainException exception) {
-        pronunciation = null
-      }
-    }
+  private void addNameNode(TextFlow contentPane, String name, String pronunciation) {
     if (pronunciation != null) {
       Text nameText = Text.new(name + " ")
       Text pronunciationText = Text.new("/" + pronunciation + "/")
