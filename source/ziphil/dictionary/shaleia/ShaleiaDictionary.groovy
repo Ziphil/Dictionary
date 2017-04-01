@@ -77,13 +77,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    newWord.updateComparisonString($alphabetOrder)
     $isChanged = true
   }
 
   public void addWord(ShaleiaWord word) {
-    word.setDictionary(this)
-    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     $isChanged = true
   }
@@ -135,6 +132,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
     word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
+    word.setDictionary(this)
     word.update()
     return word
   }
@@ -143,6 +141,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaWord newWord = ShaleiaWord.new()
     newWord.setUniqueName(oldWord.getUniqueName())
     newWord.setDescription(oldWord.getDescription())
+    newWord.setDictionary(this)
     if (updates) {
       newWord.update()
     }

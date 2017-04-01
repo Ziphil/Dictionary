@@ -58,6 +58,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     newWord.setLevel(oldWord.getLevel())
     newWord.setMemory(oldWord.getMemory())
     newWord.setModification(oldWord.getModification())
+    newWord.setDictionary(this)
     newWord.update()
     return newWord
   }

@@ -145,7 +145,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
-    newWord.updateComparisonString($alphabetOrder)
     updateOnBackground()
   }
 
@@ -153,8 +152,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     if (containsId(word.getId(), word)) {
       word.setId($validMinId)
     }
-    word.setDictionary(this)
-    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     updateOnBackground()
   }
@@ -266,7 +263,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private void updateComparisonStrings() {
     for (SlimeWord word : $words) {
-      word.updateComparisonString($alphabetOrder)
+      word.updateComparisonString()
     }
   }
 
@@ -287,6 +284,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeWord word = copiedWordBase($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
+    word.setDictionary(this)
     word.update()
     return word
   }
@@ -300,6 +298,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     newWord.setInformations(oldWord.getInformations())
     newWord.setVariations(oldWord.getVariations())
     newWord.setRelations(oldWord.getRelations())
+    newWord.setDictionary(this)
     if (updates) {
       newWord.update()
     }

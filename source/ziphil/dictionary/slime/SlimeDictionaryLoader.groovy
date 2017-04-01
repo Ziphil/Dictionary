@@ -21,7 +21,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     updateProgress(0, 1)
   }
 
-  protected ObservableList<SlimeWord> call() {
+  protected ObservableList<SlimeWord> load() {
     if ($path != null) {
       File file = File.new($path)
       FileInputStream stream = FileInputStream.new($path)
@@ -68,10 +68,6 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       } finally {
         parser.close()
         stream.close()
-      }
-      for (SlimeWord word : $words) {
-        word.updateComparisonString($dictionary.getAlphabetOrder())
-        word.update()
       }
     }
     return $words

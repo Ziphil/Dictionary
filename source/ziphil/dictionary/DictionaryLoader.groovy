@@ -21,16 +21,23 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
     setupEventHandler()
   }
 
-  protected abstract ObservableList<W> call()
+  protected abstract ObservableList<W> load()
 
-  protected void update() {
-    $dictionary.getRawWords().addAll($words)
+  protected ObservableList<W> call() {
+    ObservableList<W> result = load()
     $dictionary.update()
+    for (Word word : $words) {
+      if (isCancelled()) {
+        return null
+      }
+      word.update()
+    }
+    return result
   }
 
   private void setupEventHandler() {
     addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      update()
+      $dictionary.getRawWords().addAll($words)
     }
   }
 

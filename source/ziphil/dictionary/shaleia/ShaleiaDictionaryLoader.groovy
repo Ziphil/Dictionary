@@ -17,7 +17,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     updateProgress(0, 1)
   }
 
-  protected ObservableList<ShaleiaWord> call() {
+  protected ObservableList<ShaleiaWord> load() {
     if ($path != null) {
       File file = File.new($path)
       BufferedReader reader = file.newReader("UTF-8")
@@ -47,9 +47,6 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       } finally {
         reader.close()
       }
-      for (ShaleiaWord word : $words) {
-        word.updateComparisonString($dictionary.getAlphabetOrder())
-      }
     }
     return $words
   }
@@ -75,7 +72,6 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     word.setUniqueName(currentName)
     word.setDescription(currentDescription.toString())
     word.setDictionary($dictionary)
-    word.update()
     $words.add(word)
   }
 

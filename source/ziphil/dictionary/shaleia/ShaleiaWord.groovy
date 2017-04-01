@@ -19,6 +19,7 @@ public class ShaleiaWord extends WordBase {
     updateName()
     updateEquivalents()
     updateContent()
+    updateComparisonString()
     changeContentPaneFactory()
   }
 
@@ -47,14 +48,15 @@ public class ShaleiaWord extends WordBase {
     $content = $uniqueName + "\n" + $description
   }
 
-  public void updateComparisonString(String order) {
-    Boolean isApostropheCharacter = order.contains("'")
+  public void updateComparisonString() {
+    String alphabetOrder = $dictionary.getAlphabetOrder()
+    Boolean isApostropheCharacter = alphabetOrder.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $uniqueName.length()) {
       String character = $uniqueName[i]
       if ((isApostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
         if (character != "\$") {
-          Integer position = order.indexOf($uniqueName.codePointAt(i))
+          Integer position = alphabetOrder.indexOf($uniqueName.codePointAt(i))
           if (position > -1) {
             comparisonString.appendCodePoint(position + 174)
           } else {
