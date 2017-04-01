@@ -48,11 +48,11 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
       if (source != null) {
         $sourceControl.setText(source)
       }
-    }
-    if (previousResult.isFileSelected()) {
-      $isFileSelectedControl.setSelected(true)
-    } else {
-      $isSourceSelectedControl.setSelected(true)
+      if (previousResult.isFileSelected()) {
+        $isFileSelectedControl.setSelected(true)
+      } else {
+        $isSourceSelectedControl.setSelected(true)
+      }
     }
   }
 
