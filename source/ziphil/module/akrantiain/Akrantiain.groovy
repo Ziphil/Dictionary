@@ -16,8 +16,8 @@ public class Akrantiain {
     parse(reader)
   }
 
-  public void load(String string) {
-    Reader reader = StringReader.new(string)
+  public void load(String source) {
+    Reader reader = StringReader.new(source)
     parse(reader)
   }
 

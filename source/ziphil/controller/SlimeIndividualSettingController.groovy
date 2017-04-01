@@ -116,7 +116,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
           $akrantiainSource = file.getText()
         }
       } else {
-        $akrantiainSource = result.getString()
+        $akrantiainSource = result.getSource()
       }
     }
   }

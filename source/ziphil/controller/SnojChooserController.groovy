@@ -21,11 +21,11 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private RadioButton $isFileSelectedControl
-  @FXML private RadioButton $isStringSelectedControl
+  @FXML private RadioButton $isSourceSelectedControl
   @FXML private VBox $fileBox
-  @FXML private VBox $stringBox
+  @FXML private VBox $sourceBox
   @FXML private FileChooser $fileChooser
-  @FXML private TextArea $stringControl
+  @FXML private TextArea $sourceControl
 
   public SnojChooserController(UtilityStage<SnojChooserController.Result> stage) {
     super(stage)
@@ -41,33 +41,33 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   public void prepare(Result previousResult) {
     if (previousResult != null) {
       File file = previousResult.getFile()
-      String string = previousResult.getString()
+      String source = previousResult.getSource()
       if (file != null) {
         $fileChooser.setCurrentDirectory(file.getParentFile())
       }
-      if (string != null) {
-        $stringControl.setText(string)
+      if (source != null) {
+        $sourceControl.setText(source)
       }
     }
     if (previousResult.isFileSelected()) {
       $isFileSelectedControl.setSelected(true)
     } else {
-      $isStringSelectedControl.setSelected(true)
+      $isSourceSelectedControl.setSelected(true)
     }
   }
 
   @FXML
   protected void commit() {
     File file = $fileChooser.getSelectedFile()
-    String string = $stringControl.getText()
+    String source = $sourceControl.getText()
     Boolean isFileSelected = $isFileSelectedControl.isSelected()
-    Result result = Result.new(file, string, isFileSelected)
+    Result result = Result.new(file, source, isFileSelected)
     $stage.commit(result)
   }
 
   private void setupBoxes() {
     $fileBox.visibleProperty().bind($isFileSelectedControl.selectedProperty())
-    $stringBox.visibleProperty().bind($isStringSelectedControl.selectedProperty())
+    $sourceBox.visibleProperty().bind($isSourceSelectedControl.selectedProperty())
   }
 
   private void setupChooser() {
@@ -84,12 +84,12 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
 public static class Result {
 
   private File $file
-  private String $string
+  private String $source
   private Boolean $isFileSelected
 
-  public Result(File file, String string, Boolean isFileSelected) {
+  public Result(File file, String source, Boolean isFileSelected) {
     $file = file
-    $string = string
+    $source = source
     $isFileSelected = isFileSelected
   }
 
@@ -105,8 +105,8 @@ public static class Result {
     return $file
   }
 
-  public String getString() {
-    return $string
+  public String getSource() {
+    return $source
   }
 
 }
