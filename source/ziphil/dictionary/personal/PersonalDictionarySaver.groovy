@@ -14,7 +14,7 @@ public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary>
     super(dictionary, path)
   }
 
-  protected Boolean call() {
+  protected Boolean save() {
     if ($path != null) {
       File file = File.new($path)
       BufferedWriter writer = file.newWriter("UTF-8")
