@@ -69,6 +69,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
         parser.close()
         stream.close()
       }
+      updateProgressByParser(parser, size)
     }
     return $words
   }

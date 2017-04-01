@@ -47,6 +47,7 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
       } finally {
         reader.close()
       }
+      updateProgress(1, 1)
     }
     return $words
   }
