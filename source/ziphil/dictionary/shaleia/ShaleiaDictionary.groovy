@@ -91,6 +91,11 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void update() {
+    calculateSystemWordSize()
+    $isChanged = true
+  }
+
+  public void updateFirst() {
     parseChanges()
     calculateSystemWordSize()
     $isChanged = true

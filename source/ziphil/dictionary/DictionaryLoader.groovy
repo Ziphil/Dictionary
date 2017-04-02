@@ -30,7 +30,7 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
 
   private void update() {
     $dictionary.getRawWords().addAll($words)
-    $dictionary.update()
+    $dictionary.updateFirst()
     for (Word word : $words) {
       if (isCancelled()) {
         return null

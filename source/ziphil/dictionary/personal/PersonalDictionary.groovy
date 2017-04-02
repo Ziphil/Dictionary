@@ -38,6 +38,10 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $isChanged = true
   }
 
+  public void updateFirst() {
+    $isChanged = true
+  }
+
   public void updateMinimum() {
     $isChanged = true
   }

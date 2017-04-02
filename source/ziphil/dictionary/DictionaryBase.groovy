@@ -205,6 +205,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract void update()
 
+  public abstract void updateFirst()
+
   public abstract void updateMinimum()
 
   protected void load() {

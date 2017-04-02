@@ -18,8 +18,16 @@ public interface Dictionary<W extends Word> {
 
   public void shuffleWords()
 
+  // 内部データを更新します。
+  // 保持している単語データリストが変更されたときに呼び出されることが想定されています。
   public void update()
 
+  // 内部データを更新します。
+  // ファイルから辞書データを読み込んだ後に呼び出されることが想定されています。
+  public void updateFirst()
+
+  // 内部データを更新します。
+  // 単語データリスト以外の個別設定などが変更されたときに呼び出されることが想定されています。
   public void updateMinimum()
 
   public void save()

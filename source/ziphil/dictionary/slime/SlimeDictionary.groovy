@@ -175,6 +175,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $isChanged = true
   }
 
+  public void updateFirst() {
+    updateRegisteredTitles()
+    updatePlainInformationTitles()
+    updateInformationTitleOrder()
+    updateAkrantiain()
+    $isChanged = true
+  }
+
   public void updateMinimum() {
     updateComparisonStrings()
     updateAkrantiain()
