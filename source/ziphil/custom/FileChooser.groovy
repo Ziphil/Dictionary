@@ -65,7 +65,11 @@ public class FileChooser extends Control {
           }
         }
         File file = File.new(filePath)
-        return file
+        if (file.isFile()) {
+          return file
+        } else {
+          return null
+        }
       } else {
         return null
       }
