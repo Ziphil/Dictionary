@@ -61,6 +61,8 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
           addVersion(currentDescription)
         } else if (currentName == "META-CHANGE") {
           addChangeDescription(currentDescription)
+        } else if (currentName == "META-SNOJ") {
+          addAkrantiainSource(currentDescription)
         }
       } else {
         addWord(currentName, currentDescription)
@@ -89,6 +91,11 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
   private void addChangeDescription(StringBuilder currentDescription) {
     String changeDescription = currentDescription.toString().replaceAll(/^\s*\n/, "")
     $dictionary.setChangeDescription(changeDescription)
+  }
+
+  private void addAkrantiainSource(StringBuilder currentDescription) {
+    String akrantiainSource = currentDescription.toString().trim()
+    $dictionary.setAkrantiainSource(akrantiainSource)
   }
 
 }

@@ -18,6 +18,8 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -27,6 +29,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $alphabetOrder = ""
   private String $changeDescription = ""
   private Map<String, List<String>> $changes = HashMap.new()
+  private Akrantiain $akrantiain = null
+  private String $akrantiainSource = null
   private String $version = ""
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
@@ -98,11 +102,13 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   public void updateFirst() {
     parseChanges()
     calculateSystemWordSize()
+    updateAkrantiain()
     $isChanged = true
   }
 
   public void updateMinimum() {
     parseChanges()
+    updateAkrantiain()
     $isChanged = true
   }
 
@@ -130,6 +136,19 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   private void calculateSystemWordSize() {
     $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
+  }
+
+  private void updateAkrantiain() {
+    if ($akrantiainSource != null) {
+      try {
+        $akrantiain = Akrantiain.new()
+        $akrantiain.load($akrantiainSource)
+      } catch (AkrantiainParseException exception) {
+        $akrantiain = null
+      }
+    } else {
+      $akrantiain = null
+    }
   }
 
   public ShaleiaWord emptyWord(String defaultName) {
@@ -231,6 +250,18 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void setChangeDescription(String changeDescription) {
     $changeDescription = changeDescription
+  }
+
+  public Akrantiain getAkrantiain() {
+    return $akrantiain
+  }
+
+  public String getAkrantiainSource() {
+    return $akrantiainSource
+  }
+
+  public void setAkrantiainSource(String akrantiainSource) {
+    $akrantiainSource = akrantiainSource
   }
 
   public Consumer<String> getOnLinkClicked() {
