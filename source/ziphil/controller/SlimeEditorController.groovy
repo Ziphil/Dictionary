@@ -447,13 +447,15 @@ public class SlimeEditorController extends Controller<Boolean> {
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
     nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
       SlimeWord word = nextStage.getResult()
       Integer index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNameControls[index].setText(word.getName())
       }
+    } else {
+      removeRelationControl(box)
     }
   }
 
