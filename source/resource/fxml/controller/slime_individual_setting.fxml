@@ -100,10 +100,10 @@
           <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
-            <Button text="編集" onAction="#editSnoj">
-              <prefWidth><Double rpx="70"/></prefWidth>
-              <minWidth><Double rpx="70"/></minWidth>
-            </Button>
+            <HBox HBox.hgrow="always">
+              <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
+              <Button text="…" onAction="#editSnoj" styleClass="right-pill"/>
+            </HBox>
             <Button text="削除" onAction="#removeSnoj">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>

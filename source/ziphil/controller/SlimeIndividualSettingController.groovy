@@ -33,6 +33,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
+  @FXML private TextField $akrantiainSourceControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
@@ -66,6 +67,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
@@ -113,10 +115,14 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       if (result.isFileSelected()) {
         File file = result.getFile()
         if (file != null) {
-          $akrantiainSource = file.getText()
+          String source = file.getText()
+          $akrantiainSource = source
+          $akrantiainSourceControl.setText(source)
         }
       } else {
-        $akrantiainSource = result.getSource()
+        String source = result.getSource()
+        $akrantiainSource = source
+        $akrantiainSourceControl.setText(source)
       }
     }
   }
