@@ -130,6 +130,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   private void removeSnoj() {
     $akrantiainSource = null
+    $akrantiainSourceControl.setText("")
   }
 
   @FXML
