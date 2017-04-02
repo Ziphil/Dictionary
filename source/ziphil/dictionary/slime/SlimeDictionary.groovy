@@ -7,8 +7,6 @@ import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Task
-import ziphil.custom.SimpleTask
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
@@ -187,15 +185,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateComparisonStrings()
     updateAkrantiain()
     $isChanged = true
-  }
-
-  private void updateOnBackground() {
-    Task<Void> task = SimpleTask.new() {
-      update()
-    }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
   }
 
   private void updateRegisteredTitles() {
