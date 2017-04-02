@@ -45,26 +45,30 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Integer to = null
     Integer matchedLength = 0
     Integer pointer = from
-    while (pointer < group.getElements().size()) {
-      AkrantiainElement element = group.getElements()[pointer]
-      String elementPart = element.getPart()
-      if (matchedLength + elementPart.length() <= $text.length()) {
-        String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
-        String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-        String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
-        if (adjustedTextSubstring == adjustedElementPart) {
-          matchedLength += elementPart.length()
-          if (matchedLength == $text.length()) {
-            to = pointer + 1
+    if ($text != "") {
+      while (pointer < group.getElements().size()) {
+        AkrantiainElement element = group.getElements()[pointer]
+        String elementPart = element.getPart()
+        if (matchedLength + elementPart.length() <= $text.length()) {
+          String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
+          String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+          String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+          if (adjustedTextSubstring == adjustedElementPart) {
+            matchedLength += elementPart.length()
+            if (matchedLength == $text.length()) {
+              to = pointer + 1
+              break
+            }
+          } else {
             break
           }
         } else {
           break
         }
-      } else {
-        break
+        pointer ++
       }
-      pointer ++
+    } else {
+      to = from
     }
     return to
   }
@@ -73,26 +77,30 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Integer from = null
     Integer matchedLength = 0
     Integer pointer = to - 1
-    while (pointer >= 0) {
-      AkrantiainElement element = group.getElements()[pointer]
-      String elementPart = element.getPart()
-      if (matchedLength + elementPart.length() <= $text.length()) {
-        String textSubstring = $text.substring($text.length() - elementPart.length() - matchedLength, $text.length() - matchedLength)
-        String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-        String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
-        if (adjustedTextSubstring == adjustedElementPart) {
-          matchedLength += elementPart.length()
-          if (matchedLength == $text.length()) {
-            from = pointer
+    if ($text != "") {
+      while (pointer >= 0) {
+        AkrantiainElement element = group.getElements()[pointer]
+        String elementPart = element.getPart()
+        if (matchedLength + elementPart.length() <= $text.length()) {
+          String textSubstring = $text.substring($text.length() - elementPart.length() - matchedLength, $text.length() - matchedLength)
+          String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+          String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+          if (adjustedTextSubstring == adjustedElementPart) {
+            matchedLength += elementPart.length()
+            if (matchedLength == $text.length()) {
+              from = pointer
+              break
+            }
+          } else {
             break
           }
         } else {
           break
         }
-      } else {
-        break
+        pointer --
       }
-      pointer --
+    } else {
+      from = to
     }
     return from
   }
