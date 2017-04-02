@@ -39,11 +39,11 @@
         <RadioButton fx:id="$isFileSelectedControl" text="ファイルから" selected="true">
           <toggleGroup><ToggleGroup fx:id="sourceTypeGroup"/></toggleGroup>
         </RadioButton>
-        <RadioButton fx:id="$isStringSelectedControl" text="テキストから" toggleGroup="$sourceTypeGroup"/>
+        <RadioButton fx:id="$isSourceSelectedControl" text="テキストから" toggleGroup="$sourceTypeGroup"/>
       </HBox>
       <StackPane>
-        <VBox fx:id="$stringBox">
-          <TextArea fx:id="$stringControl" styleClass="editor" wrapText="false" VBox.vgrow="always"/>
+        <VBox fx:id="$sourceBox">
+          <TextArea fx:id="$sourceControl" styleClass="editor" wrapText="false" VBox.vgrow="always"/>
         </VBox>
         <VBox fx:id="$fileBox">
           <FileChooser fx:id="$fileChooser" VBox.vgrow="always"/>

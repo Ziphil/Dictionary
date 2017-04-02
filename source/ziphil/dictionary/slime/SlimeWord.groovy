@@ -24,6 +24,7 @@ public class SlimeWord extends WordBase {
   public void update() {
     updateEquivalents()
     updateContent()
+    updateComparisonString()
     changeContentPaneFactory()
     changePlainContentPaneFactory()
   }
@@ -53,11 +54,12 @@ public class SlimeWord extends WordBase {
     $content = content.toString()
   }
 
-  public void updateComparisonString(String order) {
-    if (order != null) {
+  public void updateComparisonString() {
+    String alphabetOrder = $dictionary.getAlphabetOrder()
+    if (alphabetOrder != null) {
       StringBuilder comparisonString = StringBuilder.new()
       for (Integer i : 0 ..< $name.length()) {
-        Integer position = order.indexOf($name.codePointAt(i))
+        Integer position = alphabetOrder.indexOf($name.codePointAt(i))
         if (position > -1) {
           comparisonString.appendCodePoint(position + 174)
         } else {

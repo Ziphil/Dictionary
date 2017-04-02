@@ -100,8 +100,8 @@ public class HelpController extends Controller<Void> {
 private static enum HelpItem {
 
   BASIC_EDIT("基本操作(編集)", "basic_edit"), BASIC_SEARCH("基本操作(検索)", "basic_search"), SLIME_EDIT("OneToMany形式の編集", "slime_edit"), SCRIPT_SEARCH("スクリプト検索", "script_search"),
-  SLIME_SPECIFICATION("API(OneToMany-JSON)", "slime_specification"), PERSONAL_SPECIFICATION("API(PDIC-CSV)", "personal_specification"), SHORTCUT("ショートカットキー", "shortcut"),
-  OTHER("その他", "other"), LICENSE("ライセンス", "license"), DICTIONARY_TYPE("各形式について", "dictionary_type")
+  SLIME_SPECIFICATION("API(OneToMany-JSON)", "slime_specification"), PERSONAL_SPECIFICATION("API(PDIC-CSV)", "personal_specification"), TOOL("ツール", "tool"),
+  SHORTCUT("ショートカットキー", "shortcut"), OTHER("その他", "other"), LICENSE("ライセンス", "license"), DICTIONARY_TYPE("各形式について", "dictionary_type")
 
   private static final String RESOURCE_DIRECTORY = "resource/help/"
 

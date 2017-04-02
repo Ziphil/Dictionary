@@ -35,9 +35,11 @@
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
+#dictionary-list .shaleia-pronunciation,
 #dictionary-list .shaleia-creation-date,
 #dictionary-list .shaleia-title,
 #dictionary-list .shaleia-possibility,
+#dictionary-list .slime-pronunciation,
 #dictionary-list .slime-title,
 #dictionary-list .slime-id,
 #dictionary-list .slime-possibility {

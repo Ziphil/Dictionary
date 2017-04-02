@@ -21,7 +21,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     updateProgress(0, 1)
   }
 
-  protected ObservableList<SlimeWord> call() {
+  protected ObservableList<SlimeWord> load() {
     if ($path != null) {
       File file = File.new($path)
       FileInputStream stream = FileInputStream.new($path)
@@ -59,6 +59,8 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               }
               updateProgressByParser(parser, size)
             }
+          } else if (topFieldName == "snoj") {
+            parseAkrantiainSource(parser)
           } else {
             $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
           }
@@ -67,10 +69,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
         parser.close()
         stream.close()
       }
-      for (SlimeWord word : $words) {
-        word.updateComparisonString($dictionary.getAlphabetOrder())
-        word.update()
-      }
+      updateProgressByParser(parser, size)
     }
     return $words
   }
@@ -224,6 +223,13 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   private void parseDefaultWord(JsonParser parser) {
     parseWord(parser, $dictionary.getDefaultWord())
+  }
+
+  private void parseAkrantiainSource(JsonParser parser) {
+    if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
+      String akrantiainSource = parser.getValueAsString()
+      $dictionary.setAkrantiainSource(akrantiainSource)
+    }
   }
 
   private void updateProgressByParser(JsonParser parser, Long size) {

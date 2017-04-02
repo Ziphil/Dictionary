@@ -16,7 +16,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
     super(dictionary, path)
   }
 
-  protected Boolean call() {
+  protected Boolean save() {
     if ($path != null) {
       File file = File.new($path)
       BufferedWriter writer = file.newWriter("UTF-8")
@@ -40,6 +40,11 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
         writer.write("* META-CHANGE\n\n")
         writer.write($dictionary.getChangeDescription().trim())
         writer.write("\n\n")
+        if ($dictionary.getAkrantiainSource() != null) {
+          writer.write("* META-SNOJ\n\n")
+          writer.write($dictionary.getAkrantiainSource().trim())
+          writer.write("\n\n")
+        }
       } finally {
         writer.close()
       }

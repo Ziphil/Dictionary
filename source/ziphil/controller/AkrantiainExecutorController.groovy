@@ -85,11 +85,11 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $akrantiain = null
         }
       } else {
-        String string = $result.getString()
+        String source = $result.getSource()
         $snojPathControl.setText("[テキスト]")
         $akrantiain = Akrantiain.new()
         try {
-          $akrantiain.load(string)
+          $akrantiain.load(source)
           $logControl.setText("")
         } catch (AkrantiainParseException exception) {
           $logControl.setText(exception.getMessage())

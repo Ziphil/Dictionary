@@ -5,73 +5,53 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainDisjunctionGroup {
+public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
 
   public static final AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
 
   private Boolean $isNegated = false
   private List<AkrantiainTokenGroup> $tokenGroups = ArrayList.new()
 
-  // 通常の条件として、ちょうど from で与えられた位置から右にマッチするかどうかを調べます。
-  // マッチした場合はマッチした範囲の右端のインデックス (範囲にそのインデックス自体は含まない) を返します。
-  // マッチしなかった場合は null を返します。
-  public Integer matchSelection(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    Integer to = null
     if (!$tokenGroups.isEmpty()) {
       for (Integer i : $tokenGroups.size() - 1 .. 0) {
         AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
-        Integer to = tokenGroup.matchSelection(group, from, setting)
-        if (to != null) {
-          return to
+        Integer singleTo = tokenGroup.matchRight(group, from, setting)
+        if (singleTo != null) {
+          to = singleTo
+          break
         }
       }
-      return null
+    }
+    if ($isNegated) {
+      return (to == null) ? from : null
     } else {
-      return null
+      return to
     }
   }
 
-  // 左条件として、ちょうど to で与えられた位置から左にマッチするかどうかを調べます。
-  // なお、マッチした範囲は与えられた AkrantiainElement オブジェクトの途中までである可能性があることに注意してください。
-  // 例えば、group が「ab」と「c」の 2 つから成る場合、「"bc"」というパターンはこれにマッチします。
-  // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
-  public Boolean matchLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    Boolean isMatched = false
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    Integer from = null
     if (!$tokenGroups.isEmpty()) {
       for (Integer i : $tokenGroups.size() - 1 .. 0) {
         AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
-        Boolean isPartMatched = tokenGroup.matchLeftCondition(group, to, setting)
-        if (isPartMatched) {
-          isMatched = true
+        Integer singleFrom = tokenGroup.matchLeft(group, to, setting)
+        if (singleFrom != null) {
+          from = singleFrom
           break
         }
       }
     }
-    return $isNegated ^ isMatched
-  }
-
-  // 右条件として、ちょうど from で与えられた位置から右にマッチするかどうかを調べます。
-  // なお、マッチした範囲は与えられた AkrantiainElement オブジェクトの途中までである可能性があることに注意してください。
-  // 例えば、group が「a」と「bc」の 2 つから成る場合、「"ab"」というパターンはこれにマッチします。
-  // 条件に合致していた場合は true を、合致しなかった場合は false を返します。
-  public Boolean matchRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    Boolean isMatched = false
-    if (!$tokenGroups.isEmpty()) {
-      for (Integer i : $tokenGroups.size() - 1 .. 0) {
-        AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
-        Boolean isPartMatched = tokenGroup.matchRightCondition(group, from, setting)
-        if (isPartMatched) {
-          isMatched = true
-          break
-        }
-      }
+    if ($isNegated) {
+      return (from == null) ? to : null
+    } else {
+      return from
     }
-    return $isNegated ^ isMatched
   }
 
-  // この選言グループが変換先をもつならば true を返し、そうでなければ false を返します。
-  // ver 0.4.2 の時点では、これに該当するのは「^」のみです。
   public Boolean isConcrete() {
-    return $tokenGroups.size() > 1 || !$tokenGroups[0].isSingleton() || $tokenGroups[0].getToken().getType() != AkrantiainTokenType.CIRCUMFLEX
+    return $tokenGroups.size() >= 2 || ($tokenGroups.size() >= 1 && $tokenGroups[0].isConcrete())
   }
 
   public String toString() {

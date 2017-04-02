@@ -20,6 +20,15 @@ public class AkrantiainElement {
     $result = null
   }
 
+  public AkrantiainElementGroup devide() {
+    AkrantiainElementGroup group = AkrantiainElementGroup.new()
+    for (String character : $part) {
+      AkrantiainElement element = AkrantiainElement.new(character, null)
+      group.getElements().add(element)
+    }
+    return group
+  }
+
   public Boolean isConverted() {
     return $result != null
   }
@@ -33,7 +42,7 @@ public class AkrantiainElement {
       } else {
         AkrantiainElementGroup group = AkrantiainElementGroup.new()
         group.getElements().add(this)
-        if (setting.findPunctuationRight().matchSelection(group, 0, setting) != null) {
+        if (setting.findPunctuationContent().matchRight(group, 0, setting) != null) {
           return true
         } else {
           return false

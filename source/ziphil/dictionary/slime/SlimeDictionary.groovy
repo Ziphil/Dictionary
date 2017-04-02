@@ -7,8 +7,6 @@ import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Task
-import ziphil.custom.SimpleTask
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DictionaryBase
@@ -18,6 +16,8 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -36,6 +36,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
+  private Akrantiain $akrantiain = null
+  private String $akrantiainSource = null
   private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
 
@@ -141,7 +143,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
-    newWord.updateComparisonString($alphabetOrder)
     updateOnBackground()
   }
 
@@ -149,8 +150,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     if (containsId(word.getId(), word)) {
       word.setId($validMinId)
     }
-    word.setDictionary(this)
-    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     updateOnBackground()
   }
@@ -170,21 +169,22 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
+    updateAkrantiain()
+    $isChanged = true
+  }
+
+  public void updateFirst() {
+    updateRegisteredTitles()
+    updatePlainInformationTitles()
+    updateInformationTitleOrder()
+    updateAkrantiain()
     $isChanged = true
   }
 
   public void updateMinimum() {
     updateComparisonStrings()
+    updateAkrantiain()
     $isChanged = true
-  }
-
-  private void updateOnBackground() {
-    Task<Void> task = SimpleTask.new() {
-      update()
-    }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
   }
 
   private void updateRegisteredTitles() {
@@ -260,7 +260,20 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private void updateComparisonStrings() {
     for (SlimeWord word : $words) {
-      word.updateComparisonString($alphabetOrder)
+      word.updateComparisonString()
+    }
+  }
+
+  private void updateAkrantiain() {
+    if ($akrantiainSource != null) {
+      try {
+        $akrantiain = Akrantiain.new()
+        $akrantiain.load($akrantiainSource)
+      } catch (AkrantiainParseException exception) {
+        $akrantiain = null
+      }
+    } else {
+      $akrantiain = null
     }
   }
 
@@ -268,6 +281,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeWord word = copiedWordBase($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
+    word.setDictionary(this)
     word.update()
     return word
   }
@@ -281,6 +295,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     newWord.setInformations(oldWord.getInformations())
     newWord.setVariations(oldWord.getVariations())
     newWord.setRelations(oldWord.getRelations())
+    newWord.setDictionary(this)
     if (updates) {
       newWord.update()
     }
@@ -450,6 +465,18 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setDefaultWord(SlimeWord defaultWord) {
     $defaultWord = defaultWord
+  }
+
+  public Akrantiain getAkrantiain() {
+    return $akrantiain
+  }
+
+  public String getAkrantiainSource() {
+    return $akrantiainSource
+  }
+
+  public void setAkrantiainSource(String akrantiainSource) {
+    $akrantiainSource = akrantiainSource
   }
 
   public Map<String, TreeNode> getExternalData() {

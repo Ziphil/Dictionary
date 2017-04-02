@@ -34,9 +34,9 @@ public class AkrantiainSentenceParser {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
       AkrantiainToken identifier = $tokens[0]
-      AkrantiainDisjunctionGroup right = nextDisjunctionGroup()
+      AkrantiainDisjunctionGroup content = nextDisjunctionGroup()
       definition.setIdentifier(identifier)
-      definition.setRight(right)
+      definition.setContent(content)
       if ($tokens[$pointer] == null) {
         return definition
       } else {
@@ -101,7 +101,7 @@ public class AkrantiainSentenceParser {
     while (true) {
       AkrantiainToken token = $tokens[$pointer ++]
       AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
-      if (tokenType == AkrantiainTokenType.QUOTE_LITERAL) {
+      if (tokenType == AkrantiainTokenType.QUOTE_LITERAL || tokenType == AkrantiainTokenType.IDENTIFIER) {
         currentTokenGroup.getTokens().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
         if (currentTokenGroup.hasToken()) {

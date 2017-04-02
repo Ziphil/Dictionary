@@ -24,6 +24,7 @@ import javafx.concurrent.WorkerStateEvent
 import javax.script.ScriptEngineManager
 import javax.script.ScriptEngine
 import javax.script.ScriptException
+import ziphil.custom.SimpleTask
 import ziphil.custom.ShufflableList
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
@@ -205,7 +206,27 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract void update()
 
+  public abstract void updateFirst()
+
   public abstract void updateMinimum()
+
+  protected void updateOnBackground() {
+    Task<Void> task = SimpleTask.new() {
+      update()
+    }
+    Thread thread = Thread.new(task)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
+  protected void updateMinimumOnBackground() {
+    Task<Void> task = SimpleTask.new() {
+      updateMinimum()
+    }
+    Thread thread = Thread.new(task)
+    thread.setDaemon(true)
+    thread.start()
+  }
 
   protected void load() {
     DictionaryLoader loader = createLoader()

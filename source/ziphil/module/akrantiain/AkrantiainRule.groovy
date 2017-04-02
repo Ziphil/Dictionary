@@ -7,16 +7,16 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainRule {
 
-  private List<AkrantiainDisjunctionGroup> $selections = ArrayList.new()
-  private AkrantiainDisjunctionGroup $leftCondition = null
-  private AkrantiainDisjunctionGroup $rightCondition = null
+  private List<AkrantiainMatchable> $selections = ArrayList.new()
+  private AkrantiainMatchable $leftCondition = null
+  private AkrantiainMatchable $rightCondition = null
   private List<AkrantiainToken> $phonemes = ArrayList.new()
 
   public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainSetting setting) {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
     while (pointer < group.getElements().size()) {
-      ApplicationResult result = applySingle(group, pointer, setting)
+      ApplicationResult result = applyOnce(group, pointer, setting)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
         pointer = result.getTo()
@@ -31,27 +31,36 @@ public class AkrantiainRule {
   // ちょうど from で与えられた位置から規則を適用します。
   // 規則がマッチして適用できた場合は、変化後の要素のリストとマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
   // そもそも規則にマッチせず適用できなかった場合は null を返します。
-  private ApplicationResult applySingle(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    List<AkrantiainElement> addedElements = ArrayList.new()
-    Integer pointer = from
-    if ($leftCondition != null && !$leftCondition.matchLeftCondition(group, pointer, setting)) {
+  private ApplicationResult applyOnce(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    if (checkLeftCondition(group, from, setting)) {
+      ApplicationResult result = applyOnceSelections(group, from, setting)
+      if (result != null) {
+        Integer to = result.getTo()
+        if (checkRightCondition(group, to, setting)) {
+          return result
+        } else {
+          return null
+        }
+      } else {
+        return null
+      }
+    } else {
       return null
     }
+  }
+
+  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    List<AkrantiainElement> addedElements = ArrayList.new()
+    Integer pointer = from
     Integer phonemeIndex = 0
-    for (AkrantiainDisjunctionGroup selection : $selections) {
-      Integer to = selection.matchSelection(group, pointer, setting)
+    for (AkrantiainMatchable selection : $selections) {
+      Integer to = selection.matchRight(group, pointer, setting)
       if (to != null) {
         if (selection.isConcrete()) {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
           AkrantiainTokenType phonemeType = phoneme.getType()
           if (phonemeType == AkrantiainTokenType.SLASH_LITERAL) {
-            Boolean isNoneConverted = true
-            for (Integer i : pointer ..< to) {
-              if (group.getElements()[i].isConverted()) {
-                isNoneConverted = false
-              }
-            }
-            if (isNoneConverted) {
+            if (group.isNoneConverted(pointer, to)) {
               AkrantiainElement addedElement = group.merge(pointer, to)
               addedElement.setResult(phoneme.getText())
               addedElements.add(addedElement)
@@ -74,10 +83,17 @@ public class AkrantiainRule {
         return null
       }
     }
-    if ($rightCondition != null && !$rightCondition.matchRightCondition(group, pointer, setting)) {
-      return null
-    }
     return ApplicationResult.new(addedElements, pointer)
+  }
+
+  private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+    AkrantiainElementGroup devidedGroup = group.devide(0, to)
+    return $leftCondition == null || $leftCondition.matchLeft(devidedGroup, devidedGroup.getElements().size(), setting) != null
+  }
+
+  private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+    AkrantiainElementGroup devidedGroup = group.devide(from, group.getElements().size())
+    return $rightCondition == null || $rightCondition.matchRight(devidedGroup, 0, setting) != null
   }
 
   public String toString() {
@@ -106,7 +122,7 @@ public class AkrantiainRule {
   public Boolean isSizeValid() {
     Integer phonemeSize = $phonemes.size()
     Integer concreteSelectionSize = 0
-    for (AkrantiainDisjunctionGroup selection : $selections) {
+    for (AkrantiainMatchable selection : $selections) {
       if (selection.isConcrete()) {
         concreteSelectionSize ++
       }
@@ -126,27 +142,27 @@ public class AkrantiainRule {
     return $rightCondition != null
   }
 
-  public List<AkrantiainDisjunctionGroup> getSelections() {
+  public List<AkrantiainMatchable> getSelections() {
     return $selections
   }
 
-  public void setSelections(List<AkrantiainDisjunctionGroup> selections) {
+  public void setSelections(List<AkrantiainMatchable> selections) {
     $selections = selections
   }
 
-  public AkrantiainDisjunctionGroup getLeftCondition() {
+  public AkrantiainMatchable getLeftCondition() {
     return $leftCondition
   }
 
-  public void setLeftCondition(AkrantiainDisjunctionGroup leftCondition) {
+  public void setLeftCondition(AkrantiainMatchable leftCondition) {
     $leftCondition = leftCondition
   }
 
-  public AkrantiainDisjunctionGroup getRightCondition() {
+  public AkrantiainMatchable getRightCondition() {
     return $rightCondition
   }
 
-  public void setRightCondition(AkrantiainDisjunctionGroup rightCondition) {
+  public void setRightCondition(AkrantiainMatchable rightCondition) {
     $rightCondition = rightCondition
   }
 

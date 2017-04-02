@@ -581,7 +581,7 @@ public class MainController extends PrimitiveController<Stage> {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("新規作成エラー")
-          dialog.setTitle("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
+          dialog.setContentText("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
         }

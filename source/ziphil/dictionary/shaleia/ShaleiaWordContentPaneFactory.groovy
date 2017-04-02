@@ -12,6 +12,8 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -20,6 +22,7 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
+  private static final String SHALEIA_PRONUNCIATION_CLASS = "shaleia-pronunciation"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
   private static final String SHALEIA_TOTAL_PART_CLASS = "shaleia-total-part"
   private static final String SHALEIA_PART_CLASS = "shaleia-part"
@@ -128,9 +131,28 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   }
 
   private void addNameNode(TextFlow contentPane, String name) {
-    Text nameText = Text.new(name + "  ")
-    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
-    contentPane.getChildren().add(nameText)
+    Akrantiain akrantiain = $dictionary.getAkrantiain()
+    String pronunciation = null
+    if (akrantiain != null) {
+      try {
+        pronunciation = akrantiain.convert(name)
+      } catch (AkrantiainException exception) {
+        pronunciation = null
+      }
+    }
+    if (pronunciation != null) {
+      Text nameText = Text.new(name + " ")
+      Text pronunciationText = Text.new("/" + pronunciation + "/")
+      Text spaceText = Text.new("  ")
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
+      pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PRONUNCIATION_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
+      contentPane.getChildren().addAll(nameText, pronunciationText, spaceText)
+    } else {
+      Text nameText = Text.new(name + "  ")
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
+      contentPane.getChildren().add(nameText)
+    }
   }
  
   private void addCreationDateNode(TextFlow contentPane, String totalPart, String creationDate) {

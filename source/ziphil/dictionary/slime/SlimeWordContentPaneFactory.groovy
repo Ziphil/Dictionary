@@ -12,6 +12,8 @@ import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -20,6 +22,7 @@ import ziphilib.transform.Ziphilify
 public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWord, SlimeDictionary> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
+  private static final String SLIME_PRONUNCIATION_CLASS = "slime-pronunciation"
   private static final String SLIME_TAG_CLASS = "slime-tag"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   private static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
@@ -89,9 +92,28 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   }
 
   private void addNameNode(TextFlow contentPane, String name) {
-    Text nameText = Text.new(name + "  ")
-    nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
-    contentPane.getChildren().add(nameText)
+    Akrantiain akrantiain = $dictionary.getAkrantiain()
+    String pronunciation = null
+    if (akrantiain != null) {
+      try {
+        pronunciation = akrantiain.convert(name)
+      } catch (AkrantiainException exception) {
+        pronunciation = null
+      }
+    }
+    if (pronunciation != null) {
+      Text nameText = Text.new(name + " ")
+      Text pronunciationText = Text.new("/" + pronunciation + "/")
+      Text spaceText = Text.new("  ")
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+      pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PRONUNCIATION_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+      contentPane.getChildren().addAll(nameText, pronunciationText, spaceText)
+    } else {
+      Text nameText = Text.new(name + "  ")
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
+      contentPane.getChildren().add(nameText)
+    }
   }
 
   private void addTagNode(TextFlow contentPane, List<String> tags) {

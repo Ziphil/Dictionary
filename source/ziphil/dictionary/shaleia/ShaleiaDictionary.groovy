@@ -18,6 +18,8 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainParseException
 import ziphilib.transform.Ziphilify
 
 
@@ -27,6 +29,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $alphabetOrder = ""
   private String $changeDescription = ""
   private Map<String, List<String>> $changes = HashMap.new()
+  private Akrantiain $akrantiain = null
+  private String $akrantiainSource = null
   private String $version = ""
   private Integer $systemWordSize = 0
   private Consumer<String> $onLinkClicked
@@ -77,13 +81,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    newWord.updateComparisonString($alphabetOrder)
     $isChanged = true
   }
 
   public void addWord(ShaleiaWord word) {
-    word.setDictionary(this)
-    word.updateComparisonString($alphabetOrder)
     $words.add(word)
     $isChanged = true
   }
@@ -94,13 +95,20 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void update() {
+    calculateSystemWordSize()
+    $isChanged = true
+  }
+
+  public void updateFirst() {
     parseChanges()
     calculateSystemWordSize()
+    updateAkrantiain()
     $isChanged = true
   }
 
   public void updateMinimum() {
     parseChanges()
+    updateAkrantiain()
     $isChanged = true
   }
 
@@ -130,11 +138,25 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
   }
 
+  private void updateAkrantiain() {
+    if ($akrantiainSource != null) {
+      try {
+        $akrantiain = Akrantiain.new()
+        $akrantiain.load($akrantiainSource)
+      } catch (AkrantiainParseException exception) {
+        $akrantiain = null
+      }
+    } else {
+      $akrantiain = null
+    }
+  }
+
   public ShaleiaWord emptyWord(String defaultName) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
     word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
+    word.setDictionary(this)
     word.update()
     return word
   }
@@ -143,6 +165,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaWord newWord = ShaleiaWord.new()
     newWord.setUniqueName(oldWord.getUniqueName())
     newWord.setDescription(oldWord.getDescription())
+    newWord.setDictionary(this)
     if (updates) {
       newWord.update()
     }
@@ -227,6 +250,18 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void setChangeDescription(String changeDescription) {
     $changeDescription = changeDescription
+  }
+
+  public Akrantiain getAkrantiain() {
+    return $akrantiain
+  }
+
+  public String getAkrantiainSource() {
+    return $akrantiainSource
+  }
+
+  public void setAkrantiainSource(String akrantiainSource) {
+    $akrantiainSource = akrantiainSource
   }
 
   public Consumer<String> getOnLinkClicked() {

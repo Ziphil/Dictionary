@@ -38,6 +38,10 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $isChanged = true
   }
 
+  public void updateFirst() {
+    $isChanged = true
+  }
+
   public void updateMinimum() {
     $isChanged = true
   }
@@ -58,6 +62,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     newWord.setLevel(oldWord.getLevel())
     newWord.setMemory(oldWord.getMemory())
     newWord.setModification(oldWord.getModification())
+    newWord.setDictionary(this)
     newWord.update()
     return newWord
   }

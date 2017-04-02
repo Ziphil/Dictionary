@@ -33,6 +33,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
+  @FXML private TextField $akrantiainSourceControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualOrderControl
@@ -40,6 +41,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $registeredParameters
+  private String $akrantiainSource
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
@@ -65,6 +67,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
@@ -72,6 +75,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       $usesIndividualOrderControl.setSelected(true)
     }
     $registeredParameters = registeredParameters
+    $akrantiainSource = dictionary.getAkrantiainSource()
     for (Integer i : 0 ..< 10) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
@@ -81,18 +85,52 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   protected void commit() {
     String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
+    String akrantiainSource = $akrantiainSource
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
+    $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
     $individualSetting.setRegisteredParameters(registeredParameters)
     $individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $dictionary.updateMinimum()
     $stage.commit(true)
+  }
+
+  @FXML
+  private void editSnoj() {
+    UtilityStage<SnojChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    SnojChooserController controller = SnojChooserController.new(nextStage)
+    SnojChooserController.Result previousResult = SnojChooserController.Result.new(null, $akrantiainSource, false)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)     
+    controller.prepare(previousResult)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SnojChooserController.Result result = nextStage.getResult()
+      if (result.isFileSelected()) {
+        File file = result.getFile()
+        if (file != null) {
+          String source = file.getText()
+          $akrantiainSource = source
+          $akrantiainSourceControl.setText(source)
+        }
+      } else {
+        String source = result.getSource()
+        $akrantiainSource = source
+        $akrantiainSourceControl.setText(source)
+      }
+    }
+  }
+
+  @FXML
+  private void removeSnoj() {
+    $akrantiainSource = null
+    $akrantiainSourceControl.setText("")
   }
 
   @FXML

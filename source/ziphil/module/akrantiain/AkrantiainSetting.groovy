@@ -7,23 +7,23 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainSetting {
 
-  private EnumSet<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
-  private List<AkrantiainDefinition> $definitions = ArrayList.new()
-  private List<AkrantiainRule> $rules = ArrayList.new()
+  private Set<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
+  private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
+  private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
 
-  public AkrantiainDisjunctionGroup findRightOf(String identifierName) {
+  public AkrantiainMatchable findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {
-        return definition.getRight()
+        return definition.getContent()
       }
     }
-    throw AkrantiainException.new("No such identifier \"${identifierName}\"")
+    return null
   }
 
-  public AkrantiainDisjunctionGroup findPunctuationRight() {
+  public AkrantiainMatchable findPunctuationContent() {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == Akrantiain.PUNCTUATION_IDENTIIER_NAME) {
-        return definition.getRight()
+        return definition.getContent()
       }
     }
     return AkrantiainDisjunctionGroup.EMPTY_GROUP
@@ -42,11 +42,11 @@ public class AkrantiainSetting {
     return false
   }
 
-  public EnumSet<AkrantiainEnvironment> getEnvironments() {
+  public Set<AkrantiainEnvironment> getEnvironments() {
     return $environments
   }
 
-  public void setEnvironments(EnumSet<AkrantiainEnvironment> environments) {
+  public void setEnvironments(Set<AkrantiainEnvironment> environments) {
     $environments = environments
   }
 

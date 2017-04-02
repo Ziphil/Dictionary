@@ -15,7 +15,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     updateProgress(0, 1)
   }
 
-  protected ObservableList<PersonalWord> call() {
+  protected ObservableList<PersonalWord> load() {
     if ($path != null) {
       File file = File.new($path)
       BufferedReader reader = file.newReader()
@@ -52,7 +52,6 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                   } else {
                     fillWord(word, headerData, index, currentValue)
                     word.setDictionary($dictionary)
-                    word.update()
                     $words.add(word)
                   }
                   word = PersonalWord.new()
@@ -80,7 +79,6 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                 } else {
                   fillWord(word, headerData, index, currentValue)
                   word.setDictionary($dictionary)
-                  word.update()
                   $words.add(word)
                 }
                 word = PersonalWord.new()
@@ -117,7 +115,6 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
           } else {
             fillWord(word, headerData, index, currentValue)
             word.setDictionary($dictionary)
-            word.update()
             $words.add(word)
           }
         }
