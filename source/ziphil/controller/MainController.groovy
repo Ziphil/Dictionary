@@ -659,10 +659,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateSearchStatuses() {
     if ($dictionary != null) {
       $dictionaryNameLabel.setText($dictionary.getName())
-      $wordView.setItems($dictionary.getWholeWords())
     } else {
       $dictionaryNameLabel.setText("")
-      $wordView.setItems((ObservableList<Element>)FXCollections.observableArrayList())
     }
     $previousSearch = ""
     $searchControl.setText("")
@@ -678,12 +676,15 @@ public class MainController extends PrimitiveController<Stage> {
       $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
       $progressIndicator.progressProperty().bind(loader.progressProperty())
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $wordView.setItems($dictionary.getWholeWords())
         search(true)
       }
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        $wordView.setItems(null)
         failUpdateDictionary()
       }
     } else {
+      $wordView.setItems(null)
       $loadingBox.visibleProperty().unbind()
       $loadingBox.setVisible(false)
       $progressIndicator.progressProperty().unbind()

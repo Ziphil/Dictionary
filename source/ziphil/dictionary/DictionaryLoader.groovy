@@ -18,17 +18,12 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
   public DictionaryLoader(D dictionary, String path) {
     $path = path
     $dictionary = dictionary
-    setupEventHandler()
   }
 
   protected abstract ObservableList<W> load()
 
   protected ObservableList<W> call() {
     ObservableList<W> result = load()
-    return result
-  }
-
-  private void update() {
     $dictionary.getRawWords().addAll($words)
     $dictionary.updateFirst()
     for (Word word : $words) {
@@ -37,12 +32,7 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
       }
       word.update()
     }
-  }
-
-  private void setupEventHandler() {
-    addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      update()
-    }
+    return result
   }
 
 }
