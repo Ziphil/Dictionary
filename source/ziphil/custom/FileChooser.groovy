@@ -55,7 +55,8 @@ public class FileChooser extends Control {
     Callable<File> function = (Callable){
       File directory = $currentDirectory.get()
       if (directory != null) {
-        String filePath = directory.getAbsolutePath() + File.separator + $inputtedFileName.get()
+        String inputtedFileName = $inputtedFileName.get()
+        String filePath = directory.getAbsolutePath() + File.separator + inputtedFileName
         if ($adjustsExtension.get() && $currentFileType.get() != null) {
           String additionalExtension = $currentFileType.get().getExtension()
           if (additionalExtension != null) {
@@ -64,9 +65,8 @@ public class FileChooser extends Control {
             }
           }
         }
-        File file = File.new(filePath)
-        if (file.isFile()) {
-          return file
+        if (inputtedFileName != "") {
+          return File.new(filePath)
         } else {
           return null
         }
