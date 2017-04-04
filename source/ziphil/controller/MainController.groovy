@@ -95,28 +95,30 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<Element> $wordView
-  @FXML private TextField $searchControl
-  @FXML private ComboBox<SearchMode> $searchModeControl
-  @FXML private ToggleButton $searchTypeControl
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
-  @FXML private Menu $searchRegisteredParameterMenu
   @FXML private MenuItem $searchRegisteredParameterItem
-  @FXML private ContextMenu $editMenu
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
+  @FXML private Menu $convertDictionaryMenu
+  @FXML private MenuItem $convertDictionaryItem
   @FXML private MenuItem $searchDetailItem
   @FXML private MenuItem $searchScriptItem
+  @FXML private Menu $searchRegisteredParameterMenu
   @FXML private MenuItem $addWordItem
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
   @FXML private MenuItem $removeWordItem
   @FXML private MenuItem $editIndividualSettingItem
+  @FXML private ContextMenu $editMenu
   @FXML private MenuItem $addWordContextItem
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
   @FXML private MenuItem $removeWordContextItem
+  @FXML private ListView<Element> $wordView
+  @FXML private TextField $searchControl
+  @FXML private ComboBox<SearchMode> $searchModeControl
+  @FXML private ToggleButton $searchTypeControl
   @FXML private HBox $footerBox
   @FXML private Label $dictionaryNameLabel
   @FXML private Label $hitWordSizeLabel
@@ -718,43 +720,49 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       $saveDictionaryItem.setDisable(false)
       $saveAndRenameDictionaryItem.setDisable(false)
+      $convertDictionaryMenu.setVisible(true)
+      $convertDictionaryMenu.setDisable(false)
+      $convertDictionaryItem.setVisible(false)
+      $searchScriptItem.setDisable(false)
       $addWordItem.setDisable(false)
       $addInheritedWordItem.setDisable(false)
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
-      $searchScriptItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary) {
         $searchDetailItem.setDisable(false)
-        $editIndividualSettingItem.setDisable(false)
         $searchRegisteredParameterMenu.setVisible(false)
         $searchRegisteredParameterMenu.setDisable(true)
         $searchRegisteredParameterItem.setVisible(true)
+        $editIndividualSettingItem.setDisable(false)
       } else if ($dictionary instanceof PersonalDictionary) {
         $searchDetailItem.setDisable(true)
-        $editIndividualSettingItem.setDisable(true)
         $searchRegisteredParameterMenu.setVisible(false)
         $searchRegisteredParameterMenu.setDisable(true)
         $searchRegisteredParameterItem.setVisible(true)
+        $editIndividualSettingItem.setDisable(true)
       } else if ($dictionary instanceof SlimeDictionary) {
         $searchDetailItem.setDisable(false)
-        $editIndividualSettingItem.setDisable(false)
         $searchRegisteredParameterMenu.setVisible(true)
         $searchRegisteredParameterMenu.setDisable(false)
         $searchRegisteredParameterItem.setVisible(false)
+        $editIndividualSettingItem.setDisable(false)
       }
     } else {
       $saveDictionaryItem.setDisable(true)
       $saveAndRenameDictionaryItem.setDisable(true)
+      $convertDictionaryMenu.setVisible(false)
+      $convertDictionaryMenu.setDisable(true)
+      $convertDictionaryItem.setVisible(true)
+      $searchDetailItem.setDisable(true)
+      $searchScriptItem.setDisable(true)
+      $searchRegisteredParameterMenu.setVisible(false)
+      $searchRegisteredParameterMenu.setDisable(true)
+      $searchRegisteredParameterItem.setVisible(true)
       $addWordItem.setDisable(true)
       $addInheritedWordItem.setDisable(true)
       $modifyWordItem.setDisable(true)
       $removeWordItem.setDisable(true)
-      $searchDetailItem.setDisable(true)
-      $searchScriptItem.setDisable(true)
       $editIndividualSettingItem.setDisable(true)
-      $searchRegisteredParameterMenu.setVisible(false)
-      $searchRegisteredParameterMenu.setDisable(true)
-      $searchRegisteredParameterItem.setVisible(true)
     }
   }
 
