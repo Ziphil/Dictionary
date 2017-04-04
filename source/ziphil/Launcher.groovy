@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 8, 0, 1897)
+  public static final Version VERSION = Version.new(1, 8, 1, 1899)
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -41,6 +41,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1. 8. 1 | ファイル選択画面で存在しないファイル名を指定するとエラーになる不具合を修正。
 //  1. 8. 0 | OneToMany 形式とシャレイア語辞典形式に snoj データを埋め込んで発音記号を生成する機能を追加。
 //  1. 7. 1 | akrantiain で単語間のマッチが正しく行われない不具合を修正。
 //  1. 7. 0 | akrantiain を実行する機能を追加。
