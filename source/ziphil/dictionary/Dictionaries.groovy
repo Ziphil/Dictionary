@@ -11,38 +11,46 @@ import ziphilib.transform.Ziphilify
 public class Dictionaries {
 
   public static Dictionary loadDictionary(File file) {
-    if (file.exists() && file.isFile()) {
-      Dictionary dictionary
-      String fileName = file.getName()
-      String filePath = file.getPath()
-      if (filePath.endsWith(".xdc")) {
-        dictionary = ShaleiaDictionary.new(fileName, filePath)
-      } else if (filePath.endsWith(".csv")) {
-        dictionary = PersonalDictionary.new(fileName, filePath)
-      } else if (filePath.endsWith(".json")) {
-        dictionary = SlimeDictionary.new(fileName, filePath)
+    if (file != null) {
+      if (file.exists() && file.isFile()) {
+        Dictionary dictionary
+        String fileName = file.getName()
+        String filePath = file.getPath()
+        if (filePath.endsWith(".xdc")) {
+          dictionary = ShaleiaDictionary.new(fileName, filePath)
+        } else if (filePath.endsWith(".csv")) {
+          dictionary = PersonalDictionary.new(fileName, filePath)
+        } else if (filePath.endsWith(".json")) {
+          dictionary = SlimeDictionary.new(fileName, filePath)
+        }
+        return dictionary
+      } else {
+        return null
       }
-      return dictionary
     } else {
       return null
     }
   }
 
   public static Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary
-    String fileName = file.getName()
-    String filePath = file.getPath()
-    if (filePath.endsWith(".xdc")) {
-      dictionary = ShaleiaDictionary.new(fileName, null)
-      dictionary.setPath(filePath)
-    } else if (filePath.endsWith(".csv")) {
-      dictionary = PersonalDictionary.new(fileName, null)
-      dictionary.setPath(filePath)
-    } else if (filePath.endsWith(".json")) {
-      dictionary = SlimeDictionary.new(fileName, null)
-      dictionary.setPath(filePath)
+    if (file != null) {
+      Dictionary dictionary
+      String fileName = file.getName()
+      String filePath = file.getPath()
+      if (filePath.endsWith(".xdc")) {
+        dictionary = ShaleiaDictionary.new(fileName, null)
+        dictionary.setPath(filePath)
+      } else if (filePath.endsWith(".csv")) {
+        dictionary = PersonalDictionary.new(fileName, null)
+        dictionary.setPath(filePath)
+      } else if (filePath.endsWith(".json")) {
+        dictionary = SlimeDictionary.new(fileName, null)
+        dictionary.setPath(filePath)
+      }
+      return dictionary
+    } else {
+      return null
     }
-    return dictionary
   }
 
   public static String getExtension(Dictionary dictionary) {
