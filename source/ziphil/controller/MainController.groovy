@@ -53,8 +53,10 @@ import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DetailSearchParameter
-import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Dictionaries
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryConverters
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
@@ -148,6 +150,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupSearchControl()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupConvertDictionaryMenu()
     setupWordViewShortcuts()
     setupDebug()
     bindSearchTypeControlProperty()
@@ -614,6 +617,39 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.save()
         $dictionaryNameLabel.setText($dictionary.getName())
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      }
+    }
+  }
+
+  private void convertDictionary(String extension) {
+    if ($dictionary != null) {
+      Boolean allowsOpen = checkDictionaryChange()
+      if (allowsOpen) {
+        DictionaryConverter converter = DictionaryConverters.createConverter(Dictionaries.getExtension($dictionary), extension)
+        if (converter != null) {
+          UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+          DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+          nextStage.initModality(Modality.APPLICATION_MODAL)
+          nextStage.initOwner($stage)
+          controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), extension)
+          nextStage.showAndWait()
+          if (nextStage.isCommitted()) {
+            File file = nextStage.getResult()
+            Dictionary newDictionary = converter.convert($dictionary)
+            newDictionary.setName(file.getName())
+            newDictionary.setPath(file.getAbsolutePath())
+            newDictionary.save()
+            updateDictionary(newDictionary)
+            Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          }
+        } else {
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("変換エラー")
+          dialog.setContentText("この変換方式は現在のバージョンではサポートされていません。")
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
+        }
       }
     }
   }
@@ -1111,6 +1147,23 @@ public class MainController extends PrimitiveController<Stage> {
         }
       }
     }
+  }
+
+  private void setupConvertDictionaryMenu() {
+    $convertDictionaryMenu.getItems().clear()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+    MenuItem slimeItem = MenuItem.new("OneToMany-JSON形式")
+    slimeItem.setGraphic(ImageView.new(icon))
+    slimeItem.setOnAction() {
+      convertDictionary("json")
+    }
+    MenuItem personalItem = MenuItem.new("PDIC-CSV形式")
+    personalItem.setOnAction() {
+      convertDictionary("csv")
+    }
+    MenuItem shaleiaItem = MenuItem.new("シャレイア語辞典形式")
+    shaleiaItem.setDisable(true)
+    $convertDictionaryMenu.getItems().addAll(slimeItem, personalItem, shaleiaItem)
   }
 
   private void setupSearchHistory() {
