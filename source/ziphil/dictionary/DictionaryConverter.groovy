@@ -1,8 +1,6 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphilib.transform.Ziphilify
 
@@ -12,7 +10,7 @@ public abstract class DictionaryConverter<D extends Dictionary, E extends Dictio
 
   protected D $newDictionary
   protected E $oldDictionary
-  protected ObservableList<W> $newWords = FXCollections.observableArrayList()
+  protected List<W> $newWords = ArrayList.new()
 
   public DictionaryConverter(D newDictionary, E oldDictionary) {
     $newDictionary = newDictionary

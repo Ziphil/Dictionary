@@ -1,10 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import ziphilib.transform.Ziphilify
 
 
@@ -12,8 +9,8 @@ import ziphilib.transform.Ziphilify
 public abstract class DictionaryLoader<D extends Dictionary, W extends Word> extends Task<Boolean> {
 
   protected D $dictionary
-  protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected String $path
+  protected List<W> $words = ArrayList.new()
 
   public DictionaryLoader(D dictionary, String path) {
     $path = path
