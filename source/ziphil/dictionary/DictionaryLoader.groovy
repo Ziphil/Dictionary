@@ -20,19 +20,25 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
     $dictionary = dictionary
   }
 
+  // ファイルからデータを読み込んで、作成した単語データを $words に格納します。
+  // このメソッドを実装する際は、パフォーマンスの低下を防ぐため、$dictionary.getRawWords() を介して直接単語データを辞書オブジェクトに追加しないでください。
   protected abstract ObservableList<W> load()
 
   protected ObservableList<W> call() {
-    ObservableList<W> result = load()
-    $dictionary.getRawWords().addAll($words)
-    $dictionary.updateFirst()
-    for (Word word : $words) {
-      if (isCancelled()) {
-        return null
+    if ($path != null) {
+      ObservableList<W> result = load()
+      $dictionary.getRawWords().addAll($words)
+      $dictionary.updateFirst()
+      for (Word word : $words) {
+        if (isCancelled()) {
+          return null
+        }
+        word.update()
       }
-      word.update()
+      return result
+    } else {
+      return null
     }
-    return result
   }
 
 }

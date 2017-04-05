@@ -43,14 +43,9 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
-    load()
-    setupWords()
-    setupSuggestions()
   }
 
-  public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
-    super(name, path)
-    $words.addAll(words)
+  protected void prepare() {
     setupWords()
     setupSuggestions()
   }
@@ -357,9 +352,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
+  // 同じ単語データをもつ SlimeDictionary オブジェクトを作成します。
+  // この処理は浅いコピーを行うので、コピー後の SlimeDictionary オブジェクトの各単語データはコピー前のものと同一です。
+  // 同じ SlimeDictionary オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用されます。
   public SlimeDictionary copy() {
-    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
-    SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
+    SlimeDictionary dictionary = SlimeDictionary.new($name, null)
+    dictionary.setPath($path)
+    dictionary.getRawWords().addAll($words)
     return dictionary
   }
 

@@ -37,7 +37,9 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
-    load()
+  }
+
+  protected void prepare() {
     setupWords()
     setupSuggestions()
   }

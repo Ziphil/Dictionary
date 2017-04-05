@@ -16,7 +16,9 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
-    load()
+  }
+
+  protected void prepare() {
     setupWords()
   }
 

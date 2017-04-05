@@ -59,7 +59,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $isFirstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
+    prepare()
+    load()
   }
+
+  protected abstract void prepare()
 
   public void searchByName(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
@@ -228,7 +232,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.start()
   }
 
-  protected void load() {
+  private void load() {
     DictionaryLoader loader = createLoader()
     loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       if (!$isFirstEmpty) {
