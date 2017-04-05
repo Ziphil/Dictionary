@@ -532,13 +532,13 @@ public class MainController extends PrimitiveController<Stage> {
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("読み込みエラー")
           dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
+          Setting.getInstance().setDefaultDictionaryPath(null)
         }
       }
     }
@@ -552,13 +552,13 @@ public class MainController extends PrimitiveController<Stage> {
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
         dialog.setTitle("読み込みエラー")
         dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
+        Setting.getInstance().setDefaultDictionaryPath(null)
       }
     }
   }
@@ -580,13 +580,13 @@ public class MainController extends PrimitiveController<Stage> {
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("新規作成エラー")
           dialog.setContentText("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
           dialog.setAllowsCancel(false)
           dialog.showAndWait()
+          Setting.getInstance().setDefaultDictionaryPath(null)
         }
       }
     }
@@ -645,13 +645,13 @@ public class MainController extends PrimitiveController<Stage> {
           if (newDictionary != null) {
             Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
           } else {
-            Setting.getInstance().setDefaultDictionaryPath(null)
             Dialog dialog = Dialog.new(StageStyle.UTILITY)
             dialog.initOwner($stage)
             dialog.setTitle("変換エラー")
             dialog.setContentText("辞書の変換ができませんでした。正しいファイルかどうか確認してください。")
             dialog.setAllowsCancel(false)
             dialog.showAndWait()
+            Setting.getInstance().setDefaultDictionaryPath(null)
           }
         }
       }
@@ -813,13 +813,13 @@ public class MainController extends PrimitiveController<Stage> {
       Dictionary dictionary = Dictionaries.loadDictionary(file)
       updateDictionary(dictionary)
       if (dictionary == null) {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
         dialog.setTitle("読み込みエラー")
         dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
         dialog.setAllowsCancel(false)
         dialog.showAndWait()
+        Setting.getInstance().setDefaultDictionaryPath(null)
       }
     } else {
       updateDictionary(null)
