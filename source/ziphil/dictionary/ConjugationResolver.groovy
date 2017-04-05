@@ -5,7 +5,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ConjugationResolver<W extends Word, S extends Suggestion> {
+public abstract class ConjugationResolver<W extends Word, S extends Suggestion> {
 
   protected List<S> $suggestions
 
@@ -13,10 +13,8 @@ public class ConjugationResolver<W extends Word, S extends Suggestion> {
     $suggestions = suggestions
   }
 
-  public void precheck(String search, String convertedSearch) {
-  }
+  public abstract void precheck(String search, String convertedSearch)
 
-  public void check(W word, String search, String convertedSearch) {
-  }
+  public abstract void check(W word, String search, String convertedSearch)
 
 }

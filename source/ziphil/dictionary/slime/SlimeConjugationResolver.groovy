@@ -14,6 +14,9 @@ public class SlimeConjugationResolver extends ConjugationResolver<SlimeWord, Sli
     super(suggestions)
   }
 
+  public void precheck(String search, String convertedSearch) {
+  }
+
   public void check(SlimeWord word, String search, String convertedSearch) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
