@@ -15,56 +15,28 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     updateProgress(0, 1)
   }
 
-  protected ObservableList<PersonalWord> load() {
-    if ($path != null) {
-      File file = File.new($path)
-      BufferedReader reader = file.newReader()
-      PersonalWord word = PersonalWord.new()
-      StringBuilder currentValue = StringBuilder.new()
-      Map<Integer, String> headerData = HashMap.new()
-      Integer index = 0
-      Boolean isFirstLine = true
-      Boolean isReadingValue = false
-      Boolean isQuoted = false
-      try {
-        for (Integer codePoint = -1 ; (codePoint = reader.read()) != -1 ;) {
-          if (codePoint == '\r') {
-            continue
-          }
-          if (isReadingValue) {
-            if (isQuoted) {
-              if (codePoint == '"') {
-                Integer nextCodePoint = reader.read()
-                if (nextCodePoint == '"') {
-                  currentValue.appendCodePoint(codePoint)
-                } else if (nextCodePoint == ',') {
-                  if (isFirstLine) {
-                    fillHeaderData(headerData, index, currentValue)
-                  } else {
-                    fillWord(word, headerData, index, currentValue)
-                  }
-                  currentValue.setLength(0)
-                  index ++
-                  isReadingValue = false
-                } else if (nextCodePoint == '\n' || nextCodePoint == -1) {
-                  if (isFirstLine) {
-                    fillHeaderData(headerData, index, currentValue)
-                  } else {
-                    fillWord(word, headerData, index, currentValue)
-                    word.setDictionary($dictionary)
-                    $words.add(word)
-                  }
-                  word = PersonalWord.new()
-                  currentValue.setLength(0)
-                  index = 0
-                  isReadingValue = false
-                  isFirstLine = false
-                }
-              } else {
+  protected Boolean load() {
+    File file = File.new($path)
+    BufferedReader reader = file.newReader()
+    PersonalWord word = PersonalWord.new()
+    StringBuilder currentValue = StringBuilder.new()
+    Map<Integer, String> headerData = HashMap.new()
+    Integer index = 0
+    Boolean isFirstLine = true
+    Boolean isReadingValue = false
+    Boolean isQuoted = false
+    try {
+      for (Integer codePoint = -1 ; (codePoint = reader.read()) != -1 ;) {
+        if (codePoint == '\r') {
+          continue
+        }
+        if (isReadingValue) {
+          if (isQuoted) {
+            if (codePoint == '"') {
+              Integer nextCodePoint = reader.read()
+              if (nextCodePoint == '"') {
                 currentValue.appendCodePoint(codePoint)
-              }
-            } else {
-              if (codePoint == ',') {
+              } else if (nextCodePoint == ',') {
                 if (isFirstLine) {
                   fillHeaderData(headerData, index, currentValue)
                 } else {
@@ -73,7 +45,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                 currentValue.setLength(0)
                 index ++
                 isReadingValue = false
-              } else if (codePoint == '\n') {
+              } else if (nextCodePoint == '\n' || nextCodePoint == -1) {
                 if (isFirstLine) {
                   fillHeaderData(headerData, index, currentValue)
                 } else {
@@ -86,43 +58,70 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
                 index = 0
                 isReadingValue = false
                 isFirstLine = false
-              } else {
-                currentValue.appendCodePoint(codePoint)
               }
+            } else {
+              currentValue.appendCodePoint(codePoint)
             }
           } else {
-            if (codePoint == '"') {
-              isReadingValue = true
-              isQuoted = true
-            } else if (codePoint == ',') {
+            if (codePoint == ',') {
+              if (isFirstLine) {
+                fillHeaderData(headerData, index, currentValue)
+              } else {
+                fillWord(word, headerData, index, currentValue)
+              }
               currentValue.setLength(0)
               index ++
+              isReadingValue = false
             } else if (codePoint == '\n') {
+              if (isFirstLine) {
+                fillHeaderData(headerData, index, currentValue)
+              } else {
+                fillWord(word, headerData, index, currentValue)
+                word.setDictionary($dictionary)
+                $words.add(word)
+              }
               word = PersonalWord.new()
               currentValue.setLength(0)
               index = 0
+              isReadingValue = false
               isFirstLine = false
             } else {
               currentValue.appendCodePoint(codePoint)
-              isReadingValue = true
-              isQuoted = false
             }
           }
-        }
-        if (isReadingValue) {
-          if (isFirstLine) {
-            fillHeaderData(headerData, index, currentValue)
+        } else {
+          if (codePoint == '"') {
+            isReadingValue = true
+            isQuoted = true
+          } else if (codePoint == ',') {
+            currentValue.setLength(0)
+            index ++
+          } else if (codePoint == '\n') {
+            word = PersonalWord.new()
+            currentValue.setLength(0)
+            index = 0
+            isFirstLine = false
           } else {
-            fillWord(word, headerData, index, currentValue)
-            word.setDictionary($dictionary)
-            $words.add(word)
+            currentValue.appendCodePoint(codePoint)
+            isReadingValue = true
+            isQuoted = false
           }
         }
-      } finally {
-        reader.close()
       }
+      if (isReadingValue) {
+        if (isFirstLine) {
+          fillHeaderData(headerData, index, currentValue)
+        } else {
+          fillWord(word, headerData, index, currentValue)
+          word.setDictionary($dictionary)
+          $words.add(word)
+        }
+      }
+    } finally {
+      reader.close()
     }
-    return $words
+    updateProgress(1, 1)
+    return true
   }
 
   private void fillHeaderData(Map<Integer, String> headerData, Integer index, StringBuilder currentValue) {

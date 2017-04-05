@@ -21,57 +21,55 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     updateProgress(0, 1)
   }
 
-  protected ObservableList<SlimeWord> load() {
-    if ($path != null) {
-      File file = File.new($path)
-      FileInputStream stream = FileInputStream.new($path)
-      JsonFactory factory = $mapper.getFactory()
-      JsonParser parser = factory.createParser(stream)
-      Long size = file.length()
-      try {
+  protected Boolean load() {
+    File file = File.new($path)
+    FileInputStream stream = FileInputStream.new($path)
+    JsonFactory factory = $mapper.getFactory()
+    JsonParser parser = factory.createParser(stream)
+    Long size = file.length()
+    try {
+      parser.nextToken()
+      while (parser.nextToken() == JsonToken.FIELD_NAME) {
+        String topFieldName = parser.getCurrentName()
         parser.nextToken()
-        while (parser.nextToken() == JsonToken.FIELD_NAME) {
-          String topFieldName = parser.getCurrentName()
-          parser.nextToken()
-          if (topFieldName == "words") {
-            while (parser.nextToken() == JsonToken.START_OBJECT) {
-              SlimeWord word = SlimeWord.new()
-              if (isCancelled()) {
-                return null
-              }
-              parseWord(parser, word)
-              word.setDictionary($dictionary)
-              $words.add(word)
-              updateProgressByParser(parser, size)
+        if (topFieldName == "words") {
+          while (parser.nextToken() == JsonToken.START_OBJECT) {
+            SlimeWord word = SlimeWord.new()
+            if (isCancelled()) {
+              return false
             }
-          } else if (topFieldName == "zpdic") {
-            while (parser.nextToken() == JsonToken.FIELD_NAME) {
-              String specialFieldName = parser.getCurrentName()
-              parser.nextToken()
-              if (specialFieldName == "alphabetOrder") {
-                parseAlphabetOrder(parser)
-              } else if (specialFieldName == "plainInformationTitles") {
-                parsePlainInformationTitles(parser)
-              } else if (specialFieldName == "informationTitleOrder") {
-                parseInformationTitleOrder(parser)
-              } else if (specialFieldName == "defaultWord") {
-                parseDefaultWord(parser)
-              }
-              updateProgressByParser(parser, size)
-            }
-          } else if (topFieldName == "snoj") {
-            parseAkrantiainSource(parser)
-          } else {
-            $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
+            parseWord(parser, word)
+            word.setDictionary($dictionary)
+            $words.add(word)
+            updateProgressByParser(parser, size)
           }
+        } else if (topFieldName == "zpdic") {
+          while (parser.nextToken() == JsonToken.FIELD_NAME) {
+            String specialFieldName = parser.getCurrentName()
+            parser.nextToken()
+            if (specialFieldName == "alphabetOrder") {
+              parseAlphabetOrder(parser)
+            } else if (specialFieldName == "plainInformationTitles") {
+              parsePlainInformationTitles(parser)
+            } else if (specialFieldName == "informationTitleOrder") {
+              parseInformationTitleOrder(parser)
+            } else if (specialFieldName == "defaultWord") {
+              parseDefaultWord(parser)
+            }
+            updateProgressByParser(parser, size)
+          }
+        } else if (topFieldName == "snoj") {
+          parseAkrantiainSource(parser)
+        } else {
+          $dictionary.getExternalData().put(topFieldName, parser.readValueAsTree())
         }
-      } finally {
-        parser.close()
-        stream.close()
       }
-      updateProgressByParser(parser, size)
+    } finally {
+      parser.close()
+      stream.close()
     }
-    return $words
+    updateProgressByParser(parser, size)
+    return true
   }
 
   private void parseWord(JsonParser parser, SlimeWord word) {
