@@ -86,16 +86,12 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       ConjugationResolver conjugationResolver = createConjugationResolver()
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
-      if (conjugationResolver != null) {
-        conjugationResolver.precheck(search, convertedSearch)
-      }
+      conjugationResolver.precheck(search, convertedSearch)
       updateWordPredicate() { Word word ->
         if (isStrict) {
           String name = word.getName()
           String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          if (conjugationResolver != null) {
-            conjugationResolver.check(word, search, convertedSearch)
-          }
+          conjugationResolver.check(word, search, convertedSearch)
           if (search != "") {
             if (searchesPrefix) {
               return convertedName.startsWith(convertedSearch)
@@ -314,9 +310,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected ConjugationResolver createConjugationResolver() {
-    return null
-  }
+  protected abstract ConjugationResolver createConjugationResolver()
 
   protected abstract DictionaryLoader createLoader()
 

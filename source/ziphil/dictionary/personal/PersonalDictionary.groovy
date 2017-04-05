@@ -2,6 +2,7 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
+import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
@@ -9,6 +10,7 @@ import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.Suggestion
@@ -97,6 +99,11 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+  }
+
+  protected ConjugationResolver createConjugationResolver() {
+    EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
+    return conjugationResolver
   }
 
   protected DictionaryLoader createLoader() {
