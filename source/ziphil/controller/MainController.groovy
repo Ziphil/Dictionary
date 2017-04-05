@@ -55,8 +55,6 @@ import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryConverter
-import ziphil.dictionary.DictionaryConverters
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
@@ -621,34 +619,31 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void convertDictionary(String extension) {
+  private void convertDictionary(String newExtension) {
     if ($dictionary != null) {
-      Boolean allowsOpen = checkDictionaryChange()
-      if (allowsOpen) {
-        DictionaryConverter converter = DictionaryConverters.createConverter(Dictionaries.getExtension($dictionary), extension)
-        if (converter != null) {
-          UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-          DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-          nextStage.initModality(Modality.APPLICATION_MODAL)
-          nextStage.initOwner($stage)
-          controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), extension)
-          nextStage.showAndWait()
-          if (nextStage.isCommitted()) {
-            File file = nextStage.getResult()
-            Dictionary newDictionary = converter.convert($dictionary)
-            newDictionary.setName(file.getName())
-            newDictionary.setPath(file.getAbsolutePath())
-            newDictionary.save()
-            updateDictionary(newDictionary)
+      Boolean allowsConvert = checkDictionaryChange()
+      if (allowsConvert) {
+        UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+        nextStage.initModality(Modality.APPLICATION_MODAL)
+        nextStage.initOwner($stage)
+        controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), newExtension)
+        nextStage.showAndWait()
+        if (nextStage.isCommitted()) {
+          File file = nextStage.getResult()
+          Dictionary newDictionary = Dictionaries.convertDictionary(file, newExtension, $dictionary)
+          updateDictionary(newDictionary)
+          if (newDictionary != null) {
             Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          } else {
+            Setting.getInstance().setDefaultDictionaryPath(null)
+            Dialog dialog = Dialog.new(StageStyle.UTILITY)
+            dialog.initOwner($stage)
+            dialog.setTitle("変換エラー")
+            dialog.setContentText("辞書の変換ができませんでした。正しいファイルかどうか確認してください。")
+            dialog.setAllowsCancel(false)
+            dialog.showAndWait()
           }
-        } else {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("変換エラー")
-          dialog.setContentText("この変換方式は現在のバージョンではサポートされていません。")
-          dialog.setAllowsCancel(false)
-          dialog.showAndWait()
         }
       }
     }

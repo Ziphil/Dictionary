@@ -53,6 +53,24 @@ public class Dictionaries {
     }
   }
 
+  public static Dictionary convertDictionary(File file, String newExtension, Dictionary oldDictionary) {
+    if (file != null) {
+      Dictionary dictionary = null
+      String fileName = file.getName()
+      String filePath = file.getPath()
+      if (newExtension == "xdc") {
+        dictionary = ShaleiaDictionary.new(fileName, filePath, oldDictionary)
+      } else if (newExtension ==  "csv") {
+        dictionary = PersonalDictionary.new(fileName, filePath, oldDictionary)
+      } else if (newExtension == "json") {
+        dictionary = SlimeDictionary.new(fileName, filePath, oldDictionary)
+      }
+      return dictionary
+    } else {
+      return null
+    }
+  }
+
   public static String getExtension(Dictionary dictionary) {
     String extension
     if (dictionary instanceof ShaleiaDictionary) {

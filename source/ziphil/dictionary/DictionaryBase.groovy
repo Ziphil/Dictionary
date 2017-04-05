@@ -38,7 +38,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private static final AccessControlContext ACCESS_CONTROL_CONTEXT = createAccessControlContext()
 
   protected String $name = ""
-  protected String $path = ""
+  protected String $path = null
   protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected FilteredList<W> $filteredWords
   protected SortedList<W> $sortedWords
@@ -61,6 +61,17 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     setupWholeWords()
     prepare()
     load()
+  }
+
+  public DictionaryBase(String name, String path, Dictionary oldDictionary) {
+    $name = name
+    $path = path
+    $isChanged = true
+    $isFirstEmpty = true
+    setupSortedWords()
+    setupWholeWords()
+    prepare()
+    convert(oldDictionary)
   }
 
   protected abstract void prepare()
@@ -245,6 +256,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.start()
   }
 
+  private void convert(Dictionary oldDictionary) {
+    DictionaryConverter converter = createConverter(oldDictionary)
+    converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      if (!$isFirstEmpty) {
+        $isChanged = false
+      }
+    }
+    $loader = converter
+    Thread thread = Thread.new(converter)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
   public void save() {
     DictionarySaver saver = createSaver()
     $saver = saver
@@ -295,6 +319,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   protected abstract DictionaryLoader createLoader()
+
+  protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
 
   protected abstract DictionarySaver createSaver()
 

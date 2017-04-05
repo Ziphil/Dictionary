@@ -1,23 +1,28 @@
-package ziphil.dictionary.converter
+package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.Word
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
-import ziphil.dictionary.slime.SlimeInformation
-import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.dictionary.slime.SlimeWord
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalSlimeDictionaryConverter implements DictionaryConverter<PersonalDictionary, SlimeDictionary> {
+public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeDictionary, PersonalDictionary, SlimeWord> {
 
-  public SlimeDictionary convert(PersonalDictionary oldDictionary) {
-    SlimeDictionary newDictionary = SlimeDictionary.new(oldDictionary.getName(), null)
-    List<PersonalWord> oldWords = oldDictionary.getRawWords()
-    for (Integer newId : 0 ..< oldWords.size()) {
+  public SlimePersonalDictionaryConverter(SlimeDictionary newDictionary, PersonalDictionary oldDictionary) {
+    super(newDictionary, oldDictionary)
+    updateProgress(0, 1)
+  }
+
+  protected Boolean convert() {
+    List<PersonalWord> oldWords = $oldDictionary.getRawWords()
+    Integer size = oldWords.size()
+    for (Integer newId : 0 ..< size) {
+      if (isCancelled()) {
+        return false
+      }
       PersonalWord oldWord = oldWords[newId]
       SlimeWord newWord = SlimeWord.new()
       newWord.setId(newId)
@@ -36,14 +41,12 @@ public class PersonalSlimeDictionaryConverter implements DictionaryConverter<Per
         newInformation.setText(oldUsage)
         newWord.getInformations().add(newInformation)
       }
-      newWord.setDictionary(newDictionary)
-      newDictionary.getRawWords().add(newWord)
+      newWord.setDictionary($newDictionary)
+      $newWords.add(newWord)
+      updateProgress(newId + 1, size)
     }
-    newDictionary.updateFirst()
-    for (Word word : newDictionary.getRawWords()) {
-      word.update()
-    }
-    return newDictionary
+    updateProgress(1, 1)
+    return true
   }
 
 }

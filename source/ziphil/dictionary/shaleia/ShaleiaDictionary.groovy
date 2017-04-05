@@ -11,10 +11,14 @@ import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -37,6 +41,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
+  }
+
+  public ShaleiaDictionary(String name, String path, Dictionary oldDictionary) {
+    super(name, path, oldDictionary)
   }
 
   protected void prepare() {
@@ -223,6 +231,16 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
     return loader
   }
+
+  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
+    if (oldDictionary instanceof ShaleiaDictionary) {
+      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (ShaleiaDictionary)oldDictionary)
+      return converter
+    } else {
+      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
+      return converter
+    }
+  } 
 
   protected DictionarySaver createSaver() {
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)

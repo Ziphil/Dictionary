@@ -9,11 +9,16 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.SearchType
+import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -43,6 +48,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
+  }
+
+  public SlimeDictionary(String name, String path, Dictionary oldDictionary) {
+    super(name, path, oldDictionary)
   }
 
   protected void prepare() {
@@ -397,6 +406,19 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     loader.setMapper($$mapper)
     return loader
   }
+
+  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
+    if (oldDictionary instanceof PersonalDictionary) {
+      SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof SlimeDictionary) {
+      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (SlimeDictionary)oldDictionary)
+      return converter
+    } else {
+      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
+      return converter
+    }
+  } 
 
   protected DictionarySaver createSaver() {
     SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
