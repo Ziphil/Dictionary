@@ -617,7 +617,6 @@ public class MainController extends PrimitiveController<Stage> {
           $dictionaryNameLabel.setText($dictionary.getName())
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("保存エラー")
