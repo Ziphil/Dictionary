@@ -610,11 +610,21 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        $dictionary.setName(file.getName())
-        $dictionary.setPath(file.getAbsolutePath())
-        $dictionary.save()
-        $dictionaryNameLabel.setText($dictionary.getName())
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        if (file != null) {
+          $dictionary.setName(file.getName())
+          $dictionary.setPath(file.getAbsolutePath())
+          $dictionary.save()
+          $dictionaryNameLabel.setText($dictionary.getName())
+          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        } else {
+          Setting.getInstance().setDefaultDictionaryPath(null)
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("保存エラー")
+          dialog.setContentText("辞書の保存ができませんでした。正しいファイルかどうか確認してください。")
+          dialog.setAllowsCancel(false)
+          dialog.showAndWait()
+        }
       }
     }
   }
