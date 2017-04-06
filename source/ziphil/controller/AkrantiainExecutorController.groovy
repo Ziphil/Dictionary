@@ -51,7 +51,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
         $logControl.setText("")
       } catch (AkrantiainException exception) {
         $outputControl.setText("")
-        $logControl.setText(exception.getMessage())
+        $logControl.setText(exception.getFullMessage())
       }
     } else {
       $outputControl.setText("")

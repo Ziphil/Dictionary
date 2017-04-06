@@ -61,7 +61,7 @@ public class Akrantiain {
     if (invalidElements.isEmpty()) {
       return currentGroup.createOutput()
     } else {
-      throw AkrantiainException.new("No rules that can handle \"${invalidElements[0].getPart()}\"")
+      throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
     }
   }
 

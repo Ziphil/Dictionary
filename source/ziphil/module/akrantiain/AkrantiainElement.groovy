@@ -9,17 +9,17 @@ public class AkrantiainElement {
 
   private String $part
   private String $result = null
-  private Integer $initialPosition = null
+  private Integer $columnNumber = null
 
-  public AkrantiainElement(String part, String result, Integer initialPosition) {
+  public AkrantiainElement(String part, String result, Integer columnNumber) {
     $part = part
     $result = result
-    $initialPosition = initialPosition
+    $columnNumber = columnNumber
   }
 
-  public AkrantiainElement(String part, Integer initialPosition) {
+  public AkrantiainElement(String part, Integer columnNumber) {
     $part = part
-    $initialPosition = initialPosition
+    $columnNumber = columnNumber
   }
 
   public AkrantiainElement(String part) {
@@ -85,12 +85,12 @@ public class AkrantiainElement {
     $result = result
   }
 
-  public Integer getInitialPosition() {
-    return $initialPosition
+  public Integer getColumnNumber() {
+    return $columnNumber
   }
 
-  public void setInitialPosition(Integer initialPosition) {
-    $initialPosition = initialPosition
+  public void setColumnNumber(Integer columnNumber) {
+    $columnNumber = columnNumber
   }
 
 }

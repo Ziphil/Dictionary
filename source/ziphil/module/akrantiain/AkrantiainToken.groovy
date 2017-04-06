@@ -169,7 +169,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer to = content.matchRight(group, from, setting)
       return to
     } else {
-      throw AkrantiainException.new("No such identifier \"${$text}\"")
+      throw AkrantiainException.new("No such identifier", this)
     }
   }
 
@@ -179,7 +179,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer from = content.matchLeft(group, to, setting)
       return from
     } else {
-      throw AkrantiainException.new("No such identifier \"${$text}\"")
+      throw AkrantiainException.new("No such identifier", this)
     }
   }
 
