@@ -87,13 +87,15 @@ public class AkrantiainRule {
   }
 
   private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    AkrantiainElementGroup devidedGroup = group.devide(0, to)
-    return $leftCondition == null || $leftCondition.matchLeft(devidedGroup, devidedGroup.getElements().size(), setting) != null
+    AkrantiainElementGroup leftGroup = group.devide(0, to)
+    AkrantiainElementGroup rightGroup = group.devide(to, group.getElements().size())
+    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
   }
 
   private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    AkrantiainElementGroup devidedGroup = group.devide(from, group.getElements().size())
-    return $rightCondition == null || $rightCondition.matchRight(devidedGroup, 0, setting) != null
+    AkrantiainElementGroup leftGroup = group.devide(0, from)
+    AkrantiainElementGroup rightGroup = group.devide(from, group.getElements().size())
+    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
   }
 
   public String toString() {

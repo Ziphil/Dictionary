@@ -18,6 +18,13 @@ public class AkrantiainElementGroup {
     return group
   }
 
+  public AkrantiainElementGroup plus(AkrantiainElementGroup group) {
+    AkrantiainElementGroup newGroup = AkrantiainElementGroup.new()
+    newGroup.getElements().addAll($elements)
+    newGroup.getElements().addAll(group.getElements())
+    return newGroup
+  }
+
   // インデックスが from から to まで (to は含まない) の要素を 1 つに合成した要素を返します。
   // 返される要素の part の値は、合成前の part をインデックス順に繋げたものになります。
   // 返される要素の result の値は、合成前の各要素の result の値に関わらず null になります。
