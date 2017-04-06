@@ -61,7 +61,10 @@
         </Button>
       </HBox>
       <TextField fx:id="$outputControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-      <TextField fx:id="$logControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+      <TextArea fx:id="$logControl" editable="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <prefHeight><Double rpx="70"/></prefHeight>
+          <minHeight><Double rpx="70"/></minHeight>
+      </TextArea>
     </GridPane>
   </center>
 </BorderPane>

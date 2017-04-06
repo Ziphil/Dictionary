@@ -59,11 +59,11 @@ public class AkrantiainParseException extends Exception {
 
   private void makeFullMessage(String plainMessage, AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("Parse Error: ")
+    fullMessage.append("AkrantiainParseException: ")
     fullMessage.append(plainMessage)
-    fullMessage.append("\n\t")
+    fullMessage.append("\n")
     if (token != null) {
-      fullMessage.append("\"")
+      fullMessage.append("  \"")
       fullMessage.append(token.getText())
       fullMessage.append("\" (at line ")
       Integer lineNumber = token.getLineNumber()
@@ -81,11 +81,11 @@ public class AkrantiainParseException extends Exception {
 
   private void makeFullMessage(String plainMessage, Integer codePoint, Integer lineNumber) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("Parse Error: ")
+    fullMessage.append("AkrantiainParseException: ")
     fullMessage.append(plainMessage)
-    fullMessage.append("\n\t")
+    fullMessage.append("\n")
     if (codePoint != null) {
-      fullMessage.append("\"")
+      fullMessage.append("  \"")
       fullMessage.appendCodePoint(codePoint)
       fullMessage.append("\" (at line ")
       if (lineNumber != null) {
