@@ -57,11 +57,11 @@ public class Akrantiain {
     for (AkrantiainRule rule : $setting.getRules()) {
       currentGroup = rule.apply(currentGroup, $setting)
     }
-    AkrantiainElement invalidElement = currentGroup.firstInvalidElement($setting)
-    if (invalidElement == null) {
+    List<AkrantiainElement> invalidElements = currentGroup.invalidElements($setting)
+    if (invalidElements.isEmpty()) {
       return currentGroup.createOutput()
     } else {
-      throw AkrantiainException.new("No rules that can handle \"${invalidElement.getPart()}\"")
+      throw AkrantiainException.new("No rules that can handle \"${invalidElements[0].getPart()}\"")
     }
   }
 

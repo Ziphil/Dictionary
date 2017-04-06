@@ -39,18 +39,19 @@ public class AkrantiainElementGroup {
     return group
   }
 
-  public AkrantiainElement firstInvalidElement(AkrantiainSetting setting) {
+  public List<AkrantiainElement> invalidElements(AkrantiainSetting setting) {
+    List<AkrantiainElement> invalidElements = ArrayList.new()
     for (AkrantiainElement element : $elements) {
       if (!element.isValid(setting)) {
-        return element
+        invalidElements.add(element)
       }
     }
-    return null
+    return invalidElements
   }
 
   // 各要素の変換後の文字列を連結し、出力文字列を作成します。
   // 変換がなされていない要素が含まれていた場合は、代わりにスペース 1 つを連結します。
-  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを firstInvalidElement() などで確認してください。
+  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを invalidElements メソッドなどで確認してください。
   public String createOutput() {
     StringBuilder output = StringBuilder.new()
     for (AkrantiainElement element : $elements) {
