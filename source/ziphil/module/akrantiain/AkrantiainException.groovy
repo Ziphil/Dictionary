@@ -32,9 +32,9 @@ public class AkrantiainException extends Exception {
     fullMessage.append(message)
     if (token != null) {
       fullMessage.append("\n")
-      fullMessage.append("  \"")
-      fullMessage.append(token.getText())
-      fullMessage.append("\" (at line ")
+      fullMessage.append("  ")
+      fullMessage.append(token.getFullText())
+      fullMessage.append(" (at line ")
       Integer lineNumber = token.getLineNumber()
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
@@ -52,9 +52,9 @@ public class AkrantiainException extends Exception {
     fullMessage.append(message)
     for (AkrantiainElement element : elements) {
       fullMessage.append("\n")
-      fullMessage.append("  \"")
+      fullMessage.append("  ")
       fullMessage.append(element.getPart())
-      fullMessage.append("\" (at column ")
+      fullMessage.append(" (at column ")
       Integer columnNumber = element.getColumnNumber()
       if (columnNumber != null) {
         fullMessage.append(columnNumber)

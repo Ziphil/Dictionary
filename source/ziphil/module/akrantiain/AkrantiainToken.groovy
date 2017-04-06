@@ -9,12 +9,14 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private AkrantiainTokenType $type
   private String $text
+  private String $fullText = ""
   private Integer $lineNumber
 
   public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber) {
     $type = type
     $text = text
     $lineNumber = lineNumber
+    makeFullText()
   }
 
   public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
@@ -183,6 +185,18 @@ public class AkrantiainToken implements AkrantiainMatchable {
     }
   }
 
+  private void makeFullText() {
+    if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
+      $fullText = "\"" + $text + "\""
+    } else if ($type == AkrantiainTokenType.SLASH_LITERAL) {
+      $fullText = "/" + $text + "/"
+    } else if ($type == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
+      $fullText = "@" + $text
+    } else {
+      $fullText = $text
+    }
+  }
+
   public Boolean isConcrete() {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }
@@ -202,6 +216,10 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   public String getText() {
     return $text
+  }
+
+  public String getFullText() {
+    return $fullText
   }
 
   public Integer getLineNumber() {

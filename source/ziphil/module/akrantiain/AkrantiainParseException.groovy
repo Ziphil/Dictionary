@@ -32,9 +32,9 @@ public class AkrantiainParseException extends Exception {
     fullMessage.append(message)
     if (token != null) {
       fullMessage.append("\n")
-      fullMessage.append("  \"")
-      fullMessage.append(token.getText())
-      fullMessage.append("\" (at line ")
+      fullMessage.append("  ")
+      fullMessage.append(token.getFullText())
+      fullMessage.append(" (at line ")
       Integer lineNumber = token.getLineNumber()
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
@@ -52,9 +52,9 @@ public class AkrantiainParseException extends Exception {
     fullMessage.append(message)
     if (codePoint != null) {
       fullMessage.append("\n")
-      fullMessage.append("  \"")
+      fullMessage.append("  ")
       fullMessage.appendCodePoint(codePoint)
-      fullMessage.append("\" (at line ")
+      fullMessage.append(" (at line ")
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
       } else {
