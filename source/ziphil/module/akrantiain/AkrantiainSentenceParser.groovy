@@ -9,23 +9,22 @@ public class AkrantiainSentenceParser {
 
   private List<AkrantiainToken> $tokens
   private Integer $pointer = 0
-  private Integer $lineNumber
 
   public AkrantiainSentenceParser(List<AkrantiainToken> tokens) {
     $tokens = tokens
-    $lineNumber = (!tokens.isEmpty()) ? tokens[0].getLineNumber() : null
   }
 
   public AkrantiainEnvironment parseEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
+      AkrantiainToken token = $tokens[0]
       try {
-        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf($tokens[0].getText())
+        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf(token.getText())
         return environment
       } catch (IllegalArgumentException exception) {
-        throw AkrantiainParseException.new("No such setting identifier", $lineNumber)
+        throw AkrantiainParseException.new("No such setting identifier", token)
       }
     } else {
-      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $lineNumber)
+      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens[-1])
     }
   }
 
@@ -42,10 +41,10 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.SEMICOLON) {
         return definition
       } else {
-        throw AkrantiainParseException.new("Invalid identifier definition sentence", $lineNumber)
+        throw AkrantiainParseException.new("Invalid identifier definition sentence", token)
       }
     } else {
-      throw AkrantiainParseException.new("Invalid identifier definition sentence", $lineNumber)
+      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens[-1])
     }
   }
 
@@ -67,13 +66,13 @@ public class AkrantiainSentenceParser {
             } else if (!rule.hasRightCondition()) {
               rule.setRightCondition(selection)
             } else {
-              throw AkrantiainParseException.new("Condition must be at the beginning or end of the left hand of a rule definition sentence", $lineNumber)
+              throw AkrantiainParseException.new("Condition must be at the beginning or end of the left hand of a rule definition sentence", token)
             }
           } else {
             if (!rule.hasRightCondition()) {
               rule.getSelections().add(selection)
             } else {
-              throw AkrantiainParseException.new("Selection must not be at the right of the right condition", $lineNumber)
+              throw AkrantiainParseException.new("Selection must not be at the right of the right condition", token)
             }
           }
         }
@@ -83,15 +82,15 @@ public class AkrantiainSentenceParser {
         } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
           break
         } else {
-          throw AkrantiainParseException.new("Only slash literals can be at the right hand of a rule definition sentence", $lineNumber)
+          throw AkrantiainParseException.new("Only slash literals can be at the right hand of a rule definition sentence", token)
         }
       }
     }
     if (!rule.hasSelection()) {
-      throw AkrantiainParseException.new("No selects", $lineNumber)
+      throw AkrantiainParseException.new("No selects", $tokens[-1])
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding ^", $lineNumber)
+      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding ^", $tokens[-1])
     }
     return rule
   }
@@ -110,7 +109,7 @@ public class AkrantiainSentenceParser {
           disjunctionGroup.getTokenGroups().add(currentTokenGroup)
           currentTokenGroup = AkrantiainTokenGroup.new()
         } else {
-          throw AkrantiainParseException.new("Invalid disjunction expression", $lineNumber)
+          throw AkrantiainParseException.new("Invalid disjunction expression", token)
         }
       } else {
         if (currentTokenGroup.hasToken()) {
@@ -118,7 +117,7 @@ public class AkrantiainSentenceParser {
           disjunctionGroup.getTokenGroups().add(currentTokenGroup)
           break
         } else {
-          throw AkrantiainParseException.new("Invalid disjunction expression", $lineNumber)
+          throw AkrantiainParseException.new("Invalid disjunction expression", token)
         }
       }
     }
@@ -139,7 +138,7 @@ public class AkrantiainSentenceParser {
         if (!selection.isNegated()) {
           selection.setNegated(true)
         } else {
-          throw AkrantiainParseException.new("Duplicate negation", $lineNumber)
+          throw AkrantiainParseException.new("Duplicate negation", token)
         }
       } else if (tokenType == AkrantiainTokenType.OPEN_PAREN) {
         AkrantiainDisjunctionGroup disjunctionGroup = nextDisjunctionGroup()
@@ -149,10 +148,10 @@ public class AkrantiainSentenceParser {
           selection.setTokenGroups(disjunctionGroup.getTokenGroups())
           break
         } else {
-          throw AkrantiainParseException.new("Invalid disjunction expression", $lineNumber)
+          throw AkrantiainParseException.new("Invalid disjunction expression", token)
         }
       } else {
-        throw AkrantiainParseException.new("Invalid condition or select", $lineNumber)
+        throw AkrantiainParseException.new("Invalid condition or select", token)
       }
     }
     return selection

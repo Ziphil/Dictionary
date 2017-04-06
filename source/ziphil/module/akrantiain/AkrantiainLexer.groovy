@@ -43,7 +43,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         if (nextCodePoint == '>') {
           token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->", $reader.getLineNumber())
         } else {
-          throw AkrantiainParseException.new("Invalid symbol", $reader.getLineNumber())
+          throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader.getLineNumber())
         }
       } else if (codePoint == '|') {
         token = AkrantiainToken.new(AkrantiainTokenType.VERTICAL, "|", $reader.getLineNumber())
@@ -69,7 +69,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           token = null
         }
       } else {
-        throw AkrantiainParseException.new("Invalid symbol", $reader.getLineNumber())
+        throw AkrantiainParseException.new("Invalid symbol", codePoint, $reader.getLineNumber())
       }
     } else {
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader.getLineNumber())
@@ -105,12 +105,12 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           if (nextCodePoint == separator || nextCodePoint == '\\') {
             currentContent.appendCodePoint(nextCodePoint)
           } else {
-            throw AkrantiainParseException.new("Invalid escape sequence", $reader.getLineNumber())
+            throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader.getLineNumber())
           }
         } else if (codePoint == '\n') {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", $reader.getLineNumber() - 1)
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader.getLineNumber() - 1)
         } else if (codePoint == -1) {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", $reader.getLineNumber())
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader.getLineNumber())
         } else if (codePoint == separator) {
           break
         } else {

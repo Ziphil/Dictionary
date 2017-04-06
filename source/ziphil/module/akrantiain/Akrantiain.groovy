@@ -33,18 +33,17 @@ public class Akrantiain {
           $setting.getEnvironments().add(environment)
         } else if (parser.isDefinitionSentence()) {
           AkrantiainDefinition definition = parser.parseDefinition()
-          if (!$setting.containsIdentifier(definition.getIdentifier())) {
+          AkrantiainToken identifier = definition.getIdentifier()
+          if (!$setting.containsIdentifier(identifier)) {
             $setting.getDefinitions().add(definition)
           } else {
-            Integer lineNumber = currentTokens[0].getLineNumber()
-            throw AkrantiainParseException.new("Duplicate identifier", lineNumber)
+            throw AkrantiainParseException.new("Duplicate identifier", identifier)
           }
         } else if (parser.isRuleSentence()) {
           AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
         } else {
-          Integer lineNumber = (!currentTokens.isEmpty()) ? currentTokens[0].getLineNumber() : null
-          throw AkrantiainParseException.new("Invalid sentence", lineNumber)
+          throw AkrantiainParseException.new("Invalid sentence", currentTokens[-1])
         }
         currentTokens.clear()
       }
