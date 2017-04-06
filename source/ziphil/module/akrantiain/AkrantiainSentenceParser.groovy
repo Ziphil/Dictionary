@@ -17,7 +17,7 @@ public class AkrantiainSentenceParser {
   }
 
   public AkrantiainEnvironment parseEnvironment() {
-    if ($tokens.size() == 1 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
+    if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       try {
         AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf($tokens[0].getText())
         return environment
@@ -30,14 +30,16 @@ public class AkrantiainSentenceParser {
   }
 
   public AkrantiainDefinition parseDefinition() {
-    if ($tokens.size() >= 3 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
+    if ($tokens.size() >= 4 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
       AkrantiainToken identifier = $tokens[0]
       AkrantiainDisjunctionGroup content = nextDisjunctionGroup()
       definition.setIdentifier(identifier)
       definition.setContent(content)
-      if ($tokens[$pointer] == null) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+      if (tokenType == AkrantiainTokenType.SEMICOLON) {
         return definition
       } else {
         throw AkrantiainParseException.new("Invalid identifier definition sentence", $lineNumber)
@@ -78,7 +80,7 @@ public class AkrantiainSentenceParser {
       } else {
         if (tokenType == AkrantiainTokenType.SLASH_LITERAL || tokenType == AkrantiainTokenType.DOLLAR) {
           rule.getPhonemes().add(token)
-        } else if (tokenType == null) {
+        } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
           break
         } else {
           throw AkrantiainParseException.new("Only slash literals can be at the right hand of a rule definition sentence", $lineNumber)

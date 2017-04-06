@@ -25,9 +25,8 @@ public class Akrantiain {
     AkrantiainLexer lexer = AkrantiainLexer.new(reader)
     List<AkrantiainToken> currentTokens = ArrayList.new()
     for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {
-      if (token.getType() != AkrantiainTokenType.SEMICOLON) {
-        currentTokens.add(token)
-      } else {
+      currentTokens.add(token)
+      if (token.getType() == AkrantiainTokenType.SEMICOLON) {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
         if (parser.isEnvironmentSentence()) {
           AkrantiainEnvironment environment = parser.parseEnvironment()
