@@ -26,7 +26,7 @@ public class AkrantiainSetting {
         return definition.getContent()
       }
     }
-    return AkrantiainDisjunctionGroup.EMPTY_GROUP
+    return AkrantiainDisjunction.EMPTY_DISJUNCTION
   }
 
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {
