@@ -28,10 +28,10 @@ public class AkrantiainException extends Exception {
 
   private void makeFullMessage(String message, AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainParseException: ")
+    fullMessage.append("AkrantiainException: ")
     fullMessage.append(message)
-    fullMessage.append("\n")
     if (token != null) {
+      fullMessage.append("\n")
       fullMessage.append("  \"")
       fullMessage.append(token.getText())
       fullMessage.append("\" (at line ")
@@ -41,10 +41,8 @@ public class AkrantiainException extends Exception {
       } else {
         fullMessage.append("?")
       }
-    } else {
-      fullMessage.append("? (at line ?")
+      fullMessage.append(")")
     }
-    fullMessage.append(")")
     $fullMessage = fullMessage.toString()
   }
 
@@ -52,8 +50,8 @@ public class AkrantiainException extends Exception {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainException: ")
     fullMessage.append(message)
-    fullMessage.append("\n")
     for (AkrantiainElement element : elements) {
+      fullMessage.append("\n")
       fullMessage.append("  \"")
       fullMessage.append(element.getPart())
       fullMessage.append("\" (at column ")
@@ -63,7 +61,7 @@ public class AkrantiainException extends Exception {
       } else {
         fullMessage.append("?")
       }
-      fullMessage.append(")\n")
+      fullMessage.append(")")
     }
     $fullMessage = fullMessage.toString()
   }

@@ -30,8 +30,8 @@ public class AkrantiainParseException extends Exception {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
     fullMessage.append(message)
-    fullMessage.append("\n")
     if (token != null) {
+      fullMessage.append("\n")
       fullMessage.append("  \"")
       fullMessage.append(token.getText())
       fullMessage.append("\" (at line ")
@@ -41,10 +41,8 @@ public class AkrantiainParseException extends Exception {
       } else {
         fullMessage.append("?")
       }
-    } else {
-      fullMessage.append("? (at line ?")
+      fullMessage.append(")")
     }
-    fullMessage.append(")")
     $fullMessage = fullMessage.toString()
   }
 
@@ -52,8 +50,8 @@ public class AkrantiainParseException extends Exception {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
     fullMessage.append(message)
-    fullMessage.append("\n")
     if (codePoint != null) {
+      fullMessage.append("\n")
       fullMessage.append("  \"")
       fullMessage.appendCodePoint(codePoint)
       fullMessage.append("\" (at line ")
@@ -62,10 +60,8 @@ public class AkrantiainParseException extends Exception {
       } else {
         fullMessage.append("?")
       }
-    } else {
-      fullMessage.append("? (at line ?")
+      fullMessage.append(")")
     }
-    fullMessage.append(")")
     $fullMessage = fullMessage.toString()
   }
 
