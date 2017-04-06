@@ -237,4 +237,8 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $lineNumber
   }
 
+  public Integer getColumnNumber() {
+    return $columnNumber
+  }
+
 }

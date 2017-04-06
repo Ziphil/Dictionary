@@ -37,8 +37,15 @@ public class AkrantiainParseException extends Exception {
       fullMessage.append(token.getFullText())
       fullMessage.append(" (at line ")
       Integer lineNumber = token.getLineNumber()
+      Integer columnNumber = token.getColumnNumber()
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
+      } else {
+        fullMessage.append("?")
+      }
+      fullMessage.append(" column ")
+      if (columnNumber != null) {
+        fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")
       }
@@ -57,8 +64,15 @@ public class AkrantiainParseException extends Exception {
       fullMessage.appendCodePoint(codePoint)
       fullMessage.append(" (at line ")
       Integer lineNumber = reader.getLineNumber()
+      Integer columnNumber = reader.getColumnNumber()
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
+      } else {
+        fullMessage.append("?")
+      }
+      fullMessage.append(" column ")
+      if (columnNumber != null) {
+        fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")
       }
