@@ -14,46 +14,22 @@ public class AkrantiainException extends Exception {
     super()
   }
 
-  public AkrantiainException(String plainMessage, AkrantiainToken token) {
+  public AkrantiainException(String message, AkrantiainToken token) {
     super()
-    makeMessage(plainMessage, token)
-    makeFullMessage(plainMessage, token)
+    $message = message
+    makeFullMessage(message, token)
   }
 
-  public AkrantiainException(String plainMessage, List<AkrantiainElement> elements) {
+  public AkrantiainException(String message, List<AkrantiainElement> elements) {
     super()
-    makeMessage(plainMessage, elements)
-    makeFullMessage(plainMessage, elements)
+    $message = message
+    makeFullMessage(message, elements)
   }
 
-  private void makeMessage(String plainMessage, AkrantiainToken token) {
-    StringBuilder message = StringBuilder.new()
-    message.append(plainMessage)
-    message.append(" (at line ")
-    if (token != null) {
-      Integer lineNumber = token.getLineNumber()
-      if (lineNumber != null) {
-        message.append(lineNumber)
-      } else {
-        message.append("?")
-      }
-    } else {
-      message.append("?")
-    }
-    message.append(")")
-    $message = message.toString()
-  }
-
-  private void makeMessage(String plainMessage, List<AkrantiainElement> elements) {
-    StringBuilder message = StringBuilder.new()
-    message.append(plainMessage)
-    $message = message.toString()
-  }
-
-  private void makeFullMessage(String plainMessage, AkrantiainToken token) {
+  private void makeFullMessage(String message, AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
-    fullMessage.append(plainMessage)
+    fullMessage.append(message)
     fullMessage.append("\n")
     if (token != null) {
       fullMessage.append("  \"")
@@ -72,10 +48,10 @@ public class AkrantiainException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(String plainMessage, List<AkrantiainElement> elements) {
+  private void makeFullMessage(String message, List<AkrantiainElement> elements) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainException: ")
-    fullMessage.append(plainMessage)
+    fullMessage.append(message)
     fullMessage.append("\n")
     for (AkrantiainElement element : elements) {
       fullMessage.append("  \"")

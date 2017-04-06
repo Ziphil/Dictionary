@@ -14,53 +14,22 @@ public class AkrantiainParseException extends Exception {
     super()
   }
 
-  public AkrantiainParseException(String plainMessage, AkrantiainToken token) {
+  public AkrantiainParseException(String message, AkrantiainToken token) {
     super()
-    makeMessage(plainMessage, token)
-    makeFullMessage(plainMessage, token)
+    $message = message
+    makeFullMessage(message, token)
   }
 
-  public AkrantiainParseException(String plainMessage, Integer codePoint, Integer lineNumber) {
+  public AkrantiainParseException(String message, Integer codePoint, Integer lineNumber) {
     super()
-    makeMessage(plainMessage, codePoint, lineNumber)
-    makeFullMessage(plainMessage, codePoint, lineNumber)
+    $message = message
+    makeFullMessage(message, codePoint, lineNumber)
   }
 
-  private void makeMessage(String plainMessage, AkrantiainToken token) {
-    StringBuilder message = StringBuilder.new()
-    message.append(plainMessage)
-    message.append(" (at line ")
-    if (token != null) {
-      Integer lineNumber = token.getLineNumber()
-      if (lineNumber != null) {
-        message.append(lineNumber)
-      } else {
-        message.append("?")
-      }
-    } else {
-      message.append("?")
-    }
-    message.append(")")
-    $message = message.toString()
-  }
-
-  private void makeMessage(String plainMessage, Integer codePoint, Integer lineNumber) {
-    StringBuilder message = StringBuilder.new()
-    message.append(plainMessage)
-    message.append(" (at line ")
-    if (lineNumber != null) {
-      message.append(lineNumber)
-    } else {
-      message.append("?")
-    }
-    message.append(")")
-    $message = message.toString()
-  }
-
-  private void makeFullMessage(String plainMessage, AkrantiainToken token) {
+  private void makeFullMessage(String message, AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
-    fullMessage.append(plainMessage)
+    fullMessage.append(message)
     fullMessage.append("\n")
     if (token != null) {
       fullMessage.append("  \"")
@@ -79,10 +48,10 @@ public class AkrantiainParseException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(String plainMessage, Integer codePoint, Integer lineNumber) {
+  private void makeFullMessage(String message, Integer codePoint, Integer lineNumber) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
-    fullMessage.append(plainMessage)
+    fullMessage.append(message)
     fullMessage.append("\n")
     if (codePoint != null) {
       fullMessage.append("  \"")
