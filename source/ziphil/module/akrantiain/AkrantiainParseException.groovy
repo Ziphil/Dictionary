@@ -17,19 +17,19 @@ public class AkrantiainParseException extends Exception {
   public AkrantiainParseException(String message, AkrantiainToken token) {
     super()
     $message = message
-    makeFullMessage(message, token)
+    makeFullMessage(token)
   }
 
   public AkrantiainParseException(String message, Integer codePoint, Integer lineNumber) {
     super()
     $message = message
-    makeFullMessage(message, codePoint, lineNumber)
+    makeFullMessage(codePoint, lineNumber)
   }
 
-  private void makeFullMessage(String message, AkrantiainToken token) {
+  private void makeFullMessage(AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
-    fullMessage.append(message)
+    fullMessage.append($message)
     if (token != null) {
       fullMessage.append("\n")
       fullMessage.append("  ")
@@ -46,10 +46,10 @@ public class AkrantiainParseException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(String message, Integer codePoint, Integer lineNumber) {
+  private void makeFullMessage(Integer codePoint, Integer lineNumber) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
-    fullMessage.append(message)
+    fullMessage.append($message)
     if (codePoint != null) {
       fullMessage.append("\n")
       fullMessage.append("  ")

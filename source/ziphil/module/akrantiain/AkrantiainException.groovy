@@ -17,19 +17,19 @@ public class AkrantiainException extends Exception {
   public AkrantiainException(String message, AkrantiainToken token) {
     super()
     $message = message
-    makeFullMessage(message, token)
+    makeFullMessage(token)
   }
 
   public AkrantiainException(String message, List<AkrantiainElement> elements) {
     super()
     $message = message
-    makeFullMessage(message, elements)
+    makeFullMessage(elements)
   }
 
-  private void makeFullMessage(String message, AkrantiainToken token) {
+  private void makeFullMessage(AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainException: ")
-    fullMessage.append(message)
+    fullMessage.append($message)
     if (token != null) {
       fullMessage.append("\n")
       fullMessage.append("  ")
@@ -46,10 +46,10 @@ public class AkrantiainException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(String message, List<AkrantiainElement> elements) {
+  private void makeFullMessage(List<AkrantiainElement> elements) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainException: ")
-    fullMessage.append(message)
+    fullMessage.append($message)
     for (AkrantiainElement element : elements) {
       fullMessage.append("\n")
       fullMessage.append("  ")
