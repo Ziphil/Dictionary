@@ -11,8 +11,8 @@ public class AkrantiainElementGroup {
 
   public static AkrantiainElementGroup create(String input) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    for (String character : input) {
-      AkrantiainElement element = AkrantiainElement.new(character)
+    for (Integer i : 0 ..< input.length()) {
+      AkrantiainElement element = AkrantiainElement.new(input[i], i)
       group.getElements().add(element)
     }
     return group
@@ -26,7 +26,7 @@ public class AkrantiainElementGroup {
     for (Integer i : from ..< to) {
       mergedPart.append($elements[i].getPart())
     }
-    return AkrantiainElement.new(mergedPart.toString())
+    return AkrantiainElement.new(mergedPart.toString(), $elements[from].getInitialPosition())
   }
 
   // インデックスが from から to まで (to は含まない) の要素を 1 文字ごとに分割した要素グループを返します。

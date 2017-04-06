@@ -8,22 +8,28 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainElement {
 
   private String $part
-  private String $result
+  private String $result = null
+  private Integer $initialPosition = null
 
-  public AkrantiainElement(String part, String result) {
+  public AkrantiainElement(String part, String result, Integer initialPosition) {
     $part = part
     $result = result
+    $initialPosition = initialPosition
+  }
+
+  public AkrantiainElement(String part, Integer initialPosition) {
+    $part = part
+    $initialPosition = initialPosition
   }
 
   public AkrantiainElement(String part) {
     $part = part
-    $result = null
   }
 
   public AkrantiainElementGroup devide() {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
     for (String character : $part) {
-      AkrantiainElement element = AkrantiainElement.new(character, null)
+      AkrantiainElement element = AkrantiainElement.new(character)
       group.getElements().add(element)
     }
     return group
@@ -77,6 +83,14 @@ public class AkrantiainElement {
 
   public void setResult(String result) {
     $result = result
+  }
+
+  public Integer getInitialPosition() {
+    return $initialPosition
+  }
+
+  public void setInitialPosition(Integer initialPosition) {
+    $initialPosition = initialPosition
   }
 
 }
