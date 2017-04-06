@@ -1,19 +1,19 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class AkrantiainLexer implements Closeable, AutoCloseable {
 
-  private LineNumberReader $reader
+  private ExtendedBufferedReader $reader
   private Boolean $isFirst = true
   private Boolean $isAfterSemicolon = false
 
   public AkrantiainLexer(Reader reader) {
-    $reader = LineNumberReader.new(reader)
-    setupReader()
+    $reader = ExtendedBufferedReader.new(reader)
   }
 
   // 次のトークンを取得します。
@@ -37,42 +37,42 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         $reader.reset()
         token = nextEnvironmentLiteral()
       } else if (codePoint == '=') {
-        token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
       } else if (codePoint == '-') {
         Integer nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
-          token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->", $reader.getLineNumber())
+          token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->", $reader)
         } else {
-          throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader.getLineNumber())
+          throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
         }
       } else if (codePoint == '|') {
-        token = AkrantiainToken.new(AkrantiainTokenType.VERTICAL, "|", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.VERTICAL, "|", $reader)
       } else if (codePoint == '^') {
-        token = AkrantiainToken.new(AkrantiainTokenType.CIRCUMFLEX, "^", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.CIRCUMFLEX, "^", $reader)
       } else if (codePoint == '$') {
-        token = AkrantiainToken.new(AkrantiainTokenType.DOLLAR, "\$", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.DOLLAR, "\$", $reader)
       } else if (codePoint == '!') {
-        token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!", $reader)
       } else if (codePoint == '(') {
-        token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(", $reader)
       } else if (codePoint == ')') {
-        token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")", $reader)
       } else if (codePoint == ';') {
-        token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader.getLineNumber())
+        token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
       } else if (AkrantiainLexer.isLetter(codePoint)) {
         $reader.reset()
         token = nextIdentifier()
       } else if (codePoint == -1) {
         if (!$isAfterSemicolon) {
-          token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader.getLineNumber())
+          token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
         } else {
           token = null
         }
       } else {
-        throw AkrantiainParseException.new("Invalid symbol", codePoint, $reader.getLineNumber())
+        throw AkrantiainParseException.new("Invalid symbol", codePoint, $reader)
       }
     } else {
-      token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader.getLineNumber())
+      token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
     }
     $isAfterSemicolon = token != null && token.getType() == AkrantiainTokenType.SEMICOLON
     return token
@@ -90,7 +90,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         break
       }
     }
-    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.IDENTIFIER, currentName.toString(), $reader.getLineNumber())
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.IDENTIFIER, currentName.toString(), $reader)
     return token
   }
 
@@ -105,12 +105,12 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           if (nextCodePoint == separator || nextCodePoint == '\\') {
             currentContent.appendCodePoint(nextCodePoint)
           } else {
-            throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader.getLineNumber())
+            throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader)
           }
         } else if (codePoint == '\n') {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader.getLineNumber() - 1)
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader)
         } else if (codePoint == -1) {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader.getLineNumber())
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader)
         } else if (codePoint == separator) {
           break
         } else {
@@ -126,9 +126,9 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     }
     AkrantiainToken token = null
     if (separator == '"') {
-      token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, currentContent.toString(), $reader.getLineNumber())
+      token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, currentContent.toString(), $reader)
     } else if (separator == '/') {
-      token = AkrantiainToken.new(AkrantiainTokenType.SLASH_LITERAL, currentContent.toString(), $reader.getLineNumber())
+      token = AkrantiainToken.new(AkrantiainTokenType.SLASH_LITERAL, currentContent.toString(), $reader)
     }
     return token
   }
@@ -154,7 +154,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         }
       }
     }
-    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.ENVIRONMENT_LITERAL, currentContent.toString(), $reader.getLineNumber())
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.ENVIRONMENT_LITERAL, currentContent.toString(), $reader)
     return token
   }
 
@@ -182,10 +182,6 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
       }
     }
     return isNextLine
-  }
-
-  private void setupReader() {
-    $reader.setLineNumber(1)
   }
 
   public static Boolean isWhitespace(Integer codePoint) {

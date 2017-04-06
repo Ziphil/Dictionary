@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
 
 
@@ -11,11 +12,21 @@ public class AkrantiainToken implements AkrantiainMatchable {
   private String $text
   private String $fullText = ""
   private Integer $lineNumber
+  private Integer $columnNumber
 
-  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber) {
+  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber, Integer columnNumber) {
     $type = type
     $text = text
     $lineNumber = lineNumber
+    $columnNumber = columnNumber
+    makeFullText()
+  }
+
+  public AkrantiainToken(AkrantiainTokenType type, String text, ExtendedBufferedReader reader) {
+    $type = type
+    $text = text
+    $lineNumber = reader.getLineNumber()
+    $columnNumber = reader.getColumnNumber()
     makeFullText()
   }
 

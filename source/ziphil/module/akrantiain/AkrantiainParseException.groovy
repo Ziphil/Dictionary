@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
 
 
@@ -20,10 +21,10 @@ public class AkrantiainParseException extends Exception {
     makeFullMessage(token)
   }
 
-  public AkrantiainParseException(String message, Integer codePoint, Integer lineNumber) {
+  public AkrantiainParseException(String message, Integer codePoint, ExtendedBufferedReader reader) {
     super()
     $message = message
-    makeFullMessage(codePoint, lineNumber)
+    makeFullMessage(codePoint, reader)
   }
 
   private void makeFullMessage(AkrantiainToken token) {
@@ -46,7 +47,7 @@ public class AkrantiainParseException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(Integer codePoint, Integer lineNumber) {
+  private void makeFullMessage(Integer codePoint, ExtendedBufferedReader reader) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("AkrantiainParseException: ")
     fullMessage.append($message)
@@ -55,6 +56,7 @@ public class AkrantiainParseException extends Exception {
       fullMessage.append("  ")
       fullMessage.appendCodePoint(codePoint)
       fullMessage.append(" (at line ")
+      Integer lineNumber = reader.getLineNumber()
       if (lineNumber != null) {
         fullMessage.append(lineNumber)
       } else {
