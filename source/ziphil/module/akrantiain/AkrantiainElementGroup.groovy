@@ -33,7 +33,13 @@ public class AkrantiainElementGroup {
     for (Integer i : from ..< to) {
       mergedPart.append($elements[i].getPart())
     }
-    return AkrantiainElement.new(mergedPart.toString(), $elements[from].getColumnNumber())
+    Integer columnNumber = null
+    if (from < $elements.size()) {
+      columnNumber = $elements[from].getColumnNumber()
+    } else {
+      columnNumber = $elements[-1].getColumnNumber()
+    }
+    return AkrantiainElement.new(mergedPart.toString(), columnNumber)
   }
 
   // インデックスが from から to まで (to は含まない) の要素を 1 文字ごとに分割した要素グループを返します。
