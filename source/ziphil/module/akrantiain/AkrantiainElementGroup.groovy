@@ -12,7 +12,7 @@ public class AkrantiainElementGroup {
   public static AkrantiainElementGroup create(String input) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
     for (Integer i : 0 ..< input.length()) {
-      AkrantiainElement element = AkrantiainElement.new(input[i], i)
+      AkrantiainElement element = AkrantiainElement.new(input[i], i + 1)
       group.getElements().add(element)
     }
     return group
