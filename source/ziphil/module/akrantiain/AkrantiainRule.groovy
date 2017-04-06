@@ -15,13 +15,22 @@ public class AkrantiainRule {
   public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainSetting setting) {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
-    while (pointer < group.getElements().size()) {
+    while (pointer <= group.getElements().size()) {
       ApplicationResult result = applyOnce(group, pointer, setting)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
-        pointer = result.getTo()
+        if (pointer < result.getTo()) {
+          pointer = result.getTo()
+        } else {
+          if (pointer < group.getElements().size()) {
+            appliedGroup.getElements().add(group.getElements()[pointer])
+          }
+          pointer ++
+        }
       } else {
-        appliedGroup.getElements().add(group.getElements()[pointer])
+        if (pointer < group.getElements().size()) {
+          appliedGroup.getElements().add(group.getElements()[pointer])
+        }
         pointer ++
       }
     }
