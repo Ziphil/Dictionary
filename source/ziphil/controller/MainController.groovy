@@ -55,6 +55,7 @@ import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
@@ -565,18 +566,18 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void createDictionary(String extension) {
+  private void createDictionary(DictionaryType type) {
     Boolean allowsCreate = checkDictionaryChange()
     if (allowsCreate) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, null, extension)
+      controller.prepare(true, null, type)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionaries.loadEmptyDictionary(file, extension)
+        Dictionary dictionary = Dictionaries.loadEmptyDictionary(type, file)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -607,7 +608,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), Dictionaries.getExtension($dictionary))
+      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), DictionaryType.valueOfDictionary($dictionary))
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -629,7 +630,7 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void convertDictionary(String newExtension) {
+  private void convertDictionary(DictionaryType type) {
     if ($dictionary != null) {
       Boolean allowsConvert = checkDictionaryChange()
       if (allowsConvert) {
@@ -637,13 +638,13 @@ public class MainController extends PrimitiveController<Stage> {
         DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
         nextStage.initModality(Modality.APPLICATION_MODAL)
         nextStage.initOwner($stage)
-        controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), newExtension)
+        controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), type)
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           File file = nextStage.getResult()
-          Dictionary newDictionary = Dictionaries.convertDictionary(file, newExtension, $dictionary)
-          updateDictionary(newDictionary)
-          if (newDictionary != null) {
+          Dictionary dictionary = Dictionaries.convertDictionary(type, $dictionary, file)
+          updateDictionary(dictionary)
+          if (dictionary != null) {
             Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
           } else {
             Dialog dialog = Dialog.new(StageStyle.UTILITY)
@@ -1079,23 +1080,15 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupCreateDictionaryMenu() {
     $createDictionaryMenu.getItems().clear()
-    MenuItem slimeItem = MenuItem.new("OneToMany-JSON形式")
-    Image slimeIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/otm_dictionary.png"))
-    slimeItem.setGraphic(ImageView.new(slimeIcon))
-    slimeItem.setOnAction() {
-      createDictionary("json")
+    for (DictionaryType type : DictionaryType.values()) {
+      DictionaryType cachedType = type
+      MenuItem item = MenuItem.new(type.getName())
+      item.setGraphic(ImageView.new(type.createIcon()))
+      item.setOnAction() {
+        createDictionary(cachedType)
+      }
+      $createDictionaryMenu.getItems().add(item)
     }
-    MenuItem personalItem = MenuItem.new("PDIC-CSV形式")
-    Image personalIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/csv_dictionary.png"))
-    personalItem.setGraphic(ImageView.new(personalIcon))
-    personalItem.setOnAction() {
-      createDictionary("csv")
-    }
-    MenuItem shaleiaItem = MenuItem.new("シャレイア語辞典形式")
-    Image shaleiaIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/xdc_dictionary.png"))
-    shaleiaItem.setGraphic(ImageView.new(shaleiaIcon))
-    shaleiaItem.setDisable(true)
-    $createDictionaryMenu.getItems().addAll(slimeItem, personalItem, shaleiaItem)
   }
 
   private void setupOpenRegisteredDictionaryMenu() {
@@ -1177,23 +1170,18 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupConvertDictionaryMenu() {
     $convertDictionaryMenu.getItems().clear()
-    MenuItem slimeItem = MenuItem.new("OneToMany-JSON形式")
-    Image slimeIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/otm_dictionary.png"))
-    slimeItem.setGraphic(ImageView.new(slimeIcon))
-    slimeItem.setOnAction() {
-      convertDictionary("json")
+    for (DictionaryType type : DictionaryType.values()) {
+      DictionaryType cachedType = type
+      MenuItem item = MenuItem.new(type.getName())
+      item.setGraphic(ImageView.new(type.createIcon()))
+      item.setOnAction() {
+        convertDictionary(cachedType)
+      }
+      if (type == DictionaryType.SHALEIA) {
+        item.setDisable(true)
+      }
+      $convertDictionaryMenu.getItems().add(item)
     }
-    MenuItem personalItem = MenuItem.new("PDIC-CSV形式")
-    Image personalIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/csv_dictionary.png"))
-    personalItem.setGraphic(ImageView.new(personalIcon))
-    personalItem.setOnAction() {
-      convertDictionary("csv")
-    }
-    MenuItem shaleiaItem = MenuItem.new("シャレイア語辞典形式")
-    Image shaleiaIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/xdc_dictionary.png"))
-    shaleiaItem.setGraphic(ImageView.new(shaleiaIcon))
-    shaleiaItem.setDisable(true)
-    $convertDictionaryMenu.getItems().addAll(slimeItem, personalItem, shaleiaItem)
   }
 
   private void setupSearchHistory() {

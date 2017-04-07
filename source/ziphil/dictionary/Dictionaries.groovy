@@ -13,7 +13,7 @@ public class Dictionaries {
   public static Dictionary loadDictionary(File file) {
     if (file != null) {
       if (file.exists() && file.isFile()) {
-        Dictionary dictionary
+        Dictionary dictionary = null
         String fileName = file.getName()
         String filePath = file.getPath()
         if (filePath.endsWith(".xdc")) {
@@ -32,18 +32,18 @@ public class Dictionaries {
     }
   }
 
-  public static Dictionary loadEmptyDictionary(File file, String extension) {
+  public static Dictionary loadEmptyDictionary(DictionaryType type, File file) {
     if (file != null) {
-      Dictionary dictionary
+      Dictionary dictionary = null
       String fileName = file.getName()
       String filePath = file.getPath()
-      if (extension == "xdc") {
+      if (type == DictionaryType.SHALEIA) {
         dictionary = ShaleiaDictionary.new(fileName, null)
         dictionary.setPath(filePath)
-      } else if (extension == "csv") {
+      } else if (type == DictionaryType.PERSONAL) {
         dictionary = PersonalDictionary.new(fileName, null)
         dictionary.setPath(filePath)
-      } else if (extension == "json") {
+      } else if (type == DictionaryType.SLIME) {
         dictionary = SlimeDictionary.new(fileName, null)
         dictionary.setPath(filePath)
       }
@@ -53,34 +53,22 @@ public class Dictionaries {
     }
   }
 
-  public static Dictionary convertDictionary(File file, String newExtension, Dictionary oldDictionary) {
+  public static Dictionary convertDictionary(DictionaryType type, Dictionary oldDictionary, File file) {
     if (file != null) {
       Dictionary dictionary = null
       String fileName = file.getName()
       String filePath = file.getPath()
-      if (newExtension == "xdc") {
+      if (type == DictionaryType.SHALEIA) {
         dictionary = ShaleiaDictionary.new(fileName, filePath, oldDictionary)
-      } else if (newExtension ==  "csv") {
+      } else if (type == DictionaryType.PERSONAL) {
         dictionary = PersonalDictionary.new(fileName, filePath, oldDictionary)
-      } else if (newExtension == "json") {
+      } else if (type == DictionaryType.SLIME) {
         dictionary = SlimeDictionary.new(fileName, filePath, oldDictionary)
       }
       return dictionary
     } else {
       return null
     }
-  }
-
-  public static String getExtension(Dictionary dictionary) {
-    String extension
-    if (dictionary instanceof ShaleiaDictionary) {
-      extension = "xdc"
-    } else if (dictionary instanceof PersonalDictionary) {
-      extension = "csv"
-    } else if (dictionary instanceof SlimeDictionary) {
-      extension = "json"
-    }
-    return extension
   }
 
 }

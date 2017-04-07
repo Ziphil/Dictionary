@@ -9,6 +9,7 @@ import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.DictionaryType
 import ziphilib.transform.Ziphilify
 
 
@@ -32,10 +33,10 @@ public class DictionaryChooserController extends Controller<File> {
     setupChooser()
   }
 
-  public void prepare(Boolean adjustsExtension, File directory, String extension) {
-    if (extension != null) {
+  public void prepare(Boolean adjustsExtension, File directory, DictionaryType type) {
+    if (type != null) {
       List<ExtensionFilter> fileTypes = $chooser.getExtensionFilters()
-      ExtensionFilter fileType = fileTypes.find{fileType -> ((ExtensionFilter)fileType).getExtension() == extension}
+      ExtensionFilter fileType = fileTypes.find{fileType -> ((ExtensionFilter)fileType).getExtension() == type.getExtension()}
       if (fileType != null) {
         $chooser.setCurrentFileType(fileType)
       }
