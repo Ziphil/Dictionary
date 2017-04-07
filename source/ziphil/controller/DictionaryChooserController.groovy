@@ -33,7 +33,7 @@ public class DictionaryChooserController extends Controller<File> {
     setupChooser()
   }
 
-  public void prepare(Boolean adjustsExtension, File directory, DictionaryType type) {
+  public void prepare(DictionaryType type, File directory, Boolean adjustsExtension) {
     if (type != null) {
       ExtensionFilter extensionFilter = type.createExtensionFilter()
       $chooser.getExtensionFilters().clear()
@@ -49,7 +49,7 @@ public class DictionaryChooserController extends Controller<File> {
   }
 
   public void prepare(Boolean adjustsExtension) {
-    prepare(adjustsExtension, null, null)
+    prepare(null, null, adjustsExtension)
   }
 
   @FXML

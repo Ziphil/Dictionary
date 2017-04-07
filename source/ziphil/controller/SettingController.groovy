@@ -205,7 +205,7 @@ public class SettingController extends Controller<Boolean> {
     nextStage.initOwner($stage)
     String currentPath = $registeredDictionaryPathControls[i].getText()
     if (currentPath != null) {
-      controller.prepare(false, File.new(currentPath).getParentFile(), null)
+      controller.prepare(null, File.new(currentPath).getParentFile(), false)
     }
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {

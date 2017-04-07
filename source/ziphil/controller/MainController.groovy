@@ -573,7 +573,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, null, type)
+      controller.prepare(type, null, true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -608,7 +608,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), DictionaryType.valueOfDictionary($dictionary))
+      controller.prepare(DictionaryType.valueOfDictionary($dictionary), File.new($dictionary.getPath()).getParentFile(), true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -638,7 +638,7 @@ public class MainController extends PrimitiveController<Stage> {
         DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
         nextStage.initModality(Modality.APPLICATION_MODAL)
         nextStage.initOwner($stage)
-        controller.prepare(true, File.new($dictionary.getPath()).getParentFile(), type)
+        controller.prepare(type, File.new($dictionary.getPath()).getParentFile(), true)
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           File file = nextStage.getResult()
