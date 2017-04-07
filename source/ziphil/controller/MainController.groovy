@@ -1155,17 +1155,21 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupConvertDictionaryMenu() {
     $convertDictionaryMenu.getItems().clear()
-    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
     MenuItem slimeItem = MenuItem.new("OneToMany-JSON形式")
-    slimeItem.setGraphic(ImageView.new(icon))
+    Image slimeIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/otm_dictionary.png"))
+    slimeItem.setGraphic(ImageView.new(slimeIcon))
     slimeItem.setOnAction() {
       convertDictionary("json")
     }
     MenuItem personalItem = MenuItem.new("PDIC-CSV形式")
+    Image personalIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/csv_dictionary.png"))
+    personalItem.setGraphic(ImageView.new(personalIcon))
     personalItem.setOnAction() {
       convertDictionary("csv")
     }
     MenuItem shaleiaItem = MenuItem.new("シャレイア語辞典形式")
+    Image shaleiaIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/xdc_dictionary.png"))
+    shaleiaItem.setGraphic(ImageView.new(shaleiaIcon))
     shaleiaItem.setDisable(true)
     $convertDictionaryMenu.getItems().addAll(slimeItem, personalItem, shaleiaItem)
   }
