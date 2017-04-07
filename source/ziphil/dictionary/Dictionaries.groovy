@@ -32,18 +32,18 @@ public class Dictionaries {
     }
   }
 
-  public static Dictionary loadEmptyDictionary(File file) {
+  public static Dictionary loadEmptyDictionary(File file, String extension) {
     if (file != null) {
       Dictionary dictionary
       String fileName = file.getName()
       String filePath = file.getPath()
-      if (filePath.endsWith(".xdc")) {
+      if (extension == "xdc") {
         dictionary = ShaleiaDictionary.new(fileName, null)
         dictionary.setPath(filePath)
-      } else if (filePath.endsWith(".csv")) {
+      } else if (extension == "csv") {
         dictionary = PersonalDictionary.new(fileName, null)
         dictionary.setPath(filePath)
-      } else if (filePath.endsWith(".json")) {
+      } else if (extension == "json") {
         dictionary = SlimeDictionary.new(fileName, null)
         dictionary.setPath(filePath)
       }

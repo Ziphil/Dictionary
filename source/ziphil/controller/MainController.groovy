@@ -95,6 +95,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
+  @FXML private Menu $createDictionaryMenu
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private MenuItem $searchRegisteredParameterItem
@@ -146,6 +147,7 @@ public class MainController extends PrimitiveController<Stage> {
   public void initialize() {
     setupWordView()
     setupSearchControl()
+    setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
     setupConvertDictionaryMenu()
@@ -563,19 +565,18 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  @FXML
-  private void createDictionary() {
+  private void createDictionary(String extension) {
     Boolean allowsCreate = checkDictionaryChange()
     if (allowsCreate) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(true)
+      controller.prepare(true, null, extension)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary dictionary = Dictionaries.loadEmptyDictionary(file)
+        Dictionary dictionary = Dictionaries.loadEmptyDictionary(file, extension)
         updateDictionary(dictionary)
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
@@ -1074,6 +1075,27 @@ public class MainController extends PrimitiveController<Stage> {
         event.consume()
       }
     }
+  }
+
+  private void setupCreateDictionaryMenu() {
+    $createDictionaryMenu.getItems().clear()
+    MenuItem slimeItem = MenuItem.new("OneToMany-JSON形式")
+    Image slimeIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/otm_dictionary.png"))
+    slimeItem.setGraphic(ImageView.new(slimeIcon))
+    slimeItem.setOnAction() {
+      createDictionary("json")
+    }
+    MenuItem personalItem = MenuItem.new("PDIC-CSV形式")
+    Image personalIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/csv_dictionary.png"))
+    personalItem.setGraphic(ImageView.new(personalIcon))
+    personalItem.setOnAction() {
+      createDictionary("csv")
+    }
+    MenuItem shaleiaItem = MenuItem.new("シャレイア語辞典形式")
+    Image shaleiaIcon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/xdc_dictionary.png"))
+    shaleiaItem.setGraphic(ImageView.new(shaleiaIcon))
+    shaleiaItem.setDisable(true)
+    $createDictionaryMenu.getItems().addAll(slimeItem, personalItem, shaleiaItem)
   }
 
   private void setupOpenRegisteredDictionaryMenu() {
