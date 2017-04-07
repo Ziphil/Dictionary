@@ -84,7 +84,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
       if (searchName != null) {
-        if (!SearchType.matches(nameSearchType, name, searchName)) {
+        if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
@@ -94,7 +94,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         for (SlimeEquivalent equivalent : equivalents) {
           String equivalentTitle = equivalent.getTitle()
           for (String equivalentName : equivalent.getNames()) {
-            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+            if (equivalentSearchType.matches(equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
               equivalentPredicate = true
             }
           }
@@ -109,7 +109,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         for (SlimeInformation information : informations) {
           String informationText = information.getText()
           String informationTitle = information.getTitle()
-          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+          if (informationSearchType.matches(informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
             informationPredicate = true
           }
         }

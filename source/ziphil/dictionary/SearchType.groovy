@@ -17,6 +17,37 @@ public enum SearchType {
     $string = string
   }
 
+  public Boolean matches(String data, String search) {
+    try {
+      if (this == EXACT) {
+        return data == search
+      } else if (this == PREFIX) {
+        return data.startsWith(search)
+      } else if (this == SUFFIX) {
+        return data.endsWith(search)
+      } else if (this == PART) {
+        return data.contains(search)
+      } else if (this == REGULAR_EXPRESSION) {
+        Matcher matcher = data =~ search
+        return matcher.find()
+      } else if (this == MINIMAL_PAIR) {
+        Boolean predicate = false
+        for (Integer i : 0 ..< search.length()) {
+          String beforeSearchName = (i == 0) ? "" : search[0 .. i - 1]
+          String afterSearchName = (i == search.length() - 1) ? "" : search[i + 1 .. -1]
+          String searchRegex = "^" + beforeSearchName + "." + afterSearchName + "\$"
+          Matcher matcher = data =~ searchRegex
+          if (matcher.find()) {
+            predicate = true
+          }
+        }
+        return predicate
+      }
+    } catch (PatternSyntaxException exception) {
+      return false
+    }
+  }
+
   public static SearchType valueOfExplanation(String explanation) {
     if (explanation == "完全一致") {
       return SearchType.EXACT
@@ -32,37 +63,6 @@ public enum SearchType {
       return SearchType.MINIMAL_PAIR
     } else {
       return null
-    }
-  }
-
-  public static Boolean matches(SearchType type, String data, String search) {
-    try {
-      if (type == EXACT) {
-        return data == search
-      } else if (type == PREFIX) {
-        return data.startsWith(search)
-      } else if (type == SUFFIX) {
-        return data.endsWith(search)
-      } else if (type == PART) {
-        return data.contains(search)
-      } else if (type == REGULAR_EXPRESSION) {
-        Matcher matcher = data =~ search
-        return matcher.find()
-      } else if (type == MINIMAL_PAIR) {
-        Boolean predicate = false
-        for (Integer i : 0 ..< search.length()) {
-          String beforeSearchName = (i == 0) ? "" : search[0 .. i - 1]
-          String afterSearchName = (i == search.length() - 1) ? "" : search[i + 1 .. -1]
-          String searchRegex = "^" + beforeSearchName + "." + afterSearchName + "\$"
-          Matcher matcher = data =~ searchRegex
-          if (matcher.find()) {
-            predicate = true
-          }
-        }
-        return predicate
-      }
-    } catch (PatternSyntaxException exception) {
-      return false
     }
   }
 

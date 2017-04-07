@@ -66,14 +66,14 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       List<String> equivalents = word.getEquivalents()
       String description = word.getDescription()
       if (searchName != null) {
-        if (!SearchType.matches(nameSearchType, name, searchName)) {
+        if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
       if (searchEquivalent != null) {
         Boolean equivalentPredicate = false
         for (String equivalent : equivalents) {
-          if (SearchType.matches(equivalentSearchType, equivalent, searchEquivalent)) {
+          if (equivalentSearchType.matches(equivalent, searchEquivalent)) {
             equivalentPredicate = true
           }
         }
@@ -82,7 +82,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
         }
       }
       if (searchDescription != null) {
-        if (!SearchType.matches(descriptionSearchType, description, searchDescription)) {
+        if (!descriptionSearchType.matches(description, searchDescription)) {
           predicate = false
         }
       }
