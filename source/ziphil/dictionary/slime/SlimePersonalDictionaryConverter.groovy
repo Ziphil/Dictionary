@@ -19,13 +19,13 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
   protected Boolean convert() {
     List<PersonalWord> oldWords = $oldDictionary.getRawWords()
     Integer size = oldWords.size()
-    for (Integer newId : 0 ..< size) {
+    for (Integer i : 0 ..< size) {
       if (isCancelled()) {
         return false
       }
-      PersonalWord oldWord = oldWords[newId]
+      PersonalWord oldWord = oldWords[i]
       SlimeWord newWord = SlimeWord.new()
-      newWord.setId(newId)
+      newWord.setId(i)
       newWord.setName(oldWord.getName())
       String oldTranslation = oldWord.getTranslation()
       if (oldTranslation != "") {
@@ -43,7 +43,7 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
       }
       newWord.setDictionary($newDictionary)
       $newWords.add(newWord)
-      updateProgress(newId + 1, size)
+      updateProgress(i + 1, size)
     }
     updateProgress(1, 1)
     return true
