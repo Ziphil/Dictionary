@@ -12,7 +12,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum DictionaryType {
 
-  SHALEIA("シャレイア語辞典形式", "xdc"), PERSONAL("PDIC-CSV形式", "csv"), SLIME("OneToMany-JSON形式", "json")
+  SLIME("OneToMany-JSON形式", "json"), PERSONAL("PDIC-CSV形式", "csv"), SHALEIA("シャレイア語辞典形式", "xdc")
 
   private String $name = ""
   private String $extension = ""
