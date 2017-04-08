@@ -978,6 +978,10 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       $dictionary.saveBackup()
     }
+    if ($individualSetting != null) {
+      $individualSetting.save()
+    }
+    Setting.getInstance().save()
     dialog.initOwner($stage)
     dialog.setTitle("エラー")
     dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
