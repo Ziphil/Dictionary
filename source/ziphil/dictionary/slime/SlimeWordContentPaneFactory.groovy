@@ -45,8 +45,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     addNameNode(contentPane, $word.getName())
     addTagNode(contentPane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
-      String equivalentString = equivalent.getNames().join(", ")
-      addEquivalentNode(contentPane, equivalent.getTitle(), equivalentString)
+      addEquivalentNode(contentPane, equivalent.getTitle(), equivalent.getNames())
     }
     for (SlimeInformation information : $word.sortedInformations()) {
       addInformationNode(contentPane, information.getTitle(), information.getText())
@@ -101,9 +100,9 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     contentPane.getChildren().add(breakText)
   }
 
-  private void addEquivalentNode(TextFlow contentPane, String title, String equivalent) {
+  private void addEquivalentNode(TextFlow contentPane, String title, List<String> equivalents) {
     Label titleText = Label.new(title)
-    Text equivalentText = Text.new(" " + equivalent)
+    Text equivalentText = Text.new(" " + equivalents.join(", "))
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
