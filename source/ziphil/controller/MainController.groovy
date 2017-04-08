@@ -384,9 +384,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Setting setting = Setting.getInstance()
-        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
-        Boolean savesAutomatically = setting.getSavesAutomatically()
+        Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -407,9 +405,6 @@ public class MainController extends PrimitiveController<Stage> {
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
           ((UpdatableListViewSkin)$wordView.getSkin()).refresh()
-          if (savesAutomatically) {
-            $dictionary.save()
-          }
         }
       }
     }
@@ -424,11 +419,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void removeWord(Element word) {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
-        Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
         $dictionary.removeWord(word)
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
       }
     }
   }
@@ -444,9 +435,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Setting setting = Setting.getInstance()
-      Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
-      Boolean savesAutomatically = setting.getSavesAutomatically()
+      Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -469,9 +458,6 @@ public class MainController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted() && nextStage.getResult()) {
         $dictionary.addWord(newWord)
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
       }
     }
   }
@@ -481,9 +467,7 @@ public class MainController extends PrimitiveController<Stage> {
       if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Setting setting = Setting.getInstance()
-        Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
-        Boolean savesAutomatically = setting.getSavesAutomatically()
+        Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -505,9 +489,6 @@ public class MainController extends PrimitiveController<Stage> {
         $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.addWord(newWord)
-          if (savesAutomatically) {
-            $dictionary.save()
-          }
         }
       }
     }
@@ -855,23 +836,29 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private Boolean checkDictionaryChange() {
+    Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
     if ($dictionary != null) {
       if ($dictionary.isChanged()) {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("確認")
-        dialog.setContentText("辞書データは変更されています。保存しますか?")
-        dialog.setCommitText("保存する")
-        dialog.setNegateText("保存しない")
-        dialog.setAllowsNegate(true)
-        dialog.showAndWait()
-        if (dialog.isCommitted()) {
+        if (!savesAutomatically) {
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("確認")
+          dialog.setContentText("辞書データは変更されています。保存しますか?")
+          dialog.setCommitText("保存する")
+          dialog.setNegateText("保存しない")
+          dialog.setAllowsNegate(true)
+          dialog.showAndWait()
+          if (dialog.isCommitted()) {
+            $dictionary.save()
+            return true
+          } else if (dialog.isNegated()) {
+            return true
+          } else {
+            return false
+          }
+        } else {
           $dictionary.save()
           return true
-        } else if (dialog.isNegated()) {
-          return true
-        } else {
-          return false
         }
       } else {
         return true
@@ -885,7 +872,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void editIndividualSetting() {
     if ($dictionary != null) {
       UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
@@ -897,9 +883,6 @@ public class MainController extends PrimitiveController<Stage> {
       }
       nextStage.showAndWait()
       if (nextStage.isCommitted() && nextStage.getResult()) {
-        if (savesAutomatically) {
-          $dictionary.save()
-        }
         if ($individualSetting != null) {
           $individualSetting.save()
         }
