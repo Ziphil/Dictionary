@@ -104,6 +104,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $saveAndRenameDictionaryItem
   @FXML private Menu $convertDictionaryMenu
   @FXML private MenuItem $convertDictionaryItem
+  @FXML private MenuItem $convertDictionaryToSlimeItem
   @FXML private MenuItem $searchDetailItem
   @FXML private MenuItem $searchScriptItem
   @FXML private Menu $searchRegisteredParameterMenu
@@ -752,18 +753,21 @@ public class MainController extends PrimitiveController<Stage> {
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary) {
+        $convertDictionaryToSlimeItem.setDisable(true)
         $searchDetailItem.setDisable(false)
         $searchRegisteredParameterMenu.setVisible(false)
         $searchRegisteredParameterMenu.setDisable(true)
         $searchRegisteredParameterItem.setVisible(true)
         $editIndividualSettingItem.setDisable(false)
       } else if ($dictionary instanceof PersonalDictionary) {
+        $convertDictionaryToSlimeItem.setDisable(false)
         $searchDetailItem.setDisable(true)
         $searchRegisteredParameterMenu.setVisible(false)
         $searchRegisteredParameterMenu.setDisable(true)
         $searchRegisteredParameterItem.setVisible(true)
         $editIndividualSettingItem.setDisable(true)
       } else if ($dictionary instanceof SlimeDictionary) {
+        $convertDictionaryToSlimeItem.setDisable(false)
         $searchDetailItem.setDisable(false)
         $searchRegisteredParameterMenu.setVisible(true)
         $searchRegisteredParameterMenu.setDisable(false)
@@ -1163,6 +1167,9 @@ public class MainController extends PrimitiveController<Stage> {
       }
       if (type == DictionaryType.SHALEIA) {
         item.setDisable(true)
+      }
+      if (type == DictionaryType.SLIME) {
+        $convertDictionaryToSlimeItem = item
       }
       $convertDictionaryMenu.getItems().add(item)
     }
