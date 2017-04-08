@@ -15,6 +15,7 @@ import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
 
 
@@ -118,6 +119,9 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
       return converter
     } else if (oldDictionary instanceof PersonalDictionary) {
       IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (PersonalDictionary)oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof SlimeDictionary) {
+      PersonalSlimeDictionaryConverter converter = PersonalSlimeDictionaryConverter.new(this, oldDictionary)
       return converter
     } else {
       EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
