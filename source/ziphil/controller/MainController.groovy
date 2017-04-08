@@ -820,9 +820,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void registerCurrentDictionary(Integer i) {
-    Setting setting = Setting.getInstance()
-    setting.getRegisteredDictionaryPaths()[i] = $dictionary.getPath()
-    setting.save()
+    Setting.getInstance().getRegisteredDictionaryPaths()[i] = $dictionary.getPath()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
   }
@@ -837,6 +835,9 @@ public class MainController extends PrimitiveController<Stage> {
 
   private Boolean checkDictionaryChange() {
     Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
+    if ($individualSetting != null) {
+      $individualSetting.save()
+    }
     if ($dictionary != null) {
       if ($dictionary.isChanged()) {
         if (!savesAutomatically) {
@@ -883,9 +884,6 @@ public class MainController extends PrimitiveController<Stage> {
       }
       nextStage.showAndWait()
       if (nextStage.isCommitted() && nextStage.getResult()) {
-        if ($individualSetting != null) {
-          $individualSetting.save()
-        }
         setupSearchRegisteredParameterMenu()
       }
     }
@@ -899,7 +897,6 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
-      Setting.getInstance().save()
       setupOpenRegisteredDictionaryMenu()
       setupRegisterCurrentDictionaryMenu()
     }
@@ -1221,6 +1218,7 @@ public class MainController extends PrimitiveController<Stage> {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
       if (allowsClose) {
+        Setting.getInstance().save()
         closeOpenStages()
       } else {
         event.consume()
