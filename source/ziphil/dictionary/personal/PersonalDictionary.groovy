@@ -14,6 +14,7 @@ import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.Suggestion
+import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphilib.transform.Ziphilify
 
 
@@ -112,7 +113,10 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   }
 
   protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof PersonalDictionary) {
+    if (oldDictionary instanceof ShaleiaDictionary) {
+      PersonalShaleiaDictionaryConverter converter = PersonalShaleiaDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof PersonalDictionary) {
       IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (PersonalDictionary)oldDictionary)
       return converter
     } else {
