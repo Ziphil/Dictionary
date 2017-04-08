@@ -14,7 +14,6 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
 
   public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
     super(dictionary, path)
-    updateProgress(0, 1)
   }
 
   protected Boolean load() {
@@ -46,7 +45,6 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     } finally {
       reader.close()
     }
-    updateProgress(1, 1)
     return true
   }
 

@@ -15,6 +15,7 @@ public abstract class DictionaryConverter<D extends Dictionary, E extends Dictio
   public DictionaryConverter(D newDictionary, E oldDictionary) {
     $newDictionary = newDictionary
     $oldDictionary = oldDictionary
+    updateProgress(0, 1)
   }
 
   protected abstract Boolean convert()
@@ -22,6 +23,7 @@ public abstract class DictionaryConverter<D extends Dictionary, E extends Dictio
   protected Boolean call() {
     if ($oldDictionary != null) {
       Boolean result = convert()
+      updateProgress(1, 1)
       $newDictionary.getRawWords().addAll($newWords)
       $newDictionary.updateFirst()
       for (Word newWord : $newWords) {

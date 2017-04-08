@@ -12,7 +12,6 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
 
   public PersonalDictionaryLoader(PersonalDictionary dictionary, String path) {
     super(dictionary, path)
-    updateProgress(0, 1)
   }
 
   protected Boolean load() {
@@ -120,7 +119,6 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     } finally {
       reader.close()
     }
-    updateProgress(1, 1)
     return true
   }
 

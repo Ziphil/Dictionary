@@ -14,7 +14,6 @@ public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<Pers
 
   public PersonalShaleiaDictionaryConverter(PersonalDictionary newDictionary, ShaleiaDictionary oldDictionary) {
     super(newDictionary, oldDictionary)
-    updateProgress(0, 1)
   }
 
   protected Boolean convert() {
@@ -94,7 +93,6 @@ public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<Pers
       }
       updateProgress(i + 1, size)
     }
-    updateProgress(1, 1)
     return true
   }
 

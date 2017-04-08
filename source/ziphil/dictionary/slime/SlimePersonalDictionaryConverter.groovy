@@ -13,7 +13,6 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
 
   public SlimePersonalDictionaryConverter(SlimeDictionary newDictionary, PersonalDictionary oldDictionary) {
     super(newDictionary, oldDictionary)
-    updateProgress(0, 1)
   }
 
   protected Boolean convert() {
@@ -45,7 +44,6 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
       $newWords.add(newWord)
       updateProgress(i + 1, size)
     }
-    updateProgress(1, 1)
     return true
   }
 

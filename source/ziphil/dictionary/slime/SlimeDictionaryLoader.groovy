@@ -18,7 +18,6 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
 
   public SlimeDictionaryLoader(SlimeDictionary dictionary, String path) {
     super(dictionary, path)
-    updateProgress(0, 1)
   }
 
   protected Boolean load() {
@@ -68,7 +67,6 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       parser.close()
       stream.close()
     }
-    updateProgressByParser(parser, size)
     return true
   }
 

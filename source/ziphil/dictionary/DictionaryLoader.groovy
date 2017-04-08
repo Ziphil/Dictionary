@@ -15,6 +15,7 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
   public DictionaryLoader(D dictionary, String path) {
     $path = path
     $dictionary = dictionary
+    updateProgress(0, 1)
   }
 
   // ファイルからデータを読み込んで、作成した単語データを $words に格納します。
@@ -24,6 +25,7 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
   protected Boolean call() {
     if ($path != null) {
       Boolean result = load()
+      updateProgress(1, 1)
       $dictionary.getRawWords().addAll($words)
       $dictionary.updateFirst()
       for (Word word : $words) {
