@@ -32,8 +32,7 @@ public class AkrantiainParseException extends Exception {
     fullMessage.append("AkrantiainParseException: ")
     fullMessage.append($message)
     if (token != null) {
-      fullMessage.append("\n")
-      fullMessage.append("  ")
+      fullMessage.append("\n  ")
       fullMessage.append(token.getFullText())
       fullMessage.append(" (at line ")
       Integer lineNumber = token.getLineNumber()
@@ -59,14 +58,12 @@ public class AkrantiainParseException extends Exception {
     fullMessage.append("AkrantiainParseException: ")
     fullMessage.append($message)
     if (codePoint != null) {
-      fullMessage.append("\n")
-      fullMessage.append("  ")
+      fullMessage.append("\n  ")
       fullMessage.appendCodePoint(codePoint)
     }
     if (reader != null) {
       if (codePoint == null) {
-        fullMessage.append("\n")
-        fullMessage.append("  ")
+        fullMessage.append("\n  ")
       }
       fullMessage.append(" (at line ")
       Integer lineNumber = reader.getLineNumber()
