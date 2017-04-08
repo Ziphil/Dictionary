@@ -62,6 +62,12 @@ public class AkrantiainParseException extends Exception {
       fullMessage.append("\n")
       fullMessage.append("  ")
       fullMessage.appendCodePoint(codePoint)
+    }
+    if (reader != null) {
+      if (codePoint == null) {
+        fullMessage.append("\n")
+        fullMessage.append("  ")
+      }
       fullMessage.append(" (at line ")
       Integer lineNumber = reader.getLineNumber()
       Integer columnNumber = reader.getColumnNumber()
