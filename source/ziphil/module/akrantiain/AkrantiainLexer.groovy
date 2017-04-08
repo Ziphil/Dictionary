@@ -64,7 +64,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = nextIdentifier()
       } else if (codePoint == -1) {
         if (!$isAfterSemicolon) {
-          token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
+          token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
         } else {
           token = null
         }
@@ -72,7 +72,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         throw AkrantiainParseException.new("Invalid symbol", codePoint, $reader)
       }
     } else {
-      token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
+      token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
     }
     $isAfterSemicolon = token != null && token.getType() == AkrantiainTokenType.SEMICOLON
     return token
