@@ -16,12 +16,7 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
   }
 
   protected void makeContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $contentPaneFactory = ShaleiaSuggestionContentPaneFactory.new(this, $dictionary)
-    $contentPaneFactory.setLineSpacing(lineSpacing)
-    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public ShaleiaDictionary getDictionary() {

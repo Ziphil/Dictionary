@@ -11,6 +11,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainException
@@ -46,11 +47,12 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   }
 
   public Pane create() {
+    Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasOther = false
     Boolean hasSynonym = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing($lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     BufferedReader reader = BufferedReader.new(StringReader.new($word.getDescription()))
     try {
       for (String line ; (line = reader.readLine()) != null ;) {
@@ -178,7 +180,8 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   }
 
   private void addOtherNode(TextFlow contentPane, String title, String other) {
-    String modifiedOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
+    String modifiedOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" \n")
     Text breakText = Text.new("\n")

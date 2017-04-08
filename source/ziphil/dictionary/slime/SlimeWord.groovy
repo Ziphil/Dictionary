@@ -79,19 +79,11 @@ public class SlimeWord extends WordBase {
   }
 
   protected void makeContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
-    $contentPaneFactory.setLineSpacing(lineSpacing)
-    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   protected void makePlainContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $plainContentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
-    $plainContentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public SlimeDictionary getDictionary() {

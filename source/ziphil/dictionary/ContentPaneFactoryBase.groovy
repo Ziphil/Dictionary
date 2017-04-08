@@ -14,8 +14,6 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
   protected E $word
   protected D $dictionary
   protected Boolean $isChanged = true
-  protected Integer $lineSpacing = 0
-  protected Boolean $modifiesPunctuation = false
 
   public ContentPaneFactoryBase(E word, D dictionary) {
     $word = word
@@ -35,14 +33,6 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
         contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
       }
     }
-  }
-
-  public void setLineSpacing(Integer lineSpacing) {
-    $lineSpacing = lineSpacing
-  }
-
-  public void setModifiesPunctuation(Boolean modifiesPunctuation) {
-    $modifiesPunctuation = modifiesPunctuation
   }
 
 }

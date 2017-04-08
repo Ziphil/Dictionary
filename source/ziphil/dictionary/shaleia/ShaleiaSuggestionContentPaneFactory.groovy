@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
@@ -22,9 +23,10 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
   }
 
   public Pane create() {
+    Integer lineSpacing = Setting.getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing($lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(contentPane, possibility.getName(), possibility.getExplanation())
     }

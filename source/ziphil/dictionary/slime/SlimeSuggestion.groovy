@@ -16,12 +16,7 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
   }
 
   protected void makeContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $contentPaneFactory = SlimeSuggestionContentPaneFactory.new(this, $dictionary)
-    $contentPaneFactory.setLineSpacing(lineSpacing)
-    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public SlimeDictionary getDictionary() {

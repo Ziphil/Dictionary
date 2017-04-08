@@ -11,6 +11,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainException
@@ -35,11 +36,12 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   }
 
   public Pane create() {
+    Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasInformation = false
     Boolean hasRelation = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing($lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     addNameNode(contentPane, $word.getName())
     addTagNode(contentPane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
@@ -138,7 +140,8 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   }
 
   private void addInformationNode(TextFlow contentPane, String title, String information) {
-    String modifiedInformation = ($modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
+    String modifiedInformation = (modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
     Boolean insertsBreak = !$dictionary.getPlainInformationTitles().contains(title)
     Text titleText = Text.new("【${title}】")
     Text innerBreakText = Text.new((insertsBreak) ? " \n" : " ")
