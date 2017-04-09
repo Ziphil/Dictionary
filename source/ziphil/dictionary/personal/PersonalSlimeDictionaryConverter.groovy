@@ -59,7 +59,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
     newTranslation.append("〉 ")
     for (Integer i : 0 ..< oldNames.size()) {
       String oldName = oldNames[i]
-      newTranslation.append(oldNames)
+      newTranslation.append(oldName)
       if (i < oldNames.size() - 1) {
         newTranslation.append(", ")
       }
