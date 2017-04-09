@@ -43,7 +43,9 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     Text otherText = Text.new(modifiedOther)
     Text breakText = Text.new("\n")
     otherText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(otherText, breakText)
+    if (other != "") {
+      contentPane.getChildren().addAll(otherText, breakText)
+    }
   }
 
 }
