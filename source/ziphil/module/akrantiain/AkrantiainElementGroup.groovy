@@ -11,11 +11,18 @@ public class AkrantiainElementGroup {
 
   public static AkrantiainElementGroup create(String input) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    for (String character : input) {
-      AkrantiainElement element = AkrantiainElement.new(character)
+    for (Integer i : 0 ..< input.length()) {
+      AkrantiainElement element = AkrantiainElement.new(input[i], i + 1)
       group.getElements().add(element)
     }
     return group
+  }
+
+  public AkrantiainElementGroup plus(AkrantiainElementGroup group) {
+    AkrantiainElementGroup newGroup = AkrantiainElementGroup.new()
+    newGroup.getElements().addAll($elements)
+    newGroup.getElements().addAll(group.getElements())
+    return newGroup
   }
 
   // インデックスが from から to まで (to は含まない) の要素を 1 つに合成した要素を返します。
@@ -26,7 +33,13 @@ public class AkrantiainElementGroup {
     for (Integer i : from ..< to) {
       mergedPart.append($elements[i].getPart())
     }
-    return AkrantiainElement.new(mergedPart.toString())
+    Integer columnNumber = null
+    if (from < $elements.size()) {
+      columnNumber = $elements[from].getColumnNumber()
+    } else {
+      columnNumber = $elements[-1].getColumnNumber()
+    }
+    return AkrantiainElement.new(mergedPart.toString(), columnNumber)
   }
 
   // インデックスが from から to まで (to は含まない) の要素を 1 文字ごとに分割した要素グループを返します。
@@ -39,18 +52,19 @@ public class AkrantiainElementGroup {
     return group
   }
 
-  public AkrantiainElement firstInvalidElement(AkrantiainSetting setting) {
+  public List<AkrantiainElement> invalidElements(AkrantiainSetting setting) {
+    List<AkrantiainElement> invalidElements = ArrayList.new()
     for (AkrantiainElement element : $elements) {
       if (!element.isValid(setting)) {
-        return element
+        invalidElements.add(element)
       }
     }
-    return null
+    return invalidElements
   }
 
   // 各要素の変換後の文字列を連結し、出力文字列を作成します。
   // 変換がなされていない要素が含まれていた場合は、代わりにスペース 1 つを連結します。
-  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを firstInvalidElement() などで確認してください。
+  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを invalidElements メソッドなどで確認してください。
   public String createOutput() {
     StringBuilder output = StringBuilder.new()
     for (AkrantiainElement element : $elements) {

@@ -9,6 +9,7 @@ import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.DictionaryType
 import ziphilib.transform.Ziphilify
 
 
@@ -32,13 +33,12 @@ public class DictionaryChooserController extends Controller<File> {
     setupChooser()
   }
 
-  public void prepare(Boolean adjustsExtension, File directory, String extension) {
-    if (extension != null) {
-      List<ExtensionFilter> fileTypes = $chooser.getExtensionFilters()
-      ExtensionFilter fileType = fileTypes.find{fileType -> ((ExtensionFilter)fileType).getExtension() == extension}
-      if (fileType != null) {
-        $chooser.setCurrentFileType(fileType)
-      }
+  public void prepare(DictionaryType type, File directory, Boolean adjustsExtension) {
+    if (type != null) {
+      ExtensionFilter extensionFilter = type.createExtensionFilter()
+      $chooser.getExtensionFilters().clear()
+      $chooser.getExtensionFilters().add(extensionFilter)
+      $chooser.setCurrentFileType(extensionFilter)
     }
     if (directory != null) {
       if (directory.isDirectory()) {
@@ -49,7 +49,7 @@ public class DictionaryChooserController extends Controller<File> {
   }
 
   public void prepare(Boolean adjustsExtension) {
-    prepare(adjustsExtension, null, null)
+    prepare(null, null, adjustsExtension)
   }
 
   @FXML
@@ -59,10 +59,10 @@ public class DictionaryChooserController extends Controller<File> {
   }
 
   private void setupChooser() {
-    ExtensionFilter slimeFilter = ExtensionFilter.new("OneToMany-JSON形式", "json")
-    ExtensionFilter personalFilter = ExtensionFilter.new("PDIC-CSV形式", "csv")
-    ExtensionFilter shaleiaFilter = ExtensionFilter.new("シャレイア語辞典形式", "xdc")
-    $chooser.getExtensionFilters().addAll(slimeFilter, personalFilter, shaleiaFilter)
+    for (DictionaryType type : DictionaryType.values()) {
+      ExtensionFilter extensionFilter = type.createExtensionFilter()
+      $chooser.getExtensionFilters().add(extensionFilter)
+    }
   }
 
 }

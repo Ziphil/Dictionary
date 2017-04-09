@@ -15,13 +15,22 @@ public class AkrantiainRule {
   public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainSetting setting) {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
-    while (pointer < group.getElements().size()) {
+    while (pointer <= group.getElements().size()) {
       ApplicationResult result = applyOnce(group, pointer, setting)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
-        pointer = result.getTo()
+        if (pointer < result.getTo()) {
+          pointer = result.getTo()
+        } else {
+          if (pointer < group.getElements().size()) {
+            appliedGroup.getElements().add(group.getElements()[pointer])
+          }
+          pointer ++
+        }
       } else {
-        appliedGroup.getElements().add(group.getElements()[pointer])
+        if (pointer < group.getElements().size()) {
+          appliedGroup.getElements().add(group.getElements()[pointer])
+        }
         pointer ++
       }
     }
@@ -87,13 +96,15 @@ public class AkrantiainRule {
   }
 
   private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    AkrantiainElementGroup devidedGroup = group.devide(0, to)
-    return $leftCondition == null || $leftCondition.matchLeft(devidedGroup, devidedGroup.getElements().size(), setting) != null
+    AkrantiainElementGroup leftGroup = group.devide(0, to)
+    AkrantiainElementGroup rightGroup = group.devide(to, group.getElements().size())
+    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
   }
 
   private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    AkrantiainElementGroup devidedGroup = group.devide(from, group.getElements().size())
-    return $rightCondition == null || $rightCondition.matchRight(devidedGroup, 0, setting) != null
+    AkrantiainElementGroup leftGroup = group.devide(0, from)
+    AkrantiainElementGroup rightGroup = group.devide(from, group.getElements().size())
+    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
   }
 
   public String toString() {

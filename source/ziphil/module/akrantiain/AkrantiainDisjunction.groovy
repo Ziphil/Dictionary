@@ -5,19 +5,19 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
+public class AkrantiainDisjunction implements AkrantiainMatchable {
 
-  public static final AkrantiainDisjunctionGroup EMPTY_GROUP = AkrantiainDisjunctionGroup.new()
+  public static final AkrantiainDisjunction EMPTY_DISJUNCTION = AkrantiainDisjunction.new()
 
   private Boolean $isNegated = false
-  private List<AkrantiainTokenGroup> $tokenGroups = ArrayList.new()
+  private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
   public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
     Integer to = null
-    if (!$tokenGroups.isEmpty()) {
-      for (Integer i : $tokenGroups.size() - 1 .. 0) {
-        AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
-        Integer singleTo = tokenGroup.matchRight(group, from, setting)
+    if (!$matchables.isEmpty()) {
+      for (Integer i : $matchables.size() - 1 .. 0) {
+        AkrantiainMatchable matchable = $matchables[i]
+        Integer singleTo = matchable.matchRight(group, from, setting)
         if (singleTo != null) {
           to = singleTo
           break
@@ -33,10 +33,10 @@ public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
 
   public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
     Integer from = null
-    if (!$tokenGroups.isEmpty()) {
-      for (Integer i : $tokenGroups.size() - 1 .. 0) {
-        AkrantiainTokenGroup tokenGroup = $tokenGroups[i]
-        Integer singleFrom = tokenGroup.matchLeft(group, to, setting)
+    if (!$matchables.isEmpty()) {
+      for (Integer i : $matchables.size() - 1 .. 0) {
+        AkrantiainMatchable matchable = $matchables[i]
+        Integer singleFrom = matchable.matchLeft(group, to, setting)
         if (singleFrom != null) {
           from = singleFrom
           break
@@ -51,7 +51,7 @@ public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
   }
 
   public Boolean isConcrete() {
-    return $tokenGroups.size() >= 2 || ($tokenGroups.size() >= 1 && $tokenGroups[0].isConcrete())
+    return $matchables.size() >= 2 || ($matchables.size() >= 1 && $matchables[0].isConcrete())
   }
 
   public String toString() {
@@ -60,9 +60,9 @@ public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
       string.append("!")
     }
     string.append("(")
-    for (Integer i : 0 ..< $tokenGroups.size()) {
-      string.append($tokenGroups[i])
-      if (i < $tokenGroups.size() - 1) {
+    for (Integer i : 0 ..< $matchables.size()) {
+      string.append($matchables[i])
+      if (i < $matchables.size() - 1) {
         string.append(", ")
       }
     }
@@ -71,7 +71,7 @@ public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
   }
 
   public Boolean isSingleton() {
-    return $tokenGroups.size() == 1
+    return $matchables.size() == 1
   }
 
   public Boolean isNegated() {
@@ -82,16 +82,16 @@ public class AkrantiainDisjunctionGroup implements AkrantiainMatchable {
     $isNegated = isNegated
   }
 
-  public AkrantiainTokenGroup getTokenGroup() {
-    return $tokenGroups[0]
+  public AkrantiainMatchable getMatchable() {
+    return $matchables[0]
   }
 
-  public List<AkrantiainTokenGroup> getTokenGroups() {
-    return $tokenGroups
+  public List<AkrantiainMatchable> getMatchables() {
+    return $matchables
   }
 
-  public void setTokenGroups(List<AkrantiainTokenGroup> tokenGroups) {
-    $tokenGroups = tokenGroups
+  public void setMatchables(List<AkrantiainMatchable> matchables) {
+    $matchables = matchables
   }
 
 }

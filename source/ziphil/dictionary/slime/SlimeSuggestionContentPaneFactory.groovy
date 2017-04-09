@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
@@ -22,9 +23,10 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
   }
 
   public Pane create() {
+    Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing($lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
       addPossibilityNode(contentPane, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getTitle())
     }

@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.Scene
+import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
@@ -26,7 +27,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $snojPathControl
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
-  @FXML private TextField $logControl
+  @FXML private TextArea $logControl
 
   private Akrantiain $akrantiain = null
   private SnojChooserController.Result $result = null
@@ -50,7 +51,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
         $logControl.setText("")
       } catch (AkrantiainException exception) {
         $outputControl.setText("")
-        $logControl.setText(exception.getMessage())
+        $logControl.setText(exception.getFullMessage())
       }
     } else {
       $outputControl.setText("")
@@ -76,7 +77,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
             $akrantiain.load(file)
             $logControl.setText("")
           } catch (AkrantiainParseException exception) {
-            $logControl.setText(exception.getMessage())
+            $logControl.setText(exception.getFullMessage())
             $akrantiain = null
           }
         } else {
@@ -92,7 +93,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $akrantiain.load(source)
           $logControl.setText("")
         } catch (AkrantiainParseException exception) {
-          $logControl.setText(exception.getMessage())
+          $logControl.setText(exception.getFullMessage())
           $akrantiain = null
         }
       }

@@ -25,27 +25,25 @@ public class Akrantiain {
     AkrantiainLexer lexer = AkrantiainLexer.new(reader)
     List<AkrantiainToken> currentTokens = ArrayList.new()
     for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {
-      if (token.getType() != AkrantiainTokenType.SEMICOLON) {
-        currentTokens.add(token)
-      } else {
+      currentTokens.add(token)
+      if (token.getType() == AkrantiainTokenType.SEMICOLON) {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
         if (parser.isEnvironmentSentence()) {
           AkrantiainEnvironment environment = parser.parseEnvironment()
           $setting.getEnvironments().add(environment)
         } else if (parser.isDefinitionSentence()) {
           AkrantiainDefinition definition = parser.parseDefinition()
-          if (!$setting.containsIdentifier(definition.getIdentifier())) {
+          AkrantiainToken identifier = definition.getIdentifier()
+          if (!$setting.containsIdentifier(identifier)) {
             $setting.getDefinitions().add(definition)
           } else {
-            Integer lineNumber = currentTokens[0].getLineNumber()
-            throw AkrantiainParseException.new("Duplicate identifier", lineNumber)
+            throw AkrantiainParseException.new("Duplicate identifier", identifier)
           }
         } else if (parser.isRuleSentence()) {
           AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
         } else {
-          Integer lineNumber = (!currentTokens.isEmpty()) ? currentTokens[0].getLineNumber() : null
-          throw AkrantiainParseException.new("Invalid sentence", lineNumber)
+          throw AkrantiainParseException.new("Invalid sentence", currentTokens[-1])
         }
         currentTokens.clear()
       }
@@ -59,11 +57,11 @@ public class Akrantiain {
     for (AkrantiainRule rule : $setting.getRules()) {
       currentGroup = rule.apply(currentGroup, $setting)
     }
-    AkrantiainElement invalidElement = currentGroup.firstInvalidElement($setting)
-    if (invalidElement == null) {
+    List<AkrantiainElement> invalidElements = currentGroup.invalidElements($setting)
+    if (invalidElements.isEmpty()) {
       return currentGroup.createOutput()
     } else {
-      throw AkrantiainException.new("No rules that can handle \"${invalidElement.getPart()}\"")
+      throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
     }
   }
 

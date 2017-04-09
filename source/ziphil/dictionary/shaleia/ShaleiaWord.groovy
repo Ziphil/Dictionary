@@ -71,12 +71,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   protected void makeContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
-    $contentPaneFactory.setLineSpacing(lineSpacing)
-    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public ShaleiaDictionary getDictionary() {

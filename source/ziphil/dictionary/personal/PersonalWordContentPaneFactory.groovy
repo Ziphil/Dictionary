@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
@@ -18,9 +19,10 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
   }
 
   public Pane create() {
+    Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing($lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     addNameNode(contentPane, $word.getName())
     addOtherNode(contentPane, $word.getTranslation())
     addOtherNode(contentPane, $word.getUsage())
@@ -36,11 +38,14 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
   }
 
   private void addOtherNode(TextFlow contentPane, String other) {
-    String modifiedOther = ($modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
+    String modifiedOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
     Text otherText = Text.new(modifiedOther)
     Text breakText = Text.new("\n")
     otherText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(otherText, breakText)
+    if (other != "") {
+      contentPane.getChildren().addAll(otherText, breakText)
+    }
   }
 
 }

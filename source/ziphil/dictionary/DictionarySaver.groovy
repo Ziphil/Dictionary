@@ -19,8 +19,12 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
   protected abstract Boolean save()
 
   protected Boolean call() {
-    Boolean result = save()
-    return result
+    if ($path != null) {
+      Boolean result = save()
+      return result
+    } else {
+      return false
+    }
   }
 
   public String getPath() {

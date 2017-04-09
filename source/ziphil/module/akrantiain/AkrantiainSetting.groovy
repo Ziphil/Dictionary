@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainSetting {
 
-  private Set<AkrantiainEnvironment> $environments = EnumSet.noneOf(AkrantiainEnvironment)
+  private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
 
@@ -26,7 +26,7 @@ public class AkrantiainSetting {
         return definition.getContent()
       }
     }
-    return AkrantiainDisjunctionGroup.EMPTY_GROUP
+    return AkrantiainDisjunction.EMPTY_DISJUNCTION
   }
 
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {

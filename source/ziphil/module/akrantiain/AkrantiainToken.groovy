@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
 
 
@@ -9,12 +10,24 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private AkrantiainTokenType $type
   private String $text
+  private String $fullText = ""
   private Integer $lineNumber
+  private Integer $columnNumber
 
-  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber) {
+  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber, Integer columnNumber) {
     $type = type
     $text = text
     $lineNumber = lineNumber
+    $columnNumber = columnNumber
+    makeFullText()
+  }
+
+  public AkrantiainToken(AkrantiainTokenType type, String text, ExtendedBufferedReader reader) {
+    $type = type
+    $text = text
+    $lineNumber = reader.getLineNumber()
+    $columnNumber = reader.getColumnNumber()
+    makeFullText()
   }
 
   public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
@@ -169,7 +182,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer to = content.matchRight(group, from, setting)
       return to
     } else {
-      throw AkrantiainException.new("No such identifier \"${$text}\"")
+      throw AkrantiainException.new("No such identifier", this)
     }
   }
 
@@ -179,7 +192,19 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer from = content.matchLeft(group, to, setting)
       return from
     } else {
-      throw AkrantiainException.new("No such identifier \"${$text}\"")
+      throw AkrantiainException.new("No such identifier", this)
+    }
+  }
+
+  private void makeFullText() {
+    if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
+      $fullText = "\"" + $text + "\""
+    } else if ($type == AkrantiainTokenType.SLASH_LITERAL) {
+      $fullText = "/" + $text + "/"
+    } else if ($type == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
+      $fullText = "@" + $text
+    } else {
+      $fullText = $text
     }
   }
 
@@ -204,8 +229,16 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $text
   }
 
+  public String getFullText() {
+    return $fullText
+  }
+
   public Integer getLineNumber() {
     return $lineNumber
+  }
+
+  public Integer getColumnNumber() {
+    return $columnNumber
   }
 
 }

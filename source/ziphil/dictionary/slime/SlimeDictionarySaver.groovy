@@ -21,43 +21,41 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
   }
 
   protected Boolean save() {
-    if ($path != null) {
-      FileOutputStream stream = FileOutputStream.new($path)
-      JsonFactory factory = $mapper.getFactory()
-      JsonGenerator generator = factory.createGenerator(stream)
-      try {
-        generator.useDefaultPrettyPrinter()
-        generator.writeStartObject()
-        generator.writeFieldName("words")
-        generator.writeStartArray()
-        for (SlimeWord word : $dictionary.getRawWords()) {
-          writeWord(generator, word)
-        }
-        generator.writeEndArray()
-        generator.writeFieldName("zpdic")
-        generator.writeStartObject()
-        generator.writeFieldName("alphabetOrder")
-        writeAlphabetOrder(generator)
-        generator.writeFieldName("plainInformationTitles")
-        writePlainInformationTitles(generator)
-        generator.writeFieldName("informationTitleOrder")
-        writeInformationTitleOrder(generator)
-        generator.writeFieldName("defaultWord")
-        writeDefaultWord(generator)
-        generator.writeEndObject()
-        generator.writeFieldName("snoj")
-        writeAkrantiainSource(generator)
-        for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
-          String fieldName = entry.getKey()
-          TreeNode node = entry.getValue()
-          generator.writeFieldName(fieldName)
-          generator.writeTree(node)
-        }
-        generator.writeEndObject()
-      } finally {
-        generator.close()
-        stream.close()
+    FileOutputStream stream = FileOutputStream.new($path)
+    JsonFactory factory = $mapper.getFactory()
+    JsonGenerator generator = factory.createGenerator(stream)
+    try {
+      generator.useDefaultPrettyPrinter()
+      generator.writeStartObject()
+      generator.writeFieldName("words")
+      generator.writeStartArray()
+      for (SlimeWord word : $dictionary.getRawWords()) {
+        writeWord(generator, word)
       }
+      generator.writeEndArray()
+      generator.writeFieldName("zpdic")
+      generator.writeStartObject()
+      generator.writeFieldName("alphabetOrder")
+      writeAlphabetOrder(generator)
+      generator.writeFieldName("plainInformationTitles")
+      writePlainInformationTitles(generator)
+      generator.writeFieldName("informationTitleOrder")
+      writeInformationTitleOrder(generator)
+      generator.writeFieldName("defaultWord")
+      writeDefaultWord(generator)
+      generator.writeEndObject()
+      generator.writeFieldName("snoj")
+      writeAkrantiainSource(generator)
+      for (Entry<String, TreeNode> entry : $dictionary.getExternalData()) {
+        String fieldName = entry.getKey()
+        TreeNode node = entry.getValue()
+        generator.writeFieldName(fieldName)
+        generator.writeTree(node)
+      }
+      generator.writeEndObject()
+    } finally {
+      generator.close()
+      stream.close()
     }
     return true
   }

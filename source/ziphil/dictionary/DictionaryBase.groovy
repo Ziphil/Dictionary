@@ -38,7 +38,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private static final AccessControlContext ACCESS_CONTROL_CONTEXT = createAccessControlContext()
 
   protected String $name = ""
-  protected String $path = ""
+  protected String $path = null
   protected ObservableList<W> $words = FXCollections.observableArrayList()
   protected FilteredList<W> $filteredWords
   protected SortedList<W> $sortedWords
@@ -59,7 +59,22 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $isFirstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
+    prepare()
+    load()
   }
+
+  public DictionaryBase(String name, String path, Dictionary oldDictionary) {
+    $name = name
+    $path = path
+    $isChanged = true
+    $isFirstEmpty = true
+    setupSortedWords()
+    setupWholeWords()
+    prepare()
+    convert(oldDictionary)
+  }
+
+  protected abstract void prepare()
 
   public void searchByName(String search, Boolean isStrict) {
     Setting setting = Setting.getInstance()
@@ -71,16 +86,12 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       ConjugationResolver conjugationResolver = createConjugationResolver()
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
-      if (conjugationResolver != null) {
-        conjugationResolver.precheck(search, convertedSearch)
-      }
+      conjugationResolver.precheck(search, convertedSearch)
       updateWordPredicate() { Word word ->
         if (isStrict) {
           String name = word.getName()
           String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          if (conjugationResolver != null) {
-            conjugationResolver.check(word, search, convertedSearch)
-          }
+          conjugationResolver.check(word, search, convertedSearch)
           if (search != "") {
             if (searchesPrefix) {
               return convertedName.startsWith(convertedSearch)
@@ -228,7 +239,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.start()
   }
 
-  protected void load() {
+  private void load() {
     DictionaryLoader loader = createLoader()
     loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       if (!$isFirstEmpty) {
@@ -237,6 +248,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
     $loader = loader
     Thread thread = Thread.new(loader)
+    thread.setDaemon(true)
+    thread.start()
+  }
+
+  private void convert(Dictionary oldDictionary) {
+    DictionaryConverter converter = createConverter(oldDictionary)
+    converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      if (!$isFirstEmpty) {
+        $isChanged = false
+      }
+    }
+    $loader = converter
+    Thread thread = Thread.new(converter)
     thread.setDaemon(true)
     thread.start()
   }
@@ -286,11 +310,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected ConjugationResolver createConjugationResolver() {
-    return null
-  }
+  protected abstract ConjugationResolver createConjugationResolver()
 
   protected abstract DictionaryLoader createLoader()
+
+  protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
 
   protected abstract DictionarySaver createSaver()
 

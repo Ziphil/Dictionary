@@ -78,20 +78,43 @@ public class SlimeWord extends WordBase {
     }
   }
 
+  public List<SlimeInformation> sortedInformations() {
+    if ($dictionary.getInformationTitleOrder() != null) {
+      List<SlimeInformation> sortedInformations = $informations.toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
+        String firstTitle = firstInformation.getTitle()
+        String secondTitle = secondInformation.getTitle()
+        Integer firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
+        Integer secondIndex = $dictionary.getInformationTitleOrder().indexOf(secondTitle)
+        if (firstIndex == -1) {
+          if (secondIndex == -1) {
+            return 0
+          } else {
+            return -1
+          }
+        } else {
+          if (secondIndex == -1) {
+            return 1
+          } else {
+            return firstIndex <=> secondIndex
+          }
+        }
+      }
+      return sortedInformations
+    } else {
+      return $informations
+    }
+  }
+
+  public Map<String, List<SlimeRelation>> groupedRelations() {
+    return $relations.groupBy{relation -> relation.getTitle()}
+  }
+
   protected void makeContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Integer lineSpacing = setting.getLineSpacing()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
-    $contentPaneFactory.setLineSpacing(lineSpacing)
-    $contentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   protected void makePlainContentPaneFactory() {
-    Setting setting = Setting.getInstance()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     $plainContentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
-    $plainContentPaneFactory.setModifiesPunctuation(modifiesPunctuation)
   }
 
   public SlimeDictionary getDictionary() {

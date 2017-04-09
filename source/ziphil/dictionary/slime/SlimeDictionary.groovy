@@ -9,11 +9,16 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailDictionary
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.SearchType
+import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -43,14 +48,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
-    load()
-    setupWords()
-    setupSuggestions()
   }
 
-  public SlimeDictionary(String name, String path, ObservableList<SlimeWord> words) {
-    super(name, path)
-    $words.addAll(words)
+  public SlimeDictionary(String name, String path, Dictionary oldDictionary) {
+    super(name, path, oldDictionary)
+  }
+
+  protected void prepare() {
     setupWords()
     setupSuggestions()
   }
@@ -80,7 +84,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
       if (searchName != null) {
-        if (!SearchType.matches(nameSearchType, name, searchName)) {
+        if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
@@ -90,7 +94,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         for (SlimeEquivalent equivalent : equivalents) {
           String equivalentTitle = equivalent.getTitle()
           for (String equivalentName : equivalent.getNames()) {
-            if (SearchType.matches(equivalentSearchType, equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
+            if (equivalentSearchType.matches(equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
               equivalentPredicate = true
             }
           }
@@ -105,7 +109,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         for (SlimeInformation information : informations) {
           String informationText = information.getText()
           String informationTitle = information.getTitle()
-          if (SearchType.matches(informationSearchType, informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
+          if (informationSearchType.matches(informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
             informationPredicate = true
           }
         }
@@ -357,9 +361,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
+  // 同じ単語データをもつ SlimeDictionary オブジェクトを作成します。
+  // この処理は浅いコピーを行うので、コピー後の SlimeDictionary オブジェクトの各単語データはコピー前のものと同一です。
+  // 同じ SlimeDictionary オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用されます。
   public SlimeDictionary copy() {
-    ObservableList<SlimeWord> copiedWords = FXCollections.observableArrayList($words)
-    SlimeDictionary dictionary = SlimeDictionary.new($name, $path, copiedWords)
+    SlimeDictionary dictionary = SlimeDictionary.new($name, null)
+    dictionary.setPath($path)
+    dictionary.getRawWords().addAll($words)
     return dictionary
   }
 
@@ -398,6 +406,19 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     loader.setMapper($$mapper)
     return loader
   }
+
+  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
+    if (oldDictionary instanceof PersonalDictionary) {
+      SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof SlimeDictionary) {
+      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (SlimeDictionary)oldDictionary)
+      return converter
+    } else {
+      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
+      return converter
+    }
+  } 
 
   protected DictionarySaver createSaver() {
     SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)

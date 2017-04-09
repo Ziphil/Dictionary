@@ -2,12 +2,20 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
-import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
+import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EmptyConjugationResolver
+import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.Suggestion
+import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
 
 
@@ -16,7 +24,13 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
-    load()
+  }
+
+  public PersonalDictionary(String name, String path, Dictionary oldDictionary) {
+    super(name, path, oldDictionary)
+  }
+
+  protected void prepare() {
     setupWords()
   }
 
@@ -89,10 +103,31 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     }
   }
 
+  protected ConjugationResolver createConjugationResolver() {
+    EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
+    return conjugationResolver
+  }
+
   protected DictionaryLoader createLoader() {
     PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
     return loader
   }
+
+  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
+    if (oldDictionary instanceof ShaleiaDictionary) {
+      PersonalShaleiaDictionaryConverter converter = PersonalShaleiaDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof PersonalDictionary) {
+      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (PersonalDictionary)oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof SlimeDictionary) {
+      PersonalSlimeDictionaryConverter converter = PersonalSlimeDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else {
+      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
+      return converter
+    }
+  } 
 
   protected DictionarySaver createSaver() {
     PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)

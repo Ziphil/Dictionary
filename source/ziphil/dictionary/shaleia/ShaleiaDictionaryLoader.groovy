@@ -14,42 +14,38 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
 
   public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
     super(dictionary, path)
-    updateProgress(0, 1)
   }
 
-  protected ObservableList<ShaleiaWord> load() {
-    if ($path != null) {
-      File file = File.new($path)
-      BufferedReader reader = file.newReader("UTF-8")
-      PrimLong size = file.length()
-      PrimLong offset = 0L
-      try {
-        String currentName = null
-        StringBuilder currentDescription = StringBuilder.new()
-        for (String line ; (line = reader.readLine()) != null ;) {
-          if (isCancelled()) {
-            reader.close()
-            return null
-          }
-          Matcher matcher = line =~ /^\*\s*(.+)\s*$/
-          if (matcher.matches()) {
-            add(currentName, currentDescription)
-            currentName = matcher.group(1)
-            currentDescription.setLength(0)
-          } else {
-            currentDescription.append(line)
-            currentDescription.append("\n")
-          }
-          offset += line.getBytes("UTF-8").length + 1
-          updateProgress(offset, size)
+  protected Boolean load() {
+    File file = File.new($path)
+    BufferedReader reader = file.newReader("UTF-8")
+    PrimLong size = file.length()
+    PrimLong offset = 0L
+    try {
+      String currentName = null
+      StringBuilder currentDescription = StringBuilder.new()
+      for (String line ; (line = reader.readLine()) != null ;) {
+        if (isCancelled()) {
+          reader.close()
+          return false
         }
-        add(currentName, currentDescription)
-      } finally {
-        reader.close()
+        Matcher matcher = line =~ /^\*\s*(.+)\s*$/
+        if (matcher.matches()) {
+          add(currentName, currentDescription)
+          currentName = matcher.group(1)
+          currentDescription.setLength(0)
+        } else {
+          currentDescription.append(line)
+          currentDescription.append("\n")
+        }
+        offset += line.getBytes("UTF-8").length + 1
+        updateProgress(offset, size)
       }
-      updateProgress(1, 1)
+      add(currentName, currentDescription)
+    } finally {
+      reader.close()
     }
-    return $words
+    return true
   }
 
   private void add(String currentName, StringBuilder currentDescription) {

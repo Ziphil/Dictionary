@@ -38,11 +38,11 @@
   <top>
     <MenuBar>
       <Menu text="ファイル">
-        <MenuItem text="辞書の新規作成" onAction="#createDictionary" accelerator="Shortcut+Shift+N">
+        <Menu fx:id="$createDictionaryMenu" text="辞書の新規作成">
           <graphic>
             <ImageView><Image url="@../../icon/new_dictionary.png"/></ImageView>
           </graphic>
-        </MenuItem>
+        </Menu>
         <MenuItem text="辞書を開く" onAction="#openDictionary" accelerator="Shortcut+O">
           <graphic>
             <ImageView><Image url="@../../icon/open_file.png"/></ImageView>
@@ -57,6 +57,9 @@
           </graphic>
         </MenuItem>
         <MenuItem fx:id="$saveAndRenameDictionaryItem" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
+        <SeparatorMenuItem/>
+        <Menu fx:id="$convertDictionaryMenu" text="別形式に変換"/>
+        <MenuItem fx:id="$convertDictionaryItem" text="別形式に変換" disable="true"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">
           <graphic>
