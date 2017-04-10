@@ -58,7 +58,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
   }
 
   private static String createCompressedPath(String path) {
-    String separator = File.separator.replaceAll("\\\\", "\\\\\\\\")
+    String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
     String compressedPath = path
     compressedPath = compressedPath.replaceAll(/\.json$/, ".zpdt")
     compressedPath = compressedPath.replaceAll(/\$/, "\\\$d")

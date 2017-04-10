@@ -11,6 +11,8 @@ public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
   public static final Version VERSION = Version.new(1, 9, 0, 1904)
+  public static final String FILE_SEPARATOR = createFileSeparator()
+  public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -21,18 +23,26 @@ public class Launcher {
 
   private static String createBasePath() {
     String classPath = System.getProperty("java.class.path")
-    Integer classIndex = classPath.indexOf(File.pathSeparator)
+    Integer classIndex = classPath.indexOf(Launcher.PATH_SEPARATOR)
     String firstPath = (classIndex != -1) ? classPath.take(classIndex) : classPath
     File file = File.new(firstPath)
     String filePath = file.getCanonicalPath()
     String path
     if (file.isDirectory()) {
-      path = filePath + File.separator
+      path = filePath + Launcher.FILE_SEPARATOR
     } else {
-      Integer fileIndex = filePath.lastIndexOf(File.separator)
-      path = filePath.take(fileIndex) + File.separator
+      Integer fileIndex = filePath.lastIndexOf(Launcher.FILE_SEPARATOR)
+      path = filePath.take(fileIndex) + Launcher.FILE_SEPARATOR
     }
     return path
+  }
+
+  private static String createFileSeparator() {
+    return System.getProperty("file.separator").charAt(0).toString()
+  }
+
+  private static String createPathSeparator() {
+    return System.getProperty("path.separator").charAt(0).toString()
   }
 
 }
