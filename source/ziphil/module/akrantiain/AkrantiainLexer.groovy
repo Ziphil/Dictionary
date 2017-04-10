@@ -37,7 +37,14 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         $reader.reset()
         token = nextEnvironmentLiteral()
       } else if (codePoint == '=') {
-        token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
+        $reader.mark(1)
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '>') {
+          token = AkrantiainToken.new(AkrantiainTokenType.BOLD_ARROW, "=>", $reader)
+        } else {
+          $reader.reset()
+          token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
+        }
       } else if (codePoint == '-') {
         Integer nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
@@ -53,6 +60,15 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = AkrantiainToken.new(AkrantiainTokenType.DOLLAR, "\$", $reader)
       } else if (codePoint == '!') {
         token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!", $reader)
+      } else if (codePoint == '%') {
+        $reader.mark(1)
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '%') {
+          token = AkrantiainToken.new(AkrantiainTokenType.DOUBLE_PERCENT, "%%", $reader)
+        } else {
+          $reader.reset()
+          token = AkrantiainToken.new(AkrantiainTokenType.PERCENT, "%", $reader)
+        }
       } else if (codePoint == '(') {
         token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(", $reader)
       } else if (codePoint == ')') {
