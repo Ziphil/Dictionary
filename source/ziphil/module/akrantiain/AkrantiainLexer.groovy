@@ -73,6 +73,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(", $reader)
       } else if (codePoint == ')') {
         token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")", $reader)
+      } else if (codePoint == '{') {
+        token = AkrantiainToken.new(AkrantiainTokenType.OPEN_CURLY, "{", $reader)
+      } else if (codePoint == '}') {
+        token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_CURLY, "}", $reader)
       } else if (codePoint == ';') {
         token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
       } else if (AkrantiainLexer.isLetter(codePoint)) {
@@ -90,7 +94,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     } else {
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
     }
-    $isAfterSemicolon = token != null && token.getType() == AkrantiainTokenType.SEMICOLON
+    $isAfterSemicolon = token != null && (token.getType() == AkrantiainTokenType.SEMICOLON || token.getType() == AkrantiainTokenType.CLOSE_CURLY)
     return token
   }
 
