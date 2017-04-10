@@ -392,6 +392,11 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
 @InnerClass(ShaleiaWordContentPaneFactory)
 private static enum TextMode {
 
-  NORMAL, NORMAL_ITALIC, NAME, NAME_ITALIC, LINK, LINK_ITALIC
+  NORMAL,
+  NORMAL_ITALIC,
+  NAME,
+  NAME_ITALIC,
+  LINK,
+  LINK_ITALIC
 
 }

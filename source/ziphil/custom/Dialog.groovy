@@ -132,6 +132,8 @@ public class Dialog extends Stage {
 @InnerClass(Dialog)
 private static enum Status {
 
-  COMMITTED, NEGATED, CANCELLED
+  COMMITTED,
+  NEGATED,
+  CANCELLED
 
 }
