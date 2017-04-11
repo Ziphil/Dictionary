@@ -94,7 +94,13 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     } else {
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
     }
-    $isAfterSemicolon = token != null && (token.getType() == AkrantiainTokenType.SEMICOLON || token.getType() == AkrantiainTokenType.CLOSE_CURLY)
+    $isAfterSemicolon = false 
+    if (token != null) {
+      AkrantiainTokenType tokenType = token.getType()
+      if (tokenType == AkrantiainTokenType.SEMICOLON || tokenType == AkrantiainTokenType.OPEN_CURLY || tokenType == AkrantiainTokenType.CLOSE_CURLY) {
+        $isAfterSemicolon = true
+      }
+    }
     return token
   }
 
