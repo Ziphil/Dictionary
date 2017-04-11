@@ -28,10 +28,10 @@ public class Akrantiain {
       currentTokens.add(token)
       if (token.getType() == AkrantiainTokenType.SEMICOLON) {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
-        if (parser.isEnvironmentSentence()) {
+        if (parser.isEnvironment()) {
           AkrantiainEnvironment environment = parser.parseEnvironment()
           $setting.getEnvironments().add(environment)
-        } else if (parser.isDefinitionSentence()) {
+        } else if (parser.isDefinition()) {
           AkrantiainDefinition definition = parser.parseDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
           if (!$setting.containsIdentifier(identifier)) {
@@ -39,7 +39,7 @@ public class Akrantiain {
           } else {
             throw AkrantiainParseException.new("Duplicate identifier", identifier)
           }
-        } else if (parser.isRuleSentence()) {
+        } else if (parser.isRule()) {
           AkrantiainRule rule = parser.parseRule()
           $setting.getRules().add(rule)
         } else {

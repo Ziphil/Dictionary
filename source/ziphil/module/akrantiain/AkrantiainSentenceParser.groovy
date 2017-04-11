@@ -157,7 +157,7 @@ public class AkrantiainSentenceParser {
     return selection
   }
 
-  public Boolean isEnvironmentSentence() {
+  public Boolean isEnvironment() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
         return true
@@ -166,7 +166,7 @@ public class AkrantiainSentenceParser {
     return false
   }
 
-  public Boolean isDefinitionSentence() {
+  public Boolean isDefinition() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.EQUAL) {
         return true
@@ -175,7 +175,7 @@ public class AkrantiainSentenceParser {
     return false
   }
 
-  public Boolean isRuleSentence() {
+  public Boolean isRule() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.ARROW) {
         return true
