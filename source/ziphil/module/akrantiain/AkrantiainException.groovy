@@ -28,7 +28,7 @@ public class AkrantiainException extends Exception {
 
   private void makeFullMessage(AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainException: ")
+    fullMessage.append("Runtime Error: ")
     fullMessage.append($message)
     if (token != null) {
       fullMessage.append("\n  ")
@@ -54,7 +54,7 @@ public class AkrantiainException extends Exception {
 
   private void makeFullMessage(List<AkrantiainElement> elements) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainException: ")
+    fullMessage.append("Runtime Error: ")
     fullMessage.append($message)
     for (AkrantiainElement element : elements) {
       fullMessage.append("\n  ")

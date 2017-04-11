@@ -29,7 +29,7 @@ public class AkrantiainParseException extends Exception {
 
   private void makeFullMessage(AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainParseException: ")
+    fullMessage.append("Parse Error: ")
     fullMessage.append($message)
     if (token != null) {
       fullMessage.append("\n  ")
@@ -55,7 +55,7 @@ public class AkrantiainParseException extends Exception {
 
   private void makeFullMessage(Integer codePoint, ExtendedBufferedReader reader) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainParseException: ")
+    fullMessage.append("Parse Error: ")
     fullMessage.append($message)
     if (codePoint != null) {
       fullMessage.append("\n  ")
