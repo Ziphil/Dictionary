@@ -7,6 +7,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainModule {
 
+  private static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
+
   private AkrantiainModuleName $name = AkrantiainModuleName.new()
   private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
@@ -59,7 +61,7 @@ public class AkrantiainModule {
 
   public AkrantiainMatchable findPunctuationContent() {
     for (AkrantiainDefinition definition : $definitions) {
-      if (definition.getIdentifier().getText() == Akrantiain.PUNCTUATION_IDENTIIER_NAME) {
+      if (definition.getIdentifier().getText() == PUNCTUATION_IDENTIIER_NAME) {
         return definition.getContent()
       }
     }
