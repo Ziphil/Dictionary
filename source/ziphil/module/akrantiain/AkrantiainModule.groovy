@@ -99,6 +99,15 @@ public class AkrantiainModule {
     return null
   }
 
+  public AkrantiainModuleName findDeadModuleName(AkrantiainRoot root) {
+    for (AkrantiainModuleName moduleName : $moduleChain) {
+      if (!root.containsModuleOf(moduleName)) {
+        return moduleName
+      }
+    }
+    return null
+  }
+
   public AkrantiainModuleName findCircularModuleName(List<AkrantiainModuleName> moduleNames, AkrantiainRoot root) {
     AkrantiainModuleName containedModuleName = null
     for (AkrantiainModuleName moduleName : moduleNames) {

@@ -62,6 +62,21 @@ public class AkrantiainRoot {
     }
   }
 
+  public AkrantiainModuleName findDeadModuleName() {
+    for (AkrantiainModule module : $modules) {
+      AkrantiainModuleName deadModuleName = module.findDeadModuleName(this)
+      if (deadModuleName != null) {
+        return deadModuleName
+      }
+    }
+    AkrantiainModuleName deadModuleName = $defaultModule.findDeadModuleName(this)
+    if (deadModuleName != null) {
+      return deadModuleName
+    } else {
+      return null
+    }
+  }
+
   public AkrantiainModuleName findCircularModuleName() {
     for (AkrantiainModule module : $modules) {
       AkrantiainModuleName circularModuleName = module.findCircularModuleName(this)

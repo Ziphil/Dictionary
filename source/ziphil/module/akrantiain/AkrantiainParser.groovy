@@ -75,6 +75,10 @@ public class AkrantiainParser {
     if (circularIdentifier != null) {
       throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)
     }
+    AkrantiainModuleName deadModuleName = $root.findDeadModuleName()
+    if (deadModuleName != null) {
+      throw AkrantiainParseException.new("No such module", deadModuleName.getTokens())
+    }
     AkrantiainModuleName circularModuleName = $root.findCircularModuleName()
     if (circularModuleName != null) {
       throw AkrantiainParseException.new("Circular module definition", circularModuleName.getTokens())
