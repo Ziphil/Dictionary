@@ -17,10 +17,19 @@ public class AkrantiainParser {
   public AkrantiainRoot readRoot() {
     AkrantiainModule currentModule = $root.getDefaultModule()
     AkrantiainSentenceParser sentenceParser = AkrantiainSentenceParser.new() 
+    Boolean isInModule = false
     for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.PERCENT) {
-        throw AkrantiainParseException.new("Not yet implemented", token)
+        currentModule = nextModule()
+        isInModule = true
+      } else if (tokenType == AkrantiainTokenType.CLOSE_CURLY) {
+        if (isInModule) {
+          currentModule = $root.getDefaultModule()
+          isInModule = false
+        } else {
+          throw AkrantiainParseException.new("Unexpected close curly bracket", token)
+        }
       } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
         sentenceParser.addToken(token)
         if (sentenceParser.isEnvironment()) {
@@ -47,6 +56,49 @@ public class AkrantiainParser {
     }
     $lexer.close()
     return $root
+  }
+
+  public AkrantiainModule nextModule() {
+    List<AkrantiainToken> moduleName = nextModuleName()
+    if (!$root.containsModuleOf(moduleName)) {
+      AkrantiainModule module = AkrantiainModule.new()
+      module.setName(moduleName)
+      return module
+    } else {
+      throw AkrantiainParseException.new("Duplicate module name", moduleName.last())
+    }
+  }
+
+  public List<AkrantiainToken> nextModuleName() {
+    List<AkrantiainToken> moduleName = ArrayList.new()
+    for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
+      AkrantiainTokenType tokenType = token.getType()
+      if (tokenType == AkrantiainTokenType.OPEN_CURLY) {
+        if (!moduleName.isEmpty()) {
+          break
+        } else {
+          throw AkrantiainParseException.new("Module must have a name", token)
+        }
+      } else {
+        Integer moduleNameSize = moduleName.size()
+        if (moduleNameSize == 0 || moduleNameSize == 2) {
+          if (tokenType == AkrantiainTokenType.IDENTIFIER) {
+            moduleName.add(token)
+          } else {
+            throw AkrantiainParseException.new("Invalid module name", token)
+          }
+        } else if (moduleNameSize == 1) {
+          if (tokenType == AkrantiainTokenType.BOLD_ARROW) {
+            moduleName.add(token)
+          } else {
+            throw AkrantiainParseException.new("Invalid module name", token)
+          }
+        } else {
+          throw AkrantiainParseException.new("Invalid module name", token)
+        }
+      }
+    }
+    return moduleName
   }
 
 }

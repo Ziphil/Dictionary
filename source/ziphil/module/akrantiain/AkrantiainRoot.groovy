@@ -14,7 +14,7 @@ public class AkrantiainRoot {
     return $defaultModule.convert(input, this)
   }
 
-  public AkrantiainModule findModuleOf(List<AkrantiainModule> moduleName) {
+  public AkrantiainModule findModuleOf(List<AkrantiainToken> moduleName) {
     for (AkrantiainModule module : $modules) {
       if (module.getName() == moduleName) {
         return module
@@ -23,7 +23,7 @@ public class AkrantiainRoot {
     return null
   }
 
-  public Boolean containsModuleOf(List<AkrantiainModule> moduleName) {
+  public Boolean containsModuleOf(List<AkrantiainToken> moduleName) {
     for (AkrantiainModule module : $modules) {
       if (module.getName() == moduleName) {
         return true
