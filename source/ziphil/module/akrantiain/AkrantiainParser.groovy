@@ -22,6 +22,7 @@ public class AkrantiainParser {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.PERCENT) {
         currentModule = nextModule()
+        $root.getModules().add(currentModule)
         isInModule = true
       } else if (tokenType == AkrantiainTokenType.CLOSE_CURLY) {
         if (isInModule) {
