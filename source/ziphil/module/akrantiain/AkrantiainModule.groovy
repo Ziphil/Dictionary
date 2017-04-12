@@ -21,15 +21,19 @@ public class AkrantiainModule {
   }
 
   private String convertByRule(String input, AkrantiainRoot root) {
-    AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
-    for (AkrantiainRule rule : $rules) {
-      currentGroup = rule.apply(currentGroup, this)
-    }
-    List<AkrantiainElement> invalidElements = currentGroup.invalidElements(this)
-    if (invalidElements.isEmpty()) {
-      return currentGroup.createOutput()
+    if (!$rules.isEmpty()) {
+      AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
+      for (AkrantiainRule rule : $rules) {
+        currentGroup = rule.apply(currentGroup, this)
+      }
+      List<AkrantiainElement> invalidElements = currentGroup.invalidElements(this)
+      if (invalidElements.isEmpty()) {
+        return currentGroup.createOutput()
+      } else {
+        throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
+      }
     } else {
-      throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
+      return input
     }
   }
 
