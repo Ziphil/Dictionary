@@ -14,6 +14,12 @@ public class AkrantiainException extends Exception {
     super()
   }
 
+  public AkrantiainException(String message) {
+    super()
+    $message = message
+    makeFullMessage(ArrayList.new())
+  }
+
   public AkrantiainException(String message, List<AkrantiainElement> elements) {
     super()
     $message = message

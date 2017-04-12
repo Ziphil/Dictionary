@@ -45,6 +45,8 @@ public class AkrantiainModule {
       AkrantiainModule module = root.findModuleOf(moduleName)
       if (module != null) {
         currentOutput = module.convert(currentOutput, root)
+      } else {
+        throw AkrantiainException.new("This cannot happen")
       }
     }
     return currentOutput

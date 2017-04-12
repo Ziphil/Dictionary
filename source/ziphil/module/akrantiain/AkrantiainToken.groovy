@@ -183,7 +183,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer to = content.matchRight(group, from, module)
       return to
     } else {
-      return null
+      throw AkrantiainException.new("This cannot happen")
     }
   }
 
@@ -193,7 +193,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer from = content.matchLeft(group, to, module)
       return from
     } else {
-      return null
+      throw AkrantiainException.new("This cannot happen")
     }
   }
 
