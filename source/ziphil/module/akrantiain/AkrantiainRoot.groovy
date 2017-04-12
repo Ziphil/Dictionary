@@ -16,7 +16,7 @@ public class AkrantiainRoot {
 
   public AkrantiainModule findModuleOf(AkrantiainModuleName moduleName) {
     for (AkrantiainModule module : $modules) {
-      if (module.getName().getTokens() == moduleName.getTokens()) {
+      if (module.getName() == moduleName) {
         return module
       }
     }

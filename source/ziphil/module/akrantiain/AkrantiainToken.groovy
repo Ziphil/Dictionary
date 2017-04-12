@@ -2,6 +2,7 @@ package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
 import ziphil.module.ExtendedBufferedReader
+import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
 
 
@@ -210,6 +211,15 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   public Boolean isConcrete() {
     return $type != AkrantiainTokenType.CIRCUMFLEX
+  }
+
+  @ConvertPrimitiveArgs
+  public Boolean equals(Object object) {
+    if (object instanceof AkrantiainToken) {
+      return $type == object.getType() && $text == object.getText()
+    } else {
+      return false
+    }
   }
 
   public String toString() {

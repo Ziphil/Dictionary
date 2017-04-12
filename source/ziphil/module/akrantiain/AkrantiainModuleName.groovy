@@ -10,6 +10,15 @@ public class AkrantiainModuleName {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 
+  @ConvertPrimitiveArgs
+  public Boolean equals(Object object) {
+    if (object instanceof AkrantiainModuleName) {
+      return $tokens == object.getTokens()
+    } else {
+      return false
+    }
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     for (Integer i : 0 ..< $tokens.size()) {
