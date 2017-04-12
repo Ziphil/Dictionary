@@ -46,6 +46,9 @@ public class AkrantiainParser {
         } else if (sentenceParser.isRule()) {
           AkrantiainRule rule = sentenceParser.readRule()
           currentModule.getRules().add(rule)
+        } else if (sentenceParser.isModuleChain()) {
+          List<AkrantiainModuleName> moduleChain = sentenceParser.readModuleChain()
+          currentModule.setModuleChain(moduleChain)
         } else {
           throw AkrantiainParseException.new("Invalid sentence", token)
         }

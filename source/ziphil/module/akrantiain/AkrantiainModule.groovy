@@ -11,6 +11,7 @@ public class AkrantiainModule {
   private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
+  private List<AkrantiainModuleName> $moduleChain = Collections.synchronizedList(ArrayList.new())
 
   public String convert(String input, AkrantiainRoot root) {
     AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
@@ -86,6 +87,14 @@ public class AkrantiainModule {
 
   public void setRules(List<AkrantiainRule> rules) {
     $rules = rules
+  }
+
+  public List<AkrantiainModuleName> getModuleChain() {
+    return $moduleChain
+  }
+
+  public void setModuleChain(List<AkrantiainModuleName> moduleChain) {
+    $moduleChain = moduleChain
   }
 
 }
