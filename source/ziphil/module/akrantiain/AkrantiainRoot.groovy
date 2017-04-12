@@ -36,9 +36,7 @@ public class AkrantiainRoot {
     StringBuilder string = StringBuilder.new()
     for (Integer i : 0 ..< $modules.size()) {
       string.append($modules[i])
-      if (i < $modules.size() - 1) {
-        string.append("\n")
-      }
+      string.append("\n")
     }
     string.append($defaultModule)
     return string.toString()

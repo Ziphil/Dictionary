@@ -214,10 +214,11 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
+    string.append("<")
     string.append($type)
-    string.append("'")
+    string.append(": '")
     string.append($fullText)
-    string.append("'")
+    string.append("'>")
     return string.toString()
   }
 
