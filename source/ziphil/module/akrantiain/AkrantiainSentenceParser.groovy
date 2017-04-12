@@ -36,7 +36,7 @@ public class AkrantiainSentenceParser {
         throw AkrantiainParseException.new("No such setting identifier", token)
       }
     } else {
-      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens[-1])
+      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens.last())
     }
   }
 
@@ -56,7 +56,7 @@ public class AkrantiainSentenceParser {
         throw AkrantiainParseException.new("Invalid identifier definition sentence", token)
       }
     } else {
-      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens[-1])
+      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens.last())
     }
   }
 
@@ -99,10 +99,10 @@ public class AkrantiainSentenceParser {
       }
     }
     if (!rule.hasSelection()) {
-      throw AkrantiainParseException.new("No selects", $tokens[-1])
+      throw AkrantiainParseException.new("No selects", $tokens.last())
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens[-1])
+      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens.last())
     }
     return rule
   }
@@ -137,7 +137,7 @@ public class AkrantiainSentenceParser {
         }
       }
     } else {
-      throw AkrantiainParseException.new("Invalid module chain", $tokens[-1])
+      throw AkrantiainParseException.new("Invalid module chain", $tokens.last())
     }
     return moduleChain
   }
