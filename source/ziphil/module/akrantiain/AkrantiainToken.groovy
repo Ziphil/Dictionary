@@ -182,7 +182,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer to = content.matchRight(group, from, module)
       return to
     } else {
-      throw AkrantiainException.new("No such identifier", this)
+      return null
     }
   }
 
@@ -192,7 +192,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
       Integer from = content.matchLeft(group, to, module)
       return from
     } else {
-      throw AkrantiainException.new("No such identifier", this)
+      return null
     }
   }
 
