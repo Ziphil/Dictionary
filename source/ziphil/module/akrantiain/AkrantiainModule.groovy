@@ -99,6 +99,35 @@ public class AkrantiainModule {
     return null
   }
 
+  public AkrantiainModuleName findCircularModuleName(List<AkrantiainModuleName> moduleNames, AkrantiainRoot root) {
+    AkrantiainModuleName containedModuleName = null
+    for (AkrantiainModuleName moduleName : moduleNames) {
+      if ($name == moduleName) {
+        containedModuleName = moduleName
+        break
+      }
+    }
+    if (containedModuleName != null) {
+      return containedModuleName
+    } else {
+      ArrayList nextModuleNames = ArrayList.new(moduleNames)
+      nextModuleNames.add($name)
+      for (AkrantiainModuleName moduleName : $moduleChain) {
+        AkrantiainModule module = root.findModuleOf(moduleName)
+        AkrantiainModuleName circularModuleName = module.findCircularModuleName(nextModuleNames, root)
+        if (circularModuleName != null) {
+          return circularModuleName
+        }
+      }
+      return null
+    }
+  }
+
+  public AkrantiainModuleName findCircularModuleName(AkrantiainRoot root) {
+    List<AkrantiainModuleName> moduleNames = ArrayList.new()
+    return findCircularModuleName(moduleNames, root)
+  }
+
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {
     return $environments.contains(environment)
   } 

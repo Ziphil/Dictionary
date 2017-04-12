@@ -62,6 +62,16 @@ public class AkrantiainRoot {
     }
   }
 
+  public AkrantiainModuleName findCircularModuleName() {
+    for (AkrantiainModule module : $modules) {
+      AkrantiainModuleName circularModuleName = module.findCircularModuleName(this)
+      if (circularModuleName != null) {
+        return circularModuleName
+      }
+    }
+    return null
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     for (Integer i : 0 ..< $modules.size()) {
