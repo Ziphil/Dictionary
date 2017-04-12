@@ -69,7 +69,7 @@ public class AkrantiainParser {
       module.setName(moduleName)
       return module
     } else {
-      throw AkrantiainParseException.new("Duplicate module name", moduleName.getTokens().last())
+      throw AkrantiainParseException.new("Duplicate module name", moduleName.getTokens())
     }
   }
 
