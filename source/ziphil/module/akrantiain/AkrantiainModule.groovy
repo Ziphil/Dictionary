@@ -14,6 +14,13 @@ public class AkrantiainModule {
   private List<AkrantiainModuleName> $moduleChain = Collections.synchronizedList(ArrayList.new())
 
   public String convert(String input, AkrantiainRoot root) {
+    String currentOutput = input
+    currentOutput = convertByRule(currentOutput, root)
+    currentOutput = convertByModuleChain(currentOutput, root)
+    return currentOutput
+  }
+
+  private String convertByRule(String input, AkrantiainRoot root) {
     AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
     for (AkrantiainRule rule : $rules) {
       currentGroup = rule.apply(currentGroup, this)
@@ -24,6 +31,17 @@ public class AkrantiainModule {
     } else {
       throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
     }
+  }
+
+  private String convertByModuleChain(String input, AkrantiainRoot root) {
+    String currentOutput = input
+    for (AkrantiainModuleName moduleName : $moduleChain) {
+      AkrantiainModule module = root.findModuleOf(moduleName)
+      if (module != null) {
+        currentOutput = module.convert(currentOutput, root)
+      }
+    }
+    return currentOutput
   }
 
   public AkrantiainMatchable findContentOf(String identifierName) {
