@@ -41,14 +41,14 @@ public class AkrantiainElement {
 
   // この要素が変換されていれば true を返し、そうでなければ false を返します。
   // ただし、変換前の文字列が句読点かスペースのみで構成されている場合は、変換されいてるかどうかにかかわらず true を返します。
-  public Boolean isValid(AkrantiainSetting setting) {
+  public Boolean isValid(AkrantiainModule module) {
     if ($result == null) {
       if (AkrantiainLexer.isAllWhitespace($part)) {
         return true
       } else {
         AkrantiainElementGroup group = AkrantiainElementGroup.new()
         group.getElements().add(this)
-        if (setting.findPunctuationContent().matchRight(group, 0, setting) != null) {
+        if (module.findPunctuationContent().matchRight(group, 0, module) != null) {
           return true
         } else {
           return false

@@ -9,7 +9,7 @@ public class Akrantiain {
 
   public static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
 
-  private AkrantiainSetting $setting = AkrantiainSetting.new()
+  private AkrantiainRoot $root = AkrantiainRoot.new()
 
   public void load(File file) {
     Reader reader = InputStreamReader.new(FileInputStream.new(file), "UTF-8")
@@ -30,18 +30,18 @@ public class Akrantiain {
         AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
         if (parser.isEnvironment()) {
           AkrantiainEnvironment environment = parser.parseEnvironment()
-          $setting.getEnvironments().add(environment)
+          $root.getDefaultModule().getEnvironments().add(environment)
         } else if (parser.isDefinition()) {
           AkrantiainDefinition definition = parser.parseDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
-          if (!$setting.containsIdentifier(identifier)) {
-            $setting.getDefinitions().add(definition)
+          if (!$root.getDefaultModule().containsIdentifier(identifier)) {
+            $root.getDefaultModule().getDefinitions().add(definition)
           } else {
             throw AkrantiainParseException.new("Duplicate identifier", identifier)
           }
         } else if (parser.isRule()) {
           AkrantiainRule rule = parser.parseRule()
-          $setting.getRules().add(rule)
+          $root.getDefaultModule().getRules().add(rule)
         } else {
           throw AkrantiainParseException.new("Invalid sentence", currentTokens[-1])
         }
@@ -54,10 +54,10 @@ public class Akrantiain {
 
   public String convert(String input) {
     AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
-    for (AkrantiainRule rule : $setting.getRules()) {
-      currentGroup = rule.apply(currentGroup, $setting)
+    for (AkrantiainRule rule : $root.getDefaultModule().getRules()) {
+      currentGroup = rule.apply(currentGroup, $root.getDefaultModule())
     }
-    List<AkrantiainElement> invalidElements = currentGroup.invalidElements($setting)
+    List<AkrantiainElement> invalidElements = currentGroup.invalidElements($root.getDefaultModule())
     if (invalidElements.isEmpty()) {
       return currentGroup.createOutput()
     } else {

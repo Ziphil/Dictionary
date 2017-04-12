@@ -52,10 +52,10 @@ public class AkrantiainElementGroup {
     return group
   }
 
-  public List<AkrantiainElement> invalidElements(AkrantiainSetting setting) {
+  public List<AkrantiainElement> invalidElements(AkrantiainModule module) {
     List<AkrantiainElement> invalidElements = ArrayList.new()
     for (AkrantiainElement element : $elements) {
-      if (!element.isValid(setting)) {
+      if (!element.isValid(module)) {
         invalidElements.add(element)
       }
     }

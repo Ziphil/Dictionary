@@ -11,12 +11,12 @@ public class AkrantiainSequence implements AkrantiainMatchable {
 
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     if (!$matchables.isEmpty()) {
       Integer pointer = from
       for (Integer i : 0 ..< $matchables.size()) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer to = matchable.matchRight(group, pointer, setting)
+        Integer to = matchable.matchRight(group, pointer, module)
         if (to != null) {
           pointer = to
         } else {
@@ -29,12 +29,12 @@ public class AkrantiainSequence implements AkrantiainMatchable {
     }
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     if (!$matchables.isEmpty()) {
       Integer pointer = to
       for (Integer i : $matchables.size() - 1 .. 0) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer from = matchable.matchLeft(group, pointer, setting)
+        Integer from = matchable.matchLeft(group, pointer, module)
         if (from != null) {
           pointer = from
         } else {

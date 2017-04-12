@@ -12,12 +12,12 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
   private Boolean $isNegated = false
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
     if (!$matchables.isEmpty()) {
       for (Integer i : $matchables.size() - 1 .. 0) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleTo = matchable.matchRight(group, from, setting)
+        Integer singleTo = matchable.matchRight(group, from, module)
         if (singleTo != null) {
           to = singleTo
           break
@@ -31,12 +31,12 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     }
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
     if (!$matchables.isEmpty()) {
       for (Integer i : $matchables.size() - 1 .. 0) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleFrom = matchable.matchLeft(group, to, setting)
+        Integer singleFrom = matchable.matchLeft(group, to, module)
         if (singleFrom != null) {
           from = singleFrom
           break
