@@ -14,7 +14,7 @@ public class AkrantiainParser {
     $lexer = AkrantiainLexer.new(reader)
   }
 
-  public AkrantiainRoot parse() {
+  public AkrantiainRoot readRoot() {
     AkrantiainModule currentModule = $root.getDefaultModule()
     AkrantiainSentenceParser sentenceParser = AkrantiainSentenceParser.new() 
     for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
@@ -24,10 +24,10 @@ public class AkrantiainParser {
       } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
         sentenceParser.addToken(token)
         if (sentenceParser.isEnvironment()) {
-          AkrantiainEnvironment environment = sentenceParser.parseEnvironment()
+          AkrantiainEnvironment environment = sentenceParser.readEnvironment()
           currentModule.getEnvironments().add(environment)
         } else if (sentenceParser.isDefinition()) {
-          AkrantiainDefinition definition = sentenceParser.parseDefinition()
+          AkrantiainDefinition definition = sentenceParser.readDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
           if (!currentModule.containsIdentifier(identifier)) {
             currentModule.getDefinitions().add(definition)
@@ -35,7 +35,7 @@ public class AkrantiainParser {
             throw AkrantiainParseException.new("Duplicate identifier", identifier)
           }
         } else if (sentenceParser.isRule()) {
-          AkrantiainRule rule = sentenceParser.parseRule()
+          AkrantiainRule rule = sentenceParser.readRule()
           currentModule.getRules().add(rule)
         } else {
           throw AkrantiainParseException.new("Invalid sentence", token)

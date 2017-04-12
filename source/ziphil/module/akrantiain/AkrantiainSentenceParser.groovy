@@ -26,7 +26,7 @@ public class AkrantiainSentenceParser {
     $pointer = 0
   }
 
-  public AkrantiainEnvironment parseEnvironment() {
+  public AkrantiainEnvironment readEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
       try {
@@ -40,7 +40,7 @@ public class AkrantiainSentenceParser {
     }
   }
 
-  public AkrantiainDefinition parseDefinition() {
+  public AkrantiainDefinition readDefinition() {
     if ($tokens.size() >= 4 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
@@ -60,7 +60,7 @@ public class AkrantiainSentenceParser {
     }
   }
 
-  public AkrantiainRule parseRule() {
+  public AkrantiainRule readRule() {
     Boolean isBeforeArrow = true
     AkrantiainRule rule = AkrantiainRule.new()
     while (true) {

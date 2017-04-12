@@ -23,7 +23,7 @@ public class Akrantiain {
 
   private void parse(Reader reader) {
     AkrantiainParser parser = AkrantiainParser.new(reader)
-    $root = parser.parse()
+    $root = parser.readRoot()
   }
 
   public String convert(String input) {
