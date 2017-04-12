@@ -34,7 +34,7 @@ public class AkrantiainModule {
     return $environments.contains(environment)
   } 
 
-  public Boolean containsIdentifier(AkrantiainToken identifier) {
+  public Boolean containsDefinitionOf(AkrantiainToken identifier) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifier.getText()) {
         return true

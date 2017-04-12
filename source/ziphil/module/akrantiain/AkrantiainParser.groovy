@@ -29,7 +29,7 @@ public class AkrantiainParser {
         } else if (sentenceParser.isDefinition()) {
           AkrantiainDefinition definition = sentenceParser.readDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
-          if (!currentModule.containsIdentifier(identifier)) {
+          if (!currentModule.containsDefinitionOf(identifier)) {
             currentModule.getDefinitions().add(definition)
           } else {
             throw AkrantiainParseException.new("Duplicate identifier", identifier)
