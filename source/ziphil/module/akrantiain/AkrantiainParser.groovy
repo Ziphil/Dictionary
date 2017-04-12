@@ -58,6 +58,9 @@ public class AkrantiainParser {
         sentenceParser.addToken(token)
       }
     }
+    if (isInModule) {
+      throw AkrantiainParseException.new("The file ended before a module is closed")
+    }
     $lexer.close()
     return $root
   }

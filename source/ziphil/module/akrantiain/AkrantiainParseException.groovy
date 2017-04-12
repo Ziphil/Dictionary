@@ -15,6 +15,12 @@ public class AkrantiainParseException extends Exception {
     super()
   }
 
+  public AkrantiainParseException(String message) {
+    super()
+    $message = message
+    makeFullMessage((AkrantiainToken)null)
+  }
+
   public AkrantiainParseException(String message, AkrantiainToken token) {
     super()
     $message = message
