@@ -7,11 +7,23 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainSentenceParser {
 
-  private List<AkrantiainToken> $tokens
+  private List<AkrantiainToken> $tokens = ArrayList.new()
   private Integer $pointer = 0
 
   public AkrantiainSentenceParser(List<AkrantiainToken> tokens) {
     $tokens = tokens
+  }
+
+  public AkrantiainSentenceParser() {
+  }
+
+  public void addToken(AkrantiainToken token) {
+    $tokens.add(token)
+  }
+
+  public void clear() {
+    $tokens.clear()
+    $pointer = 0
   }
 
   public AkrantiainEnvironment parseEnvironment() {
@@ -182,6 +194,14 @@ public class AkrantiainSentenceParser {
       }
     }
     return false
+  }
+
+  public List<AkrantiainToken> getTokens() {
+    return $tokens
+  }
+
+  public void setTokens(List<AkrantiainToken> tokens) {
+    $tokens = tokens
   }
 
 }

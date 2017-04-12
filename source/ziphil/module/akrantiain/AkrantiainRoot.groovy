@@ -10,6 +10,24 @@ public class AkrantiainRoot {
   private List<AkrantiainModule> $modules = Collections.synchronizedList(ArrayList.new())
   private AkrantiainModule $defaultModule = AkrantiainModule.new()
 
+  public AkrantiainModule findModuleOf(List<AkrantiainModule> moduleName) {
+    for (AkrantiainModule module : $modules) {
+      if (module.getName() == moduleName) {
+        return module
+      }
+    }
+    return null
+  }
+
+  public Boolean containsModuleOf(List<AkrantiainModule> moduleName) {
+    for (AkrantiainModule module : $modules) {
+      if (module.getName() == moduleName) {
+        return true
+      }
+    }
+    return false
+  }
+
   public List<AkrantiainModule> getModules() {
     return $modules
   }

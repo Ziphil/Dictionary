@@ -9,7 +9,7 @@ public class Akrantiain {
 
   public static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
 
-  private AkrantiainRoot $root = AkrantiainRoot.new()
+  private AkrantiainRoot $root
 
   public void load(File file) {
     Reader reader = InputStreamReader.new(FileInputStream.new(file), "UTF-8")
@@ -22,34 +22,8 @@ public class Akrantiain {
   }
 
   private void parse(Reader reader) {
-    AkrantiainLexer lexer = AkrantiainLexer.new(reader)
-    List<AkrantiainToken> currentTokens = ArrayList.new()
-    for (AkrantiainToken token ; (token = lexer.nextToken()) != null ;) {
-      currentTokens.add(token)
-      if (token.getType() == AkrantiainTokenType.SEMICOLON) {
-        AkrantiainSentenceParser parser = AkrantiainSentenceParser.new(currentTokens)
-        if (parser.isEnvironment()) {
-          AkrantiainEnvironment environment = parser.parseEnvironment()
-          $root.getDefaultModule().getEnvironments().add(environment)
-        } else if (parser.isDefinition()) {
-          AkrantiainDefinition definition = parser.parseDefinition()
-          AkrantiainToken identifier = definition.getIdentifier()
-          if (!$root.getDefaultModule().containsIdentifier(identifier)) {
-            $root.getDefaultModule().getDefinitions().add(definition)
-          } else {
-            throw AkrantiainParseException.new("Duplicate identifier", identifier)
-          }
-        } else if (parser.isRule()) {
-          AkrantiainRule rule = parser.parseRule()
-          $root.getDefaultModule().getRules().add(rule)
-        } else {
-          throw AkrantiainParseException.new("Invalid sentence", currentTokens[-1])
-        }
-        currentTokens.clear()
-      }
-    }
-    reader.close()
-    lexer.close()
+    AkrantiainParser parser = AkrantiainParser.new(reader)
+    $root = parser.parse()
   }
 
   public String convert(String input) {
