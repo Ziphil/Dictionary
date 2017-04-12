@@ -21,15 +21,21 @@ public class AkrantiainParser {
     for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.PERCENT) {
-        currentModule = nextModule()
-        $root.getModules().add(currentModule)
-        isInModule = true
+        if (!isInModule) {
+          currentModule = nextModule()
+          $root.getModules().add(currentModule)
+          isInModule = true
+        } else {
+          throw AkrantiainParseException.new("Module definition cannot be nested", token)
+        }
+      } else if (tokenType == AkrantiainTokenType.OPEN_CURLY) {
+        throw AkrantiainParseException.new("Unexpected left curly bracket", token)
       } else if (tokenType == AkrantiainTokenType.CLOSE_CURLY) {
         if (isInModule) {
           currentModule = $root.getDefaultModule()
           isInModule = false
         } else {
-          throw AkrantiainParseException.new("Unexpected close curly bracket", token)
+          throw AkrantiainParseException.new("Unexpected right curly bracket", token)
         }
       } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
         sentenceParser.addToken(token)
