@@ -14,16 +14,16 @@ public class AkrantiainRoot {
     return $defaultModule.convert(input, this)
   }
 
-  public AkrantiainModule findModuleOf(List<AkrantiainToken> moduleName) {
+  public AkrantiainModule findModuleOf(AkrantiainModuleName moduleName) {
     for (AkrantiainModule module : $modules) {
-      if (module.getName() == moduleName) {
+      if (module.getName().getTokens() == moduleName.getTokens()) {
         return module
       }
     }
     return null
   }
 
-  public Boolean containsModuleOf(List<AkrantiainToken> moduleName) {
+  public Boolean containsModuleOf(AkrantiainModuleName moduleName) {
     for (AkrantiainModule module : $modules) {
       if (module.getName() == moduleName) {
         return true

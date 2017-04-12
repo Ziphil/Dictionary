@@ -107,6 +107,41 @@ public class AkrantiainSentenceParser {
     return rule
   }
 
+  public List<AkrantiainModuleName> readModuleChain() {
+    List<AkrantiainModuleName> moduleChain = ArrayList.new()
+    Boolean isAfterComponent = false
+    if ($tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT) {
+      $pointer += 1
+      while (true) {
+        AkrantiainToken token = $tokens[$pointer ++]
+        AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+        if (tokenType == AkrantiainTokenType.ADVANCE) {
+          if (isAfterComponent) {
+            isAfterComponent = false
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
+          if (isAfterComponent) {
+            break
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else {
+          if (!isAfterComponent) {
+            $pointer --
+            List<AkrantiainModuleName> moduleChainComponent = nextModuleChainComponent()
+            moduleChain.addAll(moduleChainComponent)
+            isAfterComponent = true
+          }
+        }
+      }
+    } else {
+      throw AkrantiainParseException.new("Invalid module chain", $tokens[-1])
+    }
+    return moduleChain
+  }
+
   private AkrantiainDisjunction nextDisjunction() {
     Integer firstPointer = $pointer
     AkrantiainDisjunction disjunction = AkrantiainDisjunction.new()
@@ -169,6 +204,67 @@ public class AkrantiainSentenceParser {
     return selection
   }
 
+  private List<AkrantiainModuleName> nextModuleChainComponent() {
+    List<AkrantiainModuleName> moduleChainComponent = ArrayList.new()
+    AkrantiainToken token = $tokens[$pointer ++]
+    AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+    if (tokenType == AkrantiainTokenType.OPEN_PAREN) {
+      List<AkrantiainModuleName> partialModuleChainComponent = nextPartialModuleChainComponent()
+      AkrantiainToken nextToken = $tokens[$pointer ++]
+      AkrantiainTokenType nextTokenType = (nextToken != null) ? nextToken.getType() : null
+      if (nextTokenType == AkrantiainTokenType.CLOSE_PAREN) {
+        moduleChainComponent = partialModuleChainComponent
+      } else {
+        throw AkrantiainParseException.new("Invalid module chain component", token)
+      }
+    } else {
+      $pointer --
+      List<AkrantiainModuleName> partialModuleChainComponent = nextPartialModuleChainComponent()
+      moduleChainComponent = partialModuleChainComponent
+    }
+    return moduleChainComponent
+  }
+
+  private List<AkrantiainModuleName> nextPartialModuleChainComponent() {
+    List<AkrantiainModuleName> moduleChainComponent = ArrayList.new()
+    AkrantiainModuleName currentModuleName = AkrantiainModuleName.new()
+    Boolean isAfterIdentifier = false
+    Boolean isCompound = false
+    while (true) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+      if (tokenType == AkrantiainTokenType.IDENTIFIER) {
+        if (!isAfterIdentifier) {
+          currentModuleName.getTokens().add(token)
+          isAfterIdentifier = true
+          if (isCompound) {
+            moduleChainComponent.add(currentModuleName)
+            currentModuleName = AkrantiainModuleName.new()
+            currentModuleName.getTokens().add(token)
+          }
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      } else if (tokenType == AkrantiainTokenType.BOLD_ARROW) {
+        if (isAfterIdentifier) {
+          currentModuleName.getTokens().add(token)
+          isAfterIdentifier = false
+          isCompound = true
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      } else {
+        if (!moduleChainComponent.isEmpty()) {
+          $pointer --
+          break
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      }
+    }
+    return moduleChainComponent
+  }
+
   public Boolean isEnvironment() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
@@ -194,6 +290,10 @@ public class AkrantiainSentenceParser {
       }
     }
     return false
+  }
+
+  public Boolean isModuleChain() {
+    return !$tokens.isEmpty() && $tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT
   }
 
   public List<AkrantiainToken> getTokens() {

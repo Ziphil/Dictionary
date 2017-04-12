@@ -59,37 +59,37 @@ public class AkrantiainParser {
   }
 
   public AkrantiainModule nextModule() {
-    List<AkrantiainToken> moduleName = nextModuleName()
+    AkrantiainModuleName moduleName = nextModuleName()
     if (!$root.containsModuleOf(moduleName)) {
       AkrantiainModule module = AkrantiainModule.new()
       module.setName(moduleName)
       return module
     } else {
-      throw AkrantiainParseException.new("Duplicate module name", moduleName.last())
+      throw AkrantiainParseException.new("Duplicate module name", moduleName.getTokens().last())
     }
   }
 
-  public List<AkrantiainToken> nextModuleName() {
-    List<AkrantiainToken> moduleName = ArrayList.new()
+  public AkrantiainModuleName nextModuleName() {
+    AkrantiainModuleName moduleName = AkrantiainModuleName.new()
     for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.OPEN_CURLY) {
-        if (!moduleName.isEmpty()) {
+        if (!moduleName.getTokens().isEmpty()) {
           break
         } else {
           throw AkrantiainParseException.new("Module must have a name", token)
         }
       } else {
-        Integer moduleNameSize = moduleName.size()
+        Integer moduleNameSize = moduleName.getTokens().size()
         if (moduleNameSize == 0 || moduleNameSize == 2) {
           if (tokenType == AkrantiainTokenType.IDENTIFIER) {
-            moduleName.add(token)
+            moduleName.getTokens().add(token)
           } else {
             throw AkrantiainParseException.new("Invalid module name", token)
           }
         } else if (moduleNameSize == 1) {
           if (tokenType == AkrantiainTokenType.BOLD_ARROW) {
-            moduleName.add(token)
+            moduleName.getTokens().add(token)
           } else {
             throw AkrantiainParseException.new("Invalid module name", token)
           }

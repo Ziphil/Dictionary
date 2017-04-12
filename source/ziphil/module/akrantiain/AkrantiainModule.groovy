@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainModule {
 
-  private List<AkrantiainToken> $name = ArrayList.new()
+  private AkrantiainModuleName $name = AkrantiainModuleName.new()
   private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
@@ -56,11 +56,11 @@ public class AkrantiainModule {
     return false
   }
 
-  public List<AkrantiainToken> getName() {
+  public AkrantiainModuleName getName() {
     return $name
   }
 
-  public void setName(List<AkrantiainToken> name) {
+  public void setName(AkrantiainModuleName name) {
     $name = name
   }
 
