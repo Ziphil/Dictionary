@@ -254,9 +254,16 @@ public class AkrantiainSentenceParser {
           throw AkrantiainParseException.new("Invalid module chain component", token)
         }
       } else {
-        if (!moduleChainComponent.isEmpty()) {
-          $pointer --
-          break
+        if (isAfterIdentifier) {
+          if (!isCompound && !currentModuleName.getTokens().isEmpty()) {
+            moduleChainComponent.add(currentModuleName)
+          }
+          if (!moduleChainComponent.isEmpty()) {
+            $pointer --
+            break
+          } else {
+            throw AkrantiainParseException.new("Module chain component is empty", token)
+          }
         } else {
           throw AkrantiainParseException.new("Invalid module chain component", token)
         }
