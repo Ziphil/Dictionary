@@ -12,6 +12,19 @@ public class AkrantiainModule {
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
 
+  public String convert(String input, AkrantiainRoot root) {
+    AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
+    for (AkrantiainRule rule : $rules) {
+      currentGroup = rule.apply(currentGroup, this)
+    }
+    List<AkrantiainElement> invalidElements = currentGroup.invalidElements(this)
+    if (invalidElements.isEmpty()) {
+      return currentGroup.createOutput()
+    } else {
+      throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
+    }
+  }
+
   public AkrantiainMatchable findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {

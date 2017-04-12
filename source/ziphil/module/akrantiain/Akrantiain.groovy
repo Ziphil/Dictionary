@@ -27,16 +27,7 @@ public class Akrantiain {
   }
 
   public String convert(String input) {
-    AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
-    for (AkrantiainRule rule : $root.getDefaultModule().getRules()) {
-      currentGroup = rule.apply(currentGroup, $root.getDefaultModule())
-    }
-    List<AkrantiainElement> invalidElements = currentGroup.invalidElements($root.getDefaultModule())
-    if (invalidElements.isEmpty()) {
-      return currentGroup.createOutput()
-    } else {
-      throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
-    }
+    return $root.convert(input)
   }
 
 }
