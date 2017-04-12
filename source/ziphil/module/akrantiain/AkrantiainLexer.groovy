@@ -52,6 +52,13 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         } else {
           throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
         }
+      } else if (codePoint == '>') {
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '>') {
+          token = AkrantiainToken.new(AkrantiainTokenType.ADVANCE, ">>", $reader)
+        } else {
+          throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
+        }
       } else if (codePoint == '|') {
         token = AkrantiainToken.new(AkrantiainTokenType.VERTICAL, "|", $reader)
       } else if (codePoint == '^') {
