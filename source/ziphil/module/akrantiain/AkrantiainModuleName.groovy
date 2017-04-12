@@ -10,6 +10,17 @@ public class AkrantiainModuleName {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    for (Integer i : 0 ..< $tokens.size()) {
+      string.append($tokens[i])
+      if (i < $tokens.size() - 1) {
+        string.append(" ")
+      }
+    }
+    return string.toString()
+  }
+
   public List<AkrantiainToken> getTokens() {
     return $tokens
   }

@@ -57,6 +57,35 @@ public class AkrantiainModule {
     return false
   }
 
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    string.append("% ")
+    string.append($name)
+    string.append("{")
+    string.append("\nenvironments:")
+    for (Integer i : 0 ..< $environments.size()) {
+      string.append("\n  ")
+      string.append($environments[i])
+    }
+    string.append("\ndefinitions:")
+    for (Integer i : 0 ..< $definitions.size()) {
+      string.append("\n  ")
+      string.append($definitions[i])
+    }
+    string.append("\nrules:")
+    for (Integer i : 0 ..< $rules.size()) {
+      string.append("\n  ")
+      string.append($rules[i])
+    }
+    string.append("\nmodule chain:")
+    for (Integer i : 0 ..< $moduleChain.size()) {
+      string.append("\n  ")
+      string.append($moduleChain[i])
+    }
+    string.append("\n}")
+    return string.toString()
+  }
+
   public AkrantiainModuleName getName() {
     return $name
   }

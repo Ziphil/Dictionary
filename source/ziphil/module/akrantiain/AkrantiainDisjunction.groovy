@@ -63,7 +63,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     for (Integer i : 0 ..< $matchables.size()) {
       string.append($matchables[i])
       if (i < $matchables.size() - 1) {
-        string.append(", ")
+        string.append(" | ")
       }
     }
     string.append(")")

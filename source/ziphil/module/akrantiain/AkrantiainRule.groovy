@@ -114,7 +114,7 @@ public class AkrantiainRule {
     for (Integer i : 0 ..< $selections.size()) {
       string.append($selections[i])
       if (i < $selections.size() - 1) {
-        string.append(", ")
+        string.append(" ")
       }
     }
     string.append("] ")
@@ -123,7 +123,7 @@ public class AkrantiainRule {
     for (Integer i : 0 ..< $phonemes.size()) {
       string.append($phonemes[i])
       if (i < $phonemes.size() - 1) {
-        string.append(", ")
+        string.append(" ")
       }
     }
     string.append("]")
