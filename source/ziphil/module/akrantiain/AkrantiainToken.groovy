@@ -209,6 +209,30 @@ public class AkrantiainToken implements AkrantiainMatchable {
     }
   }
 
+  public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
+    if ($type == AkrantiainTokenType.IDENTIFIER) {
+      AkrantiainToken containedIdentifier = null
+      for (AkrantiainToken identifier : identifiers) {
+        if (this == identifier) {
+          containedIdentifier = identifier
+          break
+        }
+      }
+      if (containedIdentifier != null) {
+        return containedIdentifier
+      } else {
+        AkrantiainDefinition definition = module.findDefinitionOf($text)
+        if (definition != null) {
+          return definition.findCircularIdentifier(identifiers, module)
+        } else {
+          return null
+        }
+      }
+    } else {
+      return null
+    }
+  }
+
   public Boolean isConcrete() {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }

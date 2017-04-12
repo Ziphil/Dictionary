@@ -52,6 +52,15 @@ public class AkrantiainModule {
     return currentOutput
   }
 
+  public AkrantiainDefinition findDefinitionOf(String identifierName) {
+    for (AkrantiainDefinition definition : $definitions) {
+      if (definition.getIdentifier().getText() == identifierName) {
+        return definition
+      }
+    }
+    return null
+  }
+
   public AkrantiainMatchable findContentOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {
@@ -68,6 +77,16 @@ public class AkrantiainModule {
       }
     }
     return AkrantiainDisjunction.EMPTY_DISJUNCTION
+  }
+
+  public AkrantiainToken findCircularIdentifier() {
+    for (AkrantiainDefinition definition: $definitions) {
+      AkrantiainToken circularIdentifier = definition.findCircularIdentifier(this)
+      if (circularIdentifier != null) {
+        return circularIdentifier
+      }
+    }
+    return null
   }
 
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {

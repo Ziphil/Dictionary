@@ -10,6 +10,18 @@ public class AkrantiainDefinition {
   private AkrantiainToken $identifier
   private AkrantiainMatchable $content
 
+  public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
+    ArrayList nextIdentifiers = ArrayList.new(identifiers)
+    nextIdentifiers.add($identifier)
+    return $content.findCircularIdentifier(nextIdentifiers, module)
+  }
+
+  public AkrantiainToken findCircularIdentifier(AkrantiainModule module) {
+    ArrayList identifiers = ArrayList.new()
+    identifiers.add($identifier)
+    return $content.findCircularIdentifier(identifiers, module)
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append($identifier)

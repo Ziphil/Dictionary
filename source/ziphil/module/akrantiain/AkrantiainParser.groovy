@@ -61,8 +61,16 @@ public class AkrantiainParser {
     if (isInModule) {
       throw AkrantiainParseException.new("The file ended before a module is closed")
     }
+    ensureSafety()
     $lexer.close()
     return $root
+  }
+
+  private void ensureSafety() { 
+    AkrantiainToken circularIdentifier = $root.findCircularIdentifier()
+    if (circularIdentifier != null) {
+      throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)
+    }
   }
 
   public AkrantiainModule nextModule() {
