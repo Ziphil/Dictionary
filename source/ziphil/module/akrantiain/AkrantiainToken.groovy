@@ -209,6 +209,18 @@ public class AkrantiainToken implements AkrantiainMatchable {
     }
   }
 
+  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+    if ($type == AkrantiainTokenType.IDENTIFIER) {
+      if (!module.containsDefinitionOf($text)) {
+        return this
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+  }
+
   public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
     if ($type == AkrantiainTokenType.IDENTIFIER) {
       AkrantiainToken containedIdentifier = null

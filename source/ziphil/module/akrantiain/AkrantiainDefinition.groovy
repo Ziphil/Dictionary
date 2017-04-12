@@ -10,6 +10,10 @@ public class AkrantiainDefinition {
   private AkrantiainToken $identifier
   private AkrantiainMatchable $content
 
+  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+    return $content.findDeadIdentifier(module)
+  } 
+
   public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
     ArrayList nextIdentifiers = ArrayList.new(identifiers)
     nextIdentifiers.add($identifier)

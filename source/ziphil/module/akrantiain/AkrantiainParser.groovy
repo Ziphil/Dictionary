@@ -39,7 +39,7 @@ public class AkrantiainParser {
         } else if (sentenceParser.isDefinition()) {
           AkrantiainDefinition definition = sentenceParser.readDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
-          if (!currentModule.containsDefinitionOf(identifier)) {
+          if (!currentModule.containsDefinitionOf(identifier.getText())) {
             currentModule.getDefinitions().add(definition)
           } else {
             throw AkrantiainParseException.new("Duplicate identifier", identifier)
@@ -66,7 +66,11 @@ public class AkrantiainParser {
     return $root
   }
 
-  private void ensureSafety() { 
+  private void ensureSafety() {
+    AkrantiainToken deadIdentifier = $root.findDeadIdentifier()
+    if (deadIdentifier != null) {
+      throw AkrantiainParseException.new("No such identifier", deadIdentifier)
+    }
     AkrantiainToken circularIdentifier = $root.findCircularIdentifier()
     if (circularIdentifier != null) {
       throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)

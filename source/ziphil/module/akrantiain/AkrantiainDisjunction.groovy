@@ -50,6 +50,16 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     }
   }
 
+  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+    for (AkrantiainMatchable matchable : $matchables) {
+      AkrantiainToken deadIdentifier = matchable.findDeadIdentifier(module)
+      if (deadIdentifier != null) {
+        return deadIdentifier
+      }
+    }
+    return null
+  }
+
   public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
     for (AkrantiainMatchable matchable : $matchables) {
       AkrantiainToken circularIdentifier = matchable.findCircularIdentifier(identifiers, module)

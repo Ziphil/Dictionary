@@ -79,6 +79,16 @@ public class AkrantiainModule {
     return AkrantiainDisjunction.EMPTY_DISJUNCTION
   }
 
+  public AkrantiainToken findDeadIdentifier() {
+    for (AkrantiainDefinition definition: $definitions) {
+      AkrantiainToken deadIdentifier = definition.findDeadIdentifier(this)
+      if (deadIdentifier != null) {
+        return deadIdentifier
+      }
+    }
+    return null
+  }
+
   public AkrantiainToken findCircularIdentifier() {
     for (AkrantiainDefinition definition: $definitions) {
       AkrantiainToken circularIdentifier = definition.findCircularIdentifier(this)
@@ -93,9 +103,9 @@ public class AkrantiainModule {
     return $environments.contains(environment)
   } 
 
-  public Boolean containsDefinitionOf(AkrantiainToken identifier) {
+  public Boolean containsDefinitionOf(String identifierName) {
     for (AkrantiainDefinition definition : $definitions) {
-      if (definition.getIdentifier().getText() == identifier.getText()) {
+      if (definition.getIdentifier().getText() == identifierName) {
         return true
       }
     }

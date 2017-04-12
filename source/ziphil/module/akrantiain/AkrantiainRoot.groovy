@@ -32,6 +32,21 @@ public class AkrantiainRoot {
     return false
   }
 
+  public AkrantiainToken findDeadIdentifier() {
+    for (AkrantiainModule module : $modules) {
+      AkrantiainToken deadIdentifier = module.findDeadIdentifier()
+      if (deadIdentifier != null) {
+        return deadIdentifier
+      }
+    }
+    AkrantiainToken deadIdentifier = $defaultModule.findDeadIdentifier()
+    if (deadIdentifier != null) {
+      return deadIdentifier
+    } else {
+      return null
+    }
+  }
+
   public AkrantiainToken findCircularIdentifier() {
     for (AkrantiainModule module : $modules) {
       AkrantiainToken circularIdentifier = module.findCircularIdentifier()
