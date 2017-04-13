@@ -63,15 +63,19 @@ public class AkrantiainElementGroup {
   }
 
   // 各要素の変換後の文字列を連結し、出力文字列を作成します。
-  // 変換がなされていない要素が含まれていた場合は、代わりにスペース 1 つを連結します。
-  // したがって、このメソッドを実行する前に、全ての要素が変換されているかどうかを invalidElements メソッドなどで確認してください。
-  public String createOutput() {
+  // 変換がなされていない要素が含まれていた場合は、句読点類であればスペース 1 つを連結し、そうでなければ変換前の文字列を連結します。
+  // したがって、このメソッドを実行する前に、全ての要素が正当であるかどうかを invalidElements メソッドなどで確認してください。
+  public String createOutput(AkrantiainModule module) {
     StringBuilder output = StringBuilder.new()
     for (AkrantiainElement element : $elements) {
       if (element.getResult() != null) {
         output.append(element.getResult())
       } else {
-        output.append(" ")
+        if (element.isValid(module)) {
+          output.append(" ")
+        } else {
+          output.append(element.getPart())
+        }
       }
     }
     return output.toString()

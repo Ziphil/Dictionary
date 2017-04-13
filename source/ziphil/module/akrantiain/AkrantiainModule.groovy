@@ -30,7 +30,7 @@ public class AkrantiainModule {
       }
       List<AkrantiainElement> invalidElements = currentGroup.invalidElements(this)
       if (invalidElements.isEmpty() || $environments.contains(AkrantiainEnvironment.FALL_THROUGH)) {
-        return currentGroup.createOutput()
+        return currentGroup.createOutput(this)
       } else {
         throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
       }
