@@ -270,16 +270,16 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void updateAkrantiain() {
+    Akrantiain akrantiain = null
     if ($akrantiainSource != null) {
       try {
-        $akrantiain = Akrantiain.new()
-        $akrantiain.load($akrantiainSource)
+        akrantiain = Akrantiain.new()
+        akrantiain.load($akrantiainSource)
       } catch (AkrantiainParseException exception) {
-        $akrantiain = null
+        akrantiain = null
       }
-    } else {
-      $akrantiain = null
     }
+    $akrantiain = akrantiain  // snoj ファイルの読み込み中に実行されないようにフィールドは最後に更新する
   }
 
   public SlimeWord emptyWord(String defaultName) {
