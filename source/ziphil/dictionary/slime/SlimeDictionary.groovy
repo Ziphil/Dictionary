@@ -38,6 +38,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = null
+  private List<String> $punctuations = Arrays.asList(",", "、")
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
@@ -462,6 +463,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
+  }
+
+  public List<String> getPunctuations() {
+    return $punctuations
+  }
+
+  public void setPunctuations(List<String> punctuations) {
+    $punctuations = punctuations
   }
 
   public List<String> getPlainInformationTitles() {

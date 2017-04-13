@@ -93,8 +93,12 @@ public class SlimeEditorController extends Controller<Boolean> {
     for (String tag : word.getTags()) {
       addTagControl(tag, dictionary.getRegisteredTags())
     }
+    String punctuation = $dictionary.getPunctuations()[0] ?: ""
+    if (punctuation == ",") {
+      punctuation = punctuation + " "
+    }
     for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
-      String nameString = equivalent.getNames().join(", ")
+      String nameString = equivalent.getNames().join(punctuation)
       addEquivalentControl(equivalent.getTitle(), nameString, dictionary.getRegisteredEquivalentTitles())
     }
     for (SlimeInformation information : word.getInformations()) {
@@ -158,9 +162,10 @@ public class SlimeEditorController extends Controller<Boolean> {
             tags.add(tag)
           }
         }
+        String punctuationPattern = /\s*(${$dictionary.getPunctuations().join("|")})\s*/
         for (Integer i : 0 ..< $equivalentTitleControls.size()) {
           String title = $equivalentTitleControls[i].getValue()
-          List<String> equivalentNames = $equivalentNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
           if (!equivalentNames.isEmpty()) {
             rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
           }
