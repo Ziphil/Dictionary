@@ -14,10 +14,10 @@ public class AkrantiainException extends Exception {
     super()
   }
 
-  public AkrantiainException(String message, AkrantiainToken token) {
+  public AkrantiainException(String message) {
     super()
     $message = message
-    makeFullMessage(token)
+    makeFullMessage(ArrayList.new())
   }
 
   public AkrantiainException(String message, List<AkrantiainElement> elements) {
@@ -26,35 +26,9 @@ public class AkrantiainException extends Exception {
     makeFullMessage(elements)
   }
 
-  private void makeFullMessage(AkrantiainToken token) {
-    StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainException: ")
-    fullMessage.append($message)
-    if (token != null) {
-      fullMessage.append("\n  ")
-      fullMessage.append(token.getFullText())
-      fullMessage.append(" (at line ")
-      Integer lineNumber = token.getLineNumber()
-      Integer columnNumber = token.getColumnNumber()
-      if (lineNumber != null) {
-        fullMessage.append(lineNumber)
-      } else {
-        fullMessage.append("?")
-      }
-      fullMessage.append(" column ")
-      if (columnNumber != null) {
-        fullMessage.append(columnNumber)
-      } else {
-        fullMessage.append("?")
-      }
-      fullMessage.append(")")
-    }
-    $fullMessage = fullMessage.toString()
-  }
-
   private void makeFullMessage(List<AkrantiainElement> elements) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainException: ")
+    fullMessage.append("Runtime Error: ")
     fullMessage.append($message)
     for (AkrantiainElement element : elements) {
       fullMessage.append("\n  ")

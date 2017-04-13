@@ -37,6 +37,8 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
       generator.writeStartObject()
       generator.writeFieldName("alphabetOrder")
       writeAlphabetOrder(generator)
+      generator.writeFieldName("punctuations")
+      writePunctuations(generator)
       generator.writeFieldName("plainInformationTitles")
       writePlainInformationTitles(generator)
       generator.writeFieldName("informationTitleOrder")
@@ -147,6 +149,14 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
 
   private void writeAlphabetOrder(JsonGenerator generator) {
     generator.writeString($dictionary.getAlphabetOrder())
+  }
+
+  private void writePunctuations(JsonGenerator generator) {
+    generator.writeStartArray()
+    for (String punctuation : $dictionary.getPunctuations()) {
+      generator.writeString(punctuation)
+    }
+    generator.writeEndArray()
   }
 
   private void writePlainInformationTitles(JsonGenerator generator) {

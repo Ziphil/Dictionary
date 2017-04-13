@@ -37,11 +37,25 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         $reader.reset()
         token = nextEnvironmentLiteral()
       } else if (codePoint == '=') {
-        token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
+        $reader.mark(1)
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '>') {
+          token = AkrantiainToken.new(AkrantiainTokenType.BOLD_ARROW, "=>", $reader)
+        } else {
+          $reader.reset()
+          token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
+        }
       } else if (codePoint == '-') {
         Integer nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
           token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->", $reader)
+        } else {
+          throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
+        }
+      } else if (codePoint == '>') {
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '>') {
+          token = AkrantiainToken.new(AkrantiainTokenType.ADVANCE, ">>", $reader)
         } else {
           throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
         }
@@ -53,10 +67,23 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = AkrantiainToken.new(AkrantiainTokenType.DOLLAR, "\$", $reader)
       } else if (codePoint == '!') {
         token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!", $reader)
+      } else if (codePoint == '%') {
+        $reader.mark(1)
+        Integer nextCodePoint = $reader.read()
+        if (nextCodePoint == '%') {
+          token = AkrantiainToken.new(AkrantiainTokenType.DOUBLE_PERCENT, "%%", $reader)
+        } else {
+          $reader.reset()
+          token = AkrantiainToken.new(AkrantiainTokenType.PERCENT, "%", $reader)
+        }
       } else if (codePoint == '(') {
         token = AkrantiainToken.new(AkrantiainTokenType.OPEN_PAREN, "(", $reader)
       } else if (codePoint == ')') {
         token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_PAREN, ")", $reader)
+      } else if (codePoint == '{') {
+        token = AkrantiainToken.new(AkrantiainTokenType.OPEN_CURLY, "{", $reader)
+      } else if (codePoint == '}') {
+        token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_CURLY, "}", $reader)
       } else if (codePoint == ';') {
         token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
       } else if (AkrantiainLexer.isLetter(codePoint)) {
@@ -74,7 +101,13 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     } else {
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
     }
-    $isAfterSemicolon = token != null && token.getType() == AkrantiainTokenType.SEMICOLON
+    $isAfterSemicolon = false 
+    if (token != null) {
+      AkrantiainTokenType tokenType = token.getType()
+      if (tokenType == AkrantiainTokenType.SEMICOLON || tokenType == AkrantiainTokenType.OPEN_CURLY || tokenType == AkrantiainTokenType.CLOSE_CURLY) {
+        $isAfterSemicolon = true
+      }
+    }
     return token
   }
 

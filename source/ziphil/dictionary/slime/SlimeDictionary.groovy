@@ -38,6 +38,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = null
+  private List<String> $punctuations = Arrays.asList(",", "、")
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
@@ -269,16 +270,16 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void updateAkrantiain() {
+    Akrantiain akrantiain = null
     if ($akrantiainSource != null) {
       try {
-        $akrantiain = Akrantiain.new()
-        $akrantiain.load($akrantiainSource)
+        akrantiain = Akrantiain.new()
+        akrantiain.load($akrantiainSource)
       } catch (AkrantiainParseException exception) {
-        $akrantiain = null
+        akrantiain = null
       }
-    } else {
-      $akrantiain = null
     }
+    $akrantiain = akrantiain  // snoj ファイルの読み込み中に実行されないようにフィールドは最後に更新する
   }
 
   public SlimeWord emptyWord(String defaultName) {
@@ -462,6 +463,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setAlphabetOrder(String alphabetOrder) {
     $alphabetOrder = alphabetOrder
+  }
+
+  public List<String> getPunctuations() {
+    return $punctuations
+  }
+
+  public void setPunctuations(List<String> punctuations) {
+    $punctuations = punctuations
   }
 
   public List<String> getPlainInformationTitles() {

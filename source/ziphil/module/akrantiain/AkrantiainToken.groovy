@@ -2,6 +2,7 @@ package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
 import ziphil.module.ExtendedBufferedReader
+import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
 
 
@@ -30,31 +31,31 @@ public class AkrantiainToken implements AkrantiainMatchable {
     makeFullText()
   }
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
-      to = matchRightQuoteLiteral(group, from, setting)
+      to = matchRightQuoteLiteral(group, from, module)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
-      to = matchRightCircumflex(group, from, setting)
+      to = matchRightCircumflex(group, from, module)
     } else if ($type == AkrantiainTokenType.IDENTIFIER) {
-      to = matchRightIdentifier(group, from, setting)
+      to = matchRightIdentifier(group, from, module)
     }
     return to
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
-      from = matchLeftQuoteLiteral(group, to, setting)
+      from = matchLeftQuoteLiteral(group, to, module)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
-      from = matchLeftCircumflex(group, to, setting)
+      from = matchLeftCircumflex(group, to, module)
     } else if ($type == AkrantiainTokenType.IDENTIFIER) {
-      from = matchLeftIdentifier(group, to, setting)
+      from = matchLeftIdentifier(group, to, module)
     }
     return from
   }
 
-  private Integer matchRightQuoteLiteral(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  private Integer matchRightQuoteLiteral(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
     Integer matchedLength = 0
     Integer pointer = from
@@ -64,8 +65,8 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= $text.length()) {
           String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
-          String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+          String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
           if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == $text.length()) {
@@ -86,7 +87,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return to
   }
 
-  private Integer matchLeftQuoteLiteral(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  private Integer matchLeftQuoteLiteral(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
     Integer matchedLength = 0
     Integer pointer = to - 1
@@ -96,8 +97,8 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= $text.length()) {
           String textSubstring = $text.substring($text.length() - elementPart.length() - matchedLength, $text.length() - matchedLength)
-          String adjustedTextSubstring = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          String adjustedElementPart = (setting.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
+          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
+          String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
           if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == $text.length()) {
@@ -118,7 +119,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return from
   }
 
-  private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
     Boolean isMatched = false
     Integer pointer = from
@@ -130,7 +131,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
           pointer ++
-        } else if ((punctuationTo = setting.findPunctuationContent().matchRight(group, pointer, setting)) != null) {
+        } else if ((punctuationTo = module.findPunctuationContent().matchRight(group, pointer, module)) != null) {
           isMatched = true
           pointer = punctuationTo
         } else {
@@ -147,7 +148,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return to
   }
 
-  private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
     Boolean isMatched = false
     Integer pointer = to - 1
@@ -159,7 +160,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           isMatched = true
           pointer --
-        } else if ((punctuationFrom = setting.findPunctuationContent().matchLeft(group, pointer, setting)) != null) {
+        } else if ((punctuationFrom = module.findPunctuationContent().matchLeft(group, pointer, module)) != null) {
           isMatched = true
           pointer = punctuationFrom
         } else {
@@ -176,23 +177,23 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return from
   }
 
-  private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    AkrantiainMatchable content = setting.findContentOf($text)
+  private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+    AkrantiainMatchable content = module.findContentOf($text)
     if (content != null) {
-      Integer to = content.matchRight(group, from, setting)
+      Integer to = content.matchRight(group, from, module)
       return to
     } else {
-      throw AkrantiainException.new("No such identifier", this)
+      throw AkrantiainException.new("This cannot happen")
     }
   }
 
-  private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
-    AkrantiainMatchable content = setting.findContentOf($text)
+  private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
+    AkrantiainMatchable content = module.findContentOf($text)
     if (content != null) {
-      Integer from = content.matchLeft(group, to, setting)
+      Integer from = content.matchLeft(group, to, module)
       return from
     } else {
-      throw AkrantiainException.new("No such identifier", this)
+      throw AkrantiainException.new("This cannot happen")
     }
   }
 
@@ -208,16 +209,62 @@ public class AkrantiainToken implements AkrantiainMatchable {
     }
   }
 
+  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+    if ($type == AkrantiainTokenType.IDENTIFIER) {
+      if (!module.containsDefinitionOf($text)) {
+        return this
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+  }
+
+  public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
+    if ($type == AkrantiainTokenType.IDENTIFIER) {
+      AkrantiainToken containedIdentifier = null
+      for (AkrantiainToken identifier : identifiers) {
+        if (this == identifier) {
+          containedIdentifier = identifier
+          break
+        }
+      }
+      if (containedIdentifier != null) {
+        return containedIdentifier
+      } else {
+        AkrantiainDefinition definition = module.findDefinitionOf($text)
+        if (definition != null) {
+          return definition.findCircularIdentifier(identifiers, module)
+        } else {
+          return null
+        }
+      }
+    } else {
+      return null
+    }
+  }
+
   public Boolean isConcrete() {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }
 
+  @ConvertPrimitiveArgs
+  public Boolean equals(Object object) {
+    if (object instanceof AkrantiainToken) {
+      return $type == object.getType() && $text == object.getText()
+    } else {
+      return false
+    }
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    string.append($type)
     string.append("<")
-    string.append($text)
-    string.append(">")
+    string.append($type)
+    string.append(": '")
+    string.append($fullText)
+    string.append("'>")
     return string.toString()
   }
 

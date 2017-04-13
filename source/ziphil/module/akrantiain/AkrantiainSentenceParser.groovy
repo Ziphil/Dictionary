@@ -7,14 +7,26 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class AkrantiainSentenceParser {
 
-  private List<AkrantiainToken> $tokens
+  private List<AkrantiainToken> $tokens = ArrayList.new()
   private Integer $pointer = 0
 
   public AkrantiainSentenceParser(List<AkrantiainToken> tokens) {
     $tokens = tokens
   }
 
-  public AkrantiainEnvironment parseEnvironment() {
+  public AkrantiainSentenceParser() {
+  }
+
+  public void addToken(AkrantiainToken token) {
+    $tokens.add(token)
+  }
+
+  public void clear() {
+    $tokens.clear()
+    $pointer = 0
+  }
+
+  public AkrantiainEnvironment readEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
       try {
@@ -24,11 +36,11 @@ public class AkrantiainSentenceParser {
         throw AkrantiainParseException.new("No such setting identifier", token)
       }
     } else {
-      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens[-1])
+      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens.last())
     }
   }
 
-  public AkrantiainDefinition parseDefinition() {
+  public AkrantiainDefinition readDefinition() {
     if ($tokens.size() >= 4 && $tokens[0].getType() == AkrantiainTokenType.IDENTIFIER && $tokens[1].getType() == AkrantiainTokenType.EQUAL) {
       $pointer += 2
       AkrantiainDefinition definition = AkrantiainDefinition.new()
@@ -44,11 +56,11 @@ public class AkrantiainSentenceParser {
         throw AkrantiainParseException.new("Invalid identifier definition sentence", token)
       }
     } else {
-      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens[-1])
+      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens.last())
     }
   }
 
-  public AkrantiainRule parseRule() {
+  public AkrantiainRule readRule() {
     Boolean isBeforeArrow = true
     AkrantiainRule rule = AkrantiainRule.new()
     while (true) {
@@ -87,12 +99,47 @@ public class AkrantiainSentenceParser {
       }
     }
     if (!rule.hasSelection()) {
-      throw AkrantiainParseException.new("No selects", $tokens[-1])
+      throw AkrantiainParseException.new("No selects", $tokens.last())
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens[-1])
+      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens.last())
     }
     return rule
+  }
+
+  public List<AkrantiainModuleName> readModuleChain() {
+    List<AkrantiainModuleName> moduleChain = ArrayList.new()
+    Boolean isAfterComponent = false
+    if ($tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT) {
+      $pointer += 1
+      while (true) {
+        AkrantiainToken token = $tokens[$pointer ++]
+        AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+        if (tokenType == AkrantiainTokenType.ADVANCE) {
+          if (isAfterComponent) {
+            isAfterComponent = false
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
+          if (isAfterComponent) {
+            break
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else {
+          if (!isAfterComponent) {
+            $pointer --
+            List<AkrantiainModuleName> moduleChainComponent = nextModuleChainComponent()
+            moduleChain.addAll(moduleChainComponent)
+            isAfterComponent = true
+          }
+        }
+      }
+    } else {
+      throw AkrantiainParseException.new("Invalid module chain", $tokens.last())
+    }
+    return moduleChain
   }
 
   private AkrantiainDisjunction nextDisjunction() {
@@ -157,7 +204,75 @@ public class AkrantiainSentenceParser {
     return selection
   }
 
-  public Boolean isEnvironmentSentence() {
+  private List<AkrantiainModuleName> nextModuleChainComponent() {
+    List<AkrantiainModuleName> moduleChainComponent = ArrayList.new()
+    AkrantiainToken token = $tokens[$pointer ++]
+    AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+    if (tokenType == AkrantiainTokenType.OPEN_PAREN) {
+      List<AkrantiainModuleName> partialModuleChainComponent = nextPartialModuleChainComponent()
+      AkrantiainToken nextToken = $tokens[$pointer ++]
+      AkrantiainTokenType nextTokenType = (nextToken != null) ? nextToken.getType() : null
+      if (nextTokenType == AkrantiainTokenType.CLOSE_PAREN) {
+        moduleChainComponent = partialModuleChainComponent
+      } else {
+        throw AkrantiainParseException.new("Invalid module chain component", token)
+      }
+    } else {
+      $pointer --
+      List<AkrantiainModuleName> partialModuleChainComponent = nextPartialModuleChainComponent()
+      moduleChainComponent = partialModuleChainComponent
+    }
+    return moduleChainComponent
+  }
+
+  private List<AkrantiainModuleName> nextPartialModuleChainComponent() {
+    List<AkrantiainModuleName> moduleChainComponent = ArrayList.new()
+    AkrantiainModuleName currentModuleName = AkrantiainModuleName.new()
+    Boolean isAfterIdentifier = false
+    Boolean isCompound = false
+    while (true) {
+      AkrantiainToken token = $tokens[$pointer ++]
+      AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+      if (tokenType == AkrantiainTokenType.IDENTIFIER) {
+        if (!isAfterIdentifier) {
+          currentModuleName.getTokens().add(token)
+          isAfterIdentifier = true
+          if (isCompound) {
+            moduleChainComponent.add(currentModuleName)
+            currentModuleName = AkrantiainModuleName.new()
+            currentModuleName.getTokens().add(token)
+          }
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      } else if (tokenType == AkrantiainTokenType.BOLD_ARROW) {
+        if (isAfterIdentifier) {
+          currentModuleName.getTokens().add(token)
+          isAfterIdentifier = false
+          isCompound = true
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      } else {
+        if (isAfterIdentifier) {
+          if (!isCompound && !currentModuleName.getTokens().isEmpty()) {
+            moduleChainComponent.add(currentModuleName)
+          }
+          if (!moduleChainComponent.isEmpty()) {
+            $pointer --
+            break
+          } else {
+            throw AkrantiainParseException.new("Module chain component is empty", token)
+          }
+        } else {
+          throw AkrantiainParseException.new("Invalid module chain component", token)
+        }
+      }
+    }
+    return moduleChainComponent
+  }
+
+  public Boolean isEnvironment() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
         return true
@@ -166,7 +281,7 @@ public class AkrantiainSentenceParser {
     return false
   }
 
-  public Boolean isDefinitionSentence() {
+  public Boolean isDefinition() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.EQUAL) {
         return true
@@ -175,13 +290,25 @@ public class AkrantiainSentenceParser {
     return false
   }
 
-  public Boolean isRuleSentence() {
+  public Boolean isRule() {
     for (AkrantiainToken token : $tokens) {
       if (token.getType() == AkrantiainTokenType.ARROW) {
         return true
       }
     }
     return false
+  }
+
+  public Boolean isModuleChain() {
+    return !$tokens.isEmpty() && $tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT
+  }
+
+  public List<AkrantiainToken> getTokens() {
+    return $tokens
+  }
+
+  public void setTokens(List<AkrantiainToken> tokens) {
+    $tokens = tokens
   }
 
 }

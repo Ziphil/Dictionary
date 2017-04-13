@@ -18,6 +18,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.Control
 import javafx.scene.control.Skin
+import ziphil.Launcher
 import ziphilib.transform.Ziphilify
 
 
@@ -56,7 +57,7 @@ public class FileChooser extends Control {
       File directory = $currentDirectory.get()
       if (directory != null) {
         String inputtedFileName = $inputtedFileName.get()
-        String filePath = directory.getAbsolutePath() + File.separator + inputtedFileName
+        String filePath = directory.getAbsolutePath() + Launcher.FILE_SEPARATOR + inputtedFileName
         if ($adjustsExtension.get() && $currentFileType.get() != null) {
           String additionalExtension = $currentFileType.get().getExtension()
           if (additionalExtension != null) {

@@ -7,6 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum AkrantiainEnvironment {
 
-  CASE_SENSITIVE
+  CASE_SENSITIVE,
+  FALL_THROUGH
 
 }

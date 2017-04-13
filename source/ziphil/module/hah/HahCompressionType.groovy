@@ -7,7 +7,10 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum HahCompressionType {
 
-  NORMAL("通常"), RANDOM("完全ランダム"), RANDOM_SORT("ランダム→ソート"), SORT("辞書順ソート")
+  NORMAL("通常"),
+  RANDOM("完全ランダム"),
+  RANDOM_SORT("ランダム→ソート"),
+  SORT("辞書順ソート")
 
   private String $string = ""
 

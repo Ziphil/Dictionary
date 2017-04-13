@@ -203,6 +203,9 @@ private static class ConjugationCandidate {
 @InnerClass(ShaleiaConjugationResolver)
 private static enum ConjugationType {
 
-  VERB, NOUN, ADVERB, PREPOSITION
+  VERB,
+  NOUN,
+  ADVERB,
+  PREPOSITION
 
 }

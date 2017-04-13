@@ -48,6 +48,8 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
             parser.nextToken()
             if (specialFieldName == "alphabetOrder") {
               parseAlphabetOrder(parser)
+            } else if (specialFieldName == "punctuations") {
+              parsePunctuations(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
@@ -200,7 +202,16 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     $dictionary.setAlphabetOrder(alphabetOrder) 
   }
 
+  private void parsePunctuations(JsonParser parser) {
+    $dictionary.setPunctuations(ArrayList.new())
+    while (parser.nextToken() != JsonToken.END_ARRAY) {
+      String punctuation = parser.getValueAsString()
+      $dictionary.getPunctuations().add(punctuation)
+    }
+  }
+
   private void parsePlainInformationTitles(JsonParser parser) {
+    $dictionary.setPlainInformationTitles(ArrayList.new())
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String title = parser.getValueAsString()
       $dictionary.getPlainInformationTitles().add(title)

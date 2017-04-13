@@ -15,10 +15,22 @@ public class AkrantiainParseException extends Exception {
     super()
   }
 
+  public AkrantiainParseException(String message) {
+    super()
+    $message = message
+    makeFullMessage((AkrantiainToken)null)
+  }
+
   public AkrantiainParseException(String message, AkrantiainToken token) {
     super()
     $message = message
     makeFullMessage(token)
+  }
+
+  public AkrantiainParseException(String message, List<AkrantiainToken> tokens) {
+    super()
+    $message = message
+    makeFullMessage(tokens)
   }
 
   public AkrantiainParseException(String message, Integer codePoint, ExtendedBufferedReader reader) {
@@ -29,7 +41,7 @@ public class AkrantiainParseException extends Exception {
 
   private void makeFullMessage(AkrantiainToken token) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainParseException: ")
+    fullMessage.append("Parse Error: ")
     fullMessage.append($message)
     if (token != null) {
       fullMessage.append("\n  ")
@@ -53,9 +65,37 @@ public class AkrantiainParseException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
+  private void makeFullMessage(List<AkrantiainToken> tokens) {
+    StringBuilder fullMessage = StringBuilder.new()
+    fullMessage.append("Parse Error: ")
+    fullMessage.append($message)
+    if (!tokens.isEmpty()) {
+      fullMessage.append("\n  ")
+      for (AkrantiainToken token : tokens) {
+        fullMessage.append(token.getFullText())
+      }
+      fullMessage.append(" (at line ")
+      Integer lineNumber = tokens.last().getLineNumber()
+      Integer columnNumber = tokens.last().getColumnNumber()
+      if (lineNumber != null) {
+        fullMessage.append(lineNumber)
+      } else {
+        fullMessage.append("?")
+      }
+      fullMessage.append(" column ")
+      if (columnNumber != null) {
+        fullMessage.append(columnNumber)
+      } else {
+        fullMessage.append("?")
+      }
+      fullMessage.append(")")
+    }
+    $fullMessage = fullMessage.toString()
+  }
+
   private void makeFullMessage(Integer codePoint, ExtendedBufferedReader reader) {
     StringBuilder fullMessage = StringBuilder.new()
-    fullMessage.append("AkrantiainParseException: ")
+    fullMessage.append("Parse Error: ")
     fullMessage.append($message)
     if (codePoint != null) {
       fullMessage.append("\n  ")

@@ -12,11 +12,11 @@ public class AkrantiainRule {
   private AkrantiainMatchable $rightCondition = null
   private List<AkrantiainToken> $phonemes = ArrayList.new()
 
-  public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainSetting setting) {
+  public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainModule module) {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
     Integer pointer = 0
     while (pointer <= group.getElements().size()) {
-      ApplicationResult result = applyOnce(group, pointer, setting)
+      ApplicationResult result = applyOnce(group, pointer, module)
       if (result != null) {
         appliedGroup.getElements().addAll(result.getAddedElements())
         if (pointer < result.getTo()) {
@@ -40,12 +40,12 @@ public class AkrantiainRule {
   // ちょうど from で与えられた位置から規則を適用します。
   // 規則がマッチして適用できた場合は、変化後の要素のリストとマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
   // そもそも規則にマッチせず適用できなかった場合は null を返します。
-  private ApplicationResult applyOnce(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
-    if (checkLeftCondition(group, from, setting)) {
-      ApplicationResult result = applyOnceSelections(group, from, setting)
+  private ApplicationResult applyOnce(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+    if (checkLeftCondition(group, from, module)) {
+      ApplicationResult result = applyOnceSelections(group, from, module)
       if (result != null) {
         Integer to = result.getTo()
-        if (checkRightCondition(group, to, setting)) {
+        if (checkRightCondition(group, to, module)) {
           return result
         } else {
           return null
@@ -58,12 +58,12 @@ public class AkrantiainRule {
     }
   }
 
-  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     List<AkrantiainElement> addedElements = ArrayList.new()
     Integer pointer = from
     Integer phonemeIndex = 0
     for (AkrantiainMatchable selection : $selections) {
-      Integer to = selection.matchRight(group, pointer, setting)
+      Integer to = selection.matchRight(group, pointer, module)
       if (to != null) {
         if (selection.isConcrete()) {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
@@ -95,16 +95,16 @@ public class AkrantiainRule {
     return ApplicationResult.new(addedElements, pointer)
   }
 
-  private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     AkrantiainElementGroup leftGroup = group.devide(0, to)
     AkrantiainElementGroup rightGroup = group.devide(to, group.getElements().size())
-    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
+    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), module) != null
   }
 
-  private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     AkrantiainElementGroup leftGroup = group.devide(0, from)
     AkrantiainElementGroup rightGroup = group.devide(from, group.getElements().size())
-    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), setting) != null
+    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), module) != null
   }
 
   public String toString() {
@@ -114,7 +114,7 @@ public class AkrantiainRule {
     for (Integer i : 0 ..< $selections.size()) {
       string.append($selections[i])
       if (i < $selections.size() - 1) {
-        string.append(", ")
+        string.append(" ")
       }
     }
     string.append("] ")
@@ -123,7 +123,7 @@ public class AkrantiainRule {
     for (Integer i : 0 ..< $phonemes.size()) {
       string.append($phonemes[i])
       if (i < $phonemes.size() - 1) {
-        string.append(", ")
+        string.append(" ")
       }
     }
     string.append("]")

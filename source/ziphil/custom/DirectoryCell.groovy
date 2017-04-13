@@ -5,6 +5,7 @@ import java.util.regex.Matcher
 import javafx.scene.control.TreeCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import ziphil.Launcher
 import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
 
@@ -29,7 +30,7 @@ public class DirectoryCell extends TreeCell<File> {
       String path = file.toString()
       String name = file.getName()
       Image icon = (name == "") ? DRIVE_ICON : DIRECTORY_ICON
-      String separator = File.separator.replaceAll("\\\\", "\\\\\\\\")
+      String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
       Matcher matcher = path =~ /.*${separator}(.+?)$/
       if (matcher.find()) {
         setText(matcher.group(1))

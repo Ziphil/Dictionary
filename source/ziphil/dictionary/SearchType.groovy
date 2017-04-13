@@ -9,7 +9,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum SearchType {
 
-  EXACT("完全一致"), PREFIX("前方一致"), SUFFIX("後方一致"), PART("部分一致"), REGULAR_EXPRESSION("正規表現"), MINIMAL_PAIR("最小対語")
+  EXACT("完全一致"),
+  PREFIX("前方一致"),
+  SUFFIX("後方一致"),
+  PART("部分一致"),
+  REGULAR_EXPRESSION("正規表現"),
+  MINIMAL_PAIR("最小対語")
 
   private String $string = ""
 

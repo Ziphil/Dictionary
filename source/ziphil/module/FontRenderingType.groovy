@@ -7,7 +7,10 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum FontRenderingType {
 
-  DEFAULT_LCD("デフォルト＋LCD"), DEFAULT_GRAY("デフォルト＋グレースケール"), PRISM_LCD("T2K＋LCD"), PRISM_GRAY("T2K＋グレースケール")
+  DEFAULT_LCD("デフォルト＋LCD"),
+  DEFAULT_GRAY("デフォルト＋グレースケール"),
+  PRISM_LCD("T2K＋LCD"),
+  PRISM_GRAY("T2K＋グレースケール")
 
   private String $string = ""
 

@@ -12,12 +12,12 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
   private Boolean $isNegated = false
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainSetting setting) {
+  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
     if (!$matchables.isEmpty()) {
       for (Integer i : $matchables.size() - 1 .. 0) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleTo = matchable.matchRight(group, from, setting)
+        Integer singleTo = matchable.matchRight(group, from, module)
         if (singleTo != null) {
           to = singleTo
           break
@@ -31,12 +31,12 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     }
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainSetting setting) {
+  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
     if (!$matchables.isEmpty()) {
       for (Integer i : $matchables.size() - 1 .. 0) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleFrom = matchable.matchLeft(group, to, setting)
+        Integer singleFrom = matchable.matchLeft(group, to, module)
         if (singleFrom != null) {
           from = singleFrom
           break
@@ -48,6 +48,26 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     } else {
       return from
     }
+  }
+
+  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+    for (AkrantiainMatchable matchable : $matchables) {
+      AkrantiainToken deadIdentifier = matchable.findDeadIdentifier(module)
+      if (deadIdentifier != null) {
+        return deadIdentifier
+      }
+    }
+    return null
+  }
+
+  public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {
+    for (AkrantiainMatchable matchable : $matchables) {
+      AkrantiainToken circularIdentifier = matchable.findCircularIdentifier(identifiers, module)
+      if (circularIdentifier != null) {
+        return circularIdentifier
+      }
+    }
+    return null
   }
 
   public Boolean isConcrete() {
@@ -63,7 +83,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
     for (Integer i : 0 ..< $matchables.size()) {
       string.append($matchables[i])
       if (i < $matchables.size() - 1) {
-        string.append(", ")
+        string.append(" | ")
       }
     }
     string.append(")")
