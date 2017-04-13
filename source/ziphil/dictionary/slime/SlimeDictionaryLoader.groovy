@@ -211,6 +211,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
   }
 
   private void parsePlainInformationTitles(JsonParser parser) {
+    $dictionary.setPlainInformationTitles(ArrayList.new())
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String title = parser.getValueAsString()
       $dictionary.getPlainInformationTitles().add(title)
