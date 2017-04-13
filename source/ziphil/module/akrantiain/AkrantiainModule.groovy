@@ -29,7 +29,7 @@ public class AkrantiainModule {
         currentGroup = rule.apply(currentGroup, this)
       }
       List<AkrantiainElement> invalidElements = currentGroup.invalidElements(this)
-      if (invalidElements.isEmpty()) {
+      if (invalidElements.isEmpty() || $environments.contains(AkrantiainEnvironment.FALL_THROUGH)) {
         return currentGroup.createOutput()
       } else {
         throw AkrantiainException.new("No rules that can handle some characters", invalidElements)
