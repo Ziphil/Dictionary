@@ -77,14 +77,15 @@ public class AkrantiainRoot {
     }
   }
 
+  // モジュールの定義に循環参照がないかを調べ、循環が見つかった場合は循環の最初のモジュール名を返し、見つからなければ null を返します。
+  // このメソッドはデフォルトモジュールから参照されているもののみを調べるので、参照されていないモジュールの中での循環参照は検査しません。
   public AkrantiainModuleName findCircularModuleName() {
-    for (AkrantiainModule module : $modules) {
-      AkrantiainModuleName circularModuleName = module.findCircularModuleName(this)
-      if (circularModuleName != null) {
-        return circularModuleName
-      }
+    AkrantiainModuleName circularModuleName = $defaultModule.findCircularModuleName(this)
+    if (circularModuleName != null) {
+      return circularModuleName
+    } else {
+      return null
     }
-    return null
   }
 
   public String toString() {
