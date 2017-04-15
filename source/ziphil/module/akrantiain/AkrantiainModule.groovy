@@ -10,7 +10,7 @@ public class AkrantiainModule {
   private static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
 
   private AkrantiainModuleName $name = AkrantiainModuleName.new()
-  private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
+  private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.of(AkrantiainEnvironment.NORMALIZE))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainModuleName> $moduleChain = Collections.synchronizedList(ArrayList.new())
@@ -24,7 +24,7 @@ public class AkrantiainModule {
 
   private String convertByRule(String input, AkrantiainRoot root) {
     if (!$rules.isEmpty()) {
-      AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
+      AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input, this)
       for (AkrantiainRule rule : $rules) {
         currentGroup = rule.apply(currentGroup, this)
       }

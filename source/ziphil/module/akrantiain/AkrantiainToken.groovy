@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import java.text.Normalizer
 import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
@@ -60,16 +61,17 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Integer matchedLength = 0
     Integer pointer = from
     if ($text != "") {
+      String text = (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer < group.getElements().size()) {
         AkrantiainElement element = group.getElements()[pointer]
         String elementPart = element.getPart()
-        if (matchedLength + elementPart.length() <= $text.length()) {
-          String textSubstring = $text.substring(matchedLength, matchedLength + elementPart.length())
+        if (matchedLength + elementPart.length() <= text.length()) {
+          String textSubstring = text.substring(matchedLength, matchedLength + elementPart.length())
           String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
           String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
           if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
-            if (matchedLength == $text.length()) {
+            if (matchedLength == text.length()) {
               to = pointer + 1
               break
             }
@@ -92,16 +94,17 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Integer matchedLength = 0
     Integer pointer = to - 1
     if ($text != "") {
+      String text = (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer >= 0) {
         AkrantiainElement element = group.getElements()[pointer]
         String elementPart = element.getPart()
-        if (matchedLength + elementPart.length() <= $text.length()) {
-          String textSubstring = $text.substring($text.length() - elementPart.length() - matchedLength, $text.length() - matchedLength)
+        if (matchedLength + elementPart.length() <= text.length()) {
+          String textSubstring = text.substring(text.length() - elementPart.length() - matchedLength, text.length() - matchedLength)
           String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
           String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
           if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
-            if (matchedLength == $text.length()) {
+            if (matchedLength == text.length()) {
               from = pointer
               break
             }

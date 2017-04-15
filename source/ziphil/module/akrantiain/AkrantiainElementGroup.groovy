@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import java.text.Normalizer
 import ziphilib.transform.Ziphilify
 
 
@@ -9,8 +10,11 @@ public class AkrantiainElementGroup {
 
   private List<AkrantiainElement> $elements = ArrayList.new()
 
-  public static AkrantiainElementGroup create(String input) {
+  public static AkrantiainElementGroup create(String input, AkrantiainModule module) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
+    if (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) {
+      input = Normalizer.normalize(input, Normalizer.Form.NFD)
+    }
     for (Integer i : 0 ..< input.length()) {
       AkrantiainElement element = AkrantiainElement.new(input[i], i + 1)
       group.getElements().add(element)
@@ -78,7 +82,11 @@ public class AkrantiainElementGroup {
         }
       }
     }
-    return output.toString()
+    String outputString = output.toString()
+    if (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) {
+      outputString = Normalizer.normalize(outputString, Normalizer.Form.NFC)
+    }
+    return outputString
   }
 
   public Boolean isAllConverted(Integer from, Integer to) {

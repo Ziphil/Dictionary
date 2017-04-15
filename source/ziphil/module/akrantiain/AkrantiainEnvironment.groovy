@@ -8,6 +8,7 @@ import ziphilib.transform.Ziphilify
 public enum AkrantiainEnvironment {
 
   CASE_SENSITIVE,
-  FALL_THROUGH
+  FALL_THROUGH,
+  NORMALIZE
 
 }
