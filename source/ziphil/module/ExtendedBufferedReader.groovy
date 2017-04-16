@@ -15,9 +15,11 @@ public class ExtendedBufferedReader extends BufferedReader {
   private PrimInteger $lineNumber = 1
   private PrimInteger $columnNumber = 0
   private PrimBoolean $skipsLineFeed = false
+  private PrimBoolean $passesLineFeed = false
   private PrimInteger $markedLineNumber = 1
   private PrimInteger $markedColumnNumber = 0
   private PrimBoolean $markedSkipsLineFeed = false
+  private PrimBoolean $markedPassesLineFeed = false
 
   public ExtendedBufferedReader(Reader reader) {
     super(reader)
@@ -26,6 +28,11 @@ public class ExtendedBufferedReader extends BufferedReader {
   public PrimInteger read() {
     synchronized (this.@lock) {
       PrimInteger result = super.read()
+      if ($passesLineFeed) {
+        $lineNumber ++
+        $columnNumber = 0
+        $passesLineFeed = false
+      }
       $columnNumber ++
       if ($skipsLineFeed) {
         $skipsLineFeed = false
@@ -35,13 +42,11 @@ public class ExtendedBufferedReader extends BufferedReader {
         }
       }
       if (result == '\r') {
-        $lineNumber ++
-        $columnNumber = 0
         $skipsLineFeed = true
+        $passesLineFeed = true
         result = 10
       } else if (result == '\n') {
-        $lineNumber ++
-        $columnNumber = 0
+        $passesLineFeed = true
       }
       return result
     }
@@ -52,6 +57,11 @@ public class ExtendedBufferedReader extends BufferedReader {
       PrimInteger size = super.read(buffer, offset, length)
       for (PrimInteger i = offset ; i < offset + size ; i ++) {
         PrimInteger character = buffer[i]
+        if ($passesLineFeed) {
+          $lineNumber ++
+          $columnNumber = 0
+          $passesLineFeed = false
+        }
         $columnNumber ++
         if ($skipsLineFeed) {
           $skipsLineFeed = false
@@ -60,13 +70,11 @@ public class ExtendedBufferedReader extends BufferedReader {
           }
         }
         if (character == '\r') {
-          $lineNumber ++
-          $columnNumber = 0
           $skipsLineFeed = true
+          $passesLineFeed = true
           break
         } else {
-          $lineNumber ++
-          $columnNumber = 0
+          $passesLineFeed = true
           break
         }
       }
@@ -77,11 +85,16 @@ public class ExtendedBufferedReader extends BufferedReader {
   public String readLine() {
     synchronized (this.@lock) {
       String line = super.readLine($skipsLineFeed)
-      $skipsLineFeed = false
-      if (line != null) {
+      if ($passesLineFeed) {
         $lineNumber ++
         $columnNumber = 0
+        $passesLineFeed = false
       }
+      if (line != null) {
+        $columnNumber += line.length()
+        $passesLineFeed = true
+      }
+      $skipsLineFeed = false
       return line
     }
   }
@@ -96,6 +109,7 @@ public class ExtendedBufferedReader extends BufferedReader {
       $markedLineNumber = $lineNumber
       $markedColumnNumber = $columnNumber
       $markedSkipsLineFeed = $skipsLineFeed
+      $markedPassesLineFeed = $passesLineFeed
     }
   }
 
@@ -105,6 +119,7 @@ public class ExtendedBufferedReader extends BufferedReader {
       $lineNumber = $markedLineNumber
       $columnNumber = $markedColumnNumber
       $skipsLineFeed = $markedSkipsLineFeed
+      $passesLineFeed = $markedPassesLineFeed
     }
   }
 
