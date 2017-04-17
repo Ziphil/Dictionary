@@ -45,10 +45,10 @@
         <RowConstraints vgrow="always"/>
       </rowConstraints>
       <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <Label text="バージョン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <TextField fx:id="$versionControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <Label text="snojファイル:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <TextField fx:id="$versionControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
         <HBox HBox.hgrow="always">
