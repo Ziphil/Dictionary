@@ -48,8 +48,20 @@
       <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <Label text="バージョン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <TextField fx:id="$versionControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <Label text="変更履歴:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-      <TextArea fx:id="$changeDescriptionControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <Label text="snojファイル:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <spacing><Double rpx="5"/></spacing>
+        <HBox HBox.hgrow="always">
+          <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
+          <Button text="…" onAction="#editSnoj" styleClass="right-pill"/>
+        </HBox>
+        <Button text="削除" onAction="#removeSnoj">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+        </Button>
+      </HBox>
+      <Label text="変更履歴:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <TextArea fx:id="$changeDescriptionControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     </GridPane>
   </center>
   <bottom>
