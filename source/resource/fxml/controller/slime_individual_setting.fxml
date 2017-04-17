@@ -96,7 +96,7 @@
           </columnConstraints>
           <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="snojファイル:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
           <TextField fx:id="$punctuationsControl" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
