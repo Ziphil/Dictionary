@@ -24,7 +24,7 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
       }
       PersonalWord oldWord = oldWords[i]
       SlimeWord newWord = SlimeWord.new()
-      newWord.setId(i)
+      newWord.setId(i + 1)
       newWord.setName(oldWord.getName())
       String oldTranslation = oldWord.getTranslation()
       if (oldTranslation != "") {

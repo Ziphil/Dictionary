@@ -31,7 +31,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Integer $validMinId = -1
+  private Integer $validMinId = 0
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
