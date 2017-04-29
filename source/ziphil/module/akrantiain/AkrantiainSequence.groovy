@@ -49,9 +49,9 @@ public class AkrantiainSequence implements AkrantiainMatchable {
 
   public AkrantiainToken findUnknownIdentifier(AkrantiainModule module) {
     for (AkrantiainMatchable matchable : $matchables) {
-      AkrantiainToken deadIdentifier = matchable.findUnknownIdentifier(module)
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = matchable.findUnknownIdentifier(module)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
     return null

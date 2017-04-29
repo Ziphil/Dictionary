@@ -81,9 +81,9 @@ public class AkrantiainModule {
 
   public AkrantiainToken findUnknownIdentifier() {
     for (AkrantiainDefinition definition: $definitions) {
-      AkrantiainToken deadIdentifier = definition.findUnknownIdentifier(this)
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = definition.findUnknownIdentifier(this)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
     return null

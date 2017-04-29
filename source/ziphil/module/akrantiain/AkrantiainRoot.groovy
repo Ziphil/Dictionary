@@ -35,14 +35,14 @@ public class AkrantiainRoot {
 
   public AkrantiainToken findUnknownIdentifier() {
     for (AkrantiainModule module : $modules) {
-      AkrantiainToken deadIdentifier = module.findUnknownIdentifier()
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = module.findUnknownIdentifier()
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
-    AkrantiainToken deadIdentifier = $defaultModule.findUnknownIdentifier()
-    if (deadIdentifier != null) {
-      return deadIdentifier
+    AkrantiainToken unknownIdentifier = $defaultModule.findUnknownIdentifier()
+    if (unknownIdentifier != null) {
+      return unknownIdentifier
     } else {
       return null
     }
@@ -65,14 +65,14 @@ public class AkrantiainRoot {
 
   public AkrantiainModuleName findUnknownModuleName() {
     for (AkrantiainModule module : $modules) {
-      AkrantiainModuleName deadModuleName = module.findUnknownModuleName(this)
-      if (deadModuleName != null) {
-        return deadModuleName
+      AkrantiainModuleName unknownModuleName = module.findUnknownModuleName(this)
+      if (unknownModuleName != null) {
+        return unknownModuleName
       }
     }
-    AkrantiainModuleName deadModuleName = $defaultModule.findUnknownModuleName(this)
-    if (deadModuleName != null) {
-      return deadModuleName
+    AkrantiainModuleName unknownModuleName = $defaultModule.findUnknownModuleName(this)
+    if (unknownModuleName != null) {
+      return unknownModuleName
     } else {
       return null
     }
