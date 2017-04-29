@@ -137,6 +137,18 @@ public class AkrantiainModule {
     return findCircularModuleName(moduleNames, root)
   }
 
+  public List<AkrantiainModuleName> findUsedModuleNames(AkrantiainRoot root) {
+    List<AkrantiainModuleName> usedModuleNames = ArrayList.new()
+    for (AkrantiainModuleName moduleName : $moduleChain) {
+      AkrantiainModule module = root.findModuleOf(moduleName)
+      if (module != null) {
+        usedModuleNames.add(module.getName())
+        usedModuleNames.addAll(module.findUsedModuleNames(root))
+      }
+    }
+    return usedModuleNames
+  }
+
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {
     return $environments.contains(environment)
   } 

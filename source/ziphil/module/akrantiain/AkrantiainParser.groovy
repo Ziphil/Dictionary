@@ -94,6 +94,11 @@ public class AkrantiainParser {
     if (circularModuleName != null) {
       throw AkrantiainParseException.new("Circular module definition", circularModuleName.getTokens())
     }
+    List<AkrantiainModuleName> unusedModuleNames = $root.findUnusedModuleNames()
+    for (AkrantiainModuleName unusedModuleName : unusedModuleNames) {
+      AkrantiainWarning warning = AkrantiainWarning.new("Unused module", unusedModuleName.getTokens())
+      $root.getWarnings().add(warning)
+    }
   }
 
   public AkrantiainModule nextModule() {

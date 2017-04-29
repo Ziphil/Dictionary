@@ -89,6 +89,26 @@ public class AkrantiainRoot {
     }
   }
 
+  // デフォルトモジュールが参照している全てのモジュールのリストを返します。
+  // モジュール参照が循環している場合は処理が永遠に止まらなくなるので、あらかじめ findCircularModuleName メソッドでモジュール循環がないことをチェックしてください。
+  public List<AkrantiainModuleName> findUsedModuleNames() {
+    List<AkrantiainModuleName> usedModuleNames = $defaultModule.findUsedModuleNames(this)
+    return usedModuleNames
+  }
+
+  // デフォルトモジュールから参照されていない全てのモジュールのリストを返します。
+  // モジュール参照が循環している場合は処理が永遠に止まらなくなるので、あらかじめ findCircularModuleName メソッドでモジュール循環がないことをチェックしてください。
+  public List<AkrantiainModuleName> findUnusedModuleNames() {
+    List<AkrantiainModuleName> usedModuleNames = findUsedModuleNames()
+    List<AkrantiainModuleName> unusedModuleNames = ArrayList.new()
+    for (AkrantiainModule module : $modules) {
+      if (!usedModuleNames.contains(module.getName())) {
+        unusedModuleNames.add(module.getName())
+      }
+    }
+    return unusedModuleNames
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     for (Integer i : 0 ..< $modules.size()) {
