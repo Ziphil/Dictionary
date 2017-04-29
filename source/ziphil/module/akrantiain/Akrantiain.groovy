@@ -28,4 +28,8 @@ public class Akrantiain {
     return $root.convert(input)
   }
 
+  public List<AkrantiainWarning> getWarnings() {
+    return $root.getWarnings()
+  }
+
 }

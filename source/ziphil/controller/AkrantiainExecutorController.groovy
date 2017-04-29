@@ -13,6 +13,7 @@ import ziphil.custom.UtilityStage
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainException
 import ziphil.module.akrantiain.AkrantiainParseException
+import ziphil.module.akrantiain.AkrantiainWarning
 import ziphilib.transform.Ziphilify
 
 
@@ -75,7 +76,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $akrantiain = Akrantiain.new()
           try {
             $akrantiain.load(file)
-            $logControl.setText("")
+            $logControl.setText(createWarningText($akrantiain.getWarnings()))
           } catch (AkrantiainParseException exception) {
             $logControl.setText(exception.getFullMessage())
             $akrantiain = null
@@ -91,13 +92,24 @@ public class AkrantiainExecutorController extends Controller<Void> {
         $akrantiain = Akrantiain.new()
         try {
           $akrantiain.load(source)
-          $logControl.setText("")
+          $logControl.setText(createWarningText($akrantiain.getWarnings()))
         } catch (AkrantiainParseException exception) {
           $logControl.setText(exception.getFullMessage())
           $akrantiain = null
         }
       }
     }
+  }
+
+  private String createWarningText(List<AkrantiainWarning> warnings) {
+    StringBuilder warningText = StringBuilder.new()
+    for (Integer i : 0 ..< warnings.size()) {
+      warningText.append(warnings[i].getFullMessage())
+      if (i < warnings.size() - 1) {
+        warningText.append("\n")
+      }
+    }
+    return warningText.toString()
   }
 
   private void setupInputControl() {
