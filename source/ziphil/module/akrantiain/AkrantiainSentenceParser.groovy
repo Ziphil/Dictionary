@@ -102,7 +102,7 @@ public class AkrantiainSentenceParser {
       throw AkrantiainParseException.new("No selects", $tokens.last())
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens.last())
+      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding circumflexes", $tokens.last())
     }
     return rule
   }
