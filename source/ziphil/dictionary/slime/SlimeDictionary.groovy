@@ -19,6 +19,7 @@ import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -409,7 +410,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof PersonalDictionary) {
+    if (oldDictionary instanceof ShaleiaDictionary) {
+      SlimeShaleiaDictionaryConverter converter = SlimeShaleiaDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof PersonalDictionary) {
       SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
       return converter
     } else if (oldDictionary instanceof SlimeDictionary) {
