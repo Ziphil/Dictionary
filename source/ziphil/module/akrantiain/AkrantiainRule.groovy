@@ -107,6 +107,17 @@ public class AkrantiainRule {
     return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), module) != null
   }
 
+  // 変換先が存在するなら true を返し、そうでなければ false を返します。
+  // 現状では、右辺に「$」以外の文字列リテラルが 1 つ以上含まれているときに、変換先が存在すると見なされます。
+  public Boolean isConcrete() {
+    for (AkrantiainToken phoneme : $phonemes) {
+      if (phoneme.getType() != AkrantiainTokenType.DOLLAR) {
+        return true
+      }
+    }
+    return false
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append($leftCondition)
