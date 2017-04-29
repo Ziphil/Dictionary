@@ -82,7 +82,7 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryConverter<SlimeDi
   private void addEquivalent(SlimeWord newWord, String part, String equivalent) {
     SlimeEquivalent newEquivalent = SlimeEquivalent.new()
     newEquivalent.setTitle(part)
-    newEquivalent.setNames(equivalent.replaceAll(/(\{|\}|\/)/, "").split(/\s*,\s*/).toList())
+    newEquivalent.setNames(equivalent.replaceAll(/(\{|\}|\/|\(.*?\)\s*)/, "").split(/\s*,\s*/).toList())
     newWord.getRawEquivalents().add(newEquivalent)
   }
 
