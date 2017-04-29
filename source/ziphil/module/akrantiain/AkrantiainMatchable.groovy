@@ -17,7 +17,7 @@ public interface AkrantiainMatchable {
   public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module)
 
   // モジュールに存在していない識別子を含んでいればそれを返し、そうでなければ null を返します。
-  public AkrantiainToken findDeadIdentifier(AkrantiainModule module)
+  public AkrantiainToken findUnknownIdentifier(AkrantiainModule module)
 
   // 中身を全て展開したときに identifiers に含まれる識別子トークンが含まれていればそれを返し、そうでなければ null を返します。
   // 識別子の定義に循環参照がないかを調べるのに用いられます。

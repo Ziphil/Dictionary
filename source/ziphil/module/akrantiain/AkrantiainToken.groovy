@@ -212,7 +212,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     }
   }
 
-  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+  public AkrantiainToken findUnknownIdentifier(AkrantiainModule module) {
     if ($type == AkrantiainTokenType.IDENTIFIER) {
       if (!module.containsDefinitionOf($text)) {
         return this

@@ -79,9 +79,9 @@ public class AkrantiainModule {
     return AkrantiainDisjunction.EMPTY_DISJUNCTION
   }
 
-  public AkrantiainToken findDeadIdentifier() {
+  public AkrantiainToken findUnknownIdentifier() {
     for (AkrantiainDefinition definition: $definitions) {
-      AkrantiainToken deadIdentifier = definition.findDeadIdentifier(this)
+      AkrantiainToken deadIdentifier = definition.findUnknownIdentifier(this)
       if (deadIdentifier != null) {
         return deadIdentifier
       }
@@ -99,7 +99,7 @@ public class AkrantiainModule {
     return null
   }
 
-  public AkrantiainModuleName findDeadModuleName(AkrantiainRoot root) {
+  public AkrantiainModuleName findUnknownModuleName(AkrantiainRoot root) {
     for (AkrantiainModuleName moduleName : $moduleChain) {
       if (!root.containsModuleOf(moduleName)) {
         return moduleName

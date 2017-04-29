@@ -78,7 +78,7 @@ public class AkrantiainParser {
   }
 
   private void ensureSafety() {
-    AkrantiainToken deadIdentifier = $root.findDeadIdentifier()
+    AkrantiainToken deadIdentifier = $root.findUnknownIdentifier()
     if (deadIdentifier != null) {
       throw AkrantiainParseException.new("No such identifier", deadIdentifier)
     }
@@ -86,7 +86,7 @@ public class AkrantiainParser {
     if (circularIdentifier != null) {
       throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)
     }
-    AkrantiainModuleName deadModuleName = $root.findDeadModuleName()
+    AkrantiainModuleName deadModuleName = $root.findUnknownModuleName()
     if (deadModuleName != null) {
       throw AkrantiainParseException.new("No such module", deadModuleName.getTokens())
     }
