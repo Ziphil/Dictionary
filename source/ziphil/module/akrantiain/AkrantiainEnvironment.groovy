@@ -11,4 +11,13 @@ public enum AkrantiainEnvironment {
   FALL_THROUGH,
   NORMALIZE
 
+  public static Boolean contains(String name) {
+    for (AkrantiainEnvironment value : AkrantiainEnvironment.values()) {
+      if (value.name() == name) {
+        return true
+      }
+    }
+    return false
+  }
+
 }

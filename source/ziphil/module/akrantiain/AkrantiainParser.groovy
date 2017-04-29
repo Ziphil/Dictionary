@@ -41,7 +41,12 @@ public class AkrantiainParser {
         sentenceParser.addToken(token)
         if (sentenceParser.isEnvironment()) {
           AkrantiainEnvironment environment = sentenceParser.readEnvironment()
-          currentModule.getEnvironments().add(environment)
+          if (environment != null) {
+            currentModule.getEnvironments().add(environment)
+          } else {
+            AkrantiainWarning warning = AkrantiainWarning.new("No such setting identifier", sentenceParser.getTokens().first())
+            $root.getWarnings().add(warning)
+          }
         } else if (sentenceParser.isDefinition()) {
           AkrantiainDefinition definition = sentenceParser.readDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
