@@ -9,7 +9,7 @@ public class AkrantiainRoot {
 
   private List<AkrantiainModule> $modules = Collections.synchronizedList(ArrayList.new())
   private AkrantiainModule $defaultModule = AkrantiainModule.new()
-  private List<AkrantiainWarning> $warnings = ArrayList.new()
+  private List<AkrantiainWarning> $warnings = Collections.synchronizedList(ArrayList.new())
 
   public String convert(String input) {
     return $defaultModule.convert(input, this)
