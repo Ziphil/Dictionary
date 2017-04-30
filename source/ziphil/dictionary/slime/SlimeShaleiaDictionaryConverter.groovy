@@ -26,6 +26,7 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryConverter<SlimeDi
       ShaleiaWord oldWord = oldWords[i]
       if (!oldWord.getName().startsWith("\$")) {
         SlimeWord newWord = SlimeWord.new()
+        newWord.setId(i + 1)
         newWord.setName(oldWord.getName())
         BufferedReader oldDescriptionReader = BufferedReader.new(StringReader.new(oldWord.getDescription()))
         for (String line ; (line = oldDescriptionReader.readLine()) != null ;) {
