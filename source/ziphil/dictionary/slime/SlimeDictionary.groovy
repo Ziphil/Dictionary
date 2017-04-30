@@ -180,6 +180,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void updateFirst() {
+    validate()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -191,6 +192,32 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateComparisonStrings()
     updateAkrantiain()
     $isChanged = true
+  }
+
+  public void validate() {
+    validateIds()
+    validateRelations()
+  }
+
+  private void validateIds() {
+    Set<Integer> ids = HashSet.new()
+    for (SlimeWord word : $words) {
+      if (!ids.contains(word.getId())) {
+        ids.add(word.getId()) 
+      } else {
+        throw SlimeValidationException.new("Duplicate id")
+      }
+    }
+  }
+
+  private void validateRelations() {
+    for (SlimeWord word : $words) {
+      for (SlimeRelation relation : word.getRelations()) {
+        if (!$words.any{otherWord -> otherWord.getId() == relation.getId() && otherWord.getName() == relation.getName()}) {
+          throw SlimeValidationException.new("Relation refers a word which does not exist")
+        }
+      }
+    }
   }
 
   private void updateRegisteredTitles() {
