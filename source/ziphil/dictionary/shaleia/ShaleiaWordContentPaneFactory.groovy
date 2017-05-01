@@ -73,7 +73,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         if (reader.findContent()) {
           String title = reader.title()
           String content = reader.lookupContent()
-          addOtherNode(contentPane, title, content)
+          addContentNode(contentPane, title, content)
           hasOther = true
         }
         if (reader.findSynonym()) {
@@ -136,20 +136,20 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     contentPane.getChildren().add(breakText)
   }
 
-  private void addOtherNode(TextFlow contentPane, String title, String other) {
+  private void addContentNode(TextFlow contentPane, String title, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
-    String modifiedOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
+    String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
     Text titleText = Text.new("【${title}】")
     Text dammyText = Text.new(" \n")
     Text breakText = Text.new("\n")
-    List<Text> otherTexts = createRichTexts(modifiedOther)
+    List<Text> contentTexts = createRichTexts(modifiedContent)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
     dammyText.getStyleClass().add(CONTENT_CLASS)
-    for (Text otherText : otherTexts) {
-      otherText.getStyleClass().add(CONTENT_CLASS)
+    for (Text contentText : contentTexts) {
+      contentText.getStyleClass().add(CONTENT_CLASS)
     }
     contentPane.getChildren().addAll(titleText, dammyText)
-    contentPane.getChildren().addAll(otherTexts)
+    contentPane.getChildren().addAll(contentTexts)
     contentPane.getChildren().add(breakText)
   }
 

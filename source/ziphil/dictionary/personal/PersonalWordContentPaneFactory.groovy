@@ -26,8 +26,8 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
     addNameNode(contentPane, $word.getName(), $word.getPronunciation())
-    addOtherNode(contentPane, $word.getTranslation())
-    addOtherNode(contentPane, $word.getUsage())
+    addContentNode(contentPane, $word.getTranslation())
+    addContentNode(contentPane, $word.getUsage())
     modifyBreak(contentPane)
     return contentPane
   }
@@ -54,14 +54,14 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     }
   }
 
-  private void addOtherNode(TextFlow contentPane, String other) {
+  private void addContentNode(TextFlow contentPane, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
-    String modifiedOther = (modifiesPunctuation) ? Strings.modifyPunctuation(other) : other
-    Text otherText = Text.new(modifiedOther)
+    String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
+    Text contentText = Text.new(modifiedContent)
     Text breakText = Text.new("\n")
-    otherText.getStyleClass().add(CONTENT_CLASS)
-    if (other != "") {
-      contentPane.getChildren().addAll(otherText, breakText)
+    contentText.getStyleClass().add(CONTENT_CLASS)
+    if (content != "") {
+      contentPane.getChildren().addAll(contentText, breakText)
     }
   }
 
