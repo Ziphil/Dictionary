@@ -9,7 +9,8 @@ public enum AkrantiainEnvironment {
 
   CASE_SENSITIVE,
   FALL_THROUGH,
-  NORMALIZE
+  USE_NFD,
+  CUSTOM
 
   public static Boolean contains(String name) {
     for (AkrantiainEnvironment value : AkrantiainEnvironment.values()) {

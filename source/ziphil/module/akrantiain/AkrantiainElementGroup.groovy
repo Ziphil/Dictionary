@@ -12,7 +12,7 @@ public class AkrantiainElementGroup {
 
   public static AkrantiainElementGroup create(String input, AkrantiainModule module) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    if (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) {
+    if (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) {
       input = Normalizer.normalize(input, Normalizer.Form.NFD)
     }
     for (Integer i : 0 ..< input.length()) {
@@ -83,7 +83,7 @@ public class AkrantiainElementGroup {
       }
     }
     String outputString = output.toString()
-    if (module.containsEnvironment(AkrantiainEnvironment.NORMALIZE)) {
+    if (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) {
       outputString = Normalizer.normalize(outputString, Normalizer.Form.NFC)
     }
     return outputString
