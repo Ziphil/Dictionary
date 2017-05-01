@@ -31,33 +31,37 @@ public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<Pers
         StringBuilder newTranslation = StringBuilder.new()
         StringBuilder newUsage = StringBuilder.new()
         ShaleiaDescriptionReader oldReader = ShaleiaDescriptionReader.new(oldWord.getDescription())
-        while (oldReader.readLine() != null) {
-          if (oldReader.findCreationDate()) {
-            String creationDate = oldReader.lookupCreationDate()
-            String totalPart = oldReader.lookupTotalPart()
-            appendCreationDate(newTranslation, totalPart, creationDate)
+        try {
+          while (oldReader.readLine() != null) {
+            if (oldReader.findCreationDate()) {
+              String creationDate = oldReader.lookupCreationDate()
+              String totalPart = oldReader.lookupTotalPart()
+              appendCreationDate(newTranslation, totalPart, creationDate)
+            }
+            if (oldReader.findEquivalent()) {
+              String part = oldReader.lookupPart()
+              String equivalent = oldReader.lookupEquivalent()
+              appendEquivalent(newTranslation, part, equivalent)
+            }
+            if (oldReader.findContent()) {
+              String title = oldReader.title()
+              String content = oldReader.lookupContent()
+              appendContent(newUsage, title, content)
+            }
+            if (oldReader.findSynonym()) {
+              String synonym = oldReader.lookupSynonym()
+              appendSynonym(newUsage, synonym)
+            }
           }
-          if (oldReader.findEquivalent()) {
-            String part = oldReader.lookupPart()
-            String equivalent = oldReader.lookupEquivalent()
-            appendEquivalent(newTranslation, part, equivalent)
-          }
-          if (oldReader.findContent()) {
-            String title = oldReader.title()
-            String content = oldReader.lookupContent()
-            appendContent(newUsage, title, content)
-          }
-          if (oldReader.findSynonym()) {
-            String synonym = oldReader.lookupSynonym()
-            appendSynonym(newUsage, synonym)
-          }
+          modifyBreak(newTranslation)
+          modifyBreak(newUsage)
+          newWord.setTranslation(newTranslation.toString())
+          newWord.setUsage(newUsage.toString())
+          newWord.setDictionary($newDictionary)
+          $newWords.add(newWord)
+        } finally {
+          oldReader.close()
         }
-        modifyBreak(newTranslation)
-        modifyBreak(newUsage)
-        newWord.setTranslation(newTranslation.toString())
-        newWord.setUsage(newUsage.toString())
-        newWord.setDictionary($newDictionary)
-        $newWords.add(newWord)
       }
       updateProgress(i + 1, size)
     }

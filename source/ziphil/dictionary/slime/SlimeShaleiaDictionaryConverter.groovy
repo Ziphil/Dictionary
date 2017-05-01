@@ -30,20 +30,24 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryConverter<SlimeDi
         newWord.setId(i + 1)
         newWord.setName(oldWord.getName())
         ShaleiaDescriptionReader oldReader = ShaleiaDescriptionReader.new(oldWord.getDescription())
-        while (oldReader.readLine() != null) {
-          if (oldReader.findEquivalent()) {
-            String part = oldReader.lookupPart()
-            String equivalent = oldReader.lookupEquivalent()
-            addEquivalent(newWord, part, equivalent)
+        try {
+          while (oldReader.readLine() != null) {
+            if (oldReader.findEquivalent()) {
+              String part = oldReader.lookupPart()
+              String equivalent = oldReader.lookupEquivalent()
+              addEquivalent(newWord, part, equivalent)
+            }
+            if (oldReader.findContent()) {
+              String title = oldReader.title()
+              String content = oldReader.lookupContent()
+              addContent(newWord, title, content)
+            }
           }
-          if (oldReader.findContent()) {
-            String title = oldReader.title()
-            String content = oldReader.lookupContent()
-            addContent(newWord, title, content)
-          }
+          newWord.setDictionary($newDictionary)
+          $newWords.add(newWord)
+        } finally {
+          oldReader.close()
         }
-        newWord.setDictionary($newDictionary)
-        $newWords.add(newWord)
       }
       updateProgress(i + 1, size)
     }
