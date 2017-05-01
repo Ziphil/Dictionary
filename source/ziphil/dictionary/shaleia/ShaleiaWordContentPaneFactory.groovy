@@ -53,74 +53,31 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     Boolean hasSynonym = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
-    BufferedReader reader = BufferedReader.new(StringReader.new($word.getDescription()))
+    ShaleiaDescriptionReader reader = ShaleiaDescriptionReader.new($word.getDescription())
     try {
-      for (String line ; (line = reader.readLine()) != null ;) {
-        Matcher creationDateMatcher = line =~ /^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/
-        Matcher hiddenEquivalentMatcher = line =~ /^\=:\s*(.+)$/
-        Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
-        Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
-        Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
-        Matcher usageMatcher = line =~ /^U>\s*(.+)$/
-        Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
-        Matcher noteMatcher = line =~ /^N>\s*(.+)$/
-        Matcher taskMatcher = line =~ /^O>\s*(.+)$/
-        Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
-        Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
+      while (reader.readLine() != null) {
         if (contentPane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
           addNameNode(contentPane, name)
         }
-        if (creationDateMatcher.matches()) {
-          String creationDate = creationDateMatcher.group(1)
-          String totalPart = creationDateMatcher.group(2)
+        if (reader.findCreationDate()) {
+          String totalPart = reader.lookupTotalPart()
+          String creationDate = reader.lookupCreationDate()
           addCreationDateNode(contentPane, totalPart, creationDate)
         }
-        if (equivalentMatcher.matches()) {
-          String part = equivalentMatcher.group(1)
-          String equivalent = equivalentMatcher.group(2)
+        if (reader.findEquivalent()) {
+          String part = reader.lookupPart()
+          String equivalent = reader.lookupEquivalent()
           addEquivalentNode(contentPane, part, equivalent)
         }
-        if (hiddenEquivalentMatcher.matches()) {
-          String equivalent = hiddenEquivalentMatcher.group(1)
-        }
-        if (meaningMatcher.matches()) {
-          String meaning = meaningMatcher.group(1)
-          addOtherNode(contentPane, "語義", meaning)
+        if (reader.findContent()) {
+          String title = reader.title()
+          String content = reader.lookupContent()
+          addOtherNode(contentPane, title, content)
           hasOther = true
         }
-        if (etymologyMatcher.matches()) {
-          String etymology = etymologyMatcher.group(1)
-          addOtherNode(contentPane, "語源", etymology)
-          hasOther = true
-        }
-        if (usageMatcher.matches()) {
-          String usage = usageMatcher.group(1)
-          addOtherNode(contentPane, "語法", usage)
-          hasOther = true
-        }
-        if (phraseMatcher.matches()) {
-          String phrase = phraseMatcher.group(1)
-          addOtherNode(contentPane, "成句", phrase)
-          hasOther = true
-        }
-        if (noteMatcher.matches()) {
-          String note = noteMatcher.group(1)
-          addOtherNode(contentPane, "備考", note)
-          hasOther = true
-        }
-        if (taskMatcher.matches()) {
-          String task = taskMatcher.group(1)
-          addOtherNode(contentPane, "タスク", task)
-          hasOther = true
-        }
-        if (exampleMatcher.matches()) {
-          String example = exampleMatcher.group(1)
-          addOtherNode(contentPane, "例文", example)
-          hasOther = true
-        }
-        if (synonymMatcher.matches()) {
-          String synonym = synonymMatcher.group(1)
+        if (reader.findSynonym()) {
+          String synonym = reader.lookupSynonym()
           addSynonymNode(contentPane, synonym)
           hasSynonym = true
         }
