@@ -49,7 +49,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   public Pane create() {
     Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
-    Boolean hasOther = false
+    Boolean hasContent = false
     Boolean hasSynonym = false
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
@@ -74,7 +74,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
           String title = reader.title()
           String content = reader.lookupContent()
           addContentNode(contentPane, title, content)
-          hasOther = true
+          hasContent = true
         }
         if (reader.findSynonym()) {
           String synonym = reader.lookupSynonym()
