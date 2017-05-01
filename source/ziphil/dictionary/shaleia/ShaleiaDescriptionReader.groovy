@@ -126,7 +126,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
 
 
 @InnerClass(ShaleiaDescriptionReader)
-public static enum DescriptionType {
+private static enum DescriptionType {
 
   CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),
   EQUIVALENT(/^\=\s*〈(.+)〉\s*(.+)$/),
