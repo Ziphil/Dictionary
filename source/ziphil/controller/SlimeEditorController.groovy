@@ -84,6 +84,10 @@ public class SlimeEditorController extends Controller<Boolean> {
     setupIdControl()
   }
 
+  // コントローラーの準備を行います。
+  // editsEmptyWord に true を指定すると、新規単語の編集だと判断され、単語名の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
+  // 一方、editsEmptyWord に false を指定すると、既存の単語の編集だと判断され、内容の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
+  // isNormal に false を指定すると、辞書に登録される単語データ以外の編集だと判断され、ID と単語名の編集欄が無効化されます。
   public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean isNormal) {
     $word = word
     $dictionary = dictionary
