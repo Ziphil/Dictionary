@@ -42,8 +42,8 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $registeredParameters
-  private SlimeWord $defaultWord
   private String $akrantiainSource
+  private SlimeWord $defaultWord
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
@@ -78,13 +78,13 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
-    $registeredParameters = registeredParameters
-    $defaultWord = defaultWord
-    $akrantiainSource = dictionary.getAkrantiainSource()
     for (Integer i : 0 ..< 10) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
     }
+    $registeredParameters = registeredParameters
+    $akrantiainSource = dictionary.getAkrantiainSource()
+    $defaultWord = defaultWord
   }
 
   @FXML
@@ -92,18 +92,18 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
+    SlimeWord defaultWord = $defaultWord
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
-    SlimeWord defaultWord = $defaultWord
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
+    $dictionary.setDefaultWord(defaultWord)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
-    $dictionary.setDefaultWord(defaultWord)
     $individualSetting.setRegisteredParameters(registeredParameters)
     $individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $dictionary.updateMinimum()
