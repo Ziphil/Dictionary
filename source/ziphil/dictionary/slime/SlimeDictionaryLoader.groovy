@@ -38,7 +38,6 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               return false
             }
             parseWord(parser, word)
-            word.setDictionary($dictionary)
             $words.add(word)
             updateProgressByParser(parser, size)
           }
@@ -90,6 +89,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
         parseRelations(parser, word)
       }
     }
+    word.setDictionary($dictionary)
   }
 
   private void parseEntry(JsonParser parser, SlimeWord word) {
