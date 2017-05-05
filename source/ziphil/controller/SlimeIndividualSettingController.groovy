@@ -42,6 +42,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $registeredParameters
+  private SlimeWord $defaultWord
   private String $akrantiainSource
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
@@ -77,6 +78,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
       $usesIndividualOrderControl.setSelected(true)
     }
     $registeredParameters = registeredParameters
+    $defaultWord = dictionary.getDefaultWord()
     $akrantiainSource = dictionary.getAkrantiainSource()
     for (Integer i : 0 ..< 10) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
@@ -92,6 +94,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
+    SlimeWord defaultWord = $defaultWord
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
@@ -99,6 +102,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
+    $dictionary.setDefaultWord(defaultWord)
     $individualSetting.setRegisteredParameters(registeredParameters)
     $individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $dictionary.updateMinimum()
@@ -143,7 +147,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary.getDefaultWord(), $dictionary, false, false)
+    controller.prepare($defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
   }
 
