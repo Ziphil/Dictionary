@@ -68,8 +68,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(matchedLength, matchedLength + elementPart.length())
           String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
-          if (adjustedTextSubstring == adjustedElementPart) {
+          if (adjustedTextSubstring == elementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               to = pointer + 1
@@ -101,8 +100,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(text.length() - elementPart.length() - matchedLength, text.length() - matchedLength)
           String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          String adjustedElementPart = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? elementPart : elementPart.toLowerCase()
-          if (adjustedTextSubstring == adjustedElementPart) {
+          if (adjustedTextSubstring == elementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               from = pointer
