@@ -10,8 +10,8 @@ public class AkrantiainDefinition {
   private AkrantiainToken $identifier
   private AkrantiainMatchable $content
 
-  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
-    return $content.findDeadIdentifier(module)
+  public AkrantiainToken findUnknownIdentifier(AkrantiainModule module) {
+    return $content.findUnknownIdentifier(module)
   } 
 
   public AkrantiainToken findCircularIdentifier(List<AkrantiainToken> identifiers, AkrantiainModule module) {

@@ -9,6 +9,7 @@ public class AkrantiainRoot {
 
   private List<AkrantiainModule> $modules = Collections.synchronizedList(ArrayList.new())
   private AkrantiainModule $defaultModule = AkrantiainModule.new()
+  private List<AkrantiainWarning> $warnings = Collections.synchronizedList(ArrayList.new())
 
   public String convert(String input) {
     return $defaultModule.convert(input, this)
@@ -32,16 +33,16 @@ public class AkrantiainRoot {
     return false
   }
 
-  public AkrantiainToken findDeadIdentifier() {
+  public AkrantiainToken findUnknownIdentifier() {
     for (AkrantiainModule module : $modules) {
-      AkrantiainToken deadIdentifier = module.findDeadIdentifier()
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = module.findUnknownIdentifier()
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
-    AkrantiainToken deadIdentifier = $defaultModule.findDeadIdentifier()
-    if (deadIdentifier != null) {
-      return deadIdentifier
+    AkrantiainToken unknownIdentifier = $defaultModule.findUnknownIdentifier()
+    if (unknownIdentifier != null) {
+      return unknownIdentifier
     } else {
       return null
     }
@@ -62,29 +63,50 @@ public class AkrantiainRoot {
     }
   }
 
-  public AkrantiainModuleName findDeadModuleName() {
+  public AkrantiainModuleName findUnknownModuleName() {
     for (AkrantiainModule module : $modules) {
-      AkrantiainModuleName deadModuleName = module.findDeadModuleName(this)
-      if (deadModuleName != null) {
-        return deadModuleName
+      AkrantiainModuleName unknownModuleName = module.findUnknownModuleName(this)
+      if (unknownModuleName != null) {
+        return unknownModuleName
       }
     }
-    AkrantiainModuleName deadModuleName = $defaultModule.findDeadModuleName(this)
-    if (deadModuleName != null) {
-      return deadModuleName
+    AkrantiainModuleName unknownModuleName = $defaultModule.findUnknownModuleName(this)
+    if (unknownModuleName != null) {
+      return unknownModuleName
     } else {
       return null
     }
   }
 
+  // モジュールの定義に循環参照がないかを調べ、循環が見つかった場合は循環の最初のモジュール名を返し、見つからなければ null を返します。
+  // このメソッドはデフォルトモジュールから参照されているもののみを調べるので、参照されていないモジュールの中での循環参照は検査しません。
   public AkrantiainModuleName findCircularModuleName() {
+    AkrantiainModuleName circularModuleName = $defaultModule.findCircularModuleName(this)
+    if (circularModuleName != null) {
+      return circularModuleName
+    } else {
+      return null
+    }
+  }
+
+  // デフォルトモジュールが参照している全てのモジュールのリストを返します。
+  // モジュール参照が循環している場合は処理が永遠に止まらなくなるので、あらかじめ findCircularModuleName メソッドでモジュール循環がないことをチェックしてください。
+  public List<AkrantiainModuleName> findUsedModuleNames() {
+    List<AkrantiainModuleName> usedModuleNames = $defaultModule.findUsedModuleNames(this)
+    return usedModuleNames
+  }
+
+  // デフォルトモジュールから参照されていない全てのモジュールのリストを返します。
+  // モジュール参照が循環している場合は処理が永遠に止まらなくなるので、あらかじめ findCircularModuleName メソッドでモジュール循環がないことをチェックしてください。
+  public List<AkrantiainModuleName> findUnusedModuleNames() {
+    List<AkrantiainModuleName> usedModuleNames = findUsedModuleNames()
+    List<AkrantiainModuleName> unusedModuleNames = ArrayList.new()
     for (AkrantiainModule module : $modules) {
-      AkrantiainModuleName circularModuleName = module.findCircularModuleName(this)
-      if (circularModuleName != null) {
-        return circularModuleName
+      if (!usedModuleNames.contains(module.getName())) {
+        unusedModuleNames.add(module.getName())
       }
     }
-    return null
+    return unusedModuleNames
   }
 
   public String toString() {
@@ -111,6 +133,14 @@ public class AkrantiainRoot {
 
   public void setDefaultModule(AkrantiainModule defaultModule) {
     $defaultModule = defaultModule
+  }
+
+  public List<AkrantiainWarning> getWarnings() {
+    return $warnings
+  }
+
+  public void setWarnings(List<AkrantiainWarning> warnings) {
+    $warnings = warnings
   }
 
 }

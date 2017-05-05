@@ -10,7 +10,7 @@ public class AkrantiainModule {
   private static final String PUNCTUATION_IDENTIIER_NAME = "PUNCTUATION"
 
   private AkrantiainModuleName $name = AkrantiainModuleName.new()
-  private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.noneOf(AkrantiainEnvironment))
+  private Set<AkrantiainEnvironment> $environments = Collections.synchronizedSet(EnumSet.of(AkrantiainEnvironment.CUSTOM))
   private List<AkrantiainDefinition> $definitions = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainRule> $rules = Collections.synchronizedList(ArrayList.new())
   private List<AkrantiainModuleName> $moduleChain = Collections.synchronizedList(ArrayList.new())
@@ -24,7 +24,7 @@ public class AkrantiainModule {
 
   private String convertByRule(String input, AkrantiainRoot root) {
     if (!$rules.isEmpty()) {
-      AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input)
+      AkrantiainElementGroup currentGroup = AkrantiainElementGroup.create(input, this)
       for (AkrantiainRule rule : $rules) {
         currentGroup = rule.apply(currentGroup, this)
       }
@@ -79,11 +79,11 @@ public class AkrantiainModule {
     return AkrantiainDisjunction.EMPTY_DISJUNCTION
   }
 
-  public AkrantiainToken findDeadIdentifier() {
+  public AkrantiainToken findUnknownIdentifier() {
     for (AkrantiainDefinition definition: $definitions) {
-      AkrantiainToken deadIdentifier = definition.findDeadIdentifier(this)
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = definition.findUnknownIdentifier(this)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
     return null
@@ -99,7 +99,7 @@ public class AkrantiainModule {
     return null
   }
 
-  public AkrantiainModuleName findDeadModuleName(AkrantiainRoot root) {
+  public AkrantiainModuleName findUnknownModuleName(AkrantiainRoot root) {
     for (AkrantiainModuleName moduleName : $moduleChain) {
       if (!root.containsModuleOf(moduleName)) {
         return moduleName
@@ -135,6 +135,18 @@ public class AkrantiainModule {
   public AkrantiainModuleName findCircularModuleName(AkrantiainRoot root) {
     List<AkrantiainModuleName> moduleNames = ArrayList.new()
     return findCircularModuleName(moduleNames, root)
+  }
+
+  public List<AkrantiainModuleName> findUsedModuleNames(AkrantiainRoot root) {
+    List<AkrantiainModuleName> usedModuleNames = ArrayList.new()
+    for (AkrantiainModuleName moduleName : $moduleChain) {
+      AkrantiainModule module = root.findModuleOf(moduleName)
+      if (module != null) {
+        usedModuleNames.add(module.getName())
+        usedModuleNames.addAll(module.findUsedModuleNames(root))
+      }
+    }
+    return usedModuleNames
   }
 
   public Boolean containsEnvironment(AkrantiainEnvironment environment) {

@@ -19,6 +19,7 @@ import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -31,7 +32,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Integer $validMinId = -1
+  private Integer $validMinId = 0
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
@@ -179,6 +180,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void updateFirst() {
+    validate()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -190,6 +192,32 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateComparisonStrings()
     updateAkrantiain()
     $isChanged = true
+  }
+
+  public void validate() {
+    validateIds()
+    validateRelations()
+  }
+
+  private void validateIds() {
+    Set<Integer> ids = HashSet.new()
+    for (SlimeWord word : $words) {
+      if (!ids.contains(word.getId())) {
+        ids.add(word.getId()) 
+      } else {
+        throw SlimeValidationException.new("Duplicate id")
+      }
+    }
+  }
+
+  private void validateRelations() {
+    for (SlimeWord word : $words) {
+      for (SlimeRelation relation : word.getRelations()) {
+        if (!$words.any{otherWord -> otherWord.getId() == relation.getId() && otherWord.getName() == relation.getName()}) {
+          throw SlimeValidationException.new("Relation refers a word which does not exist")
+        }
+      }
+    }
   }
 
   private void updateRegisteredTitles() {
@@ -409,7 +437,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof PersonalDictionary) {
+    if (oldDictionary instanceof ShaleiaDictionary) {
+      SlimeShaleiaDictionaryConverter converter = SlimeShaleiaDictionaryConverter.new(this, oldDictionary)
+      return converter
+    } else if (oldDictionary instanceof PersonalDictionary) {
       SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
       return converter
     } else if (oldDictionary instanceof SlimeDictionary) {

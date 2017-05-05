@@ -36,14 +36,12 @@
         </Insets>
       </padding>
       <columnConstraints>
-        <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
       <rowConstraints>
         <RowConstraints vgrow="always"/>
       </rowConstraints>
-      <Label text="スクリプト:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <TextArea fx:id="$scriptControl" styleClass="editor" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <TextArea fx:id="$scriptControl" styleClass="editor" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     </GridPane>
   </center>
   <bottom>

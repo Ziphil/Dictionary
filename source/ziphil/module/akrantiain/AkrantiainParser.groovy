@@ -41,7 +41,12 @@ public class AkrantiainParser {
         sentenceParser.addToken(token)
         if (sentenceParser.isEnvironment()) {
           AkrantiainEnvironment environment = sentenceParser.readEnvironment()
-          currentModule.getEnvironments().add(environment)
+          if (environment != null) {
+            currentModule.getEnvironments().add(environment)
+          } else {
+            AkrantiainWarning warning = AkrantiainWarning.new("No such setting identifier", sentenceParser.getTokens().first())
+            $root.getWarnings().add(warning)
+          }
         } else if (sentenceParser.isDefinition()) {
           AkrantiainDefinition definition = sentenceParser.readDefinition()
           AkrantiainToken identifier = definition.getIdentifier()
@@ -52,7 +57,11 @@ public class AkrantiainParser {
           }
         } else if (sentenceParser.isRule()) {
           AkrantiainRule rule = sentenceParser.readRule()
-          currentModule.getRules().add(rule)
+          if (rule.isConcrete()) {
+            currentModule.getRules().add(rule)
+          } else {
+            throw AkrantiainParseException.new("Right side of a sentence consists solely of dollars", token)
+          }
         } else if (sentenceParser.isModuleChain()) {
           List<AkrantiainModuleName> moduleChain = sentenceParser.readModuleChain()
           currentModule.setModuleChain(moduleChain)
@@ -73,7 +82,7 @@ public class AkrantiainParser {
   }
 
   private void ensureSafety() {
-    AkrantiainToken deadIdentifier = $root.findDeadIdentifier()
+    AkrantiainToken deadIdentifier = $root.findUnknownIdentifier()
     if (deadIdentifier != null) {
       throw AkrantiainParseException.new("No such identifier", deadIdentifier)
     }
@@ -81,13 +90,18 @@ public class AkrantiainParser {
     if (circularIdentifier != null) {
       throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)
     }
-    AkrantiainModuleName deadModuleName = $root.findDeadModuleName()
+    AkrantiainModuleName deadModuleName = $root.findUnknownModuleName()
     if (deadModuleName != null) {
       throw AkrantiainParseException.new("No such module", deadModuleName.getTokens())
     }
     AkrantiainModuleName circularModuleName = $root.findCircularModuleName()
     if (circularModuleName != null) {
       throw AkrantiainParseException.new("Circular module definition", circularModuleName.getTokens())
+    }
+    List<AkrantiainModuleName> unusedModuleNames = $root.findUnusedModuleNames()
+    for (AkrantiainModuleName unusedModuleName : unusedModuleNames) {
+      AkrantiainWarning warning = AkrantiainWarning.new("Unused module", unusedModuleName.getTokens())
+      $root.getWarnings().add(warning)
     }
   }
 

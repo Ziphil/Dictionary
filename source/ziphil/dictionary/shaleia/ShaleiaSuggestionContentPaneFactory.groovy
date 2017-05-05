@@ -23,7 +23,7 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
   }
 
   public Pane create() {
-    Integer lineSpacing = Setting.getLineSpacing()
+    Integer lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)

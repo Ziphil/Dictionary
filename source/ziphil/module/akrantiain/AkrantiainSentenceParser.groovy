@@ -29,11 +29,11 @@ public class AkrantiainSentenceParser {
   public AkrantiainEnvironment readEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
-      try {
+      if (AkrantiainEnvironment.contains(token.getText())) {
         AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf(token.getText())
         return environment
-      } catch (IllegalArgumentException exception) {
-        throw AkrantiainParseException.new("No such setting identifier", token)
+      } else {
+        return null
       }
     } else {
       throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens.last())
@@ -102,7 +102,7 @@ public class AkrantiainSentenceParser {
       throw AkrantiainParseException.new("No selects", $tokens.last())
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding \"^\"", $tokens.last())
+      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding circumflexes", $tokens.last())
     }
     return rule
   }

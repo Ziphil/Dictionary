@@ -8,6 +8,17 @@ import ziphilib.transform.Ziphilify
 public enum AkrantiainEnvironment {
 
   CASE_SENSITIVE,
-  FALL_THROUGH
+  FALL_THROUGH,
+  USE_NFD,
+  CUSTOM
+
+  public static Boolean contains(String name) {
+    for (AkrantiainEnvironment value : AkrantiainEnvironment.values()) {
+      if (value.name() == name) {
+        return true
+      }
+    }
+    return false
+  }
 
 }

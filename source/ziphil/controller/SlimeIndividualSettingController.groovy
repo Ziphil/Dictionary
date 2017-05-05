@@ -43,6 +43,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
   private List<SlimeSearchParameter> $registeredParameters
   private String $akrantiainSource
+  private SlimeWord $defaultWord
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
@@ -64,6 +65,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
     List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
     List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
+    SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copiedWord(dictionary.getDefaultWord()) : null
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
     List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
@@ -76,12 +78,13 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
-    $registeredParameters = registeredParameters
-    $akrantiainSource = dictionary.getAkrantiainSource()
     for (Integer i : 0 ..< 10) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
     }
+    $registeredParameters = registeredParameters
+    $akrantiainSource = dictionary.getAkrantiainSource()
+    $defaultWord = defaultWord
   }
 
   @FXML
@@ -89,6 +92,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
+    SlimeWord defaultWord = $defaultWord
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
@@ -97,6 +101,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
+    $dictionary.setDefaultWord(defaultWord)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
     $individualSetting.setRegisteredParameters(registeredParameters)
@@ -139,11 +144,12 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
 
   @FXML
   private void editDefaultWord() {
+    SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.emptyWord(null)
     UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary.getDefaultWord(), $dictionary, false, false)
+    controller.prepare(defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
   }
 

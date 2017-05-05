@@ -47,11 +47,11 @@ public class AkrantiainSequence implements AkrantiainMatchable {
     }
   }
 
-  public AkrantiainToken findDeadIdentifier(AkrantiainModule module) {
+  public AkrantiainToken findUnknownIdentifier(AkrantiainModule module) {
     for (AkrantiainMatchable matchable : $matchables) {
-      AkrantiainToken deadIdentifier = matchable.findDeadIdentifier(module)
-      if (deadIdentifier != null) {
-        return deadIdentifier
+      AkrantiainToken unknownIdentifier = matchable.findUnknownIdentifier(module)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
       }
     }
     return null

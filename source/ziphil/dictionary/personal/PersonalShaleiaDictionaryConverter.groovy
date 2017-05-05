@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.Word
+import ziphil.dictionary.shaleia.ShaleiaDescriptionReader
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphilib.transform.Ziphilify
@@ -29,67 +30,38 @@ public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<Pers
         newWord.setName(oldWord.getName())
         StringBuilder newTranslation = StringBuilder.new()
         StringBuilder newUsage = StringBuilder.new()
-        BufferedReader oldDescriptionReader = BufferedReader.new(StringReader.new(oldWord.getDescription()))
-        for (String line ; (line = oldDescriptionReader.readLine()) != null ;) {
-          Matcher creationDateMatcher = line =~ /^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/
-          Matcher equivalentMatcher = line =~ /^\=\s*〈(.+)〉\s*(.+)$/
-          Matcher meaningMatcher = line =~ /^M>\s*(.+)$/
-          Matcher etymologyMatcher = line =~ /^E>\s*(.+)$/
-          Matcher usageMatcher = line =~ /^U>\s*(.+)$/
-          Matcher phraseMatcher = line =~ /^P>\s*(.+)$/
-          Matcher noteMatcher = line =~ /^N>\s*(.+)$/
-          Matcher taskMatcher = line =~ /^O>\s*(.+)$/
-          Matcher exampleMatcher = line =~ /^S>\s*(.+)$/
-          Matcher synonymMatcher = line =~ /^\-\s*(.+)$/
-          if (creationDateMatcher.matches()) {
-            String creationDate = creationDateMatcher.group(1)
-            String totalPart = creationDateMatcher.group(2)
-            appendCreationDate(newTranslation, totalPart, creationDate)
+        ShaleiaDescriptionReader oldReader = ShaleiaDescriptionReader.new(oldWord.getDescription())
+        try {
+          while (oldReader.readLine() != null) {
+            if (oldReader.findCreationDate()) {
+              String creationDate = oldReader.lookupCreationDate()
+              String totalPart = oldReader.lookupTotalPart()
+              appendCreationDate(newTranslation, totalPart, creationDate)
+            }
+            if (oldReader.findEquivalent()) {
+              String part = oldReader.lookupPart()
+              String equivalent = oldReader.lookupEquivalent()
+              appendEquivalent(newTranslation, part, equivalent)
+            }
+            if (oldReader.findContent()) {
+              String title = oldReader.title()
+              String content = oldReader.lookupContent()
+              appendContent(newUsage, title, content)
+            }
+            if (oldReader.findSynonym()) {
+              String synonym = oldReader.lookupSynonym()
+              appendSynonym(newUsage, synonym)
+            }
           }
-          if (equivalentMatcher.matches()) {
-            String part = equivalentMatcher.group(1)
-            String equivalent = equivalentMatcher.group(2)
-            appendEquivalent(newTranslation, part, equivalent)
-          }
-          if (meaningMatcher.matches()) {
-            String meaning = meaningMatcher.group(1)
-            appendOther(newUsage, "語義", meaning)
-          }
-          if (etymologyMatcher.matches()) {
-            String etymology = etymologyMatcher.group(1)
-            appendOther(newUsage, "語源", etymology)
-          }
-          if (usageMatcher.matches()) {
-            String usage = usageMatcher.group(1)
-            appendOther(newUsage, "語法", usage)
-          }
-          if (phraseMatcher.matches()) {
-            String phrase = phraseMatcher.group(1)
-            appendOther(newUsage, "成句", phrase)
-          }
-          if (noteMatcher.matches()) {
-            String note = noteMatcher.group(1)
-            appendOther(newUsage, "備考", note)
-          }
-          if (taskMatcher.matches()) {
-            String task = taskMatcher.group(1)
-            appendOther(newUsage, "タスク", task)
-          }
-          if (exampleMatcher.matches()) {
-            String example = exampleMatcher.group(1)
-            appendOther(newUsage, "例文", example)
-          }
-          if (synonymMatcher.matches()) {
-            String synonym = synonymMatcher.group(1)
-            appendSynonym(newUsage, synonym)
-          }
+          modifyBreak(newTranslation)
+          modifyBreak(newUsage)
+          newWord.setTranslation(newTranslation.toString())
+          newWord.setUsage(newUsage.toString())
+          newWord.setDictionary($newDictionary)
+          $newWords.add(newWord)
+        } finally {
+          oldReader.close()
         }
-        modifyBreak(newTranslation)
-        modifyBreak(newUsage)
-        newWord.setTranslation(newTranslation.toString())
-        newWord.setUsage(newUsage.toString())
-        newWord.setDictionary($newDictionary)
-        $newWords.add(newWord)
       }
       updateProgress(i + 1, size)
     }
@@ -112,11 +84,11 @@ public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<Pers
     newTranslation.append("\n")
   }
 
-  private void appendOther(StringBuilder newUsage, String title, String other) {
+  private void appendContent(StringBuilder newUsage, String title, String content) {
     newUsage.append("【")
     newUsage.append(title)
     newUsage.append("】\n")
-    newUsage.append(other.replaceAll(/(\{|\}|\[|\]|\/)/, ""))
+    newUsage.append(content.replaceAll(/(\{|\}|\[|\]|\/)/, ""))
     newUsage.append("\n")
   }
 
