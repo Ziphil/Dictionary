@@ -39,6 +39,7 @@ public class Setting {
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
+  private Boolean $keepsMainOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
@@ -284,6 +285,14 @@ public class Setting {
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
     $modifiesPunctuation = modifiesPunctuation
+  }
+
+  public Boolean getKeepsMainOnTop() {
+    return $keepsMainOnTop
+  }
+
+  public void setKeepsMainOnTop(Boolean keepsMainOnTop) {
+    $keepsMainOnTop = keepsMainOnTop
   }
 
   public Boolean getKeepsEditorOnTop() {
