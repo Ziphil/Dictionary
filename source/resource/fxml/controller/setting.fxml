@@ -149,8 +149,8 @@
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
-          <Label text="メインウィンドウ位置:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="編集ウィンドウ位置:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="最前面メインウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <ToggleButton fx:id="$keepsMainOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
@@ -167,7 +167,7 @@
               </Insets>
             </GridPane.margin>
             <Text text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;"/>
-            <Text text="これを有効にする場合は、下の編集ウィンドウ位置も有効にしておくことをお勧めします。"/>
+            <Text text="これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
