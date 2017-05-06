@@ -166,7 +166,8 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="有効にすると、メインウィンドウが常に最前面に表示されます。"/>
+            <Text text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;"/>
+            <Text text="これを有効にする場合は、下の編集ウィンドウ位置も有効にしておくことをお勧めします。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
