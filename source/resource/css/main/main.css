@@ -131,3 +131,8 @@
   CHART_COLOR_7: hsb(0, 0%, 55%);
   CHART_COLOR_8: hsb(0, 0%, 55%);
 }
+
+PieChart {
+  -fx-background-color: -fx-box-border, -fx-control-inner-background;
+  -fx-background-insets: 0px, 1px;
+}
