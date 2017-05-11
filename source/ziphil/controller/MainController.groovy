@@ -936,6 +936,15 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void showStatistics() {
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
+  }
+
+  @FXML
   private void showHelp() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     HelpController controller = HelpController.new(nextStage)

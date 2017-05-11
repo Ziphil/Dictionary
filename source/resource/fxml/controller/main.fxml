@@ -129,6 +129,8 @@
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <SeparatorMenuItem/>
+        <MenuItem text="統計情報" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="hah圧縮" onAction="#executeHahCompression" accelerator="Shortcut+Alt+H">
