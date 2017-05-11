@@ -114,11 +114,11 @@
   CHART_COLOR_1: hsb(0, 60%, 80%);
   CHART_COLOR_2: hsb(30, 60%, 80%);
   CHART_COLOR_3: hsb(60, 65%, 80%);
-  CHART_COLOR_4: hsb(120, 70%, 80%);
+  CHART_COLOR_4: hsb(120, 65%, 80%);
   CHART_COLOR_5: hsb(180, 70%, 80%);
   CHART_COLOR_6: hsb(230, 70%, 80%);
-  CHART_COLOR_7: hsb(280, 65%, 80%);
-  CHART_COLOR_8: hsb(330, 60%, 80%);
+  CHART_COLOR_7: hsb(270, 65%, 80%);
+  CHART_COLOR_8: hsb(320, 60%, 80%);
 }
 
 .other {
