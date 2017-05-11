@@ -5,7 +5,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.chart.PieChart
-import ziphil.Launcher
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
 import ziphil.custom.UtilityStage
