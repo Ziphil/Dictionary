@@ -941,6 +941,7 @@ public class MainController extends PrimitiveController<Stage> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
+    controller.prepare($dictionary)
     nextStage.showAndWait()
   }
 

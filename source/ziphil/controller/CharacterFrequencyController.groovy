@@ -1,9 +1,13 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.chart.PieChart
 import ziphil.Launcher
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Word
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
@@ -25,6 +29,39 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML
   private void initialize() {
+  }
+
+  public void prepare(Dictionary dictionary) {
+    List<PieChart.Data> data = ArrayList.new()
+    for (Word word : dictionary.getRawWords()) {
+      for (String character : word.getName()) {
+        PieChart.Data singleData = data.find{singleData -> singleData.getName() == character}
+        if (singleData != null) {
+          singleData.setPieValue(singleData.getPieValue() + 1)
+        } else {
+          PieChart.Data newData = PieChart.Data.new(character, 1)
+          data.add(newData)
+        }
+      }
+    }
+    data.sort() { PieChart.Data firstData, PieChart.Data secondData ->
+      return secondData.getPieValue() <=> firstData.getPieValue()
+    }
+    List<PieChart.Data> displayedData = ArrayList.new()
+    Integer otherFrequency = 0
+    for (Integer i : 0 ..< data.size()) {
+      PieChart.Data singleData = data[i]
+      if (i < 20) {
+        displayedData.add(singleData)
+      } else {
+        otherFrequency += singleData.getPieValue().toInteger()
+      }
+    }
+    if (otherFrequency > 0) {
+      PieChart.Data otherData = PieChart.Data.new("その他", otherFrequency)
+      displayedData.add(otherData)
+    }
+    $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
   }
 
 }
