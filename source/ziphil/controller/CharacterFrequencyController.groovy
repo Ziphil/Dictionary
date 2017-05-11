@@ -29,6 +29,7 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML
   private void initialize() {
+    setupFrequencyChart()
   }
 
   public void prepare(Dictionary dictionary) {
@@ -62,6 +63,11 @@ public class CharacterFrequencyController extends Controller<Void> {
       displayedData.add(otherData)
     }
     $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
+  }
+
+  private void setupFrequencyChart() {
+    $frequencyChart.setLegendVisible(false)
+    $frequencyChart.setStartAngle(90)
   }
 
 }
