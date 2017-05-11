@@ -58,11 +58,15 @@ public class CharacterFrequencyController extends Controller<Void> {
         otherFrequency += singleData.getPieValue().toInteger()
       }
     }
+    PieChart.Data otherData = null
     if (otherFrequency > 0) {
-      PieChart.Data otherData = PieChart.Data.new("その他", otherFrequency)
+      otherData = PieChart.Data.new("その他", otherFrequency)
       displayedData.add(otherData)
     }
     $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
+    if (otherData != null) {
+      otherData.getNode().getStyleClass().add("other")
+    }
   }
 
   private void setupFrequencyChart() {
