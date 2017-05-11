@@ -15,7 +15,7 @@ import ziphilib.transform.Ziphilify
 public class CharacterFrequencyController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/character_frequency.fxml"
-  private static final String TITLE = "統計情報"
+  private static final String TITLE = "文字頻度"
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
