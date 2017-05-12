@@ -22,6 +22,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   private static final String TITLE = "文字頻度"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
+  protected static final Integer MAX_PIE_SIZE = 20
 
   @FXML private PieChart $frequencyChart
 
@@ -55,7 +56,7 @@ public class CharacterFrequencyController extends Controller<Void> {
     Integer otherFrequency = 0
     for (Integer i : 0 ..< data.size()) {
       PieChart.Data singleData = data[i]
-      if (i < 20) {
+      if (i < MAX_PIE_SIZE) {
         displayedData.add(singleData)
       } else {
         otherFrequency += singleData.getPieValue().toInteger()
@@ -70,7 +71,7 @@ public class CharacterFrequencyController extends Controller<Void> {
     if (otherData != null) {
       otherData.getNode().getStyleClass().add("other")
       Platform.runLater() {
-        Node otherLegendNode = $frequencyChart.lookup(".data20.pie-legend-symbol")
+        Node otherLegendNode = $frequencyChart.lookup(".data${MAX_PIE_SIZE}.pie-legend-symbol")
         otherLegendNode.getStyleClass().add("other-legend-symbol")
       }
     }
