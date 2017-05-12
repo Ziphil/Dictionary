@@ -128,8 +128,3 @@
 .other-legend-symbol {
   -fx-background-color: radial-gradient(radius 100%, derive(hsb(0, 0%, 55%), 20%), derive(hsb(0, 0%, 55%), -10%));
 }
-
-PieChart {
-  -fx-background-color: -fx-box-border, -fx-control-inner-background;
-  -fx-background-insets: 0px, 1px;
-}
