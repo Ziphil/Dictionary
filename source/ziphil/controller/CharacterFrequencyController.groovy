@@ -49,8 +49,8 @@ public class CharacterFrequencyController extends Controller<Void> {
         }
       }
     }
-    data.sort() { PieChart.Data firstData, PieChart.Data secondData ->
-      return secondData.getPieValue() <=> firstData.getPieValue()
+    data.sort() { PieChart.Data firstSingleData, PieChart.Data secondSingleData ->
+      return secondSingleData.getPieValue() <=> firstSingleData.getPieValue()
     }
     List<PieChart.Data> displayedData = ArrayList.new()
     Integer otherFrequency = 0
@@ -62,14 +62,14 @@ public class CharacterFrequencyController extends Controller<Void> {
         otherFrequency += singleData.getPieValue().toInteger()
       }
     }
-    PieChart.Data otherData = null
+    PieChart.Data otherSingleData = null
     if (otherFrequency > 0) {
-      otherData = PieChart.Data.new("その他", otherFrequency)
-      displayedData.add(otherData)
+      otherSingleData = PieChart.Data.new("その他", otherFrequency)
+      displayedData.add(otherSingleData)
     }
     $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
-    if (otherData != null) {
-      otherData.getNode().getStyleClass().add("other")
+    if (otherSingleData != null) {
+      otherSingleData.getNode().getStyleClass().add("other")
       Platform.runLater() {
         Node otherLegendNode = $frequencyChart.lookup(".data${MAX_PIE_SIZE}.pie-legend-symbol")
         otherLegendNode.getStyleClass().add("other-legend-symbol")
