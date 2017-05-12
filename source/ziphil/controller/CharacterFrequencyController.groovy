@@ -1,12 +1,16 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
+import javafx.geometry.Side
+import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
+import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
@@ -65,11 +69,15 @@ public class CharacterFrequencyController extends Controller<Void> {
     $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
     if (otherData != null) {
       otherData.getNode().getStyleClass().add("other")
+      Platform.runLater() {
+        Node otherLegendNode = $frequencyChart.lookup(".data20.pie-legend-symbol")
+        otherLegendNode.getStyleClass().add("other-legend-symbol")
+      }
     }
   }
 
   private void setupFrequencyChart() {
-    $frequencyChart.setLegendVisible(false)
+    $frequencyChart.setLegendSide(Side.RIGHT)
     $frequencyChart.setStartAngle(90)
   }
 

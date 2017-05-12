@@ -121,15 +121,12 @@
   CHART_COLOR_8: hsb(320, 60%, 80%);
 }
 
-.other {
-  CHART_COLOR_1: hsb(0, 0%, 55%);
-  CHART_COLOR_2: hsb(0, 0%, 55%);
-  CHART_COLOR_3: hsb(0, 0%, 55%);
-  CHART_COLOR_4: hsb(0, 0%, 55%);
-  CHART_COLOR_5: hsb(0, 0%, 55%);
-  CHART_COLOR_6: hsb(0, 0%, 55%);
-  CHART_COLOR_7: hsb(0, 0%, 55%);
-  CHART_COLOR_8: hsb(0, 0%, 55%);
+.other.chart-pie {
+  -fx-pie-color: hsb(0, 0%, 55%);
+}
+
+.other-legend-symbol {
+  -fx-background-color: radial-gradient(radius 100%, derive(hsb(0, 0%, 55%), 20%), derive(hsb(0, 0%, 55%), -10%));
 }
 
 PieChart {
