@@ -137,6 +137,17 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           Integer nextCodePoint = $reader.read()
           if (nextCodePoint == separator || nextCodePoint == '\\') {
             currentContent.appendCodePoint(nextCodePoint)
+          } else if (nextCodePoint == 'u') {
+            StringBuilder escapeCodePointString = StringBuilder.new()
+            for (Integer i : 0 ..< 4) {
+              Integer escapeCodePoint = $reader.read()
+              if (AkrantiainLexer.isHex(escapeCodePoint)) {
+                escapeCodePointString.appendCodePoint(escapeCodePoint)
+              } else {
+                throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader)
+              }
+            }
+            currentContent.appendCodePoint(Integer.parseInt(escapeCodePointString.toString(), 16))
           } else {
             throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader)
           }
@@ -232,6 +243,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   public static Boolean isLetter(Integer codePoint) {
     return (codePoint >= 48 && codePoint <= 57) || (codePoint >= 65 && codePoint <= 90) || (codePoint >= 97 && codePoint <= 122) || codePoint == 95
+  }
+
+  public static Boolean isHex(Integer codePoint) {
+    return (codePoint >= 48 && codePoint <= 57) || (codePoint >= 65 && codePoint <= 70) || (codePoint >= 97 && codePoint <= 102)
   }
 
   public void close() {
