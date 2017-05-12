@@ -97,6 +97,10 @@
   -fx-fill: -fx-text-base-color;
 }
 
+.large {
+  -fx-font-size: 1.35em;
+}
+
 .transparent {
   -fx-background-color: transparent;
   -fx-background-insets: 0px;

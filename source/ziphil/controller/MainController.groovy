@@ -938,7 +938,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showStatistics() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
+    StatisticsController controller = StatisticsController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary)
