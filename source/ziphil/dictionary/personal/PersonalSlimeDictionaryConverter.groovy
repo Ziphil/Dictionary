@@ -1,7 +1,6 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
-import java.util.Map.Entry
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.Word
 import ziphil.dictionary.slime.SlimeDictionary
@@ -37,7 +36,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
       for (SlimeInformation oldInformation : oldWord.sortedInformations()) {
         appendInformation(newUsage, oldInformation.getTitle(), oldInformation.getText())
       }
-      for (Entry<String, List<SlimeRelation>> oldEntry : oldWord.groupedRelations()) {
+      for (Map.Entry<String, List<SlimeRelation>> oldEntry : oldWord.groupedRelations()) {
         String oldTitle = oldEntry.getKey()
         List<String> oldNames = oldEntry.getValue().collect{relation -> relation.getName()}
         appendRelation(newUsage, oldTitle, oldNames)

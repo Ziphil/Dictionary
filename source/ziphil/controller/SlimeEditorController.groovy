@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import java.util.Map.Entry
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.fxml.FXML
@@ -109,7 +108,7 @@ public class SlimeEditorController extends Controller<Boolean> {
       addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
     Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{variation -> variation.getTitle()}
-    for (Entry<String, List<SlimeVariation>> entry : groupedVariations) {
+    for (Map.Entry<String, List<SlimeVariation>> entry : groupedVariations) {
       String title = entry.getKey()
       List<SlimeVariation> variationGroup = entry.getValue()
       String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")

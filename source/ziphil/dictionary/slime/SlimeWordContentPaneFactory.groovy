@@ -1,7 +1,6 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import java.util.Map.Entry
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -51,7 +50,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
       addInformationNode(contentPane, information.getTitle(), information.getText())
       hasInformation = true
     }
-    for (Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
+    for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
       List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
