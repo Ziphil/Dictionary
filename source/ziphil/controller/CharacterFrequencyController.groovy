@@ -8,6 +8,7 @@ import javafx.fxml.FXML
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
+import javafx.scene.control.Tooltip
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
@@ -38,6 +39,7 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   public void prepare(Dictionary dictionary) {
     List<PieChart.Data> data = ArrayList.new()
+    Integer totalFrequency = 0
     for (Word word : dictionary.getRawWords()) {
       for (String character : word.getName()) {
         PieChart.Data singleData = data.find{singleData -> singleData.getName() == character}
@@ -47,6 +49,7 @@ public class CharacterFrequencyController extends Controller<Void> {
           PieChart.Data newData = PieChart.Data.new(character, 1)
           data.add(newData)
         }
+        totalFrequency ++
       }
     }
     data.sort() { PieChart.Data firstSingleData, PieChart.Data secondSingleData ->
@@ -68,6 +71,12 @@ public class CharacterFrequencyController extends Controller<Void> {
       displayedData.add(otherSingleData)
     }
     $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
+    for (PieChart.Data singleData : displayedData) {
+      Integer frequency = singleData.getPieValue().toInteger()
+      Double percentage = (Double)(frequency * 100 / totalFrequency)
+      String formattedPercentage = String.format("%.2f", percentage)
+      Tooltip.install(singleData.getNode(), Tooltip.new("${frequency} (${formattedPercentage}%)"))
+    }
     if (otherSingleData != null) {
       otherSingleData.getNode().getStyleClass().add("other")
       Platform.runLater() {
