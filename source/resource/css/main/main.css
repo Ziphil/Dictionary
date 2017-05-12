@@ -98,7 +98,16 @@
 }
 
 .large {
-  -fx-font-size: 1.35em;
+  -fx-font-size: 1.2em;
+  -fx-text-fill: -fx-text-inner-color;
+  -fx-highlight-fill: derive(-fx-control-inner-background, -20%);
+  -fx-highlight-text-fill: -fx-text-inner-color;
+  -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+  -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border), -fx-background;
+  -fx-background-insets: 0px, 1px;
+  -fx-background-radius: 3px, 2px;
+  -fx-padding: 0.166667em 0.583333em 0.166667em 0.583333em;
+  -fx-alignment: baseline-right;
 }
 
 .transparent {

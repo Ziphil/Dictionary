@@ -2,7 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.scene.text.Text
+import javafx.scene.control.Label
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.dictionary.Dictionary
@@ -19,12 +19,12 @@ public class StatisticsController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private Text $wordSizeText
-  @FXML private Text $tokiponaText
-  @FXML private Text $logTokiponaText
-  @FXML private Text $averageWordNameLengthText
-  @FXML private Text $contentLengthText
-  @FXML private Text $richnessText
+  @FXML private Label $wordSizeText
+  @FXML private Label $tokiponaText
+  @FXML private Label $logTokiponaText
+  @FXML private Label $averageWordNameLengthText
+  @FXML private Label $contentLengthText
+  @FXML private Label $richnessText
   private Dictionary $dictionary
 
   public StatisticsController(UtilityStage<Void> stage) {

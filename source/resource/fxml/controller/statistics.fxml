@@ -12,8 +12,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 <?import ziphil.module.Setting?>
 
 
@@ -44,29 +42,52 @@
       <Label text="内容長:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Label text="内容密度:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="文字頻度:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-      <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <Text fx:id="$wordSizeText" styleClass="large" text="0"/>
-        <Text text=" 語, "/>
-        <Text fx:id="$tokiponaText" styleClass="large" text="0.00"/>
-        <Text text=" TP, "/>
-        <Text fx:id="$logTokiponaText" styleClass="large" text="0.00"/>
-        <Text text=" PTP"/>
-      </TextFlow>
-      <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <Text fx:id="$averageWordNameLengthText" styleClass="large" text="0.00"/>
-        <Text text=" 文字"/>
-      </TextFlow>
-      <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
-        <Text fx:id="$contentLengthText" styleClass="large" text="0.00"/>
-        <Text text=" 文字"/>
-      </TextFlow>
-      <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-        <Text fx:id="$richnessText" styleClass="large" text="0.00"/>
-        <Text text=" 文字/語"/>
-      </TextFlow>
+      <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <spacing><Double rpx="5"/></spacing>
+        <HBox alignment="baselineLeft">
+          <Label fx:id="$wordSizeText" styleClass="large" text="0">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" 語"/>
+        </HBox>
+        <HBox alignment="baselineLeft">
+          <Label fx:id="$tokiponaText" styleClass="large" text="0.00">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" TP ("/>
+          <Label fx:id="$logTokiponaText" styleClass="large" text="0.00">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" PTP)"/>
+        </HBox>
+      </VBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Label fx:id="$averageWordNameLengthText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Label>
+        <Label text=" 文字"/>
+      </HBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label fx:id="$contentLengthText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="90"/></prefWidth>
+          <minWidth><Double rpx="90"/></minWidth>
+        </Label>
+        <Label text=" 文字"/>
+      </HBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Label fx:id="$richnessText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Label>
+        <Label text=" 文字/語"/>
+      </HBox>
       <Button text="表示" onAction="#showCharacterFrequency" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <prefWidth><Double rpx="80"/></prefWidth>
-        <minWidth><Double rpx="80"/></minWidth>
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
       </Button>
     </GridPane>
   </center>
