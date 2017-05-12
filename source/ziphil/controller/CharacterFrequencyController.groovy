@@ -22,7 +22,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/character_frequency.fxml"
   private static final String TITLE = "文字頻度"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(370)
   protected static final Integer MAX_PIE_SIZE = 20
 
   @FXML private PieChart $frequencyChart
