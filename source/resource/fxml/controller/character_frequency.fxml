@@ -30,12 +30,7 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
-      <PieChart fx:id="$frequencyChart" animated="false">
-          <prefWidth><Double rpx="400"/></prefWidth>
-          <minWidth><Double rpx="400"/></minWidth>
-          <prefHeight><Double rpx="400"/></prefHeight>
-          <minHeight><Double rpx="400"/></minHeight>
-      </PieChart>
+      <PieChart fx:id="$frequencyChart" animated="false"/>
     </VBox>
   </center>
   <bottom>
