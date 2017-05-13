@@ -302,11 +302,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.addListener(listener)
   }
 
-  public Integer hitSize() {
+  public Integer hitWordSize() {
     return $shufflableWords.size()
   }
 
-  public Integer totalSize() {
+  public Integer totalWordSize() {
     return $words.size()
   }
 

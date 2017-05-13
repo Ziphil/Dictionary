@@ -34,7 +34,7 @@ public class StatisticsController extends Controller<Void> {
 
   public void prepare(Dictionary dictionary) {
     $dictionary = dictionary
-    Integer wordSize = dictionary.totalSize()
+    Integer wordSize = dictionary.totalWordSize()
     Double tokipona = (Double)(wordSize / 120)
     Double logTokipona = Math.log10(tokipona)
     Integer wordNameLength = 0

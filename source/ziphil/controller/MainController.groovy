@@ -337,8 +337,8 @@ public class MainController extends PrimitiveController<Stage> {
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
     $elapsedTimeLabel.setText(elapsedTime.toString())
-    $hitWordSizeLabel.setText($dictionary.hitSize().toString())
-    $totalWordSizeLabel.setText($dictionary.totalSize().toString())
+    $hitWordSizeLabel.setText($dictionary.hitWordSize().toString())
+    $totalWordSizeLabel.setText($dictionary.totalWordSize().toString())
     $wordView.scrollTo(0)
   }
 

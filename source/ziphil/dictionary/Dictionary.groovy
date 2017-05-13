@@ -34,9 +34,9 @@ public interface Dictionary<W extends Word> {
 
   public void saveBackup()
 
-  public Integer hitSize()
+  public Integer hitWordSize()
 
-  public Integer totalSize()
+  public Integer totalWordSize()
 
   public String getName() 
 
