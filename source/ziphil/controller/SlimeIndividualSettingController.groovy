@@ -61,10 +61,10 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   public void prepare(SlimeDictionary dictionary, SlimeIndividualSetting individualSetting) {
     $dictionary = dictionary
     $individualSetting = individualSetting
-    List<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
-    List<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
+    ObservableList<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
+    ObservableList<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
     List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
-    List<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
+    ObservableList<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
     SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copiedWord(dictionary.getDefaultWord()) : null
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
     List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
