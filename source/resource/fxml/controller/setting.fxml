@@ -362,7 +362,7 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに自動的に使われていないIDを割り振ります。"/>
+            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
