@@ -45,6 +45,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private SlimeWord $defaultWord = SlimeWord.new()
   private Akrantiain $akrantiain = null
   private String $akrantiainSource = null
+  private List<RelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
 
@@ -149,6 +150,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
+    complyRelationRequests()
     updateOnBackground()
   }
 
@@ -157,6 +159,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       word.setId($validMinId)
     }
     $words.add(word)
+    complyRelationRequests()
     updateOnBackground()
   }
 
@@ -169,6 +172,20 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     }
     $words.remove(word)
     updateOnBackground()
+  }
+
+  public void requestRelation(SlimeWord word, SlimeRelation relation) {
+    RelationRequest request = RelationRequest.new(word, relation)
+    $relationRequests.add(request)
+  }
+
+  private void complyRelationRequests() {
+    for (RelationRequest request : $relationRequests) {
+      SlimeWord word = request.getWord()
+      word.getRelations().add(request.getRelation())
+      word.update()
+    }
+    $relationRequests.clear()
   }
 
   public void update() {
@@ -569,6 +586,28 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+}
+
+
+@InnerClass(SlimeDictionary)
+private static class RelationRequest {
+
+  private SlimeWord $word
+  private SlimeRelation $relation
+
+  public RelationRequest(SlimeWord word, SlimeRelation relation) {
+    $word = word
+    $relation = relation
+  }
+
+  public SlimeWord getWord() {
+    return $word
+  }
+
+  public SlimeRelation getRelation() {
+    return $relation
   }
 
 }
