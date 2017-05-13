@@ -47,6 +47,7 @@ public class Setting {
   private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
+  private Boolean $asksMutualRelation = true
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
 
@@ -349,6 +350,14 @@ public class Setting {
 
   public void setShowsSlimeId(Boolean showsSlimeId) {
     $showsSlimeId = showsSlimeId
+  }
+
+  public Boolean getAsksMutualRelation() {
+    return $asksMutualRelation
+  }
+
+  public void setAsksMutualRelation(Boolean asksMutualRelation) {
+    $asksMutualRelation = asksMutualRelation
   }
 
   public String getPassword() {

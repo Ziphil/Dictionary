@@ -342,11 +342,16 @@
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <ToggleButton fx:id="$ignoresDuplicateSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
           <ToggleButton fx:id="$showsSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$asksMutualRelationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -363,9 +368,18 @@
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語の編集画面にIDを表示します。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。"/>
           </TextFlow>
         </GridPane>
       </Tab>

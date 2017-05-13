@@ -464,6 +464,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void chooseRelation(HBox box) {
     UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)
+    Boolean asksMutualRelation = Setting.getInstance().getAsksMutualRelation()
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
@@ -474,7 +475,7 @@ public class SlimeEditorController extends Controller<Boolean> {
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNameControls[index].setText(word.getName())
-        if (true) {
+        if (asksMutualRelation) {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("関連語相互参照")
