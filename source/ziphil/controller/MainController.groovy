@@ -337,8 +337,8 @@ public class MainController extends PrimitiveController<Stage> {
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
     $elapsedTimeLabel.setText(elapsedTime.toString())
-    $hitWordSizeLabel.setText($dictionary.hitSize().toString())
-    $totalWordSizeLabel.setText($dictionary.totalSize().toString())
+    $hitWordSizeLabel.setText($dictionary.hitWordSize().toString())
+    $totalWordSizeLabel.setText($dictionary.totalWordSize().toString())
     $wordView.scrollTo(0)
   }
 
@@ -933,6 +933,16 @@ public class MainController extends PrimitiveController<Stage> {
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
+  }
+
+  @FXML
+  private void showStatistics() {
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    StatisticsController controller = StatisticsController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare($dictionary)
+    nextStage.showAndWait()
   }
 
   @FXML

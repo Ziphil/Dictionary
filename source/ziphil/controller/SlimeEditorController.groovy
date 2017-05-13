@@ -1,7 +1,6 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
-import java.util.Map.Entry
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.fxml.FXML
@@ -72,6 +71,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private SlimeWord $word
   private SlimeDictionary $dictionary
   private Boolean $isNormal
+  private List<RelationRequest> $relationRequests = ArrayList.new()
 
   public SlimeEditorController(UtilityStage<Boolean> nextStage) {
     super(nextStage)
@@ -109,7 +109,7 @@ public class SlimeEditorController extends Controller<Boolean> {
       addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
     Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{variation -> variation.getTitle()}
-    for (Entry<String, List<SlimeVariation>> entry : groupedVariations) {
+    for (Map.Entry<String, List<SlimeVariation>> entry : groupedVariations) {
       String title = entry.getKey()
       List<SlimeVariation> variationGroup = entry.getValue()
       String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
@@ -193,8 +193,14 @@ public class SlimeEditorController extends Controller<Boolean> {
         for (Integer i : 0 ..< $relationTitleControls.size()) {
           String title = $relationTitleControls[i].getValue()
           SlimeRelation relation = $relations[i]
+          HBox box = (HBox)$relationBox.getChildren()[i]
           if (relation != null) {
             relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+          }
+          for (RelationRequest request : $relationRequests) {
+            if (request.getBox() == box) {
+              request.setTitle(title)
+            }
           }
         }
         $word.setId(id)
@@ -205,6 +211,12 @@ public class SlimeEditorController extends Controller<Boolean> {
         $word.setVariations(variations)
         $word.setRelations(relations)
         $word.update()
+        for (RelationRequest request : $relationRequests) {
+          String title = request.getTitle()
+          if (title != null) {
+            $dictionary.requestRelation(request.getWord(), SlimeRelation.new(title, id, name))
+          }
+        }
         $stage.commit(true)
       } else {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
@@ -452,6 +464,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private void chooseRelation(HBox box) {
     UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)
+    Boolean asksMutualRelation = Setting.getInstance().getAsksMutualRelation()
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
@@ -462,6 +475,18 @@ public class SlimeEditorController extends Controller<Boolean> {
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNameControls[index].setText(word.getName())
+        if (asksMutualRelation) {
+          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          dialog.initOwner($stage)
+          dialog.setTitle("関連語相互参照")
+          dialog.setContentText("この関連語を相互参照にしますか? ここで関連語に設定した単語に、この単語が関連語として追加されます。")
+          dialog.setCommitText("はい")
+          dialog.setCancelText("いいえ")
+          dialog.showAndWait()
+          if (dialog.isCommitted()) {
+            $relationRequests.add(RelationRequest.new(null, word, box))
+          }
+        }
       }
     } else {
       removeRelationControl(box)
@@ -716,6 +741,38 @@ public class SlimeEditorController extends Controller<Boolean> {
       }
     }
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  }
+
+}
+
+
+@InnerClass(SlimeEditorController)
+private static class RelationRequest {
+
+  private String $title
+  private SlimeWord $word
+  private HBox $box
+
+  public RelationRequest(String title, SlimeWord word, HBox box) {
+    $title = title
+    $word = word
+    $box = box
+  }
+
+  public String getTitle() {
+    return $title
+  }
+
+  public void setTitle(String title) {
+    $title = title
+  }
+
+  public SlimeWord getWord() {
+    return $word
+  }
+
+  public HBox getBox() {
+    return $box
   }
 
 }

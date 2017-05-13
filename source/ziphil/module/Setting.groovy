@@ -39,6 +39,7 @@ public class Setting {
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
+  private Boolean $keepsMainOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
@@ -46,6 +47,7 @@ public class Setting {
   private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
+  private Boolean $asksMutualRelation = true
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
 
@@ -286,6 +288,14 @@ public class Setting {
     $modifiesPunctuation = modifiesPunctuation
   }
 
+  public Boolean getKeepsMainOnTop() {
+    return $keepsMainOnTop
+  }
+
+  public void setKeepsMainOnTop(Boolean keepsMainOnTop) {
+    $keepsMainOnTop = keepsMainOnTop
+  }
+
   public Boolean getKeepsEditorOnTop() {
     return $keepsEditorOnTop
   }
@@ -340,6 +350,14 @@ public class Setting {
 
   public void setShowsSlimeId(Boolean showsSlimeId) {
     $showsSlimeId = showsSlimeId
+  }
+
+  public Boolean getAsksMutualRelation() {
+    return $asksMutualRelation
+  }
+
+  public void setAsksMutualRelation(Boolean asksMutualRelation) {
+    $asksMutualRelation = asksMutualRelation
   }
 
   public String getPassword() {

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import ziphil.module.Setting?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
+  </stylesheets>
+  <center>
+    <GridPane>
+      <vgap><Double rpx="5"/></vgap>
+      <hgap><Double rpx="5"/></hgap>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <columnConstraints>
+        <ColumnConstraints hgrow="never"/>
+        <ColumnConstraints hgrow="always"/>
+      </columnConstraints>
+      <Label text="単語数:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="平均単語長:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="内容長:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="内容密度:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Label text="文字頻度:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <spacing><Double rpx="5"/></spacing>
+        <HBox alignment="baselineLeft">
+          <Label fx:id="$wordSizeText" styleClass="large" text="0">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" 語"/>
+        </HBox>
+        <HBox alignment="baselineLeft">
+          <Label fx:id="$tokiponaText" styleClass="large" text="0.00">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" TP ("/>
+          <Label fx:id="$logTokiponaText" styleClass="large" text="0.00">
+            <prefWidth><Double rpx="80"/></prefWidth>
+            <minWidth><Double rpx="80"/></minWidth>
+          </Label>
+          <Label text=" PTP)"/>
+        </HBox>
+      </VBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Label fx:id="$averageWordNameLengthText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Label>
+        <Label text=" 文字"/>
+      </HBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label fx:id="$contentLengthText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="90"/></prefWidth>
+          <minWidth><Double rpx="90"/></minWidth>
+        </Label>
+        <Label text=" 文字"/>
+      </HBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Label fx:id="$richnessText" styleClass="large" text="0.00">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Label>
+        <Label text=" 文字/語"/>
+      </HBox>
+      <Button text="表示" onAction="#showCharacterFrequency" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+      </Button>
+    </GridPane>
+  </center>
+  <bottom>
+    <AnchorPane>
+      <HBox spacing="5">
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="OK" onAction="#commit" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+      </HBox>
+    </AnchorPane>
+  </bottom>
+</BorderPane>
+

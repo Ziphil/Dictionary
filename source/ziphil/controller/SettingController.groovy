@@ -52,6 +52,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private ToggleButton $modifiesPunctuationControl
+  @FXML private ToggleButton $keepsMainOnTopControl
   @FXML private ToggleButton $keepsEditorOnTopControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -62,6 +63,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ToggleButton $searchesPrefixControl
   @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
   @FXML private ToggleButton $showsSlimeIdControl
+  @FXML private ToggleButton $asksMutualRelationControl
 
   public SettingController(UtilityStage<Boolean> nextStage) {
     super(nextStage)
@@ -91,6 +93,7 @@ public class SettingController extends Controller<Boolean> {
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
+    Boolean keepsMainOnTop = setting.getKeepsMainOnTop() == true
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop() == true
     Boolean savesAutomatically = setting.getSavesAutomatically() == true
     Boolean ignoresAccent = setting.getIgnoresAccent() == true
@@ -98,6 +101,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean searchesPrefix = setting.getSearchesPrefix() == true
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
     Boolean showsSlimeId = setting.getShowsSlimeId() == true
+    Boolean asksMutualRelation = setting.getAsksMutualRelation()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
@@ -134,6 +138,7 @@ public class SettingController extends Controller<Boolean> {
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
+    $keepsMainOnTopControl.setSelected(keepsMainOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
@@ -141,6 +146,7 @@ public class SettingController extends Controller<Boolean> {
     $searchesPrefixControl.setSelected(searchesPrefix)
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
+    $asksMutualRelationControl.setSelected(asksMutualRelation)
     for (Integer i : 0 ..< 10) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
@@ -164,6 +170,7 @@ public class SettingController extends Controller<Boolean> {
     String scriptName = $scriptControl.getValue().getNames()[0]
     FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
+    Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
@@ -171,6 +178,7 @@ public class SettingController extends Controller<Boolean> {
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
+    Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{control -> control.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{control -> control.getText()}
     setting.setContentFontFamily(contentFontFamily)
@@ -183,6 +191,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setScriptName(scriptName)
     setting.setFontRenderingType(fontRenderingType)
     setting.setModifiesPunctuation(modifiesPunctuation)
+    setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
@@ -190,6 +199,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setSearchesPrefix(searchesPrefix)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
+    setting.setAsksMutualRelation(asksMutualRelation)
     for (Integer i : 0 ..< 10) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
@@ -290,6 +300,7 @@ public class SettingController extends Controller<Boolean> {
 
   private void bindOtherProperties() {
     $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
+    $keepsMainOnTopControl.textProperty().bind(CustomBindings.whichString($keepsMainOnTopControl, "有効", "無効"))
     $keepsEditorOnTopControl.textProperty().bind(CustomBindings.whichString($keepsEditorOnTopControl, "有効", "無効"))
     $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
     $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
@@ -297,6 +308,7 @@ public class SettingController extends Controller<Boolean> {
     $searchesPrefixControl.textProperty().bind(CustomBindings.whichString($searchesPrefixControl, "有効", "無効"))
     $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
     $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
+    $asksMutualRelationControl.textProperty().bind(CustomBindings.whichString($asksMutualRelationControl, "有効", "無効"))
   }
 
 }

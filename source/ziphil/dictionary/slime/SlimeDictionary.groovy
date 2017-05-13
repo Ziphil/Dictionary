@@ -32,7 +32,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Integer $validMinId = 0
+  private Integer $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
@@ -45,6 +45,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private SlimeWord $defaultWord = SlimeWord.new()
   private Akrantiain $akrantiain = null
   private String $akrantiainSource = null
+  private List<RelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
   private Consumer<Integer> $onLinkClicked
 
@@ -136,6 +137,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
+      for (RelationRequest request : $relationRequests) {
+        SlimeRelation requestRelation = request.getRelation()
+        if (requestRelation.getId() == newWord.getId()) {
+          requestRelation.setId($validMinId)
+        }
+      }
       newWord.setId($validMinId)
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
@@ -149,14 +156,22 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
+    complyRelationRequests()
     updateOnBackground()
   }
 
   public void addWord(SlimeWord word) {
     if (containsId(word.getId(), word)) {
+      for (RelationRequest request : $relationRequests) {
+        SlimeRelation requestRelation = request.getRelation()
+        if (requestRelation.getId() == word.getId()) {
+          requestRelation.setId($validMinId)
+        }
+      }
       word.setId($validMinId)
     }
     $words.add(word)
+    complyRelationRequests()
     updateOnBackground()
   }
 
@@ -169,6 +184,20 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     }
     $words.remove(word)
     updateOnBackground()
+  }
+
+  public void requestRelation(SlimeWord word, SlimeRelation relation) {
+    RelationRequest request = RelationRequest.new(word, relation)
+    $relationRequests.add(request)
+  }
+
+  private void complyRelationRequests() {
+    for (RelationRequest request : $relationRequests) {
+      SlimeWord word = request.getWord()
+      word.getRelations().add(request.getRelation())
+      word.update()
+    }
+    $relationRequests.clear()
   }
 
   public void update() {
@@ -211,17 +240,32 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void validateRelations() {
+    Map<Integer, String> wordNames = HashMap.new()
+    Map<Integer, String> relationNames = HashMap.new()
     for (SlimeWord word : $words) {
+      Integer wordId = word.getId()
+      wordNames[wordId] = word.getName()
       for (SlimeRelation relation : word.getRelations()) {
-        if (!$words.any{otherWord -> otherWord.getId() == relation.getId() && otherWord.getName() == relation.getName()}) {
-          throw SlimeValidationException.new("Relation refers a word which does not exist")
+        Integer relationId = relation.getId()
+        String previousRelationName = relationNames[relationId]
+        if (previousRelationName == null) {
+          relationNames[relation.getId()] = relation.getName()
+        } else {
+          if (relation.getName() != previousRelationName) {
+            throw SlimeValidationException.new("Invalid relation")
+          }
         }
+      }
+    }
+    for (Map.Entry<Integer, String> entry : relationNames) {
+      if (wordNames[entry.getKey()] != entry.getValue()) {
+        throw SlimeValidationException.new("Invalid relation")
       }
     }
   }
 
   private void updateRegisteredTitles() {
-    $validMinId = -1
+    $validMinId = 0
     $registeredTags.clear()
     $registeredEquivalentTitles.clear()
     $registeredInformationTitles.clear()
@@ -554,6 +598,28 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
     $onLinkClicked = onLinkClicked
+  }
+
+}
+
+
+@InnerClass(SlimeDictionary)
+private static class RelationRequest {
+
+  private SlimeWord $word
+  private SlimeRelation $relation
+
+  public RelationRequest(SlimeWord word, SlimeRelation relation) {
+    $word = word
+    $relation = relation
+  }
+
+  public SlimeWord getWord() {
+    return $word
+  }
+
+  public SlimeRelation getRelation() {
+    return $relation
   }
 
 }

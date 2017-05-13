@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 11, 0, 1930)
+  public static final Version VERSION = Version.new(1, 12, 0, 1938)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String BASE_PATH = createBasePath()
@@ -51,6 +51,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.12. 0 | 辞書の統計情報を表示する機能を追加。 
+//          | OneToMany 形式の編集時に関連語を自動的に相互参照にする機能を追加。
+//          | ウィンドウを常に最前面に表示するかを設定する機能を追加。
 //  1.11. 0 | シャレイア語辞典形式を OneToMany 形式に変換する機能を追加。
 //          | ver 0.6.1 相当の akrantiain に対応。
 //          | OneToMany 形式でデフォルトデータを設定するとエラーになる不具合を修正。

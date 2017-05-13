@@ -50,7 +50,6 @@
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="行間調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -98,10 +97,6 @@
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <ToggleButton fx:id="$keepsEditorOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="10">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
               <Insets>
@@ -135,13 +130,46 @@
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="句読点や括弧類の周りのスペースを調整します。&#10;"/>
             <Text text="フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
           </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="11">
+        </GridPane>
+      </Tab>
+      <Tab text="ウィンドウ" closable="false">
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <Label text="最前面メインウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <ToggleButton fx:id="$keepsMainOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$keepsEditorOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
+            <Text text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;"/>
+            <Text text="これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
@@ -314,11 +342,16 @@
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <ToggleButton fx:id="$ignoresDuplicateSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
           <ToggleButton fx:id="$showsSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <ToggleButton fx:id="$asksMutualRelationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
@@ -329,15 +362,24 @@
                 <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
-            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに自動的に使われていないIDを割り振ります。"/>
+            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
               </Insets>
             </GridPane.margin>
             <Text text="単語の編集画面にIDを表示します。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。"/>
           </TextFlow>
         </GridPane>
       </Tab>

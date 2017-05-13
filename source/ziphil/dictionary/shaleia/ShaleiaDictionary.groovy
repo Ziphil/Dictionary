@@ -218,7 +218,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $suggestions.addAll(conjugationSuggestion, changeSuggestion)
   }
 
-  public Integer totalSize() {
+  public Integer totalWordSize() {
     return $words.size() - $systemWordSize
   }
 

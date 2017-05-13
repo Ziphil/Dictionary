@@ -54,6 +54,14 @@
   -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
+.chart {
+  -fx-padding: 0px;
+}
+
+.chart-content {
+  -fx-padding: 0px;
+}
+
 Text {
   -fx-font-smoothing-type: lcd;
 }
