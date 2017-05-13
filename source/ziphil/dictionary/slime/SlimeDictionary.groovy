@@ -211,11 +211,26 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void validateRelations() {
+    Map<Integer, String> wordNames = HashMap.new()
+    Map<Integer, String> relationNames = HashMap.new()
     for (SlimeWord word : $words) {
+      Integer wordId = word.getId()
+      wordNames[wordId] = word.getName()
       for (SlimeRelation relation : word.getRelations()) {
-        if (!$words.any{otherWord -> otherWord.getId() == relation.getId() && otherWord.getName() == relation.getName()}) {
-          throw SlimeValidationException.new("Relation refers a word which does not exist")
+        Integer relationId = relation.getId()
+        String previousRelationName = relationNames[relationId]
+        if (previousRelationName == null) {
+          relationNames[relation.getId()] = relation.getName()
+        } else {
+          if (relation.getName() != previousRelationName) {
+            throw SlimeValidationException.new("Invalid relation")
+          }
         }
+      }
+    }
+    for (Map.Entry<Integer, String> entry : relationNames) {
+      if (wordNames[entry.getKey()] != entry.getValue()) {
+        throw SlimeValidationException.new("Invalid relation")
       }
     }
   }
