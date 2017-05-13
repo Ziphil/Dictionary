@@ -137,6 +137,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
+      for (RelationRequest request : $relationRequests) {
+        SlimeRelation requestRelation = request.getRelation()
+        if (requestRelation.getId() == newWord.getId()) {
+          requestRelation.setId($validMinId)
+        }
+      }
       newWord.setId($validMinId)
     }
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
@@ -156,6 +162,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void addWord(SlimeWord word) {
     if (containsId(word.getId(), word)) {
+      for (RelationRequest request : $relationRequests) {
+        SlimeRelation requestRelation = request.getRelation()
+        if (requestRelation.getId() == word.getId()) {
+          requestRelation.setId($validMinId)
+        }
+      }
       word.setId($validMinId)
     }
     $words.add(word)
