@@ -73,8 +73,8 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       $captionLabel.setText("${pieValueString}\n(${percentString}%)")
       $pane.layout()
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
-      Double translateX = localPoint.getX() - $pane.getWidth() / 2
-      Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 20
+      Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10
+      Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 15
       $captionLabel.setTranslateX(translateX.toInteger())
       $captionLabel.setTranslateY(translateY.toInteger())
       $captionLabel.setVisible(true)
@@ -88,8 +88,8 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
     }
     node.addEventHandler(MouseEvent.MOUSE_MOVED) { MouseEvent event ->
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
-      Double translateX = localPoint.getX() - $pane.getWidth() / 2
-      Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 20
+      Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10
+      Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 15
       $captionLabel.setTranslateX(translateX.toInteger())
       $captionLabel.setTranslateY(translateY.toInteger())
     }
