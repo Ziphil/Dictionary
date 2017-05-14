@@ -182,7 +182,7 @@ public class SlimeEditorController extends Controller<Boolean> {
         }
         for (Integer i : 0 ..< $variationTitleControls.size()) {
           String title = $variationTitleControls[i].getValue()
-          List<String> variationNames = $variationNameControls[i].getText().split(/\s*(,|、)\s*/).toList()
+          List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
           for (String variationName : variationNames) {
             if (variationName != "") {
               variations.add(SlimeVariation.new(title, variationName))
