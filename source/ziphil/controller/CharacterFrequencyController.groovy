@@ -43,7 +43,7 @@ public class CharacterFrequencyController extends Controller<Void> {
     Integer totalFrequency = 0
     for (Word word : dictionary.getRawWords()) {
       for (String character : word.getName()) {
-        PieChart.Data singleData = data.find{singleData -> singleData.getName() == character}
+        PieChart.Data singleData = data.find{it.getName() == character}
         if (singleData != null) {
           singleData.setPieValue(singleData.getPieValue() + 1)
         } else {

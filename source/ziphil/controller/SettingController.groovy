@@ -179,8 +179,8 @@ public class SettingController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
-    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{control -> control.getText()}
-    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{control -> control.getText()}
+    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
+    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
     setting.setContentFontFamily(contentFontFamily)
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)

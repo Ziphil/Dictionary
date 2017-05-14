@@ -106,7 +106,7 @@ public class SlimeWord extends WordBase {
   }
 
   public Map<String, List<SlimeRelation>> groupedRelations() {
-    return $relations.groupBy{relation -> relation.getTitle()}
+    return $relations.groupBy{it.getTitle()}
   }
 
   protected void makeContentPaneFactory() {

@@ -86,8 +86,8 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
         if (dragboard.hasString()) {
           ObservableList<T> items = $itemView.getItems()
           String movedString = dragboard.getString()
-          T movedItem = items.find{item -> item.toString() == movedString}
-          Integer movedIndex = items.findIndexOf{item -> item.toString() == movedString}
+          T movedItem = items.find{it.toString() == movedString}
+          Integer movedIndex = items.findIndexOf{it.toString() == movedString}
           Integer index = cell.getIndex()
           items.add(index + 1, movedItem)
           if (movedIndex < index + 1) {

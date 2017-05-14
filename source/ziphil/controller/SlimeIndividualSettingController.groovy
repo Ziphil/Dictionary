@@ -67,7 +67,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     ObservableList<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
     SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copiedWord(dictionary.getDefaultWord()) : null
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
-    List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
+    List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
@@ -97,7 +97,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
-    List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
+    List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)

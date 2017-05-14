@@ -177,7 +177,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void removeWord(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
-      Boolean isChanged = otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
+      Boolean isChanged = otherWord.getRelations().removeAll{it.getId() == word.getId()}
       if (isChanged) {
         otherWord.change()
       }
@@ -445,7 +445,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public Boolean containsId(Integer id, SlimeWord excludedWord) {
-    return $words.any{word -> word != excludedWord && word.getId() == id}
+    return $words.any{it != excludedWord && it.getId() == id}
   }
 
   private void setupWords() {

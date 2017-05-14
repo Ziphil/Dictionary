@@ -53,8 +53,8 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
-      List<Integer> ids = relationGroup.collect{relation -> relation.getId()}
-      List<String> names = relationGroup.collect{relation -> relation.getName()}
+      List<Integer> ids = relationGroup.collect{it.getId()}
+      List<String> names = relationGroup.collect{it.getName()}
       addRelationNode(contentPane, title, ids, names)
       hasRelation = true
     }

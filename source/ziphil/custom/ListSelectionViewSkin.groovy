@@ -116,7 +116,7 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasString()) {
         String movedString = dragboard.getString()
-        T movedItem = firstView.getItems().find{item -> item.toString() == movedString}
+        T movedItem = firstView.getItems().find{it.toString() == movedString}
         firstView.getItems().remove(movedItem)
         secondView.getItems().add(movedItem)
         firstView.getSelectionModel().clearSelection()

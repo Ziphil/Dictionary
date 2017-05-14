@@ -108,11 +108,11 @@ public class SlimeEditorController extends Controller<Boolean> {
     for (SlimeInformation information : word.getInformations()) {
       addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
-    Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{variation -> variation.getTitle()}
+    Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{it.getTitle()}
     for (Map.Entry<String, List<SlimeVariation>> entry : groupedVariations) {
       String title = entry.getKey()
       List<SlimeVariation> variationGroup = entry.getValue()
-      String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
+      String nameString = variationGroup.collect{it.getName()}.join(", ")
       addVariationControl(title, nameString, dictionary.getRegisteredVariationTitles())
     }
     for (SlimeRelation relation : word.getRelations()) {

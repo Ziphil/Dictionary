@@ -145,7 +145,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void calculateSystemWordSize() {
-    $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
+    $systemWordSize = (Integer)$words.count{it.getUniqueName().startsWith("\$")}
   }
 
   private void updateAkrantiain() {

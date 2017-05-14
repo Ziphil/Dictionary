@@ -69,7 +69,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
         if (newSize > $size) {
           $indices.addAll($size ..< newSize)
         } else if (newSize < $size) {
-          $indices.removeIf{index -> (Integer)index >= newSize}
+          $indices.removeIf{it >= newSize}
         }
         nextReplace(from, to, change.getRemoved())
         $size = newSize
