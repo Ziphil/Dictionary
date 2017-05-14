@@ -253,15 +253,15 @@ public class MainController extends PrimitiveController<Stage> {
           ScriptSearchParameter script = nextStage.getResult()
           doSearchScript(script)
         } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
-          PrintStream stream = PrintStream.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
+          PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
           dialog.setTitle("実行エラー")
           dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
           dialog.setAllowsCancel(false)
-          exception.printStackTrace(stream)
-          stream.flush()
-          stream.close()
+          exception.printStackTrace(writer)
+          writer.flush()
+          writer.close()
           dialog.showAndWait()
         } catch (NoSuchScriptEngineException exception) {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
@@ -982,7 +982,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void handleException(Throwable throwable) {
-    PrintStream stream = PrintStream.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
     Dialog dialog = Dialog.new(StageStyle.UTILITY)
     if ($dictionary != null) {
@@ -997,9 +997,9 @@ public class MainController extends PrimitiveController<Stage> {
     dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
     dialog.setAllowsCancel(false)
     throwable.printStackTrace()
-    throwable.printStackTrace(stream)
-    stream.flush()
-    stream.close()
+    throwable.printStackTrace(writer)
+    writer.flush()
+    writer.close()
     dialog.showAndWait()
     Platform.exit()
   }
