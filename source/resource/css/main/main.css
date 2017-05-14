@@ -141,3 +141,47 @@
 .other-legend-symbol {
   -fx-background-color: radial-gradient(radius 100%, derive(hsb(0, 0%, 55%), 20%), derive(hsb(0, 0%, 55%), -10%));
 }
+
+.pie-caption {
+  -fx-background-color: -fx-background;
+  -fx-background-insets: 0px, 1px;
+  -fx-background-radius: 3px, 2px;
+  -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; 
+  -fx-text-alignment: center;
+}
+
+.default-color0.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_1, -30%), -fx-background;
+}
+
+.default-color1.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_2, -30%), -fx-background;
+}
+
+.default-color2.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_3, -30%), -fx-background;
+}
+
+.default-color3.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_4, -30%), -fx-background;
+}
+
+.default-color4.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_5, -30%), -fx-background;
+}
+
+.default-color5.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_6, -30%), -fx-background;
+}
+
+.default-color6.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_7, -30%), -fx-background;
+}
+
+.default-color7.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_8, -30%), -fx-background;
+}
+
+.other.pie-caption {
+  -fx-background-color: derive(hsb(0, 0%, 55%), -30%), -fx-background;
+}

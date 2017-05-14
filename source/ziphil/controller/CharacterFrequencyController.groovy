@@ -12,6 +12,7 @@ import javafx.scene.control.Tooltip
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
+import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
@@ -25,7 +26,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(370)
   protected static final Integer MAX_PIE_SIZE = 20
 
-  @FXML private PieChart $frequencyChart
+  @FXML private PopupPieChart $frequencyChart
 
   public CharacterFrequencyController(UtilityStage<Void> stage) {
     super(stage)
@@ -70,13 +71,7 @@ public class CharacterFrequencyController extends Controller<Void> {
       otherSingleData = PieChart.Data.new("その他", otherFrequency)
       displayedData.add(otherSingleData)
     }
-    $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
-    for (PieChart.Data singleData : displayedData) {
-      Integer frequency = singleData.getPieValue().toInteger()
-      Double percentage = (Double)(frequency * 100 / totalFrequency)
-      String formattedPercentage = String.format("%.2f", percentage)
-      Tooltip.install(singleData.getNode(), Tooltip.new("${frequency} (${formattedPercentage}%)"))
-    }
+    $frequencyChart.getChart().setData(FXCollections.observableArrayList(displayedData))
     if (otherSingleData != null) {
       otherSingleData.getNode().getStyleClass().add("other")
       Platform.runLater() {
@@ -87,8 +82,9 @@ public class CharacterFrequencyController extends Controller<Void> {
   }
 
   private void setupFrequencyChart() {
-    $frequencyChart.setLegendSide(Side.RIGHT)
-    $frequencyChart.setStartAngle(90)
+    $frequencyChart.getChart().setLegendSide(Side.RIGHT)
+    $frequencyChart.getChart().setStartAngle(90)
+    $frequencyChart.getChart().setAnimated(false)
   }
 
 }
