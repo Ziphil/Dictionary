@@ -706,7 +706,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
         $wordView.setItems(null)
-        failUpdateDictionary()
+        failUpdateDictionary(event.getSource().getException())
       }
     } else {
       $wordView.setItems(null)
@@ -809,13 +809,19 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void failUpdateDictionary() {
+  private void failUpdateDictionary(Throwable throwable) {
     updateDictionary(null)
+    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    String name = throwable.getClass().getSimpleName()
     Dialog dialog = Dialog.new(StageStyle.UTILITY)
     dialog.initOwner($stage)
     dialog.setTitle("読み込みエラー")
-    dialog.setContentText("辞書データの読み込み中にエラーが発生しました。データが壊れている可能性があります。")
+    dialog.setContentText("エラーが発生しました(${name})。データが壊れている可能性があります。詳細はエラーログを確認してください。")
     dialog.setAllowsCancel(false)
+    throwable.printStackTrace()
+    throwable.printStackTrace(writer)
+    writer.flush()
+    writer.close()
     dialog.showAndWait()
   }
 
