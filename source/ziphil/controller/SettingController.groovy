@@ -92,15 +92,15 @@ public class SettingController extends Controller<Boolean> {
     Integer separativeInterval = setting.getSeparativeInterval()
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
-    Boolean keepsMainOnTop = setting.getKeepsMainOnTop() == true
-    Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop() == true
-    Boolean savesAutomatically = setting.getSavesAutomatically() == true
-    Boolean ignoresAccent = setting.getIgnoresAccent() == true
-    Boolean ignoresCase = setting.getIgnoresCase() == true
-    Boolean searchesPrefix = setting.getSearchesPrefix() == true
-    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
-    Boolean showsSlimeId = setting.getShowsSlimeId() == true
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
+    Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+    Boolean savesAutomatically = setting.getSavesAutomatically()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
+    Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
