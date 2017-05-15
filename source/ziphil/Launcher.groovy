@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 12, 1, 1939)
+  public static final Version VERSION = Version.new(1, 12, 2, 1940)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String BASE_PATH = createBasePath()
@@ -51,6 +51,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.12. 2 | 0 単語の辞書を開いて統計を見ようとするとエラーになる不具合を修正。
+//          | 0 単語の OneToMany 形式辞書が開かれた状態で再起動するとエラーになる不具合を修正。
 //  1.12. 1 | OTM形式で変化形を編集するときに句読点の設定が無視される不具合を修正。
 //  1.12. 0 | 辞書の統計情報を表示する機能を追加。 
 //          | OneToMany 形式の編集時に関連語を自動的に相互参照にする機能を追加。
