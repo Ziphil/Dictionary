@@ -26,7 +26,7 @@ public class StatisticsController extends Controller<Void> {
   @FXML private Label $averageWordNameLengthText
   @FXML private Label $contentLengthText
   @FXML private Label $richnessText
-  private Dictionary $dictionary
+  private DictionaryStatisticsCalculator $calculator
 
   public StatisticsController(UtilityStage<Void> stage) {
     super(stage)
@@ -34,8 +34,8 @@ public class StatisticsController extends Controller<Void> {
   }
 
   public void prepare(Dictionary dictionary) {
-    $dictionary = dictionary
     DictionaryStatisticsCalculator calculator = DictionaryStatisticsCalculator.new(dictionary)
+    $calculator = calculator
     $wordSizeText.setText(String.format("%d", calculator.wordSize()))
     $tokiponaText.setText(String.format("%.2f", calculator.tokipona()))
     $logTokiponaText.setText(String.format("%.2f", calculator.logTokipona()))
@@ -50,7 +50,7 @@ public class StatisticsController extends Controller<Void> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary)
+    controller.prepare($calculator)
     nextStage.showAndWait()
   }
 

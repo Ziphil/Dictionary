@@ -10,6 +10,8 @@ import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.Tooltip
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryStatisticsCalculator
+import ziphil.dictionary.DictionaryStatisticsCalculator.CharacterStatus
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
 import ziphil.custom.PopupPieChart
@@ -38,40 +40,25 @@ public class CharacterFrequencyController extends Controller<Void> {
     setupFrequencyChart()
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void prepare(DictionaryStatisticsCalculator calculator) {
+    List<CharacterStatus> characterStatuses = calculator.characterStatuses()
     List<PieChart.Data> data = ArrayList.new()
-    Integer totalFrequency = 0
-    for (Word word : dictionary.getRawWords()) {
-      for (String character : word.getName()) {
-        PieChart.Data singleData = data.find{it.getName() == character}
-        if (singleData != null) {
-          singleData.setPieValue(singleData.getPieValue() + 1)
-        } else {
-          PieChart.Data newData = PieChart.Data.new(character, 1)
-          data.add(newData)
-        }
-        totalFrequency ++
-      }
-    }
-    data.sort() { PieChart.Data firstSingleData, PieChart.Data secondSingleData ->
-      return secondSingleData.getPieValue() <=> firstSingleData.getPieValue()
-    }
-    List<PieChart.Data> displayedData = ArrayList.new()
     Integer otherFrequency = 0
-    for (Integer i : 0 ..< data.size()) {
-      PieChart.Data singleData = data[i]
+    for (Integer i : 0 ..< characterStatuses.size()) {
+      CharacterStatus status = characterStatuses[i]
       if (i < MAX_PIE_SIZE) {
-        displayedData.add(singleData)
+        PieChart.Data singleData = PieChart.Data.new(status.getCharacter(), status.getFrequency())
+        data.add(singleData)
       } else {
-        otherFrequency += singleData.getPieValue().toInteger()
+        otherFrequency += status.getFrequency()
       }
     }
     PieChart.Data otherSingleData = null
     if (otherFrequency > 0) {
       otherSingleData = PieChart.Data.new("その他", otherFrequency)
-      displayedData.add(otherSingleData)
+      data.add(otherSingleData)
     }
-    $frequencyChart.getChart().setData(FXCollections.observableArrayList(displayedData))
+    $frequencyChart.getChart().setData(FXCollections.observableArrayList(data))
     if (otherSingleData != null) {
       otherSingleData.getNode().getStyleClass().add("other")
       Platform.runLater() {
