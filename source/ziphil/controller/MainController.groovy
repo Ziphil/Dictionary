@@ -111,6 +111,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordItem
   @FXML private MenuItem $modifyWordItem
   @FXML private MenuItem $removeWordItem
+  @FXML private MenuItem $showStatisticsItem
   @FXML private MenuItem $editIndividualSettingItem
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $addWordContextItem
@@ -751,6 +752,7 @@ public class MainController extends PrimitiveController<Stage> {
       $addInheritedWordItem.setDisable(false)
       $modifyWordItem.setDisable(false)
       $removeWordItem.setDisable(false)
+      $showStatisticsItem.setDisable(false)
       if ($dictionary instanceof ShaleiaDictionary) {
         $searchDetailItem.setDisable(false)
         $searchRegisteredParameterMenu.setVisible(false)
@@ -785,6 +787,7 @@ public class MainController extends PrimitiveController<Stage> {
       $addInheritedWordItem.setDisable(true)
       $modifyWordItem.setDisable(true)
       $removeWordItem.setDisable(true)
+      $showStatisticsItem.setDisable(true)
       $editIndividualSettingItem.setDisable(true)
     }
   }

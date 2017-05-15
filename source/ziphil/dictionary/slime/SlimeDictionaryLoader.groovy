@@ -229,7 +229,9 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
   }
 
   private void parseDefaultWord(JsonParser parser) {
-    parseWord(parser, $dictionary.getDefaultWord())
+    SlimeWord defaultWord = SlimeWord.new()
+    parseWord(parser, defaultWord)
+    $dictionary.setDefaultWord(defaultWord)
   }
 
   private void parseAkrantiainSource(JsonParser parser) {

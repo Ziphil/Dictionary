@@ -43,8 +43,8 @@ public class StatisticsController extends Controller<Void> {
       wordNameLength += word.getName().length()
       contentLength += word.getContent().length()
     }
-    Double averageWordNameLength = (Double)(wordNameLength / wordSize)
-    Double richness = (Double)(contentLength / wordSize)
+    Double averageWordNameLength = (wordSize > 0) ? (Double)(wordNameLength / wordSize) : 0
+    Double richness = (wordSize > 0) ? (Double)(contentLength / wordSize) : 0
     $wordSizeText.setText(wordSize.toString())
     $tokiponaText.setText(String.format("%.2f", tokipona))
     $logTokiponaText.setText(String.format("%.2f", logTokipona))
