@@ -24,7 +24,7 @@ public class Launcher {
   private static String createBasePath() {
     String classPath = System.getProperty("java.class.path")
     Integer classIndex = classPath.indexOf(Launcher.PATH_SEPARATOR)
-    String firstPath = (classIndex != -1) ? classPath.take(classIndex) : classPath
+    String firstPath = (classIndex >= 0) ? classPath.take(classIndex) : classPath
     File file = File.new(firstPath)
     String filePath = file.getCanonicalPath()
     String path
