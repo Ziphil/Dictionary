@@ -734,19 +734,12 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateMenuItems() {
-    String individualName = "missing"
-    if ($dictionary instanceof ShaleiaDictionary) {
-      individualName = "shaleia"
-    } else if ($dictionary instanceof PersonalDictionary) {
-      individualName = "personal"
-    } else if ($dictionary instanceof SlimeDictionary) {
-      individualName = "slime"
-    }
+    String plainName = Dictionaries.plainNameOf($dictionary) ?: "missing"
     for (Menu menu : $menuBar.getMenus()) {
       for (MenuItem item : menu.getItems()) {
         List<String> styleClass = item.getStyleClass()
         if (styleClass.contains("option")) {
-          if (styleClass.contains(individualName) || ($dictionary != null && styleClass.contains("all"))) {
+          if (styleClass.contains(plainName) || ($dictionary != null && styleClass.contains("all"))) {
             item.setDisable(false)
             if (styleClass.contains("dammy")) {
               if (!styleClass.contains("menu")) {

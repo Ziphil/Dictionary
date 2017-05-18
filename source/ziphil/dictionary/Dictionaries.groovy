@@ -71,4 +71,20 @@ public class Dictionaries {
     }
   }
 
+  public static String plainNameOf(Dictionary dictionary) {
+    if (dictionary != null) {
+      String plainName = null
+      if (dictionary instanceof ShaleiaDictionary) {
+        plainName = "shaleia"
+      } else if (dictionary instanceof PersonalDictionary) {
+        plainName = "personal"
+      } else if (dictionary instanceof SlimeDictionary) {
+        plainName = "slime"
+      }
+      return plainName
+    } else {
+      return null
+    }
+  }
+
 }
