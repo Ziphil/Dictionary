@@ -4,7 +4,6 @@ import com.orangesignal.csv.CsvConfig
 import com.orangesignal.csv.CsvReader
 import com.orangesignal.csv.io.CsvColumnNameMapReader
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
