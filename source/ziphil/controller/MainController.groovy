@@ -101,21 +101,8 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $createDictionaryMenu
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
-  @FXML private MenuItem $registerCurrentDictionaryItem
-  @FXML private MenuItem $searchRegisteredParameterItem
-  @FXML private MenuItem $saveDictionaryItem
-  @FXML private MenuItem $saveAndRenameDictionaryItem
   @FXML private Menu $convertDictionaryMenu
-  @FXML private MenuItem $convertDictionaryItem
-  @FXML private MenuItem $searchDetailItem
-  @FXML private MenuItem $searchScriptItem
   @FXML private Menu $searchRegisteredParameterMenu
-  @FXML private MenuItem $addWordItem
-  @FXML private MenuItem $addInheritedWordItem
-  @FXML private MenuItem $modifyWordItem
-  @FXML private MenuItem $removeWordItem
-  @FXML private MenuItem $showStatisticsItem
-  @FXML private MenuItem $editIndividualSettingItem
   @FXML private ContextMenu $editMenu
   @FXML private MenuItem $addWordContextItem
   @FXML private MenuItem $addInheritedWordContextItem
@@ -160,6 +147,9 @@ public class MainController extends PrimitiveController<Stage> {
     setupDebug()
     bindSearchTypeControlProperty()
     checkVersion()
+  }
+
+  public void prepare() {
     updateDictionaryToDefault()
   }
 
@@ -744,60 +734,34 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateMenuItems() {
-    if ($dictionary != null) {
-      $registerCurrentDictionaryMenu.setVisible(true)
-      $registerCurrentDictionaryMenu.setDisable(false)
-      $registerCurrentDictionaryItem.setVisible(false)
-      $saveDictionaryItem.setDisable(false)
-      $saveAndRenameDictionaryItem.setDisable(false)
-      $convertDictionaryMenu.setVisible(true)
-      $convertDictionaryMenu.setDisable(false)
-      $convertDictionaryItem.setVisible(false)
-      $searchScriptItem.setDisable(false)
-      $addWordItem.setDisable(false)
-      $addInheritedWordItem.setDisable(false)
-      $modifyWordItem.setDisable(false)
-      $removeWordItem.setDisable(false)
-      $showStatisticsItem.setDisable(false)
-      if ($dictionary instanceof ShaleiaDictionary) {
-        $searchDetailItem.setDisable(false)
-        $searchRegisteredParameterMenu.setVisible(false)
-        $searchRegisteredParameterMenu.setDisable(true)
-        $searchRegisteredParameterItem.setVisible(true)
-        $editIndividualSettingItem.setDisable(false)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        $searchDetailItem.setDisable(true)
-        $searchRegisteredParameterMenu.setVisible(false)
-        $searchRegisteredParameterMenu.setDisable(true)
-        $searchRegisteredParameterItem.setVisible(true)
-        $editIndividualSettingItem.setDisable(true)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        $searchDetailItem.setDisable(false)
-        $searchRegisteredParameterMenu.setVisible(true)
-        $searchRegisteredParameterMenu.setDisable(false)
-        $searchRegisteredParameterItem.setVisible(false)
-        $editIndividualSettingItem.setDisable(false)
+    String individualName = "missing"
+    if ($dictionary instanceof ShaleiaDictionary) {
+      individualName = "shaleia"
+    } else if ($dictionary instanceof PersonalDictionary) {
+      individualName = "personal"
+    } else if ($dictionary instanceof SlimeDictionary) {
+      individualName = "slime"
+    }
+    for (Menu menu : $menuBar.getMenus()) {
+      for (MenuItem item : menu.getItems()) {
+        List<String> styleClass = item.getStyleClass()
+        if (styleClass.contains("option")) {
+          if (styleClass.contains(individualName) || ($dictionary != null && styleClass.contains("all"))) {
+            item.setDisable(false)
+            if (styleClass.contains("dammy")) {
+              if (!styleClass.contains("menu")) {
+                item.setDisable(true)
+              }
+              item.setVisible(true)
+            }
+          } else {
+            item.setDisable(true)
+            if (styleClass.contains("dammy")) {
+              item.setVisible(false)
+            }
+          }
+        }
       }
-    } else {
-      $registerCurrentDictionaryMenu.setVisible(false)
-      $registerCurrentDictionaryMenu.setDisable(true)
-      $registerCurrentDictionaryItem.setVisible(true)
-      $saveDictionaryItem.setDisable(true)
-      $saveAndRenameDictionaryItem.setDisable(true)
-      $convertDictionaryMenu.setVisible(false)
-      $convertDictionaryMenu.setDisable(true)
-      $convertDictionaryItem.setVisible(true)
-      $searchDetailItem.setDisable(true)
-      $searchScriptItem.setDisable(true)
-      $searchRegisteredParameterMenu.setVisible(false)
-      $searchRegisteredParameterMenu.setDisable(true)
-      $searchRegisteredParameterItem.setVisible(true)
-      $addWordItem.setDisable(true)
-      $addInheritedWordItem.setDisable(true)
-      $modifyWordItem.setDisable(true)
-      $removeWordItem.setDisable(true)
-      $showStatisticsItem.setDisable(true)
-      $editIndividualSettingItem.setDisable(true)
     }
     $menuBar.layout()
   }

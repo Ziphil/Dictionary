@@ -49,18 +49,18 @@
           </graphic>
         </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
-        <Menu fx:id="$registerCurrentDictionaryMenu" text="開いている辞書を登録"/>
-        <MenuItem fx:id="$registerCurrentDictionaryItem" text="開いている辞書を登録" disable="true"/>
+        <Menu fx:id="$registerCurrentDictionaryMenu" styleClass="option,all,dammy" text="開いている辞書を登録"/>
+        <MenuItem styleClass="option,missing,dammy" text="開いている辞書を登録" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$saveDictionaryItem" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
+        <MenuItem styleClass="option,all" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
             <ImageView><Image url="@../../icon/save.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$saveAndRenameDictionaryItem" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
+        <MenuItem styleClass="option,all" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <SeparatorMenuItem/>
-        <Menu fx:id="$convertDictionaryMenu" text="別形式に変換"/>
-        <MenuItem fx:id="$convertDictionaryItem" text="別形式に変換" disable="true"/>
+        <Menu fx:id="$convertDictionaryMenu" styleClass="option,all,dammy" text="別形式に変換"/>
+        <MenuItem styleClass="option,missing,dammy" text="別形式に変換" disable="true"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">
           <graphic>
@@ -96,42 +96,42 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$searchDetailItem" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
+        <MenuItem styleClass="option,shaleia,slime" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
             <ImageView><Image url="@../../icon/detail_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$searchScriptItem" text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
+        <MenuItem styleClass="option,all" text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
           <graphic>
             <ImageView><Image url="@../../icon/script_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <Menu fx:id="$searchRegisteredParameterMenu" text="登録条件で検索"/>
-        <MenuItem fx:id="$searchRegisteredParameterItem" text="登録条件で検索" disable="true"/>
+        <Menu fx:id="$searchRegisteredParameterMenu" styleClass="option,slime,dammy" text="登録条件で検索"/>
+        <MenuItem styleClass="option,shaleia,personal,missing,dammy" text="登録条件で検索" disable="true"/>
       </Menu>
       <Menu text="編集">
-        <MenuItem fx:id="$addWordItem" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
+        <MenuItem styleClass="option,all" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
           <graphic>
             <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$addInheritedWordItem" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
+        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
           <graphic>
             <ImageView><Image url="@../../icon/inherited_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$modifyWordItem" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
+        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
           <graphic>
             <ImageView><Image url="@../../icon/modify_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem fx:id="$removeWordItem" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
+        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
           <graphic>
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$showStatisticsItem" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
+        <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu text="ツール">
         <MenuItem text="hah圧縮" onAction="#executeHahCompression" accelerator="Shortcut+Alt+H">
@@ -141,7 +141,7 @@
         </MenuItem>
         <MenuItem text="akrantiain" onAction="#executeAkrantiain" accelerator="Shortcut+Alt+A"/>
         <SeparatorMenuItem/>
-        <MenuItem fx:id="$editIndividualSettingItem" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
+        <MenuItem styleClass="option,shaleia,slime" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../../icon/setting.png"/></ImageView>
