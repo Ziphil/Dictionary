@@ -192,7 +192,7 @@
               <minWidth><Double rpx="70"/></minWidth>
             </ToggleButton>
           </HBox>
-          <ListView fx:id="$wordView" id="dictionary-list" VBox.vgrow="always"/>
+          <ListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
         </VBox>
         <HBox fx:id="$footerBox" styleClass="footer">
           <spacing><Double rpx="5"/></spacing>

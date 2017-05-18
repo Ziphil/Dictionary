@@ -72,7 +72,7 @@ public class Setting {
     BufferedWriter writer = file.newWriter("UTF-8")
     try {
       if ($contentFontFamily != null || $contentFontSize != null) {
-        writer.write("#dictionary-list .content-pane {\n")
+        writer.write(".dictionary-list .content-pane {\n")
         if ($contentFontFamily != null) {
           writer.write("  -fx-font-family: \"")
           writer.write(Strings.escapeUnicode($contentFontFamily))
