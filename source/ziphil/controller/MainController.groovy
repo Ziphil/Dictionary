@@ -23,6 +23,7 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Menu
+import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
@@ -96,6 +97,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
+  @FXML private MenuBar $menuBar
   @FXML private Menu $createDictionaryMenu
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
@@ -797,6 +799,7 @@ public class MainController extends PrimitiveController<Stage> {
       $showStatisticsItem.setDisable(true)
       $editIndividualSettingItem.setDisable(true)
     }
+    $menuBar.layout()
   }
 
   private void updateDictionaryToDefault() {

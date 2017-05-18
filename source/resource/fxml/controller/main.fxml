@@ -36,7 +36,7 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <top>
-    <MenuBar>
+    <MenuBar fx:id="$menuBar">
       <Menu text="ファイル">
         <Menu fx:id="$createDictionaryMenu" text="辞書の新規作成">
           <graphic>
