@@ -20,11 +20,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
   protected Boolean load() {
     File file = File.new($path)
     BufferedReader reader = file.newReader()
-    CsvConfig config = CsvConfig.new()
-    config.setQuoteDisabled(false)
-    config.setEscapeDisabled(false)
-    config.setEscape((Character)'"')
-    config.setIgnoreEmptyLines(true)
+    CsvConfig config = createConfig()
     CsvColumnNameMapReader csvReader = CsvColumnNameMapReader.new(CsvReader.new(reader, config))
     try {
       for (Map<String, String> line ; (line = csvReader.read()) != null ;) {
@@ -70,6 +66,15 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     if (modification != null) {
       word.setModification(modification.toInteger())
     }
+  }
+
+  private CsvConfig createConfig() {
+    CsvConfig config = CsvConfig.new()
+    config.setQuoteDisabled(false)
+    config.setEscapeDisabled(false)
+    config.setIgnoreEmptyLines(true)
+    config.setEscape((Character)'"')
+    return config
   }
 
 }
