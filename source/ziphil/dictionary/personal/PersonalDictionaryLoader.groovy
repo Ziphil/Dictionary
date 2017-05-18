@@ -32,7 +32,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
         $words.add(word)
       }
     } finally {
-      reader.close()
+      csvReader.close()
     }
     return true
   }
