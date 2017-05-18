@@ -18,7 +18,8 @@ public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary>
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
     try {
-      writer.write("word,trans,exp,level,memory,modify,pron,filelink\n")
+      writer.write("word,trans,exp,level,memory,modify,pron,filelink")
+      writer.newLine()
       for (PersonalWord word : $dictionary.getRawWords()) {
         writer.write("\"")
         writer.write(word.getName())
@@ -34,7 +35,8 @@ public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary>
         writer.write(word.getModification().toString())
         writer.write(",\"")
         writer.write(word.getPronunciation())
-        writer.write("\"\n")
+        writer.write("\"")
+        writer.newLine()
       }
     } finally {
       writer.close()
