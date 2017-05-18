@@ -13,6 +13,7 @@ public class Launcher {
   public static final Version VERSION = Version.new(1, 12, 3, 1943)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
+  public static final String LINE_SEPARATPR = createLineSeparator()
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -43,6 +44,10 @@ public class Launcher {
 
   private static String createPathSeparator() {
     return System.getProperty("path.separator").charAt(0).toString()
+  }
+
+  private static String createLineSeparator() {
+    return System.getProperty("line.separator")
   }
 
 }
