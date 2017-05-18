@@ -146,10 +146,10 @@ public class MainController extends PrimitiveController<Stage> {
     setupWordViewShortcuts()
     setupDebug()
     bindSearchTypeControlProperty()
-    checkVersion()
   }
 
   public void prepare() {
+    checkVersion()
     updateDictionaryToDefault()
   }
 
