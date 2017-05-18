@@ -99,6 +99,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $createDictionaryMenu
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
+  @FXML private MenuItem $registerCurrentDictionaryItem
   @FXML private MenuItem $searchRegisteredParameterItem
   @FXML private MenuItem $saveDictionaryItem
   @FXML private MenuItem $saveAndRenameDictionaryItem
@@ -742,6 +743,9 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void updateMenuItems() {
     if ($dictionary != null) {
+      $registerCurrentDictionaryMenu.setVisible(true)
+      $registerCurrentDictionaryMenu.setDisable(false)
+      $registerCurrentDictionaryItem.setVisible(false)
       $saveDictionaryItem.setDisable(false)
       $saveAndRenameDictionaryItem.setDisable(false)
       $convertDictionaryMenu.setVisible(true)
@@ -773,6 +777,9 @@ public class MainController extends PrimitiveController<Stage> {
         $editIndividualSettingItem.setDisable(false)
       }
     } else {
+      $registerCurrentDictionaryMenu.setVisible(false)
+      $registerCurrentDictionaryMenu.setDisable(true)
+      $registerCurrentDictionaryItem.setVisible(true)
       $saveDictionaryItem.setDisable(true)
       $saveAndRenameDictionaryItem.setDisable(true)
       $convertDictionaryMenu.setVisible(false)

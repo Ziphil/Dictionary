@@ -50,6 +50,7 @@
         </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
         <Menu fx:id="$registerCurrentDictionaryMenu" text="開いている辞書を登録"/>
+        <MenuItem fx:id="$registerCurrentDictionaryItem" text="開いている辞書を登録" disable="true"/>
         <SeparatorMenuItem/>
         <MenuItem fx:id="$saveDictionaryItem" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
