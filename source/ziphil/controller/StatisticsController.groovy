@@ -50,7 +50,7 @@ public class StatisticsController extends Controller<Void> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($calculator)
+    controller.prepare($calculator.characterStatuses())
     nextStage.showAndWait()
   }
 

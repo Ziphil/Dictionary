@@ -46,8 +46,7 @@ public class CharacterFrequencyController extends Controller<Void> {
     setupFrequencyViewColumns()
   }
 
-  public void prepare(DictionaryStatisticsCalculator calculator) {
-    List<CharacterStatus> characterStatuses = calculator.characterStatuses()
+  public void prepare(List<CharacterStatus> characterStatuses) {
     List<PieChart.Data> data = ArrayList.new()
     Integer otherFrequency = 0
     for (Integer i : 0 ..< characterStatuses.size()) {
