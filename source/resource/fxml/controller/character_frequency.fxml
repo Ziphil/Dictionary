@@ -54,18 +54,23 @@
           <TableView fx:id="$frequencyView" styleClass="frequency" VBox.vgrow="always">
             <columns>
               <TableColumn text="文字">
+                <prefWidth><Double rpx="50"/></prefWidth>
                 <cellValueFactory><PropertyValueFactory property="character"/></cellValueFactory>
               </TableColumn>
               <TableColumn text="出現回数">
+                <prefWidth><Double rpx="70"/></prefWidth>
                 <cellValueFactory><PropertyValueFactory property="frequency"/></cellValueFactory>
               </TableColumn>
               <TableColumn fx:id="$frequencyPercentageColumn" text="出現回数">
+                <prefWidth><Double rpx="90"/></prefWidth>
                 <cellValueFactory><PropertyValueFactory property="frequencyPercentage"/></cellValueFactory>
               </TableColumn>
               <TableColumn text="出現語数">
+                <prefWidth><Double rpx="70"/></prefWidth>
                 <cellValueFactory><PropertyValueFactory property="usingWordSize"/></cellValueFactory>
               </TableColumn>
               <TableColumn fx:id="$usingWordSizePercentageColumn" text="出現語数">
+                <prefWidth><Double rpx="90"/></prefWidth>
                 <cellValueFactory><PropertyValueFactory property="usingWordSizePercentage"/></cellValueFactory>
               </TableColumn>
            </columns>   
