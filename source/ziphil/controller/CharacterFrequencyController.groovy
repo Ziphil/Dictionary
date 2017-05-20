@@ -8,6 +8,7 @@ import javafx.fxml.FXML
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
+import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.Tooltip
 import ziphil.dictionary.CharacterStatus
@@ -15,6 +16,7 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryStatisticsCalculator
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
+import ziphil.custom.PercentageTableCell
 import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
@@ -31,6 +33,8 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML private PopupPieChart $frequencyChart
   @FXML private TableView<CharacterStatus> $frequencyView
+  @FXML private TableColumn<CharacterStatus, Double> $frequencyPercentageColumn
+  @FXML private TableColumn<CharacterStatus, Double> $usingWordSizePercentageColumn
 
   public CharacterFrequencyController(UtilityStage<Void> stage) {
     super(stage)
@@ -40,6 +44,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   @FXML
   private void initialize() {
     setupFrequencyChart()
+    setupFrequencyViewColumns()
   }
 
   public void prepare(DictionaryStatisticsCalculator calculator) {
@@ -75,6 +80,15 @@ public class CharacterFrequencyController extends Controller<Void> {
     $frequencyChart.getChart().setLegendSide(Side.RIGHT)
     $frequencyChart.getChart().setStartAngle(90)
     $frequencyChart.getChart().setAnimated(false)
+  }
+
+  private void setupFrequencyViewColumns() {
+    $frequencyPercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+      return PercentageTableCell.new()
+    }
+    $usingWordSizePercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+      return PercentageTableCell.new()
+    }
   }
 
 }

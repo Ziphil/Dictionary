@@ -59,13 +59,13 @@
               <TableColumn text="出現回数">
                 <cellValueFactory><PropertyValueFactory property="frequency"/></cellValueFactory>
               </TableColumn>
-              <TableColumn text="出現回数">
+              <TableColumn fx:id="$frequencyPercentageColumn" text="出現回数">
                 <cellValueFactory><PropertyValueFactory property="frequencyPercentage"/></cellValueFactory>
               </TableColumn>
               <TableColumn text="出現語数">
                 <cellValueFactory><PropertyValueFactory property="usingWordSize"/></cellValueFactory>
               </TableColumn>
-              <TableColumn text="出現語数">
+              <TableColumn fx:id="$usingWordSizePercentageColumn" text="出現語数">
                 <cellValueFactory><PropertyValueFactory property="usingWordSizePercentage"/></cellValueFactory>
               </TableColumn>
            </columns>   
