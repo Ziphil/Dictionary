@@ -795,8 +795,8 @@ public class MainController extends PrimitiveController<Stage> {
     dialog.showAndWait()
   }
 
-  private void registerCurrentDictionary(Integer i) {
-    Setting.getInstance().getRegisteredDictionaryPaths()[i] = $dictionary.getPath()
+  private void registerCurrentDictionary(Integer index) {
+    Setting.getInstance().getRegisteredDictionaryPaths()[index] = $dictionary.getPath()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
   }

@@ -208,25 +208,25 @@ public class SettingController extends Controller<Boolean> {
     }
   }
 
-  private void browseDictionary(Integer i) {
+  private void browseDictionary(Integer index) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    String currentPath = $registeredDictionaryPathControls[i].getText()
+    String currentPath = $registeredDictionaryPathControls[index].getText()
     if (currentPath != null) {
       controller.prepare(null, File.new(currentPath).getParentFile(), false)
     }
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())
+      $registeredDictionaryPathControls[index].setText(file.getAbsolutePath())
     }
   }
 
-  private void deregisterDictionary(Integer i) {
-    $registeredDictionaryPathControls[i].setText("")
-    $registeredDictionaryNameControls[i].setText("")
+  private void deregisterDictionary(Integer index) {
+    $registeredDictionaryPathControls[index].setText("")
+    $registeredDictionaryNameControls[index].setText("")
   }
 
   @FXML
