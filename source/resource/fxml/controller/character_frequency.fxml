@@ -58,20 +58,28 @@
                 <cellValueFactory><PropertyValueFactory property="character"/></cellValueFactory>
               </TableColumn>
               <TableColumn text="出現回数" resizable="false">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <cellValueFactory><PropertyValueFactory property="frequency"/></cellValueFactory>
-              </TableColumn>
-              <TableColumn fx:id="$frequencyPercentageColumn" text="出現回数" resizable="false">
-                <prefWidth><Double rpx="90"/></prefWidth>
-                <cellValueFactory><PropertyValueFactory property="frequencyPercentage"/></cellValueFactory>
+                <columns>
+                  <TableColumn text="回数" resizable="false">
+                    <prefWidth><Double rpx="70"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="frequency"/></cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="$frequencyPercentageColumn" text="割合" resizable="false">
+                    <prefWidth><Double rpx="90"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="frequencyPercentage"/></cellValueFactory>
+                  </TableColumn>
+                </columns>
               </TableColumn>
               <TableColumn text="出現語数" resizable="false">
-                <prefWidth><Double rpx="70"/></prefWidth>
-                <cellValueFactory><PropertyValueFactory property="usingWordSize"/></cellValueFactory>
-              </TableColumn>
-              <TableColumn fx:id="$usingWordSizePercentageColumn" text="出現語数" resizable="false">
-                <prefWidth><Double rpx="90"/></prefWidth>
-                <cellValueFactory><PropertyValueFactory property="usingWordSizePercentage"/></cellValueFactory>
+                <columns>
+                  <TableColumn text="語数" resizable="false">
+                    <prefWidth><Double rpx="70"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="usingWordSize"/></cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="$usingWordSizePercentageColumn" text="割合" resizable="false">
+                    <prefWidth><Double rpx="90"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="usingWordSizePercentage"/></cellValueFactory>
+                  </TableColumn>
+                </columns>
               </TableColumn>
            </columns>   
           </TableView>
