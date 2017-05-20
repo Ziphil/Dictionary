@@ -8,6 +8,7 @@ import javafx.fxml.FXML
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
+import javafx.scene.control.TableView
 import javafx.scene.control.Tooltip
 import ziphil.dictionary.CharacterStatus
 import ziphil.dictionary.Dictionary
@@ -29,6 +30,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   protected static final Integer MAX_PIE_SIZE = 20
 
   @FXML private PopupPieChart $frequencyChart
+  @FXML private TableView<CharacterStatus> $frequencyView
 
   public CharacterFrequencyController(UtilityStage<Void> stage) {
     super(stage)
@@ -66,6 +68,7 @@ public class CharacterFrequencyController extends Controller<Void> {
         otherLegendNode.getStyleClass().add("other-legend-symbol")
       }
     }
+    $frequencyView.getItems().addAll(characterStatuses)
   }
 
   private void setupFrequencyChart() {
