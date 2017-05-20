@@ -5,14 +5,14 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class DictionaryStatisticsCalculator {
+public class DictionaryAnalyzer {
 
   private Dictionary $dictionary
   private Integer $wordNameLength = 0
   private Integer $contentLength = 0
   private List<CharacterStatus> $characterStatuses = ArrayList.new()
 
-  public DictionaryStatisticsCalculator(Dictionary dictionary) {
+  public DictionaryAnalyzer(Dictionary dictionary) {
     $dictionary = dictionary
     calculateLengths()
     calculateCharacterStatuses()

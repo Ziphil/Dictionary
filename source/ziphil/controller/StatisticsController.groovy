@@ -6,7 +6,7 @@ import javafx.scene.control.Label
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryStatisticsCalculator
+import ziphil.dictionary.DictionaryAnalyzer
 import ziphil.dictionary.Word
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
@@ -26,7 +26,7 @@ public class StatisticsController extends Controller<Void> {
   @FXML private Label $averageWordNameLengthText
   @FXML private Label $contentLengthText
   @FXML private Label $richnessText
-  private DictionaryStatisticsCalculator $calculator
+  private DictionaryAnalyzer $analyzer
 
   public StatisticsController(UtilityStage<Void> stage) {
     super(stage)
@@ -34,14 +34,14 @@ public class StatisticsController extends Controller<Void> {
   }
 
   public void prepare(Dictionary dictionary) {
-    DictionaryStatisticsCalculator calculator = DictionaryStatisticsCalculator.new(dictionary)
-    $calculator = calculator
-    $wordSizeText.setText(String.format("%d", calculator.wordSize()))
-    $tokiponaText.setText(String.format("%.2f", calculator.tokipona()))
-    $logTokiponaText.setText(String.format("%.2f", calculator.logTokipona()))
-    $averageWordNameLengthText.setText(String.format("%.2f", calculator.averageWordNameLength()))
-    $contentLengthText.setText(String.format("%d", calculator.contentLength()))
-    $richnessText.setText(String.format("%.2f", calculator.richness()))
+    DictionaryAnalyzer analyzer = DictionaryAnalyzer.new(dictionary)
+    $analyzer = analyzer
+    $wordSizeText.setText(String.format("%d", analyzer.wordSize()))
+    $tokiponaText.setText(String.format("%.2f", analyzer.tokipona()))
+    $logTokiponaText.setText(String.format("%.2f", analyzer.logTokipona()))
+    $averageWordNameLengthText.setText(String.format("%.2f", analyzer.averageWordNameLength()))
+    $contentLengthText.setText(String.format("%d", analyzer.contentLength()))
+    $richnessText.setText(String.format("%.2f", analyzer.richness()))
   }
 
   @FXML
@@ -50,7 +50,7 @@ public class StatisticsController extends Controller<Void> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($calculator.characterStatuses())
+    controller.prepare($analyzer.characterStatuses())
     nextStage.showAndWait()
   }
 

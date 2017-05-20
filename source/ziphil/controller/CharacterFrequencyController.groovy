@@ -12,7 +12,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import ziphil.dictionary.CharacterStatus
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryStatisticsCalculator
+import ziphil.dictionary.DictionaryAnalyzer
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
 import ziphil.custom.PercentageTableCell
