@@ -32,19 +32,33 @@ public class DictionaryStatisticsCalculator {
   private void calculateCharacterStatuses() {
     List<CharacterStatus> characterStatuses = ArrayList.new()
     Integer totalFrequency = 0
+    Integer totalWordSize = 0
     for (Word word : $dictionary.getRawWords()) {
+      Set<String> countedCharacters = HashSet.new()
       for (String character : word.getName()) {
         CharacterStatus status = characterStatuses.find{it.getCharacter() == character}
         if (status != null) {
           status.setFrequency(status.getFrequency() + 1)
+          if (!countedCharacters.contains(character)) {
+            status.setUsingWordSize(status.getUsingWordSize() + 1)
+            countedCharacters.add(character)
+          }
         } else {
           CharacterStatus nextStatus = CharacterStatus.new()
           nextStatus.setCharacter(character)
           nextStatus.setFrequency(1)
+          nextStatus.setUsingWordSize(1)
           characterStatuses.add(nextStatus)
+          countedCharacters.add(character)
         }
         totalFrequency ++
       }
+      totalWordSize ++
+      countedCharacters.clear()
+    }
+    for (CharacterStatus status : characterStatuses) {
+      status.setFrequencyPercent((Double)(status.getFrequency() * 100 / totalFrequency))
+      status.setUsingWordSizePercent((Double)(status.getUsingWordSize() * 100 / totalWordSize))
     }
     characterStatuses.sort() { CharacterStatus firstStatus, CharacterStatus secondStatus ->
       return secondStatus.getFrequency() <=> firstStatus.getFrequency()
