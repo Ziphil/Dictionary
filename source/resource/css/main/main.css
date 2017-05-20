@@ -97,6 +97,10 @@
   -fx-fill: -fx-text-base-color;
 }
 
+.frequency .table-column {
+  -fx-alignment: center;
+}
+
 .large {
   -fx-font-size: 1.2em;
   -fx-text-fill: -fx-text-inner-color;

@@ -51,7 +51,7 @@
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
-          <TableView fx:id="$frequencyView" VBox.vgrow="always">
+          <TableView fx:id="$frequencyView" styleClass="frequency" VBox.vgrow="always">
             <columns>
               <TableColumn text="文字">
                 <cellValueFactory><PropertyValueFactory property="character"/></cellValueFactory>
