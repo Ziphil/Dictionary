@@ -83,28 +83,3 @@ public class DictionaryStatisticsCalculator {
   }
 
 }
-
-
-@InnerClass(DictionaryStatisticsCalculator)
-public static class CharacterStatus {
-
-  private String $character
-  private Integer $frequency
-
-  public String getCharacter() {
-    return $character
-  }
-
-  public void setCharacter(String character) {
-    $character = character
-  }
-
-  public Integer getFrequency() {
-    return $frequency
-  }
-
-  public void setFrequency(Integer frequency) {
-    $frequency = frequency
-  }
-
-}
