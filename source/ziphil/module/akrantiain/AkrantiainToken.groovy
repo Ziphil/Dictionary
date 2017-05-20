@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import java.text.Normalizer
 import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
-import ziphilb.type.PrimBoolean
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
