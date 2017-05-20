@@ -5,8 +5,8 @@ import java.util.regex.Matcher
 import javafx.scene.control.ListCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -22,8 +22,7 @@ public class FileCell extends ListCell<File> {
     super()
   }
 
-  @ConvertPrimitiveArgs
-  protected void updateItem(File file, Boolean isEmpty) {
+  protected void updateItem(File file, PrimBoolean isEmpty) {
     super.updateItem(file, isEmpty)
     if (isEmpty || file == null) {
       setText(null)

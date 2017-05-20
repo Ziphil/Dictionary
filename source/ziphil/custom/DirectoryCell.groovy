@@ -6,8 +6,8 @@ import javafx.scene.control.TreeCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import ziphil.Launcher
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -20,8 +20,7 @@ public class DirectoryCell extends TreeCell<File> {
     super()
   }
 
-  @ConvertPrimitiveArgs
-  protected void updateItem(File file, Boolean isEmpty) {
+  protected void updateItem(File file, PrimBoolean isEmpty) {
     super.updateItem(file, isEmpty)
     if (isEmpty || file == null) {
       setText(null)

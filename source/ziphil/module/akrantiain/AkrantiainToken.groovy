@@ -3,8 +3,8 @@ package ziphil.module.akrantiain
 import groovy.transform.CompileStatic
 import java.text.Normalizer
 import ziphil.module.ExtendedBufferedReader
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilb.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -250,8 +250,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }
 
-  @ConvertPrimitiveArgs
-  public Boolean equals(Object object) {
+  public PrimBoolean equals(Object object) {
     if (object instanceof AkrantiainToken) {
       return $type == object.getType() && $text == object.getText()
     } else {

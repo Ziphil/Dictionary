@@ -4,8 +4,8 @@ import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.slime.SlimeWord
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -15,8 +15,7 @@ public class PlainWordCell extends ListCell<SlimeWord> {
     super()
   }
 
-  @ConvertPrimitiveArgs
-  protected void updateItem(SlimeWord word, Boolean isEmpty) {
+  protected void updateItem(SlimeWord word, PrimBoolean isEmpty) {
     super.updateItem(word, isEmpty)
     if (isEmpty || word == null) {
       setText(null)

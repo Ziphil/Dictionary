@@ -4,8 +4,8 @@ import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.Element
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -15,8 +15,7 @@ public class WordCell extends ListCell<Element> {
     super()
   }
 
-  @ConvertPrimitiveArgs
-  protected void updateItem(Element word, Boolean isEmpty) {
+  protected void updateItem(Element word, PrimBoolean isEmpty) {
     super.updateItem(word, isEmpty)
     if (isEmpty || word == null) {
       setText(null)
