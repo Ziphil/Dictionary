@@ -43,7 +43,7 @@ public class ExtendedBufferedReader extends BufferedReader {
       if (result == '\r') {
         $skipsLineFeed = true
         $passesLineFeed = true
-        result = (PrimChar)'n'
+        result = (PrimChar)'\n'
       } else if (result == '\n') {
         $passesLineFeed = true
       }
