@@ -84,10 +84,10 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   private void setupFrequencyViewColumns() {
     $frequencyPercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
-      return PercentageTableCell.new()
+      return PercentageTableCell.new(3)
     }
     $usingWordSizePercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
-      return PercentageTableCell.new()
+      return PercentageTableCell.new(3)
     }
   }
 
