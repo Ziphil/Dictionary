@@ -57,8 +57,8 @@ public class DictionaryStatisticsCalculator {
       countedCharacters.clear()
     }
     for (CharacterStatus status : characterStatuses) {
-      status.setFrequencyPercent((Double)(status.getFrequency() * 100 / totalFrequency))
-      status.setUsingWordSizePercent((Double)(status.getUsingWordSize() * 100 / totalWordSize))
+      status.setFrequencyPercentage((Double)(status.getFrequency() * 100 / totalFrequency))
+      status.setUsingWordSizePercentage((Double)(status.getUsingWordSize() * 100 / totalWordSize))
     }
     characterStatuses.sort() { CharacterStatus firstStatus, CharacterStatus secondStatus ->
       return secondStatus.getFrequency() <=> firstStatus.getFrequency()

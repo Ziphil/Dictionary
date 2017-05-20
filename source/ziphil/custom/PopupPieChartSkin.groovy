@@ -69,8 +69,8 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
         totalPieValue += temporarySingleData.getPieValue()
       }
       String pieValueString = String.format("%.0f", singleData.getPieValue())
-      String percentString = String.format("%.2f", singleData.getPieValue() * 100 / totalPieValue)
-      $captionLabel.setText("${pieValueString}\n(${percentString}%)")
+      String percentageString = String.format("%.2f", singleData.getPieValue() * 100 / totalPieValue)
+      $captionLabel.setText("${pieValueString}\n(${percentageString}%)")
       $pane.layout()
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
       Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10

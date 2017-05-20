@@ -9,9 +9,9 @@ public class CharacterStatus {
 
   private String $character
   private Integer $frequency
-  private Double $frequencyPercent
+  private Double $frequencyPercentage
   private Integer $usingWordSize
-  private Double $usingWordSizePercent
+  private Double $usingWordSizePercentage
 
   public String getCharacter() {
     return $character
@@ -29,12 +29,12 @@ public class CharacterStatus {
     $frequency = frequency
   }
 
-  public Double getFrequencyPercent() {
-    return $frequencyPercent
+  public Double getFrequencyPercentage() {
+    return $frequencyPercentage
   }
 
-  public void setFrequencyPercent(Double frequencyPercent) {
-    $frequencyPercent = frequencyPercent
+  public void setFrequencyPercentage(Double frequencyPercentage) {
+    $frequencyPercentage = frequencyPercentage
   }
 
   public Integer getUsingWordSize() {
@@ -45,12 +45,12 @@ public class CharacterStatus {
     $usingWordSize = usingWordSize
   }
 
-  public Double getUsingWordSizePercent() {
-    return $usingWordSizePercent
+  public Double getUsingWordSizePercentage() {
+    return $usingWordSizePercentage
   }
 
-  public void setUsingWordSizePercent(Double usingWordSizePercent) {
-    $usingWordSizePercent = usingWordSizePercent
+  public void setUsingWordSizePercentage(Double usingWordSizePercentage) {
+    $usingWordSizePercentage = usingWordSizePercentage
   }
 
 }
