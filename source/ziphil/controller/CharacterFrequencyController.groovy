@@ -10,7 +10,6 @@ import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.Tooltip
 import ziphil.dictionary.CharacterStatus
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryStatisticsCalculator
