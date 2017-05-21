@@ -1,6 +1,8 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import ziphil.module.CharacterFrequencyAnalyzer
+import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
 
 
@@ -10,12 +12,12 @@ public class DictionaryAnalyzer {
   private Dictionary $dictionary
   private Integer $wordNameLength = 0
   private Integer $contentLength = 0
-  private List<CharacterStatus> $characterStatuses = ArrayList.new()
+  private CharacterFrequencyAnalyzer $frequencyAnalyzer = CharacterFrequencyAnalyzer.new()
 
   public DictionaryAnalyzer(Dictionary dictionary) {
     $dictionary = dictionary
     calculateLengths()
-    calculateCharacterStatuses()
+    calculateCharacterFrequency()
   }
 
   private void calculateLengths() {
@@ -29,41 +31,10 @@ public class DictionaryAnalyzer {
     $contentLength = contentLength
   }
 
-  private void calculateCharacterStatuses() {
-    List<CharacterStatus> characterStatuses = ArrayList.new()
-    Integer totalFrequency = 0
-    Integer totalWordSize = 0
+  private void calculateCharacterFrequency() {
     for (Word word : $dictionary.getRawWords()) {
-      Set<String> countedCharacters = HashSet.new()
-      for (String character : word.getName()) {
-        CharacterStatus status = characterStatuses.find{it.getCharacter() == character}
-        if (status != null) {
-          status.setFrequency(status.getFrequency() + 1)
-          if (!countedCharacters.contains(character)) {
-            status.setUsingWordSize(status.getUsingWordSize() + 1)
-            countedCharacters.add(character)
-          }
-        } else {
-          CharacterStatus nextStatus = CharacterStatus.new()
-          nextStatus.setCharacter(character)
-          nextStatus.setFrequency(1)
-          nextStatus.setUsingWordSize(1)
-          characterStatuses.add(nextStatus)
-          countedCharacters.add(character)
-        }
-        totalFrequency ++
-      }
-      totalWordSize ++
-      countedCharacters.clear()
+      $frequencyAnalyzer.addSource(word.getName())
     }
-    for (CharacterStatus status : characterStatuses) {
-      status.setFrequencyPercentage((Double)(status.getFrequency() * 100 / totalFrequency))
-      status.setUsingWordSizePercentage((Double)(status.getUsingWordSize() * 100 / totalWordSize))
-    }
-    characterStatuses.sort() { CharacterStatus firstStatus, CharacterStatus secondStatus ->
-      return secondStatus.getFrequency() <=> firstStatus.getFrequency()
-    }
-    $characterStatuses = characterStatuses
   }
 
   public Integer wordSize() {
@@ -93,7 +64,7 @@ public class DictionaryAnalyzer {
   }
 
   public List<CharacterStatus> characterStatuses() {
-    return $characterStatuses
+    return $frequencyAnalyzer.characterStatuses()
   }
 
 }

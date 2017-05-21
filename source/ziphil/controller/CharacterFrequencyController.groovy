@@ -10,13 +10,13 @@ import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import ziphil.dictionary.CharacterStatus
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
 import ziphil.custom.PercentageTableCell
 import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
+import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
 
 
