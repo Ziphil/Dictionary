@@ -22,7 +22,7 @@ public class CharacterFrequencyAnalyzer {
 
   public void addSource(String source) {
     for (String wordName : source.split(/\s*/)) {
-      addSource(wordName)
+      addWordName(wordName)
     }
   }
 
