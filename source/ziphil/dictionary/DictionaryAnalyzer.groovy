@@ -4,14 +4,16 @@ import groovy.transform.CompileStatic
 import ziphil.module.CharacterFrequencyAnalyzer
 import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimDouble
+import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
 public class DictionaryAnalyzer {
 
   private Dictionary $dictionary
-  private Integer $wordNameLength = 0
-  private Integer $contentLength = 0
+  private PrimInt $wordNameLength = 0
+  private PrimInt $contentLength = 0
   private CharacterFrequencyAnalyzer $frequencyAnalyzer = CharacterFrequencyAnalyzer.new()
 
   public DictionaryAnalyzer(Dictionary dictionary) {
@@ -21,8 +23,8 @@ public class DictionaryAnalyzer {
   }
 
   private void calculateLengths() {
-    Integer wordNameLength = 0
-    Integer contentLength = 0
+    PrimInt wordNameLength = 0
+    PrimInt contentLength = 0
     for (Word word : $dictionary.getRawWords()) {
       wordNameLength += word.getName().length()
       contentLength += word.getContent().length()
@@ -37,30 +39,30 @@ public class DictionaryAnalyzer {
     }
   }
 
-  public Integer wordSize() {
+  public PrimInt wordSize() {
     return $dictionary.totalWordSize()
   }
 
-  public Double tokipona() {
-    return (Double)(wordSize() / 120)
+  public PrimDouble tokipona() {
+    return wordSize() / 120
   }
 
-  public Double logTokipona() {
+  public PrimDouble logTokipona() {
     return Math.log10(tokipona())
   }
 
-  public Double averageWordNameLength() {
-    Integer wordSize = wordSize()
-    return (wordSize > 0) ? (Double)($wordNameLength / wordSize) : 0D
+  public PrimDouble averageWordNameLength() {
+    PrimInt wordSize = wordSize()
+    return (wordSize > 0) ? (PrimDouble)($wordNameLength / wordSize) : 0
   }
 
-  public Integer contentLength() {
+  public PrimInt contentLength() {
     return $contentLength
   }
 
-  public Double richness() {
-    Integer wordSize = wordSize()
-    return (wordSize > 0) ? (Double)($contentLength / wordSize) : 0D
+  public PrimDouble richness() {
+    PrimInt wordSize = wordSize()
+    return (wordSize > 0) ? (PrimDouble)($contentLength / wordSize) : 0
   }
 
   public List<CharacterStatus> characterStatuses() {
