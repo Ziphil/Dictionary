@@ -14,7 +14,8 @@ public class CharacterFrequencyAnalyzer {
   private PrimInt $totalFrequency = 0
   private PrimInt $totalWordSize = 0
 
-  public CharacterFrequencyAnalyzer(String input) {
+  public CharacterFrequencyAnalyzer(String input, String excludedCharacters) {
+    $excludedCharacters = excludedCharacters
     addInput(input)
   }
 
