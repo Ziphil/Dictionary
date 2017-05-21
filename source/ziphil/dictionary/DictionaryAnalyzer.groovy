@@ -33,7 +33,7 @@ public class DictionaryAnalyzer {
 
   private void calculateCharacterFrequency() {
     for (Word word : $dictionary.getRawWords()) {
-      $frequencyAnalyzer.addSource(word.getName())
+      $frequencyAnalyzer.addWordName(word.getName())
     }
   }
 

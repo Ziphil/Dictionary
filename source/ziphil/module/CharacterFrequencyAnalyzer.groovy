@@ -22,28 +22,32 @@ public class CharacterFrequencyAnalyzer {
 
   public void addSource(String source) {
     for (String wordName : source.split(/\s*/)) {
-      Set<String> countedCharacters = HashSet.new()
-      for (String character : wordName) {
-        CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
-        if (status != null) {
-          status.setFrequency(status.getFrequency() + 1)
-          if (!countedCharacters.contains(character)) {
-            status.setUsingWordSize(status.getUsingWordSize() + 1)
-            countedCharacters.add(character)
-          }
-        } else {
-          CharacterStatus nextStatus = CharacterStatus.new()
-          nextStatus.setCharacter(character)
-          nextStatus.setFrequency(1)
-          nextStatus.setUsingWordSize(1)
-          countedCharacters.add(character)
-          $characterStatuses.add(nextStatus)
-        }
-        $totalFrequency ++
-      }
-      $totalWordSize ++
-      countedCharacters.clear()
+      addSource(wordName)
     }
+  }
+
+  public void addWordName(String wordName) {
+    Set<String> countedCharacters = HashSet.new()
+    for (String character : wordName) {
+      CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
+      if (status != null) {
+        status.setFrequency(status.getFrequency() + 1)
+        if (!countedCharacters.contains(character)) {
+          status.setUsingWordSize(status.getUsingWordSize() + 1)
+          countedCharacters.add(character)
+        }
+      } else {
+        CharacterStatus nextStatus = CharacterStatus.new()
+        nextStatus.setCharacter(character)
+        nextStatus.setFrequency(1)
+        nextStatus.setUsingWordSize(1)
+        countedCharacters.add(character)
+        $characterStatuses.add(nextStatus)
+      }
+      $totalFrequency ++
+    }
+    $totalWordSize ++
+    countedCharacters.clear()
   }
 
   public List<CharacterStatus> characterStatuses() {
