@@ -14,15 +14,15 @@ public class CharacterFrequencyAnalyzer {
   private PrimInt $totalFrequency = 0
   private PrimInt $totalWordSize = 0
 
-  public CharacterFrequencyAnalyzer(String source) {
-    addSource(source)
+  public CharacterFrequencyAnalyzer(String input) {
+    addInput(input)
   }
 
   public CharacterFrequencyAnalyzer() {
   }
 
-  public void addSource(String source) {
-    for (String wordName : source.split(/\s*/)) {
+  public void addInput(String input) {
+    for (String wordName : input.split(/\s*/)) {
       addWordName(wordName)
     }
   }
