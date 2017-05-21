@@ -29,7 +29,6 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
   @FXML private TextArea $logControl
-
   private Akrantiain $akrantiain = null
   private SnojChooserController.Result $result = null
 
