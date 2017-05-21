@@ -30,6 +30,7 @@ public class CharacterFrequencyAnalyzer {
 
   public void addWordName(String wordName) {
     Set<String> countedCharacters = HashSet.new()
+    Boolean hasCharacter = false
     for (String character : wordName) {
       if ($excludedCharacters.indexOf(character) < 0) {
         CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
@@ -47,10 +48,13 @@ public class CharacterFrequencyAnalyzer {
           countedCharacters.add(character)
           $characterStatuses.add(nextStatus)
         }
+        hasCharacter = true
         $totalFrequency ++
       }
     }
-    $totalWordSize ++
+    if (hasCharacter) {
+      $totalWordSize ++
+    }
     countedCharacters.clear()
   }
 
