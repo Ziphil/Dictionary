@@ -47,7 +47,7 @@
       <Label text="入力:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="除外文字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <TextArea fx:id="$inputControl" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-      <TextField fx:id="$excludedCharactersControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextField fx:id="$excludedCharactersControl" text=".,!?" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
         <GridPane.margin>
           <Insets>
