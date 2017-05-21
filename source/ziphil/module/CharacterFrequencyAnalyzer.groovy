@@ -23,7 +23,7 @@ public class CharacterFrequencyAnalyzer {
   }
 
   public void addInput(String input) {
-    for (String wordName : input.split(/\s*/)) {
+    for (String wordName : input.split(/\s+/)) {
       addWordName(wordName)
     }
   }
