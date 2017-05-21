@@ -32,6 +32,7 @@ public class CharacterFrequencyAnalysisController extends Controller<Void> {
   @FXML
   private void execute() {
     CharacterFrequencyAnalyzer analyzer = CharacterFrequencyAnalyzer.new()
+    analyzer.setExcludedCharacters($excludedCharactersControl.getText())
     analyzer.addSource($inputControl.getText())
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)

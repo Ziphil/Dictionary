@@ -10,6 +10,7 @@ import ziphilib.type.PrimInt
 public class CharacterFrequencyAnalyzer {
 
   private List<CharacterStatus> $characterStatuses = ArrayList.new()
+  private String $excludedCharacters = ""
   private PrimInt $totalFrequency = 0
   private PrimInt $totalWordSize = 0
 
@@ -29,22 +30,24 @@ public class CharacterFrequencyAnalyzer {
   public void addWordName(String wordName) {
     Set<String> countedCharacters = HashSet.new()
     for (String character : wordName) {
-      CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
-      if (status != null) {
-        status.setFrequency(status.getFrequency() + 1)
-        if (!countedCharacters.contains(character)) {
-          status.setUsingWordSize(status.getUsingWordSize() + 1)
+      if ($excludedCharacters.indexOf(character) < 0) {
+        CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
+        if (status != null) {
+          status.setFrequency(status.getFrequency() + 1)
+          if (!countedCharacters.contains(character)) {
+            status.setUsingWordSize(status.getUsingWordSize() + 1)
+            countedCharacters.add(character)
+          }
+        } else {
+          CharacterStatus nextStatus = CharacterStatus.new()
+          nextStatus.setCharacter(character)
+          nextStatus.setFrequency(1)
+          nextStatus.setUsingWordSize(1)
           countedCharacters.add(character)
+          $characterStatuses.add(nextStatus)
         }
-      } else {
-        CharacterStatus nextStatus = CharacterStatus.new()
-        nextStatus.setCharacter(character)
-        nextStatus.setFrequency(1)
-        nextStatus.setUsingWordSize(1)
-        countedCharacters.add(character)
-        $characterStatuses.add(nextStatus)
+        $totalFrequency ++
       }
-      $totalFrequency ++
     }
     $totalWordSize ++
     countedCharacters.clear()
@@ -59,6 +62,10 @@ public class CharacterFrequencyAnalyzer {
       return secondStatus.getFrequency() <=> firstStatus.getFrequency()
     }
     return $characterStatuses
+  }
+
+  public void setExcludedCharacters(String excludedCharacters) {
+    $excludedCharacters = excludedCharacters
   }
 
 }
