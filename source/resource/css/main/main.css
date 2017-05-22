@@ -111,7 +111,7 @@
   -fx-background-insets: 0px, 1px;
   -fx-background-radius: 3px, 2px;
   -fx-padding: 0.166667em 0.583333em 0.166667em 0.583333em;
-  -fx-alignment: baseline-right;
+  -fx-alignment: baseline-center;
 }
 
 .transparent {
