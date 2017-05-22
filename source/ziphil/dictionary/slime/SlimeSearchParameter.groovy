@@ -24,25 +24,32 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     StringBuilder string = StringBuilder.new()
     if ($id != null) {
       string.append("ID[")
-      string.append($id).append("], ")
+      string.append($id)
+      string.append("], ")
     }
     if ($name != null) {
       string.append("単語[")
-      string.append($name).append("], ")
+      string.append($name)
+      string.append("], ")
     }
     if ($equivalentName != null || $equivalentTitle != null) {
       string.append("訳語[")
-      string.append($equivalentTitle ?: "").append(":")
-      string.append($equivalentName ?: "").append("], ")
+      string.append($equivalentTitle ?: "")
+      string.append(":")
+      string.append($equivalentName ?: "")
+      string.append("], ")
     }
     if ($informationText != null || $informationTitle != null) {
       string.append("内容[")
-      string.append($informationTitle ?: "").append(":")
-      string.append($informationText ?: "").append("], ")
+      string.append($informationTitle ?: "")
+      string.append(":")
+      string.append($informationText ?: "")
+      string.append("], ")
     }
     if ($tag != null) {
       string.append("タグ[")
-      string.append($tag).append("], ")
+      string.append($tag)
+      string.append("], ")
     }
     if (string.length() >= 2) {
       string.setLength(string.length() - 2)
