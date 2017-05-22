@@ -98,7 +98,7 @@
 }
 
 .frequency .table-column {
-  -fx-alignment: center;
+  -fx-alignment: baseline-center;
 }
 
 .large {
