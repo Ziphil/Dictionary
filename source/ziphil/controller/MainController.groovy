@@ -383,15 +383,15 @@ public class MainController extends PrimitiveController<Stage> {
           nextStage.initOwner($stage)
         }
         Word oldWord = $dictionary.copiedWord(word)
-        if ($dictionary instanceof ShaleiaDictionary) {
+        if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-          controller.prepare((ShaleiaWord)word)
-        } else if ($dictionary instanceof PersonalDictionary) {
+          controller.prepare(word)
+        } else if ($dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
           PersonalEditorController controller = PersonalEditorController.new(nextStage)
-          controller.prepare((PersonalWord)word)
-        } else if ($dictionary instanceof SlimeDictionary) {
+          controller.prepare(word)
+        } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          controller.prepare((SlimeWord)word, $dictionary)
+          controller.prepare(word, $dictionary)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
@@ -436,16 +436,19 @@ public class MainController extends PrimitiveController<Stage> {
       String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord(defaultName)
-        controller.prepare((ShaleiaWord)newWord, true)
+        ShaleiaWord localNewWord = $dictionary.emptyWord(defaultName)
+        newWord = localNewWord
+        controller.prepare(localNewWord, true)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord(defaultName)
-        controller.prepare((PersonalWord)newWord, true)
+        PersonalWord localNewWord = $dictionary.emptyWord(defaultName)
+        newWord = localNewWord
+        controller.prepare(localNewWord, true)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        newWord = $dictionary.emptyWord(defaultName)
-        controller.prepare((SlimeWord)newWord, $dictionary, true)
+        SlimeWord localNewWord = $dictionary.emptyWord(defaultName)
+        newWord = localNewWord
+        controller.prepare(localNewWord, $dictionary, true)
       }
       $openStages.add(nextStage)
       nextStage.showAndWait()
@@ -465,18 +468,21 @@ public class MainController extends PrimitiveController<Stage> {
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
-        if ($dictionary instanceof ShaleiaDictionary) {
+        if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-          newWord = $dictionary.inheritedWord((ShaleiaWord)word)
-          controller.prepare((ShaleiaWord)newWord)
-        } else if ($dictionary instanceof PersonalDictionary) {
+          ShaleiaWord localNewWord = $dictionary.inheritedWord(word)
+          newWord = localNewWord
+          controller.prepare(localNewWord)
+        } else if ($dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
           PersonalEditorController controller = PersonalEditorController.new(nextStage)
-          newWord = $dictionary.inheritedWord((PersonalWord)word)
-          controller.prepare((PersonalWord)newWord)
-        } else if ($dictionary instanceof SlimeDictionary) {
+          PersonalWord localNewWord = $dictionary.inheritedWord(word)
+          newWord = localNewWord
+          controller.prepare(localNewWord)
+        } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          newWord = $dictionary.inheritedWord((SlimeWord)word)
-          controller.prepare((SlimeWord)newWord, $dictionary)
+          SlimeWord localNewWord = $dictionary.inheritedWord(word)
+          newWord = localNewWord
+          controller.prepare(localNewWord, $dictionary)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
