@@ -35,17 +35,20 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   protected void commit() {
     ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
     if ($nameControl.getText() != "") {
+      parameter.setHasName(true)
       parameter.setName($nameControl.getText())
+      parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    parameter.setNameSearchType($nameSearchTypeControl.getValue())
     if ($equivalentControl.getText() != "") {
+      parameter.setHasEquivalent(true)
       parameter.setEquivalent($equivalentControl.getText())
+      parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     }
-    parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     if ($descriptionControl.getText() != "") {
+      parameter.setHasDescription(true)
       parameter.setDescription($descriptionControl.getText())
+      parameter.setDescriptionSearchType($descriptionSearchTypeControl.getValue())
     }
-    parameter.setDescriptionSearchType($descriptionSearchTypeControl.getValue())
     $stage.commit(parameter)
   }
 

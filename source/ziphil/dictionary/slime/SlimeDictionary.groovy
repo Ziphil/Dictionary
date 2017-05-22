@@ -81,17 +81,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       List<SlimeEquivalent> equivalents = word.getRawEquivalents()
       List<SlimeInformation> informations = word.getInformations()
       List<String> tags = word.getTags()
-      if (searchId != null) {
+      if (parameter.hasId()) {
         if (id != searchId) {
           predicate = false
         }
       }
-      if (searchName != null) {
+      if (parameter.hasName()) {
         if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
-      if (searchEquivalentName != null || searchEquivalentTitle != null) {
+      if (parameter.hasEquivalent()) {
         Boolean equivalentPredicate = false
         searchEquivalentName = searchEquivalentName ?: ""
         for (SlimeEquivalent equivalent : equivalents) {
@@ -106,7 +106,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           predicate = false
         }
       }
-      if (searchInformationText != null || searchInformationTitle != null) {
+      if (parameter.hasInformation()) {
         Boolean informationPredicate = false
         searchInformationText = searchInformationText ?: ""
         for (SlimeInformation information : informations) {
@@ -120,7 +120,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           predicate = false
         }
       }
-      if (searchTag != null) {
+      if (parameter.hasTag()) {
         Boolean tagPredicate = false
         for (String tag : tags) {
           if (tag == searchTag) {

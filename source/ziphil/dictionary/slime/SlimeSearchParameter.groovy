@@ -19,34 +19,39 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   private String $informationTitle
   private SearchType $informationSearchType
   private String $tag
+  private Boolean $hasId = false
+  private Boolean $hasName = false
+  private Boolean $hasEquivalent = false
+  private Boolean $hasInformation = false
+  private Boolean $hasTag = false
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    if ($id != null) {
+    if ($hasId) {
       string.append("ID[")
       string.append($id)
       string.append("], ")
     }
-    if ($name != null) {
+    if ($hasName) {
       string.append("単語[")
       string.append($name)
       string.append("], ")
     }
-    if ($equivalentName != null || $equivalentTitle != null) {
+    if ($hasEquivalent) {
       string.append("訳語[")
       string.append($equivalentTitle ?: "")
       string.append(":")
       string.append($equivalentName ?: "")
       string.append("], ")
     }
-    if ($informationText != null || $informationTitle != null) {
+    if ($hasInformation) {
       string.append("内容[")
       string.append($informationTitle ?: "")
       string.append(":")
       string.append($informationText ?: "")
       string.append("], ")
     }
-    if ($tag != null) {
+    if ($hasTag) {
       string.append("タグ[")
       string.append($tag)
       string.append("], ")
@@ -135,6 +140,46 @@ public class SlimeSearchParameter extends DetailSearchParameter {
 
   public void setTag(String tag) {
     $tag = tag
+  }
+
+  public Boolean hasId() {
+    return $hasId
+  }
+
+  public void setHasId(Boolean hasId) {
+    $hasId = hasId
+  }
+
+  public Boolean hasName() {
+    return $hasName
+  }
+
+  public void setHasName(Boolean hasName) {
+    $hasName = hasName
+  }
+
+  public Boolean hasEquivalent() {
+    return $hasEquivalent
+  }
+
+  public void setHasEquivalent(Boolean hasEquivalent) {
+    $hasEquivalent = hasEquivalent
+  }
+
+  public Boolean hasInformation() {
+    return $hasInformation
+  }
+
+  public void setHasInformation(Boolean hasInformation) {
+    $hasInformation = hasInformation
+  }
+
+  public Boolean hasTag() {
+    return $hasTag
+  }
+
+  public void setHasTag(Boolean hasTag) {
+    $hasTag = hasTag
   }
 
 }
