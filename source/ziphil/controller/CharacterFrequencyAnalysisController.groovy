@@ -26,7 +26,7 @@ public class CharacterFrequencyAnalysisController extends Controller<Void> {
 
   public CharacterFrequencyAnalysisController(UtilityStage<Void> stage) {
     super(stage)
-    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }
 
   @FXML

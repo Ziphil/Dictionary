@@ -30,7 +30,7 @@ public class StatisticsController extends Controller<Void> {
 
   public StatisticsController(UtilityStage<Void> stage) {
     super(stage)
-    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
   public void prepare(Dictionary dictionary) {
