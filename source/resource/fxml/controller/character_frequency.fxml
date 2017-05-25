@@ -37,7 +37,9 @@
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
-          <PopupPieChart fx:id="$frequencyChart"/>
+          <PopupPieChart fx:id="$frequencyChart">
+            <chart legendSide="right" startAngle="90" animated="false"/>
+          </PopupPieChart>
         </VBox>
       </Tab>
       <Tab text="表" closable="false">

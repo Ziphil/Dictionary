@@ -41,7 +41,6 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupFrequencyChart()
     setupFrequencyViewColumns()
   }
 
@@ -71,12 +70,6 @@ public class CharacterFrequencyController extends Controller<Void> {
       }
     }
     $frequencyView.getItems().addAll(characterStatuses)
-  }
-
-  private void setupFrequencyChart() {
-    $frequencyChart.getChart().setLegendSide(Side.RIGHT)
-    $frequencyChart.getChart().setStartAngle(90)
-    $frequencyChart.getChart().setAnimated(false)
   }
 
   private void setupFrequencyViewColumns() {
