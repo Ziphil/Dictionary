@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import ziphil.Launcher
 import ziphil.dictionary.IndividualSetting
+import ziphil.module.Version
 import ziphilib.transform.Ziphilify
 
 
@@ -21,6 +22,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
   private String $path = ""
   private List<SlimeSearchParameter> $registeredParameters = ArrayList.new()
   private List<String> $registeredParameterNames = ArrayList.new()
+  private Version $version = Version.new(-1, 0, 0)
 
   private SlimeIndividualSetting() {
   }
@@ -28,6 +30,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void save() {
     String compressedPath = createCompressedPath($path)
     FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+    $version = Launcher.VERSION
     try {
       $$mapper.writeValue(stream, this)
     } finally {
@@ -96,5 +99,13 @@ public class SlimeIndividualSetting extends IndividualSetting {
   public void setRegisteredParameterNames(List<String> registeredParameterNames) {
     $registeredParameterNames = registeredParameterNames
   } 
+
+  public Version getVersion() {
+    return $version
+  }
+
+  public void setVersion(Version version) {
+    $version = version
+  }
 
 }
