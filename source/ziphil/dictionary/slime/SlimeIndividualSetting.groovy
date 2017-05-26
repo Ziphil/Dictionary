@@ -41,7 +41,6 @@ public class SlimeIndividualSetting extends IndividualSetting {
   private void ensureCompatibility() {
     if ($version < Version.new(1, 13, 0)) {
       for (SlimeSearchParameter parameter : $registeredParameters) {
-        println(parameter)
         if (parameter != null) {
           if (parameter.getId() != null) {
             parameter.setHasId(true)
