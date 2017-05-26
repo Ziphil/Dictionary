@@ -157,8 +157,8 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
-      Boolean isStrict = $searchTypeControl.isSelected()
-      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, isStrict)
+      Boolean strict = $searchTypeControl.isSelected()
+      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict)
       if (forcesSearch || search != $previousSearch) {
         doSearch(parameter)
         $previousSearch = search
@@ -183,12 +183,12 @@ public class MainController extends PrimitiveController<Stage> {
   private void doSearch(NormalSearchParameter parameter) {
     String search = parameter.getSearch()
     SearchMode searchMode = parameter.getSearchMode()
-    Boolean isStrict = parameter.isStrict()
+    Boolean strict = parameter.isStrict()
     measureDictionaryStatus() {
       if (searchMode == SearchMode.NAME) {
-        $dictionary.searchByName(search, isStrict)
+        $dictionary.searchByName(search, strict)
       } else if (searchMode == SearchMode.EQUIVALENT) {
-        $dictionary.searchByEquivalent(search, isStrict)
+        $dictionary.searchByEquivalent(search, strict)
       } else if (searchMode == SearchMode.CONTENT) {
         $dictionary.searchByContent(search)
       }
@@ -284,10 +284,10 @@ public class MainController extends PrimitiveController<Stage> {
         if (parameter instanceof NormalSearchParameter) {
           String search = parameter.getSearch()
           SearchMode searchMode = parameter.getSearchMode()
-          Boolean isStrict = parameter.isStrict()
+          Boolean strict = parameter.isStrict()
           $searchControl.setText(search)
           $searchModeControl.setValue(searchMode)
-          $searchTypeControl.setSelected(isStrict)
+          $searchTypeControl.setSelected(strict)
           $previousSearch = search
           doSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
@@ -305,10 +305,10 @@ public class MainController extends PrimitiveController<Stage> {
         if (parameter instanceof NormalSearchParameter) {
           String search = parameter.getSearch()
           SearchMode searchMode = parameter.getSearchMode()
-          Boolean isStrict = parameter.isStrict()
+          Boolean strict = parameter.isStrict()
           $searchControl.setText(search)
           $searchModeControl.setValue(searchMode)
-          $searchTypeControl.setSelected(isStrict)
+          $searchTypeControl.setSelected(strict)
           $previousSearch = search
           doSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
@@ -1193,16 +1193,16 @@ public class MainController extends PrimitiveController<Stage> {
       event.consume()
     }
     $scene.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
-      Boolean isCompleted = false
+      Boolean completed = false
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasFiles()) {
         File file = dragboard.getFiles()[0]
         Platform.runLater() {
           openRegisteredDictionary(file)
         }
-        isCompleted = true
+        completed = true
       }
-      event.setDropCompleted(isCompleted)
+      event.setDropCompleted(completed)
       event.consume()
     }
   }
@@ -1236,7 +1236,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupDebug() {
-    Boolean isDebugging = Setting.getInstance().isDebugging()
+    Boolean debugging = Setting.getInstance().isDebugging()
   }
 
 }

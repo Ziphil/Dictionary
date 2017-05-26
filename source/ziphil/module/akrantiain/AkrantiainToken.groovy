@@ -122,7 +122,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
-    Boolean isMatched = false
+    Boolean matched = false
     Integer pointer = from
     while (pointer <= group.getElements().size()) {
       AkrantiainElement element = group.getElements()[pointer]
@@ -130,13 +130,13 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         Integer punctuationTo = null
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
-          isMatched = true
+          matched = true
           pointer ++
         } else if ((punctuationTo = module.findPunctuationContent().matchRight(group, pointer, module)) != null) {
-          isMatched = true
+          matched = true
           pointer = punctuationTo
         } else {
-          if (isMatched || from == 0) {
+          if (matched || from == 0) {
             to = pointer
           }
           break
@@ -151,7 +151,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
-    Boolean isMatched = false
+    Boolean matched = false
     Integer pointer = to - 1
     while (pointer >= -1) {
       AkrantiainElement element = (pointer >= 0) ? group.getElements()[pointer] : null
@@ -159,13 +159,13 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         Integer punctuationFrom = null
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
-          isMatched = true
+          matched = true
           pointer --
         } else if ((punctuationFrom = module.findPunctuationContent().matchLeft(group, pointer, module)) != null) {
-          isMatched = true
+          matched = true
           pointer = punctuationFrom
         } else {
-          if (isMatched || to == group.getElements().size()) {
+          if (matched || to == group.getElements().size()) {
             from = pointer + 1
           }
           break

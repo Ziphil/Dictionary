@@ -15,9 +15,9 @@ public class PlainWordCell extends ListCell<SlimeWord> {
     super()
   }
 
-  protected void updateItem(SlimeWord word, PrimBoolean isEmpty) {
-    super.updateItem(word, isEmpty)
-    if (isEmpty || word == null) {
+  protected void updateItem(SlimeWord word, PrimBoolean empty) {
+    super.updateItem(word, empty)
+    if (empty || word == null) {
       setText(null)
       setGraphic(null)
     } else {

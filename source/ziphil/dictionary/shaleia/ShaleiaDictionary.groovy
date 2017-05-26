@@ -91,35 +91,35 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    $isChanged = true
+    $changed = true
   }
 
   public void addWord(ShaleiaWord word) {
     $words.add(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void removeWord(ShaleiaWord word) {
     $words.remove(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void update() {
     calculateSystemWordSize()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateFirst() {
     parseChanges()
     calculateSystemWordSize()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateMinimum() {
     parseChanges()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   private void parseChanges() {

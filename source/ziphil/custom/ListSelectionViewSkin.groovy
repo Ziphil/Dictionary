@@ -112,7 +112,7 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       event.consume()
     }
     secondView.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
-      Boolean isCompleted = false
+      Boolean completed = false
       Dragboard dragboard = event.getDragboard()
       if (dragboard.hasString()) {
         String movedString = dragboard.getString()
@@ -123,9 +123,9 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         secondView.getSelectionModel().clearSelection()
         secondView.getSelectionModel().select(movedItem)
         secondView.requestFocus()
-        isCompleted = true
+        completed = true
       }
-      event.setDropCompleted(isCompleted)
+      event.setDropCompleted(completed)
       event.consume()
     }
   }

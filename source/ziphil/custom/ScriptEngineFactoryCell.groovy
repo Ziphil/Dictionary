@@ -14,9 +14,9 @@ public class ScriptEngineFactoryCell extends ListCell<ScriptEngineFactory> {
     super()
   }
 
-  protected void updateItem(ScriptEngineFactory factory, PrimBoolean isEmpty) {
-    super.updateItem(factory, isEmpty)
-    if (isEmpty || factory == null) {
+  protected void updateItem(ScriptEngineFactory factory, PrimBoolean empty) {
+    super.updateItem(factory, empty)
+    if (empty || factory == null) {
       setText(null)
       setGraphic(null)
     } else {

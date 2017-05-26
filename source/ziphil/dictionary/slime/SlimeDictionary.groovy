@@ -177,8 +177,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void removeWord(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
-      Boolean isChanged = otherWord.getRelations().removeAll{it.getId() == word.getId()}
-      if (isChanged) {
+      Boolean changed = otherWord.getRelations().removeAll{it.getId() == word.getId()}
+      if (changed) {
         otherWord.change()
       }
     }
@@ -205,7 +205,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updatePlainInformationTitles()
     updateInformationTitleOrder()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateFirst() {
@@ -214,13 +214,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updatePlainInformationTitles()
     updateInformationTitleOrder()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateMinimum() {
     updateComparisonStrings()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void validate() {

@@ -20,9 +20,9 @@ public class PercentageTableCell<S> extends TableCell<S, Double> {
     $precision = precision
   }
 
-  protected void updateItem(Double item, PrimBoolean isEmpty) {
-    super.updateItem(item, isEmpty)
-    if (isEmpty || item == null) {
+  protected void updateItem(Double item, PrimBoolean empty) {
+    super.updateItem(item, empty)
+    if (empty || item == null) {
       setText(null)
       setGraphic(null)
     } else {

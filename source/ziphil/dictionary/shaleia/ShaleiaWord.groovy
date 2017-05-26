@@ -50,11 +50,11 @@ public class ShaleiaWord extends WordBase {
 
   public void updateComparisonString() {
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    Boolean isApostropheCharacter = alphabetOrder.contains("'")
+    Boolean apostropheCharacter = alphabetOrder.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
     for (Integer i : 0 ..< $uniqueName.length()) {
       String character = $uniqueName[i]
-      if ((isApostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
+      if ((apostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
         if (character != "\$") {
           Integer position = alphabetOrder.indexOf($uniqueName.codePointAt(i))
           if (position > -1) {

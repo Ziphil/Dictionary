@@ -15,9 +15,9 @@ public class WordCell extends ListCell<Element> {
     super()
   }
 
-  protected void updateItem(Element word, PrimBoolean isEmpty) {
-    super.updateItem(word, isEmpty)
-    if (isEmpty || word == null) {
+  protected void updateItem(Element word, PrimBoolean empty) {
+    super.updateItem(word, empty)
+    if (empty || word == null) {
       setText(null)
       setGraphic(null)
     } else {

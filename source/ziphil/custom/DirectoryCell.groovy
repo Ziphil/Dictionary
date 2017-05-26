@@ -20,9 +20,9 @@ public class DirectoryCell extends TreeCell<File> {
     super()
   }
 
-  protected void updateItem(File file, PrimBoolean isEmpty) {
-    super.updateItem(file, isEmpty)
-    if (isEmpty || file == null) {
+  protected void updateItem(File file, PrimBoolean empty) {
+    super.updateItem(file, empty)
+    if (empty || file == null) {
       setText(null)
       setGraphic(null)
     } else {

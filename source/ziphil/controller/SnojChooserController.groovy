@@ -20,8 +20,8 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
-  @FXML private RadioButton $isFileSelectedControl
-  @FXML private RadioButton $isSourceSelectedControl
+  @FXML private RadioButton $fileSelectedControl
+  @FXML private RadioButton $sourceSelectedControl
   @FXML private VBox $fileBox
   @FXML private VBox $sourceBox
   @FXML private FileChooser $fileChooser
@@ -49,9 +49,9 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
         $sourceControl.setText(source)
       }
       if (previousResult.isFileSelected()) {
-        $isFileSelectedControl.setSelected(true)
+        $fileSelectedControl.setSelected(true)
       } else {
-        $isSourceSelectedControl.setSelected(true)
+        $sourceSelectedControl.setSelected(true)
       }
     }
   }
@@ -60,14 +60,14 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   protected void commit() {
     File file = $fileChooser.getSelectedFile()
     String source = $sourceControl.getText()
-    Boolean isFileSelected = $isFileSelectedControl.isSelected()
-    Result result = Result.new(file, source, isFileSelected)
+    Boolean fileSelected = $fileSelectedControl.isSelected()
+    Result result = Result.new(file, source, fileSelected)
     $stage.commit(result)
   }
 
   private void setupBoxes() {
-    $fileBox.visibleProperty().bind($isFileSelectedControl.selectedProperty())
-    $sourceBox.visibleProperty().bind($isSourceSelectedControl.selectedProperty())
+    $fileBox.visibleProperty().bind($fileSelectedControl.selectedProperty())
+    $sourceBox.visibleProperty().bind($sourceSelectedControl.selectedProperty())
   }
 
   private void setupChooser() {
@@ -85,20 +85,20 @@ public static class Result {
 
   private File $file
   private String $source
-  private Boolean $isFileSelected
+  private Boolean $fileSelected
 
-  public Result(File file, String source, Boolean isFileSelected) {
+  public Result(File file, String source, Boolean fileSelected) {
     $file = file
     $source = source
-    $isFileSelected = isFileSelected
+    $fileSelected = fileSelected
   }
 
   public Boolean isFileSelected() {
-    return $isFileSelected
+    return $fileSelected
   }
 
   public Boolean isStringSelected() {
-    return !$isFileSelected
+    return !$fileSelected
   }
 
   public File getFile() {

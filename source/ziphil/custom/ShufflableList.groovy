@@ -15,7 +15,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
 
   private List<Integer> $indices
   private Integer $size = 0
-  private Boolean $isShuffled = false
+  private Boolean $shuffled = false
 
   public ShufflableList(ObservableList<? extends E> source) {
     super(source)
@@ -27,15 +27,15 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     List<Integer> oldIndices = ArrayList.new($indices)
     Collections.shuffle($indices)
     updatePermutation(oldIndices)
-    $isShuffled = true
+    $shuffled = true
   }
 
   public void unshuffle() {
-    if ($isShuffled) {
+    if ($shuffled) {
       List<Integer> oldIndices = ArrayList.new($indices)
       $indices = ArrayList.new(0 ..< $size)
       updatePermutation(oldIndices)
-      $isShuffled = false
+      $shuffled = false
     }
   }
 

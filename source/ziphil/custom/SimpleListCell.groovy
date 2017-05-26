@@ -13,9 +13,9 @@ public class SimpleListCell<T> extends ListCell<T> {
     super()
   }
 
-  protected void updateItem(T item, PrimBoolean isEmpty) {
-    super.updateItem(item, isEmpty)
-    if (isEmpty || item == null) {
+  protected void updateItem(T item, PrimBoolean empty) {
+    super.updateItem(item, empty)
+    if (empty || item == null) {
       setText(null)
       setGraphic(null)
     } else {

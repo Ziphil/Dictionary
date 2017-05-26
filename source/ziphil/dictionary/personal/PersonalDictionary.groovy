@@ -35,29 +35,29 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   }
 
   public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
-    $isChanged = true
+    $changed = true
   }
 
   public void addWord(PersonalWord word) {
     $words.add(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void removeWord(PersonalWord word) {
     $words.remove(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void update() {
-    $isChanged = true
+    $changed = true
   }
 
   public void updateFirst() {
-    $isChanged = true
+    $changed = true
   }
 
   public void updateMinimum() {
-    $isChanged = true
+    $changed = true
   }
 
   public PersonalWord emptyWord(String defaultName) {
