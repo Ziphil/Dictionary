@@ -38,6 +38,31 @@ public class SlimeIndividualSetting extends IndividualSetting {
     }
   }
 
+  private void ensureCompatibility() {
+    if ($version < Version.new(1, 13, 0)) {
+      for (SlimeSearchParameter parameter : $registeredParameters) {
+        println(parameter)
+        if (parameter != null) {
+          if (parameter.getId() != null) {
+            parameter.setHasId(true)
+          }
+          if (parameter.getName() != null) {
+            parameter.setHasName(true)
+          }
+          if (parameter.getEquivalentName() != null || parameter.getEquivalentTitle() != null) {
+            parameter.setHasEquivalent(true)
+          }
+          if (parameter.getInformationText() != null || parameter.getInformationTitle() != null) {
+            parameter.setHasInformation(true)
+          }
+          if (parameter.getTag() != null) {
+            parameter.setHasTag(true)
+          }
+        }
+      }
+    }
+  }
+
   public static SlimeIndividualSetting create(SlimeDictionary dictionary) {
     String compressedPath = createCompressedPath(dictionary.getPath())
     File file = File.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
@@ -52,6 +77,7 @@ public class SlimeIndividualSetting extends IndividualSetting {
       } finally {
         stream.close()
       }
+      instance.ensureCompatibility()
       return instance
     } else {
       SlimeIndividualSetting instance = SlimeIndividualSetting.new()

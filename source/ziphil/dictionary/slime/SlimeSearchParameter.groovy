@@ -1,5 +1,6 @@
 package ziphil.dictionary.slime
 
+import com.fasterxml.jackson.annotation.JsonGetter
 import groovy.transform.CompileStatic
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.SearchType
@@ -142,6 +143,7 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     $tag = tag
   }
 
+  @JsonGetter("hasId")
   public Boolean hasId() {
     return $hasId
   }
@@ -150,6 +152,7 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     $hasId = hasId
   }
 
+  @JsonGetter("hasName")
   public Boolean hasName() {
     return $hasName
   }
@@ -158,6 +161,7 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     $hasName = hasName
   }
 
+  @JsonGetter("hasEquivalent")
   public Boolean hasEquivalent() {
     return $hasEquivalent
   }
@@ -166,6 +170,7 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     $hasEquivalent = hasEquivalent
   }
 
+  @JsonGetter("hasInformation")
   public Boolean hasInformation() {
     return $hasInformation
   }
@@ -174,6 +179,7 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     $hasInformation = hasInformation
   }
 
+  @JsonGetter("hasTag")
   public Boolean hasTag() {
     return $hasTag
   }
