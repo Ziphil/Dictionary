@@ -67,8 +67,15 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(matchedLength, matchedLength + elementPart.length())
-          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          if (adjustedTextSubstring == elementPart) {
+          String adjustedTextSubstring = textSubstring
+          String adjustedElementPart = elementPart
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
+            adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
+          }
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+            adjustedElementPart = adjustedElementPart.toLowerCase()
+          }
+          if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               to = pointer + 1
@@ -99,8 +106,15 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(text.length() - elementPart.length() - matchedLength, text.length() - matchedLength)
-          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          if (adjustedTextSubstring == elementPart) {
+          String adjustedTextSubstring = textSubstring
+          String adjustedElementPart = elementPart
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
+            adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
+          }
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+            adjustedElementPart = adjustedElementPart.toLowerCase()
+          }
+          if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               from = pointer
