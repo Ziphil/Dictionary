@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 12, 3, 1943)
+  public static final Version VERSION = Version.new(1, 13, 0, 1952)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.13. 0 | 文字頻度解析を行う機能を追加。
 //  1.12. 3 | 辞書を開いていない状態で辞書登録しようとするとエラーになる不具合を修正。
 //  1.12. 2 | 0 単語の辞書を開いて統計を見ようとするとエラーになる不具合を修正。
 //          | 0 単語の OneToMany 形式辞書が開かれた状態で再起動するとエラーになる不具合を修正。
