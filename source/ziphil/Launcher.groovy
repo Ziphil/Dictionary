@@ -10,9 +10,10 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 12, 3, 1943)
+  public static final Version VERSION = Version.new(1, 13, 0, 1952)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
+  public static final String LINE_SEPARATPR = createLineSeparator()
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -24,7 +25,7 @@ public class Launcher {
   private static String createBasePath() {
     String classPath = System.getProperty("java.class.path")
     Integer classIndex = classPath.indexOf(Launcher.PATH_SEPARATOR)
-    String firstPath = (classIndex != -1) ? classPath.take(classIndex) : classPath
+    String firstPath = (classIndex >= 0) ? classPath.take(classIndex) : classPath
     File file = File.new(firstPath)
     String filePath = file.getCanonicalPath()
     String path
@@ -45,16 +46,21 @@ public class Launcher {
     return System.getProperty("path.separator").charAt(0).toString()
   }
 
+  private static String createLineSeparator() {
+    return System.getProperty("line.separator")
+  }
+
 }
 
 
 
 // ◆ Version History
 //
+//  1.13. 0 | 文字頻度解析を行う機能を追加。
 //  1.12. 3 | 辞書を開いていない状態で辞書登録しようとするとエラーになる不具合を修正。
 //  1.12. 2 | 0 単語の辞書を開いて統計を見ようとするとエラーになる不具合を修正。
 //          | 0 単語の OneToMany 形式辞書が開かれた状態で再起動するとエラーになる不具合を修正。
-//  1.12. 1 | OTM形式で変化形を編集するときに句読点の設定が無視される不具合を修正。
+//  1.12. 1 | OneToMany 形式で変化形を編集するときに句読点の設定が無視される不具合を修正。
 //  1.12. 0 | 辞書の統計情報を表示する機能を追加。 
 //          | OneToMany 形式の編集時に関連語を自動的に相互参照にする機能を追加。
 //          | ウィンドウを常に最前面に表示するかを設定する機能を追加。

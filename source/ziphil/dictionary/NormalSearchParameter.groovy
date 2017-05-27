@@ -9,12 +9,12 @@ public class NormalSearchParameter extends SearchParameter {
 
   private String $search
   private SearchMode $searchMode
-  private Boolean $isStrict
+  private Boolean $strict
 
-  public NormalSearchParameter(String search, SearchMode searchMode, Boolean isStrict) {
+  public NormalSearchParameter(String search, SearchMode searchMode, Boolean strict) {
     $search = search
     $searchMode = searchMode
-    $isStrict = isStrict
+    $strict = strict
   }
 
   public NormalSearchParameter() {
@@ -37,11 +37,11 @@ public class NormalSearchParameter extends SearchParameter {
   }
 
   public Boolean isStrict() {
-    return $isStrict
+    return $strict
   }
 
-  public void setStrict(Boolean isStrict) {
-    $isStrict = isStrict
+  public void setStrict(Boolean strict) {
+    $strict = strict
   }
 
 }

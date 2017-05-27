@@ -65,12 +65,12 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       String name = word.getName()
       List<String> equivalents = word.getEquivalents()
       String description = word.getDescription()
-      if (searchName != null) {
+      if (parameter.hasName()) {
         if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
-      if (searchEquivalent != null) {
+      if (parameter.hasEquivalent()) {
         Boolean equivalentPredicate = false
         for (String equivalent : equivalents) {
           if (equivalentSearchType.matches(equivalent, searchEquivalent)) {
@@ -81,7 +81,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
           predicate = false
         }
       }
-      if (searchDescription != null) {
+      if (parameter.hasDescription()) {
         if (!descriptionSearchType.matches(description, searchDescription)) {
           predicate = false
         }
@@ -91,35 +91,35 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    $isChanged = true
+    $changed = true
   }
 
   public void addWord(ShaleiaWord word) {
     $words.add(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void removeWord(ShaleiaWord word) {
     $words.remove(word)
-    $isChanged = true
+    $changed = true
   }
 
   public void update() {
     calculateSystemWordSize()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateFirst() {
     parseChanges()
     calculateSystemWordSize()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateMinimum() {
     parseChanges()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   private void parseChanges() {
@@ -145,7 +145,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void calculateSystemWordSize() {
-    $systemWordSize = (Integer)$words.count{word -> word.getUniqueName().startsWith("\$")}
+    $systemWordSize = (Integer)$words.count{it.getUniqueName().startsWith("\$")}
   }
 
   private void updateAkrantiain() {

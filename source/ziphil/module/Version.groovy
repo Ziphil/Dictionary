@@ -3,8 +3,8 @@ package ziphil.module
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import groovy.transform.CompileStatic
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
@@ -34,8 +34,7 @@ public class Version implements Comparable<Version> {
     $date = versionList[3]
   }
 
-  @ConvertPrimitiveArgs
-  public Integer compareTo(Version other) {
+  public PrimInt compareTo(Version other) {
     if ($major > other.getMajor()) {
       return 1
     } else if ($major < other.getMajor()) {

@@ -1,5 +1,6 @@
 package ziphil.dictionary.slime
 
+import com.fasterxml.jackson.annotation.JsonGetter
 import groovy.transform.CompileStatic
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.SearchType
@@ -19,30 +20,42 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   private String $informationTitle
   private SearchType $informationSearchType
   private String $tag
+  private Boolean $hasId = false
+  private Boolean $hasName = false
+  private Boolean $hasEquivalent = false
+  private Boolean $hasInformation = false
+  private Boolean $hasTag = false
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    if ($id != null) {
+    if ($hasId) {
       string.append("ID[")
-      string.append($id).append("], ")
+      string.append($id)
+      string.append("], ")
     }
-    if ($name != null) {
+    if ($hasName) {
       string.append("単語[")
-      string.append($name).append("], ")
+      string.append($name)
+      string.append("], ")
     }
-    if ($equivalentName != null || $equivalentTitle != null) {
+    if ($hasEquivalent) {
       string.append("訳語[")
-      string.append($equivalentTitle ?: "").append(":")
-      string.append($equivalentName ?: "").append("], ")
+      string.append($equivalentTitle ?: "")
+      string.append(":")
+      string.append($equivalentName ?: "")
+      string.append("], ")
     }
-    if ($informationText != null || $informationTitle != null) {
+    if ($hasInformation) {
       string.append("内容[")
-      string.append($informationTitle ?: "").append(":")
-      string.append($informationText ?: "").append("], ")
+      string.append($informationTitle ?: "")
+      string.append(":")
+      string.append($informationText ?: "")
+      string.append("], ")
     }
-    if ($tag != null) {
+    if ($hasTag) {
       string.append("タグ[")
-      string.append($tag).append("], ")
+      string.append($tag)
+      string.append("], ")
     }
     if (string.length() >= 2) {
       string.setLength(string.length() - 2)
@@ -128,6 +141,51 @@ public class SlimeSearchParameter extends DetailSearchParameter {
 
   public void setTag(String tag) {
     $tag = tag
+  }
+
+  @JsonGetter("hasId")
+  public Boolean hasId() {
+    return $hasId
+  }
+
+  public void setHasId(Boolean hasId) {
+    $hasId = hasId
+  }
+
+  @JsonGetter("hasName")
+  public Boolean hasName() {
+    return $hasName
+  }
+
+  public void setHasName(Boolean hasName) {
+    $hasName = hasName
+  }
+
+  @JsonGetter("hasEquivalent")
+  public Boolean hasEquivalent() {
+    return $hasEquivalent
+  }
+
+  public void setHasEquivalent(Boolean hasEquivalent) {
+    $hasEquivalent = hasEquivalent
+  }
+
+  @JsonGetter("hasInformation")
+  public Boolean hasInformation() {
+    return $hasInformation
+  }
+
+  public void setHasInformation(Boolean hasInformation) {
+    $hasInformation = hasInformation
+  }
+
+  @JsonGetter("hasTag")
+  public Boolean hasTag() {
+    return $hasTag
+  }
+
+  public void setHasTag(Boolean hasTag) {
+    $hasTag = hasTag
   }
 
 }

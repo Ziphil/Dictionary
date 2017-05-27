@@ -38,7 +38,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
       }
       for (Map.Entry<String, List<SlimeRelation>> oldEntry : oldWord.groupedRelations()) {
         String oldTitle = oldEntry.getKey()
-        List<String> oldNames = oldEntry.getValue().collect{relation -> relation.getName()}
+        List<String> oldNames = oldEntry.getValue().collect{it.getName()}
         appendRelation(newUsage, oldTitle, oldNames)
       }
       modifyBreak(newTranslation)

@@ -12,7 +12,7 @@ public class AkrantiainElementGroup {
 
   public static AkrantiainElementGroup create(String input, AkrantiainModule module) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
+    if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && !module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
       input = input.toLowerCase()
     }
     if (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) {
@@ -93,25 +93,25 @@ public class AkrantiainElementGroup {
   }
 
   public Boolean isAllConverted(Integer from, Integer to) {
-    Boolean isAllConverted = true
+    Boolean allConverted = true
     for (Integer i : from ..< to) {
       if (!$elements[i].isConverted()) {
-        isAllConverted = false
+        allConverted = false
         break
       }
     }
-    return isAllConverted
+    return allConverted
   }
 
   public Boolean isNoneConverted(Integer from, Integer to) {
-    Boolean isNoneConverted = true
+    Boolean noneConverted = true
     for (Integer i : from ..< to) {
       if ($elements[i].isConverted()) {
-        isNoneConverted = false
+        noneConverted = false
         break
       }
     }
-    return isNoneConverted
+    return noneConverted
   }
 
   public String toString() {

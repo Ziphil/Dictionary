@@ -4,12 +4,11 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
-import ziphilib.transform.ConvertPrimitives
 import ziphilib.transform.Ziphilify
 import ziphilib.type.PrimLong
 
 
-@CompileStatic @Ziphilify @ConvertPrimitives
+@CompileStatic @Ziphilify
 public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
 
   public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {

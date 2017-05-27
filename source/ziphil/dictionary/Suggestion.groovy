@@ -8,7 +8,7 @@ public interface Suggestion<P> extends Element {
 
   public Boolean isDisplayed()
 
-  public void setDisplayed(Boolean isDisplayed)
+  public void setDisplayed(Boolean displayed)
 
   public List<P> getPossibilities()
 

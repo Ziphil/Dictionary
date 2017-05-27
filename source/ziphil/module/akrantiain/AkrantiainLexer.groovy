@@ -9,8 +9,8 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private ExtendedBufferedReader $reader
-  private Boolean $isFirst = true
-  private Boolean $isAfterSemicolon = false
+  private Boolean $first = true
+  private Boolean $afterSemicolon = false
 
   public AkrantiainLexer(Reader reader) {
     $reader = ExtendedBufferedReader.new(reader)
@@ -21,10 +21,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
   // スペースとコメントは無視されます。
   // もともとの入力で改行前のセミコロンが省略されている場合でも、自動的にセミコロンを補って動作します。
   public AkrantiainToken nextToken() {
-    Boolean isNextLine = skipBlank()
+    Boolean nextLine = skipBlank()
     AkrantiainToken token = null
-    if ($isFirst || $isAfterSemicolon || !isNextLine) {
-      $isFirst = false
+    if ($first || $afterSemicolon || !nextLine) {
+      $first = false
       $reader.mark(3)
       Integer codePoint = $reader.read()
       if (codePoint == '"') {
@@ -90,7 +90,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         $reader.reset()
         token = nextIdentifier()
       } else if (codePoint == -1) {
-        if (!$isAfterSemicolon) {
+        if (!$afterSemicolon) {
           token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
         } else {
           token = null
@@ -101,11 +101,11 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     } else {
       token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, "", $reader)
     }
-    $isAfterSemicolon = false 
+    $afterSemicolon = false 
     if (token != null) {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.SEMICOLON || tokenType == AkrantiainTokenType.OPEN_CURLY || tokenType == AkrantiainTokenType.CLOSE_CURLY) {
-        $isAfterSemicolon = true
+        $afterSemicolon = true
       }
     }
     return token
@@ -129,10 +129,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private AkrantiainToken nextStringLiteral(String separator) {
     StringBuilder currentContent = StringBuilder.new()
-    Boolean isInside = false
+    Boolean inside = false
     while (true) {
       Integer codePoint = $reader.read()
-      if (isInside) {
+      if (inside) {
         if (codePoint == '\\') {
           Integer nextCodePoint = $reader.read()
           if (nextCodePoint == separator || nextCodePoint == '\\') {
@@ -162,7 +162,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         }
       } else {
         if (codePoint == separator) {
-          isInside = true
+          inside = true
         } else if (codePoint == -1) {
           break
         }
@@ -179,11 +179,11 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
 
   private AkrantiainToken nextEnvironmentLiteral() {
     StringBuilder currentContent = StringBuilder.new()
-    Boolean isInside = false
+    Boolean inside = false
     while (true) {
       $reader.mark(1)
       Integer codePoint = $reader.read()
-      if (isInside) {
+      if (inside) {
         if (AkrantiainLexer.isLetter(codePoint)) {
           currentContent.appendCodePoint(codePoint)
         } else {
@@ -192,7 +192,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         }
       } else {
         if (codePoint == '@') {
-          isInside = true
+          inside = true
         } else if (codePoint == -1) {
           break
         }
@@ -203,29 +203,29 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
   }
 
   private Boolean skipBlank() {
-    Boolean isInComment = false
-    Boolean isNextLine = false
+    Boolean inComment = false
+    Boolean nextLine = false
     while (true) {
-      if (isInComment) {
+      if (inComment) {
         Integer codePoint = $reader.read()
         if (codePoint == '\n' || codePoint == -1) {
-          isInComment = false
-          isNextLine = true
+          inComment = false
+          nextLine = true
         }
       } else {
         $reader.mark(2)
         Integer codePoint = $reader.read()
         if (codePoint == '#') {
-          isInComment = true
+          inComment = true
         } else if (codePoint == '\n') {
-          isNextLine = true
+          nextLine = true
         } else if (!AkrantiainLexer.isWhitespace(codePoint)) {
           $reader.reset()
           break
         }
       }
     }
-    return isNextLine
+    return nextLine
   }
 
   public static Boolean isWhitespace(Integer codePoint) {

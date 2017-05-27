@@ -2,8 +2,8 @@ package ziphil.custom
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -13,10 +13,9 @@ public class SimpleListCell<T> extends ListCell<T> {
     super()
   }
 
-  @ConvertPrimitiveArgs
-  protected void updateItem(T item, Boolean isEmpty) {
-    super.updateItem(item, isEmpty)
-    if (isEmpty || item == null) {
+  protected void updateItem(T item, PrimBoolean empty) {
+    super.updateItem(item, empty)
+    if (empty || item == null) {
       setText(null)
       setGraphic(null)
     } else {

@@ -17,23 +17,23 @@ public class AkrantiainParser {
   public AkrantiainRoot readRoot() {
     AkrantiainModule currentModule = $root.getDefaultModule()
     AkrantiainSentenceParser sentenceParser = AkrantiainSentenceParser.new() 
-    Boolean isInModule = false
+    Boolean inModule = false
     for (AkrantiainToken token ; (token = $lexer.nextToken()) != null ;) {
       AkrantiainTokenType tokenType = token.getType()
       if (tokenType == AkrantiainTokenType.PERCENT) {
-        if (!isInModule) {
+        if (!inModule) {
           currentModule = nextModule()
           $root.getModules().add(currentModule)
-          isInModule = true
+          inModule = true
         } else {
           throw AkrantiainParseException.new("Module definition cannot be nested", token)
         }
       } else if (tokenType == AkrantiainTokenType.OPEN_CURLY) {
         throw AkrantiainParseException.new("Unexpected left curly bracket", token)
       } else if (tokenType == AkrantiainTokenType.CLOSE_CURLY) {
-        if (isInModule) {
+        if (inModule) {
           currentModule = $root.getDefaultModule()
-          isInModule = false
+          inModule = false
         } else {
           throw AkrantiainParseException.new("Unexpected right curly bracket", token)
         }
@@ -73,7 +73,7 @@ public class AkrantiainParser {
         sentenceParser.addToken(token)
       }
     }
-    if (isInModule) {
+    if (inModule) {
       throw AkrantiainParseException.new("The file ended before a module is closed")
     }
     ensureSafety()

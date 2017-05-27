@@ -53,11 +53,11 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     if ($dictionary != null) {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
-      Boolean isStrict = $searchTypeControl.isSelected()
+      Boolean strict = $searchTypeControl.isSelected()
       if (searchMode == SearchMode.NAME) {
-        $dictionary.searchByName(search, isStrict)
+        $dictionary.searchByName(search, strict)
       } else if (searchMode == SearchMode.EQUIVALENT) {
-        $dictionary.searchByEquivalent(search, isStrict)
+        $dictionary.searchByEquivalent(search, strict)
       } else if (searchMode == SearchMode.CONTENT) {
         $dictionary.searchByContent(search)
       }

@@ -33,10 +33,10 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
         parser.nextToken()
         if (topFieldName == "words") {
           while (parser.nextToken() == JsonToken.START_OBJECT) {
-            SlimeWord word = SlimeWord.new()
             if (isCancelled()) {
               return false
             }
+            SlimeWord word = SlimeWord.new()
             parseWord(parser, word)
             $words.add(word)
             updateProgressByParser(parser, size)

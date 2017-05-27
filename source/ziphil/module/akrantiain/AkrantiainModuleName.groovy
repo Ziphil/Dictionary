@@ -1,8 +1,8 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -10,8 +10,7 @@ public class AkrantiainModuleName {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
 
-  @ConvertPrimitiveArgs
-  public Boolean equals(Object object) {
+  public PrimBoolean equals(Object object) {
     if (object instanceof AkrantiainModuleName) {
       return $tokens == object.getTokens()
     } else {

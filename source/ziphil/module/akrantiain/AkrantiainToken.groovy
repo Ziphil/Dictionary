@@ -3,8 +3,8 @@ package ziphil.module.akrantiain
 import groovy.transform.CompileStatic
 import java.text.Normalizer
 import ziphil.module.ExtendedBufferedReader
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -67,8 +67,15 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(matchedLength, matchedLength + elementPart.length())
-          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          if (adjustedTextSubstring == elementPart) {
+          String adjustedTextSubstring = textSubstring
+          String adjustedElementPart = elementPart
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
+            adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
+          }
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+            adjustedElementPart = adjustedElementPart.toLowerCase()
+          }
+          if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               to = pointer + 1
@@ -99,8 +106,15 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         if (matchedLength + elementPart.length() <= text.length()) {
           String textSubstring = text.substring(text.length() - elementPart.length() - matchedLength, text.length() - matchedLength)
-          String adjustedTextSubstring = (module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) ? textSubstring : textSubstring.toLowerCase()
-          if (adjustedTextSubstring == elementPart) {
+          String adjustedTextSubstring = textSubstring
+          String adjustedElementPart = elementPart
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
+            adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
+          }
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+            adjustedElementPart = adjustedElementPart.toLowerCase()
+          }
+          if (adjustedTextSubstring == adjustedElementPart) {
             matchedLength += elementPart.length()
             if (matchedLength == text.length()) {
               from = pointer
@@ -122,7 +136,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
     Integer to = null
-    Boolean isMatched = false
+    Boolean matched = false
     Integer pointer = from
     while (pointer <= group.getElements().size()) {
       AkrantiainElement element = group.getElements()[pointer]
@@ -130,13 +144,13 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         Integer punctuationTo = null
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
-          isMatched = true
+          matched = true
           pointer ++
         } else if ((punctuationTo = module.findPunctuationContent().matchRight(group, pointer, module)) != null) {
-          isMatched = true
+          matched = true
           pointer = punctuationTo
         } else {
-          if (isMatched || from == 0) {
+          if (matched || from == 0) {
             to = pointer
           }
           break
@@ -151,7 +165,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
     Integer from = null
-    Boolean isMatched = false
+    Boolean matched = false
     Integer pointer = to - 1
     while (pointer >= -1) {
       AkrantiainElement element = (pointer >= 0) ? group.getElements()[pointer] : null
@@ -159,13 +173,13 @@ public class AkrantiainToken implements AkrantiainMatchable {
         String elementPart = element.getPart()
         Integer punctuationFrom = null
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
-          isMatched = true
+          matched = true
           pointer --
         } else if ((punctuationFrom = module.findPunctuationContent().matchLeft(group, pointer, module)) != null) {
-          isMatched = true
+          matched = true
           pointer = punctuationFrom
         } else {
-          if (isMatched || to == group.getElements().size()) {
+          if (matched || to == group.getElements().size()) {
             from = pointer + 1
           }
           break
@@ -250,8 +264,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }
 
-  @ConvertPrimitiveArgs
-  public Boolean equals(Object object) {
+  public PrimBoolean equals(Object object) {
     if (object instanceof AkrantiainToken) {
       return $type == object.getType() && $text == object.getText()
     } else {

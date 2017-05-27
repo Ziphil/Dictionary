@@ -49,14 +49,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private ObservableList<Element> $wholeWords = FXCollections.observableArrayList()
   private Task<?> $loader
   private Task<?> $saver
-  protected Boolean $isChanged = false
-  protected Boolean $isFirstEmpty = false
+  protected Boolean $changed = false
+  protected Boolean $firstEmpty = false
 
   public DictionaryBase(String name, String path) {
     $name = name
     $path = path
-    $isChanged = (path == null) ? true : false
-    $isFirstEmpty = path == null
+    $changed = (path == null) ? true : false
+    $firstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
     prepare()
@@ -66,8 +66,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public DictionaryBase(String name, String path, Dictionary oldDictionary) {
     $name = name
     $path = path
-    $isChanged = true
-    $isFirstEmpty = true
+    $changed = true
+    $firstEmpty = true
     setupSortedWords()
     setupWholeWords()
     prepare()
@@ -76,19 +76,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract void prepare()
 
-  public void searchByName(String search, Boolean isStrict) {
+  public void searchByName(String search, Boolean strict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
     try {
-      Pattern pattern = (isStrict) ? null : Pattern.compile(search)
+      Pattern pattern = (strict) ? null : Pattern.compile(search)
       ConjugationResolver conjugationResolver = createConjugationResolver()
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
       conjugationResolver.precheck(search, convertedSearch)
       updateWordPredicate() { Word word ->
-        if (isStrict) {
+        if (strict) {
           String name = word.getName()
           String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
           conjugationResolver.check(word, search, convertedSearch)
@@ -110,7 +110,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchByEquivalent(String search, Boolean isStrict) {
+  public void searchByEquivalent(String search, Boolean strict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -119,7 +119,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
       updateWordPredicate() { Word word ->
-        if (isStrict) {
+        if (strict) {
           if (search != "") {
             return word.getEquivalents().any() { String equivalent ->
               if (searchesPrefix) {
@@ -242,8 +242,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private void load() {
     DictionaryLoader loader = createLoader()
     loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      if (!$isFirstEmpty) {
-        $isChanged = false
+      if (!$firstEmpty) {
+        $changed = false
       }
     }
     $loader = loader
@@ -255,8 +255,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private void convert(Dictionary oldDictionary) {
     DictionaryConverter converter = createConverter(oldDictionary)
     converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      if (!$isFirstEmpty) {
-        $isChanged = false
+      if (!$firstEmpty) {
+        $changed = false
       }
     }
     $loader = converter
@@ -270,7 +270,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $saver = saver
     saver.run()
     if (saver.getPath() != null) {
-      $isChanged = false
+      $changed = false
     }
   }
 
@@ -368,7 +368,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   public Boolean isChanged() {
-    return $isChanged
+    return $changed
   }
 
 }

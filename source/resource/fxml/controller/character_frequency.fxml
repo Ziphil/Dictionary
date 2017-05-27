@@ -4,12 +4,17 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.PopupPieChart?>
 <?import ziphil.module.Setting?>
 
 
@@ -20,18 +25,69 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
-    <VBox alignment="center">
-      <spacing><Double rpx="5"/></spacing>
-      <padding>
-        <Insets>
-          <top><Double rpx="10"/></top>
-          <right><Double rpx="10"/></right>
-          <bottom><Double rpx="10"/></bottom>
-          <left><Double rpx="10"/></left>
-        </Insets>
-      </padding>
-      <PieChart fx:id="$frequencyChart" animated="false"/>
-    </VBox>
+    <TabPane>
+      <Tab text="グラフ" closable="false">
+        <VBox alignment="center">
+          <spacing><Double rpx="5"/></spacing>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <PopupPieChart fx:id="$frequencyChart">
+            <chart legendSide="right" startAngle="90" animated="false"/>
+          </PopupPieChart>
+        </VBox>
+      </Tab>
+      <Tab text="表" closable="false">
+        <VBox alignment="center">
+          <spacing><Double rpx="5"/></spacing>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <TableView fx:id="$frequencyView" styleClass="frequency" VBox.vgrow="always">
+            <columns>
+              <TableColumn text="文字" resizable="false">
+                <prefWidth><Double rpx="50"/></prefWidth>
+                <cellValueFactory><PropertyValueFactory property="character"/></cellValueFactory>
+              </TableColumn>
+              <TableColumn text="出現回数" resizable="false">
+                <columns>
+                  <TableColumn text="回数" resizable="false">
+                    <prefWidth><Double rpx="70"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="frequency"/></cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="$frequencyPercentageColumn" text="割合" resizable="false">
+                    <prefWidth><Double rpx="90"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="frequencyPercentage"/></cellValueFactory>
+                  </TableColumn>
+                </columns>
+              </TableColumn>
+              <TableColumn text="出現語数" resizable="false">
+                <columns>
+                  <TableColumn text="語数" resizable="false">
+                    <prefWidth><Double rpx="70"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="usingWordSize"/></cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="$usingWordSizePercentageColumn" text="割合" resizable="false">
+                    <prefWidth><Double rpx="90"/></prefWidth>
+                    <cellValueFactory><PropertyValueFactory property="usingWordSizePercentage"/></cellValueFactory>
+                  </TableColumn>
+                </columns>
+              </TableColumn>
+           </columns>   
+          </TableView>
+        </VBox>
+      </Tab>
+    </TabPane>
   </center>
   <bottom>
     <AnchorPane>

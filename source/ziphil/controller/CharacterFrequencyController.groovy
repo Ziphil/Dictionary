@@ -8,11 +8,15 @@ import javafx.fxml.FXML
 import javafx.geometry.Side
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
-import javafx.scene.control.Tooltip
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
 import ziphil.custom.Measurement
+import ziphil.custom.PercentageTableCell
+import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
+import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
 
 
@@ -22,10 +26,13 @@ public class CharacterFrequencyController extends Controller<Void> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/character_frequency.fxml"
   private static final String TITLE = "文字頻度"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(370)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(410)
   protected static final Integer MAX_PIE_SIZE = 20
 
-  @FXML private PieChart $frequencyChart
+  @FXML private PopupPieChart $frequencyChart
+  @FXML private TableView<CharacterStatus> $frequencyView
+  @FXML private TableColumn<CharacterStatus, Double> $frequencyPercentageColumn
+  @FXML private TableColumn<CharacterStatus, Double> $usingWordSizePercentageColumn
 
   public CharacterFrequencyController(UtilityStage<Void> stage) {
     super(stage)
@@ -34,49 +41,27 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML
   private void initialize() {
-    setupFrequencyChart()
+    setupFrequencyViewColumns()
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void prepare(List<CharacterStatus> characterStatuses) {
     List<PieChart.Data> data = ArrayList.new()
-    Integer totalFrequency = 0
-    for (Word word : dictionary.getRawWords()) {
-      for (String character : word.getName()) {
-        PieChart.Data singleData = data.find{singleData -> singleData.getName() == character}
-        if (singleData != null) {
-          singleData.setPieValue(singleData.getPieValue() + 1)
-        } else {
-          PieChart.Data newData = PieChart.Data.new(character, 1)
-          data.add(newData)
-        }
-        totalFrequency ++
-      }
-    }
-    data.sort() { PieChart.Data firstSingleData, PieChart.Data secondSingleData ->
-      return secondSingleData.getPieValue() <=> firstSingleData.getPieValue()
-    }
-    List<PieChart.Data> displayedData = ArrayList.new()
     Integer otherFrequency = 0
-    for (Integer i : 0 ..< data.size()) {
-      PieChart.Data singleData = data[i]
+    for (Integer i : 0 ..< characterStatuses.size()) {
+      CharacterStatus status = characterStatuses[i]
       if (i < MAX_PIE_SIZE) {
-        displayedData.add(singleData)
+        PieChart.Data singleData = PieChart.Data.new(status.getCharacter(), status.getFrequency())
+        data.add(singleData)
       } else {
-        otherFrequency += singleData.getPieValue().toInteger()
+        otherFrequency += status.getFrequency()
       }
     }
     PieChart.Data otherSingleData = null
     if (otherFrequency > 0) {
       otherSingleData = PieChart.Data.new("その他", otherFrequency)
-      displayedData.add(otherSingleData)
+      data.add(otherSingleData)
     }
-    $frequencyChart.setData(FXCollections.observableArrayList(displayedData))
-    for (PieChart.Data singleData : displayedData) {
-      Integer frequency = singleData.getPieValue().toInteger()
-      Double percentage = (Double)(frequency * 100 / totalFrequency)
-      String formattedPercentage = String.format("%.2f", percentage)
-      Tooltip.install(singleData.getNode(), Tooltip.new("${frequency} (${formattedPercentage}%)"))
-    }
+    $frequencyChart.getChart().setData(FXCollections.observableArrayList(data))
     if (otherSingleData != null) {
       otherSingleData.getNode().getStyleClass().add("other")
       Platform.runLater() {
@@ -84,11 +69,16 @@ public class CharacterFrequencyController extends Controller<Void> {
         otherLegendNode.getStyleClass().add("other-legend-symbol")
       }
     }
+    $frequencyView.getItems().addAll(characterStatuses)
   }
 
-  private void setupFrequencyChart() {
-    $frequencyChart.setLegendSide(Side.RIGHT)
-    $frequencyChart.setStartAngle(90)
+  private void setupFrequencyViewColumns() {
+    $frequencyPercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+      return PercentageTableCell.new(3)
+    }
+    $usingWordSizePercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+      return PercentageTableCell.new(3)
+    }
   }
 
 }

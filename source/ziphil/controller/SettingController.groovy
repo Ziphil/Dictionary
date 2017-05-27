@@ -92,15 +92,15 @@ public class SettingController extends Controller<Boolean> {
     Integer separativeInterval = setting.getSeparativeInterval()
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
-    Boolean modifiesPunctuation = setting.getModifiesPunctuation() == true
-    Boolean keepsMainOnTop = setting.getKeepsMainOnTop() == true
-    Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop() == true
-    Boolean savesAutomatically = setting.getSavesAutomatically() == true
-    Boolean ignoresAccent = setting.getIgnoresAccent() == true
-    Boolean ignoresCase = setting.getIgnoresCase() == true
-    Boolean searchesPrefix = setting.getSearchesPrefix() == true
-    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId() == true
-    Boolean showsSlimeId = setting.getShowsSlimeId() == true
+    Boolean modifiesPunctuation = setting.getModifiesPunctuation()
+    Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
+    Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+    Boolean savesAutomatically = setting.getSavesAutomatically()
+    Boolean ignoresAccent = setting.getIgnoresAccent()
+    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean searchesPrefix = setting.getSearchesPrefix()
+    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
+    Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
@@ -179,8 +179,8 @@ public class SettingController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
-    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{control -> control.getText()}
-    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{control -> control.getText()}
+    List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
+    List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
     setting.setContentFontFamily(contentFontFamily)
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)
@@ -208,25 +208,25 @@ public class SettingController extends Controller<Boolean> {
     }
   }
 
-  private void browseDictionary(Integer i) {
+  private void browseDictionary(Integer index) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    String currentPath = $registeredDictionaryPathControls[i].getText()
+    String currentPath = $registeredDictionaryPathControls[index].getText()
     if (currentPath != null) {
       controller.prepare(null, File.new(currentPath).getParentFile(), false)
     }
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      $registeredDictionaryPathControls[i].setText(file.getAbsolutePath())
+      $registeredDictionaryPathControls[index].setText(file.getAbsolutePath())
     }
   }
 
-  private void deregisterDictionary(Integer i) {
-    $registeredDictionaryPathControls[i].setText("")
-    $registeredDictionaryNameControls[i].setText("")
+  private void deregisterDictionary(Integer index) {
+    $registeredDictionaryPathControls[index].setText("")
+    $registeredDictionaryNameControls[index].setText("")
   }
 
   @FXML

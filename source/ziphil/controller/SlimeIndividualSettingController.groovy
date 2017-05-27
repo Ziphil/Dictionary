@@ -67,7 +67,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     ObservableList<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
     SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copiedWord(dictionary.getDefaultWord()) : null
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
-    List<String> registeredParameterStrings = registeredParameters.collect{parameter -> (parameter != null) ? parameter.toString() : ""}
+    List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
@@ -97,7 +97,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
-    List<String> registeredParameterNames = $registeredParameterNameControls.collect{control -> control.getText()}
+    List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
@@ -153,23 +153,23 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     nextStage.showAndWait()
   }
 
-  private void editSearchParameter(Integer i) {
+  private void editSearchParameter(Integer index) {
     UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary, $registeredParameters[i])
+    controller.prepare($dictionary, $registeredParameters[index])
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SlimeSearchParameter parameter = nextStage.getResult()
-      $registeredParameters[i] = parameter
-      $registeredParameterStringControls[i].setText(parameter.toString())
+      $registeredParameters[index] = parameter
+      $registeredParameterStringControls[index].setText(parameter.toString())
     }
   }
 
-  private void deregisterSearchParameter(Integer i) {
-    $registeredParameters[i] = (SlimeSearchParameter)null
-    $registeredParameterStringControls[i].setText("")
-    $registeredParameterNameControls[i].setText("")
+  private void deregisterSearchParameter(Integer index) {
+    $registeredParameters[index] = (SlimeSearchParameter)null
+    $registeredParameterStringControls[index].setText("")
+    $registeredParameterNameControls[index].setText("")
   }
 
   private void setupSearchParameterPane() {

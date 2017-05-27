@@ -61,14 +61,14 @@ public class AkrantiainSentenceParser {
   }
 
   public AkrantiainRule readRule() {
-    Boolean isBeforeArrow = true
+    Boolean beforeArrow = true
     AkrantiainRule rule = AkrantiainRule.new()
     while (true) {
       AkrantiainToken token = $tokens[$pointer ++]
       AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
-      if (isBeforeArrow) {
+      if (beforeArrow) {
         if (tokenType == AkrantiainTokenType.ARROW) {
-          isBeforeArrow = false
+          beforeArrow = false
         } else {
           $pointer --
           AkrantiainDisjunction selection = nextSelection()
@@ -109,30 +109,30 @@ public class AkrantiainSentenceParser {
 
   public List<AkrantiainModuleName> readModuleChain() {
     List<AkrantiainModuleName> moduleChain = ArrayList.new()
-    Boolean isAfterComponent = false
+    Boolean afterComponent = false
     if ($tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT) {
       $pointer += 1
       while (true) {
         AkrantiainToken token = $tokens[$pointer ++]
         AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
         if (tokenType == AkrantiainTokenType.ADVANCE) {
-          if (isAfterComponent) {
-            isAfterComponent = false
+          if (afterComponent) {
+            afterComponent = false
           } else {
             throw AkrantiainParseException.new("Invalid module chain", token)
           }
         } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
-          if (isAfterComponent) {
+          if (afterComponent) {
             break
           } else {
             throw AkrantiainParseException.new("Invalid module chain", token)
           }
         } else {
-          if (!isAfterComponent) {
+          if (!afterComponent) {
             $pointer --
             List<AkrantiainModuleName> moduleChainComponent = nextModuleChainComponent()
             moduleChain.addAll(moduleChainComponent)
-            isAfterComponent = true
+            afterComponent = true
           }
         }
       }
@@ -228,16 +228,16 @@ public class AkrantiainSentenceParser {
   private List<AkrantiainModuleName> nextPartialModuleChainComponent() {
     List<AkrantiainModuleName> moduleChainComponent = ArrayList.new()
     AkrantiainModuleName currentModuleName = AkrantiainModuleName.new()
-    Boolean isAfterIdentifier = false
-    Boolean isCompound = false
+    Boolean afterIdentifier = false
+    Boolean compound = false
     while (true) {
       AkrantiainToken token = $tokens[$pointer ++]
       AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
       if (tokenType == AkrantiainTokenType.IDENTIFIER) {
-        if (!isAfterIdentifier) {
+        if (!afterIdentifier) {
           currentModuleName.getTokens().add(token)
-          isAfterIdentifier = true
-          if (isCompound) {
+          afterIdentifier = true
+          if (compound) {
             moduleChainComponent.add(currentModuleName)
             currentModuleName = AkrantiainModuleName.new()
             currentModuleName.getTokens().add(token)
@@ -246,16 +246,16 @@ public class AkrantiainSentenceParser {
           throw AkrantiainParseException.new("Invalid module chain component", token)
         }
       } else if (tokenType == AkrantiainTokenType.BOLD_ARROW) {
-        if (isAfterIdentifier) {
+        if (afterIdentifier) {
           currentModuleName.getTokens().add(token)
-          isAfterIdentifier = false
-          isCompound = true
+          afterIdentifier = false
+          compound = true
         } else {
           throw AkrantiainParseException.new("Invalid module chain component", token)
         }
       } else {
-        if (isAfterIdentifier) {
-          if (!isCompound && !currentModuleName.getTokens().isEmpty()) {
+        if (afterIdentifier) {
+          if (!compound && !currentModuleName.getTokens().isEmpty()) {
             moduleChainComponent.add(currentModuleName)
           }
           if (!moduleChainComponent.isEmpty()) {

@@ -6,6 +6,7 @@ import javafx.scene.control.Label
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryAnalyzer
 import ziphil.dictionary.Word
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
@@ -25,32 +26,22 @@ public class StatisticsController extends Controller<Void> {
   @FXML private Label $averageWordNameLengthText
   @FXML private Label $contentLengthText
   @FXML private Label $richnessText
-  private Dictionary $dictionary
+  private DictionaryAnalyzer $analyzer
 
   public StatisticsController(UtilityStage<Void> stage) {
     super(stage)
-    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
   public void prepare(Dictionary dictionary) {
-    $dictionary = dictionary
-    Integer wordSize = dictionary.totalWordSize()
-    Double tokipona = (Double)(wordSize / 120)
-    Double logTokipona = Math.log10(tokipona)
-    Integer wordNameLength = 0
-    Integer contentLength = 0
-    for (Word word : dictionary.getRawWords()) {
-      wordNameLength += word.getName().length()
-      contentLength += word.getContent().length()
-    }
-    Double averageWordNameLength = (wordSize > 0) ? (Double)(wordNameLength / wordSize) : 0
-    Double richness = (wordSize > 0) ? (Double)(contentLength / wordSize) : 0
-    $wordSizeText.setText(wordSize.toString())
-    $tokiponaText.setText(String.format("%.2f", tokipona))
-    $logTokiponaText.setText(String.format("%.2f", logTokipona))
-    $averageWordNameLengthText.setText(String.format("%.2f", averageWordNameLength))
-    $contentLengthText.setText(contentLength.toString())
-    $richnessText.setText(String.format("%.2f", richness))
+    DictionaryAnalyzer analyzer = DictionaryAnalyzer.new(dictionary)
+    $analyzer = analyzer
+    $wordSizeText.setText(String.format("%d", analyzer.wordSize()))
+    $tokiponaText.setText(String.format("%.2f", analyzer.tokipona()))
+    $logTokiponaText.setText(String.format("%.2f", analyzer.logTokipona()))
+    $averageWordNameLengthText.setText(String.format("%.2f", analyzer.averageWordNameLength()))
+    $contentLengthText.setText(String.format("%d", analyzer.contentLength()))
+    $richnessText.setText(String.format("%.2f", analyzer.richness()))
   }
 
   @FXML
@@ -59,7 +50,7 @@ public class StatisticsController extends Controller<Void> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary)
+    controller.prepare($analyzer.characterStatuses())
     nextStage.showAndWait()
   }
 

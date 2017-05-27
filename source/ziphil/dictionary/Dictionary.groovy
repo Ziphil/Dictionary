@@ -8,9 +8,9 @@ import javafx.concurrent.Task
 @CompileStatic 
 public interface Dictionary<W extends Word> {
 
-  public void searchByName(String search, Boolean isStrict)
+  public void searchByName(String search, Boolean strict)
 
-  public void searchByEquivalent(String search, Boolean isStrict)
+  public void searchByEquivalent(String search, Boolean strict)
 
   public void searchByContent(String search)
 

@@ -81,13 +81,13 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
         event.consume()
       }
       cell.addEventHandler(DragEvent.DRAG_DROPPED) { DragEvent event ->
-        Boolean isCompleted = false
+        Boolean completed = false
         Dragboard dragboard = event.getDragboard()
         if (dragboard.hasString()) {
           ObservableList<T> items = $itemView.getItems()
           String movedString = dragboard.getString()
-          T movedItem = items.find{item -> item.toString() == movedString}
-          Integer movedIndex = items.findIndexOf{item -> item.toString() == movedString}
+          T movedItem = items.find{it.toString() == movedString}
+          Integer movedIndex = items.findIndexOf{it.toString() == movedString}
           Integer index = cell.getIndex()
           items.add(index + 1, movedItem)
           if (movedIndex < index + 1) {
@@ -97,9 +97,9 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
             items.removeAt(movedIndex + 1)
             $itemView.getSelectionModel().select(index + 1)
           }
-          isCompleted = true
+          completed = true
         }
-        event.setDropCompleted(isCompleted)
+        event.setDropCompleted(completed)
         event.consume()
       }
       return cell

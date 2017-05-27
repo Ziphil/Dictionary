@@ -9,7 +9,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
 
   public static final AkrantiainDisjunction EMPTY_DISJUNCTION = AkrantiainDisjunction.new()
 
-  private Boolean $isNegated = false
+  private Boolean $negated = false
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
   public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
@@ -24,7 +24,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
         }
       }
     }
-    if ($isNegated) {
+    if ($negated) {
       return (to == null) ? from : null
     } else {
       return to
@@ -43,7 +43,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
         }
       }
     }
-    if ($isNegated) {
+    if ($negated) {
       return (from == null) ? to : null
     } else {
       return from
@@ -76,7 +76,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    if ($isNegated) {
+    if ($negated) {
       string.append("!")
     }
     string.append("(")
@@ -95,11 +95,11 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
   }
 
   public Boolean isNegated() {
-    return $isNegated
+    return $negated
   }
 
-  public void setNegated(Boolean isNegated) {
-    $isNegated = isNegated
+  public void setNegated(Boolean negated) {
+    $negated = negated
   }
 
   public AkrantiainMatchable getMatchable() {

@@ -6,8 +6,8 @@ import groovy.transform.CompileStatic
 import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.TransformationList
-import ziphilib.transform.ConvertPrimitiveArgs
 import ziphilib.transform.Ziphilify
+import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
@@ -15,7 +15,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
 
   private List<Integer> $indices
   private Integer $size = 0
-  private Boolean $isShuffled = false
+  private Boolean $shuffled = false
 
   public ShufflableList(ObservableList<? extends E> source) {
     super(source)
@@ -27,15 +27,15 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     List<Integer> oldIndices = ArrayList.new($indices)
     Collections.shuffle($indices)
     updatePermutation(oldIndices)
-    $isShuffled = true
+    $shuffled = true
   }
 
   public void unshuffle() {
-    if ($isShuffled) {
+    if ($shuffled) {
       List<Integer> oldIndices = ArrayList.new($indices)
       $indices = ArrayList.new(0 ..< $size)
       updatePermutation(oldIndices)
-      $isShuffled = false
+      $shuffled = false
     }
   }
 
@@ -69,7 +69,7 @@ public class ShufflableList<E> extends TransformationList<E, E> {
         if (newSize > $size) {
           $indices.addAll($size ..< newSize)
         } else if (newSize < $size) {
-          $indices.removeIf{index -> (Integer)index >= newSize}
+          $indices.removeIf{it >= newSize}
         }
         nextReplace(from, to, change.getRemoved())
         $size = newSize
@@ -78,21 +78,18 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     endChange()
   }
 
-  @ConvertPrimitiveArgs
-  public Integer size() {
+  public PrimInt size() {
     return $size
   }
 
-  @ConvertPrimitiveArgs
-  public E get(Integer index) {
+  public E get(PrimInt index) {
     if (index >= $size) {
       throw IndexOutOfBoundsException.new()
     }
     return getSource()[$indices[index]]
   }
 
-  @ConvertPrimitiveArgs
-  public Integer getSourceIndex(Integer index) {
+  public PrimInt getSourceIndex(PrimInt index) {
     return $indices[index]
   }
 

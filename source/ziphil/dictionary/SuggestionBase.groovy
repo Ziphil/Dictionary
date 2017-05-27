@@ -11,7 +11,7 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
   protected ContentPaneFactoryBase $contentPaneFactory
-  protected Boolean $isDisplayed = false
+  protected Boolean $displayed = false
 
   public abstract void update()
 
@@ -24,11 +24,11 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
   }
 
   public Boolean isDisplayed() {
-    return $isDisplayed
+    return $displayed
   }
 
-  public void setDisplayed(Boolean isDisplayed) {
-    $isDisplayed = isDisplayed
+  public void setDisplayed(Boolean displayed) {
+    $displayed = displayed
   }
 
   public List<P> getPossibilities() {

@@ -81,17 +81,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       List<SlimeEquivalent> equivalents = word.getRawEquivalents()
       List<SlimeInformation> informations = word.getInformations()
       List<String> tags = word.getTags()
-      if (searchId != null) {
+      if (parameter.hasId()) {
         if (id != searchId) {
           predicate = false
         }
       }
-      if (searchName != null) {
+      if (parameter.hasName()) {
         if (!nameSearchType.matches(name, searchName)) {
           predicate = false
         }
       }
-      if (searchEquivalentName != null || searchEquivalentTitle != null) {
+      if (parameter.hasEquivalent()) {
         Boolean equivalentPredicate = false
         searchEquivalentName = searchEquivalentName ?: ""
         for (SlimeEquivalent equivalent : equivalents) {
@@ -106,7 +106,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           predicate = false
         }
       }
-      if (searchInformationText != null || searchInformationTitle != null) {
+      if (parameter.hasInformation()) {
         Boolean informationPredicate = false
         searchInformationText = searchInformationText ?: ""
         for (SlimeInformation information : informations) {
@@ -120,7 +120,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           predicate = false
         }
       }
-      if (searchTag != null) {
+      if (parameter.hasTag()) {
         Boolean tagPredicate = false
         for (String tag : tags) {
           if (tag == searchTag) {
@@ -177,8 +177,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void removeWord(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
-      Boolean isChanged = otherWord.getRelations().removeAll{relation -> relation.getId() == word.getId()}
-      if (isChanged) {
+      Boolean changed = otherWord.getRelations().removeAll{it.getId() == word.getId()}
+      if (changed) {
         otherWord.change()
       }
     }
@@ -205,7 +205,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updatePlainInformationTitles()
     updateInformationTitleOrder()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateFirst() {
@@ -214,13 +214,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updatePlainInformationTitles()
     updateInformationTitleOrder()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void updateMinimum() {
     updateComparisonStrings()
     updateAkrantiain()
-    $isChanged = true
+    $changed = true
   }
 
   public void validate() {
@@ -445,7 +445,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public Boolean containsId(Integer id, SlimeWord excludedWord) {
-    return $words.any{word -> word != excludedWord && word.getId() == id}
+    return $words.any{it != excludedWord && it.getId() == id}
   }
 
   private void setupWords() {

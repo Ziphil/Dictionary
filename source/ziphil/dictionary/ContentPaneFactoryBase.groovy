@@ -13,7 +13,7 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
 
   protected E $word
   protected D $dictionary
-  protected Boolean $isChanged = true
+  protected Boolean $changed = true
 
   public ContentPaneFactoryBase(E word, D dictionary) {
     $word = word
@@ -23,7 +23,7 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
   public abstract Pane create()
 
   public void change() {
-    $isChanged = true
+    $changed = true
   }
 
   protected void modifyBreak(TextFlow contentPane) {

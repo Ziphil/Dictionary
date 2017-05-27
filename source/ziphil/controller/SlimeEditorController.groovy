@@ -70,7 +70,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private List<TextField> $relationNameControls = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
-  private Boolean $isNormal
+  private Boolean $normal
   private List<RelationRequest> $relationRequests = ArrayList.new()
 
   public SlimeEditorController(UtilityStage<Boolean> nextStage) {
@@ -87,11 +87,11 @@ public class SlimeEditorController extends Controller<Boolean> {
   // コントローラーの準備を行います。
   // editsEmptyWord に true を指定すると、新規単語の編集だと判断され、単語名の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
   // 一方、editsEmptyWord に false を指定すると、既存の単語の編集だと判断され、内容の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
-  // isNormal に false を指定すると、辞書に登録される単語データ以外の編集だと判断され、ID と単語名の編集欄が無効化されます。
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean isNormal) {
+  // normal に false を指定すると、辞書に登録される単語データ以外の編集だと判断され、ID と単語名の編集欄が無効化されます。
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean normal) {
     $word = word
     $dictionary = dictionary
-    $isNormal = isNormal
+    $normal = normal
     $idControl.setText(word.getId().toString())
     $nameControl.setText(word.getName())
     for (String tag : word.getTags()) {
@@ -108,11 +108,10 @@ public class SlimeEditorController extends Controller<Boolean> {
     for (SlimeInformation information : word.getInformations()) {
       addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
     }
-    Map<String, List<SlimeVariation>> groupedVariations = word.getVariations().groupBy{variation -> variation.getTitle()}
-    for (Map.Entry<String, List<SlimeVariation>> entry : groupedVariations) {
+    for (Map.Entry<String, List<SlimeVariation>> entry : word.groupedVariations()) {
       String title = entry.getKey()
       List<SlimeVariation> variationGroup = entry.getValue()
-      String nameString = variationGroup.collect{variation -> variation.getName()}.join(", ")
+      String nameString = variationGroup.collect{it.getName()}.join(", ")
       addVariationControl(title, nameString, dictionary.getRegisteredVariationTitles())
     }
     for (SlimeRelation relation : word.getRelations()) {
@@ -134,7 +133,7 @@ public class SlimeEditorController extends Controller<Boolean> {
         }
       }
     }
-    if (!isNormal) {
+    if (!normal) {
       $idControl.setDisable(true)
       $nameControl.setDisable(true)
     }
@@ -153,7 +152,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
       Integer id = $idControl.getText().toInteger()
-      if (ignoresDuplicateSlimeId || !$isNormal || !$dictionary.containsId(id, $word)) {
+      if (ignoresDuplicateSlimeId || !$normal || !$dictionary.containsId(id, $word)) {
         String name = $nameControl.getText()
         List<SlimeEquivalent> rawEquivalents = ArrayList.new()
         List<String> tags = ArrayList.new()

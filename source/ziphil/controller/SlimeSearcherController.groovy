@@ -64,34 +64,24 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private void applySearchParameter() {
     if ($searchParameter != null) {
-      if ($searchParameter.getId() != null) {
+      if ($searchParameter.hasId()) {
         $idControl.setText($searchParameter.getId().toString())
       }
-      if ($searchParameter.getName() != null) {
+      if ($searchParameter.hasName()) {
         $nameControl.setText($searchParameter.getName())
-      }
-      if ($searchParameter.getNameSearchType() != null) {
         $nameSearchTypeControl.setValue($searchParameter.getNameSearchType())
       }
-      if ($searchParameter.getEquivalentName() != null) {
+      if ($searchParameter.hasEquivalent()) {
         $equivalentNameControl.setText($searchParameter.getEquivalentName())
-      }
-      if ($searchParameter.getEquivalentTitle() != null) {
         $equivalentTitleControl.setValue($searchParameter.getEquivalentTitle())
-      }
-      if ($searchParameter.getEquivalentSearchType() != null) {
         $equivalentSearchTypeControl.setValue($searchParameter.getEquivalentSearchType())
       }
-      if ($searchParameter.getInformationText() != null) {
+      if ($searchParameter.hasInformation()) {
         $informationTextControl.setText($searchParameter.getInformationText())
-      }
-      if ($searchParameter.getInformationTitle() != null) {
         $informationTitleControl.setValue($searchParameter.getInformationTitle())
-      }
-      if ($searchParameter.getInformationSearchType() != null) {
         $informationSearchTypeControl.setValue($searchParameter.getInformationSearchType())
       }
-      if ($searchParameter.getTag() != null) {
+      if ($searchParameter.hasTag()) {
         $tagControl.setValue($searchParameter.getTag())
       }
     }
@@ -101,27 +91,28 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
     if ($idControl.getText() != "") {
+      parameter.setHasId(true)
       parameter.setId($idControl.getText().toInteger())
     }
     if ($nameControl.getText() != "") {
+      parameter.setHasName(true)
       parameter.setName($nameControl.getText())
+      parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    parameter.setNameSearchType($nameSearchTypeControl.getValue())
-    if ($equivalentNameControl.getText() != "") {
+    if ($equivalentNameControl.getText() != "" || $equivalentTitleControl.getValue() != null) {
+      parameter.setHasEquivalent(true)
       parameter.setEquivalentName($equivalentNameControl.getText())
-    }
-    if ($equivalentTitleControl.getValue() != "") {
       parameter.setEquivalentTitle($equivalentTitleControl.getValue())
+      parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     } 
-    parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
-    if ($informationTextControl.getText() != "") {
+    if ($informationTextControl.getText() != "" || $informationTitleControl.getValue() != null) {
+      parameter.setHasInformation(true)
       parameter.setInformationText($informationTextControl.getText())
-    }
-    if ($informationTitleControl.getValue() != "") {
       parameter.setInformationTitle($informationTitleControl.getValue())
+      parameter.setInformationSearchType($informationSearchTypeControl.getValue())
     }
-    parameter.setInformationSearchType($informationSearchTypeControl.getValue())
-    if ($tagControl.getValue() != "") {
+    if ($tagControl.getValue() != null) {
+      parameter.setHasTag(true)
       parameter.setTag($tagControl.getValue())
     }
     $stage.commit(parameter)

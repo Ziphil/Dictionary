@@ -1,24 +1,24 @@
 // @charset "utf-8";
 
 
-#dictionary-list .content {
+.dictionary-list .content {
   -fx-fill: -fx-text-base-color;
 }
 
-#dictionary-list:focused .list-cell:filled:selected .content {
+.dictionary-list:focused .list-cell:filled:selected .content {
   -fx-fill: white;
 }
 
-#dictionary-list .head-name {
+.dictionary-list .head-name {
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
 }
 
-#dictionary-list .shaleia-total-part,
-#dictionary-list .shaleia-part,
-#dictionary-list .slime-tag,
-#dictionary-list .slime-equivalent-title,
-#dictionary-list .slime-relation-title {
+.dictionary-list .shaleia-total-part,
+.dictionary-list .shaleia-part,
+.dictionary-list .slime-tag,
+.dictionary-list .slime-equivalent-title,
+.dictionary-list .slime-relation-title {
   -fx-font-size: 0.8em;
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
@@ -27,32 +27,32 @@
   -fx-margin: 0px 5px 0px 0px;
 }
 
-#dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
-#dictionary-list:focused .list-cell:filled:selected .shaleia-part,
-#dictionary-list:focused .list-cell:filled:selected .slime-tag,
-#dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title,
-#dictionary-list:focused .list-cell:filled:selected .slime-relation-title {
+.dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
+.dictionary-list:focused .list-cell:filled:selected .shaleia-part,
+.dictionary-list:focused .list-cell:filled:selected .slime-tag,
+.dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-relation-title {
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
-#dictionary-list .shaleia-pronunciation,
-#dictionary-list .shaleia-creation-date,
-#dictionary-list .shaleia-title,
-#dictionary-list .shaleia-possibility,
-#dictionary-list .personal-pronunciation,
-#dictionary-list .slime-pronunciation,
-#dictionary-list .slime-title,
-#dictionary-list .slime-id,
-#dictionary-list .slime-possibility {
+.dictionary-list .shaleia-pronunciation,
+.dictionary-list .shaleia-creation-date,
+.dictionary-list .shaleia-title,
+.dictionary-list .shaleia-possibility,
+.dictionary-list .personal-pronunciation,
+.dictionary-list .slime-pronunciation,
+.dictionary-list .slime-title,
+.dictionary-list .slime-id,
+.dictionary-list .slime-possibility {
   -fx-font-size: 0.9em;
 }
 
-#dictionary-list .shaleia-link,
-#dictionary-list .slime-link {
+.dictionary-list .shaleia-link,
+.dictionary-list .slime-link {
   -fx-underline: true;
 }
 
-#dictionary-list .shaleia-italic {
+.dictionary-list .shaleia-italic {
   -fx-font-style: italic;
 }
 
@@ -97,6 +97,10 @@
   -fx-fill: -fx-text-base-color;
 }
 
+.frequency .table-column {
+  -fx-alignment: baseline-center;
+}
+
 .large {
   -fx-font-size: 1.2em;
   -fx-text-fill: -fx-text-inner-color;
@@ -107,7 +111,7 @@
   -fx-background-insets: 0px, 1px;
   -fx-background-radius: 3px, 2px;
   -fx-padding: 0.166667em 0.583333em 0.166667em 0.583333em;
-  -fx-alignment: baseline-right;
+  -fx-alignment: baseline-center;
 }
 
 .transparent {
@@ -140,4 +144,48 @@
 
 .other-legend-symbol {
   -fx-background-color: radial-gradient(radius 100%, derive(hsb(0, 0%, 55%), 20%), derive(hsb(0, 0%, 55%), -10%));
+}
+
+.pie-caption {
+  -fx-background-color: -fx-background;
+  -fx-background-insets: 0px, 1px;
+  -fx-background-radius: 3px, 2px;
+  -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; 
+  -fx-text-alignment: center;
+}
+
+.default-color0.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_1, -30%), -fx-background;
+}
+
+.default-color1.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_2, -30%), -fx-background;
+}
+
+.default-color2.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_3, -30%), -fx-background;
+}
+
+.default-color3.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_4, -30%), -fx-background;
+}
+
+.default-color4.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_5, -30%), -fx-background;
+}
+
+.default-color5.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_6, -30%), -fx-background;
+}
+
+.default-color6.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_7, -30%), -fx-background;
+}
+
+.default-color7.pie-caption {
+  -fx-background-color: derive(CHART_COLOR_8, -30%), -fx-background;
+}
+
+.other.pie-caption {
+  -fx-background-color: derive(hsb(0, 0%, 55%), -30%), -fx-background;
 }
