@@ -25,6 +25,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.RefreshableListView?>
 <?import ziphil.dictionary.SearchMode?>
 <?import ziphil.module.Setting?>
 
@@ -193,7 +194,7 @@
               <minWidth><Double rpx="70"/></minWidth>
             </ToggleButton>
           </HBox>
-          <ListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
+          <RefreshableListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
         </VBox>
         <HBox fx:id="$footerBox" styleClass="footer">
           <spacing><Double rpx="5"/></spacing>

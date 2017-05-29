@@ -49,7 +49,7 @@ import javax.script.ScriptException
 import ziphil.Launcher
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
-import ziphil.custom.UpdatableListViewSkin
+import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailDictionary
@@ -108,7 +108,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private MenuItem $addInheritedWordContextItem
   @FXML private MenuItem $modifyWordContextItem
   @FXML private MenuItem $removeWordContextItem
-  @FXML private ListView<Element> $wordView
+  @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
@@ -398,7 +398,7 @@ public class MainController extends PrimitiveController<Stage> {
         $openStages.remove(nextStage)
         if (nextStage.isCommitted() && nextStage.getResult()) {
           $dictionary.modifyWord(oldWord, word)
-          ((UpdatableListViewSkin)$wordView.getSkin()).refresh()
+          $wordView.refresh()
         }
       }
     }
@@ -1052,7 +1052,6 @@ public class MainController extends PrimitiveController<Stage> {
       }
       return cell
     }
-    $wordView.setSkin(UpdatableListViewSkin.new($wordView))
   }
 
   private void setupSearchControl() {

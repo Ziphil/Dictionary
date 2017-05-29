@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class UpdatableListViewSkin<T> extends ListViewSkin<T> {
+public class RefreshableListViewSkin<T> extends ListViewSkin<T> {
 
-  public UpdatableListViewSkin(ListView<T> control) {
+  public RefreshableListViewSkin(RefreshableListView<T> control) {
     super(control)
   }
   
