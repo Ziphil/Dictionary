@@ -15,7 +15,6 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
-  private static final String SLIME_ID_CLASS = "slime-id"
 
   public SlimeWordPlainContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
     super(word, dictionary)
@@ -32,11 +31,9 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
 
   private void addNameNode(TextFlow contentPane, String name, Integer id) {
     Text nameText = Text.new(name + " ")
-    Text idText = Text.new("#${id}")
     Text breakText = Text.new("\n")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
-    idText.getStyleClass().addAll(CONTENT_CLASS, SLIME_ID_CLASS)
-    contentPane.getChildren().addAll(nameText, idText, breakText)
+    contentPane.getChildren().addAll(nameText, breakText)
   }
 
   private void addEquivalentNode(TextFlow contentPane, String equivalent) {
