@@ -25,7 +25,16 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
-    addNameNode(contentPane, $word.getName(), $word.getPronunciation())
+    String pronunciation = $word.getPronunciation()
+    if (pronunciation != "") {
+      if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
+        pronunciation = "/" + pronunciation
+      }
+      if (!pronunciation.endsWith("/") && !pronunciation.endsWith("[")) {
+        pronunciation = pronunciation + "/"
+      }
+    }
+    addNameNode(contentPane, $word.getName(), pronunciation)
     addContentNode(contentPane, $word.getTranslation())
     addContentNode(contentPane, $word.getUsage())
     modifyBreak(contentPane)
@@ -34,12 +43,6 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
 
   private void addNameNode(TextFlow contentPane, String name, String pronunciation) {
     if (pronunciation != "") {
-      if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
-        pronunciation = "/" + pronunciation
-      }
-      if (!pronunciation.endsWith("/") && !pronunciation.endsWith("[")) {
-        pronunciation = pronunciation + "/"
-      }
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")
