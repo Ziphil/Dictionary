@@ -13,14 +13,23 @@ public abstract class WordBase implements Word {
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
   protected ContentPaneFactoryBase $contentPaneFactory
+  protected ContentPaneFactoryBase $plainContentPaneFactory
 
   public abstract void update()
 
   protected abstract ContentPaneFactoryBase createContentPaneFactory()
 
+  protected abstract ContentPaneFactoryBase createPlainContentPaneFactory()
+
   protected void changeContentPaneFactory() {
     if ($contentPaneFactory != null) {
       $contentPaneFactory.change()
+    }
+  }
+
+  protected void changePlainContentPaneFactory() {
+    if ($plainContentPaneFactory != null) {
+      $plainContentPaneFactory.change()
     }
   }
 
@@ -53,6 +62,13 @@ public abstract class WordBase implements Word {
       $contentPaneFactory = createContentPaneFactory()
     }
     return $contentPaneFactory
+  }
+
+  public ContentPaneFactory getPlainContentPaneFactory() {
+    if ($plainContentPaneFactory == null) {
+      $plainContentPaneFactory = createPlainContentPaneFactory()
+    }
+    return $plainContentPaneFactory
   }
 
 }

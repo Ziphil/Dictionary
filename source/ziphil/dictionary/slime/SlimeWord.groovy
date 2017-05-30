@@ -19,7 +19,6 @@ public class SlimeWord extends WordBase {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private ContentPaneFactoryBase $plainContentPaneFactory
 
   public void update() {
     updateEquivalents()
@@ -69,12 +68,6 @@ public class SlimeWord extends WordBase {
       $comparisonString = comparisonString.toString()
     } else {
       $comparisonString = $name
-    }
-  }
-
-  private void changePlainContentPaneFactory() {
-    if ($plainContentPaneFactory != null) {
-      $plainContentPaneFactory.change()
     }
   }
 
@@ -183,13 +176,6 @@ public class SlimeWord extends WordBase {
 
   public String getComparisonString() {
     return $comparisonString
-  }
-
-  public ContentPaneFactory getPlainContentPaneFactory() {
-    if ($plainContentPaneFactory == null) {
-      $plainContentPaneFactory = createPlainContentPaneFactory()
-    }
-    return $plainContentPaneFactory
   }
 
 }

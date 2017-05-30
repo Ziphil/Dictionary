@@ -31,6 +31,10 @@ public class PersonalWord extends WordBase {
     return PersonalWordContentPaneFactory.new(this, $dictionary)
   }
 
+  protected ContentPaneFactoryBase createPlainContentPaneFactory() {
+    return null
+  }
+
   public PersonalDictionary getDictionary() {
     return $dictionary
   }
