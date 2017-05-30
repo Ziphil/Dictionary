@@ -76,7 +76,7 @@ public class ShaleiaWord extends WordBase {
   }
 
   protected ContentPaneFactoryBase createPlainContentPaneFactory() {
-    return null
+    return ShaleiaWordPlainContentPaneFactory.new(this, $dictionary)
   }
 
   public ShaleiaDictionary getDictionary() {
