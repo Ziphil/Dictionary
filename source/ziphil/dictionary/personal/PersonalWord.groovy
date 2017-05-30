@@ -1,6 +1,7 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -26,8 +27,8 @@ public class PersonalWord extends WordBase {
     $content = name + "\n" + translation + "\n" + usage
   }
 
-  protected void makeContentPaneFactory() {
-    $contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactoryBase createContentPaneFactory() {
+    return PersonalWordContentPaneFactory.new(this, $dictionary)
   }
 
   public PersonalDictionary getDictionary() {

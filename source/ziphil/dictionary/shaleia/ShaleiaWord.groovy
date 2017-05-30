@@ -2,6 +2,7 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -70,8 +71,8 @@ public class ShaleiaWord extends WordBase {
     $comparisonString = comparisonString.toString()
   }
 
-  protected void makeContentPaneFactory() {
-    $contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactoryBase createContentPaneFactory() {
+    return ShaleiaWordContentPaneFactory.new(this, $dictionary)
   }
 
   public ShaleiaDictionary getDictionary() {
