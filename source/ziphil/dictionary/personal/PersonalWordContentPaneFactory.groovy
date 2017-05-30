@@ -14,6 +14,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<PersonalWord, PersonalDictionary> {
 
+  private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
   private static final String PERSONAL_PRONUNCIATION_CLASS = "persoanl-pronunciation"
 
   public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
@@ -46,13 +47,13 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")
-      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, PERSONAL_PRONUNCIATION_CLASS)
       contentPane.getChildren().addAll(nameText, pronunciationText, breakText)
     } else {
       Label nameText = Label.new(name)
       Text breakText = Text.new("\n")
-      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
       contentPane.getChildren().addAll(nameText, breakText)
     }
   }
