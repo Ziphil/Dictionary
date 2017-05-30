@@ -319,6 +319,16 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void searchSentence() {
+    if ($dictionary != null) {
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
+      nextStage.initOwner($stage)
+      nextStage.showAndWait()
+    }
+  }
+
+  @FXML
   private void shuffleWords() {
     if ($dictionary != null) {
       $dictionary.shuffleWords()
