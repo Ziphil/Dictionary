@@ -18,19 +18,16 @@ public class SentenceSearchResultCell extends ListCell<List<Word>> {
 
   protected void updateItem(List<Word> words, PrimBoolean empty) {
     super.updateItem(words, empty)
-    if (empty || words == null) {
-      setText(null)
-      setGraphic(null)
-    } else {
-      VBox graphic = VBox.new(Measurement.rpx(3))
+    VBox graphic = VBox.new(Measurement.rpx(3))
+    graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
+    if (!empty && words != null) {
       for (Word word : words) {
         Pane pane = word.getPlainContentPaneFactory().create()
-        pane.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
         graphic.getChildren().add(pane)
       }
-      setText(null)
-      setGraphic(graphic)
-    }
+    } 
+    setText(null)
+    setGraphic(graphic)
   }
 
 }
