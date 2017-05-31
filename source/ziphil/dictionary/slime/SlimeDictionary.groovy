@@ -351,7 +351,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         akrantiain = null
       }
     }
-    $akrantiain = akrantiain  // snoj ファイルの読み込み中に実行されないようにフィールドは最後に更新する
+    $akrantiain = akrantiain
   }
 
   public SlimeWord emptyWord(String defaultName) {
