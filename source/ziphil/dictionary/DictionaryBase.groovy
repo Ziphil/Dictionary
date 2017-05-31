@@ -78,8 +78,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public void searchByName(String search, Boolean strict, Boolean reallyStrict) {
     Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
     Boolean searchesPrefix = (reallyStrict) ? false : setting.getSearchesPrefix()
     try {
       Pattern pattern = (strict) ? null : Pattern.compile(search)
