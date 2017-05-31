@@ -110,7 +110,7 @@
         <Menu fx:id="$searchRegisteredParameterMenu" styleClass="option,slime,dammy" text="登録条件で検索"/>
         <MenuItem styleClass="option,shaleia,personal,missing,dammy" text="登録条件で検索" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="文一括検索" onAction="#searchSentence" accelerator="Shortcut+H"/>
+        <MenuItem styleClass="option,all" text="文一括検索" onAction="#searchSentence" accelerator="Shortcut+B"/>
       </Menu>
       <Menu text="編集">
         <MenuItem styleClass="option,all" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
