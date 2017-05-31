@@ -16,8 +16,8 @@ public class SentenceSearchResultController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/sentence_search_result.fxml"
   private static final String TITLE = "文一括検索結果"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(540)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(240)
 
   @FXML private ListView<List<Word>> $resultView
 

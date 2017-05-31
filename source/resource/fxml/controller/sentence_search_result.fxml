@@ -31,7 +31,7 @@
         </Insets>
       </padding>
       <ListView fx:id="$resultView" styleClass="dictionary-list" orientation="horizontal" VBox.vgrow="always">
-        <fixedCellSize><Double rpx="150"/></fixedCellSize>
+        <fixedCellSize><Double rpx="80"/></fixedCellSize>
       </ListView>
     </VBox>
   </center>
