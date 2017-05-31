@@ -5,6 +5,9 @@ import javafx.fxml.FXML
 import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.Dictionary
+import ziphil.dictionary.Element
+import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
 
 
@@ -18,10 +21,35 @@ public class SentenceSearcherController extends Controller<Void> {
 
   @FXML private TextField $sentenceControl
   @FXML private TextField $punctuationsControl
+  private Dictionary $dictionary
 
   public SentenceSearcherController(UtilityStage<Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+  }
+
+  public void prepare(Dictionary dictionary) {
+    $dictionary = dictionary
+  }
+
+  @FXML
+  private void search() {
+    String sentence = $sentenceControl.getText()
+    String punctuations = $punctuationsControl.getText()
+    for (String wordName : sentence.split(/\s+/)) {
+      StringBuilder nextWordName = StringBuilder.new()
+      for (String character : wordName) {
+        if (punctuations.indexOf(character) < 0) {
+          nextWordName.append(character)
+        }
+      }
+      $dictionary.searchByName(nextWordName.toString(), true, true)
+      List<Element> hitWords = $dictionary.getWholeWords()
+      for (Element word : hitWords) {
+        if (word instanceof Word) {
+        }
+      }
+    }
   }
 
   @FXML

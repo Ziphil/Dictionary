@@ -324,6 +324,7 @@ public class MainController extends PrimitiveController<Stage> {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
       nextStage.initOwner($stage)
+      controller.prepare($dictionary.copy())
       nextStage.showAndWait()
     }
   }

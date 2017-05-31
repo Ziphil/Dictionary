@@ -8,6 +8,12 @@ import javafx.concurrent.Task
 @CompileStatic 
 public interface Dictionary<W extends Word> {
 
+  // 与えられた検索文字列で単語名から検索します。
+  // strict に true が指定された場合は環境設定に応じて完全一致もしくは前方一致で検索を行い、false が指定された場合は正規表現で検索を行います。
+  // また、reallyStrict に true が指定されると、環境設定に関わらず完全一致検索を行います。
+  // reallyStrict の設定は、strict が true の場合のみ効果を発揮します。
+  public void searchByName(String search, Boolean strict, Boolean reallyStrict)
+
   public void searchByName(String search, Boolean strict)
 
   public void searchByEquivalent(String search, Boolean strict)

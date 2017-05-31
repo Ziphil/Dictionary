@@ -55,7 +55,7 @@
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
-        <Button text="OK" onAction="#commit" defaultButton="true">
+        <Button text="OK" onAction="#search" defaultButton="true">
           <prefWidth><Double rpx="80"/></prefWidth>
           <minWidth><Double rpx="80"/></minWidth>
         </Button>

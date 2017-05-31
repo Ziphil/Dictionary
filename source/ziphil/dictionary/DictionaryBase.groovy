@@ -76,11 +76,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract void prepare()
 
-  public void searchByName(String search, Boolean strict) {
+  public void searchByName(String search, Boolean strict, Boolean reallyStrict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
+    Boolean searchesPrefix = (reallyStrict) ? false : setting.getSearchesPrefix()
     try {
       Pattern pattern = (strict) ? null : Pattern.compile(search)
       ConjugationResolver conjugationResolver = createConjugationResolver()
@@ -108,6 +108,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       }
     } catch (PatternSyntaxException exception) {
     }
+  }
+
+  public void searchByName(String search, Boolean strict) {
+    searchByName(search, strict, false)
   }
 
   public void searchByEquivalent(String search, Boolean strict) {
