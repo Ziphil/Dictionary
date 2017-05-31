@@ -42,7 +42,7 @@
       <Label text="検索文:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="句読点:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <TextField fx:id="$sentenceControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-      <TextField fx:id="$punctuationsControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextField fx:id="$punctuationsControl" text=".,!?" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>
