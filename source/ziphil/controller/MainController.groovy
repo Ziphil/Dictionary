@@ -323,6 +323,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare($dictionary.copy())
       nextStage.showAndWait()
