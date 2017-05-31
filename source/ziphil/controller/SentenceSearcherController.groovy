@@ -66,8 +66,4 @@ public class SentenceSearcherController extends Controller<Void> {
     nextStage.showAndWait()
   }
 
-  @FXML
-  protected void commit() {
-  }
-
 }
