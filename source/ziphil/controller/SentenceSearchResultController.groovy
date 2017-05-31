@@ -5,6 +5,7 @@ import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.ListView
 import ziphil.custom.Measurement
+import ziphil.custom.SentenceSearchResultCell
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
@@ -25,8 +26,20 @@ public class SentenceSearchResultController extends Controller<Void> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }
 
+  @FXML
+  public void initialize() {
+    setupResultView()
+  }
+
   public void prepare(ObservableList<List<Word>> result) {
     $resultView.setItems(result)
+  }
+
+  private void setupResultView() {
+    $resultView.setCellFactory() { ListView<List<Word>> view ->
+      SentenceSearchResultCell cell = SentenceSearchResultCell.new()
+      return cell
+    }
   }
 
 }

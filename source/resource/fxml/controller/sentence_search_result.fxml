@@ -30,7 +30,9 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
-      <ListView fx:id="$resultView" orientation="horizontal" VBox.vgrow="always"/>
+      <ListView fx:id="$resultView" styleClass="dictionary-list" orientation="horizontal" VBox.vgrow="always">
+        <fixedCellSize><Double rpx="150"/></fixedCellSize>
+      </ListView>
     </VBox>
   </center>
   <bottom>
