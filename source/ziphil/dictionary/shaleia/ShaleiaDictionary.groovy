@@ -205,6 +205,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   public ShaleiaDictionary copy() {
     ShaleiaDictionary dictionary = ShaleiaDictionary.new($name, null)
     dictionary.setPath($path)
+    dictionary.setVersion($version)
     dictionary.getRawWords().addAll($words)
     return dictionary
   }
