@@ -12,7 +12,7 @@ public class AkrantiainElementGroup {
 
   public static AkrantiainElementGroup create(String input, AkrantiainModule module) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && !module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+    if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && !module.containsEnvironment(AkrantiainEnvironment.PRESERVE_CASE)) {
       input = input.toLowerCase()
     }
     if (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) {
