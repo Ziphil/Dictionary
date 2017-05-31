@@ -48,15 +48,17 @@ public class SentenceSearcherController extends Controller<Void> {
           nextWordName.append(character)
         }
       }
-      $dictionary.searchByName(nextWordName.toString(), true, true)
-      List<Element> hitWords = $dictionary.getWholeWords()
-      List<Word> finalHitwords = ArrayList.new()
-      for (Element word : hitWords) {
-        if (word instanceof Word) {
-          finalHitwords.add((Word)word)
+      if (nextWordName.length() > 0) {
+        $dictionary.searchByName(nextWordName.toString(), true, true)
+        List<Element> hitWords = $dictionary.getWholeWords()
+        List<Word> finalHitwords = ArrayList.new()
+        for (Element word : hitWords) {
+          if (word instanceof Word) {
+            finalHitwords.add((Word)word)
+          }
         }
+        result.add(finalHitwords)
       }
-      result.add(finalHitwords)
     }
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SentenceSearchResultController controller = SentenceSearchResultController.new(nextStage)
