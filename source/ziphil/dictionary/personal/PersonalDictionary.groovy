@@ -97,6 +97,13 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return newWord
   }
 
+  public PersonalDictionary copy() {
+    PersonalDictionary dictionary = PersonalDictionary.new($name, null)
+    dictionary.setPath($path)
+    dictionary.getRawWords().addAll($words)
+    return dictionary
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()

@@ -202,6 +202,13 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return newWord
   }
 
+  public ShaleiaDictionary copy() {
+    ShaleiaDictionary dictionary = ShaleiaDictionary.new($name, null)
+    dictionary.setPath($path)
+    dictionary.getRawWords().addAll($words)
+    return dictionary
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()

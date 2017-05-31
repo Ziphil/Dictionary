@@ -239,6 +239,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.start()
   }
 
+  public abstract Dictionary copy()
+
   private void load() {
     DictionaryLoader loader = createLoader()
     loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
