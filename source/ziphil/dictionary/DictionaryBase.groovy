@@ -79,15 +79,15 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public void searchNormal(NormalSearchParameter parameter) {
     SearchMode searchMode = parameter.getSearchMode()
     if (searchMode == SearchMode.NAME) {
-      searchByName(parameter.getSearch(), parameter.isStrict(), parameter.isReallyStrict())
+      searchNormalByName(parameter.getSearch(), parameter.isStrict(), parameter.isReallyStrict())
     } else if (searchMode == SearchMode.EQUIVALENT) {
-      searchByEquivalent(parameter.getSearch(), parameter.isStrict())
+      searchNormalByEquivalent(parameter.getSearch(), parameter.isStrict())
     } else if (searchMode == SearchMode.CONTENT) {
-      searchByContent(parameter.getSearch())
+      searchNormalByContent(parameter.getSearch())
     }
   }
 
-  protected void searchByName(String search, Boolean strict, Boolean reallyStrict) {
+  protected void searchNormalByName(String search, Boolean strict, Boolean reallyStrict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
     Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
@@ -121,7 +121,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void searchByEquivalent(String search, Boolean strict) {
+  protected void searchNormalByEquivalent(String search, Boolean strict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -153,7 +153,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void searchByContent(String search) {
+  protected void searchNormalByContent(String search) {
     try {
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()

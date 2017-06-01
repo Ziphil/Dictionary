@@ -178,7 +178,7 @@
           </padding>
           <HBox>
             <spacing><Double rpx="5"/></spacing>
-            <TextField fx:id="$searchControl" onKeyReleased="#search" HBox.hgrow="always"/>
+            <TextField fx:id="$searchControl" onKeyReleased="#searchNormal" HBox.hgrow="always"/>
             <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>

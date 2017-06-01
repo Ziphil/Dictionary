@@ -153,14 +153,14 @@ public class MainController extends PrimitiveController<Stage> {
     updateDictionaryToDefault()
   }
 
-  private void search(Boolean forcesSearch) {
+  private void searchNormal(Boolean forcesSearch) {
     if ($dictionary != null) {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean strict = $searchTypeControl.isSelected()
       NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
       if (forcesSearch || search != $previousSearch) {
-        doSearch(parameter)
+        doSearchNormal(parameter)
         $previousSearch = search
         if (forcesSearch) {
           $searchHistory.add(parameter, false)
@@ -172,15 +172,15 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void search(KeyEvent event) {
-    search(false)
+  private void searchNormal(KeyEvent event) {
+    searchNormal(false)
   }
 
-  private void search() {
-    search(false)
+  private void searchNormal() {
+    searchNormal(false)
   }
 
-  private void doSearch(NormalSearchParameter parameter) {
+  private void doSearchNormal(NormalSearchParameter parameter) {
     measureDictionaryStatus() {
       $dictionary.searchNormal(parameter)
     }
@@ -279,7 +279,7 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearch(parameter)
+          doSearchNormal(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
           doSearchDetail(parameter)
         }
@@ -300,7 +300,7 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearch(parameter)
+          doSearchNormal(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
           doSearchDetail(parameter)
         }
@@ -341,7 +341,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void changeSearchMode() {
     $searchControl.requestFocus()
-    search(true)
+    searchNormal(true)
   }
 
   @FXML
@@ -366,14 +366,14 @@ public class MainController extends PrimitiveController<Stage> {
   private void changeSearchType() {
     if (!$searchTypeControl.isDisable()) {
       $searchTypeControl.setSelected(!$searchTypeControl.isSelected())
-      search(true)
+      searchNormal(true)
     }
   }
 
   @FXML
   private void toggleSearchType() {
     $searchControl.requestFocus()
-    search(true)
+    searchNormal(true)
   }
 
   private void modifyWord(Element word) {
@@ -704,7 +704,7 @@ public class MainController extends PrimitiveController<Stage> {
       $progressIndicator.progressProperty().bind(loader.progressProperty())
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
         $wordView.setItems($dictionary.getWholeWords())
-        search(true)
+        searchNormal(true)
       }
       loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
         $wordView.setItems(null)
@@ -727,7 +727,7 @@ public class MainController extends PrimitiveController<Stage> {
           parameter.setSearch(name)
           parameter.setSearchMode(SearchMode.NAME)
           parameter.setStrict(true)
-          doSearch(parameter)
+          doSearchNormal(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
