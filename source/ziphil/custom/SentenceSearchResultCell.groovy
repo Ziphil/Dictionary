@@ -1,6 +1,7 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import javafx.geometry.Pos
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -27,6 +28,7 @@ public class SentenceSearchResultCell extends ListCell<SentenceSearcher.Result> 
         graphic.getChildren().add(pane)
       }
     } 
+    setAlignment(Pos.TOP_CENTER)
     setText(null)
     setGraphic(graphic)
   }
