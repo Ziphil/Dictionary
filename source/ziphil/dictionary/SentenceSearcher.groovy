@@ -10,6 +10,7 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimePossibility
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeSuggestion
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -104,6 +105,7 @@ public class SentenceSearcher {
 
 
 @InnerClass(SentenceSearcher)
+@Ziphilify
 public static class Result {
 
   private String $name = ""

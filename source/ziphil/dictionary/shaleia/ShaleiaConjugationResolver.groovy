@@ -5,6 +5,7 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

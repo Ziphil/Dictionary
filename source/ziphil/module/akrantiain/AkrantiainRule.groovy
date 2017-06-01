@@ -1,6 +1,7 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

@@ -25,6 +25,7 @@ import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainParseException
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

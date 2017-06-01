@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
