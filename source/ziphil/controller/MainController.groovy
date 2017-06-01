@@ -727,6 +727,7 @@ public class MainController extends PrimitiveController<Stage> {
           parameter.setSearch(name)
           parameter.setSearchMode(SearchMode.NAME)
           parameter.setStrict(true)
+          parameter.setReallyStrict(true)
           doSearchNormal(parameter)
           $searchHistory.add(parameter)
         }
