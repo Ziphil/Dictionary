@@ -30,8 +30,8 @@ public class SentenceSearcher {
     $dictionary = dictionary
   }
 
-  public ObservableList<List<Word>> search() {
-    ObservableList<List<Word>> results = FXCollections.observableArrayList()
+  public ObservableList<Result> search() {
+    ObservableList<Result> results = FXCollections.observableArrayList()
     for (String wordName : $sentence.split(/\s+/)) {
       StringBuilder nextWordName = StringBuilder.new()
       for (String character : wordName) {
@@ -43,10 +43,10 @@ public class SentenceSearcher {
         NormalSearchParameter parameter = NormalSearchParameter.new(nextWordName.toString(), SearchMode.NAME, true, true)
         $dictionary.searchNormal(parameter)
         List<Element> hitWords = ArrayList.new($dictionary.getWholeWords())
-        List<Word> result = ArrayList.new()
+        Result result = Result.new(nextWordName.toString())
         for (Element word : hitWords) {
           if (word instanceof Word) {
-            result.add((Word)word)
+            result.getWords().add((Word)word)
           } else {
             if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaSuggestion) {
               addShaleiaSuggestionResult(result, (ShaleiaSuggestion)word)
@@ -61,7 +61,7 @@ public class SentenceSearcher {
     return results
   }
 
-  private void addShaleiaSuggestionResult(List<Word> result, ShaleiaSuggestion suggestion) {
+  private void addShaleiaSuggestionResult(Result result, ShaleiaSuggestion suggestion) {
     ShaleiaDictionary dictionary = (ShaleiaDictionary)$dictionary
     List<ShaleiaPossibility> possibilities = ArrayList.new(suggestion.getPossibilities())
     for (ShaleiaPossibility possibility : possibilities) {
@@ -70,13 +70,13 @@ public class SentenceSearcher {
       List<Element> hitWords = dictionary.getWholeWords()
       for (Element word : hitWords) {
         if (word instanceof Word) {
-          result.add((Word)word)
+          result.getWords().add((Word)word)
         }
       }
     }
   }
 
-  private void addSlimeSuggestionResult(List<Word> result, SlimeSuggestion suggestion) {
+  private void addSlimeSuggestionResult(Result result, SlimeSuggestion suggestion) {
     SlimeDictionary dictionary = (SlimeDictionary)$dictionary
     List<SlimePossibility> possibilities = ArrayList.new(suggestion.getPossibilities())
     for (SlimePossibility possibility : possibilities) {
@@ -86,7 +86,7 @@ public class SentenceSearcher {
       List<Element> hitWords = dictionary.getWholeWords()
       for (Element word : hitWords) {
         if (word instanceof Word) {
-          result.add((Word)word)
+          result.getWords().add((Word)word)
         }
       }
     }
@@ -98,6 +98,27 @@ public class SentenceSearcher {
 
   public void setPunctuations(String punctuations) {
     $punctuations = punctuations
+  }
+
+}
+
+
+@InnerClass(SentenceSearcher)
+public static class Result {
+
+  private String $name = ""
+  private List<Word> $words = ArrayList.new()
+
+  public Result(String name) {
+    $name = name
+  }
+
+  public String getName() {
+    return $name
+  }
+
+  public List<Word> getWords() {
+    return $words
   }
 
 }

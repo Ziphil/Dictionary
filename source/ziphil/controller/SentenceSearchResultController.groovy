@@ -7,6 +7,7 @@ import javafx.scene.control.ListView
 import ziphil.custom.Measurement
 import ziphil.custom.SentenceSearchResultCell
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.SentenceSearcher
 import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
 
@@ -19,7 +20,7 @@ public class SentenceSearchResultController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(540)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(240)
 
-  @FXML private ListView<List<Word>> $resultView
+  @FXML private ListView<SentenceSearcher.Result> $resultView
 
   public SentenceSearchResultController(UtilityStage<Void> stage) {
     super(stage)
@@ -31,12 +32,12 @@ public class SentenceSearchResultController extends Controller<Void> {
     setupResultView()
   }
 
-  public void prepare(ObservableList<List<Word>> result) {
+  public void prepare(ObservableList<SentenceSearcher.Result> result) {
     $resultView.setItems(result)
   }
 
   private void setupResultView() {
-    $resultView.setCellFactory() { ListView<List<Word>> view ->
+    $resultView.setCellFactory() { ListView<SentenceSearcher.Result> view ->
       SentenceSearchResultCell cell = SentenceSearchResultCell.new()
       return cell
     }
