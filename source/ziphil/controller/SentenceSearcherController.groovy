@@ -11,6 +11,8 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Element
+import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -57,7 +59,8 @@ public class SentenceSearcherController extends Controller<Void> {
         }
       }
       if (nextWordName.length() > 0) {
-        $dictionary.searchByName(nextWordName.toString(), true, true)
+        NormalSearchParameter parameter = NormalSearchParameter.new(nextWordName.toString(), SearchMode.NAME, true, true)
+        $dictionary.searchNormal(parameter)
         List<Element> hitWords = ArrayList.new($dictionary.getWholeWords())
         List<Word> finalHitwords = ArrayList.new()
         for (Element word : hitWords) {
@@ -67,7 +70,8 @@ public class SentenceSearcherController extends Controller<Void> {
             if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaSuggestion) {
               List<ShaleiaPossibility> possibilities = ArrayList.new(((ShaleiaSuggestion)word).getPossibilities())
               for (ShaleiaPossibility possibility : possibilities) {
-                $dictionary.searchByName(possibility.getName(), true, true)
+                NormalSearchParameter suggestionParameter = NormalSearchParameter.new(possibility.getName(), SearchMode.NAME, true, true)
+                $dictionary.searchNormal(suggestionParameter)
                 List<Element> suggestionHitWords = $dictionary.getWholeWords()
                 for (Element suggestionWord : suggestionHitWords) {
                   if (suggestionWord instanceof Word) {
@@ -78,9 +82,9 @@ public class SentenceSearcherController extends Controller<Void> {
             } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeSuggestion) {
               List<SlimePossibility> possibilities = ArrayList.new(((SlimeSuggestion)word).getPossibilities())
               for (SlimePossibility possibility : possibilities) {
-                SlimeSearchParameter parameter = SlimeSearchParameter.new()
-                parameter.setId(possibility.getWord().getId())
-                $dictionary.searchDetail(parameter)
+                SlimeSearchParameter suggestionParameter = SlimeSearchParameter.new()
+                suggestionParameter.setId(possibility.getWord().getId())
+                $dictionary.searchDetail(suggestionParameter)
                 List<Element> suggestionHitWords = $dictionary.getWholeWords()
                 for (Element suggestionWord : suggestionHitWords) {
                   if (suggestionWord instanceof Word) {

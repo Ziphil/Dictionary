@@ -158,7 +158,7 @@ public class MainController extends PrimitiveController<Stage> {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean strict = $searchTypeControl.isSelected()
-      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict)
+      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
       if (forcesSearch || search != $previousSearch) {
         doSearch(parameter)
         $previousSearch = search
@@ -181,17 +181,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void doSearch(NormalSearchParameter parameter) {
-    String search = parameter.getSearch()
-    SearchMode searchMode = parameter.getSearchMode()
-    Boolean strict = parameter.isStrict()
     measureDictionaryStatus() {
-      if (searchMode == SearchMode.NAME) {
-        $dictionary.searchByName(search, strict)
-      } else if (searchMode == SearchMode.EQUIVALENT) {
-        $dictionary.searchByEquivalent(search, strict)
-      } else if (searchMode == SearchMode.CONTENT) {
-        $dictionary.searchByContent(search)
-      }
+      $dictionary.searchNormal(parameter)
     }
   }
 
@@ -270,9 +261,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void doSearchScript(ScriptSearchParameter parameter) {
-    String script = parameter.getScript()
     measureDictionaryStatus() {
-      $dictionary.searchScript(script)
+      $dictionary.searchScript(parameter)
     }
   }
 

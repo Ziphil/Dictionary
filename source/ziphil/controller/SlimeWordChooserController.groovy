@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent
 import ziphil.custom.Measurement
 import ziphil.custom.PlainWordCell
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
@@ -54,13 +55,8 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
       String search = $searchControl.getText()
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean strict = $searchTypeControl.isSelected()
-      if (searchMode == SearchMode.NAME) {
-        $dictionary.searchByName(search, strict)
-      } else if (searchMode == SearchMode.EQUIVALENT) {
-        $dictionary.searchByEquivalent(search, strict)
-      } else if (searchMode == SearchMode.CONTENT) {
-        $dictionary.searchByContent(search)
-      }
+      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
+      $dictionary.searchNormal(parameter)
       $wordView.scrollTo(0)
     }
   }

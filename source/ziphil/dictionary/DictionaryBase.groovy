@@ -76,7 +76,18 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract void prepare()
 
-  public void searchByName(String search, Boolean strict, Boolean reallyStrict) {
+  public void searchNormal(NormalSearchParameter parameter) {
+    SearchMode searchMode = parameter.getSearchMode()
+    if (searchMode == SearchMode.NAME) {
+      searchByName(parameter.getSearch(), parameter.isStrict(), parameter.isReallyStrict())
+    } else if (searchMode == SearchMode.EQUIVALENT) {
+      searchByEquivalent(parameter.getSearch(), parameter.isStrict())
+    } else if (searchMode == SearchMode.CONTENT) {
+      searchByContent(parameter.getSearch())
+    }
+  }
+
+  protected void searchByName(String search, Boolean strict, Boolean reallyStrict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
     Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
@@ -110,11 +121,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchByName(String search, Boolean strict) {
-    searchByName(search, strict, false)
-  }
-
-  public void searchByEquivalent(String search, Boolean strict) {
+  protected void searchByEquivalent(String search, Boolean strict) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -146,7 +153,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchByContent(String search) {
+  protected void searchByContent(String search) {
     try {
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
@@ -158,7 +165,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchScript(String script) {
+  public void searchScript(ScriptSearchParameter parameter) {
+    String script = parameter.getScript()
     String scriptName = Setting.getInstance().getScriptName()
     ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
     ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
