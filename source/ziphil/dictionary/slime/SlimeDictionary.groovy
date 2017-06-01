@@ -17,6 +17,7 @@ import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -466,7 +467,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $suggestions.add(suggestion)
   }
 
-  protected ConjugationResolver createConjugationResolver() {
+  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
     SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
     return conjugationResolver
   }

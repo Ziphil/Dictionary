@@ -13,6 +13,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -110,7 +111,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     }
   }
 
-  protected ConjugationResolver createConjugationResolver() {
+  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
   }

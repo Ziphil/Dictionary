@@ -19,6 +19,7 @@ import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -230,8 +231,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return $words.size() - $systemWordSize
   }
 
-  protected ConjugationResolver createConjugationResolver() {
-    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
+  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, parameter, $changes, $version)
     return conjugationResolver
   }
 

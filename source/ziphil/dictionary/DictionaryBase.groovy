@@ -97,7 +97,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     Boolean searchesPrefix = (reallyStrict) ? false : setting.getSearchesPrefix()
     try {
       Pattern pattern = (strict) ? null : Pattern.compile(search)
-      ConjugationResolver conjugationResolver = createConjugationResolver()
+      ConjugationResolver conjugationResolver = createConjugationResolver(parameter)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
       conjugationResolver.precheck(search, convertedSearch)
@@ -330,7 +330,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected abstract ConjugationResolver createConjugationResolver()
+  protected abstract ConjugationResolver createConjugationResolver(NormalSearchParameter parameter)
 
   protected abstract DictionaryLoader createLoader()
 
