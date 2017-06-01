@@ -32,8 +32,8 @@ public class SentenceSearchResultController extends Controller<Void> {
     setupResultView()
   }
 
-  public void prepare(ObservableList<SentenceSearcher.Result> result) {
-    $resultView.setItems(result)
+  public void prepare(ObservableList<SentenceSearcher.Result> results) {
+    $resultView.setItems(results)
   }
 
   private void setupResultView() {
