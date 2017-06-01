@@ -131,9 +131,10 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   }
 
   private void checkConjugation(ShaleiaWord word, String search, String convertedSearch) {
+    Boolean reallyStrict = $parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
     if (!$candidates.isEmpty()) {
       String name = word.getName()
       String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
