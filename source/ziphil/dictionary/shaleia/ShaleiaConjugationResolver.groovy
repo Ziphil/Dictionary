@@ -2,8 +2,10 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.ConjugationResolver
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -18,12 +20,14 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   private static final Map<String, String> PREPOSITION_PREFIXES = [("非動詞修飾"): "i"]
   private static final Map<String, String> NEGATION_PREFIXES = [("否定"): "du"]
 
+  private NormalSearchParameter $parameter
   private Map<String, List<String>> $changes
   private String $version
   private List<ConjugationCandidate> $candidates = ArrayList.new()
 
-  public ShaleiaConjugationResolver(List<ShaleiaSuggestion> suggestions, Map<String, List<String>> changes, String version) {
+  public ShaleiaConjugationResolver(List<ShaleiaSuggestion> suggestions, NormalSearchParameter parameter, Map<String, List<String>> changes, String version) {
     super(suggestions)
+    $parameter = parameter
     $changes = changes
     $version = version
   }
@@ -128,9 +132,10 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   }
 
   private void checkConjugation(ShaleiaWord word, String search, String convertedSearch) {
+    Boolean reallyStrict = $parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
+    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
     if (!$candidates.isEmpty()) {
       String name = word.getName()
       String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)

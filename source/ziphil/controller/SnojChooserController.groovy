@@ -9,6 +9,7 @@ import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

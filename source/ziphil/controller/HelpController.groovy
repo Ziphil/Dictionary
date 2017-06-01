@@ -22,6 +22,7 @@ import org.w3c.dom.html.HTMLAnchorElement
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.Setting
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

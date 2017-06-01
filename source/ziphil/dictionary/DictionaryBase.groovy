@@ -76,14 +76,28 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract void prepare()
 
-  public void searchByName(String search, Boolean strict) {
+  public void searchNormal(NormalSearchParameter parameter) {
+    SearchMode searchMode = parameter.getSearchMode()
+    if (searchMode == SearchMode.NAME) {
+      searchNormalByName(parameter)
+    } else if (searchMode == SearchMode.EQUIVALENT) {
+      searchNormalByEquivalent(parameter)
+    } else if (searchMode == SearchMode.CONTENT) {
+      searchNormalByContent(parameter)
+    }
+  }
+
+  protected void searchNormalByName(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
+    Boolean strict = parameter.isStrict()
+    Boolean reallyStrict = parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
+    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
+    Boolean searchesPrefix = (reallyStrict) ? false : setting.getSearchesPrefix()
     try {
       Pattern pattern = (strict) ? null : Pattern.compile(search)
-      ConjugationResolver conjugationResolver = createConjugationResolver()
+      ConjugationResolver conjugationResolver = createConjugationResolver(parameter)
       String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
       resetSuggestions()
       conjugationResolver.precheck(search, convertedSearch)
@@ -110,7 +124,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchByEquivalent(String search, Boolean strict) {
+  protected void searchNormalByEquivalent(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
+    Boolean strict = parameter.isStrict()
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -142,7 +158,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchByContent(String search) {
+  protected void searchNormalByContent(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
     try {
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
@@ -154,7 +171,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void searchScript(String script) {
+  public void searchScript(ScriptSearchParameter parameter) {
+    String script = parameter.getScript()
     String scriptName = Setting.getInstance().getScriptName()
     ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
     ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
@@ -239,6 +257,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.start()
   }
 
+  public abstract Dictionary copy()
+
   private void load() {
     DictionaryLoader loader = createLoader()
     loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
@@ -310,7 +330,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected abstract ConjugationResolver createConjugationResolver()
+  protected abstract ConjugationResolver createConjugationResolver(NormalSearchParameter parameter)
 
   protected abstract DictionaryLoader createLoader()
 

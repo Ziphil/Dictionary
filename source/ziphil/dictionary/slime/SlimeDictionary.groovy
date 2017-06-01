@@ -17,6 +17,7 @@ import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -24,6 +25,7 @@ import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainParseException
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -351,7 +353,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         akrantiain = null
       }
     }
-    $akrantiain = akrantiain  // snoj ファイルの読み込み中に実行されないようにフィールドは最後に更新する
+    $akrantiain = akrantiain
   }
 
   public SlimeWord emptyWord(String defaultName) {
@@ -434,9 +436,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
-  // 同じ単語データをもつ SlimeDictionary オブジェクトを作成します。
-  // この処理は浅いコピーを行うので、コピー後の SlimeDictionary オブジェクトの各単語データはコピー前のものと同一です。
-  // 同じ SlimeDictionary オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用されます。
   public SlimeDictionary copy() {
     SlimeDictionary dictionary = SlimeDictionary.new($name, null)
     dictionary.setPath($path)
@@ -469,7 +468,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $suggestions.add(suggestion)
   }
 
-  protected ConjugationResolver createConjugationResolver() {
+  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
     SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
     return conjugationResolver
   }

@@ -72,7 +72,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
           if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
             adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
           }
-          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.PRESERVE_CASE)) {
             adjustedElementPart = adjustedElementPart.toLowerCase()
           }
           if (adjustedTextSubstring == adjustedElementPart) {
@@ -111,7 +111,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
           if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE)) {
             adjustedTextSubstring = adjustedTextSubstring.toLowerCase()
           }
-          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.CONSERVE_CASE)) {
+          if (!module.containsEnvironment(AkrantiainEnvironment.CASE_SENSITIVE) && module.containsEnvironment(AkrantiainEnvironment.PRESERVE_CASE)) {
             adjustedElementPart = adjustedElementPart.toLowerCase()
           }
           if (adjustedTextSubstring == adjustedElementPart) {

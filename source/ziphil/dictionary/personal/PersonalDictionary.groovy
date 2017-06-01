@@ -13,6 +13,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -97,13 +98,20 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return newWord
   }
 
+  public PersonalDictionary copy() {
+    PersonalDictionary dictionary = PersonalDictionary.new($name, null)
+    dictionary.setPath($path)
+    dictionary.getRawWords().addAll($words)
+    return dictionary
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
   }
 
-  protected ConjugationResolver createConjugationResolver() {
+  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
   }

@@ -8,13 +8,9 @@ import javafx.concurrent.Task
 @CompileStatic 
 public interface Dictionary<W extends Word> {
 
-  public void searchByName(String search, Boolean strict)
+  public void searchNormal(NormalSearchParameter parameter)
 
-  public void searchByEquivalent(String search, Boolean strict)
-
-  public void searchByContent(String search)
-
-  public void searchScript(String script)
+  public void searchScript(ScriptSearchParameter parameter)
 
   public void shuffleWords()
 
@@ -29,6 +25,11 @@ public interface Dictionary<W extends Word> {
   // 内部データを更新します。
   // 単語データリスト以外の個別設定などが変更されたときに呼び出されることが想定されています。
   public void updateMinimum()
+
+  // 同じ単語データをもつ辞書オブジェクトを作成します。
+  // この処理は浅いコピーを行うので、コピー後の辞書オブジェクトの各単語データはコピー前のものと同一です。
+  // 同じ辞書オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用できます。
+  public Dictionary copy()
 
   public void save()
 

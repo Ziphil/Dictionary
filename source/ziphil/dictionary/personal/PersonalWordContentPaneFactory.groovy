@@ -14,6 +14,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<PersonalWord, PersonalDictionary> {
 
+  private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
   private static final String PERSONAL_PRONUNCIATION_CLASS = "persoanl-pronunciation"
 
   public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
@@ -25,7 +26,16 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
-    addNameNode(contentPane, $word.getName(), $word.getPronunciation())
+    String pronunciation = $word.getPronunciation()
+    if (pronunciation != "") {
+      if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
+        pronunciation = "/" + pronunciation
+      }
+      if (!pronunciation.endsWith("/") && !pronunciation.endsWith("[")) {
+        pronunciation = pronunciation + "/"
+      }
+    }
+    addNameNode(contentPane, $word.getName(), pronunciation)
     addContentNode(contentPane, $word.getTranslation())
     addContentNode(contentPane, $word.getUsage())
     modifyBreak(contentPane)
@@ -34,22 +44,16 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
 
   private void addNameNode(TextFlow contentPane, String name, String pronunciation) {
     if (pronunciation != "") {
-      if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
-        pronunciation = "/" + pronunciation
-      }
-      if (!pronunciation.endsWith("/") && !pronunciation.endsWith("[")) {
-        pronunciation = pronunciation + "/"
-      }
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")
-      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, PERSONAL_PRONUNCIATION_CLASS)
       contentPane.getChildren().addAll(nameText, pronunciationText, breakText)
     } else {
       Label nameText = Label.new(name)
       Text breakText = Text.new("\n")
-      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS)
+      nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
       contentPane.getChildren().addAll(nameText, breakText)
     }
   }

@@ -1,6 +1,7 @@
 package ziphil.module.hah
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

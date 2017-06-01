@@ -26,7 +26,7 @@ public class AkrantiainParser {
           $root.getModules().add(currentModule)
           inModule = true
         } else {
-          throw AkrantiainParseException.new("Module definition cannot be nested", token)
+          throw AkrantiainParseException.new("Nested module definition", token)
         }
       } else if (tokenType == AkrantiainTokenType.OPEN_CURLY) {
         throw AkrantiainParseException.new("Unexpected left curly bracket", token)
@@ -44,7 +44,7 @@ public class AkrantiainParser {
           if (environment != null) {
             currentModule.getEnvironments().add(environment)
           } else {
-            AkrantiainWarning warning = AkrantiainWarning.new("No such setting identifier", sentenceParser.getTokens().first())
+            AkrantiainWarning warning = AkrantiainWarning.new("Unknown setting specifier", sentenceParser.getTokens().first())
             $root.getWarnings().add(warning)
           }
         } else if (sentenceParser.isDefinition()) {
@@ -53,7 +53,7 @@ public class AkrantiainParser {
           if (!currentModule.containsDefinitionOf(identifier.getText())) {
             currentModule.getDefinitions().add(definition)
           } else {
-            throw AkrantiainParseException.new("Duplicate identifier", identifier)
+            throw AkrantiainParseException.new("Duplicate definition regarding identifier", identifier)
           }
         } else if (sentenceParser.isRule()) {
           AkrantiainRule rule = sentenceParser.readRule()
@@ -84,19 +84,19 @@ public class AkrantiainParser {
   private void ensureSafety() {
     AkrantiainToken deadIdentifier = $root.findUnknownIdentifier()
     if (deadIdentifier != null) {
-      throw AkrantiainParseException.new("No such identifier", deadIdentifier)
+      throw AkrantiainParseException.new("Undefined identifier", deadIdentifier)
     }
     AkrantiainToken circularIdentifier = $root.findCircularIdentifier()
     if (circularIdentifier != null) {
-      throw AkrantiainParseException.new("Circular identifier definition", circularIdentifier)
+      throw AkrantiainParseException.new("Circular reference involving identifier", circularIdentifier)
     }
     AkrantiainModuleName deadModuleName = $root.findUnknownModuleName()
     if (deadModuleName != null) {
-      throw AkrantiainParseException.new("No such module", deadModuleName.getTokens())
+      throw AkrantiainParseException.new("Undefined module", deadModuleName.getTokens())
     }
     AkrantiainModuleName circularModuleName = $root.findCircularModuleName()
     if (circularModuleName != null) {
-      throw AkrantiainParseException.new("Circular module definition", circularModuleName.getTokens())
+      throw AkrantiainParseException.new("Circular reference involving module", circularModuleName.getTokens())
     }
     List<AkrantiainModuleName> unusedModuleNames = $root.findUnusedModuleNames()
     for (AkrantiainModuleName unusedModuleName : unusedModuleNames) {
@@ -112,7 +112,7 @@ public class AkrantiainParser {
       module.setName(moduleName)
       return module
     } else {
-      throw AkrantiainParseException.new("Duplicate module name", moduleName.getTokens())
+      throw AkrantiainParseException.new("Duplicate definition of module", moduleName.getTokens())
     }
   }
 

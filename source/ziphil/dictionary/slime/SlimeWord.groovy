@@ -19,7 +19,6 @@ public class SlimeWord extends WordBase {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
   private String $comparisonString = ""
-  private ContentPaneFactoryBase $plainContentPaneFactory
 
   public void update() {
     updateEquivalents()
@@ -72,12 +71,6 @@ public class SlimeWord extends WordBase {
     }
   }
 
-  private void changePlainContentPaneFactory() {
-    if ($plainContentPaneFactory != null) {
-      $plainContentPaneFactory.change()
-    }
-  }
-
   public List<SlimeInformation> sortedInformations() {
     if ($dictionary.getInformationTitleOrder() != null) {
       List<SlimeInformation> sortedInformations = $informations.toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
@@ -113,12 +106,12 @@ public class SlimeWord extends WordBase {
     return $relations.groupBy{it.getTitle()}
   }
 
-  protected void makeContentPaneFactory() {
-    $contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactoryBase createContentPaneFactory() {
+    return SlimeWordContentPaneFactory.new(this, $dictionary)
   }
 
-  protected void makePlainContentPaneFactory() {
-    $plainContentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactoryBase createPlainContentPaneFactory() {
+    return SlimeWordPlainContentPaneFactory.new(this, $dictionary)
   }
 
   public SlimeDictionary getDictionary() {
@@ -183,13 +176,6 @@ public class SlimeWord extends WordBase {
 
   public String getComparisonString() {
     return $comparisonString
-  }
-
-  public ContentPaneFactory getPlainContentPaneFactory() {
-    if ($plainContentPaneFactory == null) {
-      makePlainContentPaneFactory()
-    }
-    return $plainContentPaneFactory
   }
 
 }

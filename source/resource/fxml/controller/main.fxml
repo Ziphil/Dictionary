@@ -25,6 +25,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.RefreshableListView?>
 <?import ziphil.dictionary.SearchMode?>
 <?import ziphil.module.Setting?>
 
@@ -108,6 +109,8 @@
         </MenuItem>
         <Menu fx:id="$searchRegisteredParameterMenu" styleClass="option,slime,dammy" text="登録条件で検索"/>
         <MenuItem styleClass="option,shaleia,personal,missing,dammy" text="登録条件で検索" disable="true"/>
+        <SeparatorMenuItem/>
+        <MenuItem styleClass="option,all" text="文一括検索" onAction="#searchSentence" accelerator="Shortcut+B"/>
       </Menu>
       <Menu text="編集">
         <MenuItem styleClass="option,all" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
@@ -175,7 +178,7 @@
           </padding>
           <HBox>
             <spacing><Double rpx="5"/></spacing>
-            <TextField fx:id="$searchControl" onKeyReleased="#search" HBox.hgrow="always"/>
+            <TextField fx:id="$searchControl" onKeyReleased="#searchNormal" HBox.hgrow="always"/>
             <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
@@ -193,7 +196,7 @@
               <minWidth><Double rpx="70"/></minWidth>
             </ToggleButton>
           </HBox>
-          <ListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
+          <RefreshableListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
         </VBox>
         <HBox fx:id="$footerBox" styleClass="footer">
           <spacing><Double rpx="5"/></spacing>

@@ -46,7 +46,7 @@
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$nameControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$nameSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -65,7 +65,7 @@
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$equivalentControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$equivalentControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$equivalentSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -83,7 +83,7 @@
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
-        <TextField fx:id="$descriptionControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$descriptionControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$descriptionSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>

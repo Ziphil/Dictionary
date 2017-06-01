@@ -37,6 +37,7 @@ import ziphil.dictionary.slime.SlimeRelation
 import ziphil.dictionary.slime.SlimeVariation
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

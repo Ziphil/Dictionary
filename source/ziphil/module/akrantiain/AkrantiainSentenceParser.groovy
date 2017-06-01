@@ -36,7 +36,7 @@ public class AkrantiainSentenceParser {
         return null
       }
     } else {
-      throw AkrantiainParseException.new("Setting sentence must consist of only one setting identifier", $tokens.last())
+      throw AkrantiainParseException.new("Invalid definition sentence of setting specifier", $tokens.last())
     }
   }
 
@@ -53,10 +53,10 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.SEMICOLON) {
         return definition
       } else {
-        throw AkrantiainParseException.new("Invalid identifier definition sentence", token)
+        throw AkrantiainParseException.new("Invalid definition sentence of identifier", token)
       }
     } else {
-      throw AkrantiainParseException.new("Invalid identifier definition sentence", $tokens.last())
+      throw AkrantiainParseException.new("Invalid definition sentence of identifier", $tokens.last())
     }
   }
 
@@ -78,13 +78,13 @@ public class AkrantiainSentenceParser {
             } else if (!rule.hasRightCondition()) {
               rule.setRightCondition(selection)
             } else {
-              throw AkrantiainParseException.new("Condition must be at the beginning or end of the left hand of a rule definition sentence", token)
+              throw AkrantiainParseException.new("Invalid definition sentence of rule", token)
             }
           } else {
             if (!rule.hasRightCondition()) {
               rule.getSelections().add(selection)
             } else {
-              throw AkrantiainParseException.new("Selection must not be at the right of the right condition", token)
+              throw AkrantiainParseException.new("Invalid definition sentence of rule", token)
             }
           }
         }
@@ -94,7 +94,7 @@ public class AkrantiainSentenceParser {
         } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
           break
         } else {
-          throw AkrantiainParseException.new("Only slash literals can be at the right hand of a rule definition sentence", token)
+          throw AkrantiainParseException.new("Invalid definition sentence of rule", token)
         }
       }
     }
@@ -102,7 +102,7 @@ public class AkrantiainSentenceParser {
       throw AkrantiainParseException.new("No selects", $tokens.last())
     }
     if (!rule.isSizeValid()) {
-      throw AkrantiainParseException.new("The number of phonemes is not equal to the number of selects excluding circumflexes", $tokens.last())
+      throw AkrantiainParseException.new("Mismatched number of concrete terms", $tokens.last())
     }
     return rule
   }
@@ -262,7 +262,7 @@ public class AkrantiainSentenceParser {
             $pointer --
             break
           } else {
-            throw AkrantiainParseException.new("Module chain component is empty", token)
+            throw AkrantiainParseException.new("Empty module chain component", token)
           }
         } else {
           throw AkrantiainParseException.new("Invalid module chain component", token)

@@ -3,6 +3,7 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 

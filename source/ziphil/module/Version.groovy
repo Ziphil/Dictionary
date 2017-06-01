@@ -28,9 +28,9 @@ public class Version implements Comparable<Version> {
 
   @JsonCreator
   public Version(List<Integer> versionList) {
-    $major = versionList[0] ?: -1
-    $minor = versionList[1] ?: 0
-    $patch = versionList[2] ?: 0
+    $major = (versionList[0] != null) ? versionList[0] : -1
+    $minor = (versionList[1] != null) ? versionList[1] : 0
+    $patch = (versionList[2] != null) ? versionList[2] : 0
     $date = versionList[3]
   }
 
