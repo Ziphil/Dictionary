@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ScriptSearchParameter extends SearchParameter {
 
-  private String $script
+  private String $script = ""
 
   public ScriptSearchParameter(String script) {
     $script = script

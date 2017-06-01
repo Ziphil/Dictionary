@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class NormalSearchParameter extends SearchParameter {
 
-  private String $search
-  private SearchMode $searchMode
-  private Boolean $strict
+  private String $search = ""
+  private SearchMode $searchMode = SearchMode.NAME
+  private Boolean $strict = false
   private Boolean $reallyStrict = false
 
   // 与えられた引数から通常検索用のパラメータオブジェクトを作成します。
