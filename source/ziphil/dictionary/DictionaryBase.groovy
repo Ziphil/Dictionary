@@ -79,15 +79,18 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public void searchNormal(NormalSearchParameter parameter) {
     SearchMode searchMode = parameter.getSearchMode()
     if (searchMode == SearchMode.NAME) {
-      searchNormalByName(parameter.getSearch(), parameter.isStrict(), parameter.isReallyStrict())
+      searchNormalByName(parameter)
     } else if (searchMode == SearchMode.EQUIVALENT) {
-      searchNormalByEquivalent(parameter.getSearch(), parameter.isStrict())
+      searchNormalByEquivalent(parameter)
     } else if (searchMode == SearchMode.CONTENT) {
-      searchNormalByContent(parameter.getSearch())
+      searchNormalByContent(parameter)
     }
   }
 
-  protected void searchNormalByName(String search, Boolean strict, Boolean reallyStrict) {
+  protected void searchNormalByName(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
+    Boolean strict = parameter.isStrict()
+    Boolean reallyStrict = parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
     Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
@@ -121,7 +124,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void searchNormalByEquivalent(String search, Boolean strict) {
+  protected void searchNormalByEquivalent(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
+    Boolean strict = parameter.isStrict()
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -153,7 +158,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void searchNormalByContent(String search) {
+  protected void searchNormalByContent(NormalSearchParameter parameter) {
+    String search = parameter.getSearch()
     try {
       Pattern pattern = Pattern.compile(search)
       resetSuggestions()
