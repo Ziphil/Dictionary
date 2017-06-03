@@ -150,16 +150,16 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void updateAkrantiain() {
+    Akrantiain akrantiain = null
     if ($akrantiainSource != null) {
       try {
-        $akrantiain = Akrantiain.new()
-        $akrantiain.load($akrantiainSource)
+        akrantiain = Akrantiain.new()
+        akrantiain.load($akrantiainSource)
       } catch (AkrantiainParseException exception) {
-        $akrantiain = null
+        akrantiain = null
       }
-    } else {
-      $akrantiain = null
     }
+    $akrantiain = akrantiain
   }
 
   public ShaleiaWord emptyWord(String defaultName) {
