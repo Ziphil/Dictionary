@@ -26,6 +26,19 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   private Boolean $hasInformation = false
   private Boolean $hasTag = false
 
+  public SlimeSearchParameter(Int id) {
+    $id = id
+    $hasId = true
+  }
+
+  public SlimeSearchParameter(String name) {
+    $name = name
+    $hasName = true
+  }
+
+  public SlimeSearchParameter() {
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     if ($hasId) {

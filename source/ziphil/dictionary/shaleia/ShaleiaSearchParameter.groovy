@@ -19,6 +19,14 @@ public class ShaleiaSearchParameter extends DetailSearchParameter {
   private Boolean $hasEquivalent = false
   private Boolean $hasDescription = false
 
+  public ShaleiaSearchParameter(String name) {
+    $name = name
+    $hasName = true
+  }
+
+  public ShaleiaSearchParameter() {
+  }
+
   public String getName() {
     return $name
   }
