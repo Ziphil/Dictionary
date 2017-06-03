@@ -12,39 +12,39 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
   private Boolean $negated = false
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
-    Integer to = null
+  public Int matchRight(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
+    Int to = -1
     if (!$matchables.isEmpty()) {
-      for (Integer i : $matchables.size() - 1 .. 0) {
+      for (Int i = $matchables.size() - 1 ; i >= 0 ; i --) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleTo = matchable.matchRight(group, from, module)
-        if (singleTo != null) {
+        Int singleTo = matchable.matchRight(group, from, module)
+        if (singleTo >= 0) {
           to = singleTo
           break
         }
       }
     }
     if ($negated) {
-      return (to == null) ? from : null
+      return (to == -1) ? from : -1
     } else {
       return to
     }
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
-    Integer from = null
+  public Int matchLeft(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
+    Int from = -1
     if (!$matchables.isEmpty()) {
-      for (Integer i : $matchables.size() - 1 .. 0) {
+      for (Int i = $matchables.size() - 1 ; i >= 0 ; i --) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer singleFrom = matchable.matchLeft(group, to, module)
-        if (singleFrom != null) {
+        Int singleFrom = matchable.matchLeft(group, to, module)
+        if (singleFrom >= 0) {
           from = singleFrom
           break
         }
       }
     }
     if ($negated) {
-      return (from == null) ? to : null
+      return (from == -1) ? to : -1
     } else {
       return from
     }
@@ -80,7 +80,7 @@ public class AkrantiainDisjunction implements AkrantiainMatchable {
       string.append("!")
     }
     string.append("(")
-    for (Integer i : 0 ..< $matchables.size()) {
+    for (Int i = 0 ; i < $matchables.size() ; i ++) {
       string.append($matchables[i])
       if (i < $matchables.size() - 1) {
         string.append(" | ")

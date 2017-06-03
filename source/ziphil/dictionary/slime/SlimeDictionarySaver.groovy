@@ -19,7 +19,7 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
     super(dictionary, path)
   }
 
-  protected Boolean save() {
+  protected BooleanClass save() {
     FileOutputStream stream = FileOutputStream.new($path)
     JsonFactory factory = $mapper.getFactory()
     JsonGenerator generator = factory.createGenerator(stream)

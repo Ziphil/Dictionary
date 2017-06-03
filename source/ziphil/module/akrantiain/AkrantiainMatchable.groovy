@@ -1,20 +1,21 @@
 package ziphil.module.akrantiain
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.ConvertPrimitives
 
 
-@CompileStatic
+@CompileStatic @ConvertPrimitives
 public interface AkrantiainMatchable {
 
   // ちょうど from で与えられた位置から右向きにマッチするかどうかを調べます。
   // マッチした場合はマッチした範囲の右端のインデックス (範囲にそのインデックス自体は含まない) を返します。
-  // マッチしなかった場合は null を返します。
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module)
+  // マッチしなかった場合は -1 を返します。
+  public Int matchRight(AkrantiainElementGroup group, Int from, AkrantiainModule module)
 
   // ちょうど to で与えられた位置から左向きにマッチするかどうかを調べます。
   // マッチした場合はマッチした範囲の左端のインデックス (範囲にそのインデックス自体を含む) を返します。
-  // マッチしなかった場合は null を返します。
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module)
+  // マッチしなかった場合は -1 を返します。
+  public Int matchLeft(AkrantiainElementGroup group, Int to, AkrantiainModule module)
 
   // モジュールに存在していない識別子を含んでいればそれを返し、そうでなければ null を返します。
   public AkrantiainToken findUnknownIdentifier(AkrantiainModule module)

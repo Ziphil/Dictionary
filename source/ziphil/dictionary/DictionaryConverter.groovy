@@ -6,7 +6,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryConverter<D extends Dictionary, E extends Dictionary, W extends Word> extends Task<Boolean> {
+public abstract class DictionaryConverter<D extends Dictionary, E extends Dictionary, W extends Word> extends Task<BooleanClass> {
 
   protected D $newDictionary
   protected E $oldDictionary
@@ -18,11 +18,11 @@ public abstract class DictionaryConverter<D extends Dictionary, E extends Dictio
     updateProgress(0, 1)
   }
 
-  protected abstract Boolean convert()
+  protected abstract BooleanClass convert()
 
-  protected Boolean call() {
+  protected BooleanClass call() {
     if ($oldDictionary != null) {
-      Boolean result = convert()
+      BooleanClass result = convert()
       updateProgress(1, 1)
       $newDictionary.getRawWords().addAll($newWords)
       $newDictionary.updateFirst()

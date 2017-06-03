@@ -29,7 +29,7 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
     return contentPane
   }
 
-  private void addNameNode(TextFlow contentPane, String name, Integer id) {
+  private void addNameNode(TextFlow contentPane, String name, Int id) {
     Text nameText = Text.new(name + " ")
     Text breakText = Text.new("\n")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)

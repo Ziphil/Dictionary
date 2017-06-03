@@ -25,7 +25,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeIndividualSettingController extends Controller<Boolean> {
+public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_individual_setting.fxml"
   private static final String TITLE = "個別設定"
@@ -47,7 +47,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
-  public SlimeIndividualSettingController(UtilityStage<Boolean> stage) {
+  public SlimeIndividualSettingController(UtilityStage<BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -78,7 +78,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     if (dictionary.getInformationTitleOrder() == null) {
       $usesIndividualOrderControl.setSelected(true)
     }
-    for (Integer i : 0 ..< 10) {
+    for (Int i = 0 ; i < 10 ; i ++) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
     }
@@ -145,7 +145,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
   @FXML
   private void editDefaultWord() {
     SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.emptyWord(null)
-    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
@@ -153,7 +153,7 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     nextStage.showAndWait()
   }
 
-  private void editSearchParameter(Integer index) {
+  private void editSearchParameter(Int index) {
     UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
     nextStage.initOwner($stage)
@@ -166,15 +166,15 @@ public class SlimeIndividualSettingController extends Controller<Boolean> {
     }
   }
 
-  private void deregisterSearchParameter(Integer index) {
+  private void deregisterSearchParameter(Int index) {
     $registeredParameters[index] = (SlimeSearchParameter)null
     $registeredParameterStringControls[index].setText("")
     $registeredParameterNameControls[index].setText("")
   }
 
   private void setupSearchParameterPane() {
-    for (Integer i : 0 ..< 10) {
-      Integer j = i
+    for (Int i = 0 ; i < 10 ; i ++) {
+      Int j = i
       Label numberLabel = Label.new("検索条件${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()

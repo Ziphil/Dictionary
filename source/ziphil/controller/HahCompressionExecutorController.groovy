@@ -29,7 +29,7 @@ public class HahCompressionExecutorController extends Controller<Void> {
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
   @FXML private ComboBox<HahCompressionType> $typeControl
-  @FXML private Spinner<Integer> $intervalControl
+  @FXML private Spinner<IntegerClass> $intervalControl
   @FXML private TextField $alphabetOrderControl
   @FXML private CheckBox $usesDictionaryAlphabetOrderControl
   @FXML private CheckBox $usesUnicodeOrderControl
@@ -75,7 +75,7 @@ public class HahCompressionExecutorController extends Controller<Void> {
   }
 
   private void setupAlphabetOrderControl() {
-    Callable<Boolean> function = (Callable){
+    Callable<BooleanClass> function = (Callable){
       return $typeControl.getValue() != HahCompressionType.SORT || $usesDictionaryAlphabetOrderControl.isSelected() || $usesUnicodeOrderControl.isSelected()
     }
     BooleanBinding binding = Bindings.createBooleanBinding(function, $typeControl.valueProperty(), $usesDictionaryAlphabetOrderControl.selectedProperty(), $usesUnicodeOrderControl.selectedProperty()) 
@@ -83,7 +83,7 @@ public class HahCompressionExecutorController extends Controller<Void> {
   }
 
   private void setupUsesDictionaryAlphabetOrderControl() {
-    Callable<Boolean> function = (Callable){
+    Callable<BooleanClass> function = (Callable){
       return $typeControl.getValue() != HahCompressionType.SORT || $dictionaryAlphabetOrder == null
     }
     BooleanBinding binding = Bindings.createBooleanBinding(function, $typeControl.valueProperty()) 
@@ -91,7 +91,7 @@ public class HahCompressionExecutorController extends Controller<Void> {
   }
 
   private void setupUsesUnicodeOrderControl() {
-    Callable<Boolean> function = (Callable){
+    Callable<BooleanClass> function = (Callable){
       return $typeControl.getValue() != HahCompressionType.SORT
     }
     BooleanBinding binding = Bindings.createBooleanBinding(function, $typeControl.valueProperty()) 

@@ -3,9 +3,10 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
+import ziphilib.transform.ConvertPrimitives
 
 
-@CompileStatic 
+@CompileStatic @ConvertPrimitives
 public interface Dictionary<W extends Word> {
 
   public void searchNormal(NormalSearchParameter parameter)
@@ -35,9 +36,9 @@ public interface Dictionary<W extends Word> {
 
   public void saveBackup()
 
-  public Integer hitWordSize()
+  public Int hitWordSize()
 
-  public Integer totalWordSize()
+  public Int totalWordSize()
 
   public String getName() 
 

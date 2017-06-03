@@ -16,7 +16,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaEditorController extends Controller<Boolean> {
+public class ShaleiaEditorController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -27,7 +27,7 @@ public class ShaleiaEditorController extends Controller<Boolean> {
   @FXML private TextArea $descriptionControl
   private ShaleiaWord $word
 
-  public ShaleiaEditorController(UtilityStage<Boolean> stage) {
+  public ShaleiaEditorController(UtilityStage<BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()

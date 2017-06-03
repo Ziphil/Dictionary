@@ -181,7 +181,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       Exception suppressedException
       updateWordPredicate() { Word word ->
         try {
-          PrivilegedExceptionAction<Boolean> action = (PrivilegedExceptionAction<Boolean>){
+          PrivilegedExceptionAction<BooleanClass> action = (PrivilegedExceptionAction<BooleanClass>){
             try {
               if (suppressedException == null) {
                 scriptEngine.put("word", plainWord(word))
@@ -322,11 +322,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.addListener(listener)
   }
 
-  public Integer hitWordSize() {
+  public Int hitWordSize() {
     return $shufflableWords.size()
   }
 
-  public Integer totalWordSize() {
+  public Int totalWordSize() {
     return $words.size()
   }
 

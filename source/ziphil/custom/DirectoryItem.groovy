@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -14,7 +13,7 @@ public class DirectoryItem extends TreeItem<File> {
     super(file)
   }
 
-  public PrimBoolean isLeaf() {
+  public Boolean isLeaf() {
     return false
   }
 

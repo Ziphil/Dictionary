@@ -2,31 +2,27 @@ package ziphil.module
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
-import ziphilib.type.PrimChar
-import ziphilib.type.PrimInt
-import ziphilib.type.PrimLong
 
 
 @CompileStatic @Ziphilify
 public class ExtendedBufferedReader extends BufferedReader {
 
-  private PrimInt $lineNumber = 1
-  private PrimInt $columnNumber = 0
-  private PrimBoolean $skipsLineFeed = false
-  private PrimBoolean $passesLineFeed = false
-  private PrimInt $markedLineNumber = 1
-  private PrimInt $markedColumnNumber = 0
-  private PrimBoolean $markedSkipsLineFeed = false
-  private PrimBoolean $markedPassesLineFeed = false
+  private Int $lineNumber = 1
+  private Int $columnNumber = 0
+  private Boolean $skipsLineFeed = false
+  private Boolean $passesLineFeed = false
+  private Int $markedLineNumber = 1
+  private Int $markedColumnNumber = 0
+  private Boolean $markedSkipsLineFeed = false
+  private Boolean $markedPassesLineFeed = false
 
   public ExtendedBufferedReader(Reader reader) {
     super(reader)
   }
 
-  public PrimInt read() {
+  public Int read() {
     synchronized (this.@lock) {
-      PrimInt result = super.read()
+      Int result = super.read()
       if ($passesLineFeed) {
         $lineNumber ++
         $columnNumber = 0
@@ -43,7 +39,7 @@ public class ExtendedBufferedReader extends BufferedReader {
       if (result == '\r') {
         $skipsLineFeed = true
         $passesLineFeed = true
-        result = (PrimChar)'\n'
+        result = (Char)'\n'
       } else if (result == '\n') {
         $passesLineFeed = true
       }
@@ -51,11 +47,11 @@ public class ExtendedBufferedReader extends BufferedReader {
     }
   }
 
-  public PrimInt read(PrimChar[] buffer, PrimInt offset, PrimInt length) {
+  public Int read(Char[] buffer, Int offset, Int length) {
     synchronized (this.@lock) {
-      PrimInt size = super.read(buffer, offset, length)
-      for (PrimInt i = offset ; i < offset + size ; i ++) {
-        PrimInt character = buffer[i]
+      Int size = super.read(buffer, offset, length)
+      for (Int i = offset ; i < offset + size ; i ++) {
+        Int character = buffer[i]
         if ($passesLineFeed) {
           $lineNumber ++
           $columnNumber = 0
@@ -98,11 +94,11 @@ public class ExtendedBufferedReader extends BufferedReader {
     }
   }
 
-  public PrimLong skip(PrimLong size) {
+  public Long skip(Long size) {
     throw UnsupportedOperationException.new()
   }
 
-  public void mark(PrimInt readAheadLimit) {
+  public void mark(Int readAheadLimit) {
     synchronized (this.@lock) {
       super.mark(readAheadLimit)
       $markedLineNumber = $lineNumber
@@ -122,11 +118,11 @@ public class ExtendedBufferedReader extends BufferedReader {
     }
   }
 
-  public PrimInt getLineNumber() {
+  public Int getLineNumber() {
     return $lineNumber
   }
 
-  public PrimInt getColumnNumber() {
+  public Int getColumnNumber() {
     return $columnNumber
   }
 

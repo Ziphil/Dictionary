@@ -37,7 +37,7 @@ public enum SearchType {
         return matcher.find()
       } else if (this == MINIMAL_PAIR) {
         Boolean predicate = false
-        for (Integer i : 0 ..< search.length()) {
+        for (Int i = 0 ; i < search.length() ; i ++) {
           String beforeSearchName = (i == 0) ? "" : search[0 .. i - 1]
           String afterSearchName = (i == search.length() - 1) ? "" : search[i + 1 .. -1]
           String searchRegex = "^" + beforeSearchName + "." + afterSearchName + "\$"

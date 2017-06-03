@@ -127,7 +127,7 @@ public class AkrantiainParser {
           throw AkrantiainParseException.new("Module must have a name", token)
         }
       } else {
-        Integer moduleNameSize = moduleName.getTokens().size()
+        Int moduleNameSize = moduleName.getTokens().size()
         if (moduleNameSize == 0 || moduleNameSize == 2) {
           if (tokenType == AkrantiainTokenType.IDENTIFIER) {
             moduleName.getTokens().add(token)

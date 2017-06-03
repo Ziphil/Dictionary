@@ -75,12 +75,12 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
       Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10
       Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 15
-      $captionLabel.setTranslateX(translateX.toInteger())
-      $captionLabel.setTranslateY(translateY.toInteger())
+      $captionLabel.setTranslateX((Int)translateX)
+      $captionLabel.setTranslateY((Int)translateY)
       $captionLabel.setVisible(true)
       List<String> styleClass = $captionLabel.getStyleClass()
       if (styleClass.size() > 2) {
-        for (Integer i : 2 ..< styleClass.size()) {
+        for (Int i = 2 ; i < styleClass.size() ; i ++) {
           styleClass.removeAt(2)
         }
       }
@@ -90,8 +90,8 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
       Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10
       Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 15
-      $captionLabel.setTranslateX(translateX.toInteger())
-      $captionLabel.setTranslateY(translateY.toInteger())
+      $captionLabel.setTranslateX((Int)translateX)
+      $captionLabel.setTranslateY((Int)translateY)
     }
     node.addEventHandler(MouseEvent.MOUSE_EXITED) { MouseEvent event ->
       $captionLabel.setVisible(false)

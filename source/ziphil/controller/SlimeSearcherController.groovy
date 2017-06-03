@@ -92,7 +92,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
     if ($idControl.getText() != "") {
       parameter.setHasId(true)
-      parameter.setId($idControl.getText().toInteger())
+      parameter.setId(IntegerClass.parseInt($idControl.getText()))
     }
     if ($nameControl.getText() != "") {
       parameter.setHasName(true)

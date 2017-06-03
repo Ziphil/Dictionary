@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox
 import ziphil.dictionary.SentenceSearcher
 import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -18,7 +17,7 @@ public class SentenceSearchResultCell extends ListCell<SentenceSearcher.Result> 
     super()
   }
 
-  protected void updateItem(SentenceSearcher.Result result, PrimBoolean empty) {
+  protected void updateItem(SentenceSearcher.Result result, Boolean empty) {
     super.updateItem(result, empty)
     VBox graphic = VBox.new(Measurement.rpx(3))
     graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))

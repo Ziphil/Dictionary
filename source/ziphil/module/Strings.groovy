@@ -25,7 +25,7 @@ public class Strings {
 
   public static String escapeUnicode(String string) {
     StringBuilder result = StringBuilder.new()
-    for (Integer i : 0 ..< string.length()) {
+    for (Int i = 0 ; i < string.length() ; i ++) {
       String character = string[i]
       if (!(character ==~ /^\p{ASCII}$/)) {
         String escapedCharacter = String.format("\\u%04x", string.codePointAt(i))
@@ -39,9 +39,9 @@ public class Strings {
 
   public static String unaccent(String string) {
     StringBuilder result = StringBuilder.new()
-    for (Integer i : 0 ..< string.length()) {
-      Integer position = UNICODE_CHARACTERS.indexOf(string.codePointAt(i))
-      if (position > -1) {
+    for (Int i = 0 ; i < string.length() ; i ++) {
+      Int position = UNICODE_CHARACTERS.indexOf(string.codePointAt(i))
+      if (position >= 0) {
         result.append(ASCII_CHARACTERS.charAt(position))
       } else {
         result.append(string.charAt(i))

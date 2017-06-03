@@ -9,15 +9,15 @@ public class AkrantiainElement {
 
   private String $part
   private String $result = null
-  private Integer $columnNumber = null
+  private Int $columnNumber = -1
 
-  public AkrantiainElement(String part, String result, Integer columnNumber) {
+  public AkrantiainElement(String part, String result, Int columnNumber) {
     $part = part
     $result = result
     $columnNumber = columnNumber
   }
 
-  public AkrantiainElement(String part, Integer columnNumber) {
+  public AkrantiainElement(String part, Int columnNumber) {
     $part = part
     $columnNumber = columnNumber
   }
@@ -48,7 +48,7 @@ public class AkrantiainElement {
       } else {
         AkrantiainElementGroup group = AkrantiainElementGroup.new()
         group.getElements().add(this)
-        if (module.findPunctuationContent().matchRight(group, 0, module) != null) {
+        if (module.findPunctuationContent().matchRight(group, 0, module) >= 0) {
           return true
         } else {
           return false
@@ -85,11 +85,11 @@ public class AkrantiainElement {
     $result = result
   }
 
-  public Integer getColumnNumber() {
+  public Int getColumnNumber() {
     return $columnNumber
   }
 
-  public void setColumnNumber(Integer columnNumber) {
+  public void setColumnNumber(Int columnNumber) {
     $columnNumber = columnNumber
   }
 

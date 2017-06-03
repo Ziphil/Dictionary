@@ -40,7 +40,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
 
   @FXML
   private void exchangeUp() {
-    Integer index = $itemView.getSelectionModel().getSelectedIndex()
+    Int index = $itemView.getSelectionModel().getSelectedIndex()
     if (index > 0) {
       $itemView.getItems().swap(index, index - 1)
       $itemView.getSelectionModel().select(index - 1)
@@ -49,7 +49,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
 
   @FXML
   private void exchangeDown() {
-    Integer index = $itemView.getSelectionModel().getSelectedIndex()
+    Int index = $itemView.getSelectionModel().getSelectedIndex()
     if (index >= 0 && index < $itemView.getItems().size() - 1) {
       $itemView.getItems().swap(index, index + 1)
       $itemView.getSelectionModel().select(index + 1)
@@ -87,8 +87,8 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
           ObservableList<T> items = $itemView.getItems()
           String movedString = dragboard.getString()
           T movedItem = items.find{it.toString() == movedString}
-          Integer movedIndex = items.findIndexOf{it.toString() == movedString}
-          Integer index = cell.getIndex()
+          Int movedIndex = items.findIndexOf{it.toString() == movedString}
+          Int index = cell.getIndex()
           items.add(index + 1, movedItem)
           if (movedIndex < index + 1) {
             items.removeAt(movedIndex)

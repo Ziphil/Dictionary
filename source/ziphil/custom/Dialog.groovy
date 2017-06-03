@@ -131,6 +131,7 @@ public class Dialog extends Stage {
 
 
 @InnerClass(Dialog)
+@Ziphilify
 private static enum Status {
 
   COMMITTED,

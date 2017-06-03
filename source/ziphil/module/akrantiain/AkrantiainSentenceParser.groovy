@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 public class AkrantiainSentenceParser {
 
   private List<AkrantiainToken> $tokens = ArrayList.new()
-  private Integer $pointer = 0
+  private Int $pointer = 0
 
   public AkrantiainSentenceParser(List<AkrantiainToken> tokens) {
     $tokens = tokens
@@ -143,7 +143,7 @@ public class AkrantiainSentenceParser {
   }
 
   private AkrantiainDisjunction nextDisjunction() {
-    Integer firstPointer = $pointer
+    Int firstPointer = $pointer
     AkrantiainDisjunction disjunction = AkrantiainDisjunction.new()
     AkrantiainSequence sequence = AkrantiainSequence.new()
     while (true) {

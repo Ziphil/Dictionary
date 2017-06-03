@@ -9,12 +9,12 @@ import ziphilib.transform.Ziphilify
 public class HahCompression {
 
   private HahCompressionType $type = HahCompressionType.NORMAL
-  private Integer $interval = 4
+  private Int $interval = 4
   private String $alphabetOrder = null
 
   public String compress(String input) {
     List<SortElement> elements = ArrayList.new()
-    for (Integer i : 0 ..< input.length()) {
+    for (Int i = 0 ; i < input.length() ; i ++) {
       SortElement element = SortElement.new(input.getAt(i), i)
       element.updateComparisonIndex($alphabetOrder)
       elements.add(element)
@@ -28,10 +28,10 @@ public class HahCompression {
     }
     List<SortElement> compressedElements = ArrayList.new()
     if (elements.size() > 0) {
-      Integer max = (Integer)(elements.size() - 1).intdiv($interval)
-      for (Integer i : 0 .. max) {
-        Integer start = $interval * i
-        Integer end = ($interval * (i + 1) <= elements.size()) ? $interval * (i + 1) - 1 : elements.size() - 1
+      Int max = (Int)(elements.size() - 1).intdiv($interval)
+      for (Int i = 0 ; i <= max ; i ++) {
+        Int start = $interval * i
+        Int end = ($interval * (i + 1) <= elements.size()) ? $interval * (i + 1) - 1 : elements.size() - 1
         compressedElements.add(elements[start])
         if (start < end) {
           compressedElements.add(elements[end])
@@ -54,7 +54,7 @@ public class HahCompression {
     $type = type
   }
 
-  public void setInterval(Integer interval) {
+  public void setInterval(Int interval) {
     $interval = interval
   }
 
@@ -66,13 +66,14 @@ public class HahCompression {
 
 
 @InnerClass(HahCompression)
+@Ziphilify
 private static class SortElement {
 
   private String $character
-  private Integer $comparisonIndex = -1
-  private Integer $index = -1
+  private Int $comparisonIndex = -1
+  private Int $index = -1
 
-  public SortElement(String character, Integer index) {
+  public SortElement(String character, Int index) {
     $character = character
     $index = index
   }
@@ -89,11 +90,11 @@ private static class SortElement {
     return $character
   }
 
-  public Integer getComparisonIndex() {
+  public Int getComparisonIndex() {
     return $comparisonIndex
   }
 
-  public Integer getIndex() {
+  public Int getIndex() {
     return $index
   }
 

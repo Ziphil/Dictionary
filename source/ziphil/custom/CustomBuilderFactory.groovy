@@ -13,7 +13,7 @@ public class CustomBuilderFactory implements BuilderFactory {
   private BuilderFactory $baseFactory = JavaFXBuilderFactory.new()
 
   public Builder getBuilder(Class clazz) {
-    if (clazz == Double) {
+    if (clazz == DoubleClass) {
       return Measurement.new()
     } else {
       return $baseFactory.getBuilder(clazz)

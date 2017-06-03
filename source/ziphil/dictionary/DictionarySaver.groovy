@@ -6,7 +6,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean> {
+public abstract class DictionarySaver<D extends Dictionary> extends Task<BooleanClass> {
 
   protected D $dictionary
   protected String $path
@@ -16,11 +16,11 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
     $dictionary = dictionary
   }
 
-  protected abstract Boolean save()
+  protected abstract BooleanClass save()
 
-  protected Boolean call() {
+  protected BooleanClass call() {
     if ($path != null) {
-      Boolean result = save()
+      BooleanClass result = save()
       return result
     } else {
       return false

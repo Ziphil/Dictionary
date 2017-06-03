@@ -27,12 +27,12 @@ public class CharacterFrequencyController extends Controller<Void> {
   private static final String TITLE = "文字頻度"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(410)
-  protected static final Integer MAX_PIE_SIZE = 20
+  protected static final Int MAX_PIE_SIZE = 20
 
   @FXML private PopupPieChart $frequencyChart
   @FXML private TableView<CharacterStatus> $frequencyView
-  @FXML private TableColumn<CharacterStatus, Double> $frequencyPercentageColumn
-  @FXML private TableColumn<CharacterStatus, Double> $usingWordSizePercentageColumn
+  @FXML private TableColumn<CharacterStatus, DoubleClass> $frequencyPercentageColumn
+  @FXML private TableColumn<CharacterStatus, DoubleClass> $usingWordSizePercentageColumn
 
   public CharacterFrequencyController(UtilityStage<Void> stage) {
     super(stage)
@@ -46,8 +46,8 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   public void prepare(List<CharacterStatus> characterStatuses) {
     List<PieChart.Data> data = ArrayList.new()
-    Integer otherFrequency = 0
-    for (Integer i : 0 ..< characterStatuses.size()) {
+    Int otherFrequency = 0
+    for (Int i = 0 ; i < characterStatuses.size() ; i ++) {
       CharacterStatus status = characterStatuses[i]
       if (i < MAX_PIE_SIZE) {
         PieChart.Data singleData = PieChart.Data.new(status.getCharacter(), status.getFrequency())
@@ -73,10 +73,10 @@ public class CharacterFrequencyController extends Controller<Void> {
   }
 
   private void setupFrequencyViewColumns() {
-    $frequencyPercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+    $frequencyPercentageColumn.setCellFactory() { TableColumn<CharacterStatus, DoubleClass> column ->
       return PercentageTableCell.new(3)
     }
-    $usingWordSizePercentageColumn.setCellFactory() { TableColumn<CharacterStatus, Double> column ->
+    $usingWordSizePercentageColumn.setCellFactory() { TableColumn<CharacterStatus, DoubleClass> column ->
       return PercentageTableCell.new(3)
     }
   }

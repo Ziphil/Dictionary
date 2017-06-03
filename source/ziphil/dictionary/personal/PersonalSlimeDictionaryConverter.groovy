@@ -18,10 +18,10 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
     super(newDictionary, oldDictionary)
   }
 
-  protected Boolean convert() {
+  protected BooleanClass convert() {
     List<SlimeWord> oldWords = $oldDictionary.getRawWords()
-    Integer size = oldWords.size()
-    for (Integer i : 0 ..< size) {
+    Int size = oldWords.size()
+    for (Int i = 0 ; i < size ; i ++) {
       if (isCancelled()) {
         return false
       }
@@ -56,7 +56,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
     newTranslation.append("〈")
     newTranslation.append(oldTitle)
     newTranslation.append("〉 ")
-    for (Integer i : 0 ..< oldNames.size()) {
+    for (Int i = 0 ; i < oldNames.size() ; i ++) {
       String oldName = oldNames[i]
       newTranslation.append(oldName)
       if (i < oldNames.size() - 1) {
@@ -84,7 +84,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryConverter<Person
       newUsage.append("〉")
     }
     newUsage.append(" ")
-    for (Integer i : 0 ..< oldNames.size()) {
+    for (Int i = 0 ; i < oldNames.size() ; i ++) {
       String oldName = oldNames[i]
       newUsage.append(oldName)
       if (i < oldNames.size() - 1) {

@@ -15,10 +15,10 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
     super(newDictionary, oldDictionary)
   }
 
-  protected Boolean convert() {
+  protected BooleanClass convert() {
     List<PersonalWord> oldWords = $oldDictionary.getRawWords()
-    Integer size = oldWords.size()
-    for (Integer i : 0 ..< size) {
+    Int size = oldWords.size()
+    for (Int i = 0 ; i < size ; i ++) {
       if (isCancelled()) {
         return false
       }

@@ -23,7 +23,7 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
   }
 
   public Pane create() {
-    Integer lineSpacing = Setting.getInstance().getLineSpacing()
+    Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
@@ -34,7 +34,7 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     return contentPane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, Integer id, String name, String title) {
+  private void addPossibilityNode(TextFlow contentPane, Int id, String name, String title) {
     Text prefixText = Text.new("もしかして:")
     Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)

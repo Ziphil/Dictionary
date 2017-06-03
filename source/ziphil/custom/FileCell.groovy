@@ -6,7 +6,6 @@ import javafx.scene.control.ListCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -22,7 +21,7 @@ public class FileCell extends ListCell<File> {
     super()
   }
 
-  protected void updateItem(File file, PrimBoolean empty) {
+  protected void updateItem(File file, Boolean empty) {
     super.updateItem(file, empty)
     if (empty || file == null) {
       setText(null)

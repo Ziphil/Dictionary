@@ -98,7 +98,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
     }
-    Callable<Boolean> disableFunction = (Callable){
+    Callable<BooleanClass> disableFunction = (Callable){
       SearchMode searchMode = $searchModeControl.getValue()
       if (searchMode == SearchMode.NAME) {
         return false

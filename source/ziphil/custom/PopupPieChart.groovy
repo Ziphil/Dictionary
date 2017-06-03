@@ -33,11 +33,11 @@ public class PopupPieChart extends Control {
     return $chart.getReadOnlyProperty()
   }
 
-  public Integer getPieValuePrecision() {
+  public Int getPieValuePrecision() {
     return $pieValuePrecision.get()
   }
 
-  public void setPieValuePrecision(Integer pieValuePrecision) {
+  public void setPieValuePrecision(Int pieValuePrecision) {
     $pieValuePrecision.set(pieValuePrecision)
   }
 
@@ -45,11 +45,11 @@ public class PopupPieChart extends Control {
     return $pieValuePrecision
   }
 
-  public Integer getPercentagePrecision() {
+  public Int getPercentagePrecision() {
     return $percentagePrecision.get()
   }
 
-  public void setPercentagePrecision(Integer percentagePrecision) {
+  public void setPercentagePrecision(Int percentagePrecision) {
     $percentagePrecision.set(percentagePrecision)
   }
 

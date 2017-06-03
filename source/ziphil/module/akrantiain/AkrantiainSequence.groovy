@@ -11,39 +11,39 @@ public class AkrantiainSequence implements AkrantiainMatchable {
 
   private List<AkrantiainMatchable> $matchables = ArrayList.new()
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+  public Int matchRight(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
     if (!$matchables.isEmpty()) {
-      Integer pointer = from
-      for (Integer i : 0 ..< $matchables.size()) {
+      Int pointer = from
+      for (Int i = 0 ; i < $matchables.size() ; i ++) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer to = matchable.matchRight(group, pointer, module)
-        if (to != null) {
+        Int to = matchable.matchRight(group, pointer, module)
+        if (to >= 0) {
           pointer = to
         } else {
-          return null
+          return -1
         }
       }
       return pointer
     } else {
-      return null
+      return -1
     }
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
+  public Int matchLeft(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
     if (!$matchables.isEmpty()) {
-      Integer pointer = to
-      for (Integer i : $matchables.size() - 1 .. 0) {
+      Int pointer = to
+      for (Int i = $matchables.size() - 1 ; i >= 0 ; i --) {
         AkrantiainMatchable matchable = $matchables[i]
-        Integer from = matchable.matchLeft(group, pointer, module)
-        if (from != null) {
+        Int from = matchable.matchLeft(group, pointer, module)
+        if (from >= 0) {
           pointer = from
         } else {
-          return null
+          return -1
         }
       }
       return pointer
     } else {
-      return null
+      return -1
     }
   }
 
@@ -73,7 +73,7 @@ public class AkrantiainSequence implements AkrantiainMatchable {
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    for (Integer i : 0 ..< $matchables.size()) {
+    for (Int i = 0 ; i < $matchables.size() ; i ++) {
       string.append($matchables[i])
       if (i < $matchables.size() - 1) {
         string.append(" ")

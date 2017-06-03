@@ -4,16 +4,14 @@ import groovy.transform.CompileStatic
 import ziphil.module.CharacterFrequencyAnalyzer
 import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimDouble
-import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
 public class DictionaryAnalyzer {
 
   private Dictionary $dictionary
-  private PrimInt $wordNameLength = 0
-  private PrimInt $contentLength = 0
+  private Int $wordNameLength = 0
+  private Int $contentLength = 0
   private CharacterFrequencyAnalyzer $frequencyAnalyzer = CharacterFrequencyAnalyzer.new()
 
   public DictionaryAnalyzer(Dictionary dictionary) {
@@ -23,8 +21,8 @@ public class DictionaryAnalyzer {
   }
 
   private void calculateLengths() {
-    PrimInt wordNameLength = 0
-    PrimInt contentLength = 0
+    Int wordNameLength = 0
+    Int contentLength = 0
     for (Word word : $dictionary.getRawWords()) {
       wordNameLength += word.getName().length()
       contentLength += word.getContent().length()
@@ -39,30 +37,30 @@ public class DictionaryAnalyzer {
     }
   }
 
-  public PrimInt wordSize() {
+  public Int wordSize() {
     return $dictionary.totalWordSize()
   }
 
-  public PrimDouble tokipona() {
+  public Double tokipona() {
     return wordSize() / 120
   }
 
-  public PrimDouble logTokipona() {
+  public Double logTokipona() {
     return Math.log10(tokipona())
   }
 
-  public PrimDouble averageWordNameLength() {
-    PrimInt wordSize = wordSize()
-    return (wordSize > 0) ? (PrimDouble)($wordNameLength / wordSize) : 0
+  public Double averageWordNameLength() {
+    Int wordSize = wordSize()
+    return (wordSize > 0) ? (Double)($wordNameLength / wordSize) : 0
   }
 
-  public PrimInt contentLength() {
+  public Int contentLength() {
     return $contentLength
   }
 
-  public PrimDouble richness() {
-    PrimInt wordSize = wordSize()
-    return (wordSize > 0) ? (PrimDouble)($contentLength / wordSize) : 0
+  public Double richness() {
+    Int wordSize = wordSize()
+    return (wordSize > 0) ? (Double)($contentLength / wordSize) : 0
   }
 
   public List<CharacterStatus> characterStatuses() {

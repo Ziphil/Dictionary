@@ -49,8 +49,8 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         $sourceView.getItems().remove(movedItem)
         $targetView.getItems().add(movedItem)
       }
-      Integer size = $targetView.getItems().size()
-      Integer movedSize = movedItems.size()
+      Int size = $targetView.getItems().size()
+      Int movedSize = movedItems.size()
       $sourceView.getSelectionModel().clearSelection()
       $targetView.getSelectionModel().clearSelection()
       $targetView.getSelectionModel().selectRange(size - movedSize, size)
@@ -66,8 +66,8 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
         $targetView.getItems().remove(movedItem)
         $sourceView.getItems().add(movedItem)
       }
-      Integer size = $sourceView.getItems().size()
-      Integer movedSize = movedItems.size()
+      Int size = $sourceView.getItems().size()
+      Int movedSize = movedItems.size()
       $targetView.getSelectionModel().clearSelection()
       $sourceView.getSelectionModel().clearSelection()
       $sourceView.getSelectionModel().selectRange(size - movedSize, size)

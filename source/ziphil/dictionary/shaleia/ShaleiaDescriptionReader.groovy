@@ -57,7 +57,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     return find(DescriptionType.SYNONYM)
   }
 
-  private String lookup(DescriptionType type, Integer group) {
+  private String lookup(DescriptionType type, Int group) {
     if ($matcher != null && $type == type) {
       return $matcher.group(group)
     } else {
@@ -127,6 +127,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
 
 
 @InnerClass(ShaleiaDescriptionReader)
+@Ziphilify
 private static enum DescriptionType {
 
   CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),

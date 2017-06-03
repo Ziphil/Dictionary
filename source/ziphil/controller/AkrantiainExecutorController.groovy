@@ -102,7 +102,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   private String createWarningText(List<AkrantiainWarning> warnings) {
     StringBuilder warningText = StringBuilder.new()
-    for (Integer i : 0 ..< warnings.size()) {
+    for (Int i = 0 ; i < warnings.size() ; i ++) {
       warningText.append(warnings[i].getFullMessage())
       if (i < warnings.size() - 1) {
         warningText.append("\n")

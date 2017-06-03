@@ -82,6 +82,7 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
 
 
 @InnerClass(SnojChooserController)
+@Ziphilify
 public static class Result {
 
   private File $file

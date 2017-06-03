@@ -379,7 +379,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void modifyWord(Element word) {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
-        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -430,7 +430,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void addWord() {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
@@ -465,7 +465,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
-        UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -732,7 +732,7 @@ public class MainController extends PrimitiveController<Stage> {
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
-        $dictionary.setOnLinkClicked() { Integer id ->
+        $dictionary.setOnLinkClicked() { Int id ->
           SlimeSearchParameter parameter = SlimeSearchParameter.new()
           parameter.setId(id)
           doSearchDetail(parameter)
@@ -804,7 +804,7 @@ public class MainController extends PrimitiveController<Stage> {
     dialog.showAndWait()
   }
 
-  private void registerCurrentDictionary(Integer index) {
+  private void registerCurrentDictionary(Int index) {
     Setting.getInstance().getRegisteredDictionaryPaths()[index] = $dictionary.getPath()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
@@ -857,7 +857,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void editIndividualSetting() {
     if ($dictionary != null) {
-      UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       if ($dictionary instanceof SlimeDictionary && $individualSetting instanceof SlimeIndividualSetting) {
@@ -876,7 +876,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void editSetting() {
-    UtilityStage<Boolean> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SettingController controller = SettingController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
@@ -1011,7 +1011,7 @@ public class MainController extends PrimitiveController<Stage> {
     Callable<String> textFunction = (Callable){
       return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
     }
-    Callable<Boolean> disableFunction = (Callable){
+    Callable<BooleanClass> disableFunction = (Callable){
       SearchMode searchMode = $searchModeControl.getValue()
       if (searchMode == SearchMode.NAME) {
         return false
@@ -1087,7 +1087,7 @@ public class MainController extends PrimitiveController<Stage> {
     Setting setting = Setting.getInstance()
     List<String> dictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> dictionaryNames = setting.getRegisteredDictionaryNames()
-    for (Integer i : 0 ..< 10) {
+    for (Int i = 0 ; i < 10 ; i ++) {
       String dictionaryPath = dictionaryPaths[i]
       String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
@@ -1111,8 +1111,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupRegisterCurrentDictionaryMenu() {
     $registerCurrentDictionaryMenu.getItems().clear()
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
-    for (Integer i : 0 ..< 10) {
-      Integer j = i
+    for (Int i = 0 ; i < 10 ; i ++) {
+      Int j = i
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath == null) {
@@ -1136,7 +1136,7 @@ public class MainController extends PrimitiveController<Stage> {
       if ($individualSetting instanceof SlimeIndividualSetting) {
         List<SlimeSearchParameter> parameters = $individualSetting.getRegisteredParameters()
         List<String> parameterNames = $individualSetting.getRegisteredParameterNames()
-        for (Integer i : 0 ..< 10) {
+        for (Int i = 0 ; i < 10 ; i ++) {
           SlimeSearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
@@ -1176,7 +1176,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupSearchHistory() {
-    Integer separativeInterval = Setting.getInstance().getSeparativeInterval()
+    Int separativeInterval = Setting.getInstance().getSeparativeInterval()
     $searchHistory.setSeparativeInterval(separativeInterval)
   }
 
