@@ -83,6 +83,7 @@ public class SentenceSearcher {
     for (SlimePossibility possibility : possibilities) {
       SlimeSearchParameter parameter = SlimeSearchParameter.new()
       parameter.setId(possibility.getWord().getId())
+      parameter.setHasId(true)
       dictionary.searchDetail(parameter)
       List<Element> hitWords = dictionary.getWholeWords()
       for (Element word : hitWords) {

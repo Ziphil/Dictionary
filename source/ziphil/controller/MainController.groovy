@@ -735,6 +735,7 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.setOnLinkClicked() { Int id ->
           SlimeSearchParameter parameter = SlimeSearchParameter.new()
           parameter.setId(id)
+          parameter.setHasId(true)
           doSearchDetail(parameter)
           $searchHistory.add(parameter)
         }
