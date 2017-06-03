@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeSearchParameter extends DetailSearchParameter {
 
-  private Integer $id
+  private Int $id
   private String $name
   private SearchType $nameSearchType
   private String $equivalentName
@@ -25,6 +25,19 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   private Boolean $hasEquivalent = false
   private Boolean $hasInformation = false
   private Boolean $hasTag = false
+
+  public SlimeSearchParameter(Int id) {
+    $id = id
+    $hasId = true
+  }
+
+  public SlimeSearchParameter(String name) {
+    $name = name
+    $hasName = true
+  }
+
+  public SlimeSearchParameter() {
+  }
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
@@ -63,11 +76,11 @@ public class SlimeSearchParameter extends DetailSearchParameter {
     return string.toString()
   }
 
-  public Integer getId() {
+  public Int getId() {
     return $id
   }
 
-  public void setId(Integer id) {
+  public void setId(Int id) {
     $id = id
   }
 

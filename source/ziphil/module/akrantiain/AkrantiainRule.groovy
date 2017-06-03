@@ -15,7 +15,7 @@ public class AkrantiainRule {
 
   public AkrantiainElementGroup apply(AkrantiainElementGroup group, AkrantiainModule module) {
     AkrantiainElementGroup appliedGroup = AkrantiainElementGroup.new()
-    Integer pointer = 0
+    Int pointer = 0
     while (pointer <= group.getElements().size()) {
       ApplicationResult result = applyOnce(group, pointer, module)
       if (result != null) {
@@ -41,11 +41,11 @@ public class AkrantiainRule {
   // ちょうど from で与えられた位置から規則を適用します。
   // 規則がマッチして適用できた場合は、変化後の要素のリストとマッチした範囲の右側のインデックス (範囲にそのインデックス自体は含まない) を返します。
   // そもそも規則にマッチせず適用できなかった場合は null を返します。
-  private ApplicationResult applyOnce(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+  private ApplicationResult applyOnce(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
     if (checkLeftCondition(group, from, module)) {
       ApplicationResult result = applyOnceSelections(group, from, module)
       if (result != null) {
-        Integer to = result.getTo()
+        Int to = result.getTo()
         if (checkRightCondition(group, to, module)) {
           return result
         } else {
@@ -59,13 +59,13 @@ public class AkrantiainRule {
     }
   }
 
-  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+  private ApplicationResult applyOnceSelections(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
     List<AkrantiainElement> addedElements = ArrayList.new()
-    Integer pointer = from
-    Integer phonemeIndex = 0
+    Int pointer = from
+    Int phonemeIndex = 0
     for (AkrantiainMatchable selection : $selections) {
-      Integer to = selection.matchRight(group, pointer, module)
-      if (to != null) {
+      Int to = selection.matchRight(group, pointer, module)
+      if (to >= 0) {
         if (selection.isConcrete()) {
           AkrantiainToken phoneme = $phonemes[phonemeIndex]
           AkrantiainTokenType phonemeType = phoneme.getType()
@@ -78,13 +78,13 @@ public class AkrantiainRule {
               return null
             }
           } else if (phonemeType == AkrantiainTokenType.DOLLAR) {
-            for (Integer i : pointer ..< to) {
+            for (Int i = pointer ; i < to ; i ++) {
               addedElements.add(group.getElements()[i])
             }
           }
           phonemeIndex ++
         } else {
-          for (Integer i : pointer ..< to) {
+          for (Int i = pointer ; i < to ; i ++) {
             addedElements.add(group.getElements()[i])
           }
         }
@@ -96,16 +96,16 @@ public class AkrantiainRule {
     return ApplicationResult.new(addedElements, pointer)
   }
 
-  private Boolean checkLeftCondition(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
+  private Boolean checkLeftCondition(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
     AkrantiainElementGroup leftGroup = group.devide(0, to)
     AkrantiainElementGroup rightGroup = group.devide(to, group.getElements().size())
-    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), module) != null
+    return $leftCondition == null || $leftCondition.matchLeft(leftGroup + rightGroup, leftGroup.getElements().size(), module) >= 0
   }
 
-  private Boolean checkRightCondition(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+  private Boolean checkRightCondition(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
     AkrantiainElementGroup leftGroup = group.devide(0, from)
     AkrantiainElementGroup rightGroup = group.devide(from, group.getElements().size())
-    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), module) != null
+    return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), module) >= 0
   }
 
   // 変換先が存在するなら true を返し、そうでなければ false を返します。
@@ -123,7 +123,7 @@ public class AkrantiainRule {
     StringBuilder string = StringBuilder.new()
     string.append($leftCondition)
     string.append(" [")
-    for (Integer i : 0 ..< $selections.size()) {
+    for (Int i = 0 ; i < $selections.size() ; i ++) {
       string.append($selections[i])
       if (i < $selections.size() - 1) {
         string.append(" ")
@@ -132,7 +132,7 @@ public class AkrantiainRule {
     string.append("] ")
     string.append($rightCondition)
     string.append(" -> [")
-    for (Integer i : 0 ..< $phonemes.size()) {
+    for (Int i = 0 ; i < $phonemes.size() ; i ++) {
       string.append($phonemes[i])
       if (i < $phonemes.size() - 1) {
         string.append(" ")
@@ -143,8 +143,8 @@ public class AkrantiainRule {
   }
 
   public Boolean isSizeValid() {
-    Integer phonemeSize = $phonemes.size()
-    Integer concreteSelectionSize = 0
+    Int phonemeSize = $phonemes.size()
+    Int concreteSelectionSize = 0
     for (AkrantiainMatchable selection : $selections) {
       if (selection.isConcrete()) {
         concreteSelectionSize ++
@@ -201,12 +201,13 @@ public class AkrantiainRule {
 
 
 @InnerClass(AkrantiainRule)
+@Ziphilify
 private static class ApplicationResult {
 
   private List<AkrantiainElement> $addedElements
-  private Integer $to
+  private Int $to = -1
 
-  public ApplicationResult(List<AkrantiainElement> addedElements, Integer to) {
+  public ApplicationResult(List<AkrantiainElement> addedElements, Int to) {
     $addedElements = addedElements
     $to = to
   }
@@ -215,7 +216,7 @@ private static class ApplicationResult {
     return $addedElements
   }
 
-  public Integer getTo() {
+  public Int getTo() {
     return $to
   }
 

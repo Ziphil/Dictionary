@@ -4,37 +4,36 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
 public class Version implements Comparable<Version> {
 
-  private Integer $major = -1
-  private Integer $minor = 0
-  private Integer $patch = 0
-  private Integer $date = null
+  private Int $major = -1
+  private Int $minor = 0
+  private Int $patch = 0
+  private Int $date = -1
 
-  public Version(Integer major, Integer minor, Integer patch, Integer date) {
+  public Version(Int major, Int minor, Int patch, Int date) {
     $major = major
     $minor = minor
     $patch = patch
     $date = date
   }
 
-  public Version(Integer major, Integer minor, Integer patch) {
-    this(major, minor, patch, null)
+  public Version(Int major, Int minor, Int patch) {
+    this(major, minor, patch, -1)
   }
 
   @JsonCreator
-  public Version(List<Integer> versionList) {
+  public Version(List<IntegerClass> versionList) {
     $major = (versionList[0] != null) ? versionList[0] : -1
     $minor = (versionList[1] != null) ? versionList[1] : 0
     $patch = (versionList[2] != null) ? versionList[2] : 0
-    $date = versionList[3]
+    $date = (versionList[3] != null) ?versionList[3] : -1
   }
 
-  public PrimInt compareTo(Version other) {
+  public Int compareTo(Version other) {
     if ($major > other.getMajor()) {
       return 1
     } else if ($major < other.getMajor()) {
@@ -65,23 +64,23 @@ public class Version implements Comparable<Version> {
   }
 
   @JsonValue
-  public List<Integer> toList() {
+  public List<IntegerClass> toList() {
     return [$major, $minor, $patch]
   }
 
-  public Integer getMajor() {
+  public Int getMajor() {
     return $major
   }
 
-  public Integer getMinor() {
+  public Int getMinor() {
     return $minor
   }
 
-  public Integer getPatch() {
+  public Int getPatch() {
     return $patch
   }
 
-  public Integer getDate() {
+  public Int getDate() {
     return $date
   }
 

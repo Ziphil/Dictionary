@@ -13,7 +13,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaIndividualSettingController extends Controller<Boolean> {
+public class ShaleiaIndividualSettingController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_individual_setting.fxml"
   private static final String TITLE = "個別設定"
@@ -27,7 +27,7 @@ public class ShaleiaIndividualSettingController extends Controller<Boolean> {
   private String $akrantiainSource
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaIndividualSettingController(UtilityStage<Boolean> stage) {
+  public ShaleiaIndividualSettingController(UtilityStage<BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

@@ -48,7 +48,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   }
 
   public Pane create() {
-    Integer lineSpacing = Setting.getInstance().getLineSpacing()
+    Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasContent = false
     Boolean hasSynonym = false
@@ -323,7 +323,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
           if (character == END_ESCAPE_CHARACTER && currentEscapeString.length() > 0) {
             Matcher matcher = currentEscapeString.toString() =~ /^&#x([0-9A-Fa-f]+);$/
             if (matcher.matches()) {
-              String convertedEscapeString = Character.toChars(Integer.parseInt(matcher.group(1), 16))[0]
+              String convertedEscapeString = CharacterClass.toChars(IntegerClass.parseInt(matcher.group(1), 16))[0]
               currentString.append(convertedEscapeString)
               currentName.append(convertedEscapeString)
               currentEscapeString.setLength(0)
@@ -348,6 +348,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
 
 
 @InnerClass(ShaleiaWordContentPaneFactory)
+@Ziphilify
 private static enum TextMode {
 
   NORMAL,

@@ -12,7 +12,7 @@ public class IdentityDictionaryConverter<D extends Dictionary, W extends Word> e
     updateProgress(0, 1)
   }
 
-  protected Boolean convert() {
+  protected BooleanClass convert() {
     $newWords.addAll($newDictionary.getRawWords())
     updateProgress(1, 1)
     return true

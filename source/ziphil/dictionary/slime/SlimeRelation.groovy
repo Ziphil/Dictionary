@@ -8,10 +8,10 @@ import ziphilib.transform.Ziphilify
 public class SlimeRelation {
 
   private String $title = ""
-  private Integer $id = -1
+  private Int $id = -1
   private String $name = ""
 
-  public SlimeRelation(String title, Integer id, String name) {
+  public SlimeRelation(String title, Int id, String name) {
     $title = title
     $id = id
     $name = name
@@ -28,11 +28,11 @@ public class SlimeRelation {
     $title = title
   }
 
-  public Integer getId() {
+  public Int getId() {
     return $id
   }
 
-  public void setId(Integer id) {
+  public void setId(Int id) {
     $id = id
   }
 

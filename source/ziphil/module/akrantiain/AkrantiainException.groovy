@@ -34,8 +34,8 @@ public class AkrantiainException extends Exception {
       fullMessage.append("\n  ")
       fullMessage.append(element.getPart())
       fullMessage.append(" (at column ")
-      Integer columnNumber = element.getColumnNumber()
-      if (columnNumber != null) {
+      Int columnNumber = element.getColumnNumber()
+      if (columnNumber >= 0) {
         fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")

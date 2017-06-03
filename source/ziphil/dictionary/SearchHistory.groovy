@@ -7,14 +7,14 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SearchHistory {
 
-  private static final Integer MAX_SIZE = 20
+  private static final Int MAX_SIZE = 20
 
   private List<SearchParameter> $parameters = ArrayList.new()
-  private Integer $pointer = 0
-  private Long $interval = null
-  private Integer $separativeInterval = 0
+  private Int $pointer = 0
+  private Long $interval = -1
+  private Int $separativeInterval = 0
 
-  public SearchHistory(Integer separativeInterval) {
+  public SearchHistory(Int separativeInterval) {
     $separativeInterval = separativeInterval
   }
 
@@ -22,13 +22,13 @@ public class SearchHistory {
   }
 
   public void add(SearchParameter parameter, Boolean checksTime) {
-    for (Integer i : 0 ..< $pointer) {
+    for (Int i = 0 ; i < $pointer ; i ++) {
       $parameters.removeAt(0)
     }
     $pointer = 0
     if (checksTime) {
       Long time = System.currentTimeMillis()
-      if ($interval != null && time - $interval < $separativeInterval) {
+      if ($interval >= 0 && time - $interval < $separativeInterval) {
         $parameters.set(0, parameter)
       } else {
         $parameters.add(0, parameter)
@@ -36,7 +36,7 @@ public class SearchHistory {
       $interval = time
     } else {
       $parameters.add(0, parameter)
-      $interval = null
+      $interval = -1
     }
     if ($parameters.size() > MAX_SIZE) {
       $parameters.removeAt($parameters.size() - 1)
@@ -49,12 +49,12 @@ public class SearchHistory {
 
   public void clear() {
     $parameters.clear()
-    $interval = null
+    $interval = -1
     $pointer = 0
   }
 
   public SearchParameter previous() {
-    $interval = null
+    $interval = -1
     if (hasPrevious()) {
       $pointer ++
       return $parameters[$pointer]
@@ -64,7 +64,7 @@ public class SearchHistory {
   }
 
   public SearchParameter next() {
-    $interval = null
+    $interval = -1
     if (hasNext()) {
       $pointer --
       return $parameters[$pointer]
@@ -81,11 +81,11 @@ public class SearchHistory {
     return $pointer - 1 >= 0
   }
 
-  public Integer getSeparativeInterval() {
+  public Int getSeparativeInterval() {
     return $separativeInterval
   }
 
-  public void setSeparativeInterval(Integer separativeInterval) {
+  public void setSeparativeInterval(Int separativeInterval) {
     $separativeInterval = separativeInterval
   }
 

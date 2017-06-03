@@ -20,7 +20,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     super(dictionary, path)
   }
 
-  protected Boolean load() {
+  protected BooleanClass load() {
     File file = File.new($path)
     FileInputStream stream = FileInputStream.new($path)
     JsonFactory factory = $mapper.getFactory()
@@ -97,7 +97,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       String entryFieldName = parser.getCurrentName()
       parser.nextToken()
       if (entryFieldName == "id") {
-        Integer id = parser.getValueAsInt()
+        Int id = parser.getValueAsInt()
         word.setId(id)
       } else if (entryFieldName == "form") {
         String name = parser.getValueAsString()
@@ -184,7 +184,7 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
             String relationEntryFieldName = parser.getCurrentName()
             parser.nextToken()
             if (relationEntryFieldName == "id") {
-              Integer id = parser.getValueAsInt()
+              Int id = parser.getValueAsInt()
               relation.setId(id)
             } else if (relationEntryFieldName == "form") {
               String name = parser.getValueAsString()

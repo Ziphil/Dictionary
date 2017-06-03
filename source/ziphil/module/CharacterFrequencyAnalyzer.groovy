@@ -2,8 +2,6 @@ package ziphil.module
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimDouble
-import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
@@ -11,8 +9,8 @@ public class CharacterFrequencyAnalyzer {
 
   private List<CharacterStatus> $characterStatuses = ArrayList.new()
   private String $excludedCharacters = ""
-  private PrimInt $totalFrequency = 0
-  private PrimInt $totalWordSize = 0
+  private Int $totalFrequency = 0
+  private Int $totalWordSize = 0
 
   public CharacterFrequencyAnalyzer(String input, String excludedCharacters) {
     $excludedCharacters = excludedCharacters

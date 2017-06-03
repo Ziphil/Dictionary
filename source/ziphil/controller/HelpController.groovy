@@ -72,7 +72,7 @@ public class HelpController extends Controller<Void> {
       if (newValue == Worker.State.SUCCEEDED) {
         Document document = $helpView.getEngine().getDocument()
         NodeList nodeList = document.getElementsByTagName("a")
-        for (Integer i : 0 ..< nodeList.getLength()) {
+        for (Int i = 0 ; i < nodeList.getLength() ; i ++) {
           Node node = nodeList.item(i)
           String styleClass = ((Element)node).getAttribute("class")
           if (styleClass == "blank") {
@@ -98,6 +98,7 @@ public class HelpController extends Controller<Void> {
 
 
 @InnerClass(HelpController)
+@Ziphilify
 private static enum HelpItem {
 
   BASIC_EDIT("基本操作(編集)", "basic_edit"),

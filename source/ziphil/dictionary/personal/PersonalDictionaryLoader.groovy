@@ -16,7 +16,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     super(dictionary, path)
   }
 
-  protected Boolean load() {
+  protected BooleanClass load() {
     File file = File.new($path)
     BufferedReader reader = file.newReader()
     CsvConfig config = createConfig()
@@ -57,13 +57,13 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
       word.setUsage(usage)
     }
     if (level != null) {
-      word.setLevel(level.toInteger())
+      word.setLevel(IntegerClass.parseInt(level))
     }
     if (memory != null) {
-      word.setMemory(memory.toInteger())
+      word.setMemory(IntegerClass.parseInt(memory))
     }
     if (modification != null) {
-      word.setModification(modification.toInteger())
+      word.setModification(IntegerClass.parseInt(modification))
     }
   }
 
@@ -72,7 +72,7 @@ public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionar
     config.setQuoteDisabled(false)
     config.setEscapeDisabled(false)
     config.setIgnoreEmptyLines(true)
-    config.setEscape((Character)'"')
+    config.setEscape((Char)'"')
     return config
   }
 

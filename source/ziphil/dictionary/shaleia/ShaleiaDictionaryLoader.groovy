@@ -5,7 +5,6 @@ import java.util.regex.Matcher
 import javafx.collections.ObservableList
 import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimLong
 
 
 @CompileStatic @Ziphilify
@@ -15,11 +14,11 @@ public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary,
     super(dictionary, path)
   }
 
-  protected Boolean load() {
+  protected BooleanClass load() {
     File file = File.new($path)
     BufferedReader reader = file.newReader("UTF-8")
-    PrimLong size = file.length()
-    PrimLong offset = 0L
+    Long size = file.length()
+    Long offset = 0L
     try {
       String currentName = null
       StringBuilder currentDescription = StringBuilder.new()

@@ -37,7 +37,7 @@ public class ApplicationInformationController extends Controller<Void> {
   }
 
   private void setupCopyrightLabel() {
-    Integer year = LocalDateTime.now().getYear()
+    Int year = LocalDateTime.now().getYear()
     String copyright = "Copyright © 2016–${year}"
     $copyrightLabel.setText(copyright)
   }

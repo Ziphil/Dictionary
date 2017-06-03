@@ -5,7 +5,6 @@ import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -15,7 +14,7 @@ public class PlainWordCell extends ListCell<Word> {
     super()
   }
 
-  protected void updateItem(Word word, PrimBoolean empty) {
+  protected void updateItem(Word word, Boolean empty) {
     super.updateItem(word, empty)
     if (empty || word == null) {
       setText(null)

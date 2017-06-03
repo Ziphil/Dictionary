@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import java.text.Normalizer
 import ziphil.module.ExtendedBufferedReader
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
@@ -13,10 +12,10 @@ public class AkrantiainToken implements AkrantiainMatchable {
   private AkrantiainTokenType $type
   private String $text
   private String $fullText = ""
-  private Integer $lineNumber
-  private Integer $columnNumber
+  private Int $lineNumber
+  private Int $columnNumber
 
-  public AkrantiainToken(AkrantiainTokenType type, String text, Integer lineNumber, Integer columnNumber) {
+  public AkrantiainToken(AkrantiainTokenType type, String text, Int lineNumber, Int columnNumber) {
     $type = type
     $text = text
     $lineNumber = lineNumber
@@ -32,8 +31,8 @@ public class AkrantiainToken implements AkrantiainMatchable {
     makeFullText()
   }
 
-  public Integer matchRight(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
-    Integer to = null
+  public Int matchRight(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
+    Int to = -1
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
       to = matchRightQuoteLiteral(group, from, module)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
@@ -44,8 +43,8 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return to
   }
 
-  public Integer matchLeft(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
-    Integer from = null
+  public Int matchLeft(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
+    Int from = -1
     if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
       from = matchLeftQuoteLiteral(group, to, module)
     } else if ($type == AkrantiainTokenType.CIRCUMFLEX) {
@@ -56,10 +55,10 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return from
   }
 
-  private Integer matchRightQuoteLiteral(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
-    Integer to = null
-    Integer matchedLength = 0
-    Integer pointer = from
+  private Int matchRightQuoteLiteral(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
+    Int to = -1
+    Int matchedLength = 0
+    Int pointer = from
     if ($text != "") {
       String text = (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer < group.getElements().size()) {
@@ -95,10 +94,10 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return to
   }
 
-  private Integer matchLeftQuoteLiteral(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
-    Integer from = null
-    Integer matchedLength = 0
-    Integer pointer = to - 1
+  private Int matchLeftQuoteLiteral(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
+    Int from = -1
+    Int matchedLength = 0
+    Int pointer = to - 1
     if ($text != "") {
       String text = (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer >= 0) {
@@ -134,19 +133,19 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return from
   }
 
-  private Integer matchRightCircumflex(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
-    Integer to = null
+  private Int matchRightCircumflex(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
+    Int to = -1
     Boolean matched = false
-    Integer pointer = from
+    Int pointer = from
     while (pointer <= group.getElements().size()) {
       AkrantiainElement element = group.getElements()[pointer]
       if (element != null) {
         String elementPart = element.getPart()
-        Integer punctuationTo = null
+        Int punctuationTo = -1
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           matched = true
           pointer ++
-        } else if ((punctuationTo = module.findPunctuationContent().matchRight(group, pointer, module)) != null) {
+        } else if ((punctuationTo = module.findPunctuationContent().matchRight(group, pointer, module)) >= 0) {
           matched = true
           pointer = punctuationTo
         } else {
@@ -163,19 +162,19 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return to
   }
 
-  private Integer matchLeftCircumflex(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
-    Integer from = null
+  private Int matchLeftCircumflex(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
+    Int from = -1
     Boolean matched = false
-    Integer pointer = to - 1
+    Int pointer = to - 1
     while (pointer >= -1) {
       AkrantiainElement element = (pointer >= 0) ? group.getElements()[pointer] : null
       if (element != null) {
         String elementPart = element.getPart()
-        Integer punctuationFrom = null
+        Int punctuationFrom = -1
         if (AkrantiainLexer.isAllWhitespace(elementPart)) {
           matched = true
           pointer --
-        } else if ((punctuationFrom = module.findPunctuationContent().matchLeft(group, pointer, module)) != null) {
+        } else if ((punctuationFrom = module.findPunctuationContent().matchLeft(group, pointer, module)) >= 0) {
           matched = true
           pointer = punctuationFrom
         } else {
@@ -192,20 +191,20 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return from
   }
 
-  private Integer matchRightIdentifier(AkrantiainElementGroup group, Integer from, AkrantiainModule module) {
+  private Int matchRightIdentifier(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
     AkrantiainMatchable content = module.findContentOf($text)
     if (content != null) {
-      Integer to = content.matchRight(group, from, module)
+      Int to = content.matchRight(group, from, module)
       return to
     } else {
       throw AkrantiainException.new("This cannot happen")
     }
   }
 
-  private Integer matchLeftIdentifier(AkrantiainElementGroup group, Integer to, AkrantiainModule module) {
+  private Int matchLeftIdentifier(AkrantiainElementGroup group, Int to, AkrantiainModule module) {
     AkrantiainMatchable content = module.findContentOf($text)
     if (content != null) {
-      Integer from = content.matchLeft(group, to, module)
+      Int from = content.matchLeft(group, to, module)
       return from
     } else {
       throw AkrantiainException.new("This cannot happen")
@@ -264,7 +263,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $type != AkrantiainTokenType.CIRCUMFLEX
   }
 
-  public PrimBoolean equals(Object object) {
+  public Boolean equals(Object object) {
     if (object instanceof AkrantiainToken) {
       return $type == object.getType() && $text == object.getText()
     } else {
@@ -294,11 +293,11 @@ public class AkrantiainToken implements AkrantiainMatchable {
     return $fullText
   }
 
-  public Integer getLineNumber() {
+  public Int getLineNumber() {
     return $lineNumber
   }
 
-  public Integer getColumnNumber() {
+  public Int getColumnNumber() {
     return $columnNumber
   }
 

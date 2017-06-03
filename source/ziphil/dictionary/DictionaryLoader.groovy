@@ -6,7 +6,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryLoader<D extends Dictionary, W extends Word> extends Task<Boolean> {
+public abstract class DictionaryLoader<D extends Dictionary, W extends Word> extends Task<BooleanClass> {
 
   protected D $dictionary
   protected String $path
@@ -20,11 +20,11 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
 
   // ファイルからデータを読み込んで、作成した単語データを $words に格納します。
   // このメソッドを実装する際は、パフォーマンスの低下を防ぐため、$dictionary.getRawWords() を介して直接単語データを辞書オブジェクトに追加しないでください。
-  protected abstract Boolean load()
+  protected abstract BooleanClass load()
 
-  protected Boolean call() {
+  protected BooleanClass call() {
     if ($path != null) {
-      Boolean result = load()
+      BooleanClass result = load()
       updateProgress(1, 1)
       $dictionary.getRawWords().addAll($words)
       $dictionary.updateFirst()

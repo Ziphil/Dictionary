@@ -16,7 +16,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
     super(dictionary, path)
   }
 
-  protected Boolean save() {
+  protected BooleanClass save() {
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
     try {

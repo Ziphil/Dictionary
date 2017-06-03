@@ -37,7 +37,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private Akrantiain $akrantiain = null
   private String $akrantiainSource = null
   private String $version = ""
-  private Integer $systemWordSize = 0
+  private Int $systemWordSize = 0
   private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
@@ -146,20 +146,20 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   private void calculateSystemWordSize() {
-    $systemWordSize = (Integer)$words.count{it.getUniqueName().startsWith("\$")}
+    $systemWordSize = (Int)$words.count{it.getUniqueName().startsWith("\$")}
   }
 
   private void updateAkrantiain() {
+    Akrantiain akrantiain = null
     if ($akrantiainSource != null) {
       try {
-        $akrantiain = Akrantiain.new()
-        $akrantiain.load($akrantiainSource)
+        akrantiain = Akrantiain.new()
+        akrantiain.load($akrantiainSource)
       } catch (AkrantiainParseException exception) {
-        $akrantiain = null
+        akrantiain = null
       }
-    } else {
-      $akrantiain = null
     }
+    $akrantiain = akrantiain
   }
 
   public ShaleiaWord emptyWord(String defaultName) {
@@ -227,7 +227,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $suggestions.addAll(conjugationSuggestion, changeSuggestion)
   }
 
-  public Integer totalWordSize() {
+  public Int totalWordSize() {
     return $words.size() - $systemWordSize
   }
 

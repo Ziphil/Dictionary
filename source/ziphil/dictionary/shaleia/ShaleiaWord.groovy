@@ -53,12 +53,12 @@ public class ShaleiaWord extends WordBase {
     String alphabetOrder = $dictionary.getAlphabetOrder()
     Boolean apostropheCharacter = alphabetOrder.contains("'")
     StringBuilder comparisonString = StringBuilder.new()
-    for (Integer i : 0 ..< $uniqueName.length()) {
+    for (Int i = 0 ; i < $uniqueName.length() ; i ++) {
       String character = $uniqueName[i]
       if ((apostropheCharacter || character != "'") && character != "+" && character != "~" && character != "-") {
         if (character != "\$") {
-          Integer position = alphabetOrder.indexOf($uniqueName.codePointAt(i))
-          if (position > -1) {
+          Int position = alphabetOrder.indexOf($uniqueName.codePointAt(i))
+          if (position >= 0) {
             comparisonString.appendCodePoint(position + 174)
           } else {
             comparisonString.appendCodePoint(10000)

@@ -26,7 +26,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     if ($first || $afterSemicolon || !nextLine) {
       $first = false
       $reader.mark(3)
-      Integer codePoint = $reader.read()
+      Int codePoint = $reader.read()
       if (codePoint == '"') {
         $reader.reset()
         token = nextStringLiteral('"')
@@ -38,7 +38,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = nextEnvironmentLiteral()
       } else if (codePoint == '=') {
         $reader.mark(1)
-        Integer nextCodePoint = $reader.read()
+        Int nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
           token = AkrantiainToken.new(AkrantiainTokenType.BOLD_ARROW, "=>", $reader)
         } else {
@@ -46,14 +46,14 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
           token = AkrantiainToken.new(AkrantiainTokenType.EQUAL, "=", $reader)
         }
       } else if (codePoint == '-') {
-        Integer nextCodePoint = $reader.read()
+        Int nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
           token = AkrantiainToken.new(AkrantiainTokenType.ARROW, "->", $reader)
         } else {
           throw AkrantiainParseException.new("Invalid symbol", nextCodePoint, $reader)
         }
       } else if (codePoint == '>') {
-        Integer nextCodePoint = $reader.read()
+        Int nextCodePoint = $reader.read()
         if (nextCodePoint == '>') {
           token = AkrantiainToken.new(AkrantiainTokenType.ADVANCE, ">>", $reader)
         } else {
@@ -69,7 +69,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = AkrantiainToken.new(AkrantiainTokenType.EXCLAMATION, "!", $reader)
       } else if (codePoint == '%') {
         $reader.mark(1)
-        Integer nextCodePoint = $reader.read()
+        Int nextCodePoint = $reader.read()
         if (nextCodePoint == '%') {
           token = AkrantiainToken.new(AkrantiainTokenType.DOUBLE_PERCENT, "%%", $reader)
         } else {
@@ -115,7 +115,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     StringBuilder currentName = StringBuilder.new()
     while (true) {
       $reader.mark(1)
-      Integer codePoint = $reader.read()
+      Int codePoint = $reader.read()
       if (AkrantiainLexer.isLetter(codePoint)) {
         currentName.appendCodePoint(codePoint)
       } else {
@@ -131,30 +131,30 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     StringBuilder currentContent = StringBuilder.new()
     Boolean inside = false
     while (true) {
-      Integer codePoint = $reader.read()
+      Int codePoint = $reader.read()
       if (inside) {
         if (codePoint == '\\') {
-          Integer nextCodePoint = $reader.read()
+          Int nextCodePoint = $reader.read()
           if (nextCodePoint == separator || nextCodePoint == '\\') {
             currentContent.appendCodePoint(nextCodePoint)
           } else if (nextCodePoint == 'u') {
             StringBuilder escapeCodePointString = StringBuilder.new()
-            for (Integer i : 0 ..< 4) {
-              Integer escapeCodePoint = $reader.read()
+            for (Int i = 0 ; i < 4 ; i ++) {
+              Int escapeCodePoint = $reader.read()
               if (AkrantiainLexer.isHex(escapeCodePoint)) {
                 escapeCodePointString.appendCodePoint(escapeCodePoint)
               } else {
                 throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader)
               }
             }
-            currentContent.appendCodePoint(Integer.parseInt(escapeCodePointString.toString(), 16))
+            currentContent.appendCodePoint(IntegerClass.parseInt(escapeCodePointString.toString(), 16))
           } else {
             throw AkrantiainParseException.new("Invalid escape sequence", codePoint, $reader)
           }
         } else if (codePoint == '\n') {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader)
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", -1, $reader)
         } else if (codePoint == -1) {
-          throw AkrantiainParseException.new("The line ended before a string literal is closed", null, $reader)
+          throw AkrantiainParseException.new("The line ended before a string literal is closed", -1, $reader)
         } else if (codePoint == separator) {
           break
         } else {
@@ -182,7 +182,7 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     Boolean inside = false
     while (true) {
       $reader.mark(1)
-      Integer codePoint = $reader.read()
+      Int codePoint = $reader.read()
       if (inside) {
         if (AkrantiainLexer.isLetter(codePoint)) {
           currentContent.appendCodePoint(codePoint)
@@ -207,14 +207,14 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     Boolean nextLine = false
     while (true) {
       if (inComment) {
-        Integer codePoint = $reader.read()
+        Int codePoint = $reader.read()
         if (codePoint == '\n' || codePoint == -1) {
           inComment = false
           nextLine = true
         }
       } else {
         $reader.mark(2)
-        Integer codePoint = $reader.read()
+        Int codePoint = $reader.read()
         if (codePoint == '#') {
           inComment = true
         } else if (codePoint == '\n') {
@@ -228,24 +228,24 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
     return nextLine
   }
 
-  public static Boolean isWhitespace(Integer codePoint) {
-    return Character.isWhitespace(codePoint)
+  public static Boolean isWhitespace(Int codePoint) {
+    return CharacterClass.isWhitespace(codePoint)
   }
 
   public static Boolean isAllWhitespace(String string) {
-    for (Integer i : 0 ..< string.length()) {
-      if (!Character.isWhitespace(string.charAt(i))) {
+    for (Int i = 0 ; i < string.length() ; i ++) {
+      if (!CharacterClass.isWhitespace(string.charAt(i))) {
         return false
       }
     }
     return true
   }
 
-  public static Boolean isLetter(Integer codePoint) {
+  public static Boolean isLetter(Int codePoint) {
     return (codePoint >= 48 && codePoint <= 57) || (codePoint >= 65 && codePoint <= 90) || (codePoint >= 97 && codePoint <= 122) || codePoint == 95
   }
 
-  public static Boolean isHex(Integer codePoint) {
+  public static Boolean isHex(Int codePoint) {
     return (codePoint >= 48 && codePoint <= 57) || (codePoint >= 65 && codePoint <= 70) || (codePoint >= 97 && codePoint <= 102)
   }
 

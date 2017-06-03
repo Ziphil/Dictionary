@@ -178,6 +178,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
 
 
 @InnerClass(ShaleiaConjugationResolver)
+@Ziphilify
 private static class ConjugationCandidate {
 
   private ConjugationType $type
@@ -206,6 +207,7 @@ private static class ConjugationCandidate {
 
 
 @InnerClass(ShaleiaConjugationResolver)
+@Ziphilify
 private static enum ConjugationType {
 
   VERB,

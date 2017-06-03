@@ -35,7 +35,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   }
 
   public Pane create() {
-    Integer lineSpacing = Setting.getInstance().getLineSpacing()
+    Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasInformation = false
     Boolean hasRelation = false
@@ -53,7 +53,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
-      List<Integer> ids = relationGroup.collect{it.getId()}
+      List<IntegerClass> ids = relationGroup.collect{it.getId()}
       List<String> names = relationGroup.collect{it.getName()}
       addRelationNode(contentPane, title, ids, names)
       hasRelation = true
@@ -127,7 +127,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   }
 
   @VoidClosure
-  private void addRelationNode(TextFlow contentPane, String title, List<Integer> ids, List<String> names) {
+  private void addRelationNode(TextFlow contentPane, String title, List<IntegerClass> ids, List<String> names) {
     Text formerTitleText = Text.new("cf:")
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
@@ -139,8 +139,8 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     } else {
       contentPane.getChildren().addAll(formerTitleText, spaceText)
     }
-    for (Integer i : 0 ..< names.size()) {
-      Integer id = ids[i]
+    for (Int i = 0 ; i < names.size() ; i ++) {
+      Int id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
       nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->

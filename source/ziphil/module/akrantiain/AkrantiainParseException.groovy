@@ -33,7 +33,7 @@ public class AkrantiainParseException extends Exception {
     makeFullMessage(tokens)
   }
 
-  public AkrantiainParseException(String message, Integer codePoint, ExtendedBufferedReader reader) {
+  public AkrantiainParseException(String message, Int codePoint, ExtendedBufferedReader reader) {
     super()
     $message = message
     makeFullMessage(codePoint, reader)
@@ -47,15 +47,15 @@ public class AkrantiainParseException extends Exception {
       fullMessage.append("\n  ")
       fullMessage.append(token.getFullText())
       fullMessage.append(" (at line ")
-      Integer lineNumber = token.getLineNumber()
-      Integer columnNumber = token.getColumnNumber()
-      if (lineNumber != null) {
+      Int lineNumber = token.getLineNumber()
+      Int columnNumber = token.getColumnNumber()
+      if (lineNumber >= 0) {
         fullMessage.append(lineNumber)
       } else {
         fullMessage.append("?")
       }
       fullMessage.append(" column ")
-      if (columnNumber != null) {
+      if (columnNumber >= 0) {
         fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")
@@ -75,15 +75,15 @@ public class AkrantiainParseException extends Exception {
         fullMessage.append(token.getFullText())
       }
       fullMessage.append(" (at line ")
-      Integer lineNumber = tokens.last().getLineNumber()
-      Integer columnNumber = tokens.last().getColumnNumber()
-      if (lineNumber != null) {
+      Int lineNumber = tokens.last().getLineNumber()
+      Int columnNumber = tokens.last().getColumnNumber()
+      if (lineNumber >= 0) {
         fullMessage.append(lineNumber)
       } else {
         fullMessage.append("?")
       }
       fullMessage.append(" column ")
-      if (columnNumber != null) {
+      if (columnNumber >= 0) {
         fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")
@@ -93,11 +93,11 @@ public class AkrantiainParseException extends Exception {
     $fullMessage = fullMessage.toString()
   }
 
-  private void makeFullMessage(Integer codePoint, ExtendedBufferedReader reader) {
+  private void makeFullMessage(Int codePoint, ExtendedBufferedReader reader) {
     StringBuilder fullMessage = StringBuilder.new()
     fullMessage.append("Parse Error: ")
     fullMessage.append($message)
-    if (codePoint != null) {
+    if (codePoint >= 0) {
       fullMessage.append("\n  ")
       fullMessage.appendCodePoint(codePoint)
     }
@@ -106,15 +106,15 @@ public class AkrantiainParseException extends Exception {
         fullMessage.append("\n  ")
       }
       fullMessage.append(" (at line ")
-      Integer lineNumber = reader.getLineNumber()
-      Integer columnNumber = reader.getColumnNumber()
-      if (lineNumber != null) {
+      Int lineNumber = reader.getLineNumber()
+      Int columnNumber = reader.getColumnNumber()
+      if (lineNumber >= 0) {
         fullMessage.append(lineNumber)
       } else {
         fullMessage.append("?")
       }
       fullMessage.append(" column ")
-      if (columnNumber != null) {
+      if (columnNumber >= 0) {
         fullMessage.append(columnNumber)
       } else {
         fullMessage.append("?")

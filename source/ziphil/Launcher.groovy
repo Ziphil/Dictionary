@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 14, 0, 1957)
+  public static final Version VERSION = Version.new(1, 14, 1, 1959)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -24,7 +24,7 @@ public class Launcher {
 
   private static String createBasePath() {
     String classPath = System.getProperty("java.class.path")
-    Integer classIndex = classPath.indexOf(Launcher.PATH_SEPARATOR)
+    Int classIndex = classPath.indexOf(Launcher.PATH_SEPARATOR)
     String firstPath = (classIndex >= 0) ? classPath.take(classIndex) : classPath
     File file = File.new(firstPath)
     String filePath = file.getCanonicalPath()
@@ -32,7 +32,7 @@ public class Launcher {
     if (file.isDirectory()) {
       path = filePath + Launcher.FILE_SEPARATOR
     } else {
-      Integer fileIndex = filePath.lastIndexOf(Launcher.FILE_SEPARATOR)
+      Int fileIndex = filePath.lastIndexOf(Launcher.FILE_SEPARATOR)
       path = filePath.take(fileIndex) + Launcher.FILE_SEPARATOR
     }
     return path
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.14. 1 | OneToMany 形式で関連語リンクをクリックしてもその単語が表示されない不具合を修正。
+//          | シャレイア語辞典形式で akrantiain 実行時にエラーになることがある不具合を修正。
 //  1.14. 0 | 文一括検索を行う機能を追加。
 //  1.13. 0 | 文字頻度解析を行う機能を追加。
 //  1.12. 3 | 辞書を開いていない状態で辞書登録しようとするとエラーになる不具合を修正。

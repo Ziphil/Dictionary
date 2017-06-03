@@ -30,12 +30,12 @@ public class Setting {
   private List<String> $registeredDictionaryNames = ArrayList.new()
   private String $defaultDictionaryPath
   private String $contentFontFamily
-  private Integer $contentFontSize
+  private Int $contentFontSize
   private String $editorFontFamily
-  private Integer $editorFontSize
+  private Int $editorFontSize
   private String $systemFontFamily
-  private Integer $lineSpacing = 0
-  private Integer $separativeInterval = 700
+  private Int $lineSpacing = 0
+  private Int $separativeInterval = 700
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private Boolean $modifiesPunctuation = false
@@ -71,28 +71,28 @@ public class Setting {
     File file = File.new(Launcher.BASE_PATH + CUSTOM_STYLESHEET_PATH)
     BufferedWriter writer = file.newWriter("UTF-8")
     try {
-      if ($contentFontFamily != null || $contentFontSize != null) {
+      if ($contentFontFamily != null || $contentFontSize > 0) {
         writer.write(".dictionary-list .content-pane {\n")
         if ($contentFontFamily != null) {
           writer.write("  -fx-font-family: \"")
           writer.write(Strings.escapeUnicode($contentFontFamily))
           writer.write("\";\n")
         }
-        if ($contentFontSize != null) {
+        if ($contentFontSize > 0) {
           writer.write("  -fx-font-size: ")
           writer.write($contentFontSize.toString())
           writer.write(";\n")
         }
         writer.write("}\n\n")
       }
-      if ($editorFontFamily != null || $editorFontSize != null) {
+      if ($editorFontFamily != null || $editorFontSize > 0) {
         writer.write(".editor {\n")
         if ($editorFontFamily != null) {
           writer.write("  -fx-font-family: \"")
           writer.write(Strings.escapeUnicode($editorFontFamily))
           writer.write("\";\n")
         }
-        if ($editorFontSize != null) {
+        if ($editorFontSize > 0) {
           writer.write("  -fx-font-size: ")
           writer.write($editorFontSize.toString())
           writer.write(";\n")
@@ -216,11 +216,11 @@ public class Setting {
     $contentFontFamily = contentFontFamily
   }
 
-  public Integer getContentFontSize() {
+  public Int getContentFontSize() {
     return $contentFontSize
   }
 
-  public void setContentFontSize(Integer contentFontSize) {
+  public void setContentFontSize(Int contentFontSize) {
     $contentFontSize = contentFontSize
   }
 
@@ -232,11 +232,11 @@ public class Setting {
     $editorFontFamily = editorFontFamily
   }
 
-  public Integer getEditorFontSize() {
+  public Int getEditorFontSize() {
     return $editorFontSize
   }
 
-  public void setEditorFontSize(Integer editorFontSize) {
+  public void setEditorFontSize(Int editorFontSize) {
     $editorFontSize = editorFontSize
   }
 
@@ -248,19 +248,19 @@ public class Setting {
     $systemFontFamily = systemFontFamily
   }
 
-  public Integer getLineSpacing() {
+  public Int getLineSpacing() {
     return $lineSpacing
   }
 
-  public void setLineSpacing(Integer lineSpacing) {
+  public void setLineSpacing(Int lineSpacing) {
     $lineSpacing = lineSpacing
   }
 
-  public Integer getSeparativeInterval() {
+  public Int getSeparativeInterval() {
     return $separativeInterval
   }
 
-  public void setSeparativeInterval(Integer separativeInterval) {
+  public void setSeparativeInterval(Int separativeInterval) {
     $separativeInterval = separativeInterval
   }
 

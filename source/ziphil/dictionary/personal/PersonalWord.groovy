@@ -14,9 +14,9 @@ public class PersonalWord extends WordBase {
   private String $pronunciation = ""
   private String $translation = ""
   private String $usage = ""
-  private Integer $level = 0
-  private Integer $memory = 0
-  private Integer $modification = 0
+  private Int $level = 0
+  private Int $memory = 0
+  private Int $modification = 0
 
   public void update() {
     updateContent()
@@ -67,27 +67,27 @@ public class PersonalWord extends WordBase {
     $usage = usage
   }
 
-  public Integer getLevel() {
+  public Int getLevel() {
     return $level
   }
 
-  public void setLevel(Integer level) {
+  public void setLevel(Int level) {
     $level = level
   }
 
-  public Integer getMemory() {
+  public Int getMemory() {
     return $memory
   }
 
-  public void setMemory(Integer memory) {
+  public void setMemory(Int memory) {
     $memory = memory
   }
 
-  public Integer getModification() {
+  public Int getModification() {
     return $modification
   }
 
-  public void setModification(Integer modification) {
+  public void setModification(Int modification) {
     $modification = modification
   }
 

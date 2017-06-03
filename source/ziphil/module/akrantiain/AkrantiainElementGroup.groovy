@@ -18,7 +18,7 @@ public class AkrantiainElementGroup {
     if (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) {
       input = Normalizer.normalize(input, Normalizer.Form.NFD)
     }
-    for (Integer i : 0 ..< input.length()) {
+    for (Int i = 0 ; i < input.length() ; i ++) {
       AkrantiainElement element = AkrantiainElement.new(input[i], i + 1)
       group.getElements().add(element)
     }
@@ -35,12 +35,12 @@ public class AkrantiainElementGroup {
   // インデックスが from から to まで (to は含まない) の要素を 1 つに合成した要素を返します。
   // 返される要素の part の値は、合成前の part をインデックス順に繋げたものになります。
   // 返される要素の result の値は、合成前の各要素の result の値に関わらず null になります。
-  public AkrantiainElement merge(Integer from, Integer to) {
+  public AkrantiainElement merge(Int from, Int to) {
     StringBuilder mergedPart = StringBuilder.new()
-    for (Integer i : from ..< to) {
+    for (Int i = from ; i < to ; i ++) {
       mergedPart.append($elements[i].getPart())
     }
-    Integer columnNumber = null
+    Int columnNumber = -1
     if (from < $elements.size()) {
       columnNumber = $elements[from].getColumnNumber()
     } else {
@@ -51,9 +51,9 @@ public class AkrantiainElementGroup {
 
   // インデックスが from から to まで (to は含まない) の要素を 1 文字ごとに分割した要素グループを返します。
   // 返される要素グループに含まれる全ての要素の result の値は、常に null になります。
-  public AkrantiainElementGroup devide(Integer from, Integer to) {
+  public AkrantiainElementGroup devide(Int from, Int to) {
     AkrantiainElementGroup group = AkrantiainElementGroup.new()
-    for (Integer i : from ..< to) {
+    for (Int i = from ; i < to ; i ++) {
       group.getElements().addAll($elements[i].devide().getElements())
     }
     return group
@@ -92,9 +92,9 @@ public class AkrantiainElementGroup {
     return outputString
   }
 
-  public Boolean isAllConverted(Integer from, Integer to) {
+  public Boolean isAllConverted(Int from, Int to) {
     Boolean allConverted = true
-    for (Integer i : from ..< to) {
+    for (Int i = from ; i < to ; i ++) {
       if (!$elements[i].isConverted()) {
         allConverted = false
         break
@@ -103,9 +103,9 @@ public class AkrantiainElementGroup {
     return allConverted
   }
 
-  public Boolean isNoneConverted(Integer from, Integer to) {
+  public Boolean isNoneConverted(Int from, Int to) {
     Boolean noneConverted = true
-    for (Integer i : from ..< to) {
+    for (Int i = from ; i < to ; i ++) {
       if ($elements[i].isConverted()) {
         noneConverted = false
         break
@@ -117,7 +117,7 @@ public class AkrantiainElementGroup {
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("[")
-    for (Integer i : 0 ..< $elements.size()) {
+    for (Int i = 0 ; i < $elements.size() ; i ++) {
       string.append($elements[i])
       if (i < $elements.size() - 1) {
         string.append(", ")

@@ -1,9 +1,10 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import ziphilib.transform.ConvertPrimitives
 
 
-@CompileStatic
+@CompileStatic @ConvertPrimitives
 public interface Suggestion<P> extends Element {
 
   public Boolean isDisplayed()

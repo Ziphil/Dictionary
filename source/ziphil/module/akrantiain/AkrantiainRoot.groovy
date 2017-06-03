@@ -111,7 +111,7 @@ public class AkrantiainRoot {
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    for (Integer i : 0 ..< $modules.size()) {
+    for (Int i = 0 ; i < $modules.size() ; i ++) {
       string.append($modules[i])
       string.append("\n")
     }

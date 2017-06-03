@@ -168,22 +168,22 @@ public class AkrantiainModule {
     string.append($name)
     string.append("{")
     string.append("\nenvironments:")
-    for (Integer i : 0 ..< $environments.size()) {
+    for (Int i = 0 ; i < $environments.size(); i ++) {
       string.append("\n  ")
       string.append($environments[i])
     }
     string.append("\ndefinitions:")
-    for (Integer i : 0 ..< $definitions.size()) {
+    for (Int i = 0 ; i < $definitions.size(); i ++) {
       string.append("\n  ")
       string.append($definitions[i])
     }
     string.append("\nrules:")
-    for (Integer i : 0 ..< $rules.size()) {
+    for (Int i = 0 ; i < $rules.size(); i ++) {
       string.append("\n  ")
       string.append($rules[i])
     }
     string.append("\nmodule chain:")
-    for (Integer i : 0 ..< $moduleChain.size()) {
+    for (Int i = 0 ; i < $moduleChain.size(); i ++) {
       string.append("\n  ")
       string.append($moduleChain[i])
     }

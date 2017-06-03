@@ -20,7 +20,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalEditorController extends Controller<Boolean> {
+public class PersonalEditorController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/personal_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -31,12 +31,12 @@ public class PersonalEditorController extends Controller<Boolean> {
   @FXML private TextField $pronunciationControl
   @FXML private TextArea $translationControl
   @FXML private TextArea $usageControl
-  @FXML private Spinner<Integer> $levelControl
+  @FXML private Spinner<IntegerClass> $levelControl
   @FXML private CheckBox $memoryControl
   @FXML private CheckBox $modificationControl
   private PersonalWord $word
 
-  public PersonalEditorController(UtilityStage<Boolean> stage) {
+  public PersonalEditorController(UtilityStage<BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()

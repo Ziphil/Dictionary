@@ -22,7 +22,7 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
   }
 
   public Pane create() {
-    Integer lineSpacing = Setting.getInstance().getLineSpacing()
+    Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)

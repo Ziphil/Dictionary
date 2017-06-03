@@ -7,41 +7,42 @@ import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.collections.transformation.TransformationList
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimInt
 
 
 @CompileStatic @Ziphilify
 public class ShufflableList<E> extends TransformationList<E, E> {
 
-  private List<Integer> $indices
-  private Integer $size = 0
+  private Int[] $indices
+  private Int $size = 0
   private Boolean $shuffled = false
 
   public ShufflableList(ObservableList<? extends E> source) {
     super(source)
-    $indices = ArrayList.new(0 ..< source.size())
+    $indices = (Int[])(0 ..< source.size()).toArray()
     $size = source.size()
   }
 
   public void shuffle() {
-    List<Integer> oldIndices = ArrayList.new($indices)
-    Collections.shuffle($indices)
+    Int[] oldIndices = $indices
+    List<IntegerClass> convertedIndices = $indices.toList()
+    Collections.shuffle(convertedIndices)
+    $indices = (Int[])convertedIndices.toArray()
     updatePermutation(oldIndices)
     $shuffled = true
   }
 
   public void unshuffle() {
     if ($shuffled) {
-      List<Integer> oldIndices = ArrayList.new($indices)
-      $indices = ArrayList.new(0 ..< $size)
+      Int[] oldIndices = $indices
+      $indices = (Int[])(0 ..< $size).toArray()
       updatePermutation(oldIndices)
       $shuffled = false
     }
   }
 
-  private void updatePermutation(List<Integer> oldIndices) {
-    Integer[] permutation = Integer[].new($size)
-    for (Integer i : 0 ..< $size) {
+  private void updatePermutation(Int[] oldIndices) {
+    Int[] permutation = Int[].new($size)
+    for (Int i = 0 ; i < $size ; i ++) {
       permutation[oldIndices[i]] = $indices[i]
     }
     beginChange()
@@ -52,24 +53,34 @@ public class ShufflableList<E> extends TransformationList<E, E> {
   protected void sourceChanged(Change<? extends E> change) {
     beginChange()
     while (change.next()) {
-      Integer from = change.getFrom()
-      Integer to = change.getTo()
+      Int from = change.getFrom()
+      Int to = change.getTo()
       if (change.wasPermutated()) {
-        Integer[] permutation = Integer[].new($size)
-        for (Integer i : 0 ..< $size) {
+        Int[] permutation = Int[].new($size)
+        for (Int i = 0 ; i < $size ; i ++) {
           permutation[i] = change.getPermutation($indices[i])
         }
         nextPermutation(0, $size, permutation)
       } else if (change.wasUpdated()) {
-        for (Integer i : from ..< to) {
+        for (Int i = from ; i < to ; i ++) {
           nextUpdate($indices[i])
         }
       } else {
-        Integer newSize = change.getList().size()
+        Int newSize = change.getList().size()
         if (newSize > $size) {
-          $indices.addAll($size ..< newSize)
+          $indices = Arrays.copyOf($indices, newSize)
+          for (Int i = $size ; i < newSize ; i ++) {
+            $indices[i] = i
+          }
         } else if (newSize < $size) {
-          $indices.removeIf{it >= newSize}
+          Int[] oldIndices = $indices
+          Int pointer = 0
+          $indices = Int[].new(newSize)
+          for (Int oldIndex : oldIndices) {
+            if (oldIndex < newSize) {
+              $indices[pointer ++] = oldIndex
+            }
+          }
         }
         nextReplace(from, to, change.getRemoved())
         $size = newSize
@@ -78,18 +89,18 @@ public class ShufflableList<E> extends TransformationList<E, E> {
     endChange()
   }
 
-  public PrimInt size() {
+  public Int size() {
     return $size
   }
 
-  public E get(PrimInt index) {
+  public E get(Int index) {
     if (index >= $size) {
       throw IndexOutOfBoundsException.new()
     }
     return getSource()[$indices[index]]
   }
 
-  public PrimInt getSourceIndex(PrimInt index) {
+  public Int getSourceIndex(Int index) {
     return $indices[index]
   }
 

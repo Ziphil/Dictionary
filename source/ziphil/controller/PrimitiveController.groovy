@@ -27,10 +27,10 @@ public class PrimitiveController<S extends Stage> {
     $stage.setScene($scene)
     $stage.setTitle(title)
     $stage.setResizable(resizable)
-    if (minWidth != null) {
+    if (minWidth >= 0) {
       $stage.setMinWidth(minWidth)
     }
-    if (minHeight != null) {
+    if (minHeight >= 0) {
       $stage.setMinHeight(minHeight)
     }
     $stage.sizeToScene()
@@ -41,11 +41,11 @@ public class PrimitiveController<S extends Stage> {
   }
 
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Boolean resizable) {
-    loadResource(resourcePath, title, defaultWidth, defaultHeight, null, null, resizable)
+    loadResource(resourcePath, title, defaultWidth, defaultHeight, -1, -1, resizable)
   }
 
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight) {
-    loadResource(resourcePath, title, defaultWidth, defaultHeight, null, null, true)
+    loadResource(resourcePath, title, defaultWidth, defaultHeight, -1, -1, true)
   }
 
   public S getStage() {

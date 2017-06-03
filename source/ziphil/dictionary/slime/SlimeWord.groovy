@@ -12,7 +12,7 @@ import ziphilib.transform.Ziphilify
 public class SlimeWord extends WordBase {
 
   private SlimeDictionary $dictionary
-  private Integer $id = -1
+  private Int $id = -1
   private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
@@ -57,9 +57,9 @@ public class SlimeWord extends WordBase {
     String alphabetOrder = $dictionary.getAlphabetOrder()
     if (alphabetOrder != null) {
       StringBuilder comparisonString = StringBuilder.new()
-      for (Integer i : 0 ..< $name.length()) {
-        Integer position = alphabetOrder.indexOf($name.codePointAt(i))
-        if (position > -1) {
+      for (Int i = 0 ; i < $name.length() ; i ++) {
+        Int position = alphabetOrder.indexOf($name.codePointAt(i))
+        if (position >= 0) {
           comparisonString.appendCodePoint(position + 174)
         } else {
           comparisonString.appendCodePoint(10000)
@@ -76,8 +76,8 @@ public class SlimeWord extends WordBase {
       List<SlimeInformation> sortedInformations = $informations.toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
         String firstTitle = firstInformation.getTitle()
         String secondTitle = secondInformation.getTitle()
-        Integer firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
-        Integer secondIndex = $dictionary.getInformationTitleOrder().indexOf(secondTitle)
+        Int firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
+        Int secondIndex = $dictionary.getInformationTitleOrder().indexOf(secondTitle)
         if (firstIndex == -1) {
           if (secondIndex == -1) {
             return 0
@@ -122,11 +122,11 @@ public class SlimeWord extends WordBase {
     $dictionary = dictionary
   }
 
-  public Integer getId() {
+  public Int getId() {
     return $id
   }
 
-  public void setId(Integer id) {
+  public void setId(Int id) {
     $id = id
   }
 

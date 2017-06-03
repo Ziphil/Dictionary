@@ -30,7 +30,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SettingController extends Controller<Boolean> {
+public class SettingController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
@@ -38,17 +38,17 @@ public class SettingController extends Controller<Boolean> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilyControl
-  @FXML private Spinner<Integer> $contentFontSizeControl
+  @FXML private Spinner<IntegerClass> $contentFontSizeControl
   @FXML private CheckBox $usesSystemContentFontFamilyControl
   @FXML private CheckBox $usesDefaultContentFontSizeControl
   @FXML private ComboBox<String> $editorFontFamilyControl
-  @FXML private Spinner<Integer> $editorFontSizeControl
+  @FXML private Spinner<IntegerClass> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private ComboBox<String> $systemFontFamilyControl
   @FXML private CheckBox $usesDefaultSystemFontFamilyControl
-  @FXML private Spinner<Integer> $lineSpacingControl
-  @FXML private Spinner<Integer> $separativeIntervalControl
+  @FXML private Spinner<IntegerClass> $lineSpacingControl
+  @FXML private Spinner<IntegerClass> $separativeIntervalControl
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private ToggleButton $modifiesPunctuationControl
@@ -65,7 +65,7 @@ public class SettingController extends Controller<Boolean> {
   @FXML private ToggleButton $showsSlimeIdControl
   @FXML private ToggleButton $asksMutualRelationControl
 
-  public SettingController(UtilityStage<Boolean> nextStage) {
+  public SettingController(UtilityStage<BooleanClass> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -84,12 +84,12 @@ public class SettingController extends Controller<Boolean> {
   private void applySettings() {
     Setting setting = Setting.getInstance()
     String contentFontFamily = setting.getContentFontFamily()
-    Integer contentFontSize = setting.getContentFontSize()
+    Int contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
-    Integer editorFontSize = setting.getEditorFontSize()
+    Int editorFontSize = setting.getEditorFontSize()
     String systemFontFamily = setting.getSystemFontFamily()
-    Integer lineSpacing = setting.getLineSpacing()
-    Integer separativeInterval = setting.getSeparativeInterval()
+    Int lineSpacing = setting.getLineSpacing()
+    Int separativeInterval = setting.getSeparativeInterval()
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
@@ -109,7 +109,7 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesSystemContentFontFamilyControl.setSelected(true)
     }
-    if (contentFontSize != null) {
+    if (contentFontSize > 0) {
       $contentFontSizeControl.getValueFactory().setValue(contentFontSize)
     } else {
       $usesDefaultContentFontSizeControl.setSelected(true)
@@ -119,7 +119,7 @@ public class SettingController extends Controller<Boolean> {
     } else {
       $usesSystemEditorFontFamilyControl.setSelected(true)
     }
-    if (editorFontSize != null) {
+    if (editorFontSize > 0) {
       $editorFontSizeControl.getValueFactory().setValue(editorFontSize)
     } else {
       $usesDefaultEditorFontSizeControl.setSelected(true)
@@ -147,7 +147,7 @@ public class SettingController extends Controller<Boolean> {
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
-    for (Integer i : 0 ..< 10) {
+    for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
     }
@@ -158,15 +158,15 @@ public class SettingController extends Controller<Boolean> {
     Boolean usesSystemContentFontFamily = $usesSystemContentFontFamilyControl.isSelected()
     Boolean usesDefaultContentFontSize = $usesDefaultContentFontSizeControl.isSelected()
     String contentFontFamily = (usesSystemContentFontFamily) ? null : $contentFontFamilyControl.getValue()
-    Integer contentFontSize = (usesDefaultContentFontSize) ? null : $contentFontSizeControl.getValue()
+    Int contentFontSize = (usesDefaultContentFontSize) ? -1 : $contentFontSizeControl.getValue()
     Boolean usesSystemEditorFontFamily = $usesSystemEditorFontFamilyControl.isSelected()
     Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getValue()
-    Integer editorFontSize = (usesDefaultEditorFontSize) ? null : $editorFontSizeControl.getValue()
+    Int editorFontSize = (usesDefaultEditorFontSize) ? -1 : $editorFontSizeControl.getValue()
     Boolean usesDefaultSystemFontFamily = $usesDefaultSystemFontFamilyControl.isSelected()
     String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getValue()
-    Integer lineSpacing = $lineSpacingControl.getValue()
-    Integer separativeInterval = $separativeIntervalControl.getValue()
+    Int lineSpacing = $lineSpacingControl.getValue()
+    Int separativeInterval = $separativeIntervalControl.getValue()
     String scriptName = $scriptControl.getValue().getNames()[0]
     FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
@@ -200,7 +200,7 @@ public class SettingController extends Controller<Boolean> {
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setAsksMutualRelation(asksMutualRelation)
-    for (Integer i : 0 ..< 10) {
+    for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
@@ -208,7 +208,7 @@ public class SettingController extends Controller<Boolean> {
     }
   }
 
-  private void browseDictionary(Integer index) {
+  private void browseDictionary(Int index) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -224,7 +224,7 @@ public class SettingController extends Controller<Boolean> {
     }
   }
 
-  private void deregisterDictionary(Integer index) {
+  private void deregisterDictionary(Int index) {
     $registeredDictionaryPathControls[index].setText("")
     $registeredDictionaryNameControls[index].setText("")
   }
@@ -245,8 +245,8 @@ public class SettingController extends Controller<Boolean> {
   }
 
   private void setupRegisteredDictionaryPane() {
-    for (Integer i : 0 ..< 10) {
-      Integer j = i
+    for (Int i = 0 ; i < 10 ; i ++) {
+      Int j = i
       Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()

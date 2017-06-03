@@ -42,7 +42,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeEditorController extends Controller<Boolean> {
+public class SlimeEditorController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -74,7 +74,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   private Boolean $normal
   private List<RelationRequest> $relationRequests = ArrayList.new()
 
-  public SlimeEditorController(UtilityStage<Boolean> nextStage) {
+  public SlimeEditorController(UtilityStage<BooleanClass> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
@@ -152,7 +152,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   protected void commit() {
     Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
-      Integer id = $idControl.getText().toInteger()
+      Int id = IntegerClass.parseInt($idControl.getText())
       if (ignoresDuplicateSlimeId || !$normal || !$dictionary.containsId(id, $word)) {
         String name = $nameControl.getText()
         List<SlimeEquivalent> rawEquivalents = ArrayList.new()
@@ -160,28 +160,28 @@ public class SlimeEditorController extends Controller<Boolean> {
         List<SlimeInformation> informations = ArrayList.new()
         List<SlimeVariation> variations = ArrayList.new()
         List<SlimeRelation> relations = ArrayList.new()
-        for (Integer i : 0 ..< $tagControls.size()) {
+        for (Int i = 0 ; i < $tagControls.size() ; i ++) {
           String tag = $tagControls[i].getValue()
           if (tag != "") {
             tags.add(tag)
           }
         }
         String punctuationPattern = /\s*(${$dictionary.getPunctuations().join("|")})\s*/
-        for (Integer i : 0 ..< $equivalentTitleControls.size()) {
+        for (Int i = 0 ; i < $equivalentTitleControls.size() ; i ++) {
           String title = $equivalentTitleControls[i].getValue()
           List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
           if (!equivalentNames.isEmpty()) {
             rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
           }
         }
-        for (Integer i : 0 ..< $informationTitleControls.size()) {
+        for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
           String title = $informationTitleControls[i].getValue()
           String text = $informationTextControls[i].getText()
           if (text != "") {
             informations.add(SlimeInformation.new(title, text))
           }
         }
-        for (Integer i : 0 ..< $variationTitleControls.size()) {
+        for (Int i = 0 ; i < $variationTitleControls.size() ; i ++) {
           String title = $variationTitleControls[i].getValue()
           List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
           for (String variationName : variationNames) {
@@ -190,7 +190,7 @@ public class SlimeEditorController extends Controller<Boolean> {
             }
           }
         }
-        for (Integer i : 0 ..< $relationTitleControls.size()) {
+        for (Int i = 0 ; i < $relationTitleControls.size() ; i ++) {
           String title = $relationTitleControls[i].getValue()
           SlimeRelation relation = $relations[i]
           HBox box = (HBox)$relationBox.getChildren()[i]
@@ -266,9 +266,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     chooseRelation((HBox)$relationBox.getChildren()[-1])
   }
 
-  private void exchangeTagControl(HBox box, Integer amount) {
-    Integer index = $tagBox.getChildren().indexOf(box)
-    Integer otherIndex = index + amount
+  private void exchangeTagControl(HBox box, Int amount) {
+    Int index = $tagBox.getChildren().indexOf(box)
+    Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $tagBox.getChildren().size()) {
       Node otherBox = $tagBox.getChildren()[otherIndex]
       $tagBox.getChildren()[index] = HBox.new()
@@ -280,9 +280,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
-  private void exchangeEquivalentControl(HBox box, Integer amount) {
-    Integer index = $equivalentBox.getChildren().indexOf(box)
-    Integer otherIndex = index + amount
+  private void exchangeEquivalentControl(HBox box, Int amount) {
+    Int index = $equivalentBox.getChildren().indexOf(box)
+    Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $equivalentBox.getChildren().size()) {
       Node otherBox = $equivalentBox.getChildren()[otherIndex]
       $equivalentBox.getChildren()[index] = HBox.new()
@@ -297,9 +297,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
-  private void exchangeInformationControl(HBox box, Integer amount) {
-    Integer index = $informationBox.getChildren().indexOf(box)
-    Integer otherIndex = index + amount
+  private void exchangeInformationControl(HBox box, Int amount) {
+    Int index = $informationBox.getChildren().indexOf(box)
+    Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $informationBox.getChildren().size()) {
       Node otherBox = $informationBox.getChildren()[otherIndex]
       $informationBox.getChildren()[index] = HBox.new()
@@ -314,9 +314,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
-  private void exchangeVariationControl(HBox box, Integer amount) {
-    Integer index = $variationBox.getChildren().indexOf(box)
-    Integer otherIndex = index + amount
+  private void exchangeVariationControl(HBox box, Int amount) {
+    Int index = $variationBox.getChildren().indexOf(box)
+    Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $variationBox.getChildren().size()) {
       Node otherBox = $variationBox.getChildren()[otherIndex]
       $variationBox.getChildren()[index] = HBox.new()
@@ -331,9 +331,9 @@ public class SlimeEditorController extends Controller<Boolean> {
     }
   }
 
-  private void exchangeRelationControl(HBox box, Integer amount) {
-    Integer index = $relationBox.getChildren().indexOf(box)
-    Integer otherIndex = index + amount
+  private void exchangeRelationControl(HBox box, Int amount) {
+    Int index = $relationBox.getChildren().indexOf(box)
+    Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $relationBox.getChildren().size()) {
       Node otherBox = $relationBox.getChildren()[otherIndex]
       $relationBox.getChildren()[index] = HBox.new()
@@ -352,7 +352,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeTagControl(HBox box) {
-    Integer index = $tagBox.getChildren().indexOf(box)
+    Int index = $tagBox.getChildren().indexOf(box)
     if (index >= 0) {
       $tagBox.getChildren().removeAt(index)
       $tagControls.removeAt(index)
@@ -360,7 +360,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeEquivalentControl(HBox box) {
-    Integer index = $equivalentBox.getChildren().indexOf(box)
+    Int index = $equivalentBox.getChildren().indexOf(box)
     if (index >= 0) {
       $equivalentBox.getChildren().removeAt(index)
       $equivalentTitleControls.removeAt(index)
@@ -369,7 +369,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeInformationControl(HBox box) {
-    Integer index = $informationBox.getChildren().indexOf(box)
+    Int index = $informationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $informationBox.getChildren().removeAt(index)
       $informationTitleControls.removeAt(index)
@@ -378,7 +378,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeVariationControl(HBox box) {
-    Integer index = $variationBox.getChildren().indexOf(box)
+    Int index = $variationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $variationBox.getChildren().removeAt(index)
       $variationTitleControls.removeAt(index)
@@ -387,7 +387,7 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void removeRelationControl(HBox box) {
-    Integer index = $relationBox.getChildren().indexOf(box)
+    Int index = $relationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $relationBox.getChildren().removeAt(index)
       $relations.removeAt(index)
@@ -402,9 +402,9 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusTagControl(EventTarget target) {
-    Integer index = $tagControls.indexOf(target)
+    Int index = $tagControls.indexOf(target)
     if (index >= 0) {
-      Integer nextIndex = (index < $tagControls.size() - 1) ? index + 1 : 0
+      Int nextIndex = (index < $tagControls.size() - 1) ? index + 1 : 0
       $tagControls[nextIndex].requestFocus()
       scrollPaneTo($tagControls[nextIndex])
     } else {
@@ -417,9 +417,9 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusEquivalentControl(EventTarget target) {
-    Integer index = $equivalentNameControls.indexOf(target)
+    Int index = $equivalentNameControls.indexOf(target)
     if (index >= 0) {
-      Integer nextIndex = (index < $equivalentNameControls.size() - 1) ? index + 1 : 0
+      Int nextIndex = (index < $equivalentNameControls.size() - 1) ? index + 1 : 0
       $equivalentNameControls[nextIndex].requestFocus()
       scrollPaneTo($equivalentNameControls[nextIndex])
     } else {
@@ -432,9 +432,9 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusInformationControl(EventTarget target) {
-    Integer index = $informationTextControls.indexOf(target)
+    Int index = $informationTextControls.indexOf(target)
     if (index >= 0) {
-      Integer nextIndex = (index < $informationTextControls.size() - 1) ? index + 1 : 0
+      Int nextIndex = (index < $informationTextControls.size() - 1) ? index + 1 : 0
       $informationTextControls[nextIndex].requestFocus()
       scrollPaneTo($informationTextControls[nextIndex])
     } else {
@@ -447,9 +447,9 @@ public class SlimeEditorController extends Controller<Boolean> {
   }
 
   private void focusVariationControl(EventTarget target) {
-    Integer index = $variationNameControls.indexOf(target)
+    Int index = $variationNameControls.indexOf(target)
     if (index >= 0) {
-      Integer nextIndex = (index < $variationNameControls.size() - 1) ? index + 1 : 0
+      Int nextIndex = (index < $variationNameControls.size() - 1) ? index + 1 : 0
       $variationNameControls[nextIndex].requestFocus()
       scrollPaneTo($variationNameControls[nextIndex])
     } else {
@@ -471,7 +471,7 @@ public class SlimeEditorController extends Controller<Boolean> {
     nextStage.showAndWait()
     if (nextStage.isCommitted() && nextStage.getResult() != null) {
       SlimeWord word = nextStage.getResult()
-      Integer index = $relationBox.getChildren().indexOf(box)
+      Int index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNameControls[index].setText(word.getName())
@@ -695,10 +695,10 @@ public class SlimeEditorController extends Controller<Boolean> {
     Double nodeAbsoluteMinY = nodeMinY - paneMinY
     Double nodeAbsoluteMaxY = nodeMaxY - paneMinY
     if (nodeAbsoluteMinY < 0) {
-      Double vvalue = (Double)(nodeRelativeMinY / (contentHeight - viewportHeight))
+      Double vvalue = nodeRelativeMinY / (contentHeight - viewportHeight)
       $scrollPane.setVvalue(vvalue)
     } else if (nodeAbsoluteMaxY > viewportHeight) {
-      Double vvalue = (Double)((nodeRelativeMaxY - viewportHeight) / (contentHeight - viewportHeight))
+      Double vvalue = (nodeRelativeMaxY - viewportHeight) / (contentHeight - viewportHeight)
       $scrollPane.setVvalue(vvalue)
     }
   }
@@ -747,6 +747,7 @@ public class SlimeEditorController extends Controller<Boolean> {
 
 
 @InnerClass(SlimeEditorController)
+@Ziphilify
 private static class RelationRequest {
 
   private String $title

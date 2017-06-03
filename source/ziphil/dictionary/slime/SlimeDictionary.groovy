@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
-import java.util.function.Consumer
+import java.util.function.IntConsumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.ConjugationResolver
@@ -34,7 +34,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  private Integer $validMinId = 1
+  private Int $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
@@ -49,7 +49,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $akrantiainSource = null
   private List<RelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
-  private Consumer<Integer> $onLinkClicked
+  private IntConsumer $onLinkClicked
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -65,7 +65,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void searchDetail(SlimeSearchParameter parameter) {
-    Integer searchId = parameter.getId()
+    Int searchId = parameter.getId()
     String searchName = parameter.getName()
     SearchType nameSearchType = parameter.getNameSearchType()
     String searchEquivalentName = parameter.getEquivalentName()
@@ -78,7 +78,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     resetSuggestions()
     updateWordPredicate() { SlimeWord word ->   
       Boolean predicate = true
-      Integer id = word.getId()
+      Int id = word.getId()
       String name = word.getName()
       List<SlimeEquivalent> equivalents = word.getRawEquivalents()
       List<SlimeInformation> informations = word.getInformations()
@@ -231,7 +231,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void validateIds() {
-    Set<Integer> ids = HashSet.new()
+    Set<IntegerClass> ids = HashSet.new()
     for (SlimeWord word : $words) {
       if (!ids.contains(word.getId())) {
         ids.add(word.getId()) 
@@ -242,13 +242,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   private void validateRelations() {
-    Map<Integer, String> wordNames = HashMap.new()
-    Map<Integer, String> relationNames = HashMap.new()
+    Map<IntegerClass, String> wordNames = HashMap.new()
+    Map<IntegerClass, String> relationNames = HashMap.new()
     for (SlimeWord word : $words) {
-      Integer wordId = word.getId()
+      Int wordId = word.getId()
       wordNames[wordId] = word.getName()
       for (SlimeRelation relation : word.getRelations()) {
-        Integer relationId = relation.getId()
+        Int relationId = relation.getId()
         String previousRelationName = relationNames[relationId]
         if (previousRelationName == null) {
           relationNames[relation.getId()] = relation.getName()
@@ -259,7 +259,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
-    for (Map.Entry<Integer, String> entry : relationNames) {
+    for (Map.Entry<IntegerClass, String> entry : relationNames) {
       if (wordNames[entry.getKey()] != entry.getValue()) {
         throw SlimeValidationException.new("Invalid relation")
       }
@@ -394,7 +394,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public Object plainWord(SlimeWord oldWord) {
     SlimePlainWord newWord = SlimePlainWord.new()
-    Integer newId = oldWord.getId()
+    Int newId = oldWord.getId()
     String newName = oldWord.getName()
     List<SlimeEquivalent> newEquivalents = ArrayList.new()
     for (SlimeEquivalent equivalent : oldWord.getRawEquivalents()) {
@@ -443,17 +443,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return dictionary
   }
 
-  public Boolean containsId(Integer id, SlimeWord excludedWord) {
+  public Boolean containsId(Int id, SlimeWord excludedWord) {
     return $words.any{it != excludedWord && it.getId() == id}
   }
 
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
-      Integer firstId = firstWord.getId()
-      Integer secondId = secondWord.getId()
+      Int firstId = firstWord.getId()
+      Int secondId = secondWord.getId()
       String firstString = firstWord.getComparisonString()
       String secondString = secondWord.getComparisonString()
-      Integer result = firstString <=> secondString
+      Int result = firstString <=> secondString
       if (result == 0) {
         return firstId <=> secondId
       } else {
@@ -507,7 +507,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return mapper
   }
 
-  public Integer getValidMinId() {
+  public Int getValidMinId() {
     return $validMinId
   }
 
@@ -591,11 +591,11 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $externalData = externalData
   }
 
-  public Consumer<Integer> getOnLinkClicked() {
+  public IntConsumer getOnLinkClicked() {
     return $onLinkClicked
   }
 
-  public void setOnLinkClicked(Consumer<Integer> onLinkClicked) {
+  public void setOnLinkClicked(IntConsumer onLinkClicked) {
     $onLinkClicked = onLinkClicked
   }
 
@@ -603,6 +603,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
 
 @InnerClass(SlimeDictionary)
+@Ziphilify
 private static class RelationRequest {
 
   private SlimeWord $word

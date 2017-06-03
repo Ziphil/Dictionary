@@ -12,7 +12,7 @@ public class EmptyDictionaryConverter<D extends Dictionary, E extends Dictionary
     updateProgress(0, 1)
   }
 
-  protected Boolean convert() {
+  protected BooleanClass convert() {
     updateProgress(1, 1)
     return true
   }

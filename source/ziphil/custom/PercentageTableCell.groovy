@@ -3,24 +3,23 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.scene.control.TableCell
 import ziphilib.transform.Ziphilify
-import ziphilib.type.PrimBoolean
 
 
 @CompileStatic @Ziphilify
-public class PercentageTableCell<S> extends TableCell<S, Double> {
+public class PercentageTableCell<S> extends TableCell<S, DoubleClass> {
 
-  private Integer $precision = 2
+  private Int $precision = 2
 
   public PercentageTableCell() {
     super()
   }
 
-  public PercentageTableCell(Integer precision) {
+  public PercentageTableCell(Int precision) {
     super()
     $precision = precision
   }
 
-  protected void updateItem(Double item, PrimBoolean empty) {
+  protected void updateItem(DoubleClass item, Boolean empty) {
     super.updateItem(item, empty)
     if (empty || item == null) {
       setText(null)
