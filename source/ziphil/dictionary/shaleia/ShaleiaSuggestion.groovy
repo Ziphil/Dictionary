@@ -1,6 +1,7 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -15,8 +16,8 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
     changeContentPaneFactory()
   }
 
-  protected void makeContentPaneFactory() {
-    $contentPaneFactory = ShaleiaSuggestionContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactoryBase createContentPaneFactory() {
+    return ShaleiaSuggestionContentPaneFactory.new(this, $dictionary)
   }
 
   public ShaleiaDictionary getDictionary() {

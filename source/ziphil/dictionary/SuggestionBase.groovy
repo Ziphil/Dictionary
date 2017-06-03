@@ -15,7 +15,7 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   public abstract void update()
 
-  protected abstract void makeContentPaneFactory()
+  protected abstract ContentPaneFactoryBase createContentPaneFactory()
 
   protected void changeContentPaneFactory() {
     if ($contentPaneFactory != null) {
@@ -41,7 +41,7 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   public ContentPaneFactory getContentPaneFactory() {
     if ($contentPaneFactory == null) {
-      makeContentPaneFactory()
+      $contentPaneFactory = createContentPaneFactory()
     }
     return $contentPaneFactory
   }
