@@ -35,6 +35,7 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
       if ($persisted) {
         $contentPane = contentPane
       }
+      $changed = false
       return contentPane
     } else {
       return $contentPane
