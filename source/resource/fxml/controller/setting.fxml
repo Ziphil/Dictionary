@@ -396,12 +396,17 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="表示用データ保持:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <ToggleButton fx:id="$savesAutomaticallyControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <prefWidth><Double rpx="70"/></prefWidth>
             <minWidth><Double rpx="70"/></minWidth>
           </ToggleButton>
-          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <ToggleButton fx:id="$persistsContentPanesControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <prefWidth><Double rpx="70"/></prefWidth>
+            <minWidth><Double rpx="70"/></minWidth>
+          </ToggleButton>
+          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <Spinner fx:id="$separativeIntervalControl" editable="true">
               <prefWidth><Double rpx="80"/></prefWidth>
               <minWidth><Double rpx="80"/></minWidth>
@@ -420,6 +425,16 @@
             <Text text="無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
           </TextFlow>
           <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+              <Insets>
+                <left><Double rpx="10"/></left>
+                <bottom><Double rpx="5"/></bottom>
+              </Insets>
+            </GridPane.margin>
+            <Text text="単語リストへの表示用データをメモリ上に保持します。&#10;"/>
+            <Text text="有効にすると、メモリ使用量が増加する代わりに検索が高速になる場合があります。"/>
+          </TextFlow>
+          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
             <GridPane.margin>
               <Insets>
                 <left><Double rpx="10"/></left>
