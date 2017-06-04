@@ -12,27 +12,24 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum DictionaryType {
 
-  SLIME("OneToMany-JSON形式", "json"),
-  PERSONAL("PDIC-CSV形式", "csv"),
-  SHALEIA("シャレイア語辞典形式", "xdc")
+  SLIME("OneToMany-JSON形式", "json", "otm_dictionary.png"),
+  PERSONAL("PDIC-CSV形式", "csv", "csv_dictionary.png"),
+  SHALEIA("シャレイア語辞典形式", "xdc", "xdc_dictionary.png")
+
+  private static final String ICON_DIRECTORY = "resource/icon/"
 
   private String $name = ""
   private String $extension = ""
+  private String $iconPath = ""
 
-  private DictionaryType(String name, String extension) {
+  private DictionaryType(String name, String extension, String iconPath) {
     $name = name
     $extension = extension
+    $iconPath = iconPath
   }
 
   public Image createIcon() {
-    String path = ""
-    if (this == SHALEIA) {
-      path = "resource/icon/xdc_dictionary.png"
-    } else if (this == PERSONAL) {
-      path = "resource/icon/csv_dictionary.png"
-    } else if (this == SLIME) {
-      path = "resource/icon/otm_dictionary.png"
-    }
+    String path = ICON_DIRECTORY + $iconPath
     return Image.new(getClass().getClassLoader().getResourceAsStream(path))
   }
 
