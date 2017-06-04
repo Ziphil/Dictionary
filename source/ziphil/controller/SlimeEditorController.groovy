@@ -150,10 +150,10 @@ public class SlimeEditorController extends Controller<BooleanClass> {
 
   @FXML
   protected void commit() {
-    Boolean ignoresDuplicateSlimeId = Setting.getInstance().getIgnoresDuplicateSlimeId()
+    Boolean ignoresDuplicateId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
       Int id = IntegerClass.parseInt($idControl.getText())
-      if (ignoresDuplicateSlimeId || !$normal || !$dictionary.containsId(id, $word)) {
+      if (ignoresDuplicateId || !$normal || !$dictionary.containsId(id, $word)) {
         String name = $nameControl.getText()
         List<SlimeEquivalent> rawEquivalents = ArrayList.new()
         List<String> tags = ArrayList.new()
@@ -732,8 +732,8 @@ public class SlimeEditorController extends Controller<BooleanClass> {
   }
 
   private void setupIdControl() {
-    Boolean showsSlimeId = Setting.getInstance().getShowsSlimeId()
-    if (!showsSlimeId) {
+    Boolean showsId = Setting.getInstance().getShowsSlimeId()
+    if (!showsId) {
       $gridPane.getChildren().remove($idControl)
       $gridPane.getChildren().remove($idLabel)
       for (Node node : $gridPane.getChildren()) {
