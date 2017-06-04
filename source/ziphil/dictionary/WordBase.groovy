@@ -12,8 +12,8 @@ public abstract class WordBase implements Word {
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
-  protected ContentPaneFactoryBase $contentPaneFactory
-  protected ContentPaneFactoryBase $plainContentPaneFactory
+  private ContentPaneFactoryBase $contentPaneFactory
+  private ContentPaneFactoryBase $plainContentPaneFactory
 
   public abstract void update()
 

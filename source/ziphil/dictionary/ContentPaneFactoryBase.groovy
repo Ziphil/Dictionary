@@ -13,9 +13,9 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
 
   protected E $word
   protected D $dictionary
-  protected Pane $contentPane = null 
-  protected Boolean $changed = true
-  protected Boolean $persisted = false
+  private Pane $contentPane = null 
+  private Boolean $changed = true
+  private Boolean $persisted = false
 
   public ContentPaneFactoryBase(E word, D dictionary, Boolean persisted) {
     $word = word
