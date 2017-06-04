@@ -21,7 +21,7 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)

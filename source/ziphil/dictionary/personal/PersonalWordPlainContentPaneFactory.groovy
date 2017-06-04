@@ -19,7 +19,7 @@ public class PersonalWordPlainContentPaneFactory extends ContentPaneFactoryBase<
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     addNameNode(contentPane, $word.getName())

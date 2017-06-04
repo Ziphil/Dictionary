@@ -22,7 +22,7 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)

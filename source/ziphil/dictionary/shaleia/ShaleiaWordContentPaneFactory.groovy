@@ -47,7 +47,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasContent = false
