@@ -17,7 +17,8 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    return SlimeSuggestionContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return SlimeSuggestionContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   public SlimeDictionary getDictionary() {

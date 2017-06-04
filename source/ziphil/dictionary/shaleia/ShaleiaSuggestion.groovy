@@ -17,7 +17,8 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    return ShaleiaSuggestionContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return ShaleiaSuggestionContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   public ShaleiaDictionary getDictionary() {

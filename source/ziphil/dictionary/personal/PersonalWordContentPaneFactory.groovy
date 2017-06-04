@@ -17,8 +17,8 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
   private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
   private static final String PERSONAL_PRONUNCIATION_CLASS = "persoanl-pronunciation"
 
-  public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
-    super(word, dictionary)
+  public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

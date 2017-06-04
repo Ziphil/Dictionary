@@ -43,8 +43,8 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   private static final String END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
-  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
-    super(word, dictionary)
+  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

@@ -18,8 +18,8 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
 
-  public SlimeSuggestionContentPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary) {
-    super(word, dictionary)
+  public SlimeSuggestionContentPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

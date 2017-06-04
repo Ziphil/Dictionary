@@ -30,8 +30,8 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
-  public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
-    super(word, dictionary)
+  public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

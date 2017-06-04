@@ -16,8 +16,8 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
 
-  public SlimeWordPlainContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
-    super(word, dictionary)
+  public SlimeWordPlainContentPaneFactory(SlimeWord word, SlimeDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

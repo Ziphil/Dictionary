@@ -18,8 +18,8 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"
 
-  public ShaleiaSuggestionContentPaneFactory(ShaleiaSuggestion word, ShaleiaDictionary dictionary) {
-    super(word, dictionary)
+  public ShaleiaSuggestionContentPaneFactory(ShaleiaSuggestion word, ShaleiaDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
   }
 
   protected Pane doCreate() {

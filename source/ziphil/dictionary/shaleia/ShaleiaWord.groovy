@@ -72,11 +72,13 @@ public class ShaleiaWord extends WordBase {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    return ShaleiaWordContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return ShaleiaWordContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   protected ContentPaneFactory createPlainContentPaneFactory() {
-    return ShaleiaWordPlainContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return ShaleiaWordPlainContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   public ShaleiaDictionary getDictionary() {

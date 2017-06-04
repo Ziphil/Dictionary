@@ -106,11 +106,13 @@ public class SlimeWord extends WordBase {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    return SlimeWordContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return SlimeWordContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   protected ContentPaneFactory createPlainContentPaneFactory() {
-    return SlimeWordPlainContentPaneFactory.new(this, $dictionary)
+    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
+    return SlimeWordPlainContentPaneFactory.new(this, $dictionary, persisted)
   }
 
   public SlimeDictionary getDictionary() {
