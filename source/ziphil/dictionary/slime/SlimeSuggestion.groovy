@@ -1,7 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.SuggestionBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -16,7 +16,7 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
     changeContentPaneFactory()
   }
 
-  protected ContentPaneFactoryBase createContentPaneFactory() {
+  protected ContentPaneFactory createContentPaneFactory() {
     return SlimeSuggestionContentPaneFactory.new(this, $dictionary)
   }
 

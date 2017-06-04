@@ -2,7 +2,6 @@ package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.ContentPaneFactory
-import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -106,11 +105,11 @@ public class SlimeWord extends WordBase {
     return $relations.groupBy{it.getTitle()}
   }
 
-  protected ContentPaneFactoryBase createContentPaneFactory() {
+  protected ContentPaneFactory createContentPaneFactory() {
     return SlimeWordContentPaneFactory.new(this, $dictionary)
   }
 
-  protected ContentPaneFactoryBase createPlainContentPaneFactory() {
+  protected ContentPaneFactory createPlainContentPaneFactory() {
     return SlimeWordPlainContentPaneFactory.new(this, $dictionary)
   }
 

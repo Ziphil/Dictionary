@@ -10,12 +10,12 @@ import ziphilib.transform.Ziphilify
 public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
-  private ContentPaneFactoryBase $contentPaneFactory
+  private ContentPaneFactory $contentPaneFactory
   private Boolean $displayed = false
 
   public abstract void update()
 
-  protected abstract ContentPaneFactoryBase createContentPaneFactory()
+  protected abstract ContentPaneFactory createContentPaneFactory()
 
   protected void changeContentPaneFactory() {
     if ($contentPaneFactory != null) {
