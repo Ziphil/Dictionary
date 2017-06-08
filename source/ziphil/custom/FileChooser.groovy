@@ -17,7 +17,12 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.Control
+import javafx.scene.control.ListCell
+import javafx.scene.control.ListView
 import javafx.scene.control.Skin
+import javafx.scene.control.TreeCell
+import javafx.scene.control.TreeView
+import javafx.util.Callback
 import ziphil.Launcher
 import ziphilib.transform.Ziphilify
 
@@ -32,6 +37,8 @@ public class FileChooser extends Control {
   private ListProperty<ExtensionFilter> $extensionFilters = SimpleListProperty.new(FXCollections.observableArrayList())
   private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
   private BooleanProperty $adjustsExtension = SimpleBooleanProperty.new(false)
+  private ObjectProperty<Callback<TreeView<File>, TreeCell<File>>> $directoryCellFactory = SimpleObjectProperty.new(null)
+  private ObjectProperty<Callback<ListView<File>, ListCell<File>>> $fileCellFactory = SimpleObjectProperty.new(null)
 
   public FileChooser() {
     bindSelectedFile()
@@ -161,6 +168,30 @@ public class FileChooser extends Control {
 
   public BooleanProperty adjustsExtensionProperty() {
     return $adjustsExtension
+  }
+
+  public ObjectProperty<Callback<TreeView<File>, TreeCell<File>>> directoryCellFactoryProperty() {
+    return $directoryCellFactory
+  }
+
+  public Callback<TreeView<File>, TreeCell<File>> getDirectoryCellFactory() {
+    return $directoryCellFactory.get()
+  }
+
+  public void setDirectoryCellFactory(Callback<TreeView<File>, TreeCell<File>> directoryCellFactory) {
+    $directoryCellFactory.set(directoryCellFactory)
+  }
+
+  public ObjectProperty<Callback<ListView<File>, ListCell<File>>> fileCellFactoryProperty() {
+    return $fileCellFactory
+  }
+
+  public Callback<ListView<File>, ListCell<File>> getFileCellFactory() {
+    return $fileCellFactory.get()
+  }
+
+  public void setFileCellFactory(Callback<ListView<File>, ListCell<File>> fileCellFactory) {
+    $fileCellFactory.set(fileCellFactory)
   }
 
 }

@@ -15,10 +15,12 @@ import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Control
 import javafx.scene.control.Label
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.SplitPane
 import javafx.scene.control.TextField
+import javafx.scene.control.TreeCell
 import javafx.scene.control.TreeView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
@@ -99,7 +101,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
     $directoryView.setRoot(root)
     $directoryView.setShowRoot(false)
     $directoryView.setCellFactory() { TreeView<File> view ->
-      DirectoryCell cell = DirectoryCell.new()
+      TreeCell<File> cell = $control.getDirectoryCellFactory().call(view)
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentFile(cell.getItem())
@@ -112,7 +114,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   @VoidClosure
   private void setupFileView() {
     $fileView.setCellFactory() { ListView<File> view ->
-      FileCell cell = FileCell.new()
+      ListCell<File> cell = $control.getFileCellFactory().call(view)
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentFile(cell.getItem())
