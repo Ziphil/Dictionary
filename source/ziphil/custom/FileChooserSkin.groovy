@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 import javafx.stage.WindowEvent
+import javafx.util.Callback
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -101,7 +102,8 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
     $directoryView.setRoot(root)
     $directoryView.setShowRoot(false)
     $directoryView.setCellFactory() { TreeView<File> view ->
-      TreeCell<File> cell = $control.getDirectoryCellFactory().call(view)
+      Callback<TreeView<File>, TreeCell<File>> cellFactory = $control.getDirectoryCellFactory()
+      TreeCell<File> cell = (cellFactory != null) ? cellFactory.call(view) : DirectoryCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           changeCurrentFile(cell.getItem())
@@ -114,7 +116,8 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   @VoidClosure
   private void setupFileView() {
     $fileView.setCellFactory() { ListView<File> view ->
-      ListCell<File> cell = $control.getFileCellFactory().call(view)
+      Callback<ListView<File>, ListCell<File>> cellFactory = $control.getFileCellFactory()
+      ListCell<File> cell = (cellFactory != null) ? cellFactory.call(view) : FileCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentFile(cell.getItem())
