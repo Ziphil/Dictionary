@@ -6,10 +6,8 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ListView
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.control.TreeView
-import ziphil.custom.DirectoryCell
 import ziphil.custom.ExtensionFilter
-import ziphil.custom.FileCell
+import ziphil.custom.DictionaryFileCell
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -67,11 +65,8 @@ public class DictionaryChooserController extends Controller<File> {
       ExtensionFilter extensionFilter = type.createExtensionFilter()
       $chooser.getExtensionFilters().add(extensionFilter)
     }
-    $chooser.setDirectoryCellFactory() { TreeView<File> view ->
-      return DirectoryCell.new()
-    }
     $chooser.setFileCellFactory() { ListView<File> view ->
-      return FileCell.new()
+      return DictionaryFileCell.new()
     }
   }
 

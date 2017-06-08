@@ -2,14 +2,10 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
-import javafx.scene.control.ListView
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
-import javafx.scene.control.TreeView
 import javafx.scene.layout.VBox
-import ziphil.custom.DirectoryCell
 import ziphil.custom.ExtensionFilter
-import ziphil.custom.FileCell
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -80,12 +76,6 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
     $fileChooser.getExtensionFilters().add(filter)
     $fileChooser.setCurrentFileType(filter)
     $fileChooser.setAdjustsExtension(false)
-    $fileChooser.setDirectoryCellFactory() { TreeView<File> view ->
-      return DirectoryCell.new()
-    }
-    $fileChooser.setFileCellFactory() { ListView<File> view ->
-      return FileCell.new()
-    }
   }
 
 }
