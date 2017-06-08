@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class SuggestionBase<P> implements Suggestion<P> {
+public abstract class SuggestionBase<P extends Possibility> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
   private ContentPaneFactory $contentPaneFactory
