@@ -170,10 +170,6 @@ public class FileChooser extends Control {
     return $adjustsExtension
   }
 
-  public ObjectProperty<Callback<TreeView<File>, TreeCell<File>>> directoryCellFactoryProperty() {
-    return $directoryCellFactory
-  }
-
   public Callback<TreeView<File>, TreeCell<File>> getDirectoryCellFactory() {
     return $directoryCellFactory.get()
   }
@@ -182,8 +178,8 @@ public class FileChooser extends Control {
     $directoryCellFactory.set(directoryCellFactory)
   }
 
-  public ObjectProperty<Callback<ListView<File>, ListCell<File>>> fileCellFactoryProperty() {
-    return $fileCellFactory
+  public ObjectProperty<Callback<TreeView<File>, TreeCell<File>>> directoryCellFactoryProperty() {
+    return $directoryCellFactory
   }
 
   public Callback<ListView<File>, ListCell<File>> getFileCellFactory() {
@@ -192,6 +188,10 @@ public class FileChooser extends Control {
 
   public void setFileCellFactory(Callback<ListView<File>, ListCell<File>> fileCellFactory) {
     $fileCellFactory.set(fileCellFactory)
+  }
+
+  public ObjectProperty<Callback<ListView<File>, ListCell<File>>> fileCellFactoryProperty() {
+    return $fileCellFactory
   }
 
 }
