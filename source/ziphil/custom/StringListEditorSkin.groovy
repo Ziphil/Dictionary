@@ -26,14 +26,25 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
 
   @FXML
   private void initialize() {
+    bindProperties()
   }
 
   @FXML
   private void add() {
+    String addition = $additionControl.getText()
+    $stringView.getItems().add(addition)
   }
 
   @FXML
   private void addSeparate() {
+    String addition = $additionControl.getText()
+    for (String character : addition) {
+      $stringView.getItems().add(character)
+    }
+  }
+
+  private void bindProperties() {
+    $stringView.itemsProperty().bindBidirectional($control.stringsProperty())
   }
 
 }
