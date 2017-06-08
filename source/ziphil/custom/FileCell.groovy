@@ -1,7 +1,6 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
-import java.util.regex.Matcher
 import javafx.scene.control.ListCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
