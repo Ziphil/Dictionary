@@ -10,6 +10,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -145,7 +146,8 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
       Text nameText = Text.new(name)
       nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if ($dictionary.getOnLinkClicked() != null) {
-          $dictionary.getOnLinkClicked().accept(id)
+          SearchParameter parameter = SlimeSearchParameter.new(id)
+          $dictionary.getOnLinkClicked().accept(parameter)
         }
       }
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)

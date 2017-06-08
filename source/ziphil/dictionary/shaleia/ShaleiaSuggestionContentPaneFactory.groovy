@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -28,13 +29,13 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(contentPane, possibility.getName(), possibility.getExplanation())
+      addPossibilityNode(contentPane, possibility.createParameter(), possibility.getName(), possibility.getExplanation())
     }
     modifyBreak(contentPane)
     return contentPane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, String name, String explanation) {
+  private void addPossibilityNode(TextFlow contentPane, SearchParameter parameter, String name, String explanation) {
     Text prefixText = Text.new("もしかして:")
     Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
@@ -42,7 +43,7 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
     Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
-        $dictionary.getOnLinkClicked().accept(name)
+        $dictionary.getOnLinkClicked().accept(parameter)
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)

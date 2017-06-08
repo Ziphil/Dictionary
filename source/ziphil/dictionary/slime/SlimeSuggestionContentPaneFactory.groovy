@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -28,13 +29,13 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     contentPane.setLineSpacing(lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(contentPane, possibility.getWord().getId(), possibility.getWord().getName(), possibility.getTitle())
+      addPossibilityNode(contentPane, possibility.createParameter(), possibility.getWord().getName(), possibility.getTitle())
     }
     modifyBreak(contentPane)
     return contentPane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, Int id, String name, String title) {
+  private void addPossibilityNode(TextFlow contentPane, SearchParameter parameter, String name, String title) {
     Text prefixText = Text.new("もしかして:")
     Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
@@ -42,7 +43,7 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     Text breakText = Text.new("\n")
     nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
-        $dictionary.getOnLinkClicked().accept(id)
+        $dictionary.getOnLinkClicked().accept(parameter)
       }
     }
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)

@@ -11,6 +11,9 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.SearchMode
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -202,7 +205,8 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
           for (Text unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
-                $dictionary.getOnLinkClicked().accept(name)
+                SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
+                $dictionary.getOnLinkClicked().accept(parameter)
               }
             }
           }
@@ -227,7 +231,8 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
           for (Text unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
               if ($dictionary.getOnLinkClicked() != null) {
-                $dictionary.getOnLinkClicked().accept(name)
+                SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
+                $dictionary.getOnLinkClicked().accept(parameter)
               }
             }
           }

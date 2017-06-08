@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import ziphilib.transform.ConvertPrimitives
@@ -53,6 +54,10 @@ public interface Dictionary<W extends Word> {
   public ObservableList<W> getWords()
 
   public ObservableList<W> getRawWords()
+
+  public Consumer<SearchParameter> getOnLinkClicked()
+
+  public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 
 
   public Task<?> getLoader()
 

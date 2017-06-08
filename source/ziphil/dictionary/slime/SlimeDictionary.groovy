@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
-import java.util.function.IntConsumer
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.ConjugationResolver
@@ -49,7 +48,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $akrantiainSource = null
   private List<RelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
-  private IntConsumer $onLinkClicked
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -589,14 +587,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setExternalData(Map<String, TreeNode> externalData) {
     $externalData = externalData
-  }
-
-  public IntConsumer getOnLinkClicked() {
-    return $onLinkClicked
-  }
-
-  public void setOnLinkClicked(IntConsumer onLinkClicked) {
-    $onLinkClicked = onLinkClicked
   }
 
 }
