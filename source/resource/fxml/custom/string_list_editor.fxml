@@ -18,8 +18,8 @@
   </stylesheets>
   <spacing><Double rpx="5"/></spacing>
   <ListView fx:id="$stringView" orientation="horizontal">
-    <prefHeight><Double rpx="31"/></prefHeight>
-    <minHeight><Double rpx="31"/></minHeight>
+    <prefHeight><Double rpx="38"/></prefHeight>
+    <minHeight><Double rpx="38"/></minHeight>
   </ListView>
   <HBox>
     <spacing><Double rpx="5"/></spacing>
