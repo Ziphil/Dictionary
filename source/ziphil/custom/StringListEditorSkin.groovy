@@ -3,6 +3,7 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
+import javafx.scene.control.ComboBox
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
@@ -17,6 +18,7 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
 
   @FXML private ListView<String> $listView
   @FXML private TextField $inputControl
+  @FXML private ComboBox $additionModeControl
 
   public StringListEditorSkin(StringListEditor control) {
     super(control)
@@ -31,16 +33,18 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
   }
 
   @FXML
-  private void add() {
+  private void addInput() {
     String input = $inputControl.getText()
-    $listView.getItems().add(input)
-  }
-
-  @FXML
-  private void addSeparate() {
-    String input = $inputControl.getText()
-    for (String character : input) {
-      $listView.getItems().add(character)
+    AdditionMode additionMode = $additionModeControl.getValue()
+    if (additionMode == AdditionMode.NORMAL) {
+      $listView.getItems().add(input)
+    } else if (additionMode == AdditionMode.SPLIT_SINGLE) {
+      for (String character : input) {
+        $listView.getItems().add(character)
+      }
+    } else if (additionMode == AdditionMode.SPLIT_COMMA) {
+      List<String> splitInput = input.split(/\s*(,|、)\s*/).toList()
+      $listView.getItems().addAll(splitInput)
     }
   }
 

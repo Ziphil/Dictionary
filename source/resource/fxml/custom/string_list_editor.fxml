@@ -38,7 +38,7 @@
       </items>
       <value><AdditionMode fx:value="SPLIT_SINGLE"/></value>
     </ComboBox>
-    <Button text="追加" onAction="#add">
+    <Button text="追加" onAction="#addInput">
       <prefWidth><Double rpx="70"/></prefWidth>
       <minWidth><Double rpx="70"/></minWidth>
     </Button>
