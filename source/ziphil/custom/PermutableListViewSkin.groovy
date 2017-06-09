@@ -89,13 +89,14 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
           T movedItem = items.find{it.toString() == movedString}
           Int movedIndex = items.findIndexOf{it.toString() == movedString}
           Int index = cell.getIndex()
-          items.add(index + 1, movedItem)
-          if (movedIndex < index + 1) {
-            items.removeAt(movedIndex)
+          if (index < movedIndex) {
+            items.add(index, movedItem)
+            items.removeAt(movedIndex + 1)
             $itemView.getSelectionModel().select(index)
           } else {
-            items.removeAt(movedIndex + 1)
-            $itemView.getSelectionModel().select(index + 1)
+            items.add(index + 1, movedItem)
+            items.removeAt(movedIndex)
+            $itemView.getSelectionModel().select(index)
           }
           completed = true
         }
