@@ -56,6 +56,32 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
     }
   }
 
+  @FXML
+  private void remove() {
+    Int index = $listView.getSelectionModel().getSelectedIndex()
+    if (index >= 0) {
+      $listView.getItems().removeAt(index)
+    }
+  }
+
+  @FXML
+  private void exchangeLeft() {
+    Int index = $listView.getSelectionModel().getSelectedIndex()
+    if (index > 0) {
+      $listView.getItems().swap(index, index - 1)
+      $listView.getSelectionModel().select(index - 1)
+    }
+  }
+
+  @FXML
+  private void exchangeRight() {
+    Int index = $listView.getSelectionModel().getSelectedIndex()
+    if (index >= 0 && index < $listView.getItems().size() - 1) {
+      $listView.getItems().swap(index, index + 1)
+      $listView.getSelectionModel().select(index + 1)
+    }
+  }
+
   @VoidClosure
   private void setupDragAndDrop() {
     $listView.setCellFactory() { ListView<String> view ->
