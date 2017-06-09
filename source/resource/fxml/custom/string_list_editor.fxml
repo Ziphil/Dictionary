@@ -19,13 +19,13 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <spacing><Double rpx="5"/></spacing>
-  <ListView fx:id="$stringView" orientation="horizontal">
+  <ListView fx:id="$listView" orientation="horizontal">
     <prefHeight><Double rpx="38"/></prefHeight>
     <minHeight><Double rpx="38"/></minHeight>
   </ListView>
   <HBox>
     <spacing><Double rpx="5"/></spacing>
-    <TextField fx:id="$additionControl" HBox.hgrow="always"/>
+    <TextField fx:id="$inputControl" HBox.hgrow="always"/>
     <ComboBox fx:id="$additionModeControl">
       <prefWidth><Double rpx="140"/></prefWidth>
       <minWidth><Double rpx="140"/></minWidth>

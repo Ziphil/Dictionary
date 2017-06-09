@@ -15,8 +15,8 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
 
   private static final String RESOURCE_PATH = "resource/fxml/custom/string_list_editor.fxml"
 
-  @FXML private ListView<String> $stringView
-  @FXML private TextField $additionControl
+  @FXML private ListView<String> $listView
+  @FXML private TextField $inputControl
 
   public StringListEditorSkin(StringListEditor control) {
     super(control)
@@ -32,20 +32,20 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
 
   @FXML
   private void add() {
-    String addition = $additionControl.getText()
-    $stringView.getItems().add(addition)
+    String input = $inputControl.getText()
+    $listView.getItems().add(input)
   }
 
   @FXML
   private void addSeparate() {
-    String addition = $additionControl.getText()
-    for (String character : addition) {
-      $stringView.getItems().add(character)
+    String input = $inputControl.getText()
+    for (String character : input) {
+      $listView.getItems().add(character)
     }
   }
 
   private void bindProperties() {
-    $stringView.itemsProperty().bindBidirectional($control.stringsProperty())
+    $listView.itemsProperty().bindBidirectional($control.stringsProperty())
   }
 
 }
