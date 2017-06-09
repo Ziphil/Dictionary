@@ -36,7 +36,7 @@
           <AdditionMode fx:value="SPLIT_COMMA"/>
         </FXCollections>
       </items>
-      <value><AdditionMode fx:value="SPLIT_SINGLE"/></value>
+      <value><AdditionMode fx:value="SPLIT_COMMA"/></value>
     </ComboBox>
     <Button text="追加" onAction="#addInput">
       <prefWidth><Double rpx="70"/></prefWidth>
