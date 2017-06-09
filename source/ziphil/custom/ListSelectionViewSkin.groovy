@@ -54,7 +54,9 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       $sourceView.getSelectionModel().clearSelection()
       $targetView.getSelectionModel().clearSelection()
       $targetView.getSelectionModel().selectRange(size - movedSize, size)
-      $targetView.requestFocus()
+      if ($sourceView.isFocused()) {
+        $targetView.requestFocus()
+      }
     }
   }
 
@@ -71,7 +73,9 @@ public class ListSelectionViewSkin<T> extends CustomSkinBase<ListSelectionView<T
       $targetView.getSelectionModel().clearSelection()
       $sourceView.getSelectionModel().clearSelection()
       $sourceView.getSelectionModel().selectRange(size - movedSize, size)
-      $sourceView.requestFocus()
+      if ($targetView.isFocused()) {
+        $sourceView.requestFocus()
+      }
     }
   }
 
