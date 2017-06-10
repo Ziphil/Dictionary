@@ -12,9 +12,6 @@
 
 
 <fx:root type="Group" styleClass="help-indicator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <stylesheets>
-    <URL value="@../../css/main/modification.css"/>
-  </stylesheets>
   <StackPane fx:id="$stackPane">
     <Circle styleClass="circle">
       <radius><Double rpx="8"/></radius>
