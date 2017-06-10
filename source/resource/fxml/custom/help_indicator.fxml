@@ -7,23 +7,18 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
 
-<fx:root type="HBox" styleClass="help-indicator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="Group" styleClass="help-indicator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
-  <spacing><Double rpx="5"/></spacing>
-  <Group>
-    <StackPane fx:id="$stackPane">
-      <Circle styleClass="circle">
-        <radius><Double rpx="9"/></radius>
-      </Circle>
-      <Label fx:id="$markLabel" text="?"/>
-    </StackPane>
-  </Group>
+  <StackPane fx:id="$stackPane">
+    <Circle styleClass="circle">
+      <radius><Double rpx="9"/></radius>
+    </Circle>
+    <Label fx:id="$markLabel" text="?"/>
+  </StackPane>
 </fx:root>
