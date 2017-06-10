@@ -23,6 +23,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.ScriptEngineFactoryCell
 import ziphil.custom.SwitchButton
 import ziphil.custom.UtilityStage
+import ziphil.module.ClickType
 import ziphil.module.CustomBindings
 import ziphil.module.FontRenderingType
 import ziphil.module.Setting
@@ -51,6 +52,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $separativeIntervalControl
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
+  @FXML private ComboBox<ClickType> $linkClickTypeControl
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
@@ -92,6 +94,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int separativeInterval = setting.getSeparativeInterval()
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
+    ClickType linkClickType = setting.getLinkClickType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
@@ -138,6 +141,7 @@ public class SettingController extends Controller<BooleanClass> {
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
+    $linkClickTypeControl.getSelectionModel().select(linkClickType)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainOnTopControl.setSelected(keepsMainOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
@@ -171,6 +175,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int separativeInterval = $separativeIntervalControl.getValue()
     String scriptName = $scriptControl.getValue().getNames()[0]
     FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
+    ClickType linkClickType = $linkClickTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
@@ -193,6 +198,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setSeparativeInterval(separativeInterval)
     setting.setScriptName(scriptName)
     setting.setFontRenderingType(fontRenderingType)
+    setting.setLinkClickType(linkClickType)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)

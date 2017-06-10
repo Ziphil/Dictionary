@@ -23,6 +23,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import ziphil.custom.HelpIndicator?>
 <?import ziphil.custom.SwitchButton?>
+<?import ziphil.module.ClickType?>
 <?import ziphil.module.FontRenderingType?>
 <?import ziphil.module.Setting?>
 
@@ -310,6 +311,7 @@
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示用データ保持:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="単語リンク条件:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$savesAutomaticallyControl">
@@ -337,6 +339,22 @@
               <Label text=" ms"/>
             </HBox>
             <HelpIndicator text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$linkClickTypeControl">
+              <prefWidth><Double rpx="150"/></prefWidth>
+              <minWidth><Double rpx="150"/></minWidth>
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <ClickType fx:value="PRIMARY"/>
+                  <ClickType fx:value="DOUBLE_PRIMARY"/>
+                  <ClickType fx:value="MIDDLE"/>
+                  <ClickType fx:value="SHORTCUT_PRIMARY"/>
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <HelpIndicator text="単語リンクで新しい検索結果を表示させる条件を変更できます。"/>
           </HBox>
         </GridPane>
       </Tab>
