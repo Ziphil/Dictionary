@@ -4,10 +4,11 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
@@ -17,10 +18,12 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <spacing><Double rpx="5"/></spacing>
-  <StackPane>
-    <Circle styleClass="circle">
-      <radius><Double rpx="9"/></radius>
-    </Circle>
-    <Label fx:id="$markLabel" text="?"/>
-  </StackPane>
+  <Group>
+    <StackPane fx:id="$stackPane">
+      <Circle styleClass="circle">
+        <radius><Double rpx="9"/></radius>
+      </Circle>
+      <Label fx:id="$markLabel" text="?"/>
+    </StackPane>
+  </Group>
 </fx:root>
