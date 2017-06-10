@@ -13,7 +13,6 @@
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -23,6 +22,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <?import ziphil.custom.HelpIndicator?>
+<?import ziphil.custom.SwitchButton?>
 <?import ziphil.module.FontRenderingType?>
 <?import ziphil.module.Setting?>
 
@@ -101,10 +101,10 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$modifiesPunctuationControl" text="無効">
+            <SwitchButton fx:id="$modifiesPunctuationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
           </HBox>
         </GridPane>
@@ -125,18 +125,18 @@
           <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$keepsMainOnTopControl" text="無効">
+            <SwitchButton fx:id="$keepsMainOnTopControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$keepsEditorOnTopControl" text="無効">
+            <SwitchButton fx:id="$keepsEditorOnTopControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
           </HBox>
         </GridPane>
@@ -200,26 +200,26 @@
           <Label text="スクリプト言語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$ignoresAccentControl" text="無効">
+            <SwitchButton fx:id="$ignoresAccentControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$ignoresCaseControl" text="無効">
+            <SwitchButton fx:id="$ignoresCaseControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$searchesPrefixControl" text="無効">
+            <SwitchButton fx:id="$searchesPrefixControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -271,26 +271,26 @@
           <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$ignoresDuplicateSlimeIdControl" text="無効">
+            <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$showsSlimeIdControl" text="無効">
+            <SwitchButton fx:id="$showsSlimeIdControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語の編集画面にIDを表示します。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$asksMutualRelationControl" text="無効">
+            <SwitchButton fx:id="$asksMutualRelationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。&#10;無効の場合は相互参照にはならずに編集が完了します。"/>
           </HBox>
         </GridPane>
@@ -312,18 +312,18 @@
           <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$savesAutomaticallyControl" text="無効">
+            <SwitchButton fx:id="$savesAutomaticallyControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <ToggleButton fx:id="$persistsContentPanesControl" text="無効">
+            <SwitchButton fx:id="$persistsContentPanesControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-            </ToggleButton>
+            </SwitchButton>
             <HelpIndicator text="単語リストへの表示用データをメモリ上に保持します。&#10;有効にすると、メモリ使用量が増加する代わりに検索が高速になる場合があります。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">

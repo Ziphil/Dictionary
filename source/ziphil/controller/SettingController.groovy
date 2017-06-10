@@ -10,7 +10,6 @@ import javafx.scene.control.ListView
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
-import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
@@ -22,6 +21,7 @@ import javax.script.ScriptEngineManager
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.ScriptEngineFactoryCell
+import ziphil.custom.SwitchButton
 import ziphil.custom.UtilityStage
 import ziphil.module.CustomBindings
 import ziphil.module.FontRenderingType
@@ -51,20 +51,20 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $separativeIntervalControl
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
-  @FXML private ToggleButton $modifiesPunctuationControl
-  @FXML private ToggleButton $keepsMainOnTopControl
-  @FXML private ToggleButton $keepsEditorOnTopControl
+  @FXML private SwitchButton $modifiesPunctuationControl
+  @FXML private SwitchButton $keepsMainOnTopControl
+  @FXML private SwitchButton $keepsEditorOnTopControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
-  @FXML private ToggleButton $savesAutomaticallyControl
-  @FXML private ToggleButton $ignoresAccentControl
-  @FXML private ToggleButton $ignoresCaseControl
-  @FXML private ToggleButton $searchesPrefixControl
-  @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
-  @FXML private ToggleButton $showsSlimeIdControl
-  @FXML private ToggleButton $asksMutualRelationControl
-  @FXML private ToggleButton $persistsContentPanesControl
+  @FXML private SwitchButton $savesAutomaticallyControl
+  @FXML private SwitchButton $ignoresAccentControl
+  @FXML private SwitchButton $ignoresCaseControl
+  @FXML private SwitchButton $searchesPrefixControl
+  @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
+  @FXML private SwitchButton $showsSlimeIdControl
+  @FXML private SwitchButton $asksMutualRelationControl
+  @FXML private SwitchButton $persistsContentPanesControl
 
   public SettingController(UtilityStage<BooleanClass> nextStage) {
     super(nextStage)
@@ -78,7 +78,6 @@ public class SettingController extends Controller<BooleanClass> {
     setupFontFamilyControls()
     setupIntegerControls()
     bindFontControlProperties()
-    bindOtherProperties()
     applySettings()
   }
 
@@ -301,20 +300,6 @@ public class SettingController extends Controller<BooleanClass> {
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
     $systemFontFamilyControl.disableProperty().bind($usesDefaultSystemFontFamilyControl.selectedProperty())
-  }
-
-  private void bindOtherProperties() {
-    $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
-    $keepsMainOnTopControl.textProperty().bind(CustomBindings.whichString($keepsMainOnTopControl, "有効", "無効"))
-    $keepsEditorOnTopControl.textProperty().bind(CustomBindings.whichString($keepsEditorOnTopControl, "有効", "無効"))
-    $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
-    $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
-    $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))
-    $searchesPrefixControl.textProperty().bind(CustomBindings.whichString($searchesPrefixControl, "有効", "無効"))
-    $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
-    $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
-    $asksMutualRelationControl.textProperty().bind(CustomBindings.whichString($asksMutualRelationControl, "有効", "無効"))
-    $persistsContentPanesControl.textProperty().bind(CustomBindings.whichString($persistsContentPanesControl, "有効", "無効"))
   }
 
 }
