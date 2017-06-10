@@ -190,8 +190,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.LINK
       } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && character == END_LINK_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -211,8 +210,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NORMAL
       } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && PUNCTUATIONS.indexOf(character) >= 0) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -234,8 +232,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         texts.add(characterText)    
       } else if (currentMode == TextMode.LINK && character == START_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -247,8 +244,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.LINK_ITALIC
       } else if (currentMode == TextMode.LINK_ITALIC && character == END_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -277,8 +273,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NORMAL
       } else if (currentMode == TextMode.NAME && character == START_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           texts.add(text)
           currentString.setLength(0)
@@ -287,8 +282,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NAME_ITALIC
       } else if (currentMode == TextMode.NAME_ITALIC && character == END_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
           texts.add(text)
           currentString.setLength(0)
