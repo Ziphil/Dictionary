@@ -62,6 +62,7 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
         }
       }
     }
+    return handler
   }
 
 }
