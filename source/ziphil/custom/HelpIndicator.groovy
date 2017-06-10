@@ -12,6 +12,7 @@ import ziphilib.transform.Ziphilify
 public class HelpIndicator extends Control {
 
   private StringProperty $text = SimpleStringProperty.new("")
+  private StringProperty $markCharacter = SimpleStringProperty.new("?")
 
   public HelpIndicator(String text) {
     $text.set(text)
@@ -34,6 +35,18 @@ public class HelpIndicator extends Control {
 
   public StringProperty textProperty() {
     return $text
+  }
+
+  public String getMarkCharacter() {
+    return $markCharacter.get()
+  }
+
+  public void setMarkCharacter(String markCharacter) {
+    $markCharacter.set(markCharacter)
+  }
+
+  public StringProperty markCharacterProperty() {
+    return $markCharacter
   }
 
 }

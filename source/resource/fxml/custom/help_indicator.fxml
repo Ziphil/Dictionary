@@ -21,6 +21,6 @@
     <Circle styleClass="circle">
       <radius><Double rpx="9"/></radius>
     </Circle>
-    <Label text="?"/>
+    <Label fx:id="$markLabel" text="?"/>
   </StackPane>
 </fx:root>
