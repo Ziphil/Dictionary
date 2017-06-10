@@ -17,7 +17,7 @@
   </stylesheets>
   <StackPane fx:id="$stackPane">
     <Circle styleClass="circle">
-      <radius><Double rpx="9"/></radius>
+      <radius><Double rpx="8"/></radius>
     </Circle>
     <Label fx:id="$markLabel" text="?"/>
   </StackPane>
