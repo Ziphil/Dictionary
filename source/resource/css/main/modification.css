@@ -62,6 +62,16 @@
   -fx-padding: 0px;
 }
 
+.help-indicator .label {
+  -fx-font-weight: bold;
+  -fx-text-fill: -fx-box-border;
+}
+
+.help-indicator .circle {
+  -fx-fill: null;
+  -fx-stroke: -fx-box-border;
+}
+
 Text {
   -fx-font-smoothing-type: lcd;
 }
