@@ -15,7 +15,6 @@ public class HelpIndicatorSkin extends CustomSkinBase<HelpIndicator, HBox> {
   private static final String RESOURCE_PATH = "resource/fxml/custom/help_indicator.fxml"
 
   @FXML private Label $markLabel
-  private Tooltip $tooltip = Tooltip.new()
 
   public HelpIndicatorSkin(HelpIndicator control) {
     super(control)
@@ -31,11 +30,12 @@ public class HelpIndicatorSkin extends CustomSkinBase<HelpIndicator, HBox> {
   }
 
   private void setupTooltip() {
-    Tooltip.install($node, $tooltip)
+    Tooltip tooltip = Tooltip.new()
+    Tooltip.install($node, tooltip)
+    tooltip.textProperty().bindBidirectional($control.textProperty())
   }
 
   private void bindProperty() {
-    $tooltip.textProperty().bindBidirectional($control.textProperty())
     $markLabel.textProperty().bindBidirectional($control.markCharacterProperty())
   }
 
