@@ -49,7 +49,7 @@
           </padding>
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="行間調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="行間追加幅:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
@@ -90,7 +90,6 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
             <HBox alignment="baselineLeft">
-              <Label text="＋ "/>
               <Spinner fx:id="$lineSpacingControl" editable="true" >
                 <prefWidth><Double rpx="70"/></prefWidth>
                 <minWidth><Double rpx="70"/></minWidth>
