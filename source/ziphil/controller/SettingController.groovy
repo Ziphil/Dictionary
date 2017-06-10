@@ -34,7 +34,7 @@ public class SettingController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(580)
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilyControl
@@ -260,8 +260,8 @@ public class SettingController extends Controller<BooleanClass> {
       Button browseButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
       dictionaryPathControl.getStyleClass().add("left-pill")
-      dictionaryNameControl.setPrefWidth(Measurement.rpx(150))
-      dictionaryNameControl.setMinWidth(Measurement.rpx(150))
+      dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
+      dictionaryNameControl.setMinWidth(Measurement.rpx(130))
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))

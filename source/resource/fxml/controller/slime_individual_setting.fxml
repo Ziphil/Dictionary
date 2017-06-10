@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import ziphil.custom.HelpIndicator?>
 <?import ziphil.custom.ListSelectionView?>
 <?import ziphil.custom.PermutableListView?>
 <?import ziphil.module.Setting?>
@@ -48,34 +49,24 @@
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
           <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ListSelectionView fx:id="$plainInformationTitleView" sourceName="項目" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefHeight><Double rpx="120"/></prefHeight>
-            <minHeight><Double rpx="120"/></minHeight>
-          </ListSelectionView>
-          <PermutableListView fx:id="$informationTitleOrderView" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <prefHeight><Double rpx="120"/></prefHeight>
-            <minHeight><Double rpx="120"/></minHeight>
-          </PermutableListView>
-          <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="ここで指定した内容欄の項目は、項目名のラベルの後に改行が入らなくなります。&#10;"/>
-            <Text text="文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="4">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="ここで内容の項目順を指定しておくと、必ずその順番で表示されます。"/>
-          </TextFlow>
+          <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <ListSelectionView fx:id="$plainInformationTitleView" sourceName="項目" HBox.hgrow="always">
+              <prefHeight><Double rpx="120"/></prefHeight>
+              <minHeight><Double rpx="120"/></minHeight>
+            </ListSelectionView>
+            <HelpIndicator text="ここで指定した内容欄の項目は、項目名のラベルの後に改行が入らなくなります。&#10;文章が1行だけのものなどを指定しておくと見やすくなるかもしれません。"/>
+          </HBox>
+          <HBox VBox.vgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <PermutableListView fx:id="$informationTitleOrderView" HBox.hgrow="always">
+              <prefHeight><Double rpx="120"/></prefHeight>
+              <minHeight><Double rpx="120"/></minHeight>
+            </PermutableListView>
+            <HelpIndicator text="ここで内容の項目順を指定しておくと、必ずその順番で表示されます。"/>
+          </HBox>
+          <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -95,12 +86,20 @@
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
           <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-          <TextField fx:id="$alphabetOrderControl" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-          <TextField fx:id="$punctuationsControl" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$alphabetOrderControl" HBox.hgrow="always"/>
+            <HelpIndicator text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;何も入力しなかった場合はID順になります。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$punctuationsControl" HBox.hgrow="always"/>
+            <HelpIndicator text="訳語と変化形を編集するときに用いる区切り文字を入力してください。&#10;複数の文字を設定することができます。&#10;単語データを表示するときは最初の文字が区切りに使用されます。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
             <HBox HBox.hgrow="always">
               <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
@@ -110,51 +109,16 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </Button>
+            <HelpIndicator text="akrantiainのsnojファイルを読み込んで、辞書データに埋め込みます。&#10;これを設定しておくと、単語の綴りから自動的に発音記号が作成され表示されます。"/>
           </HBox>
-          <Button text="編集" onAction="#editDefaultWord" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </Button>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;"/>
-            <Text text="何も入力しなかった場合はID順になります。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="訳語と変化形を編集するときに用いる区切り文字を入力してください。&#10;"/>
-            <Text text="複数の文字を設定することができます。&#10;"/>
-            <Text text="単語データを表示するときは最初の文字が区切りに使用されます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="akrantiainのsnojファイルを読み込んで、辞書データに埋め込みます。&#10;"/>
-            <Text text="これを設定しておくと、単語の綴りから自動的に発音記号が作成され表示されます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語を新規作成するときに、ここで指定したデータが自動的に入力されます。&#10;"/>
-            <Text text="IDと単語名の設定は無視されます。"/>
-          </TextFlow>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <Button text="編集" onAction="#editDefaultWord">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </Button>
+            <HelpIndicator text="単語を新規作成するときに、ここで指定したデータが自動的に入力されます。&#10;IDと単語名の設定は無視されます。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="検索" closable="false">
@@ -172,16 +136,11 @@
           <columnConstraints>
             <ColumnConstraints hgrow="never"/>
             <ColumnConstraints hgrow="always"/>
+            <ColumnConstraints hgrow="never"/>
           </columnConstraints>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="10">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="左側の入力欄に検索条件の名前を入れておくと、その名前がメニューに表示されます。&#10;"/>
-            <Text text="検索条件は辞書ファイルとは別に保存されます。"/>
-          </TextFlow>
+          <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="10">
+            <HelpIndicator text="左側の入力欄に検索条件の名前を入れておくと、その名前がメニューに表示されます。&#10;検索条件は辞書ファイルとは別に保存されます。"/>
+          </HBox>
         </GridPane>
       </Tab>
     </TabPane>

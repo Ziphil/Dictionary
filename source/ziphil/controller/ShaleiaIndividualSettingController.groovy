@@ -18,7 +18,7 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
   private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_individual_setting.fxml"
   private static final String TITLE = "個別設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(360)
 
   @FXML private TextField $alphabetOrderControl
   @FXML private TextField $versionControl
