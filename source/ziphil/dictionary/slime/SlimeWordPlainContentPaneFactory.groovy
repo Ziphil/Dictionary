@@ -20,6 +20,10 @@ public class SlimeWordPlainContentPaneFactory extends ContentPaneFactoryBase<Sli
     super(word, dictionary, persisted)
   }
 
+  public SlimeWordPlainContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)

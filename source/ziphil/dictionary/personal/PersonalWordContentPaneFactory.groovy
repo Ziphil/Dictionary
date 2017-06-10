@@ -21,6 +21,10 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
     super(word, dictionary, persisted)
   }
 
+  public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()

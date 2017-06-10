@@ -20,6 +20,10 @@ public class ShaleiaWordPlainContentPaneFactory extends ContentPaneFactoryBase<S
     super(word, dictionary, persisted)
   }
 
+  public ShaleiaWordPlainContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)

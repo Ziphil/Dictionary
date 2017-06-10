@@ -51,6 +51,10 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     super(word, dictionary, persisted)
   }
 
+  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
@@ -336,8 +340,10 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   private EventHandler<MouseEvent> createLinkEventHandler(String name) {
     EventHandler<MouseEvent> handler = { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
-        SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
-        $dictionary.getOnLinkClicked().accept(parameter)
+        if ($linkClickType != null && $linkClickType.matches(event)) {
+          SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
+          $dictionary.getOnLinkClicked().accept(parameter)
+        }
       }
     }
     return handler

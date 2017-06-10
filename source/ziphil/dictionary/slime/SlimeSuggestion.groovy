@@ -3,6 +3,7 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.SuggestionBase
+import ziphil.module.ClickType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -17,8 +18,13 @@ public class SlimeSuggestion extends SuggestionBase<SlimePossibility> {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
-    return SlimeSuggestionContentPaneFactory.new(this, $dictionary, persisted)
+    Setting setting = Setting.getInstance()
+    ClickType linkClickType = setting.getLinkClickType()
+    Boolean persisted = setting.getPersistsContentPanes()
+    SlimeSuggestionContentPaneFactory contentPaneFactory = SlimeSuggestionContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setLinkClickType(linkClickType)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   public SlimeDictionary getDictionary() {

@@ -19,6 +19,10 @@ public class PersonalWordPlainContentPaneFactory extends ContentPaneFactoryBase<
     super(word, dictionary, persisted)
   }
 
+  public PersonalWordPlainContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)

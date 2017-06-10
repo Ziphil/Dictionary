@@ -28,13 +28,19 @@ public class PersonalWord extends WordBase {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
-    return PersonalWordContentPaneFactory.new(this, $dictionary, persisted)
+    Setting setting = Setting.getInstance()
+    Boolean persisted = setting.getPersistsContentPanes()
+    PersonalWordContentPaneFactory contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   protected ContentPaneFactory createPlainContentPaneFactory() {
-    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
-    return PersonalWordPlainContentPaneFactory.new(this, $dictionary, persisted)
+    Setting setting = Setting.getInstance()
+    Boolean persisted = setting.getPersistsContentPanes()
+    PersonalWordPlainContentPaneFactory contentPaneFactory = PersonalWordPlainContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   public PersonalDictionary getDictionary() {

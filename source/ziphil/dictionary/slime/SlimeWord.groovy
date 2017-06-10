@@ -3,6 +3,7 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.WordBase
+import ziphil.module.ClickType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -106,13 +107,23 @@ public class SlimeWord extends WordBase {
   }
 
   protected ContentPaneFactory createContentPaneFactory() {
-    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
-    return SlimeWordContentPaneFactory.new(this, $dictionary, persisted)
+    Setting setting = Setting.getInstance()
+    ClickType linkClickType = setting.getLinkClickType()
+    Boolean persisted = setting.getPersistsContentPanes()
+    SlimeWordContentPaneFactory contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setLinkClickType(linkClickType)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   protected ContentPaneFactory createPlainContentPaneFactory() {
-    Boolean persisted = Setting.getInstance().getPersistsContentPanes()
-    return SlimeWordPlainContentPaneFactory.new(this, $dictionary, persisted)
+    Setting setting = Setting.getInstance()
+    ClickType linkClickType = setting.getLinkClickType()
+    Boolean persisted = setting.getPersistsContentPanes()
+    SlimeWordPlainContentPaneFactory contentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setLinkClickType(linkClickType)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   public SlimeDictionary getDictionary() {

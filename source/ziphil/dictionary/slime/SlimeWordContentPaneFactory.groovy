@@ -36,6 +36,10 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     super(word, dictionary, persisted)
   }
 
+  public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
+    super(word, dictionary)
+  }
+
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
@@ -160,8 +164,10 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   private EventHandler<MouseEvent> createLinkEventHandler(Int id) {
     EventHandler<MouseEvent> handler = { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
-        SearchParameter parameter = SlimeSearchParameter.new(id)
-        $dictionary.getOnLinkClicked().accept(parameter)
+        if ($linkClickType != null && $linkClickType.matches(event)) {
+          SearchParameter parameter = SlimeSearchParameter.new(id)
+          $dictionary.getOnLinkClicked().accept(parameter)
+        }
       }
     }
     return handler

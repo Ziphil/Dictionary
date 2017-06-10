@@ -5,6 +5,7 @@ import javafx.scene.Node
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.module.ClickType
 import ziphilib.transform.Ziphilify
 
 
@@ -14,6 +15,7 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
   protected E $word
   protected D $dictionary
   private Pane $contentPane = null 
+  protected ClickType $linkClickType = null
   private Boolean $changed = true
   private Boolean $persisted = false
 
@@ -57,6 +59,10 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
         contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
       }
     }
+  }
+
+  public void setLinkClickType(ClickType linkClickType) {
+    $linkClickType = linkClickType
   }
 
   public Boolean isPersisted() {
