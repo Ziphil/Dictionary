@@ -38,6 +38,7 @@ public class Setting {
   private Int $separativeInterval = 700
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
+  private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
   private Boolean $keepsMainOnTop = false
   private Boolean $keepsEditorOnTop = true
@@ -279,6 +280,14 @@ public class Setting {
 
   public void setFontRenderingType(FontRenderingType fontRenderingType) {
     $fontRenderingType = fontRenderingType
+  }
+
+  public ClickType getLinkClickType() {
+    return $linkClickType
+  }
+
+  public void setLinkClickType(ClickType linkClickType) {
+    $linkClickType = linkClickType
   }
 
   public Boolean getModifiesPunctuation() {
