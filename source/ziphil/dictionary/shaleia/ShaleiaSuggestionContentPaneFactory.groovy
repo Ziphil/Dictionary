@@ -1,6 +1,7 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
+import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
@@ -41,16 +42,20 @@ public class ShaleiaSuggestionContentPaneFactory extends ContentPaneFactoryBase<
     Text nameText = Text.new(name)
     Text explanationText = Text.new(" の${explanation}?")
     Text breakText = Text.new("\n")
-    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-      if ($dictionary.getOnLinkClicked() != null) {
-        $dictionary.getOnLinkClicked().accept(parameter)
-      }
-    }
+    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(parameter))
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
     explanationText.getStyleClass().add(CONTENT_CLASS)
     contentPane.getChildren().addAll(prefixText, spaceText, nameText, explanationText, breakText)
+  }
+
+  private EventHandler<MouseEvent> createLinkEventHandler(SearchParameter parameter) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        $dictionary.getOnLinkClicked().accept(parameter)
+      }
+    }
   }
 
 }

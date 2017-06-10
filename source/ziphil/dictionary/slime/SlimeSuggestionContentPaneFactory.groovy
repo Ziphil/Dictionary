@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
@@ -41,16 +42,21 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     Text nameText = Text.new(name)
     Text titleText = Text.new(" の${title}?")
     Text breakText = Text.new("\n")
-    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-      if ($dictionary.getOnLinkClicked() != null) {
-        $dictionary.getOnLinkClicked().accept(parameter)
-      }
-    }
+    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(parameter)) 
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SLIME_POSSIBILITY_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     titleText.getStyleClass().add(CONTENT_CLASS)
     contentPane.getChildren().addAll(prefixText, spaceText, nameText, titleText, breakText)
+  }
+
+  private EventHandler<MouseEvent> createLinkEventHandler(SearchParameter parameter) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        $dictionary.getOnLinkClicked().accept(parameter)
+      }
+    }
+    return handler
   }
 
 }
