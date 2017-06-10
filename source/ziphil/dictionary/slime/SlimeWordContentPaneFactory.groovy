@@ -144,12 +144,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
       Int id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
-      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-        if ($dictionary.getOnLinkClicked() != null) {
-          SearchParameter parameter = SlimeSearchParameter.new(id)
-          $dictionary.getOnLinkClicked().accept(parameter)
-        }
-      }
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(id))
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       contentPane.getChildren().add(nameText)
       if (i < names.size() - 1) {
@@ -162,7 +157,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     contentPane.getChildren().add(breakText)
   }
 
-  private EventHandler<MouseEvent> createWordLinkEventHandler(Int id) {
+  private EventHandler<MouseEvent> createLinkEventHandler(Int id) {
     EventHandler<MouseEvent> handler = { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
         SearchParameter parameter = SlimeSearchParameter.new(id)
