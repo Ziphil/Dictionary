@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -127,7 +128,6 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     contentPane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }
 
-  @VoidClosure
   private void addRelationNode(TextFlow contentPane, String title, List<IntegerClass> ids, List<String> names) {
     Text formerTitleText = Text.new("cf:")
     Label titleText = Label.new(title)
@@ -160,6 +160,16 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     }
     Text breakText = Text.new("\n")
     contentPane.getChildren().add(breakText)
+  }
+
+  private EventHandler<MouseEvent> createWordLinkEventHandler(Int id) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        SearchParameter parameter = SlimeSearchParameter.new(id)
+        $dictionary.getOnLinkClicked().accept(parameter)
+      }
+    }
+    return handler
   }
 
 }

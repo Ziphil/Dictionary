@@ -2,6 +2,7 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -171,7 +172,6 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     contentPane.getChildren().add(breakText)
   }
 
-  @VoidClosure
   private List<Text> createRichTexts(String string, Boolean decoratesLink) {
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()
@@ -203,12 +203,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         if (currentName.length() > 0) {
           String name = currentName.toString()
           for (Text unnamedText : unnamedTexts) {
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-              if ($dictionary.getOnLinkClicked() != null) {
-                SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
-                $dictionary.getOnLinkClicked().accept(parameter)
-              }
-            }
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
           unnamedTexts.clear()
@@ -229,12 +224,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         if (currentName.length() > 0) {
           String name = currentName.toString()
           for (Text unnamedText : unnamedTexts) {
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-              if ($dictionary.getOnLinkClicked() != null) {
-                SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
-                $dictionary.getOnLinkClicked().accept(parameter)
-              }
-            }
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
           unnamedTexts.clear()
@@ -347,6 +337,16 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
 
   private List<Text> createRichTexts(String string) {
     return createRichTexts(string, false)
+  }
+
+  private EventHandler<MouseEvent> createLinkEventHandler(String name) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
+        $dictionary.getOnLinkClicked().accept(parameter)
+      }
+    }
+    return handler
   }
 
 }
