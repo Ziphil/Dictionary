@@ -62,6 +62,11 @@
   -fx-padding: 0px;
 }
 
+.tooltip {
+  -fx-padding: 0.416667em 0.583333em;
+  -fx-font-size: 0.9em;
+}
+
 .help-indicator .label {
   -fx-font-weight: bold;
   -fx-text-fill: -fx-box-border;
