@@ -53,6 +53,10 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     return find(DescriptionType.CONTENT)
   }
 
+  public Boolean findNote() {
+    return find(DescriptionType.NOTE)
+  }
+
   public Boolean findSynonym() {
     return find(DescriptionType.SYNONYM)
   }
@@ -90,29 +94,44 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     return lookup(DescriptionType.CONTENT, 2)
   }
 
+  public String lookupNote() {
+    return lookup(DescriptionType.NOTE, 2)
+  }
+
   public String lookupSynonym() {
     return lookup(DescriptionType.SYNONYM, 1)
   }
 
   public String title() {
-    if ($matcher != null && $type == DescriptionType.CONTENT) {
-      String alphabet = $matcher.group(1)
-      if (alphabet == "M") {
-        return "語義"
-      } else if (alphabet == "E") {
-        return "語源"
-      } else if (alphabet == "U") {
-        return "語法"
-      } else if (alphabet == "P") {
-        return "成句"
-      } else if (alphabet == "N") {
-        return "備考"
-      } else if (alphabet == "O") {
-        return "タスク"
-      } else if (alphabet == "S") {
-        return "例文"
-      } else {
-        return "?"
+    if ($matcher != null) {
+      if ($type == DescriptionType.CONTENT) {
+        String alphabet = $matcher.group(1)
+        if (alphabet == "M") {
+          return "語義"
+        } else if (alphabet == "E") {
+          return "語源"
+        } else if (alphabet == "U") {
+          return "語法"
+        } else if (alphabet == "P") {
+          return "成句"
+        } else if (alphabet == "N") {
+          return "備考"
+        } else if (alphabet == "O") {
+          return "タスク"
+        } else if (alphabet == "S") {
+          return "例文"
+        } else {
+          return "?"
+        }
+      } else if ($type == DescriptionType.NOTE) {
+        String alphabet = $matcher.group(1)
+        if (alphabet == "C") {
+          return "考察"
+        } else if (alphabet == "H") {
+          return "履歴"
+        } else {
+          return "?"
+        }
       }
     } else {
       return null
@@ -134,6 +153,7 @@ private static enum DescriptionType {
   EQUIVALENT(/^\=\s*〈(.+)〉\s*(.+)$/),
   HIDDEN_EQUIVALENT(/^\=:\s*(.+)$/),
   CONTENT(/^([A-Z])>\s*(.+)$/),
+  NOTE(/^([A-Z])~\s*(.+)$/),
   SYNONYM(/^\-\s*(.+)$/)
 
   private String $regex
