@@ -112,7 +112,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
       } else if (alphabet == "S") {
         return "例文"
       } else {
-        return ""
+        return "?"
       }
     } else {
       return null
