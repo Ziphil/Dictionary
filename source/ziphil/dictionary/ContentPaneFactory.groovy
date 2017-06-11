@@ -23,9 +23,8 @@ public interface ContentPaneFactory {
   // このメソッドが呼び出され直後は、create メソッドは常に新たにペインを生成します。
   public void change()
 
-  // 生成したペインをフィールドに保持する設定になっている場合は true を返し、そうでない場合は false を返します。
-  public Boolean isPersisted()
-
+  // 生成したペインをフィールドに保持するかどうかを指定します。
+  // true を渡すとペインを保持するようになり、false を渡すと create メソッドが呼ばれるたびに新たにペインを生成するようになります。
   public void setPersisted(Boolean persisted)
 
 }

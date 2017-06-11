@@ -65,10 +65,6 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
     $linkClickType = linkClickType
   }
 
-  public Boolean isPersisted() {
-    return $persisted
-  }
-
   public void setPersisted(Boolean persisted) {
     $persisted = persisted
     if (!persisted) {
