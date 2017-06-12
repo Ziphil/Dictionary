@@ -26,6 +26,7 @@ import ziphilib.transform.Ziphilify
 public class PrintController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/print.fxml"
+  private static final String PRINT_STYLESHEET_PATH = "resource/css/main/print.css"
   private static final String TITLE = "印刷"
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
@@ -82,7 +83,7 @@ public class PrintController extends Controller<Void> {
 
   private Pane createMainPane() {
     VBox box = VBox.new(Measurement.rpx(3))
-    URL stylesheetURL = getClass().getClassLoader().getResource("resource/css/main/main.css")
+    URL stylesheetURL = getClass().getClassLoader().getResource(PRINT_STYLESHEET_PATH)
     PageLayout layout = $printerJob.getPrinter().getDefaultPageLayout()
     box.setPrefWidth(layout.getPrintableWidth())
     box.getStylesheets().add(stylesheetURL.toString())
