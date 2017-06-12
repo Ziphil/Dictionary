@@ -33,7 +33,7 @@ public class PrintController extends Controller<Void> {
   private static final Int MAX_WORD_SIZE = 50
 
   @FXML private ComboBox<Printer> $printerControl
-  private Dictionary $dictionary
+  private List<Element> $words
   private PrinterJob $printerJob = PrinterJob.createPrinterJob()
 
   public PrintController(UtilityStage<Void> stage) {
@@ -47,7 +47,7 @@ public class PrintController extends Controller<Void> {
   }
 
   public void prepare(Dictionary dictionary) {
-    $dictionary = dictionary
+    $words = ArrayList.new(dictionary.getWholeWords())
   }
 
   @FXML
@@ -56,9 +56,8 @@ public class PrintController extends Controller<Void> {
       Pane mainPane = createMainPane()
       Scene scene = createScene(mainPane)
       PageLayout layout = $printerJob.getPrinter().getDefaultPageLayout()
-      List<Element> words = $dictionary.getWholeWords()
-      for (Int i = 0 ; i < MAX_WORD_SIZE && i < words.size() ; i ++) {
-        Element word = words[i]
+      for (Int i = 0 ; i < MAX_WORD_SIZE && i < $words.size() ; i ++) {
+        Element word = $words[i]
         Pane pane = word.getContentPaneFactory().create(true)
         Parent root = scene.getRoot()
         mainPane.getChildren().add(pane)
