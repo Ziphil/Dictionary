@@ -924,6 +924,16 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void printDictionary() {
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    PrintController controller = PrintController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare($dictionary)
+    nextStage.showAndWait()
+  }
+
+  @FXML
   private void showStatistics() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     StatisticsController controller = StatisticsController.new(nextStage)
