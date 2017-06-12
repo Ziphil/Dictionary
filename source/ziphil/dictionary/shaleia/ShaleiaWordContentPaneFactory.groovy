@@ -2,6 +2,7 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -11,6 +12,9 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.SearchMode
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -43,11 +47,15 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   private static final String END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
+  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
+  }
+
   public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasContent = false
@@ -168,7 +176,6 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     contentPane.getChildren().add(breakText)
   }
 
-  @VoidClosure
   private List<Text> createRichTexts(String string, Boolean decoratesLink) {
     List<Text> texts = ArrayList.new()
     List<Text> unnamedTexts = ArrayList.new()
@@ -187,8 +194,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.LINK
       } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && character == END_LINK_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -200,11 +206,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         if (currentName.length() > 0) {
           String name = currentName.toString()
           for (Text unnamedText : unnamedTexts) {
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-              if ($dictionary.getOnLinkClicked() != null) {
-                $dictionary.getOnLinkClicked().accept(name)
-              }
-            }
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
           unnamedTexts.clear()
@@ -212,8 +214,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NORMAL
       } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && PUNCTUATIONS.indexOf(character) >= 0) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -225,11 +226,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         if (currentName.length() > 0) {
           String name = currentName.toString()
           for (Text unnamedText : unnamedTexts) {
-            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-              if ($dictionary.getOnLinkClicked() != null) {
-                $dictionary.getOnLinkClicked().accept(name)
-              }
-            }
+            unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
           unnamedTexts.clear()
@@ -239,8 +236,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         texts.add(characterText)    
       } else if (currentMode == TextMode.LINK && character == START_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -252,8 +248,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.LINK_ITALIC
       } else if (currentMode == TextMode.LINK_ITALIC && character == END_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
           if (decoratesLink) {
             text.getStyleClass().add(SHALEIA_LINK_CLASS)
@@ -282,8 +277,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NORMAL
       } else if (currentMode == TextMode.NAME && character == START_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
           texts.add(text)
           currentString.setLength(0)
@@ -292,8 +286,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
         currentMode = TextMode.NAME_ITALIC
       } else if (currentMode == TextMode.NAME_ITALIC && character == END_ITALIC_CHARACTER) {
         if (currentString.length() > 0) {
-          String partName = currentString.toString()
-          Text text = Text.new(partName)
+          Text text = Text.new(currentString.toString())
           text.getStyleClass().addAll(SHALEIA_NAME_CLASS, SHALEIA_ITALIC_CLASS)
           texts.add(text)
           currentString.setLength(0)
@@ -342,6 +335,18 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
 
   private List<Text> createRichTexts(String string) {
     return createRichTexts(string, false)
+  }
+
+  private EventHandler<MouseEvent> createLinkEventHandler(String name) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        if ($linkClickType != null && $linkClickType.matches(event)) {
+          SearchParameter parameter = NormalSearchParameter.new(name, SearchMode.NAME, true, true)
+          $dictionary.getOnLinkClicked().accept(parameter)
+        }
+      }
+    }
+    return handler
   }
 
 }

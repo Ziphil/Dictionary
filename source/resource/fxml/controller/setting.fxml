@@ -13,7 +13,6 @@
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,6 +21,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import ziphil.custom.HelpIndicator?>
+<?import ziphil.custom.SwitchButton?>
+<?import ziphil.module.ClickType?>
 <?import ziphil.module.FontRenderingType?>
 <?import ziphil.module.Setting?>
 
@@ -47,9 +49,9 @@
             </Insets>
           </padding>
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-          <Label text="行間調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+          <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="行間追加幅:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -61,13 +63,14 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
+            <HelpIndicator text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="10"/></spacing>
             <CheckBox fx:id="$usesSystemContentFontFamilyControl" text="システムフォントを用いる"/>
             <CheckBox fx:id="$usesDefaultContentFontSizeControl" text="デフォルトサイズを用いる"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$editorFontFamilyControl" editable="true">
               <prefWidth><Double rpx="350"/></prefWidth>
@@ -78,63 +81,33 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
+            <HelpIndicator text="このフォントは単語データの編集時のテキストエリアで用いられます。"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="10"/></spacing>
             <CheckBox fx:id="$usesSystemEditorFontFamilyControl" text="システムフォントを用いる"/>
             <CheckBox fx:id="$usesDefaultEditorFontSizeControl" text="デフォルトサイズを用いる"/>
           </HBox>
-          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <Label text="＋ "/>
-            <Spinner fx:id="$lineSpacingControl" editable="true" >
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <spacing><Double rpx="5"/></spacing>
+            <HBox alignment="baselineLeft">
+              <Spinner fx:id="$lineSpacingControl" editable="true" >
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+                <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
+              </Spinner>
+              <Label text=" px"/>
+            </HBox>
+            <HelpIndicator text="単語データ表示欄の行間のスペースを調整します。&#10;指定したピクセル分だけ余分に行間が空きます。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$modifiesPunctuationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
-              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="-10" max="20" initialValue="0" amountToStepBy="1"/></valueFactory>
-            </Spinner>
-            <Label text=" px"/>
+            </SwitchButton>
+            <HelpIndicator text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
           </HBox>
-          <ToggleButton fx:id="$modifiesPunctuationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="8">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="このフォントは単語データの表示に用いられます。&#10;"/>
-            <Text text="フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="このフォントは単語データの編集時のテキストエリアで用いられます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語データ表示欄の行間のスペースを調整します。&#10;"/>
-            <Text text="指定したピクセル分だけ余分に行間が空きます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="9">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="句読点や括弧類の周りのスペースを調整します。&#10;"/>
-            <Text text="フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
-          </TextFlow>
         </GridPane>
       </Tab>
       <Tab text="ウィンドウ" closable="false">
@@ -150,33 +123,23 @@
             </Insets>
           </padding>
           <Label text="最前面メインウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ToggleButton fx:id="$keepsMainOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ToggleButton fx:id="$keepsEditorOnTopControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;"/>
-            <Text text="これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
-          </TextFlow>
+          <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$keepsMainOnTopControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$keepsEditorOnTopControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="GUI" closable="false">
@@ -192,42 +155,32 @@
             </Insets>
           </padding>
           <Label text="システムフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="フォントレンダリング:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-          <ComboBox fx:id="$systemFontFamilyControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefWidth><Double rpx="350"/></prefWidth>
-            <minWidth><Double rpx="350"/></minWidth>
-          </ComboBox>
+          <Label text="フォントレンダリング:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$systemFontFamilyControl" editable="true">
+              <prefWidth><Double rpx="350"/></prefWidth>
+              <minWidth><Double rpx="350"/></minWidth>
+            </ComboBox>
+            <HelpIndicator text="このフォントはGUI全体で用いられます。"/>
+          </HBox>
           <CheckBox fx:id="$usesDefaultSystemFontFamilyControl" text="デフォルトフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-          <ComboBox fx:id="$fontRenderingTypeControl" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <prefWidth><Double rpx="180"/></prefWidth>
-            <minWidth><Double rpx="180"/></minWidth>
-            <items>
-              <FXCollections fx:factory="observableArrayList">
-                <FontRenderingType fx:value="DEFAULT_LCD"/>
-                <FontRenderingType fx:value="DEFAULT_GRAY"/>
-                <FontRenderingType fx:value="PRISM_LCD"/>
-                <FontRenderingType fx:value="PRISM_GRAY"/>
-              </FXCollections>
-            </items>
-          </ComboBox>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="このフォントはGUI全体で用いられます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="4">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="フォントのレンダリング方法を変更できます。&#10;"/>
-            <Text text="環境によっては設定が反映されない場合があります。"/>
-          </TextFlow>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$fontRenderingTypeControl">
+              <prefWidth><Double rpx="180"/></prefWidth>
+              <minWidth><Double rpx="180"/></minWidth>
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <FontRenderingType fx:value="DEFAULT_LCD"/>
+                  <FontRenderingType fx:value="DEFAULT_GRAY"/>
+                  <FontRenderingType fx:value="PRISM_LCD"/>
+                  <FontRenderingType fx:value="PRISM_GRAY"/>
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <HelpIndicator text="フォントのレンダリング方法を変更できます。&#10;環境によっては設定が反映されない場合があります。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="検索" closable="false">
@@ -243,62 +196,41 @@
             </Insets>
           </padding>
           <Label text="アクセント記号の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="前方一致検索:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <Label text="スクリプト言語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-          <ToggleButton fx:id="$ignoresAccentControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ToggleButton fx:id="$ignoresCaseControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ToggleButton fx:id="$searchesPrefixControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ComboBox fx:id="$scriptControl" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <prefWidth><Double rpx="250"/></prefWidth>
-            <minWidth><Double rpx="250"/></minWidth>
-          </ComboBox>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;"/>
-            <Text text="有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="7">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="スクリプト検索で利用する言語を設定できます。&#10;"/>
-            <Text text="libraryフォルダにjarファイルを追加することで、利用できる言語を増やすことができます。"/>
-          </TextFlow>
+          <Label text="大文字小文字の無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="前方一致検索:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="スクリプト言語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$ignoresAccentControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$ignoresCaseControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$searchesPrefixControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$scriptControl">
+              <prefWidth><Double rpx="250"/></prefWidth>
+              <minWidth><Double rpx="250"/></minWidth>
+            </ComboBox>
+            <HelpIndicator text="スクリプト検索で利用する言語を設定できます。&#10;libraryフォルダにjarファイルを追加することで、利用できる言語を増やすことができます。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="登録辞書" closable="false">
@@ -316,16 +248,11 @@
           <columnConstraints>
             <ColumnConstraints hgrow="never"/>
             <ColumnConstraints hgrow="always"/>
+            <ColumnConstraints hgrow="never"/>
           </columnConstraints>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="10">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="左側の入力欄に辞書の名前を入れておくと、その名前がメニューに表示されます。&#10;"/>
-            <Text text="空欄にするとファイル名が表示されます。"/>
-          </TextFlow>
+          <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="10">
+            <HelpIndicator text="左側の入力欄に辞書の名前を入れておくと、その名前がメニューに表示されます。&#10;空欄にするとファイル名が表示されます。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="OTM形式" closable="false">
@@ -341,46 +268,32 @@
             </Insets>
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <ToggleButton fx:id="$ignoresDuplicateSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ToggleButton fx:id="$showsSlimeIdControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <ToggleButton fx:id="$asksMutualRelationControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="4">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語の編集画面にIDを表示します。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。"/>
-          </TextFlow>
+          <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$showsSlimeIdControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語の編集画面にIDを表示します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$asksMutualRelationControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。&#10;無効の場合は相互参照にはならずに編集が完了します。"/>
+          </HBox>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -396,37 +309,53 @@
             </Insets>
           </padding>
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <Label text="表示用データ保持:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <ToggleButton fx:id="$savesAutomaticallyControl" text="無効" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <prefWidth><Double rpx="70"/></prefWidth>
-            <minWidth><Double rpx="70"/></minWidth>
-          </ToggleButton>
-          <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <Spinner fx:id="$separativeIntervalControl" editable="true">
-              <prefWidth><Double rpx="80"/></prefWidth>
-              <minWidth><Double rpx="80"/></minWidth>
-              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="5000" initialValue="0" amountToStepBy="50"/></valueFactory>
-            </Spinner>
-            <Label text=" ms"/>
+          <Label text="単語リンク条件:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$savesAutomaticallyControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
           </HBox>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-                <bottom><Double rpx="5"/></bottom>
-              </Insets>
-            </GridPane.margin>
-            <Text text="単語データの編集時に自動的に変更を保存します。&#10;"/>
-            <Text text="無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
-          </TextFlow>
-          <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <GridPane.margin>
-              <Insets>
-                <left><Double rpx="10"/></left>
-              </Insets>
-            </GridPane.margin>
-            <Text text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
-          </TextFlow>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$persistsContentPanesControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語リストへの表示用データをメモリ上に保持します。&#10;有効にすると、メモリ使用量が増加する代わりに検索が高速になる場合があります。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <spacing><Double rpx="5"/></spacing>
+            <HBox alignment="baselineLeft">
+              <Spinner fx:id="$separativeIntervalControl" editable="true">
+                <prefWidth><Double rpx="80"/></prefWidth>
+                <minWidth><Double rpx="80"/></minWidth>
+                <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="5000" initialValue="0" amountToStepBy="50"/></valueFactory>
+              </Spinner>
+              <Label text=" ms"/>
+            </HBox>
+            <HelpIndicator text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$linkClickTypeControl">
+              <prefWidth><Double rpx="150"/></prefWidth>
+              <minWidth><Double rpx="150"/></minWidth>
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <ClickType fx:value="PRIMARY"/>
+                  <ClickType fx:value="DOUBLE_PRIMARY"/>
+                  <ClickType fx:value="MIDDLE"/>
+                  <ClickType fx:value="SHORTCUT_PRIMARY"/>
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <HelpIndicator text="単語リンクで新しい検索結果を表示させる条件を変更できます。"/>
+          </HBox>
         </GridPane>
       </Tab>
     </TabPane>

@@ -10,7 +10,6 @@ import javafx.scene.control.ListView
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
-import javafx.scene.control.ToggleButton
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
@@ -22,7 +21,9 @@ import javax.script.ScriptEngineManager
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.ScriptEngineFactoryCell
+import ziphil.custom.SwitchButton
 import ziphil.custom.UtilityStage
+import ziphil.module.ClickType
 import ziphil.module.CustomBindings
 import ziphil.module.FontRenderingType
 import ziphil.module.Setting
@@ -34,7 +35,7 @@ public class SettingController extends Controller<BooleanClass> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(580)
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $contentFontFamilyControl
@@ -51,19 +52,21 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $separativeIntervalControl
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
-  @FXML private ToggleButton $modifiesPunctuationControl
-  @FXML private ToggleButton $keepsMainOnTopControl
-  @FXML private ToggleButton $keepsEditorOnTopControl
+  @FXML private ComboBox<ClickType> $linkClickTypeControl
+  @FXML private SwitchButton $modifiesPunctuationControl
+  @FXML private SwitchButton $keepsMainOnTopControl
+  @FXML private SwitchButton $keepsEditorOnTopControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
-  @FXML private ToggleButton $savesAutomaticallyControl
-  @FXML private ToggleButton $ignoresAccentControl
-  @FXML private ToggleButton $ignoresCaseControl
-  @FXML private ToggleButton $searchesPrefixControl
-  @FXML private ToggleButton $ignoresDuplicateSlimeIdControl
-  @FXML private ToggleButton $showsSlimeIdControl
-  @FXML private ToggleButton $asksMutualRelationControl
+  @FXML private SwitchButton $savesAutomaticallyControl
+  @FXML private SwitchButton $ignoresAccentControl
+  @FXML private SwitchButton $ignoresCaseControl
+  @FXML private SwitchButton $searchesPrefixControl
+  @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
+  @FXML private SwitchButton $showsSlimeIdControl
+  @FXML private SwitchButton $asksMutualRelationControl
+  @FXML private SwitchButton $persistsContentPanesControl
 
   public SettingController(UtilityStage<BooleanClass> nextStage) {
     super(nextStage)
@@ -77,7 +80,6 @@ public class SettingController extends Controller<BooleanClass> {
     setupFontFamilyControls()
     setupIntegerControls()
     bindFontControlProperties()
-    bindOtherProperties()
     applySettings()
   }
 
@@ -92,6 +94,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int separativeInterval = setting.getSeparativeInterval()
     String scriptName = setting.getScriptName()
     FontRenderingType fontRenderingType = setting.getFontRenderingType()
+    ClickType linkClickType = setting.getLinkClickType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
@@ -102,6 +105,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
+    Boolean persistsContentPanes = setting.getPersistsContentPanes()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
@@ -137,6 +141,7 @@ public class SettingController extends Controller<BooleanClass> {
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
+    $linkClickTypeControl.getSelectionModel().select(linkClickType)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainOnTopControl.setSelected(keepsMainOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
@@ -147,6 +152,7 @@ public class SettingController extends Controller<BooleanClass> {
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
+    $persistsContentPanesControl.setSelected(persistsContentPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
@@ -169,6 +175,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int separativeInterval = $separativeIntervalControl.getValue()
     String scriptName = $scriptControl.getValue().getNames()[0]
     FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
+    ClickType linkClickType = $linkClickTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
@@ -179,6 +186,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
+    Boolean persistsContentPanes = $persistsContentPanesControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
     setting.setContentFontFamily(contentFontFamily)
@@ -190,6 +198,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setSeparativeInterval(separativeInterval)
     setting.setScriptName(scriptName)
     setting.setFontRenderingType(fontRenderingType)
+    setting.setLinkClickType(linkClickType)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
@@ -200,6 +209,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setAsksMutualRelation(asksMutualRelation)
+    setting.setPersistsContentPanes(persistsContentPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
@@ -255,8 +265,8 @@ public class SettingController extends Controller<BooleanClass> {
       Button browseButton = Button.new("…")
       Button deregisterButton = Button.new("解除")
       dictionaryPathControl.getStyleClass().add("left-pill")
-      dictionaryNameControl.setPrefWidth(Measurement.rpx(150))
-      dictionaryNameControl.setMinWidth(Measurement.rpx(150))
+      dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
+      dictionaryNameControl.setMinWidth(Measurement.rpx(130))
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))
@@ -296,19 +306,6 @@ public class SettingController extends Controller<BooleanClass> {
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
     $systemFontFamilyControl.disableProperty().bind($usesDefaultSystemFontFamilyControl.selectedProperty())
-  }
-
-  private void bindOtherProperties() {
-    $modifiesPunctuationControl.textProperty().bind(CustomBindings.whichString($modifiesPunctuationControl, "有効", "無効"))
-    $keepsMainOnTopControl.textProperty().bind(CustomBindings.whichString($keepsMainOnTopControl, "有効", "無効"))
-    $keepsEditorOnTopControl.textProperty().bind(CustomBindings.whichString($keepsEditorOnTopControl, "有効", "無効"))
-    $savesAutomaticallyControl.textProperty().bind(CustomBindings.whichString($savesAutomaticallyControl, "有効", "無効"))
-    $ignoresAccentControl.textProperty().bind(CustomBindings.whichString($ignoresAccentControl, "有効", "無効"))
-    $ignoresCaseControl.textProperty().bind(CustomBindings.whichString($ignoresCaseControl, "有効", "無効"))
-    $searchesPrefixControl.textProperty().bind(CustomBindings.whichString($searchesPrefixControl, "有効", "無効"))
-    $ignoresDuplicateSlimeIdControl.textProperty().bind(CustomBindings.whichString($ignoresDuplicateSlimeIdControl, "有効", "無効"))
-    $showsSlimeIdControl.textProperty().bind(CustomBindings.whichString($showsSlimeIdControl, "有効", "無効"))
-    $asksMutualRelationControl.textProperty().bind(CustomBindings.whichString($asksMutualRelationControl, "有効", "無効"))
   }
 
 }

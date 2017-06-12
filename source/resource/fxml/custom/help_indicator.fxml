@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+
+
+<fx:root type="Group" styleClass="help-indicator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <StackPane fx:id="$stackPane">
+    <Circle styleClass="circle">
+      <radius><Double rpx="8"/></radius>
+    </Circle>
+    <Label fx:id="$markLabel" text="?"/>
+  </StackPane>
+</fx:root>

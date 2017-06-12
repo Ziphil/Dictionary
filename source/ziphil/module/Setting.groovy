@@ -38,6 +38,7 @@ public class Setting {
   private Int $separativeInterval = 700
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
+  private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
   private Boolean $keepsMainOnTop = false
   private Boolean $keepsEditorOnTop = true
@@ -48,6 +49,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private Boolean $asksMutualRelation = true
+  private Boolean $persistsContentPanes = false
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
 
@@ -280,6 +282,14 @@ public class Setting {
     $fontRenderingType = fontRenderingType
   }
 
+  public ClickType getLinkClickType() {
+    return $linkClickType
+  }
+
+  public void setLinkClickType(ClickType linkClickType) {
+    $linkClickType = linkClickType
+  }
+
   public Boolean getModifiesPunctuation() {
     return $modifiesPunctuation
   }
@@ -358,6 +368,14 @@ public class Setting {
 
   public void setAsksMutualRelation(Boolean asksMutualRelation) {
     $asksMutualRelation = asksMutualRelation
+  }
+
+  public Boolean getPersistsContentPanes() {
+    return $persistsContentPanes
+  }
+
+  public void setPersistsContentPanes(Boolean persistsContentPanes) {
+    $persistsContentPanes = persistsContentPanes
   }
 
   public String getPassword() {

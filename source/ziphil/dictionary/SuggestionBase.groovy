@@ -7,15 +7,15 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class SuggestionBase<P> implements Suggestion<P> {
+public abstract class SuggestionBase<P extends Possibility> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
-  protected ContentPaneFactoryBase $contentPaneFactory
-  protected Boolean $displayed = false
+  private ContentPaneFactory $contentPaneFactory
+  private Boolean $displayed = false
 
   public abstract void update()
 
-  protected abstract void makeContentPaneFactory()
+  protected abstract ContentPaneFactory createContentPaneFactory()
 
   protected void changeContentPaneFactory() {
     if ($contentPaneFactory != null) {
@@ -41,7 +41,7 @@ public abstract class SuggestionBase<P> implements Suggestion<P> {
 
   public ContentPaneFactory getContentPaneFactory() {
     if ($contentPaneFactory == null) {
-      makeContentPaneFactory()
+      $contentPaneFactory = createContentPaneFactory()
     }
     return $contentPaneFactory
   }

@@ -1,7 +1,7 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -27,12 +27,20 @@ public class PersonalWord extends WordBase {
     $content = name + "\n" + translation + "\n" + usage
   }
 
-  protected ContentPaneFactoryBase createContentPaneFactory() {
-    return PersonalWordContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactory createContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Boolean persisted = setting.getPersistsContentPanes()
+    PersonalWordContentPaneFactory contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
-  protected ContentPaneFactoryBase createPlainContentPaneFactory() {
-    return PersonalWordPlainContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactory createPlainContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    Boolean persisted = setting.getPersistsContentPanes()
+    PersonalWordPlainContentPaneFactory contentPaneFactory = PersonalWordPlainContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   public PersonalDictionary getDictionary() {

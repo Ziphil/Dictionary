@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -10,6 +11,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
 import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -30,11 +32,15 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
   private static final String SLIME_TITLE_CLASS = "slime-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
+  public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
+  }
+
   public SlimeWordContentPaneFactory(SlimeWord word, SlimeDictionary dictionary) {
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow contentPane = TextFlow.new()
     Boolean hasInformation = false
@@ -126,7 +132,6 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     contentPane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }
 
-  @VoidClosure
   private void addRelationNode(TextFlow contentPane, String title, List<IntegerClass> ids, List<String> names) {
     Text formerTitleText = Text.new("cf:")
     Label titleText = Label.new(title)
@@ -143,11 +148,7 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
       Int id = ids[i]
       String name = names[i]
       Text nameText = Text.new(name)
-      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-        if ($dictionary.getOnLinkClicked() != null) {
-          $dictionary.getOnLinkClicked().accept(id)
-        }
-      }
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(id))
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       contentPane.getChildren().add(nameText)
       if (i < names.size() - 1) {
@@ -158,6 +159,18 @@ public class SlimeWordContentPaneFactory extends ContentPaneFactoryBase<SlimeWor
     }
     Text breakText = Text.new("\n")
     contentPane.getChildren().add(breakText)
+  }
+
+  private EventHandler<MouseEvent> createLinkEventHandler(Int id) {
+    EventHandler<MouseEvent> handler = { MouseEvent event ->
+      if ($dictionary.getOnLinkClicked() != null) {
+        if ($linkClickType != null && $linkClickType.matches(event)) {
+          SearchParameter parameter = SlimeSearchParameter.new(id)
+          $dictionary.getOnLinkClicked().accept(parameter)
+        }
+      }
+    }
+    return handler
   }
 
 }

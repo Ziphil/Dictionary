@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 14, 1, 1959)
+  public static final Version VERSION = Version.new(1, 15, 0, 1968)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.15. 0 | 単語リストへの表示用データをメモリ上に保持するかどうかを設定する機能を追加。
+//          | 単語リンクが受け付けるクリック方法を設定する機能を追加。
 //  1.14. 1 | OneToMany 形式で関連語リンクをクリックしてもその単語が表示されない不具合を修正。
 //          | シャレイア語辞典形式で akrantiain 実行時にエラーになることがある不具合を修正。
 //  1.14. 0 | 文一括検索を行う機能を追加。

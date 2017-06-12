@@ -3,9 +3,11 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
+import javafx.scene.control.ListView
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ziphil.custom.ExtensionFilter
+import ziphil.custom.DictionaryFileCell
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -62,6 +64,9 @@ public class DictionaryChooserController extends Controller<File> {
     for (DictionaryType type : DictionaryType.values()) {
       ExtensionFilter extensionFilter = type.createExtensionFilter()
       $chooser.getExtensionFilters().add(extensionFilter)
+    }
+    $chooser.setFileCellFactory() { ListView<File> view ->
+      return DictionaryFileCell.new()
     }
   }
 

@@ -9,6 +9,7 @@ import java.security.PrivilegedExceptionAction
 import java.security.ProtectionDomain
 import java.security.cert.Certificate
 import java.util.concurrent.Callable
+import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -47,6 +48,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
   private ObservableList<Element> $wholeWords = FXCollections.observableArrayList()
+  protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
   protected Boolean $changed = false
@@ -377,6 +379,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public ObservableList<W> getRawWords() {
     return $words
+  }
+
+  public Consumer<SearchParameter> getOnLinkClicked() {
+    return $onLinkClicked
+  }
+
+  public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) {
+    $onLinkClicked = onLinkClicked
   }
 
   public Task<?> getLoader() {

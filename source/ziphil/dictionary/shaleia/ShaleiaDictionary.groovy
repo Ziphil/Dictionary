@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.function.Consumer
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -38,7 +37,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $akrantiainSource = null
   private String $version = ""
   private Int $systemWordSize = 0
-  private Consumer<String> $onLinkClicked
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
@@ -291,14 +289,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void setAkrantiainSource(String akrantiainSource) {
     $akrantiainSource = akrantiainSource
-  }
-
-  public Consumer<String> getOnLinkClicked() {
-    return $onLinkClicked
-  }
-
-  public void setOnLinkClicked(Consumer<String> onLinkClicked) {
-    $onLinkClicked = onLinkClicked
   }
 
 }

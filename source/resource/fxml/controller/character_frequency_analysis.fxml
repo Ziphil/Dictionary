@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.StringListEditor?>
 <?import ziphil.module.Setting?>
 
 

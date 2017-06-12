@@ -48,12 +48,8 @@ public class SentenceSearcher {
         for (Element word : hitWords) {
           if (word instanceof Word) {
             result.getWords().add((Word)word)
-          } else {
-            if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaSuggestion) {
-              addShaleiaSuggestionResult(result, (ShaleiaSuggestion)word)
-            } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeSuggestion) {
-              addSlimeSuggestionResult(result, (SlimeSuggestion)word)
-            }
+          } else if (word instanceof Suggestion) {
+            addSuggestionResult(result, (Suggestion)word)
           }
         }
         results.add(result)
@@ -62,28 +58,16 @@ public class SentenceSearcher {
     return results
   }
 
-  private void addShaleiaSuggestionResult(Result result, ShaleiaSuggestion suggestion) {
-    ShaleiaDictionary dictionary = (ShaleiaDictionary)$dictionary
-    List<ShaleiaPossibility> possibilities = ArrayList.new(suggestion.getPossibilities())
-    for (ShaleiaPossibility possibility : possibilities) {
-      NormalSearchParameter parameter = NormalSearchParameter.new(possibility.getName(), SearchMode.NAME, true, true)
-      dictionary.searchNormal(parameter)
-      List<Element> hitWords = dictionary.getWholeWords()
-      for (Element word : hitWords) {
-        if (word instanceof Word) {
-          result.getWords().add((Word)word)
-        }
+  private void addSuggestionResult(Result result, Suggestion suggestion) {
+    List<Possibility> possibilities = ArrayList.new(suggestion.getPossibilities())
+    for (Possibility possibility : possibilities) {
+      SearchParameter parameter = possibility.createParameter()
+      if (parameter instanceof NormalSearchParameter) {
+        $dictionary.searchNormal(parameter)
+      } else if ($dictionary instanceof DetailDictionary && parameter instanceof DetailSearchParameter) {
+        $dictionary.searchDetail(parameter)
       }
-    }
-  }
-
-  private void addSlimeSuggestionResult(Result result, SlimeSuggestion suggestion) {
-    SlimeDictionary dictionary = (SlimeDictionary)$dictionary
-    List<SlimePossibility> possibilities = ArrayList.new(suggestion.getPossibilities())
-    for (SlimePossibility possibility : possibilities) {
-      SlimeSearchParameter parameter = SlimeSearchParameter.new(possibility.getWord().getId())
-      dictionary.searchDetail(parameter)
-      List<Element> hitWords = dictionary.getWholeWords()
+      List<Element> hitWords = $dictionary.getWholeWords()
       for (Element word : hitWords) {
         if (word instanceof Word) {
           result.getWords().add((Word)word)

@@ -16,11 +16,15 @@ public class ShaleiaWordPlainContentPaneFactory extends ContentPaneFactoryBase<S
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
 
+  public ShaleiaWordPlainContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
+    super(word, dictionary, persisted)
+  }
+
   public ShaleiaWordPlainContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(word, dictionary)
   }
 
-  public Pane create() {
+  protected Pane doCreate() {
     TextFlow contentPane = TextFlow.new()
     contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
     addNameNode(contentPane, $word.getName())

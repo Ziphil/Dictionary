@@ -2,8 +2,9 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.ContentPaneFactory
 import ziphil.dictionary.WordBase
+import ziphil.module.ClickType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
@@ -71,12 +72,24 @@ public class ShaleiaWord extends WordBase {
     $comparisonString = comparisonString.toString()
   }
 
-  protected ContentPaneFactoryBase createContentPaneFactory() {
-    return ShaleiaWordContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactory createContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    ClickType linkClickType = setting.getLinkClickType()
+    Boolean persisted = setting.getPersistsContentPanes()
+    ShaleiaWordContentPaneFactory contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setLinkClickType(linkClickType)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
-  protected ContentPaneFactoryBase createPlainContentPaneFactory() {
-    return ShaleiaWordPlainContentPaneFactory.new(this, $dictionary)
+  protected ContentPaneFactory createPlainContentPaneFactory() {
+    Setting setting = Setting.getInstance()
+    ClickType linkClickType = setting.getLinkClickType()
+    Boolean persisted = setting.getPersistsContentPanes()
+    ShaleiaWordPlainContentPaneFactory contentPaneFactory = ShaleiaWordPlainContentPaneFactory.new(this, $dictionary)
+    contentPaneFactory.setLinkClickType(linkClickType)
+    contentPaneFactory.setPersisted(persisted)
+    return contentPaneFactory
   }
 
   public ShaleiaDictionary getDictionary() {

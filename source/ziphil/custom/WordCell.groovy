@@ -20,7 +20,7 @@ public class WordCell extends ListCell<Element> {
       setText(null)
       setGraphic(null)
     } else {
-      Pane graphic = word.getContentPaneFactory().create()
+      Pane graphic = word.getContentPaneFactory().create(false)
       graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(graphic)

@@ -5,7 +5,7 @@ import ziphilib.transform.ConvertPrimitives
 
 
 @CompileStatic @ConvertPrimitives
-public interface Suggestion<P> extends Element {
+public interface Suggestion<P extends Possibility> extends Element {
 
   public Boolean isDisplayed()
 
