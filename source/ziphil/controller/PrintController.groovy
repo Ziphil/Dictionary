@@ -8,6 +8,7 @@ import javafx.scene.Node
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Spinner
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
@@ -33,6 +34,7 @@ public class PrintController extends Controller<Void> {
   private static final Int MAX_WORD_SIZE = 50
 
   @FXML private ComboBox<Printer> $printerControl
+  @FXML private Spinner<IntegerClass> $fontSizeControl
   private List<Element> $words
   private PrinterJob $printerJob = PrinterJob.createPrinterJob()
 
@@ -86,6 +88,11 @@ public class PrintController extends Controller<Void> {
     PageLayout layout = $printerJob.getJobSettings().getPageLayout()
     box.setPrefWidth(layout.getPrintableWidth())
     box.getStylesheets().add(stylesheetURL.toString())
+    StringBuilder style = StringBuilder.new()
+    style.append("-fx-font-size: ")
+    style.append($fontSizeControl.getValue())
+    style.append(";")
+    box.setStyle(style.toString())
     return box
   }
 

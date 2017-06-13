@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -40,6 +42,7 @@
       </columnConstraints>
       <Label text="プリンター:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="ページ設定:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="フォントサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$printerControl">
@@ -55,6 +58,11 @@
         <prefWidth><Double rpx="70"/></prefWidth>
         <minWidth><Double rpx="70"/></minWidth>
       </Button>
+      <Spinner fx:id="$fontSizeControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="4" max="30" initialValue="10" amountToStepBy="1"/></valueFactory>
+      </Spinner>
     </GridPane>
   </center>
   <bottom>
