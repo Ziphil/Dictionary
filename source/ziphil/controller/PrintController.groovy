@@ -13,10 +13,12 @@ import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
+import javafx.scene.control.TextFormatter
 import javafx.scene.layout.VBox
 import javafx.print.PageLayout
 import javafx.print.Printer
 import javafx.print.PrinterJob
+import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
@@ -50,6 +52,7 @@ public class PrintController extends Controller<Void> {
   @FXML
   private void initialize() {
     setupPrinterControl()
+    setupIntegerControls()
   }
 
   public void prepare(Dictionary dictionary) {
@@ -151,6 +154,12 @@ public class PrintController extends Controller<Void> {
         $startIndexControl.getValueFactory().setValue(newValue - MAX_WORD_SIZE + 1)
       }
     }
+  }
+
+  private void setupIntegerControls() {
+    $fontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $startIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $endIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }
