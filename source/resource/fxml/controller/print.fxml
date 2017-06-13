@@ -39,6 +39,7 @@
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
       <Label text="プリンター:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="ページ設定:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$printerControl">
@@ -50,6 +51,10 @@
           <minWidth><Double rpx="70"/></minWidth>
         </Button>
       </HBox>
+      <Button text="設定" onAction="#configPageLayout" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+      </Button>
     </GridPane>
   </center>
   <bottom>

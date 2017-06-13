@@ -101,6 +101,11 @@ public class PrintController extends Controller<Void> {
     $printerJob.showPrintDialog($stage)
   }
 
+  @FXML
+  private void configPageLayout() {
+    $printerJob.showPageSetupDialog($stage)
+  }
+
   private void setupPrinterControl() {
     $printerControl.getItems().addAll(Printer.getAllPrinters())
     $printerControl.setValue(Printer.getDefaultPrinter())
