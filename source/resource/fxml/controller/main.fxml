@@ -59,7 +59,6 @@
           </graphic>
         </MenuItem>
         <MenuItem styleClass="option,all" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
-        <SeparatorMenuItem/>
         <Menu fx:id="$convertDictionaryMenu" styleClass="option,all,dammy" text="別形式に変換"/>
         <MenuItem styleClass="option,missing,dammy" text="別形式に変換" disable="true"/>
         <SeparatorMenuItem/>
