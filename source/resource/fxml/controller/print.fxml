@@ -43,6 +43,7 @@
       <Label text="プリンター:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="ページ設定:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="フォントサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="印刷範囲:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$printerControl">
@@ -63,6 +64,19 @@
         <minWidth><Double rpx="70"/></minWidth>
         <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="4" max="30" initialValue="10" amountToStepBy="1"/></valueFactory>
       </Spinner>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Spinner fx:id="$startIndexControl" editable="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
+        </Spinner>
+        <Label text=" ～ "/>
+        <Spinner fx:id="$endIndexControl" editable="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
+        </Spinner>
+      </HBox>
     </GridPane>
   </center>
   <bottom>
