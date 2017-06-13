@@ -98,7 +98,7 @@ public class PrintController extends Controller<Void> {
 
   @FXML
   private void configPrinter() {
-    $printerJob.showPageSetupDialog($stage)
+    $printerJob.showPrintDialog($stage)
   }
 
   private void setupPrinterControl() {
