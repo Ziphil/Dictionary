@@ -55,7 +55,7 @@ public class PrintController extends Controller<Void> {
     Task<Void> task = SimpleTask.new() {
       Pane mainPane = createMainPane()
       Scene scene = createScene(mainPane)
-      PageLayout layout = $printerJob.getPrinter().getDefaultPageLayout()
+      PageLayout layout = $printerJob.getJobSettings().getPageLayout()
       for (Int i = 0 ; i < MAX_WORD_SIZE && i < $words.size() ; i ++) {
         Element word = $words[i]
         Pane pane = word.getContentPaneFactory().create(true)
@@ -83,7 +83,7 @@ public class PrintController extends Controller<Void> {
   private Pane createMainPane() {
     VBox box = VBox.new(Measurement.rpx(3))
     URL stylesheetURL = getClass().getClassLoader().getResource(PRINT_STYLESHEET_PATH)
-    PageLayout layout = $printerJob.getPrinter().getDefaultPageLayout()
+    PageLayout layout = $printerJob.getJobSettings().getPageLayout()
     box.setPrefWidth(layout.getPrintableWidth())
     box.getStylesheets().add(stylesheetURL.toString())
     return box
