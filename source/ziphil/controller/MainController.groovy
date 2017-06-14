@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.awt.Desktop
+import java.awt.GraphicsEnvironment
 import java.lang.Thread.UncaughtExceptionHandler
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
@@ -954,9 +955,18 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void showOfficialSite() {
-    Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new(OFFICIAL_SITE_URI)
-    desktop.browse(uri)
+    if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+      Desktop desktop = Desktop.getDesktop()
+      URI uri = URI.new(OFFICIAL_SITE_URI)
+      desktop.browse(uri)
+    } else {
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      dialog.initOwner($stage)
+      dialog.setTitle("デスクトップエラー")
+      dialog.setContentText("この環境はブラウザの起動がサポートされていません。")
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
+    }
   }
 
   @FXML
