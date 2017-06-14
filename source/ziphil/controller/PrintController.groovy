@@ -28,7 +28,6 @@ public class PrintController extends Controller<Void> {
   private static final String TITLE = "印刷"
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
-  private static final Int MAX_WORD_SIZE = 2000
 
   @FXML private ComboBox<Printer> $printerControl
   @FXML private Spinner<IntegerClass> $startIndexControl
@@ -101,21 +100,15 @@ public class PrintController extends Controller<Void> {
     startIndexValueFactory.setValue(1)
     endIndexValueFactory.setMax($words.size())
     endIndexValueFactory.setMin(1)
-    endIndexValueFactory.setValue(MAX_WORD_SIZE)
+    endIndexValueFactory.setValue($words.size())
     $startIndexControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
       if (newValue > $endIndexControl.getValue()) {
         $endIndexControl.getValueFactory().setValue(newValue)
-      }
-      if (newValue <= $endIndexControl.getValue() - MAX_WORD_SIZE) {
-        $endIndexControl.getValueFactory().setValue(newValue + MAX_WORD_SIZE - 1)
       }
     }
     $endIndexControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
       if (newValue < $startIndexControl.getValue()) {
         $startIndexControl.getValueFactory().setValue(newValue)
-      }
-      if (newValue >= $startIndexControl.getValue() + MAX_WORD_SIZE) {
-        $startIndexControl.getValueFactory().setValue(newValue - MAX_WORD_SIZE + 1)
       }
     }
   }
