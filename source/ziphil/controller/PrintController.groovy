@@ -31,9 +31,9 @@ public class PrintController extends Controller<Void> {
   private static final Int MAX_WORD_SIZE = 50
 
   @FXML private ComboBox<Printer> $printerControl
-  @FXML private Spinner<IntegerClass> $fontSizeControl
   @FXML private Spinner<IntegerClass> $startIndexControl
   @FXML private Spinner<IntegerClass> $endIndexControl
+  @FXML private Spinner<IntegerClass> $fontSizeControl
   @FXML private Spinner<IntegerClass> $columnSizeControl
   private List<Element> $words
   private PrinterJob $printerJob = PrinterJob.createPrinterJob()
@@ -121,9 +121,9 @@ public class PrintController extends Controller<Void> {
   }
 
   private void setupIntegerControls() {
-    $fontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $startIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $endIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $fontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $columnSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 

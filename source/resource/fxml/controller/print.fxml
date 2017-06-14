@@ -42,8 +42,8 @@
       </columnConstraints>
       <Label text="プリンター:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="ページ設定:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <Label text="フォントサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-      <Label text="印刷範囲:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Label text="印刷範囲:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="フォントサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="段組:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
@@ -60,12 +60,7 @@
         <prefWidth><Double rpx="70"/></prefWidth>
         <minWidth><Double rpx="70"/></minWidth>
       </Button>
-      <Spinner fx:id="$fontSizeControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
-        <prefWidth><Double rpx="70"/></prefWidth>
-        <minWidth><Double rpx="70"/></minWidth>
-        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="4" max="30" initialValue="10" amountToStepBy="1"/></valueFactory>
-      </Spinner>
-      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <Spinner fx:id="$startIndexControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
@@ -78,6 +73,11 @@
           <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
         </Spinner>
       </HBox>
+      <Spinner fx:id="$fontSizeControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="4" max="30" initialValue="10" amountToStepBy="1"/></valueFactory>
+      </Spinner>
       <Spinner fx:id="$columnSizeControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <prefWidth><Double rpx="70"/></prefWidth>
         <minWidth><Double rpx="70"/></minWidth>
