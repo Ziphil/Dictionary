@@ -62,14 +62,14 @@
       </Button>
       <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <Spinner fx:id="$startIndexControl" editable="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
           <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
         </Spinner>
         <Label text=" ～ "/>
         <Spinner fx:id="$endIndexControl" editable="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
           <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
         </Spinner>
       </HBox>
