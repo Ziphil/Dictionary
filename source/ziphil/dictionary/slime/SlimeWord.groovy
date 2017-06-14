@@ -67,7 +67,7 @@ public class SlimeWord extends WordBase {
       }
       $comparisonString = comparisonString.toString()
     } else {
-      $comparisonString = $name
+      $comparisonString = ""
     }
   }
 
