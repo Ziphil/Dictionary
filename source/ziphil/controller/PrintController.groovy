@@ -28,7 +28,7 @@ public class PrintController extends Controller<Void> {
   private static final String TITLE = "印刷"
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
-  private static final Int MAX_WORD_SIZE = 50
+  private static final Int MAX_WORD_SIZE = 2000
 
   @FXML private ComboBox<Printer> $printerControl
   @FXML private Spinner<IntegerClass> $startIndexControl
