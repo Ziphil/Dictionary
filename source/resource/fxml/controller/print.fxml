@@ -44,6 +44,7 @@
       <Label text="ページ設定:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="フォントサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Label text="印刷範囲:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Label text="段組:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$printerControl">
@@ -77,6 +78,11 @@
           <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
         </Spinner>
       </HBox>
+      <Spinner fx:id="$columnSizeControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <prefWidth><Double rpx="70"/></prefWidth>
+        <minWidth><Double rpx="70"/></minWidth>
+        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="5" initialValue="1" amountToStepBy="1"/></valueFactory>
+      </Spinner>
     </GridPane>
   </center>
   <bottom>

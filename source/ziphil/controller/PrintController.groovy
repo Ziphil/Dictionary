@@ -34,6 +34,7 @@ public class PrintController extends Controller<Void> {
   @FXML private Spinner<IntegerClass> $fontSizeControl
   @FXML private Spinner<IntegerClass> $startIndexControl
   @FXML private Spinner<IntegerClass> $endIndexControl
+  @FXML private Spinner<IntegerClass> $columnSizeControl
   private List<Element> $words
   private PrinterJob $printerJob = PrinterJob.createPrinterJob()
 
@@ -60,9 +61,11 @@ public class PrintController extends Controller<Void> {
       Int endIndex = $endIndexControl.getValue()
       PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
       Int fontSize = $fontSizeControl.getValue()
+      Int columnSize = $columnSizeControl.getValue()
       PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
       builder.setPageLayout(pageLayout)
       builder.setFontSize(fontSize)
+      builder.setColumnSize(columnSize)
       for (Node page ; (page = builder.nextPage()) != null ;) {
         $printerJob.printPage(page)
       }
@@ -121,6 +124,7 @@ public class PrintController extends Controller<Void> {
     $fontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $startIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $endIndexControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $columnSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }
