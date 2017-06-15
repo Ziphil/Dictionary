@@ -23,7 +23,7 @@ public class SentenceSearchResultCell extends ListCell<SentenceSearcher.Result> 
     graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
     if (!empty && result != null) {
       for (Word word : result.getWords()) {
-        Pane pane = word.getPlainContentPaneFactory().create(true)
+        Pane pane = word.getPlainPaneFactory().create(true)
         graphic.getChildren().add(pane)
       }
     } 

@@ -10,16 +10,16 @@ import ziphilib.transform.Ziphilify
 public abstract class SuggestionBase<P extends Possibility> implements Suggestion<P> {
 
   protected List<P> $possibilities = ArrayList.new()
-  private ContentPaneFactory $contentPaneFactory
+  private PaneFactory $paneFactory
   private Boolean $displayed = false
 
   public abstract void update()
 
-  protected abstract ContentPaneFactory createContentPaneFactory()
+  protected abstract PaneFactory createPaneFactory()
 
-  protected void changeContentPaneFactory() {
-    if ($contentPaneFactory != null) {
-      $contentPaneFactory.change()
+  protected void changePaneFactory() {
+    if ($paneFactory != null) {
+      $paneFactory.change()
     }
   }
 
@@ -39,11 +39,11 @@ public abstract class SuggestionBase<P extends Possibility> implements Suggestio
     $possibilities = possibilities
   }
 
-  public ContentPaneFactory getContentPaneFactory() {
-    if ($contentPaneFactory == null) {
-      $contentPaneFactory = createContentPaneFactory()
+  public PaneFactory getPaneFactory() {
+    if ($paneFactory == null) {
+      $paneFactory = createPaneFactory()
     }
-    return $contentPaneFactory
+    return $paneFactory
   }
 
 }

@@ -2,7 +2,7 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.module.ClickType
 import ziphil.module.Setting
@@ -22,7 +22,7 @@ public class ShaleiaWord extends WordBase {
     updateEquivalents()
     updateContent()
     updateComparisonString()
-    changeContentPaneFactory()
+    changePaneFactory()
   }
 
   private void updateName() {
@@ -72,24 +72,24 @@ public class ShaleiaWord extends WordBase {
     $comparisonString = comparisonString.toString()
   }
 
-  protected ContentPaneFactory createContentPaneFactory() {
+  protected PaneFactory createPaneFactory() {
     Setting setting = Setting.getInstance()
     ClickType linkClickType = setting.getLinkClickType()
-    Boolean persisted = setting.getPersistsContentPanes()
-    ShaleiaWordContentPaneFactory contentPaneFactory = ShaleiaWordContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setLinkClickType(linkClickType)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    ShaleiaWordPaneFactory paneFactory = ShaleiaWordPaneFactory.new(this, $dictionary)
+    paneFactory.setLinkClickType(linkClickType)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
-  protected ContentPaneFactory createPlainContentPaneFactory() {
+  protected PaneFactory createPlainPaneFactory() {
     Setting setting = Setting.getInstance()
     ClickType linkClickType = setting.getLinkClickType()
-    Boolean persisted = setting.getPersistsContentPanes()
-    ShaleiaWordPlainContentPaneFactory contentPaneFactory = ShaleiaWordPlainContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setLinkClickType(linkClickType)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    ShaleiaWordPlainPaneFactory paneFactory = ShaleiaWordPlainPaneFactory.new(this, $dictionary)
+    paneFactory.setLinkClickType(linkClickType)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
   public ShaleiaDictionary getDictionary() {

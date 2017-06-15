@@ -322,7 +322,7 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <SwitchButton fx:id="$persistsContentPanesControl">
+            <SwitchButton fx:id="$persistsPanesControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>

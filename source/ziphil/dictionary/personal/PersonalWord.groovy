@@ -1,7 +1,7 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -20,27 +20,27 @@ public class PersonalWord extends WordBase {
 
   public void update() {
     updateContent()
-    changeContentPaneFactory()
+    changePaneFactory()
   }
 
   private void updateContent() {
     $content = name + "\n" + translation + "\n" + usage
   }
 
-  protected ContentPaneFactory createContentPaneFactory() {
+  protected PaneFactory createPaneFactory() {
     Setting setting = Setting.getInstance()
-    Boolean persisted = setting.getPersistsContentPanes()
-    PersonalWordContentPaneFactory contentPaneFactory = PersonalWordContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    PersonalWordPaneFactory paneFactory = PersonalWordPaneFactory.new(this, $dictionary)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
-  protected ContentPaneFactory createPlainContentPaneFactory() {
+  protected PaneFactory createPlainPaneFactory() {
     Setting setting = Setting.getInstance()
-    Boolean persisted = setting.getPersistsContentPanes()
-    PersonalWordPlainContentPaneFactory contentPaneFactory = PersonalWordPlainContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    PersonalWordPlainPaneFactory paneFactory = PersonalWordPlainPaneFactory.new(this, $dictionary)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
   public PersonalDictionary getDictionary() {

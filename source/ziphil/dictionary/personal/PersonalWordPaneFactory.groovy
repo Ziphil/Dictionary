@@ -5,31 +5,31 @@ import javafx.scene.control.Label
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.PaneFactoryBase
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<PersonalWord, PersonalDictionary> {
+public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, PersonalDictionary> {
 
   private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
   private static final String PERSONAL_PRONUNCIATION_CLASS = "persoanl-pronunciation"
 
-  public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary, Boolean persisted) {
+  public PersonalWordPaneFactory(PersonalWord word, PersonalDictionary dictionary, Boolean persisted) {
     super(word, dictionary, persisted)
   }
 
-  public PersonalWordContentPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
+  public PersonalWordPaneFactory(PersonalWord word, PersonalDictionary dictionary) {
     super(word, dictionary)
   }
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow contentPane = TextFlow.new()
-    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing(lineSpacing)
+    TextFlow pane = TextFlow.new()
+    pane.getStyleClass().add(CONTENT_PANE_CLASS)
+    pane.setLineSpacing(lineSpacing)
     String pronunciation = $word.getPronunciation()
     if (pronunciation != "") {
       if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
@@ -39,37 +39,37 @@ public class PersonalWordContentPaneFactory extends ContentPaneFactoryBase<Perso
         pronunciation = pronunciation + "/"
       }
     }
-    addNameNode(contentPane, $word.getName(), pronunciation)
-    addContentNode(contentPane, $word.getTranslation())
-    addContentNode(contentPane, $word.getUsage())
-    modifyBreak(contentPane)
-    return contentPane
+    addNameNode(pane, $word.getName(), pronunciation)
+    addContentNode(pane, $word.getTranslation())
+    addContentNode(pane, $word.getUsage())
+    modifyBreak(pane)
+    return pane
   }
 
-  private void addNameNode(TextFlow contentPane, String name, String pronunciation) {
+  private void addNameNode(TextFlow pane, String name, String pronunciation) {
     if (pronunciation != "") {
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, PERSONAL_PRONUNCIATION_CLASS)
-      contentPane.getChildren().addAll(nameText, pronunciationText, breakText)
+      pane.getChildren().addAll(nameText, pronunciationText, breakText)
     } else {
       Label nameText = Label.new(name)
       Text breakText = Text.new("\n")
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, PERSONAL_HEAD_NAME_CLASS)
-      contentPane.getChildren().addAll(nameText, breakText)
+      pane.getChildren().addAll(nameText, breakText)
     }
   }
 
-  private void addContentNode(TextFlow contentPane, String content) {
+  private void addContentNode(TextFlow pane, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
     String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
     Text contentText = Text.new(modifiedContent)
     Text breakText = Text.new("\n")
     contentText.getStyleClass().add(CONTENT_CLASS)
     if (content != "") {
-      contentPane.getChildren().addAll(contentText, breakText)
+      pane.getChildren().addAll(contentText, breakText)
     }
   }
 

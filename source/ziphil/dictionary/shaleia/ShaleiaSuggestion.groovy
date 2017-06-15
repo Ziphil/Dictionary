@@ -1,7 +1,7 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.SuggestionBase
 import ziphil.module.ClickType
 import ziphil.module.Setting
@@ -14,17 +14,17 @@ public class ShaleiaSuggestion extends SuggestionBase<ShaleiaPossibility> {
   private ShaleiaDictionary $dictionary
 
   public void update() {
-    changeContentPaneFactory()
+    changePaneFactory()
   }
 
-  protected ContentPaneFactory createContentPaneFactory() {
+  protected PaneFactory createPaneFactory() {
     Setting setting = Setting.getInstance()
     ClickType linkClickType = setting.getLinkClickType()
-    Boolean persisted = setting.getPersistsContentPanes()
-    ShaleiaSuggestionContentPaneFactory contentPaneFactory = ShaleiaSuggestionContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setLinkClickType(linkClickType)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    ShaleiaSuggestionPaneFactory paneFactory = ShaleiaSuggestionPaneFactory.new(this, $dictionary)
+    paneFactory.setLinkClickType(linkClickType)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
   public ShaleiaDictionary getDictionary() {

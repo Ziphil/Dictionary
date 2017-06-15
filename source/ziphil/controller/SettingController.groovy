@@ -66,7 +66,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
   @FXML private SwitchButton $asksMutualRelationControl
-  @FXML private SwitchButton $persistsContentPanesControl
+  @FXML private SwitchButton $persistsPanesControl
 
   public SettingController(UtilityStage<BooleanClass> nextStage) {
     super(nextStage)
@@ -105,7 +105,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
-    Boolean persistsContentPanes = setting.getPersistsContentPanes()
+    Boolean persistsPanes = setting.getPersistsPanes()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
@@ -152,7 +152,7 @@ public class SettingController extends Controller<BooleanClass> {
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
-    $persistsContentPanesControl.setSelected(persistsContentPanes)
+    $persistsPanesControl.setSelected(persistsPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
@@ -186,7 +186,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
-    Boolean persistsContentPanes = $persistsContentPanesControl.isSelected()
+    Boolean persistsPanes = $persistsPanesControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
     setting.setContentFontFamily(contentFontFamily)
@@ -209,7 +209,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setAsksMutualRelation(asksMutualRelation)
-    setting.setPersistsContentPanes(persistsContentPanes)
+    setting.setPersistsPanes(persistsPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
