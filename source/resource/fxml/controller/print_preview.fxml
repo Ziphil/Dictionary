@@ -22,7 +22,7 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
-    <VBox>
+    <VBox alignment="center">
       <spacing><Double rpx="10"/></spacing>
       <padding>
         <Insets>
