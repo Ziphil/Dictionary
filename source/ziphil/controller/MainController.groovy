@@ -957,13 +957,22 @@ public class MainController extends PrimitiveController<Stage> {
   private void showOfficialSite() {
     if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
       Desktop desktop = Desktop.getDesktop()
-      URI uri = URI.new(OFFICIAL_SITE_URI)
-      desktop.browse(uri)
+      if (desktop.isSupported(Desktop.Action.BROWSE)) {
+        URI uri = URI.new(OFFICIAL_SITE_URI)
+        desktop.browse(uri)
+      } else {
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        dialog.initOwner($stage)
+        dialog.setTitle("デスクトップエラー")
+        dialog.setContentText("この環境はブラウザの起動がサポートされていません。")
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
     } else {
       Dialog dialog = Dialog.new(StageStyle.UTILITY)
       dialog.initOwner($stage)
       dialog.setTitle("デスクトップエラー")
-      dialog.setContentText("この環境はブラウザの起動がサポートされていません。")
+      dialog.setContentText("この環境はデスクトップの操作がサポートされていません。")
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
     }
