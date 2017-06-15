@@ -16,7 +16,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PageBuilder {
 
-  private static final String PRINT_STYLESHEET_PATH = "resource/css/main/print.css"
+  private static final String PAGE_STYLESHEET_PATH = "resource/css/main/page.css"
   private static final Double COLUMN_SPACING = Measurement.rpx(15)
 
   private List<Element> $words
@@ -112,7 +112,7 @@ public class PageBuilder {
   private Pane createMainPane() {
     VBox box = VBox.new(Measurement.rpx(3))
     Double width = ($pageLayout.getPrintableWidth() - COLUMN_SPACING * ($columnSize - 1)) / $columnSize
-    URL stylesheetURL = getClass().getClassLoader().getResource(PRINT_STYLESHEET_PATH)
+    URL stylesheetURL = getClass().getClassLoader().getResource(PAGE_STYLESHEET_PATH)
     box.setPrefWidth(width)
     box.getStylesheets().add(stylesheetURL.toString())
     StringBuilder style = StringBuilder.new()
