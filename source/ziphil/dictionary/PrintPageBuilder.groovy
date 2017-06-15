@@ -108,6 +108,10 @@ public class PrintPageBuilder {
     return scene
   }
 
+  public void reset() {
+    $currentIndex = $startIndex
+  }
+
   public void setPageLayout(PageLayout pageLayout) {
     $pageLayout = pageLayout
   }
