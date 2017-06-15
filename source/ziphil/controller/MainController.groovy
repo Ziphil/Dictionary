@@ -926,12 +926,21 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void printDictionary() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    PrintController controller = PrintController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare($dictionary)
-    nextStage.showAndWait()
+    if (!$dictionary.getWholeWords().isEmpty()) {
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      PrintController controller = PrintController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      controller.prepare($dictionary)
+      nextStage.showAndWait()
+    } else {
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      dialog.initOwner($stage)
+      dialog.setTitle("印刷内容エラー")
+      dialog.setContentText("印刷する単語データがありません。")
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
+    }
   }
 
   @FXML
