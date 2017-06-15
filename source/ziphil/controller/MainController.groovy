@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.awt.Desktop
+import java.awt.GraphicsEnvironment
 import java.lang.Thread.UncaughtExceptionHandler
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
@@ -924,6 +925,25 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void printDictionary() {
+    if (!$dictionary.getWholeWords().isEmpty()) {
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      PrintController controller = PrintController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      controller.prepare($dictionary)
+      nextStage.showAndWait()
+    } else {
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      dialog.initOwner($stage)
+      dialog.setTitle("印刷内容エラー")
+      dialog.setContentText("印刷する単語データがありません。")
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
+    }
+  }
+
+  @FXML
   private void showStatistics() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     StatisticsController controller = StatisticsController.new(nextStage)
@@ -944,9 +964,27 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void showOfficialSite() {
-    Desktop desktop = Desktop.getDesktop()
-    URI uri = URI.new(OFFICIAL_SITE_URI)
-    desktop.browse(uri)
+    if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+      Desktop desktop = Desktop.getDesktop()
+      if (desktop.isSupported(Desktop.Action.BROWSE)) {
+        URI uri = URI.new(OFFICIAL_SITE_URI)
+        desktop.browse(uri)
+      } else {
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        dialog.initOwner($stage)
+        dialog.setTitle("デスクトップエラー")
+        dialog.setContentText("この環境はブラウザの起動がサポートされていません。")
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
+      }
+    } else {
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      dialog.initOwner($stage)
+      dialog.setTitle("デスクトップエラー")
+      dialog.setContentText("この環境はデスクトップの操作がサポートされていません。")
+      dialog.setAllowsCancel(false)
+      dialog.showAndWait()
+    }
   }
 
   @FXML

@@ -56,7 +56,7 @@ public class Version implements Comparable<Version> {
   }
 
   public String toString() {
-    if (date != null) {
+    if ($date >= 0) {
       return "${$major}.${$minor}.${$patch}-${$date}"
     } else {
       return "${$major}.${$minor}.${$patch}"

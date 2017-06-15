@@ -49,7 +49,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private Boolean $asksMutualRelation = true
-  private Boolean $persistsContentPanes = false
+  private Boolean $persistsPanes = false
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
 
@@ -370,12 +370,12 @@ public class Setting {
     $asksMutualRelation = asksMutualRelation
   }
 
-  public Boolean getPersistsContentPanes() {
-    return $persistsContentPanes
+  public Boolean getPersistsPanes() {
+    return $persistsPanes
   }
 
-  public void setPersistsContentPanes(Boolean persistsContentPanes) {
-    $persistsContentPanes = persistsContentPanes
+  public void setPersistsPanes(Boolean persistsPanes) {
+    $persistsPanes = persistsPanes
   }
 
   public String getPassword() {

@@ -10,53 +10,53 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictionary> implements ContentPaneFactory {
+public abstract class PaneFactoryBase<E extends Element, D extends Dictionary> implements PaneFactory {
 
   protected E $word
   protected D $dictionary
-  private Pane $contentPane = null 
+  private Pane $pane = null 
   protected ClickType $linkClickType = null
   private Boolean $changed = true
   private Boolean $persisted = false
 
-  public ContentPaneFactoryBase(E word, D dictionary, Boolean persisted) {
+  public PaneFactoryBase(E word, D dictionary, Boolean persisted) {
     $word = word
     $dictionary = dictionary
     $persisted = persisted
   }
 
-  public ContentPaneFactoryBase(E word, D dictionary) {
+  public PaneFactoryBase(E word, D dictionary) {
     this(word, dictionary, false)
   }
 
   protected abstract Pane doCreate()
 
   public Pane create(Boolean forcesCreate) {
-    if ($contentPane == null || $changed || forcesCreate) {
-      Pane contentPane = doCreate()
+    if ($pane == null || $changed || forcesCreate) {
+      Pane pane = doCreate()
       if ($persisted) {
-        $contentPane = contentPane
+        $pane = pane
       }
       $changed = false
-      return contentPane
+      return pane
     } else {
-      return $contentPane
+      return $pane
     }
   }
 
   public void destroy() {
-    $contentPane = null
+    $pane = null
   }
 
   public void change() {
     $changed = true
   }
 
-  protected void modifyBreak(TextFlow contentPane) {
-    if (contentPane.getChildren().size() >= 1) {
-      Node lastChild = contentPane.getChildren().last()
+  protected void modifyBreak(TextFlow pane) {
+    if (pane.getChildren().size() >= 1) {
+      Node lastChild = pane.getChildren().last()
       if (lastChild instanceof Text && lastChild.getText() == "\n") {
-        contentPane.getChildren().removeAt(contentPane.getChildren().size() - 1)
+        pane.getChildren().removeAt(pane.getChildren().size() - 1)
       }
     }
   }
@@ -68,7 +68,7 @@ public abstract class ContentPaneFactoryBase<E extends Element, D extends Dictio
   public void setPersisted(Boolean persisted) {
     $persisted = persisted
     if (!persisted) {
-      $contentPane = null
+      $pane = null
     }
   }
 

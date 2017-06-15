@@ -11,8 +11,8 @@ import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
-import ziphil.dictionary.ContentPaneFactoryBase
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -25,7 +25,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_PRONUNCIATION_CLASS = "shaleia-pronunciation"
@@ -47,58 +47,58 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
   private static final String END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
-  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
+  public ShaleiaWordPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
     super(word, dictionary, persisted)
   }
 
-  public ShaleiaWordContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+  public ShaleiaWordPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(word, dictionary)
   }
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow contentPane = TextFlow.new()
+    TextFlow pane = TextFlow.new()
     Boolean hasContent = false
     Boolean hasSynonym = false
-    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing(lineSpacing)
+    pane.getStyleClass().add(CONTENT_PANE_CLASS)
+    pane.setLineSpacing(lineSpacing)
     ShaleiaDescriptionReader reader = ShaleiaDescriptionReader.new($word.getDescription())
     try {
       while (reader.readLine() != null) {
-        if (contentPane.getChildren().isEmpty()) {
+        if (pane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
-          addNameNode(contentPane, name)
+          addNameNode(pane, name)
         }
         if (reader.findCreationDate()) {
           String totalPart = reader.lookupTotalPart()
           String creationDate = reader.lookupCreationDate()
-          addCreationDateNode(contentPane, totalPart, creationDate)
+          addCreationDateNode(pane, totalPart, creationDate)
         }
         if (reader.findEquivalent()) {
           String part = reader.lookupPart()
           String equivalent = reader.lookupEquivalent()
-          addEquivalentNode(contentPane, part, equivalent)
+          addEquivalentNode(pane, part, equivalent)
         }
         if (reader.findContent()) {
           String title = reader.title()
           String content = reader.lookupContent()
-          addContentNode(contentPane, title, content)
+          addContentNode(pane, title, content)
           hasContent = true
         }
         if (reader.findSynonym()) {
           String synonym = reader.lookupSynonym()
-          addSynonymNode(contentPane, synonym)
+          addSynonymNode(pane, synonym)
           hasSynonym = true
         }
       }
-      modifyBreak(contentPane)
+      modifyBreak(pane)
     } finally {
       reader.close()
     }
-    return contentPane
+    return pane
   }
 
-  private void addNameNode(TextFlow contentPane, String name) {
+  private void addNameNode(TextFlow pane, String name) {
     Akrantiain akrantiain = $dictionary.getAkrantiain()
     String pronunciation = null
     if (akrantiain != null) {
@@ -115,24 +115,24 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PRONUNCIATION_CLASS)
       spaceText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
-      contentPane.getChildren().addAll(nameText, pronunciationText, spaceText)
+      pane.getChildren().addAll(nameText, pronunciationText, spaceText)
     } else {
       Text nameText = Text.new(name + "  ")
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
-      contentPane.getChildren().add(nameText)
+      pane.getChildren().add(nameText)
     }
   }
  
-  private void addCreationDateNode(TextFlow contentPane, String totalPart, String creationDate) {
+  private void addCreationDateNode(TextFlow pane, String totalPart, String creationDate) {
     Label totalPartText = Label.new(totalPart)
     Text creationDateText = Text.new(" " + creationDate)
     Text breakText = Text.new("\n")
     totalPartText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TOTAL_PART_CLASS)
     creationDateText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CREATION_DATE_CLASS)
-    contentPane.getChildren().addAll(totalPartText, creationDateText, breakText)
+    pane.getChildren().addAll(totalPartText, creationDateText, breakText)
   }
 
-  private void addEquivalentNode(TextFlow contentPane, String part, String equivalent) {
+  private void addEquivalentNode(TextFlow pane, String part, String equivalent) {
     Label partText = Label.new(part)
     Text breakText = Text.new("\n")
     List<Text> equivalentTexts = createRichTexts(" " + equivalent)
@@ -140,12 +140,12 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     for (Text equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
-    contentPane.getChildren().add(partText)
-    contentPane.getChildren().addAll(equivalentTexts)
-    contentPane.getChildren().add(breakText)
+    pane.getChildren().add(partText)
+    pane.getChildren().addAll(equivalentTexts)
+    pane.getChildren().add(breakText)
   }
 
-  private void addContentNode(TextFlow contentPane, String title, String content) {
+  private void addContentNode(TextFlow pane, String title, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
     String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
     Text titleText = Text.new("【${title}】")
@@ -157,12 +157,12 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     for (Text contentText : contentTexts) {
       contentText.getStyleClass().add(CONTENT_CLASS)
     }
-    contentPane.getChildren().addAll(titleText, dammyText)
-    contentPane.getChildren().addAll(contentTexts)
-    contentPane.getChildren().add(breakText)
+    pane.getChildren().addAll(titleText, dammyText)
+    pane.getChildren().addAll(contentTexts)
+    pane.getChildren().add(breakText)
   }
 
-  private void addSynonymNode(TextFlow contentPane, String synonym) {
+  private void addSynonymNode(TextFlow pane, String synonym) {
     TextFlow textFlow = TextFlow.new()
     Text titleText = Text.new("cf:")
     Text breakText = Text.new("\n")
@@ -171,9 +171,9 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    contentPane.getChildren().add(titleText)
-    contentPane.getChildren().addAll(synonymTexts)
-    contentPane.getChildren().add(breakText)
+    pane.getChildren().add(titleText)
+    pane.getChildren().addAll(synonymTexts)
+    pane.getChildren().add(breakText)
   }
 
   private List<Text> createRichTexts(String string, Boolean decoratesLink) {
@@ -352,7 +352,7 @@ public class ShaleiaWordContentPaneFactory extends ContentPaneFactoryBase<Shalei
 }
 
 
-@InnerClass(ShaleiaWordContentPaneFactory)
+@InnerClass(ShaleiaWordPaneFactory)
 @Ziphilify
 private static enum TextMode {
 

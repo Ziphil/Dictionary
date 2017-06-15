@@ -19,6 +19,6 @@ public interface Word extends Element {
 
   public void setContent(String content)
 
-  public ContentPaneFactory getPlainContentPaneFactory()
+  public PaneFactory getPlainPaneFactory()
 
 }

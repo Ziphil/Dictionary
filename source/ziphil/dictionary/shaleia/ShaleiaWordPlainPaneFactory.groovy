@@ -5,46 +5,46 @@ import javafx.geometry.Pos
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.PaneFactoryBase
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordPlainContentPaneFactory extends ContentPaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordPlainPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
 
-  public ShaleiaWordPlainContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
+  public ShaleiaWordPlainPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
     super(word, dictionary, persisted)
   }
 
-  public ShaleiaWordPlainContentPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
+  public ShaleiaWordPlainPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary) {
     super(word, dictionary)
   }
 
   protected Pane doCreate() {
-    TextFlow contentPane = TextFlow.new()
-    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    addNameNode(contentPane, $word.getName())
-    addEquivalentNode(contentPane, $word.getEquivalents().join(", "))
-    modifyBreak(contentPane)
-    return contentPane
+    TextFlow pane = TextFlow.new()
+    pane.getStyleClass().add(CONTENT_PANE_CLASS)
+    addNameNode(pane, $word.getName())
+    addEquivalentNode(pane, $word.getEquivalents().join(", "))
+    modifyBreak(pane)
+    return pane
   }
 
-  private void addNameNode(TextFlow contentPane, String name) {
+  private void addNameNode(TextFlow pane, String name) {
     Text nameText = Text.new(name + " ")
     Text breakText = Text.new("\n")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
-    contentPane.getChildren().addAll(nameText, breakText)
+    pane.getChildren().addAll(nameText, breakText)
   }
 
-  private void addEquivalentNode(TextFlow contentPane, String equivalent) {
+  private void addEquivalentNode(TextFlow pane, String equivalent) {
     Text equivalentText = Text.new(equivalent)
     Text breakText = Text.new("\n")
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
-    contentPane.getChildren().addAll(equivalentText, breakText)
+    pane.getChildren().addAll(equivalentText, breakText)
   }
 
 }

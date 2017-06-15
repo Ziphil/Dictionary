@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import ziphil.dictionary.ContentPaneFactoryBase
+import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -15,32 +15,32 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<SlimeSuggestion, SlimeDictionary> {
+public class SlimeSuggestionPaneFactory extends PaneFactoryBase<SlimeSuggestion, SlimeDictionary> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
 
-  public SlimeSuggestionContentPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary, Boolean persisted) {
+  public SlimeSuggestionPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary, Boolean persisted) {
     super(word, dictionary, persisted)
   }
 
-  public SlimeSuggestionContentPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary) {
+  public SlimeSuggestionPaneFactory(SlimeSuggestion word, SlimeDictionary dictionary) {
     super(word, dictionary)
   }
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow contentPane = TextFlow.new()
-    contentPane.getStyleClass().add(CONTENT_PANE_CLASS)
-    contentPane.setLineSpacing(lineSpacing)
+    TextFlow pane = TextFlow.new()
+    pane.getStyleClass().add(CONTENT_PANE_CLASS)
+    pane.setLineSpacing(lineSpacing)
     for (SlimePossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(contentPane, possibility.createParameter(), possibility.getWord().getName(), possibility.getTitle())
+      addPossibilityNode(pane, possibility.createParameter(), possibility.getWord().getName(), possibility.getTitle())
     }
-    modifyBreak(contentPane)
-    return contentPane
+    modifyBreak(pane)
+    return pane
   }
 
-  private void addPossibilityNode(TextFlow contentPane, SearchParameter parameter, String name, String title) {
+  private void addPossibilityNode(TextFlow pane, SearchParameter parameter, String name, String title) {
     Text prefixText = Text.new("もしかして:")
     Text spaceText = Text.new(" ")
     Text nameText = Text.new(name)
@@ -51,7 +51,7 @@ public class SlimeSuggestionContentPaneFactory extends ContentPaneFactoryBase<Sl
     spaceText.getStyleClass().add(CONTENT_CLASS)
     nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
     titleText.getStyleClass().add(CONTENT_CLASS)
-    contentPane.getChildren().addAll(prefixText, spaceText, nameText, titleText, breakText)
+    pane.getChildren().addAll(prefixText, spaceText, nameText, titleText, breakText)
   }
 
   private EventHandler<MouseEvent> createLinkEventHandler(SearchParameter parameter) {

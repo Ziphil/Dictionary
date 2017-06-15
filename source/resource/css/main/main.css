@@ -97,6 +97,11 @@
   -fx-fill: -fx-text-base-color;
 }
 
+.preview-pane {
+  -fx-background-color: -fx-box-border, -fx-control-inner-background;
+  -fx-background-insets: 0px, 1px;
+}
+
 .frequency .table-column {
   -fx-alignment: baseline-center;
 }

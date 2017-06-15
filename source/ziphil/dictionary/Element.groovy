@@ -8,6 +8,6 @@ public interface Element {
 
   public void update()
 
-  public ContentPaneFactory getContentPaneFactory()
+  public PaneFactory getPaneFactory()
 
 }

@@ -1,0 +1,45 @@
+// @charset "utf-8";
+
+
+.content {
+  -fx-fill: -fx-text-base-color;
+}
+
+.head-name {
+  -fx-font-size: 1.2em;
+  -fx-font-weight: bold;
+}
+
+.shaleia-total-part,
+.shaleia-part,
+.slime-tag,
+.slime-equivalent-title,
+.slime-relation-title {
+  -fx-font-size: 0.8em;
+  -fx-border-color: derive(-fx-control-inner-background, -30%);
+  -fx-border-style: solid;
+  -fx-border-radius: 3px;
+  -fx-padding: 0px 2px 0px 2px;
+  -fx-margin: 0px 5px 0px 0px;
+}
+
+.shaleia-pronunciation,
+.shaleia-creation-date,
+.shaleia-title,
+.shaleia-possibility,
+.personal-pronunciation,
+.slime-pronunciation,
+.slime-title,
+.slime-id,
+.slime-possibility {
+  -fx-font-size: 0.9em;
+}
+
+.shaleia-link,
+.slime-link {
+  -fx-underline: true;
+}
+
+.shaleia-italic {
+  -fx-font-style: italic;
+}

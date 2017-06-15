@@ -12,24 +12,24 @@ public abstract class WordBase implements Word {
   protected String $name = ""
   protected List<String> $equivalents = ArrayList.new()
   protected String $content = ""
-  private ContentPaneFactory $contentPaneFactory
-  private ContentPaneFactory $plainContentPaneFactory
+  private PaneFactory $paneFactory
+  private PaneFactory $plainPaneFactory
 
   public abstract void update()
 
-  protected abstract ContentPaneFactory createContentPaneFactory()
+  protected abstract PaneFactory createPaneFactory()
 
-  protected abstract ContentPaneFactory createPlainContentPaneFactory()
+  protected abstract PaneFactory createPlainPaneFactory()
 
-  protected void changeContentPaneFactory() {
-    if ($contentPaneFactory != null) {
-      $contentPaneFactory.change()
+  protected void changePaneFactory() {
+    if ($paneFactory != null) {
+      $paneFactory.change()
     }
   }
 
-  protected void changePlainContentPaneFactory() {
-    if ($plainContentPaneFactory != null) {
-      $plainContentPaneFactory.change()
+  protected void changePlainPaneFactory() {
+    if ($plainPaneFactory != null) {
+      $plainPaneFactory.change()
     }
   }
 
@@ -57,18 +57,18 @@ public abstract class WordBase implements Word {
     $content = content
   }
 
-  public ContentPaneFactory getContentPaneFactory() {
-    if ($contentPaneFactory == null) {
-      $contentPaneFactory = createContentPaneFactory()
+  public PaneFactory getPaneFactory() {
+    if ($paneFactory == null) {
+      $paneFactory = createPaneFactory()
     }
-    return $contentPaneFactory
+    return $paneFactory
   }
 
-  public ContentPaneFactory getPlainContentPaneFactory() {
-    if ($plainContentPaneFactory == null) {
-      $plainContentPaneFactory = createPlainContentPaneFactory()
+  public PaneFactory getPlainPaneFactory() {
+    if ($plainPaneFactory == null) {
+      $plainPaneFactory = createPlainPaneFactory()
     }
-    return $plainContentPaneFactory
+    return $plainPaneFactory
   }
 
 }

@@ -6,7 +6,7 @@ import ziphilib.transform.ConvertPrimitives
 
 
 @CompileStatic @ConvertPrimitives
-public interface ContentPaneFactory {
+public interface PaneFactory {
 
   public static final String CONTENT_CLASS = "content"
   public static final String CONTENT_PANE_CLASS = "content-pane"

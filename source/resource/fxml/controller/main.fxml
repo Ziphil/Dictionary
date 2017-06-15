@@ -13,7 +13,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -59,9 +58,10 @@
           </graphic>
         </MenuItem>
         <MenuItem styleClass="option,all" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
-        <SeparatorMenuItem/>
         <Menu fx:id="$convertDictionaryMenu" styleClass="option,all,dammy" text="別形式に変換"/>
         <MenuItem styleClass="option,missing,dammy" text="別形式に変換" disable="true"/>
+        <SeparatorMenuItem/>
+        <MenuItem text="印刷" onAction="#printDictionary"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">
           <graphic>

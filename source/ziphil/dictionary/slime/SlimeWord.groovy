@@ -1,7 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ContentPaneFactory
+import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.module.ClickType
 import ziphil.module.Setting
@@ -24,13 +24,13 @@ public class SlimeWord extends WordBase {
     updateEquivalents()
     updateContent()
     updateComparisonString()
-    changeContentPaneFactory()
-    changePlainContentPaneFactory()
+    changePaneFactory()
+    changePlainPaneFactory()
   }
 
   public void change() {
-    changeContentPaneFactory()
-    changePlainContentPaneFactory()
+    changePaneFactory()
+    changePlainPaneFactory()
   }
 
   private void updateEquivalents() {
@@ -106,24 +106,24 @@ public class SlimeWord extends WordBase {
     return $relations.groupBy{it.getTitle()}
   }
 
-  protected ContentPaneFactory createContentPaneFactory() {
+  protected PaneFactory createPaneFactory() {
     Setting setting = Setting.getInstance()
     ClickType linkClickType = setting.getLinkClickType()
-    Boolean persisted = setting.getPersistsContentPanes()
-    SlimeWordContentPaneFactory contentPaneFactory = SlimeWordContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setLinkClickType(linkClickType)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    SlimeWordPaneFactory paneFactory = SlimeWordPaneFactory.new(this, $dictionary)
+    paneFactory.setLinkClickType(linkClickType)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
-  protected ContentPaneFactory createPlainContentPaneFactory() {
+  protected PaneFactory createPlainPaneFactory() {
     Setting setting = Setting.getInstance()
     ClickType linkClickType = setting.getLinkClickType()
-    Boolean persisted = setting.getPersistsContentPanes()
-    SlimeWordPlainContentPaneFactory contentPaneFactory = SlimeWordPlainContentPaneFactory.new(this, $dictionary)
-    contentPaneFactory.setLinkClickType(linkClickType)
-    contentPaneFactory.setPersisted(persisted)
-    return contentPaneFactory
+    Boolean persisted = setting.getPersistsPanes()
+    SlimeWordPlainPaneFactory paneFactory = SlimeWordPlainPaneFactory.new(this, $dictionary)
+    paneFactory.setLinkClickType(linkClickType)
+    paneFactory.setPersisted(persisted)
+    return paneFactory
   }
 
   public SlimeDictionary getDictionary() {
