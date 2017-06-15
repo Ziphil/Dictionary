@@ -50,7 +50,7 @@ public class PrintPreviewController extends Controller<Void> {
     Double height = (orientation == PageOrientation.PORTRAIT || orientation == PageOrientation.REVERSE_PORTRAIT) ? paper.getHeight() : paper.getWidth()
     $previewPane.setPrefWidth(width)
     $previewPane.setPrefHeight(height)
-    Node page = builder.nextPage()
+    Node page = builder.createPage(0)
     if (page != null) {
       $previewPane.getChildren().add(page)
       page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())

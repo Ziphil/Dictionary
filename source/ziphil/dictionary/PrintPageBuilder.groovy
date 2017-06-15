@@ -20,50 +20,26 @@ public class PrintPageBuilder {
   private static final Double COLUMN_SPACING = Measurement.rpx(15)
 
   private List<Element> $words
-  private Int $currentIndex = 0
   private Int $startIndex = 0
   private Int $endIndex = 0
-  private Int $currentPageNumber = 0
+  private List<IntegerClass> $separationIndices = ArrayList.new()
   private PageLayout $pageLayout
   private Int $fontSize = 10
   private Int $columnSize = 1
 
   public PrintPageBuilder(List<Element> words, Int startIndex, Int endIndex) {
     $words = words
-    $currentIndex = startIndex
     $startIndex = startIndex
     $endIndex = endIndex
   }
 
-  public Node nextPage() {
-    Double width = ($pageLayout.getPrintableWidth() - COLUMN_SPACING * ($columnSize - 1)) / $columnSize
-    Pane page = HBox.new(COLUMN_SPACING)
-    Boolean hasPage = true
-    for (Int i = 0 ; i < $columnSize ; i ++) {
-      Node column = nextColumn(width)
-      if (column != null) {
-        page.getChildren().add(column)
-      } else {
-        if (i == 0) {
-          hasPage = false
-        }
-        break
-      }
-    }
-    if (hasPage) {
-      $currentPageNumber ++
-      return page
-    } else {
-      return null
-    }
-  }
-
-  private Node nextColumn(Double width) {
-    if ($currentIndex < $endIndex) {
-      Pane mainPane = createMainPane(width)
+  public void prepare() {
+    Int currentIndex = $startIndex
+    while (currentIndex < $endIndex) {
+      Pane mainPane = createMainPane()
       Scene scene = createScene(mainPane)
       Boolean last = true
-      for (Int i = $currentIndex ; i < $endIndex ; i ++) {
+      for (Int i = currentIndex ; i < $endIndex ; i ++) {
         Element word = $words[i]
         Pane pane = word.getContentPaneFactory().create(true)
         Parent root = scene.getRoot()
@@ -71,27 +47,59 @@ public class PrintPageBuilder {
         root.applyCss()
         root.layout()
         if (mainPane.getHeight() > $pageLayout.getPrintableHeight()) {
-          if (i > $currentIndex) {
+          if (i > currentIndex) {
             mainPane.getChildren().remove(pane)
-            $currentIndex = i
+            currentIndex = i
           } else {
-            $currentIndex = i + 1
+            currentIndex = i + 1
           }
           last = false
           break
         }
       }
       if (last) {
-        $currentIndex = $endIndex
+        currentIndex = $endIndex
       }
-      return scene.getRoot()
+      $separationIndices.add(currentIndex - 1)
+    }
+  }
+
+  public Node createPage(Int pageNumber) {
+    if (pageNumber >= 0 && pageNumber < pageSize()) {
+      Pane page = HBox.new(COLUMN_SPACING)
+      Int startColumnNumber = pageNumber * $columnSize
+      Int endColumnNumber = (pageNumber + 1) * $columnSize
+      for (Int i = startColumnNumber ; i < endColumnNumber ; i ++) {
+        Node column = createColumn(i)
+        if (column != null) {
+          page.getChildren().add(column)
+        }
+      }
+      return page
     } else {
       return null
     }
   }
 
-  private Pane createMainPane(Double width) {
+  private Node createColumn(Int columnNumber) {
+    if (columnNumber >= 0 && columnNumber < columnSize()) {
+      Pane mainPane = createMainPane()
+      Int startIndex = (columnNumber > 0) ? $separationIndices[columnNumber - 1] + 1 : 0
+      Int endIndex = $separationIndices[columnNumber] + 1
+      for (Int i = startIndex ; i < endIndex ; i ++) {
+        Element word = $words[i]
+        Pane pane = word.getContentPaneFactory().create(true)
+        mainPane.getChildren().add(pane)
+      }
+      return mainPane
+    } else {
+      return null
+    }
+  }
+
+  private Pane createMainPane() {
     VBox box = VBox.new(Measurement.rpx(3))
+    Double width = ($pageLayout.getPrintableWidth() - COLUMN_SPACING * ($columnSize - 1)) / $columnSize
     URL stylesheetURL = getClass().getClassLoader().getResource(PRINT_STYLESHEET_PATH)
     box.setPrefWidth(width)
     box.getStylesheets().add(stylesheetURL.toString())
@@ -110,12 +118,12 @@ public class PrintPageBuilder {
     return scene
   }
 
-  public void reset() {
-    $currentIndex = $startIndex
+  private Int columnSize() {
+    return $separationIndices.size()
   }
 
-  public Int getCurrentPageNumber() {
-    return $currentPageNumber
+  public Int pageSize() {
+    return (columnSize() > 0) ? (columnSize() - 1).intdiv($columnSize) + 1 : 0
   }
 
   public void setPageLayout(PageLayout pageLayout) {
