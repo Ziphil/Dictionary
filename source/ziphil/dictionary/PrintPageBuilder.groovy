@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.print.PageLayout
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.Parent
@@ -8,7 +9,6 @@ import javafx.scene.Scene
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
-import javafx.print.PageLayout
 import ziphil.custom.Measurement
 import ziphilib.transform.Ziphilify
 
