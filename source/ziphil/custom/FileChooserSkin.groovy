@@ -105,7 +105,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
       Callback<TreeView<File>, TreeCell<File>> cellFactory = $control.getDirectoryCellFactory()
       TreeCell<File> cell = (cellFactory != null) ? cellFactory.call(view) : DirectoryCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
-        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           changeCurrentDirectory(cell.getItem())
         }
       }
