@@ -3,6 +3,7 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.print.PageLayout
+import javafx.print.PageOrientation
 import javafx.print.Paper
 import javafx.print.PrinterJob
 import javafx.scene.Node
@@ -44,8 +45,11 @@ public class PrintPreviewController extends Controller<Void> {
     $builder = builder
     PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
     Paper paper = pageLayout.getPaper()
-    $previewPane.setPrefWidth(paper.getWidth())
-    $previewPane.setPrefHeight(paper.getHeight())
+    PageOrientation orientation = pageLayout.getPageOrientation()
+    Double width = (orientation == PageOrientation.PORTRAIT || orientation == PageOrientation.REVERSE_PORTRAIT) ? paper.getWidth() : paper.getHeight()
+    Double height = (orientation == PageOrientation.PORTRAIT || orientation == PageOrientation.REVERSE_PORTRAIT) ? paper.getHeight() : paper.getWidth()
+    $previewPane.setPrefWidth(width)
+    $previewPane.setPrefHeight(height)
     Node page = builder.nextPage()
     if (page != null) {
       $previewPane.getChildren().add(page)
