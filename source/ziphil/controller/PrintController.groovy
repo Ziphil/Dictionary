@@ -20,7 +20,7 @@ import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Element
-import ziphil.dictionary.PrintPageBuilder
+import ziphil.dictionary.PageBuilder
 import ziphil.module.JavaVersion
 import ziphilib.transform.Ziphilify
 
@@ -73,9 +73,9 @@ public class PrintController extends Controller<Void> {
     }
     if (!cancelled) {
       Task<Void> task = SimpleTask.new() {
-        PrintPageBuilder builder = createBuilder()
-        for (Int i = 0 ; i < builder.pageSize() ; i ++) {
-          Node page = builder.createPage(i)
+        PageBuilder pageBuilder = createPageBuilder()
+        for (Int i = 0 ; i < pageBuilder.pageSize() ; i ++) {
+          Node page = pageBuilder.createPage(i)
           $printerJob.printPage(page)
         }
         $printerJob.endJob()
@@ -87,18 +87,18 @@ public class PrintController extends Controller<Void> {
     }
   }
 
-  private PrintPageBuilder createBuilder() {
+  private PageBuilder createPageBuilder() {
     Int startIndex = $startIndexControl.getValue() - 1
     Int endIndex = $endIndexControl.getValue()
     PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
     Int fontSize = $fontSizeControl.getValue()
     Int columnSize = $columnSizeControl.getValue()
-    PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
-    builder.setPageLayout(pageLayout)
-    builder.setFontSize(fontSize)
-    builder.setColumnSize(columnSize)
-    builder.prepare()
-    return builder
+    PageBuilder pageBuilder = PageBuilder.new($words, startIndex, endIndex)
+    pageBuilder.setPageLayout(pageLayout)
+    pageBuilder.setFontSize(fontSize)
+    pageBuilder.setColumnSize(columnSize)
+    pageBuilder.prepare()
+    return pageBuilder
   }
 
   @FXML
@@ -117,7 +117,7 @@ public class PrintController extends Controller<Void> {
     PrintPreviewController controller = PrintPreviewController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($printerJob, createBuilder())
+    controller.prepare($printerJob, createPageBuilder())
     nextStage.showAndWait()
   }
 

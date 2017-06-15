@@ -14,7 +14,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PrintPageBuilder {
+public class PageBuilder {
 
   private static final String PRINT_STYLESHEET_PATH = "resource/css/main/print.css"
   private static final Double COLUMN_SPACING = Measurement.rpx(15)
@@ -27,7 +27,7 @@ public class PrintPageBuilder {
   private Int $fontSize = 10
   private Int $columnSize = 1
 
-  public PrintPageBuilder(List<Element> words, Int startIndex, Int endIndex) {
+  public PageBuilder(List<Element> words, Int startIndex, Int endIndex) {
     $words = words
     $startIndex = startIndex
     $endIndex = endIndex

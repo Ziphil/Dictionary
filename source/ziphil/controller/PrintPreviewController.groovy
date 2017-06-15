@@ -14,7 +14,7 @@ import javafx.scene.control.TextFormatter
 import javafx.scene.layout.Pane
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.PrintPageBuilder
+import ziphil.dictionary.PageBuilder
 import ziphil.module.JavaVersion
 import ziphilib.transform.Ziphilify
 
@@ -30,7 +30,7 @@ public class PrintPreviewController extends Controller<Void> {
   @FXML private Pane $previewPane
   @FXML private Spinner<IntegerClass> $pageNumberControl
   private PrinterJob $printerJob
-  private PrintPageBuilder $builder
+  private PageBuilder $pageBuilder
 
   public PrintPreviewController(UtilityStage<Void> stage) {
     super(stage)
@@ -43,9 +43,9 @@ public class PrintPreviewController extends Controller<Void> {
     setupIntegerControl()
   }
 
-  public void prepare(PrinterJob printerJob, PrintPageBuilder builder) {
+  public void prepare(PrinterJob printerJob, PageBuilder pageBuilder) {
     $printerJob = printerJob
-    $builder = builder
+    $pageBuilder = pageBuilder
     PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
     Paper paper = pageLayout.getPaper()
     PageOrientation orientation = pageLayout.getPageOrientation()
@@ -54,7 +54,7 @@ public class PrintPreviewController extends Controller<Void> {
     $previewPane.setPrefWidth(width)
     $previewPane.setPrefHeight(height)
     IntegerSpinnerValueFactory pageNumberValueFactory = (IntegerSpinnerValueFactory)$pageNumberControl.getValueFactory()
-    pageNumberValueFactory.setMax(builder.pageSize())
+    pageNumberValueFactory.setMax(pageBuilder.pageSize())
     pageNumberValueFactory.setMin(1)
     pageNumberValueFactory.setValue(1)
     $stage.sizeToScene()
@@ -62,7 +62,7 @@ public class PrintPreviewController extends Controller<Void> {
 
   private void setupPageNumberControl() {
     $pageNumberControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
-      Node page = $builder.createPage(newValue - 1)
+      Node page = $pageBuilder.createPage(newValue - 1)
       if (page != null) {
         PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
         $previewPane.getChildren().clear()
