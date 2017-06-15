@@ -106,7 +106,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
       TreeCell<File> cell = (cellFactory != null) ? cellFactory.call(view) : DirectoryCell.new()
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-          changeCurrentFile(cell.getItem())
+          changeCurrentDirectory(cell.getItem())
         }
       }
       return cell
