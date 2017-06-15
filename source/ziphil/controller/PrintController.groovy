@@ -72,15 +72,7 @@ public class PrintController extends Controller<Void> {
     }
     if (!cancelled) {
       Task<Void> task = SimpleTask.new() {
-        Int startIndex = $startIndexControl.getValue() - 1
-        Int endIndex = $endIndexControl.getValue()
-        PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
-        Int fontSize = $fontSizeControl.getValue()
-        Int columnSize = $columnSizeControl.getValue()
-        PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
-        builder.setPageLayout(pageLayout)
-        builder.setFontSize(fontSize)
-        builder.setColumnSize(columnSize)
+        PrintPageBuilder builder = createBuilder()
         for (Node page ; (page = builder.nextPage()) != null ;) {
           $printerJob.printPage(page)
         }
@@ -91,6 +83,19 @@ public class PrintController extends Controller<Void> {
       thread.start()
       $stage.commit(null)
     }
+  }
+
+  private PrintPageBuilder createBuilder() {
+    Int startIndex = $startIndexControl.getValue() - 1
+    Int endIndex = $endIndexControl.getValue()
+    PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
+    Int fontSize = $fontSizeControl.getValue()
+    Int columnSize = $columnSizeControl.getValue()
+    PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
+    builder.setPageLayout(pageLayout)
+    builder.setFontSize(fontSize)
+    builder.setColumnSize(columnSize)
+    return builder
   }
 
   @FXML
