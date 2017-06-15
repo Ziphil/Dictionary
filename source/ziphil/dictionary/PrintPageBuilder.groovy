@@ -23,6 +23,7 @@ public class PrintPageBuilder {
   private Int $currentIndex = 0
   private Int $startIndex = 0
   private Int $endIndex = 0
+  private Int $currentPageNumber = 0
   private PageLayout $pageLayout
   private Int $fontSize = 10
   private Int $columnSize = 1
@@ -50,6 +51,7 @@ public class PrintPageBuilder {
       }
     }
     if (hasPage) {
+      $currentPageNumber ++
       return page
     } else {
       return null
@@ -110,6 +112,10 @@ public class PrintPageBuilder {
 
   public void reset() {
     $currentIndex = $startIndex
+  }
+
+  public Int getCurrentPageNumber() {
+    return $currentPageNumber
   }
 
   public void setPageLayout(PageLayout pageLayout) {
