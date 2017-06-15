@@ -37,6 +37,7 @@ public class PageBuilder {
     Pane page = HBox.new(COLUMN_SPACING)
     Int startColumnNumber = pageNumber * $columnSize
     Int endColumnNumber = (pageNumber + 1) * $columnSize
+    page.setSnapToPixel(false)
     for (Int i = startColumnNumber ; i < endColumnNumber ; i ++) {
       Node column = createColumn(i)
       if (column != null) {
@@ -114,6 +115,7 @@ public class PageBuilder {
     Double width = ($pageLayout.getPrintableWidth() - COLUMN_SPACING * ($columnSize - 1)) / $columnSize
     URL stylesheetURL = getClass().getClassLoader().getResource(PAGE_STYLESHEET_PATH)
     box.setPrefWidth(width)
+    box.setSnapToPixel(false)
     box.getStylesheets().add(stylesheetURL.toString())
     StringBuilder style = StringBuilder.new()
     style.append("-fx-font-size: ")
