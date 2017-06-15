@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.print.PageLayout
 import javafx.print.PageOrientation
@@ -8,6 +9,7 @@ import javafx.print.Paper
 import javafx.print.PrinterJob
 import javafx.scene.Node
 import javafx.scene.control.Spinner
+import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
 import javafx.scene.control.TextFormatter
 import javafx.scene.layout.Pane
 import ziphil.custom.IntegerUnaryOperator
@@ -37,6 +39,7 @@ public class PrintPreviewController extends Controller<Void> {
 
   @FXML
   private void initialize() {
+    setupPageNumberControl()
     setupIntegerControl()
   }
 
@@ -50,12 +53,23 @@ public class PrintPreviewController extends Controller<Void> {
     Double height = (orientation == PageOrientation.PORTRAIT || orientation == PageOrientation.REVERSE_PORTRAIT) ? paper.getHeight() : paper.getWidth()
     $previewPane.setPrefWidth(width)
     $previewPane.setPrefHeight(height)
-    Node page = builder.createPage(0)
-    if (page != null) {
-      $previewPane.getChildren().add(page)
-      page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())
-    }
+    IntegerSpinnerValueFactory pageNumberValueFactory = (IntegerSpinnerValueFactory)$pageNumberControl.getValueFactory()
+    pageNumberValueFactory.setMax(builder.pageSize())
+    pageNumberValueFactory.setMin(1)
+    pageNumberValueFactory.setValue(1)
     $stage.sizeToScene()
+  }
+
+  private void setupPageNumberControl() {
+    $pageNumberControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
+      Node page = $builder.createPage(newValue - 1)
+      if (page != null) {
+        PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
+        $previewPane.getChildren().clear()
+        $previewPane.getChildren().add(page)
+        page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())
+      }
+    }
   }
 
   private void setupIntegerControl() {
