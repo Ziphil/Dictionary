@@ -37,7 +37,7 @@
         <prefWidth><Double rpx="80"/></prefWidth>
         <minWidth><Double rpx="80"/></minWidth>
         <styleClass><Spinner fx:constant="STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL"/></styleClass>
-        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1"/></valueFactory>
+        <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="1000" initialValue="1" amountToStepBy="1"/></valueFactory>
       </Spinner>
     </VBox>
   </center>

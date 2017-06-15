@@ -74,9 +74,13 @@ public class PrintController extends Controller<Void> {
     if (!cancelled) {
       Task<Void> task = SimpleTask.new() {
         PageBuilder pageBuilder = createPageBuilder()
-        for (Int i = 0 ; i < pageBuilder.pageSize() ; i ++) {
+        for (Int i = 0 ;; i ++) {
           Node page = pageBuilder.createPage(i)
-          $printerJob.printPage(page)
+          if (page != null) {
+            $printerJob.printPage(page)
+          } else {
+            break
+          }
         }
         $printerJob.endJob()
       }
@@ -97,7 +101,6 @@ public class PrintController extends Controller<Void> {
     pageBuilder.setPageLayout(pageLayout)
     pageBuilder.setFontSize(fontSize)
     pageBuilder.setColumnSize(columnSize)
-    pageBuilder.prepare()
     return pageBuilder
   }
 

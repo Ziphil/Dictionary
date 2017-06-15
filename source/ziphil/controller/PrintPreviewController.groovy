@@ -53,21 +53,28 @@ public class PrintPreviewController extends Controller<Void> {
     Double height = (orientation == PageOrientation.PORTRAIT || orientation == PageOrientation.REVERSE_PORTRAIT) ? paper.getHeight() : paper.getWidth()
     $previewPane.setPrefWidth(width)
     $previewPane.setPrefHeight(height)
-    IntegerSpinnerValueFactory pageNumberValueFactory = (IntegerSpinnerValueFactory)$pageNumberControl.getValueFactory()
-    pageNumberValueFactory.setMax(pageBuilder.pageSize())
-    pageNumberValueFactory.setMin(1)
-    pageNumberValueFactory.setValue(1)
     $stage.sizeToScene()
+    updatePage(0)
+  }
+
+  private Boolean updatePage(Int pageNumber) {
+    Node page = $pageBuilder.createPage(pageNumber)
+    if (page != null) {
+      PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
+      $previewPane.getChildren().clear()
+      $previewPane.getChildren().add(page)
+      page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())
+      return true
+    } else {
+      return false
+    }
   }
 
   private void setupPageNumberControl() {
     $pageNumberControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
-      Node page = $pageBuilder.createPage(newValue - 1)
-      if (page != null) {
-        PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
-        $previewPane.getChildren().clear()
-        $previewPane.getChildren().add(page)
-        page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())
+      Boolean exists = updatePage(newValue - 1)
+      if (!exists) {
+        $pageNumberControl.getValueFactory().setValue(oldValue)
       }
     }
   }
