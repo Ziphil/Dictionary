@@ -60,8 +60,8 @@ public class PageBuilder {
 
   private Node createColumnByIndices(Int columnNumber) {
     Pane mainPane = createMainPane()
-    Int startIndex = (columnNumber > 0) ? $separationIndices[columnNumber - 1] + 1 : 0
-    Int endIndex = $separationIndices[columnNumber] + 1
+    Int startIndex = (columnNumber > 0) ? $separationIndices[columnNumber - 1] : 0
+    Int endIndex = $separationIndices[columnNumber]
     for (Int i = startIndex ; i < endIndex ; i ++) {
       Element word = $words[i]
       Pane pane = word.getContentPaneFactory().create(true)
@@ -72,7 +72,7 @@ public class PageBuilder {
 
   private Node caluculateSeparationIndices(Int endColumnNumber) {
     Int startColumnNumber = $separationIndices.size()
-    Int currentIndex = (startColumnNumber > 0) ? $separationIndices[startColumnNumber - 1] + 1 : 0
+    Int currentIndex = (startColumnNumber > 0) ? $separationIndices[startColumnNumber - 1] : 0
     Pane lastMainPane = null
     for (Int i = startColumnNumber ; i < endColumnNumber ; i ++) {
       if (currentIndex < $endIndex) {
@@ -100,7 +100,7 @@ public class PageBuilder {
         if (last) {
           currentIndex = $endIndex
         }
-        $separationIndices.add(currentIndex - 1)
+        $separationIndices.add(currentIndex)
         lastMainPane = mainPane
       } else {
         lastMainPane = null
