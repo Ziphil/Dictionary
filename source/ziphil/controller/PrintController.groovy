@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
 import javafx.scene.control.TextFormatter
+import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
@@ -106,6 +107,15 @@ public class PrintController extends Controller<Void> {
   @FXML
   private void configPageLayout() {
     $printerJob.showPageSetupDialog($stage)
+  }
+
+  @FXML
+  private void showPreview() {
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    PrintPreviewController controller = PrintPreviewController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
   }
 
   private void setupPrinterControl() {
