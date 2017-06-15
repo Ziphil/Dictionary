@@ -9,15 +9,18 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
 import javafx.scene.control.TextFormatter
+import javafx.stage.StageStyle
 import javafx.print.PageLayout
 import javafx.print.Printer
 import javafx.print.PrinterJob
+import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.PrintPageBuilder
+import ziphil.module.JavaVersion
 import ziphilib.transform.Ziphilify
 
 
@@ -55,25 +58,39 @@ public class PrintController extends Controller<Void> {
 
   @FXML
   protected void commit() {
-    Task<Void> task = SimpleTask.new() {
-      Int startIndex = $startIndexControl.getValue() - 1
-      Int endIndex = $endIndexControl.getValue()
-      PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
-      Int fontSize = $fontSizeControl.getValue()
-      Int columnSize = $columnSizeControl.getValue()
-      PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
-      builder.setPageLayout(pageLayout)
-      builder.setFontSize(fontSize)
-      builder.setColumnSize(columnSize)
-      for (Node page ; (page = builder.nextPage()) != null ;) {
-        $printerJob.printPage(page)
+    Boolean cancelled = false
+    JavaVersion version = JavaVersion.current()
+    if (version < JavaVersion.parseString("1.8.0_112")) {
+      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      dialog.initOwner($stage)
+      dialog.setTitle("注意")
+      dialog.setContentText("現在実行中のJavaのバージョンでは、印刷開始までに数分かかる可能性があります。Javaを最新のものにアップデートすることをお勧めします。このまま印刷を実行しますか?")
+      dialog.showAndWait()
+      if (dialog.isCancelled()) {
+        cancelled = true
       }
-      $printerJob.endJob()
     }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
-    $stage.commit(null)
+    if (!cancelled) {
+      Task<Void> task = SimpleTask.new() {
+        Int startIndex = $startIndexControl.getValue() - 1
+        Int endIndex = $endIndexControl.getValue()
+        PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
+        Int fontSize = $fontSizeControl.getValue()
+        Int columnSize = $columnSizeControl.getValue()
+        PrintPageBuilder builder = PrintPageBuilder.new($words, startIndex, endIndex)
+        builder.setPageLayout(pageLayout)
+        builder.setFontSize(fontSize)
+        builder.setColumnSize(columnSize)
+        for (Node page ; (page = builder.nextPage()) != null ;) {
+          $printerJob.printPage(page)
+        }
+        $printerJob.endJob()
+      }
+      Thread thread = Thread.new(task)
+      thread.setDaemon(true)
+      thread.start()
+      $stage.commit(null)
+    }
   }
 
   @FXML
