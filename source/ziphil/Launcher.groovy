@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 15, 1, 1970)
+  public static final Version VERSION = Version.new(1, 16, 0, 1971)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.16. 0 | 単語リストを印刷する機能を追加。
+//          | ファイル選択画面で右側のディレクトリをクリックしてもファイル一覧が更新されない不具合を修正。
 //  1.15. 1 | OneToMany 形式でアルファベット順を空欄にしても ID 順で表示されない不具合を修正。
 //  1.15. 0 | 単語リストへの表示用データをメモリ上に保持するかどうかを設定する機能を追加。
 //          | 単語リンクが受け付けるクリック方法を設定する機能を追加。
