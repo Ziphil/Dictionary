@@ -2,6 +2,8 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.print.PageLayout
+import javafx.print.Paper
 import javafx.print.PrinterJob
 import javafx.scene.Node
 import javafx.scene.control.Spinner
@@ -40,6 +42,16 @@ public class PrintPreviewController extends Controller<Void> {
   public void prepare(PrinterJob printerJob, PrintPageBuilder builder) {
     $printerJob = printerJob
     $builder = builder
+    PageLayout pageLayout = $printerJob.getJobSettings().getPageLayout()
+    Paper paper = pageLayout.getPaper()
+    $previewPane.setPrefWidth(paper.getWidth())
+    $previewPane.setPrefHeight(paper.getHeight())
+    Node page = builder.nextPage()
+    if (page != null) {
+      $previewPane.getChildren().add(page)
+      page.relocate(pageLayout.getLeftMargin(), pageLayout.getTopMargin())
+    }
+    $stage.sizeToScene()
   }
 
   private void setupIntegerControl() {

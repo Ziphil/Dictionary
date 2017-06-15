@@ -115,6 +115,7 @@ public class PrintController extends Controller<Void> {
     PrintPreviewController controller = PrintPreviewController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
+    controller.prepare($printerJob, createBuilder())
     nextStage.showAndWait()
   }
 
