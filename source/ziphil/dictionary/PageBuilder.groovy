@@ -34,10 +34,9 @@ public class PageBuilder {
   }
 
   public Node createPage(Int pageNumber) {
-    Pane page = HBox.new(COLUMN_SPACING)
+    Pane page = createPagePane()
     Int startColumnNumber = pageNumber * $columnSize
     Int endColumnNumber = (pageNumber + 1) * $columnSize
-    page.setSnapToPixel(false)
     for (Int i = startColumnNumber ; i < endColumnNumber ; i ++) {
       Node column = createColumn(i)
       if (column != null) {
@@ -60,36 +59,36 @@ public class PageBuilder {
   }
 
   private Node createColumnByIndices(Int columnNumber) {
-    Pane mainPane = createMainPane()
+    Pane column = createColumnPane()
     Int startIndex = (columnNumber > 0) ? $separationIndices[columnNumber - 1] : 0
     Int endIndex = $separationIndices[columnNumber]
     for (Int i = startIndex ; i < endIndex ; i ++) {
       Element word = $words[i]
       Pane pane = word.getPaneFactory().create(true)
-      mainPane.getChildren().add(pane)
+      column.getChildren().add(pane)
     }
-    return mainPane
+    return column
   }
 
   private Node caluculateSeparationIndices(Int endColumnNumber) {
     Int startColumnNumber = $separationIndices.size()
     Int currentIndex = (startColumnNumber > 0) ? $separationIndices[startColumnNumber - 1] : 0
-    Pane lastMainPane = null
+    Pane lastColumn = null
     for (Int i = startColumnNumber ; i < endColumnNumber ; i ++) {
       if (currentIndex < $endIndex) {
-        Pane mainPane = createMainPane()
-        Scene scene = createScene(mainPane)
+        Pane column = createColumnPane()
+        Scene scene = createScene(column)
         Boolean last = true
         for (Int j = currentIndex ; j < $endIndex ; j ++) {
           Element word = $words[j]
           Pane pane = word.getPaneFactory().create(true)
           Parent root = scene.getRoot()
-          mainPane.getChildren().add(pane)
+          column.getChildren().add(pane)
           root.applyCss()
           root.layout()
-          if (mainPane.getHeight() > $pageLayout.getPrintableHeight()) {
+          if (column.getHeight() > $pageLayout.getPrintableHeight()) {
             if (j > currentIndex) {
-              mainPane.getChildren().remove(pane)
+              column.getChildren().remove(pane)
               currentIndex = j
             } else {
               currentIndex = j + 1
@@ -102,27 +101,33 @@ public class PageBuilder {
           currentIndex = $endIndex
         }
         $separationIndices.add(currentIndex)
-        lastMainPane = mainPane
+        lastColumn = column
       } else {
-        lastMainPane = null
+        lastColumn = null
       }
     }
-    return lastMainPane
+    return lastColumn
   }
 
-  private Pane createMainPane() {
-    VBox box = VBox.new(Measurement.rpx(3))
+  private Pane createPagePane() {
+    HBox page = HBox.new(COLUMN_SPACING)
+    page.setSnapToPixel(false)
+    return page
+  }
+
+  private Pane createColumnPane() {
+    VBox column = VBox.new(Measurement.rpx(3))
     Double width = ($pageLayout.getPrintableWidth() - COLUMN_SPACING * ($columnSize - 1)) / $columnSize
     URL stylesheetURL = getClass().getClassLoader().getResource(PAGE_STYLESHEET_PATH)
-    box.setPrefWidth(width)
-    box.setSnapToPixel(false)
-    box.getStylesheets().add(stylesheetURL.toString())
+    column.setPrefWidth(width)
+    column.setSnapToPixel(false)
+    column.getStylesheets().add(stylesheetURL.toString())
     StringBuilder style = StringBuilder.new()
     style.append("-fx-font-size: ")
     style.append($fontSize)
     style.append(";")
-    box.setStyle(style.toString())
-    return box
+    column.setStyle(style.toString())
+    return column
   }
 
   private Scene createScene(Node node) {
