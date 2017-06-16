@@ -14,7 +14,7 @@
 <fx:root type="Group" styleClass="help-indicator" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <StackPane fx:id="$stackPane">
     <Circle styleClass="circle">
-      <radius><Double rpx="8"/></radius>
+      <radius><Double rpx="7"/></radius>
     </Circle>
     <Label fx:id="$markLabel" text="?"/>
   </StackPane>

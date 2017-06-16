@@ -69,12 +69,12 @@
 
 .help-indicator .label {
   -fx-font-weight: bold;
-  -fx-text-fill: -fx-box-border;
+  -fx-text-fill: -fx-outer-border;
 }
 
 .help-indicator .circle {
   -fx-fill: -fx-control-inner-background;
-  -fx-stroke: -fx-box-border;
+  -fx-stroke: -fx-outer-border;
 }
 
 Text {
