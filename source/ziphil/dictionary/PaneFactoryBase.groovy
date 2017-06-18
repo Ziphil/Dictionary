@@ -34,10 +34,10 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary> i
   public Pane create(Boolean forcesCreate) {
     if ($pane == null || $changed || forcesCreate) {
       Pane pane = doCreate()
-      if ($persisted) {
+      if ($persisted && !forcesCreate) {
         $pane = pane
+        $changed = false
       }
-      $changed = false
       return pane
     } else {
       return $pane
