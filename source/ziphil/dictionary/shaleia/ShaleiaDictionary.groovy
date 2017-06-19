@@ -129,7 +129,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     try {
       $changes.clear()
       for (String line ; (line = reader.readLine()) != null ;) {
-        Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
+        Matcher matcher = line =~ /^\-\s*(.+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
         if (matcher.matches()) {
           String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
           if (!$changes.containsKey(oldName)) {
