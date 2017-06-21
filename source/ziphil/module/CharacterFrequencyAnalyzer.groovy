@@ -56,10 +56,7 @@ public class CharacterFrequencyAnalyzer {
                 countedCharacters.add(matchedCharacter)
               }
             } else {
-              CharacterStatus nextStatus = CharacterStatus.new()
-              nextStatus.setCharacter(matchedCharacter)
-              nextStatus.setFrequency(1)
-              nextStatus.setUsingWordSize(1)
+              CharacterStatus nextStatus = CharacterStatus.new(matchedCharacter, 1, 1)
               countedCharacters.add(matchedCharacter)
               $characterStatuses.add(nextStatus)
             }
