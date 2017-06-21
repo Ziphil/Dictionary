@@ -35,7 +35,7 @@ public class StringListCell extends ListCell<String> {
       setText(item)
       setGraphic(graphic)
       setGraphicTextGap(0)
-      setContentDisplay(ContentDisplay.BOTTOM)
+      setContentDisplay(ContentDisplay.TOP)
     }
   }
 
