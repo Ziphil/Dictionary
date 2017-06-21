@@ -15,8 +15,8 @@
 <fx:root type="HBox" alignment="centerLeft" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <spacing><Double rpx="5"/></spacing>
   <ListView fx:id="$listView" orientation="horizontal" HBox.hgrow="always">
-    <prefHeight><Double rpx="38"/></prefHeight>
-    <minHeight><Double rpx="38"/></minHeight>
+    <prefHeight><Double rpx="54"/></prefHeight>
+    <minHeight><Double rpx="54"/></minHeight>
   </ListView>
   <Label text="←"/>
   <TextField fx:id="$inputControl">

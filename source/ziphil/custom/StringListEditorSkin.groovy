@@ -58,7 +58,7 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
   @VoidClosure
   private void setupDragAndDrop() {
     $listView.setCellFactory() { ListView<String> view ->
-      ListCell<String> cell = SimpleListCell.new()
+      ListCell<String> cell = StringListCell.new()
       cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
         String movedItem = cell.getItem()
         if (movedItem != null) {
