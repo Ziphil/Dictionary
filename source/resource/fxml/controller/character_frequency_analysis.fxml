@@ -60,6 +60,7 @@
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
       </HBox>
+      <ziphil.custom.StringListEditor GridPane.columnIndex="1" GridPane.rowIndex="3"/> 
     </GridPane>
   </center>
 </BorderPane>
