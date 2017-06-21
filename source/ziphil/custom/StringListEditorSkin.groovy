@@ -10,6 +10,8 @@ import javafx.scene.control.TextField
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.Dragboard
 import javafx.scene.input.DragEvent
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.HBox
@@ -34,8 +36,23 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
 
   @FXML
   private void initialize() {
+    setupInputControl()
     setupDragAndDrop()
     bindProperties()
+  }
+
+  private void setupInputControl() {
+    $inputControl.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+      if (event.getCode() == KeyCode.SPACE) {
+        $listView.getItems().add($inputControl.getText().trim())
+        $inputControl.setText("")
+      }
+    }
+    $inputControl.addEventHandler(KeyEvent.KEY_TYPED) { KeyEvent event ->
+      if (event.getCharacter() == " ") {
+        event.consume()
+      }
+    }
   }
 
   @VoidClosure
