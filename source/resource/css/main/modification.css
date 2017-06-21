@@ -78,6 +78,15 @@
   -fx-background-color: derive(-fx-mark-color, -30%);
 }
 
+.list-view:focused .list-cell:filled:selected .list-close-button {
+  -fx-background-color: derive(-fx-selection-bar, 85%);
+  -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.2), 1, 0, 0, 1);
+}
+
+.list-view:focused .list-cell:filled:selected .list-close-button:hover {
+  -fx-background-color: derive(derive(-fx-selection-bar, 85%), 30%);
+}
+
 .help-indicator .label {
   -fx-font-weight: bold;
   -fx-text-fill: -fx-outer-border;
