@@ -51,7 +51,7 @@
       <TextArea fx:id="$inputControl" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <TextField fx:id="$excludedCharactersControl" text=".,!?" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <StringListEditor GridPane.columnIndex="1" GridPane.rowIndex="2"/> 
-      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="3">
+      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
         <GridPane.margin>
           <Insets>
             <top><Double rpx="5"/></top>
