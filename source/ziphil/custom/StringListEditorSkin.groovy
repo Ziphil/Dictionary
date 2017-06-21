@@ -101,6 +101,9 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
         event.setDropCompleted(completed)
         event.consume()
       }
+      cell.setOnCloseButtonClicked() { MouseEvent event ->
+        $listView.getItems().remove(cell.getItem())
+      }
       return cell
     }
   }
