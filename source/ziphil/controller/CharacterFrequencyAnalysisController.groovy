@@ -8,6 +8,7 @@ import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.Measurement
+import ziphil.custom.StringListEditor
 import ziphil.custom.UtilityStage
 import ziphil.module.CharacterFrequencyAnalyzer
 import ziphilib.transform.Ziphilify
@@ -23,6 +24,7 @@ public class CharacterFrequencyAnalysisController extends Controller<Void> {
 
   @FXML private TextArea $inputControl
   @FXML private TextField $excludedCharactersControl
+  @FXML private StringListEditor $multigraphsControl
 
   public CharacterFrequencyAnalysisController(UtilityStage<Void> stage) {
     super(stage)
@@ -33,6 +35,7 @@ public class CharacterFrequencyAnalysisController extends Controller<Void> {
   private void execute() {
     CharacterFrequencyAnalyzer analyzer = CharacterFrequencyAnalyzer.new()
     analyzer.setExcludedCharacters($excludedCharactersControl.getText())
+    analyzer.setMultigraphs($multigraphsControl.getStrings())
     analyzer.addInput($inputControl.getText())
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)

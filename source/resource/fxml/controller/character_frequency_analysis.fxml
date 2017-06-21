@@ -50,7 +50,7 @@
       <Label text="1文字扱い:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <TextArea fx:id="$inputControl" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
       <TextField fx:id="$excludedCharactersControl" text=".,!?" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <StringListEditor GridPane.columnIndex="1" GridPane.rowIndex="2"/> 
+      <StringListEditor fx:id="$multigraphsControl" GridPane.columnIndex="1" GridPane.rowIndex="2"/> 
       <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
         <GridPane.margin>
           <Insets>
