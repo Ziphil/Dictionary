@@ -11,12 +11,16 @@ import ziphil.custom.Measurement
 import ziphil.custom.StringListEditor
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EquivalentCollection
 import ziphil.dictionary.EquivalentCollectionType
+import ziphil.dictionary.NameGenerator
+import ziphil.dictionary.PseudoWord
+import ziphil.dictionary.Word
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class WordGeneratorController extends Controller<Void> {
+public class WordGeneratorController extends Controller<List<Word>> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/word_generator.fxml"
   private static final String TITLE = "単語自動生成"
@@ -30,7 +34,7 @@ public class WordGeneratorController extends Controller<Void> {
   @FXML private Spinner<IntegerClass> $maxSyllableSizeControl
   @FXML private ComboBox $collectionTypeControl
 
-  public WordGeneratorController(UtilityStage<Void> stage) {
+  public WordGeneratorController(UtilityStage<List<Word>> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -43,6 +47,24 @@ public class WordGeneratorController extends Controller<Void> {
   }
 
   public void prepare(EditableDictionary dictionary) {
+  }
+
+  protected void commit() {
+    List<Word> words = ArrayList.new()
+    EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    if (collectionType != null) {
+      EquivalentCollection collection = EquivalentCollection.load(collectionType)
+      NameGenerator generator = NameGenerator.new()
+      generator.setVowels($vowelsControl.getStrings())
+      generator.setConsonants($consonantsControl.getStrings())
+      generator.setSyllablePatterns($syllablePatternsControl.getStrings())
+      generator.setMinSyllableSize($minSyllableSizeControl.getValue())
+      generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+      for (PseudoWord pseudoWord : collection.getPseudoWords()) {
+        String name = generator.generate()
+      }
+    }
+    $stage.commit(words)
   }
 
   private void setupSyllableSizeControls() {
