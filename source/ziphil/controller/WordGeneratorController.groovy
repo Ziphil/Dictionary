@@ -33,6 +33,7 @@ public class WordGeneratorController extends Controller<List<Word>> {
   @FXML private Spinner<IntegerClass> $minSyllableSizeControl
   @FXML private Spinner<IntegerClass> $maxSyllableSizeControl
   @FXML private ComboBox $collectionTypeControl
+  private EditableDictionary $dictionary
 
   public WordGeneratorController(UtilityStage<List<Word>> stage) {
     super(stage)
@@ -47,6 +48,7 @@ public class WordGeneratorController extends Controller<List<Word>> {
   }
 
   public void prepare(EditableDictionary dictionary) {
+    $dictionary = dictionary
   }
 
   protected void commit() {
@@ -62,6 +64,8 @@ public class WordGeneratorController extends Controller<List<Word>> {
       generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
       for (PseudoWord pseudoWord : collection.getPseudoWords()) {
         String name = generator.generate()
+        Word word = $dictionary.determineWord(name, pseudoWord)
+        words.add(word)
       }
     }
     $stage.commit(words)

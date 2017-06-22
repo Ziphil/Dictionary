@@ -512,6 +512,10 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.initOwner($stage)
       controller.prepare($dictionary)
       nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        List<Word> newWords = nextStage.getResult()
+        $dictionary.addWord(newWords)
+      }
     }
   }
 
