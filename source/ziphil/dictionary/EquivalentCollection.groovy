@@ -5,22 +5,19 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
-import ziphil.Launcher
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class EquivalentCollection {
 
-  private static final String COLLECTION_DIRECTORY = "data/collection/"
-
   private static ObjectMapper $$mapper = createObjectMapper()
 
   private String $name = ""
   private List<PseudoWord> $pseudoWords = ArrayList.new()
 
-  public static EquivalentCollection load(String path) {
-    File file = File.new(Launcher.BASE_PATH + COLLECTION_DIRECTORY + path)
+  public static EquivalentCollection load(EquivalentCollectionType type) {
+    File file = File.new(type.getPath())
     if (file.exists()) {
       FileInputStream stream = FileInputStream.new(file)
       EquivalentCollection collection
@@ -42,6 +39,10 @@ public class EquivalentCollection {
     ObjectMapper mapper = ObjectMapper.new()
     mapper.enable(SerializationFeature.INDENT_OUTPUT)
     return mapper
+  }
+
+  public static ObjectMapper getObjectMapper() {
+    return $$mapper
   }
 
   public String getName() {
