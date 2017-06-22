@@ -80,7 +80,7 @@
           <prefWidth><Double rpx="150"/></prefWidth>
           <minWidth><Double rpx="150"/></minWidth>
         </ComboBox>
-        <Button text="表示">
+        <Button text="表示" onAction="#showEquivalents">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
         </Button>

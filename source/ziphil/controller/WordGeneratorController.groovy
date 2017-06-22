@@ -6,6 +6,8 @@ import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextFormatter
+import javafx.stage.Modality
+import javafx.stage.StageStyle
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.StringListEditor
@@ -49,6 +51,20 @@ public class WordGeneratorController extends Controller<List<Word>> {
 
   public void prepare(EditableDictionary dictionary) {
     $dictionary = dictionary
+  }
+
+  @FXML
+  private void showEquivalents() {
+    EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    if (collectionType != null) {
+      EquivalentCollection collection = EquivalentCollection.load(collectionType)
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      EquivalentCollectionController controller = EquivalentCollectionController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      controller.prepare(collection)
+      nextStage.showAndWait()
+    }
   }
 
   protected void commit() {
