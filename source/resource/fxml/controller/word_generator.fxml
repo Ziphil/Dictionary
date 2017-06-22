@@ -51,17 +51,39 @@
       <Label text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
-        <StringListEditor fx:id="$vowelsControl" HBox.hgrow="always"/>
+        <StringListEditor fx:id="$vowelsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="a"/>
+              <String fx:value="e"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
         <HelpIndicator text="母音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
         <spacing><Double rpx="5"/></spacing>
-        <StringListEditor fx:id="$consonantsControl" HBox.hgrow="always"/>
+        <StringListEditor fx:id="$consonantsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="k"/>
+              <String fx:value="p"/>
+              <String fx:value="m"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
         <HelpIndicator text="子音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
-        <StringListEditor fx:id="$syllablePatternsControl" HBox.hgrow="always"/>
+        <StringListEditor fx:id="$syllablePatternsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="V"/>
+              <String fx:value="CV"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
         <HelpIndicator text="許容する音節のパターンを指定してください。&#10;パターンは、母音を表す「V」と子音を表す「C」から成る文字列です。&#10;例えば、「CVC」は母音字の前後に子音字が存在するような音節を表します。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
       </HBox>
       <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
