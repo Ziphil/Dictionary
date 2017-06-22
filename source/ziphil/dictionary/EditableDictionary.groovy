@@ -12,15 +12,15 @@ public interface EditableDictionary<W extends Word, V extends Word> {
 
   public void addWord(V word)
 
-  public void addWord(List<? extends V> words)
+  public void addWords(List<? extends V> words)
 
   public void removeWord(V word)
 
-  public V emptyWord(String defaultName)
+  public V createWord(String defaultName)
 
-  public V copiedWord(W oldWord)
+  public V copyWord(W oldWord)
 
-  public V inheritedWord(W oldWord)
+  public V inheritWord(W oldWord)
 
   public V determineWord(String name, PseudoWord psuedoWord)
 

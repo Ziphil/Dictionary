@@ -65,7 +65,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     ObservableList<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
     List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
     ObservableList<String> informationTitleOrder = FXCollections.observableArrayList(dictionary.getInformationTitleOrder() ?: dictionary.getRegisteredInformationTitles())
-    SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copiedWord(dictionary.getDefaultWord()) : null
+    SlimeWord defaultWord = (dictionary.getDefaultWord() != null) ? dictionary.copyWord(dictionary.getDefaultWord()) : null
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
@@ -144,7 +144,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void editDefaultWord() {
-    SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.emptyWord(null)
+    SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.createWord(null)
     UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)

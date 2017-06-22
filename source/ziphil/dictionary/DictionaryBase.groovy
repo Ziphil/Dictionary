@@ -186,7 +186,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
           PrivilegedExceptionAction<BooleanClass> action = (PrivilegedExceptionAction<BooleanClass>){
             try {
               if (suppressedException == null) {
-                scriptEngine.put("word", plainWord(word))
+                scriptEngine.put("word", createPlainWord(word))
                 Object result = scriptEngine.eval(script)
                 return (result) ? true : false
               } else {
@@ -233,7 +233,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.shuffle()
   }
 
-  public abstract Object plainWord(W word)
+  public abstract Object createPlainWord(W word)
 
   public abstract void update()
 

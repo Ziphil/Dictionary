@@ -45,7 +45,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
-  public void addWord(List<? extends PersonalWord> words) {
+  public void addWords(List<? extends PersonalWord> words) {
     $words.addAll(words)
     $changed = true
   }
@@ -67,14 +67,14 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
-  public PersonalWord emptyWord(String defaultName) {
+  public PersonalWord createWord(String defaultName) {
     PersonalWord word = PersonalWord.new()
     word.setName(defaultName ?: "")
     word.update()
     return word
   }
 
-  public PersonalWord copiedWord(PersonalWord oldWord) {
+  public PersonalWord copyWord(PersonalWord oldWord) {
     PersonalWord newWord = PersonalWord.new()
     newWord.setName(oldWord.getName())
     newWord.setPronunciation(oldWord.getPronunciation())
@@ -88,8 +88,8 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return newWord
   }
 
-  public PersonalWord inheritedWord(PersonalWord oldWord) {
-    return copiedWord(oldWord)
+  public PersonalWord inheritWord(PersonalWord oldWord) {
+    return copyWord(oldWord)
   }
 
   public PersonalWord determineWord(String name, PseudoWord pseudoWord) {
@@ -106,7 +106,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return word
   }
 
-  public Object plainWord(PersonalWord oldWord) {
+  public Object createPlainWord(PersonalWord oldWord) {
     PersonalPlainWord newWord = PersonalPlainWord.new()
     newWord.setName(oldWord.getName())
     newWord.setPronunciation(oldWord.getPronunciation())

@@ -180,7 +180,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
-  public void addWord(List<? extends SlimeWord> words) {
+  public void addWords(List<? extends SlimeWord> words) {
     for (SlimeWord word : words) {
       addWordWithoutUpdate(word)
       incrementValidMinId(word)
@@ -374,8 +374,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $akrantiain = akrantiain
   }
 
-  public SlimeWord emptyWord(String defaultName) {
-    SlimeWord word = copiedWordBase($defaultWord, false)
+  public SlimeWord createWord(String defaultName) {
+    SlimeWord word = prepareCopyWord($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
     word.setDictionary(this)
@@ -383,7 +383,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return word
   }
 
-  private SlimeWord copiedWordBase(SlimeWord oldWord, Boolean updates) {
+  private SlimeWord prepareCopyWord(SlimeWord oldWord, Boolean updates) {
     SlimeWord newWord = SlimeWord.new()
     newWord.setId(oldWord.getId())
     newWord.setName(oldWord.getName())
@@ -399,12 +399,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
-  public SlimeWord copiedWord(SlimeWord oldWord) {
-    return copiedWordBase(oldWord, true)
+  public SlimeWord copyWord(SlimeWord oldWord) {
+    return prepareCopyWord(oldWord, true)
   }
 
-  public SlimeWord inheritedWord(SlimeWord oldWord) {
-    SlimeWord newWord = copiedWordBase(oldWord, false)
+  public SlimeWord inheritWord(SlimeWord oldWord) {
+    SlimeWord newWord = prepareCopyWord(oldWord, false)
     newWord.setId($validMinId)
     newWord.update()
     return newWord
@@ -425,7 +425,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return word
   }
 
-  public Object plainWord(SlimeWord oldWord) {
+  public Object createPlainWord(SlimeWord oldWord) {
     SlimePlainWord newWord = SlimePlainWord.new()
     Int newId = oldWord.getId()
     String newName = oldWord.getName()

@@ -99,7 +99,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $changed = true
   }
 
-  public void addWord(List<? extends ShaleiaWord> words) {
+  public void addWords(List<? extends ShaleiaWord> words) {
     $words.addAll(words)
     $changed = true
   }
@@ -166,7 +166,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $akrantiain = akrantiain
   }
 
-  public ShaleiaWord emptyWord(String defaultName) {
+  public ShaleiaWord createWord(String defaultName) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
@@ -176,7 +176,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return word
   }
 
-  private ShaleiaWord copiedWordBase(ShaleiaWord oldWord, Boolean updates) {
+  private ShaleiaWord prepareCopyWord(ShaleiaWord oldWord, Boolean updates) {
     ShaleiaWord newWord = ShaleiaWord.new()
     newWord.setUniqueName(oldWord.getUniqueName())
     newWord.setDescription(oldWord.getDescription())
@@ -187,13 +187,13 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return newWord
   }
 
-  public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
-    return copiedWordBase(oldWord, true)
+  public ShaleiaWord copyWord(ShaleiaWord oldWord) {
+    return prepareCopyWord(oldWord, true)
   }
 
-  public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
+  public ShaleiaWord inheritWord(ShaleiaWord oldWord) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
-    ShaleiaWord newWord = copiedWordBase(oldWord, false)
+    ShaleiaWord newWord = prepareCopyWord(oldWord, false)
     newWord.setDescription(oldWord.getDescription().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
     newWord.update()
     return newWord
@@ -211,7 +211,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return word
   }
 
-  public Object plainWord(ShaleiaWord oldWord) {
+  public Object createPlainWord(ShaleiaWord oldWord) {
     ShaleiaPlainWord newWord = ShaleiaPlainWord.new()
     newWord.setName(oldWord.getName())
     newWord.setUniqueName(oldWord.getUniqueName())
