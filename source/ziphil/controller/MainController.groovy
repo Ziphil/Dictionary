@@ -931,7 +931,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void executeCharacterAnalysis() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    CharacterFrequencyAnalysisController controller = CharacterFrequencyAnalysisController.new(nextStage)
+    CharacterFrequencyAnalyzerController controller = CharacterFrequencyAnalyzerController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
