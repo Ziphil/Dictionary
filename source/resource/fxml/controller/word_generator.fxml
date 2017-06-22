@@ -71,7 +71,7 @@
         <Spinner fx:id="$maxSyllableSizeControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
-          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="1" amountToStepBy="1"/></valueFactory>
+          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="3" amountToStepBy="1"/></valueFactory>
         </Spinner>
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
