@@ -205,7 +205,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     List<String> pseudoEquivalents = pseudoWord.getEquivalents()
     String pseudoContent = pseudoWord.getContent()
     word.setUniqueName(name)
-    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(",")}")
+    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(", ")}")
     word.setDictionary(this)
     word.update()
     return word
