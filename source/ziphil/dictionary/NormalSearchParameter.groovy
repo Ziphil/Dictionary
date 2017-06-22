@@ -17,7 +17,7 @@ public class NormalSearchParameter implements SearchParameter<Word> {
   private Boolean $strict = false
   private Boolean $reallyStrict = false
   private String $convertedSearch
-  private Pattern $pattern
+  private Pattern $searchPattern
 
   // 与えられた引数から通常検索用のパラメータオブジェクトを作成します。
   // strict に true が指定された場合は環境設定に応じて完全一致もしくは前方一致で検索を行うことを意味し、false が指定された場合は正規表現で検索を行うことを意味します。
@@ -39,9 +39,9 @@ public class NormalSearchParameter implements SearchParameter<Word> {
     Boolean ignoresCase = ($reallyStrict) ? false : setting.getIgnoresCase()
     $convertedSearch = Strings.convert($search, ignoresAccent, ignoresCase)
     try {
-      $pattern = ($searchMode != SearchMode.CONTENT && $strict) ? null : Pattern.compile($search)
+      $searchPattern = ($searchMode != SearchMode.CONTENT && $strict) ? null : Pattern.compile($search)
     } catch (PatternSyntaxException exception) {
-      $pattern = null
+      $searchPattern = null
     }
   }
 
@@ -75,8 +75,8 @@ public class NormalSearchParameter implements SearchParameter<Word> {
         return true
       }
     } else {
-      if ($pattern != null) {
-        Matcher matcher = $pattern.matcher(word.getName())
+      if ($searchPattern != null) {
+        Matcher matcher = $searchPattern.matcher(word.getName())
         return matcher.find()
       } else {
         return false
@@ -102,9 +102,9 @@ public class NormalSearchParameter implements SearchParameter<Word> {
         return true
       }
     } else {
-      if ($pattern != null) {
+      if ($searchPattern != null) {
         return word.getEquivalents().any() { String equivalent ->
-          Matcher matcher = $pattern.matcher(equivalent)
+          Matcher matcher = $searchPattern.matcher(equivalent)
           return matcher.find()
         }
       } else {
@@ -114,8 +114,8 @@ public class NormalSearchParameter implements SearchParameter<Word> {
   }
 
   private Boolean matchesByContent(Word word) {
-    if ($pattern != null) {
-      Matcher matcher = $pattern.matcher(word.getContent())
+    if ($searchPattern != null) {
+      Matcher matcher = $searchPattern.matcher(word.getContent())
       return matcher.find()
     } else {
       return false
