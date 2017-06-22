@@ -21,9 +21,9 @@ public class NameGenerator {
       String syllablePattern = ($syllablePatterns.isEmpty()) ? "" : $syllablePatterns[$random.nextInt($syllablePatterns.size())]
       String syllable = syllablePattern.replaceAll(/(.)/) { List<String> match ->
         String character = match[1]
-        if (character == "V") {
+        if (character == "V" || character == "v") {
           return ($vowels.isEmpty()) ? "" : $vowels[$random.nextInt($vowels.size())]
-        } else if (character == "C") {
+        } else if (character == "C" || character == "c") {
           return ($consonants.isEmpty()) ? "" : $consonants[$random.nextInt($consonants.size())]
         } else {
           return ""
