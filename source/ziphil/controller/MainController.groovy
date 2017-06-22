@@ -160,7 +160,7 @@ public class MainController extends PrimitiveController<Stage> {
       Boolean strict = $searchTypeControl.isSelected()
       NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
       if (forcesSearch || search != $previousSearch) {
-        doSearchNormal(parameter)
+        measureAndSearch(parameter)
         $previousSearch = search
         if (forcesSearch) {
           $searchHistory.add(parameter, false)
@@ -180,12 +180,6 @@ public class MainController extends PrimitiveController<Stage> {
     searchNormal(false)
   }
 
-  private void doSearchNormal(NormalSearchParameter parameter) {
-    measureDictionaryStatus() {
-      $dictionary.search(parameter)
-    }
-  }
-
   @FXML
   private void searchDetail() {
     if ($dictionary != null) {
@@ -196,7 +190,7 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           ShaleiaSearchParameter parameter = nextStage.getResult()
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
@@ -207,21 +201,9 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           SlimeSearchParameter parameter = nextStage.getResult()
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
           $searchHistory.add(parameter)
         }
-      }
-    }
-  }
-
-  private void doSearchDetail(DetailSearchParameter parameter) {
-    if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
-      measureDictionaryStatus() {
-        $dictionary.search(parameter)
-      }
-    } else if ($dictionary instanceof SlimeDictionary && parameter instanceof SlimeSearchParameter) {
-      measureDictionaryStatus() {
-        $dictionary.search(parameter)
       }
     }
   }
@@ -235,8 +217,8 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         try {
-          ScriptSearchParameter script = nextStage.getResult()
-          doSearchScript(script)
+          ScriptSearchParameter parameter = nextStage.getResult()
+          measureAndSearch(parameter)
         } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
           PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
@@ -260,12 +242,6 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void doSearchScript(ScriptSearchParameter parameter) {
-    measureDictionaryStatus() {
-      $dictionary.search(parameter)
-    }
-  }
-
   @FXML
   private void searchPrevious() {
     if ($dictionary != null) {
@@ -279,9 +255,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearchNormal(parameter)
+          measureAndSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
         }
       }
     }
@@ -300,9 +276,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearchNormal(parameter)
+          measureAndSearch(parameter)
         } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
         }
       }
     }
@@ -336,6 +312,12 @@ public class MainController extends PrimitiveController<Stage> {
     $hitWordSizeLabel.setText($dictionary.hitWordSize().toString())
     $totalWordSizeLabel.setText($dictionary.totalWordSize().toString())
     $wordView.scrollTo(0)
+  }
+
+  private void measureAndSearch(SearchParameter parameter) {
+    measureDictionaryStatus() {
+      $dictionary.search(parameter)
+    }
   }
 
   @FXML
@@ -738,11 +720,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateOnLinkClicked() {
     if ($dictionary != null) {
       $dictionary.setOnLinkClicked() { SearchParameter parameter ->
-        if (parameter instanceof NormalSearchParameter) {
-          doSearchNormal(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
-        }
+        measureAndSearch(parameter)
         $searchHistory.add(parameter)
       }
     }
@@ -1186,7 +1164,7 @@ public class MainController extends PrimitiveController<Stage> {
           if (parameter != null) {
             item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
-              doSearchDetail(parameter)
+              measureAndSearch(parameter)
               $searchHistory.add(parameter)
             }
           } else {
