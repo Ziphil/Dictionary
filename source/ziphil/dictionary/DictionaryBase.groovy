@@ -89,7 +89,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  protected void updateWordPredicate(Predicate<? super W> predicate) {
+  private void updateWordPredicate(Predicate<? super W> predicate) {
     $filteredWords.setPredicate(predicate)
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
       return suggestion.isDisplayed()
@@ -97,7 +97,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.unshuffle()
   }
 
-  protected void resetSuggestions() {
+  private void resetSuggestions() {
     for (Suggestion suggestion : $suggestions) {
       suggestion.getPossibilities().clear()
       suggestion.setDisplayed(false)
