@@ -17,6 +17,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -160,7 +161,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
-  public void addWord(SlimeWord word) {
+  private void addWordWithoutUpdate(SlimeWord word) {
     if (containsId(word.getId(), word)) {
       for (RelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
@@ -171,6 +172,18 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       word.setId($validMinId)
     }
     $words.add(word)
+  }
+
+  public void addWord(SlimeWord word) {
+    addWordWithoutUpdate(word)
+    complyRelationRequests()
+    updateOnBackground()
+  }
+
+  public void addWord(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      addWordWithoutUpdate(word)
+    }
     complyRelationRequests()
     updateOnBackground()
   }
@@ -388,6 +401,19 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     newWord.setId($validMinId)
     newWord.update()
     return newWord
+  }
+
+  public SlimeWord determineWord(String name, PseudoWord pseudoWord) {
+    SlimeWord word = SlimeWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setName(name)
+    word.getRawEquivalents().add(SlimeEquivalent.new("", pseudoEquivalents))
+    if (pseudoContent != null) {
+      word.getInformations().add(SlimeInformation.new("", pseudoContent))
+    }
+    word.update()
+    return word
   }
 
   public Object plainWord(SlimeWord oldWord) {

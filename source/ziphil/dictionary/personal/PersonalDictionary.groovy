@@ -14,6 +14,7 @@ import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -41,6 +42,11 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
 
   public void addWord(PersonalWord word) {
     $words.add(word)
+    $changed = true
+  }
+
+  public void addWord(List<? extends PersonalWord> words) {
+    $words.addAll(words)
     $changed = true
   }
 
@@ -84,6 +90,19 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
 
   public PersonalWord inheritedWord(PersonalWord oldWord) {
     return copiedWord(oldWord)
+  }
+
+  public PersonalWord determineWord(String name, PseudoWord pseudoWord) {
+    PersonalWord word = PersonalWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setName(name)
+    word.setTranslation(pseudoEquivalents.join(", "))
+    if (pseudoContent != null) {
+      word.setUsage(pseudoContent)
+    }
+    word.update()
+    return word
   }
 
   public Object plainWord(PersonalWord oldWord) {

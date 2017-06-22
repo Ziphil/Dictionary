@@ -12,6 +12,8 @@ public interface EditableDictionary<W extends Word, V extends Word> {
 
   public void addWord(V word)
 
+  public void addWord(List<? extends V> words)
+
   public void removeWord(V word)
 
   public V emptyWord(String defaultName)
@@ -19,5 +21,7 @@ public interface EditableDictionary<W extends Word, V extends Word> {
   public V copiedWord(W oldWord)
 
   public V inheritedWord(W oldWord)
+
+  public V determineWord(String name, PseudoWord psuedoWord)
 
 }

@@ -19,6 +19,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -95,6 +96,11 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void addWord(ShaleiaWord word) {
     $words.add(word)
+    $changed = true
+  }
+
+  public void addWord(List<? extends ShaleiaWord> words) {
+    $words.addAll(words)
     $changed = true
   }
 
@@ -191,6 +197,17 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     newWord.setDescription(oldWord.getDescription().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
     newWord.update()
     return newWord
+  }
+
+  public ShaleiaWord determineWord(String name, PseudoWord pseudoWord) {
+    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    ShaleiaWord word = ShaleiaWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setUniqueName(name)
+    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(",")}")
+    word.update()
+    return word
   }
 
   public Object plainWord(ShaleiaWord oldWord) {
