@@ -133,7 +133,7 @@
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="単語の自動生成" onAction="#addGeneratedWords"/>
+        <MenuItem styleClass="option,all" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
