@@ -11,17 +11,17 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class StringListCell extends ListCell<String> {
+public class ClosableListCell<T> extends ListCell<T> {
 
   private static Double CLOSE_BUTTON_SIZE = 16
 
   private EventHandler<? super MouseEvent> $onCloseButtonClicked = null
 
-  public StringListCell() {
+  public ClosableListCell() {
     super()
   }
 
-  protected void updateItem(String item, Boolean empty) {
+  protected void updateItem(T item, Boolean empty) {
     super.updateItem(item, empty)
     if (empty || item == null) {
       setText(null)
@@ -32,7 +32,7 @@ public class StringListCell extends ListCell<String> {
       graphic.setPrefHeight(CLOSE_BUTTON_SIZE)
       graphic.setOnMouseClicked($onCloseButtonClicked)
       graphic.getStyleClass().setAll("list-close-button")
-      setText(item)
+      setText(item.toString())
       setGraphic(graphic)
       setGraphicTextGap(0)
       setContentDisplay(ContentDisplay.TOP)
