@@ -55,6 +55,9 @@ public class EquivalentCollectionType {
         collectionTypes.add(collectionType)
       }
     }
+    collectionTypes.sort() { EquivalentCollectionType firstCollectionType, EquivalentCollectionType secondCollectionType ->
+      return firstCollectionType.getSize() <=> secondCollectionType.getSize()
+    }
     return collectionTypes
   }
 

@@ -103,6 +103,9 @@ public class WordGeneratorController extends Controller<List<Word>> {
   private void setupCollectionTypeControl() {
     List<EquivalentCollectionType> collectionTypes = EquivalentCollectionType.getCollectionTypes()
     $collectionTypeControl.getItems().addAll(collectionTypes)
+    if (!collectionTypes.isEmpty()) {
+      $collectionTypeControl.setValue(collectionTypes.first())
+    }
   }
 
   private void setupIntegerControls() {
