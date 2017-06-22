@@ -64,27 +64,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public void search(SearchParameter parameter) {
     ConjugationResolver conjugationResolver = null
-    String search = null
-    String convertedSearch = null
     Exception suppressedException = null
     resetSuggestions()
     if (parameter instanceof NormalSearchParameter) {
       if (parameter.getSearchMode() == SearchMode.NAME) {
-        Boolean reallyStrict = parameter.isReallyStrict()
-        Setting setting = Setting.getInstance()
-        Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
-        Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
-        conjugationResolver = createConjugationResolver(parameter)
-        search = parameter.getSearch()
-        convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-        conjugationResolver.precheck(search, convertedSearch)
+        conjugationResolver = createConjugationResolver()
+        conjugationResolver.prepare(parameter)
       }
     }
     parameter.prepare(this)
     updateWordPredicate() { Word word ->
       try {
         if (conjugationResolver != null) {
-          conjugationResolver.check(word, search, convertedSearch)
+          conjugationResolver.check(word)
         }
         return parameter.matches(word)
       } catch (Exception exception) {
@@ -215,7 +207,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words.size()
   }
 
-  protected abstract ConjugationResolver createConjugationResolver(NormalSearchParameter parameter)
+  protected abstract ConjugationResolver createConjugationResolver()
 
   protected abstract DictionaryLoader createLoader()
 

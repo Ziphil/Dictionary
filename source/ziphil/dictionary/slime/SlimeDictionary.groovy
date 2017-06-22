@@ -428,7 +428,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $suggestions.add(suggestion)
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
+  protected ConjugationResolver createConjugationResolver() {
     SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
     return conjugationResolver
   }

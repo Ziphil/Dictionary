@@ -20,44 +20,52 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   private static final Map<String, String> PREPOSITION_PREFIXES = [("非動詞修飾"): "i"]
   private static final Map<String, String> NEGATION_PREFIXES = [("否定"): "du"]
 
-  private NormalSearchParameter $parameter
   private Map<String, List<String>> $changes
   private String $version
   private List<ConjugationCandidate> $candidates = ArrayList.new()
+  private String $search
+  private String $convertedSearch
+  private NormalSearchParameter $parameter
 
-  public ShaleiaConjugationResolver(List<ShaleiaSuggestion> suggestions, NormalSearchParameter parameter, Map<String, List<String>> changes, String version) {
+  public ShaleiaConjugationResolver(List<ShaleiaSuggestion> suggestions, Map<String, List<String>> changes, String version) {
     super(suggestions)
-    $parameter = parameter
     $changes = changes
     $version = version
   }
 
-  public void precheck(String search, String convertedSearch) {
-    prepareCheckConjugation(search, convertedSearch)
-    checkChange(search, convertedSearch)
+  public void prepare(NormalSearchParameter parameter) {
+    Boolean reallyStrict = parameter.isReallyStrict()
+    Setting setting = Setting.getInstance()
+    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
+    $search = parameter.getSearch()
+    $convertedSearch = Strings.convert(parameter.getSearch(), ignoresAccent, ignoresCase)
+    $parameter = parameter
+    prepareCheckConjugation()
+    checkChange()
   }
 
-  public void check(ShaleiaWord word, String search, String convertedSearch) {
-    checkConjugation(word, search, convertedSearch)
+  public void check(ShaleiaWord word) {
+    checkConjugation(word)
   }
 
-  private void prepareCheckConjugation(String search, String convertedSearch) {
+  private void prepareCheckConjugation() {
     if ($version == "5.5") {
       for (Map.Entry<String, String> tenseEntry : TENSE_SUFFIXES) {
         for (Map.Entry<String, String> aspectEntry : ASPECT_SUFFIXES) {
           String suffix = tenseEntry.getValue() + aspectEntry.getValue()
           for (Map.Entry<String, String> negationEntry : NEGATION_PREFIXES) {
             String prefix = negationEntry.getValue()
-            if (convertedSearch.endsWith(suffix) && convertedSearch.startsWith(prefix)) {
+            if ($convertedSearch.endsWith(suffix) && $convertedSearch.startsWith(prefix)) {
               String explanation = tenseEntry.getKey() + aspectEntry.getKey() + negationEntry.getKey()
-              String name = convertedSearch.replaceAll(/^${prefix}|${suffix}$/, "")
+              String name = $convertedSearch.replaceAll(/^${prefix}|${suffix}$/, "")
               ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.VERB, explanation, name)
               $candidates.add(candidate)
             }
           }
-          if (convertedSearch.endsWith(suffix)) {
+          if ($convertedSearch.endsWith(suffix)) {
             String explanation = tenseEntry.getKey() + aspectEntry.getKey()
-            String name = convertedSearch.replaceAll(/${suffix}$/, "")
+            String name = $convertedSearch.replaceAll(/${suffix}$/, "")
             ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.VERB, explanation, name)
             $candidates.add(candidate)
           }
@@ -67,16 +75,16 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
         String prefix = verbClassEntry.getValue()
         for (Map.Entry<String, String> negationEntry : NEGATION_PREFIXES) {
           String doublePrefix = prefix + negationEntry.getValue()
-          if (convertedSearch.startsWith(doublePrefix)) {
+          if ($convertedSearch.startsWith(doublePrefix)) {
             String explanation = verbClassEntry.getKey() + negationEntry.getKey()
-            String name = convertedSearch.replaceAll(/^${doublePrefix}/, "")
+            String name = $convertedSearch.replaceAll(/^${doublePrefix}/, "")
             ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.VERB, explanation, name)
             $candidates.add(candidate)
           }
         }
-        if (convertedSearch.startsWith(prefix)) {
+        if ($convertedSearch.startsWith(prefix)) {
           String explanation = verbClassEntry.getKey()
-          String name = convertedSearch.replaceAll(/^${prefix}/, "")
+          String name = $convertedSearch.replaceAll(/^${prefix}/, "")
           ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.VERB, explanation, name)
           $candidates.add(candidate)
         }
@@ -85,34 +93,34 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
         String prefix = adverbClassEntry.getValue()
         for (Map.Entry<String, String> negationEntry : NEGATION_PREFIXES) {
           String doublePrefix = prefix + negationEntry.getValue()
-          if (convertedSearch.startsWith(doublePrefix)) {
+          if ($convertedSearch.startsWith(doublePrefix)) {
             String explanation = adverbClassEntry.getKey() + negationEntry.getKey()
-            String name = convertedSearch.replaceAll(/^${doublePrefix}/, "")
+            String name = $convertedSearch.replaceAll(/^${doublePrefix}/, "")
             ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.ADVERB, explanation, name)
             $candidates.add(candidate)
           }
         }
-        if (convertedSearch.startsWith(prefix)) {
+        if ($convertedSearch.startsWith(prefix)) {
           String explanation = adverbClassEntry.getKey()
-          String name = convertedSearch.replaceAll(/^${prefix}/, "")
+          String name = $convertedSearch.replaceAll(/^${prefix}/, "")
           ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.ADVERB, explanation, name)
           $candidates.add(candidate)
         }
       }
       for (Map.Entry<String, String> prepositionEntry : PREPOSITION_PREFIXES) {
         String prefix = prepositionEntry.getValue()
-        if (convertedSearch.startsWith(prefix)) {
+        if ($convertedSearch.startsWith(prefix)) {
           String explanation = prepositionEntry.getKey()
-          String name = convertedSearch.replaceAll(/^${prefix}/, "")
+          String name = $convertedSearch.replaceAll(/^${prefix}/, "")
           ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.PREPOSITION, explanation, name)
           $candidates.add(candidate)
         }
       }
       for (Map.Entry<String, String> negationEntry : NEGATION_PREFIXES) {
         String prefix = negationEntry.getValue()
-        if (convertedSearch.startsWith(prefix)) {
+        if ($convertedSearch.startsWith(prefix)) {
           String explanation = negationEntry.getKey()
-          String name = convertedSearch.replaceAll(/^${prefix}/, "")
+          String name = $convertedSearch.replaceAll(/^${prefix}/, "")
           ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.NOUN, explanation, name)
           $candidates.add(candidate)
         }
@@ -120,9 +128,9 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     }
   }
 
-  private void checkChange(String search, String convertedSearch) {
-    if ($changes.containsKey(convertedSearch)) {
-      for (String newName : $changes[convertedSearch]) {
+  private void checkChange() {
+    if ($changes.containsKey($convertedSearch)) {
+      for (String newName : $changes[$convertedSearch]) {
         ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
         $suggestions[1].getPossibilities().add(possibility)
         $suggestions[1].setDisplayed(true)
@@ -131,7 +139,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     }
   }
 
-  private void checkConjugation(ShaleiaWord word, String search, String convertedSearch) {
+  private void checkConjugation(ShaleiaWord word) {
     Boolean reallyStrict = $parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()

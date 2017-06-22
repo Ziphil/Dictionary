@@ -131,7 +131,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     }
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
+  protected ConjugationResolver createConjugationResolver() {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
   }

@@ -247,8 +247,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return $words.size() - $systemWordSize
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
-    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, parameter, $changes, $version)
+  protected ConjugationResolver createConjugationResolver() {
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
     return conjugationResolver
   }
 

@@ -11,10 +11,10 @@ public class EmptyConjugationResolver<W extends Word, S extends Suggestion> exte
     super(suggestions)
   }
 
-  public void precheck(String search, String convertedSearch) {
+  public void prepare(NormalSearchParameter parameter) {
   }
 
-  public void check(W word, String search, String convertedSearch) {
+  public void check(W word) {
   }
 
 }
