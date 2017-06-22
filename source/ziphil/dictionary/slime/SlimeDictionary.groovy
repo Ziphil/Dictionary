@@ -183,6 +183,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   public void addWord(List<? extends SlimeWord> words) {
     for (SlimeWord word : words) {
       addWordWithoutUpdate(word)
+      incrementValidMinId(word)
     }
     complyRelationRequests()
     updateOnBackground()
@@ -274,6 +275,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       if (wordNames[entry.getKey()] != entry.getValue()) {
         throw SlimeValidationException.new("Invalid relation")
       }
+    }
+  }
+
+  private void incrementValidMinId(SlimeWord word) {
+    if (word.getId() >= $validMinId) {
+      $validMinId = word.getId() + 1
     }
   }
 
@@ -407,11 +414,13 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeWord word = SlimeWord.new()
     List<String> pseudoEquivalents = pseudoWord.getEquivalents()
     String pseudoContent = pseudoWord.getContent()
+    word.setId($validMinId)
     word.setName(name)
     word.getRawEquivalents().add(SlimeEquivalent.new("", pseudoEquivalents))
     if (pseudoContent != null) {
       word.getInformations().add(SlimeInformation.new("", pseudoContent))
     }
+    word.setDictionary(this)
     word.update()
     return word
   }

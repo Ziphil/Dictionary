@@ -101,6 +101,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     if (pseudoContent != null) {
       word.setUsage(pseudoContent)
     }
+    word.setDictionary(this)
     word.update()
     return word
   }

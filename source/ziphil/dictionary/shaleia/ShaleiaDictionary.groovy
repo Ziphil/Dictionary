@@ -206,6 +206,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     String pseudoContent = pseudoWord.getContent()
     word.setUniqueName(name)
     word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(",")}")
+    word.setDictionary(this)
     word.update()
     return word
   }
