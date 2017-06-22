@@ -40,9 +40,9 @@ public class CharacterFrequencyAnalyzer {
           String matchedCharacter = cachedString.substring(0, 1)
           i -= cachedString.length() - 1
           for (Int j = cachedString.length() - 1 ; j > 1 ; j --) {
-            String substring = cachedString.substring(0, j)
-            if ($multigraphs.contains(substring)) {
-              matchedCharacter = substring
+            String cachedSubstring = cachedString.substring(0, j)
+            if ($multigraphs.contains(cachedSubstring)) {
+              matchedCharacter = cachedSubstring
               i += j - 1
               break
             }
