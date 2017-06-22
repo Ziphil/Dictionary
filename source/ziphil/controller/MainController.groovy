@@ -303,21 +303,15 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void measureDictionaryStatus(Runnable searchFunction) {
+  private void measureAndSearch(SearchParameter parameter) {
     Long beforeTime = System.nanoTime()
-    searchFunction.run()
+    $dictionary.search(parameter)
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
     $elapsedTimeLabel.setText(elapsedTime.toString())
     $hitWordSizeLabel.setText($dictionary.hitWordSize().toString())
     $totalWordSizeLabel.setText($dictionary.totalWordSize().toString())
     $wordView.scrollTo(0)
-  }
-
-  private void measureAndSearch(SearchParameter parameter) {
-    measureDictionaryStatus() {
-      $dictionary.search(parameter)
-    }
   }
 
   @FXML
