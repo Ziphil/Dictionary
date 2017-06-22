@@ -504,6 +504,18 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void addGeneratedWords() {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      WordGeneratorController controller = WordGeneratorController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      controller.prepare($dictionary)
+      nextStage.showAndWait()
+    }
+  }
+
+  @FXML
   private void openDictionary() {
     Boolean allowsOpen = checkDictionaryChange()
     if (allowsOpen) {

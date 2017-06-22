@@ -134,6 +134,8 @@
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
+        <MenuItem styleClass="option,all" text="単語自動生成" onAction="#addGeneratedWords"/>
+        <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu text="ツール">
