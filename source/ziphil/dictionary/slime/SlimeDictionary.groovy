@@ -7,7 +7,6 @@ import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
@@ -17,6 +16,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -29,7 +29,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord>, DetailDictionary<SlimeSearchParameter> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord> {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -62,79 +62,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     setupSuggestions()
   }
 
-  public void searchDetail(SlimeSearchParameter parameter) {
-    Int searchId = parameter.getId()
-    String searchName = parameter.getName()
-    SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalentName = parameter.getEquivalentName()
-    String searchEquivalentTitle = parameter.getEquivalentTitle()
-    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchInformationText = parameter.getInformationText()
-    String searchInformationTitle = parameter.getInformationTitle()
-    SearchType informationSearchType = parameter.getInformationSearchType()
-    String searchTag = parameter.getTag()
-    resetSuggestions()
-    updateWordPredicate() { SlimeWord word ->   
-      Boolean predicate = true
-      Int id = word.getId()
-      String name = word.getName()
-      List<SlimeEquivalent> equivalents = word.getRawEquivalents()
-      List<SlimeInformation> informations = word.getInformations()
-      List<String> tags = word.getTags()
-      if (parameter.hasId()) {
-        if (id != searchId) {
-          predicate = false
-        }
-      }
-      if (parameter.hasName()) {
-        if (!nameSearchType.matches(name, searchName)) {
-          predicate = false
-        }
-      }
-      if (parameter.hasEquivalent()) {
-        Boolean equivalentPredicate = false
-        searchEquivalentName = searchEquivalentName ?: ""
-        for (SlimeEquivalent equivalent : equivalents) {
-          String equivalentTitle = equivalent.getTitle()
-          for (String equivalentName : equivalent.getNames()) {
-            if (equivalentSearchType.matches(equivalentName, searchEquivalentName) && (searchEquivalentTitle == null || equivalentTitle == searchEquivalentTitle)) {
-              equivalentPredicate = true
-            }
-          }
-        }
-        if (!equivalentPredicate) {
-          predicate = false
-        }
-      }
-      if (parameter.hasInformation()) {
-        Boolean informationPredicate = false
-        searchInformationText = searchInformationText ?: ""
-        for (SlimeInformation information : informations) {
-          String informationText = information.getText()
-          String informationTitle = information.getTitle()
-          if (informationSearchType.matches(informationText, searchInformationText) && (searchInformationTitle == null || informationTitle == searchInformationTitle)) {
-            informationPredicate = true
-          }
-        }
-        if (!informationPredicate) {
-          predicate = false
-        }
-      }
-      if (parameter.hasTag()) {
-        Boolean tagPredicate = false
-        for (String tag : tags) {
-          if (tag == searchTag) {
-            tagPredicate = true
-          }
-        }
-        if (!tagPredicate) {
-          predicate = false
-        }
-      }
-      return predicate
-    }
-  }
-
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
       for (RelationRequest request : $relationRequests) {
@@ -160,7 +87,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
-  public void addWord(SlimeWord word) {
+  private void addWordWithoutUpdate(SlimeWord word) {
     if (containsId(word.getId(), word)) {
       for (RelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
@@ -171,6 +98,19 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       word.setId($validMinId)
     }
     $words.add(word)
+  }
+
+  public void addWord(SlimeWord word) {
+    addWordWithoutUpdate(word)
+    complyRelationRequests()
+    updateOnBackground()
+  }
+
+  public void addWords(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      addWordWithoutUpdate(word)
+      incrementValidMinId(word)
+    }
     complyRelationRequests()
     updateOnBackground()
   }
@@ -264,6 +204,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     }
   }
 
+  private void incrementValidMinId(SlimeWord word) {
+    if (word.getId() >= $validMinId) {
+      $validMinId = word.getId() + 1
+    }
+  }
+
   private void updateRegisteredTitles() {
     $validMinId = 0
     $registeredTags.clear()
@@ -354,8 +300,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $akrantiain = akrantiain
   }
 
-  public SlimeWord emptyWord(String defaultName) {
-    SlimeWord word = copiedWordBase($defaultWord, false)
+  public SlimeWord createWord(String defaultName) {
+    SlimeWord word = prepareCopyWord($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
     word.setDictionary(this)
@@ -363,7 +309,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return word
   }
 
-  private SlimeWord copiedWordBase(SlimeWord oldWord, Boolean updates) {
+  private SlimeWord prepareCopyWord(SlimeWord oldWord, Boolean updates) {
     SlimeWord newWord = SlimeWord.new()
     newWord.setId(oldWord.getId())
     newWord.setName(oldWord.getName())
@@ -379,18 +325,33 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return newWord
   }
 
-  public SlimeWord copiedWord(SlimeWord oldWord) {
-    return copiedWordBase(oldWord, true)
+  public SlimeWord copyWord(SlimeWord oldWord) {
+    return prepareCopyWord(oldWord, true)
   }
 
-  public SlimeWord inheritedWord(SlimeWord oldWord) {
-    SlimeWord newWord = copiedWordBase(oldWord, false)
+  public SlimeWord inheritWord(SlimeWord oldWord) {
+    SlimeWord newWord = prepareCopyWord(oldWord, false)
     newWord.setId($validMinId)
     newWord.update()
     return newWord
   }
 
-  public Object plainWord(SlimeWord oldWord) {
+  public SlimeWord determineWord(String name, PseudoWord pseudoWord) {
+    SlimeWord word = SlimeWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setId($validMinId)
+    word.setName(name)
+    word.getRawEquivalents().add(SlimeEquivalent.new("", pseudoEquivalents))
+    if (pseudoContent != null) {
+      word.getInformations().add(SlimeInformation.new("", pseudoContent))
+    }
+    word.setDictionary(this)
+    word.update()
+    return word
+  }
+
+  public Object createPlainWord(SlimeWord oldWord) {
     SlimePlainWord newWord = SlimePlainWord.new()
     Int newId = oldWord.getId()
     String newName = oldWord.getName()
@@ -466,7 +427,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $suggestions.add(suggestion)
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
+  protected ConjugationResolver createConjugationResolver() {
     SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
     return conjugationResolver
   }

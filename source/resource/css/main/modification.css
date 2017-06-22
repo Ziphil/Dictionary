@@ -67,14 +67,34 @@
   -fx-font-size: 0.9em;
 }
 
+.list-close-button {
+  -fx-background-color: -fx-mark-color;
+  -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z";
+  -fx-scale-shape: false;
+  -fx-effect: dropshadow(two-pass-box, rgba(255, 255, 255, 0.4), 1, 0, 0, 1);
+}
+
+.list-close-button:hover {
+  -fx-background-color: derive(-fx-mark-color, -30%);
+}
+
+.list-view:focused .list-cell:filled:selected .list-close-button {
+  -fx-background-color: derive(-fx-selection-bar, 85%);
+  -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.2), 1, 0, 0, 1);
+}
+
+.list-view:focused .list-cell:filled:selected .list-close-button:hover {
+  -fx-background-color: derive(derive(-fx-selection-bar, 85%), 30%);
+}
+
 .help-indicator .label {
   -fx-font-weight: bold;
-  -fx-text-fill: -fx-box-border;
+  -fx-text-fill: -fx-outer-border;
 }
 
 .help-indicator .circle {
   -fx-fill: -fx-control-inner-background;
-  -fx-stroke: -fx-box-border;
+  -fx-stroke: -fx-outer-border;
 }
 
 Text {

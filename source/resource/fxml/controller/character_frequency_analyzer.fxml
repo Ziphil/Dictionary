@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.HelpIndicator?>
 <?import ziphil.custom.StringListEditor?>
 <?import ziphil.module.Setting?>
 
@@ -39,6 +40,7 @@
       <columnConstraints>
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
+        <ColumnConstraints hgrow="never"/>
       </columnConstraints>
       <rowConstraints>
         <RowConstraints vgrow="always"/>
@@ -47,9 +49,19 @@
       </rowConstraints>
       <Label text="入力:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="除外文字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="1文字扱い:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <TextArea fx:id="$inputControl" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-      <TextField fx:id="$excludedCharactersControl" text=".,!?" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <spacing><Double rpx="5"/></spacing>
+        <TextField fx:id="$excludedCharactersControl" text=".,!?" HBox.hgrow="always"/>
+      </HBox>
+      <HelpIndicator text="ここで設定された文字は頻度解析の対象になりません。&#10;句読点や約物などを解析対象にしたくない場合に利用してください。" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <spacing><Double rpx="5"/></spacing>
+        <StringListEditor fx:id="$multigraphsControl" HBox.hgrow="always"/>
+      </HBox>
+      <HelpIndicator text="Unicode上では2文字以上であっても解析時に1文字として扱いたい文字列を設定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
         <GridPane.margin>
           <Insets>
             <top><Double rpx="5"/></top>

@@ -9,11 +9,13 @@ public class CharacterFrequencyAnalyzer {
 
   private List<CharacterStatus> $characterStatuses = ArrayList.new()
   private String $excludedCharacters = ""
+  private List<String> $multigraphs = ArrayList.new()
   private Int $totalFrequency = 0
   private Int $totalWordSize = 0
 
-  public CharacterFrequencyAnalyzer(String input, String excludedCharacters) {
+  public CharacterFrequencyAnalyzer(String input, String excludedCharacters, List<String> multigraphs) {
     $excludedCharacters = excludedCharacters
+    $multigraphs = multigraphs
     addInput(input)
   }
 
@@ -28,26 +30,41 @@ public class CharacterFrequencyAnalyzer {
 
   public void addWordName(String wordName) {
     Set<String> countedCharacters = HashSet.new()
+    StringBuilder cachedString = StringBuilder.new()
     Boolean hasCharacter = false
-    for (String character : wordName) {
+    for (Int i = 0 ; i <= wordName.length() ; i ++) {
+      String character = (i < wordName.length()) ? wordName.charAt(i) : "\b"
       if ($excludedCharacters.indexOf(character) < 0) {
-        CharacterStatus status = $characterStatuses.find{it.getCharacter() == character}
-        if (status != null) {
-          status.setFrequency(status.getFrequency() + 1)
-          if (!countedCharacters.contains(character)) {
-            status.setUsingWordSize(status.getUsingWordSize() + 1)
-            countedCharacters.add(character)
+        cachedString.append(character)
+        if (!$multigraphs.any{it.startsWith(cachedString.toString())}) {
+          String matchedCharacter = cachedString.substring(0, 1)
+          i -= cachedString.length() - 1
+          for (Int j = cachedString.length() - 1 ; j > 1 ; j --) {
+            String cachedSubstring = cachedString.substring(0, j)
+            if ($multigraphs.contains(cachedSubstring)) {
+              matchedCharacter = cachedSubstring
+              i += j - 1
+              break
+            }
           }
-        } else {
-          CharacterStatus nextStatus = CharacterStatus.new()
-          nextStatus.setCharacter(character)
-          nextStatus.setFrequency(1)
-          nextStatus.setUsingWordSize(1)
-          countedCharacters.add(character)
-          $characterStatuses.add(nextStatus)
+          if (matchedCharacter != "\b") {
+            CharacterStatus status = $characterStatuses.find{it.getCharacter() == matchedCharacter}
+            if (status != null) {
+              status.setFrequency(status.getFrequency() + 1)
+              if (!countedCharacters.contains(matchedCharacter)) {
+                status.setUsingWordSize(status.getUsingWordSize() + 1)
+                countedCharacters.add(matchedCharacter)
+              }
+            } else {
+              CharacterStatus nextStatus = CharacterStatus.new(matchedCharacter, 1, 1)
+              countedCharacters.add(matchedCharacter)
+              $characterStatuses.add(nextStatus)
+            }
+            cachedString.setLength(0)
+            hasCharacter = true
+            $totalFrequency ++
+          }
         }
-        hasCharacter = true
-        $totalFrequency ++
       }
     }
     if (hasCharacter) {
@@ -69,6 +86,10 @@ public class CharacterFrequencyAnalyzer {
 
   public void setExcludedCharacters(String excludedCharacters) {
     $excludedCharacters = excludedCharacters
+  }
+
+  public void setMultigraphs(List<String> multigraphs) {
+    $multigraphs = multigraphs
   }
 
 }

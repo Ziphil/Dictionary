@@ -3,7 +3,6 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
@@ -14,6 +13,7 @@ import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -44,6 +44,11 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
+  public void addWords(List<? extends PersonalWord> words) {
+    $words.addAll(words)
+    $changed = true
+  }
+
   public void removeWord(PersonalWord word) {
     $words.remove(word)
     $changed = true
@@ -61,14 +66,14 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
-  public PersonalWord emptyWord(String defaultName) {
+  public PersonalWord createWord(String defaultName) {
     PersonalWord word = PersonalWord.new()
     word.setName(defaultName ?: "")
     word.update()
     return word
   }
 
-  public PersonalWord copiedWord(PersonalWord oldWord) {
+  public PersonalWord copyWord(PersonalWord oldWord) {
     PersonalWord newWord = PersonalWord.new()
     newWord.setName(oldWord.getName())
     newWord.setPronunciation(oldWord.getPronunciation())
@@ -82,11 +87,25 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return newWord
   }
 
-  public PersonalWord inheritedWord(PersonalWord oldWord) {
-    return copiedWord(oldWord)
+  public PersonalWord inheritWord(PersonalWord oldWord) {
+    return copyWord(oldWord)
   }
 
-  public Object plainWord(PersonalWord oldWord) {
+  public PersonalWord determineWord(String name, PseudoWord pseudoWord) {
+    PersonalWord word = PersonalWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setName(name)
+    word.setTranslation(pseudoEquivalents.join(", "))
+    if (pseudoContent != null) {
+      word.setUsage(pseudoContent)
+    }
+    word.setDictionary(this)
+    word.update()
+    return word
+  }
+
+  public Object createPlainWord(PersonalWord oldWord) {
     PersonalPlainWord newWord = PersonalPlainWord.new()
     newWord.setName(oldWord.getName())
     newWord.setPronunciation(oldWord.getPronunciation())
@@ -111,7 +130,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     }
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
+  protected ConjugationResolver createConjugationResolver() {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
   }

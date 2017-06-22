@@ -13,6 +13,15 @@ public class CharacterStatus {
   private Int $usingWordSize
   private Double $usingWordSizePercentage
 
+  public CharacterStatus(String character, Int frequency, Int usingWordSize) {
+    $character = character
+    $frequency = frequency
+    $usingWordSize = usingWordSize
+  }
+
+  public CharacterStatus() {
+  }
+
   public String getCharacter() {
     return $character
   }

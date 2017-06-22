@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.HelpIndicator?>
+<?import ziphil.custom.StringListEditor?>
+<?import ziphil.module.Setting?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
+  </stylesheets>
+  <center>
+    <GridPane>
+      <vgap><Double rpx="5"/></vgap>
+      <hgap><Double rpx="5"/></hgap>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <columnConstraints>
+        <ColumnConstraints hgrow="never"/>
+        <ColumnConstraints hgrow="always"/>
+      </columnConstraints>
+      <Label text="母音字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="子音字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Label text="音節パターン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="音節数:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Label text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <spacing><Double rpx="5"/></spacing>
+        <StringListEditor fx:id="$vowelsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="a"/>
+              <String fx:value="e"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
+        <HelpIndicator text="母音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <spacing><Double rpx="5"/></spacing>
+        <StringListEditor fx:id="$consonantsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="s"/>
+              <String fx:value="k"/>
+              <String fx:value="p"/>
+              <String fx:value="m"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
+        <HelpIndicator text="子音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <spacing><Double rpx="5"/></spacing>
+        <StringListEditor fx:id="$syllablePatternsControl" HBox.hgrow="always">
+          <strings>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="V"/>
+              <String fx:value="CV"/>
+            </FXCollections>
+          </strings>
+        </StringListEditor>
+        <HelpIndicator text="許容する音節のパターンを指定してください。&#10;パターンは、母音を表す「V」と子音を表す「C」から成る文字列です。&#10;例えば、「CVC」は母音字の前後に子音字が存在するような音節を表します。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+      </HBox>
+      <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <spacing><Double rpx="5"/></spacing>
+        <Spinner fx:id="$minSyllableSizeControl" editable="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="1" amountToStepBy="1"/></valueFactory>
+        </Spinner>
+        <Label text=" ～ "/>
+        <Spinner fx:id="$maxSyllableSizeControl" editable="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="3" amountToStepBy="1"/></valueFactory>
+        </Spinner>
+      </HBox>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <spacing><Double rpx="5"/></spacing>
+        <ComboBox fx:id="$collectionTypeControl">
+          <prefWidth><Double rpx="200"/></prefWidth>
+          <minWidth><Double rpx="200"/></minWidth>
+        </ComboBox>
+        <Button text="表示" onAction="#showEquivalents">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+        </Button>
+        <HelpIndicator text="自動生成する訳語セットを選択してください。&#10;「表示」をクリックするとそのセットに含まれる全ての訳語を閲覧できます。&#10;data/collectionフォルダ内に訳語データファイルを置いておくと、選択できる訳語セットを追加編集することができます。"/>
+      </HBox>
+    </GridPane>
+  </center>
+  <bottom>
+    <AnchorPane>
+      <HBox spacing="5">
+        <spacing><Double rpx="5"/></spacing>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
+        <Button text="キャンセル" onAction="#cancel" cancelButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+        <Button text="OK" onAction="#commit" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+      </HBox>
+    </AnchorPane>
+  </bottom>
+</BorderPane>

@@ -53,8 +53,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
-import ziphil.dictionary.DetailDictionary
-import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryType
@@ -67,6 +66,7 @@ import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchType
+import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.personal.PersonalDictionary
@@ -161,7 +161,7 @@ public class MainController extends PrimitiveController<Stage> {
       Boolean strict = $searchTypeControl.isSelected()
       NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
       if (forcesSearch || search != $previousSearch) {
-        doSearchNormal(parameter)
+        measureAndSearch(parameter)
         $previousSearch = search
         if (forcesSearch) {
           $searchHistory.add(parameter, false)
@@ -181,15 +181,9 @@ public class MainController extends PrimitiveController<Stage> {
     searchNormal(false)
   }
 
-  private void doSearchNormal(NormalSearchParameter parameter) {
-    measureDictionaryStatus() {
-      $dictionary.searchNormal(parameter)
-    }
-  }
-
   @FXML
   private void searchDetail() {
-    if ($dictionary != null && $dictionary instanceof DetailDictionary) {
+    if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
         ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
@@ -197,7 +191,7 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           ShaleiaSearchParameter parameter = nextStage.getResult()
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
           $searchHistory.add(parameter)
         }
       } else if ($dictionary instanceof SlimeDictionary) {
@@ -208,21 +202,9 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         if (nextStage.isCommitted()) {
           SlimeSearchParameter parameter = nextStage.getResult()
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
           $searchHistory.add(parameter)
         }
-      }
-    }
-  }
-
-  private void doSearchDetail(DetailSearchParameter parameter) {
-    if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
-      measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
-      }
-    } else if ($dictionary instanceof SlimeDictionary && parameter instanceof SlimeSearchParameter) {
-      measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
       }
     }
   }
@@ -236,8 +218,8 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         try {
-          ScriptSearchParameter script = nextStage.getResult()
-          doSearchScript(script)
+          ScriptSearchParameter parameter = nextStage.getResult()
+          measureAndSearch(parameter)
         } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
           PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
@@ -261,12 +243,6 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void doSearchScript(ScriptSearchParameter parameter) {
-    measureDictionaryStatus() {
-      $dictionary.searchScript(parameter)
-    }
-  }
-
   @FXML
   private void searchPrevious() {
     if ($dictionary != null) {
@@ -280,9 +256,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearchNormal(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
+        } else if (parameter instanceof DetailedSearchParameter) {
+          measureAndSearch(parameter)
         }
       }
     }
@@ -301,9 +277,9 @@ public class MainController extends PrimitiveController<Stage> {
           $searchModeControl.setValue(searchMode)
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
-          doSearchNormal(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
+          measureAndSearch(parameter)
+        } else if (parameter instanceof DetailedSearchParameter) {
+          measureAndSearch(parameter)
         }
       }
     }
@@ -328,9 +304,9 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void measureDictionaryStatus(Runnable searchFunction) {
+  private void measureAndSearch(SearchParameter parameter) {
     Long beforeTime = System.nanoTime()
-    searchFunction.run()
+    $dictionary.search(parameter)
     Long afterTime = System.nanoTime()
     Long elapsedTime = (Long)(afterTime - beforeTime).intdiv(1000000)
     $elapsedTimeLabel.setText(elapsedTime.toString())
@@ -385,7 +361,7 @@ public class MainController extends PrimitiveController<Stage> {
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
-        Word oldWord = $dictionary.copiedWord(word)
+        Word oldWord = $dictionary.copyWord(word)
         if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
           controller.prepare(word)
@@ -439,17 +415,17 @@ public class MainController extends PrimitiveController<Stage> {
       String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        ShaleiaWord localNewWord = $dictionary.emptyWord(defaultName)
+        ShaleiaWord localNewWord = $dictionary.createWord(defaultName)
         newWord = localNewWord
         controller.prepare(localNewWord, true)
       } else if ($dictionary instanceof PersonalDictionary) {
         PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        PersonalWord localNewWord = $dictionary.emptyWord(defaultName)
+        PersonalWord localNewWord = $dictionary.createWord(defaultName)
         newWord = localNewWord
         controller.prepare(localNewWord, true)
       } else if ($dictionary instanceof SlimeDictionary) {
         SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        SlimeWord localNewWord = $dictionary.emptyWord(defaultName)
+        SlimeWord localNewWord = $dictionary.createWord(defaultName)
         newWord = localNewWord
         controller.prepare(localNewWord, $dictionary, true)
       }
@@ -473,17 +449,17 @@ public class MainController extends PrimitiveController<Stage> {
         }
         if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
           ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-          ShaleiaWord localNewWord = $dictionary.inheritedWord(word)
+          ShaleiaWord localNewWord = $dictionary.inheritWord(word)
           newWord = localNewWord
           controller.prepare(localNewWord)
         } else if ($dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
           PersonalEditorController controller = PersonalEditorController.new(nextStage)
-          PersonalWord localNewWord = $dictionary.inheritedWord(word)
+          PersonalWord localNewWord = $dictionary.inheritWord(word)
           newWord = localNewWord
           controller.prepare(localNewWord)
         } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          SlimeWord localNewWord = $dictionary.inheritedWord(word)
+          SlimeWord localNewWord = $dictionary.inheritWord(word)
           newWord = localNewWord
           controller.prepare(localNewWord, $dictionary)
         }
@@ -501,6 +477,25 @@ public class MainController extends PrimitiveController<Stage> {
   private void addInheritedWord() {
     Element word = $wordView.getSelectionModel().getSelectedItem()
     addInheritedWord(word)
+  }
+
+  @FXML
+  private void addGeneratedWords() {
+    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+      UtilityStage<List<Word>> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      WordGeneratorController controller = WordGeneratorController.new(nextStage)
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      controller.prepare($dictionary)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        List<Word> newWords = nextStage.getResult()
+        SearchParameter parameter = SelectionSearchParameter.new(newWords)
+        $dictionary.addWords(newWords)
+        measureAndSearch(parameter)
+        $searchHistory.add(parameter)
+      }
+    }
   }
 
   @FXML
@@ -723,11 +718,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateOnLinkClicked() {
     if ($dictionary != null) {
       $dictionary.setOnLinkClicked() { SearchParameter parameter ->
-        if (parameter instanceof NormalSearchParameter) {
-          doSearchNormal(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
-          doSearchDetail(parameter)
-        }
+        measureAndSearch(parameter)
         $searchHistory.add(parameter)
       }
     }
@@ -915,7 +906,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void executeCharacterAnalysis() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    CharacterFrequencyAnalysisController controller = CharacterFrequencyAnalysisController.new(nextStage)
+    CharacterFrequencyAnalyzerController controller = CharacterFrequencyAnalyzerController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
@@ -1171,7 +1162,7 @@ public class MainController extends PrimitiveController<Stage> {
           if (parameter != null) {
             item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
-              doSearchDetail(parameter)
+              measureAndSearch(parameter)
               $searchHistory.add(parameter)
             }
           } else {

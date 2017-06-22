@@ -10,82 +10,55 @@ import javafx.scene.control.TextField
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.Dragboard
 import javafx.scene.input.DragEvent
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
-import javafx.scene.layout.VBox
-import ziphilib.transform.InnerClass
+import javafx.scene.layout.HBox
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox> {
+public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox> {
 
   private static final String RESOURCE_PATH = "resource/fxml/custom/string_list_editor.fxml"
 
   @FXML private ListView<String> $listView
   @FXML private TextField $inputControl
-  @FXML private ComboBox $additionModeControl
 
   public StringListEditorSkin(StringListEditor control) {
     super(control)
-    $node = VBox.new()
+    $node = HBox.new()
     loadResource(RESOURCE_PATH)
     setupNode()
   }
 
   @FXML
   private void initialize() {
+    setupInputControl()
     setupDragAndDrop()
     bindProperties()
   }
 
-  @FXML
-  private void addInput() {
-    String input = $inputControl.getText()
-    AdditionMode additionMode = $additionModeControl.getValue()
-    if (additionMode == AdditionMode.NORMAL) {
-      $listView.getItems().add(input)
-    } else if (additionMode == AdditionMode.SPLIT_SINGLE) {
-      for (String character : input) {
-        $listView.getItems().add(character)
+  private void setupInputControl() {
+    $inputControl.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+      if (event.getCode() == KeyCode.SPACE) {
+        $listView.getItems().add($inputControl.getText().trim())
+        $inputControl.setText("")
       }
-    } else if (additionMode == AdditionMode.SPLIT_COMMA) {
-      List<String> splitInput = input.split(/\s*(,|、)\s*/).toList()
-      $listView.getItems().addAll(splitInput)
     }
-  }
-
-  @FXML
-  private void remove() {
-    Int index = $listView.getSelectionModel().getSelectedIndex()
-    if (index >= 0) {
-      $listView.getItems().removeAt(index)
-    }
-  }
-
-  @FXML
-  private void exchangeLeft() {
-    Int index = $listView.getSelectionModel().getSelectedIndex()
-    if (index > 0) {
-      $listView.getItems().swap(index, index - 1)
-      $listView.getSelectionModel().select(index - 1)
-    }
-  }
-
-  @FXML
-  private void exchangeRight() {
-    Int index = $listView.getSelectionModel().getSelectedIndex()
-    if (index >= 0 && index < $listView.getItems().size() - 1) {
-      $listView.getItems().swap(index, index + 1)
-      $listView.getSelectionModel().select(index + 1)
+    $inputControl.addEventHandler(KeyEvent.KEY_TYPED) { KeyEvent event ->
+      if (event.getCharacter() == " ") {
+        event.consume()
+      }
     }
   }
 
   @VoidClosure
   private void setupDragAndDrop() {
     $listView.setCellFactory() { ListView<String> view ->
-      ListCell<String> cell = SimpleListCell.new()
+      ListCell<String> cell = ClosableListCell.new()
       cell.addEventHandler(MouseEvent.DRAG_DETECTED) { MouseEvent event ->
         String movedItem = cell.getItem()
         if (movedItem != null) {
@@ -127,6 +100,9 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, VBox>
         }
         event.setDropCompleted(completed)
         event.consume()
+      }
+      cell.setOnCloseButtonClicked() { MouseEvent event ->
+        $listView.getItems().remove(cell.getItem())
       }
       return cell
     }

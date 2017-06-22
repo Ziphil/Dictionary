@@ -9,7 +9,6 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
@@ -19,6 +18,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -28,7 +28,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord>, DetailDictionary<ShaleiaSearchParameter> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord> {
 
   private String $alphabetOrder = ""
   private String $changeDescription = ""
@@ -51,50 +51,17 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     setupSuggestions()
   }
 
-  public void searchDetail(ShaleiaSearchParameter parameter) {
-    String searchName = parameter.getName()
-    SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalent = parameter.getEquivalent()
-    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchDescription = parameter.getDescription()
-    SearchType descriptionSearchType = parameter.getDescriptionSearchType()
-    resetSuggestions()
-    updateWordPredicate() { ShaleiaWord word ->
-      Boolean predicate = true
-      String name = word.getName()
-      List<String> equivalents = word.getEquivalents()
-      String description = word.getDescription()
-      if (parameter.hasName()) {
-        if (!nameSearchType.matches(name, searchName)) {
-          predicate = false
-        }
-      }
-      if (parameter.hasEquivalent()) {
-        Boolean equivalentPredicate = false
-        for (String equivalent : equivalents) {
-          if (equivalentSearchType.matches(equivalent, searchEquivalent)) {
-            equivalentPredicate = true
-          }
-        }
-        if (!equivalentPredicate) {
-          predicate = false
-        }
-      }
-      if (parameter.hasDescription()) {
-        if (!descriptionSearchType.matches(description, searchDescription)) {
-          predicate = false
-        }
-      }
-      return predicate
-    }
-  }
-
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
     $changed = true
   }
 
   public void addWord(ShaleiaWord word) {
     $words.add(word)
+    $changed = true
+  }
+
+  public void addWords(List<? extends ShaleiaWord> words) {
+    $words.addAll(words)
     $changed = true
   }
 
@@ -129,7 +96,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     try {
       $changes.clear()
       for (String line ; (line = reader.readLine()) != null ;) {
-        Matcher matcher = line =~ /^\-\s*(\d+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
+        Matcher matcher = line =~ /^\-\s*(.+)\s*:\s*\{(.+)\}\s*→\s*\{(.+)\}/
         if (matcher.matches()) {
           String oldName = Strings.convert(matcher.group(2), ignoresAccent, ignoresCase)
           if (!$changes.containsKey(oldName)) {
@@ -160,7 +127,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $akrantiain = akrantiain
   }
 
-  public ShaleiaWord emptyWord(String defaultName) {
+  public ShaleiaWord createWord(String defaultName) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
@@ -170,7 +137,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return word
   }
 
-  private ShaleiaWord copiedWordBase(ShaleiaWord oldWord, Boolean updates) {
+  private ShaleiaWord prepareCopyWord(ShaleiaWord oldWord, Boolean updates) {
     ShaleiaWord newWord = ShaleiaWord.new()
     newWord.setUniqueName(oldWord.getUniqueName())
     newWord.setDescription(oldWord.getDescription())
@@ -181,19 +148,31 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return newWord
   }
 
-  public ShaleiaWord copiedWord(ShaleiaWord oldWord) {
-    return copiedWordBase(oldWord, true)
+  public ShaleiaWord copyWord(ShaleiaWord oldWord) {
+    return prepareCopyWord(oldWord, true)
   }
 
-  public ShaleiaWord inheritedWord(ShaleiaWord oldWord) {
+  public ShaleiaWord inheritWord(ShaleiaWord oldWord) {
     Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
-    ShaleiaWord newWord = copiedWordBase(oldWord, false)
+    ShaleiaWord newWord = prepareCopyWord(oldWord, false)
     newWord.setDescription(oldWord.getDescription().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
     newWord.update()
     return newWord
   }
 
-  public Object plainWord(ShaleiaWord oldWord) {
+  public ShaleiaWord determineWord(String name, PseudoWord pseudoWord) {
+    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    ShaleiaWord word = ShaleiaWord.new()
+    List<String> pseudoEquivalents = pseudoWord.getEquivalents()
+    String pseudoContent = pseudoWord.getContent()
+    word.setUniqueName(name)
+    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(", ")}")
+    word.setDictionary(this)
+    word.update()
+    return word
+  }
+
+  public Object createPlainWord(ShaleiaWord oldWord) {
     ShaleiaPlainWord newWord = ShaleiaPlainWord.new()
     newWord.setName(oldWord.getName())
     newWord.setUniqueName(oldWord.getUniqueName())
@@ -229,8 +208,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return $words.size() - $systemWordSize
   }
 
-  protected ConjugationResolver createConjugationResolver(NormalSearchParameter parameter) {
-    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, parameter, $changes, $version)
+  protected ConjugationResolver createConjugationResolver() {
+    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
     return conjugationResolver
   }
 
