@@ -53,7 +53,6 @@ import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
-import ziphil.dictionary.DetailDictionary
 import ziphil.dictionary.DetailSearchParameter
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
@@ -189,7 +188,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void searchDetail() {
-    if ($dictionary != null && $dictionary instanceof DetailDictionary) {
+    if ($dictionary != null) {
       if ($dictionary instanceof ShaleiaDictionary) {
         UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
         ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
