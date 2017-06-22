@@ -66,6 +66,7 @@
         <StringListEditor fx:id="$consonantsControl" HBox.hgrow="always">
           <strings>
             <FXCollections fx:factory="observableArrayList">
+              <String fx:value="s"/>
               <String fx:value="k"/>
               <String fx:value="p"/>
               <String fx:value="m"/>
