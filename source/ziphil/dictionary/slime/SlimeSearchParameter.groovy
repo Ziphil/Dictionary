@@ -2,14 +2,14 @@ package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.annotation.JsonGetter
 import groovy.transform.CompileStatic
-import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSearchParameter implements DetailSearchParameter<SlimeWord> {
+public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> {
 
   private Int $id
   private String $name

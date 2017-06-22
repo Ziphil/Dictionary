@@ -1,14 +1,14 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSearchParameter implements DetailSearchParameter<ShaleiaWord> {
+public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWord> {
 
   private String $name
   private SearchType $nameSearchType

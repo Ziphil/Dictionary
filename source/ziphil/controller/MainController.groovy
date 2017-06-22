@@ -53,7 +53,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
-import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryType
@@ -257,7 +257,7 @@ public class MainController extends PrimitiveController<Stage> {
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
           measureAndSearch(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
+        } else if (parameter instanceof DetailedSearchParameter) {
           measureAndSearch(parameter)
         }
       }
@@ -278,7 +278,7 @@ public class MainController extends PrimitiveController<Stage> {
           $searchTypeControl.setSelected(strict)
           $previousSearch = search
           measureAndSearch(parameter)
-        } else if (parameter instanceof DetailSearchParameter) {
+        } else if (parameter instanceof DetailedSearchParameter) {
           measureAndSearch(parameter)
         }
       }
