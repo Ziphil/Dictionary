@@ -66,6 +66,7 @@ import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchType
+import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.personal.PersonalDictionary
@@ -489,7 +490,10 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         List<Word> newWords = nextStage.getResult()
+        SearchParameter parameter = SelectionSearchParameter.new(newWords)
         $dictionary.addWords(newWords)
+        measureAndSearch(parameter)
+        $searchHistory.add(parameter)
       }
     }
   }
