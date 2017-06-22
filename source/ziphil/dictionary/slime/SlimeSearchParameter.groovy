@@ -3,12 +3,13 @@ package ziphil.dictionary.slime
 import com.fasterxml.jackson.annotation.JsonGetter
 import groovy.transform.CompileStatic
 import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSearchParameter extends DetailSearchParameter {
+public class SlimeSearchParameter implements DetailSearchParameter<SlimeWord> {
 
   private Int $id
   private String $name
@@ -37,6 +38,67 @@ public class SlimeSearchParameter extends DetailSearchParameter {
   }
 
   public SlimeSearchParameter() {
+  }
+
+  public void prepare(Dictionary dictionary) {
+  }
+
+  public Boolean matches(SlimeWord word) {
+    Boolean predicate = true
+    Int id = word.getId()
+    String name = word.getName()
+    List<SlimeEquivalent> equivalents = word.getRawEquivalents()
+    List<SlimeInformation> informations = word.getInformations()
+    List<String> tags = word.getTags()
+    if ($hasId) {
+      if (id != $id) {
+        predicate = false
+      }
+    }
+    if ($hasName) {
+      if (!$nameSearchType.matches(name, $name)) {
+        predicate = false
+      }
+    }
+    if ($hasEquivalent) {
+      Boolean equivalentPredicate = false
+      for (SlimeEquivalent equivalent : equivalents) {
+        String equivalentTitle = equivalent.getTitle()
+        for (String equivalentName : equivalent.getNames()) {
+          if ($equivalentSearchType.matches(equivalentName, $equivalentName ?: "") && ($equivalentTitle == null || equivalentTitle == $equivalentTitle)) {
+            equivalentPredicate = true
+          }
+        }
+      }
+      if (!equivalentPredicate) {
+        predicate = false
+      }
+    }
+    if ($hasInformation) {
+      Boolean informationPredicate = false
+      for (SlimeInformation information : informations) {
+        String informationText = information.getText()
+        String informationTitle = information.getTitle()
+        if ($informationSearchType.matches(informationText, $informationText ?: "") && ($informationTitle == null || informationTitle == $informationTitle)) {
+          informationPredicate = true
+        }
+      }
+      if (!informationPredicate) {
+        predicate = false
+      }
+    }
+    if ($hasTag) {
+      Boolean tagPredicate = false
+      for (String tag : tags) {
+        if (tag == $tag) {
+          tagPredicate = true
+        }
+      }
+      if (!tagPredicate) {
+        predicate = false
+      }
+    }
+    return predicate
   }
 
   public String toString() {

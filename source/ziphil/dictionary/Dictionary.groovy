@@ -10,9 +10,7 @@ import ziphilib.transform.ConvertPrimitives
 @CompileStatic @ConvertPrimitives
 public interface Dictionary<W extends Word> {
 
-  public void searchNormal(NormalSearchParameter parameter)
-
-  public void searchScript(ScriptSearchParameter parameter)
+  public void search(SearchParameter parameter)
 
   public void shuffleWords()
 
@@ -27,6 +25,8 @@ public interface Dictionary<W extends Word> {
   // 内部データを更新します。
   // 単語データリスト以外の個別設定などが変更されたときに呼び出されることが想定されています。
   public void updateMinimum()
+
+  public Object createPlainWord(W word)
 
   // 同じ単語データをもつ辞書オブジェクトを作成します。
   // この処理は浅いコピーを行うので、コピー後の辞書オブジェクトの各単語データはコピー前のものと同一です。

@@ -1,10 +1,9 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import ziphilib.transform.Ziphilify
 
 
-@CompileStatic @Ziphilify
-public class DetailSearchParameter extends SearchParameter {
+@CompileStatic
+public interface DetailSearchParameter<W extends Word> extends SearchParameter<W> {
 
 }

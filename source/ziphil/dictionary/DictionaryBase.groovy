@@ -1,19 +1,9 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
-import java.security.AccessController
-import java.security.AccessControlContext
-import java.security.CodeSource
-import java.security.Permissions
-import java.security.PrivilegedExceptionAction
-import java.security.ProtectionDomain
-import java.security.cert.Certificate
 import java.util.concurrent.Callable
 import java.util.function.Consumer
 import java.util.function.Predicate
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ListChangeListener.Change
@@ -22,12 +12,8 @@ import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
-import javax.script.ScriptEngineManager
-import javax.script.ScriptEngine
-import javax.script.ScriptException
 import ziphil.custom.SimpleTask
 import ziphil.custom.ShufflableList
-import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphilib.transform.Ziphilify
@@ -35,8 +21,6 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
-
-  private static final AccessControlContext ACCESS_CONTROL_CONTEXT = createAccessControlContext()
 
   protected String $name = ""
   protected String $path = null
@@ -78,139 +62,38 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract void prepare()
 
-  public void searchNormal(NormalSearchParameter parameter) {
-    SearchMode searchMode = parameter.getSearchMode()
-    if (searchMode == SearchMode.NAME) {
-      searchNormalByName(parameter)
-    } else if (searchMode == SearchMode.EQUIVALENT) {
-      searchNormalByEquivalent(parameter)
-    } else if (searchMode == SearchMode.CONTENT) {
-      searchNormalByContent(parameter)
-    }
-  }
-
-  protected void searchNormalByName(NormalSearchParameter parameter) {
-    String search = parameter.getSearch()
-    Boolean strict = parameter.isStrict()
-    Boolean reallyStrict = parameter.isReallyStrict()
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
-    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
-    Boolean searchesPrefix = (reallyStrict) ? false : setting.getSearchesPrefix()
-    try {
-      Pattern pattern = (strict) ? null : Pattern.compile(search)
-      ConjugationResolver conjugationResolver = createConjugationResolver(parameter)
-      String convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
-      resetSuggestions()
-      conjugationResolver.precheck(search, convertedSearch)
-      updateWordPredicate() { Word word ->
-        if (strict) {
-          String name = word.getName()
-          String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-          conjugationResolver.check(word, search, convertedSearch)
-          if (search != "") {
-            if (searchesPrefix) {
-              return convertedName.startsWith(convertedSearch)
-            } else {
-              return convertedName == convertedSearch
-            }
-          } else {
-            return true
-          }
-        } else {
-          Matcher matcher = pattern.matcher(word.getName())
-          return matcher.find()
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  protected void searchNormalByEquivalent(NormalSearchParameter parameter) {
-    String search = parameter.getSearch()
-    Boolean strict = parameter.isStrict()
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = setting.getIgnoresAccent()
-    Boolean ignoresCase = setting.getIgnoresCase()
-    Boolean searchesPrefix = setting.getSearchesPrefix()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      resetSuggestions()
-      updateWordPredicate() { Word word ->
-        if (strict) {
-          if (search != "") {
-            return word.getEquivalents().any() { String equivalent ->
-              if (searchesPrefix) {
-                return equivalent.startsWith(search)
-              } else {
-                return equivalent == search
-              }
-            }
-          } else {
-            return true
-          }
-        } else {
-          return word.getEquivalents().any() { String equivalent ->
-            Matcher matcher = pattern.matcher(equivalent)
-            return matcher.find()
-          }
-        }
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  protected void searchNormalByContent(NormalSearchParameter parameter) {
-    String search = parameter.getSearch()
-    try {
-      Pattern pattern = Pattern.compile(search)
-      resetSuggestions()
-      updateWordPredicate() { Word word ->
-        Matcher matcher = pattern.matcher(word.getContent())
-        return matcher.find()
-      }
-    } catch (PatternSyntaxException exception) {
-    }
-  }
-
-  public void searchScript(ScriptSearchParameter parameter) {
-    String script = parameter.getScript()
-    String scriptName = Setting.getInstance().getScriptName()
-    ScriptEngineManager scriptEngineManager = ScriptEngineManager.new()
-    ScriptEngine scriptEngine = scriptEngineManager.getEngineByName(scriptName)
+  public void search(SearchParameter parameter) {
+    ConjugationResolver conjugationResolver = null
+    String search = null
+    String convertedSearch = null
+    Exception suppressedException = null
     resetSuggestions()
-    if (scriptEngine != null) {
-      Exception suppressedException
-      updateWordPredicate() { Word word ->
-        try {
-          PrivilegedExceptionAction<BooleanClass> action = (PrivilegedExceptionAction<BooleanClass>){
-            try {
-              if (suppressedException == null) {
-                scriptEngine.put("word", createPlainWord(word))
-                Object result = scriptEngine.eval(script)
-                return (result) ? true : false
-              } else {
-                return false
-              }
-            } catch (Exception exception) {
-              suppressedException = exception
-              return false
-            }
-          }
-          return AccessController.doPrivileged(action, ACCESS_CONTROL_CONTEXT)
-        } catch (Exception exception) {
-          suppressedException = exception
-          return false
+    if (parameter instanceof NormalSearchParameter) {
+      if (parameter.getSearchMode() == SearchMode.NAME) {
+        Boolean reallyStrict = parameter.isReallyStrict()
+        Setting setting = Setting.getInstance()
+        Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
+        Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
+        conjugationResolver = createConjugationResolver(parameter)
+        search = parameter.getSearch()
+        convertedSearch = Strings.convert(search, ignoresAccent, ignoresCase)
+        conjugationResolver.precheck(search, convertedSearch)
+      }
+    }
+    parameter.prepare(this)
+    updateWordPredicate() { Word word ->
+      try {
+        if (conjugationResolver != null) {
+          conjugationResolver.check(word, search, convertedSearch)
         }
-      }
-      if (suppressedException != null) {
-        throw suppressedException
-      }
-    } else {
-      updateWordPredicate() { Word word ->
+        return parameter.matches(word)
+      } catch (Exception exception) {
+        suppressedException = exception
         return false
       }
-      throw NoSuchScriptEngineException.new(scriptName)
+    }
+    if (suppressedException != null) {
+      throw suppressedException
     }
   }
 
@@ -232,8 +115,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public void shuffleWords() {
     $shufflableWords.shuffle()
   }
-
-  public abstract Object createPlainWord(W word)
 
   public abstract void update()
 
@@ -258,6 +139,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     thread.setDaemon(true)
     thread.start()
   }
+
+  public abstract Object createPlainWord(W word)
 
   public abstract Dictionary copy()
 
@@ -339,19 +222,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
 
   protected abstract DictionarySaver createSaver()
-
-  private static AccessControlContext createAccessControlContext() {
-    CodeSource codeSource = CodeSource.new(null, (Certificate[])null)
-    Permissions permissions = Permissions.new()
-    permissions.add(PropertyPermission.new("*", "read"))
-    permissions.add(RuntimePermission.new("accessDeclaredMembers"))
-    permissions.add(RuntimePermission.new("createClassLoader"))
-    permissions.add(RuntimePermission.new("getProtectionDomain"))
-    ProtectionDomain domain = ProtectionDomain.new(codeSource, permissions)
-    ProtectionDomain[] domains = [domain]
-    AccessControlContext context = AccessControlContext.new(domains)
-    return context
-  }
 
   public String getName() {
     return $name

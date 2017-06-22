@@ -42,7 +42,7 @@ public class SentenceSearcher {
       }
       if (nextWordName.length() > 0) {
         NormalSearchParameter parameter = NormalSearchParameter.new(nextWordName.toString(), SearchMode.NAME, true, true)
-        $dictionary.searchNormal(parameter)
+        $dictionary.search(parameter)
         List<Element> hitWords = ArrayList.new($dictionary.getWholeWords())
         Result result = Result.new(nextWordName.toString())
         for (Element word : hitWords) {
@@ -62,11 +62,7 @@ public class SentenceSearcher {
     List<Possibility> possibilities = ArrayList.new(suggestion.getPossibilities())
     for (Possibility possibility : possibilities) {
       SearchParameter parameter = possibility.createParameter()
-      if (parameter instanceof NormalSearchParameter) {
-        $dictionary.searchNormal(parameter)
-      } else if ($dictionary instanceof DetailDictionary && parameter instanceof DetailSearchParameter) {
-        $dictionary.searchDetail(parameter)
-      }
+      $dictionary.search(parameter)
       List<Element> hitWords = $dictionary.getWholeWords()
       for (Element word : hitWords) {
         if (word instanceof Word) {

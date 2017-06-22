@@ -183,7 +183,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void doSearchNormal(NormalSearchParameter parameter) {
     measureDictionaryStatus() {
-      $dictionary.searchNormal(parameter)
+      $dictionary.search(parameter)
     }
   }
 
@@ -218,11 +218,11 @@ public class MainController extends PrimitiveController<Stage> {
   private void doSearchDetail(DetailSearchParameter parameter) {
     if ($dictionary instanceof ShaleiaDictionary && parameter instanceof ShaleiaSearchParameter) {
       measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
+        $dictionary.search(parameter)
       }
     } else if ($dictionary instanceof SlimeDictionary && parameter instanceof SlimeSearchParameter) {
       measureDictionaryStatus() {
-        $dictionary.searchDetail(parameter)
+        $dictionary.search(parameter)
       }
     }
   }
@@ -263,7 +263,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void doSearchScript(ScriptSearchParameter parameter) {
     measureDictionaryStatus() {
-      $dictionary.searchScript(parameter)
+      $dictionary.search(parameter)
     }
   }
 

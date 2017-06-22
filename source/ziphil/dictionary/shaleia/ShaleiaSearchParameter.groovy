@@ -2,12 +2,13 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.DetailSearchParameter
+import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSearchParameter extends DetailSearchParameter {
+public class ShaleiaSearchParameter implements DetailSearchParameter<ShaleiaWord> {
 
   private String $name
   private SearchType $nameSearchType
@@ -25,6 +26,38 @@ public class ShaleiaSearchParameter extends DetailSearchParameter {
   }
 
   public ShaleiaSearchParameter() {
+  }
+
+  public void prepare(Dictionary dictionary) {
+  }
+
+  public Boolean matches(ShaleiaWord word) {
+    Boolean predicate = true
+    String name = word.getName()
+    List<String> equivalents = word.getEquivalents()
+    String description = word.getDescription()
+    if ($hasName) {
+      if (!$nameSearchType.matches(name, $name)) {
+        predicate = false
+      }
+    }
+    if ($hasEquivalent) {
+      Boolean equivalentPredicate = false
+      for (String equivalent : equivalents) {
+        if ($equivalentSearchType.matches(equivalent, $equivalent)) {
+          equivalentPredicate = true
+        }
+      }
+      if (!equivalentPredicate) {
+        predicate = false
+      }
+    }
+    if ($hasDescription) {
+      if (!$descriptionSearchType.matches(description, $description)) {
+        predicate = false
+      }
+    }
+    return predicate
   }
 
   public String getName() {

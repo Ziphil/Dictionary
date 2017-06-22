@@ -56,7 +56,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
       SearchMode searchMode = $searchModeControl.getValue()
       Boolean strict = $searchTypeControl.isSelected()
       NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
-      $dictionary.searchNormal(parameter)
+      $dictionary.search(parameter)
       $wordView.scrollTo(0)
     }
   }
