@@ -18,13 +18,13 @@ public class NameGenerator {
     StringBuilder name = StringBuilder.new()
     Int syllableSize = $random.nextInt($maxSyllableSize - $minSyllableSize + 1) + $minSyllableSize
     for (Int i = 0 ; i < syllableSize ; i ++) {
-      String syllablePattern = $syllablePatterns[$random.nextInt($syllablePatterns.size())]
+      String syllablePattern = ($syllablePatterns.isEmpty()) ? "" : $syllablePatterns[$random.nextInt($syllablePatterns.size())]
       String syllable = syllablePattern.replaceAll(/(.)/) { List<String> match ->
         String character = match[1]
         if (character == "V") {
-          return $vowels[$random.nextInt($vowels.size())]
+          return ($vowels.isEmpty()) ? "" : $vowels[$random.nextInt($vowels.size())]
         } else if (character == "C") {
-          return $consonants[$random.nextInt($consonants.size())]
+          return ($consonants.isEmpty()) ? "" : $consonants[$random.nextInt($consonants.size())]
         } else {
           return ""
         }
