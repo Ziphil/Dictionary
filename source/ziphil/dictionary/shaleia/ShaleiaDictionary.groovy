@@ -52,44 +52,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     setupSuggestions()
   }
 
-  public void searchDetail(ShaleiaSearchParameter parameter) {
-    String searchName = parameter.getName()
-    SearchType nameSearchType = parameter.getNameSearchType()
-    String searchEquivalent = parameter.getEquivalent()
-    SearchType equivalentSearchType = parameter.getEquivalentSearchType()
-    String searchDescription = parameter.getDescription()
-    SearchType descriptionSearchType = parameter.getDescriptionSearchType()
-    resetSuggestions()
-    updateWordPredicate() { ShaleiaWord word ->
-      Boolean predicate = true
-      String name = word.getName()
-      List<String> equivalents = word.getEquivalents()
-      String description = word.getDescription()
-      if (parameter.hasName()) {
-        if (!nameSearchType.matches(name, searchName)) {
-          predicate = false
-        }
-      }
-      if (parameter.hasEquivalent()) {
-        Boolean equivalentPredicate = false
-        for (String equivalent : equivalents) {
-          if (equivalentSearchType.matches(equivalent, searchEquivalent)) {
-            equivalentPredicate = true
-          }
-        }
-        if (!equivalentPredicate) {
-          predicate = false
-        }
-      }
-      if (parameter.hasDescription()) {
-        if (!descriptionSearchType.matches(description, searchDescription)) {
-          predicate = false
-        }
-      }
-      return predicate
-    }
-  }
-
   public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
     $changed = true
   }
