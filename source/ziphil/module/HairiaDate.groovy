@@ -3,6 +3,7 @@ package ziphil.module
 import groovy.transform.CompileStatic
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAccessor
@@ -70,6 +71,10 @@ public class HairiaDate implements TemporalAccessor {
 
   public static HairiaDate now() {
     return from(LocalDate.now())
+  }
+
+  public static HairiaDate nowShifted() {
+    return from(LocalDateTime.now().minus(6, ChronoUnit.HOURS))
   }
 
   public static HairiaDate from(TemporalAccessor accessor) {
