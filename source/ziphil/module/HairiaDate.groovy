@@ -37,11 +37,11 @@ public class HairiaDate implements TemporalAccessor {
   }
 
   private Int getMonthOfYear() {
-    return (Int)Math.floorDiv(getYearRemainder(), 33) + 1;
+    return (Int)Math.floorDiv(getYearRemainder(), 33) + 1
   }
 
   private Int getDayOfMonth() {
-    return (Int)Math.floorMod(getYearRemainder(), 33) + 1;
+    return (Int)Math.floorMod(getYearRemainder(), 33) + 1
   }
 
   public Boolean isSupported(TemporalField field) {
