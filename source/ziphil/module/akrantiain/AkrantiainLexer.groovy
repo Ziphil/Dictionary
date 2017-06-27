@@ -86,6 +86,9 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         token = AkrantiainToken.new(AkrantiainTokenType.CLOSE_CURLY, "}", $reader)
       } else if (codePoint == ';') {
         token = AkrantiainToken.new(AkrantiainTokenType.SEMICOLON, ";", $reader)
+      } else if (AkrantiainLexer.isNumeric(codePoint)) {
+        $reader.reset()
+        token = nextNumeric()
       } else if (AkrantiainLexer.isLetter(codePoint)) {
         $reader.reset()
         token = nextIdentifier()
@@ -124,6 +127,26 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
       }
     }
     AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.IDENTIFIER, currentName.toString(), $reader)
+    return token
+  }
+
+  private AkrantiainToken nextNumeric() {
+    StringBuilder currentNumber = StringBuilder.new()
+    while (true) {
+      $reader.mark(1)
+      Int codePoint = $reader.read()
+      if (AkrantiainLexer.isLetter(codePoint)) {
+        if (AkrantiainLexer.isNumeric(codePoint)) {
+          currentNumber.appendCodePoint(codePoint)
+        } else {
+          throw AkrantiainParseException.new("Identifier starts with numeric", codePoint, $reader)
+        }
+      } else {
+        $reader.reset()
+        break
+      }
+    }
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.NUMERIC, currentNumber.toString(), $reader)
     return token
   }
 
@@ -239,6 +262,10 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
       }
     }
     return true
+  }
+
+  public static Boolean isNumeric(Int codePoint) {
+    return codePoint >= 48 && codePoint <= 57
   }
 
   public static Boolean isLetter(Int codePoint) {

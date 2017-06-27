@@ -11,6 +11,7 @@ public enum AkrantiainTokenType {
   QUOTE_LITERAL,
   SLASH_LITERAL,
   ENVIRONMENT_LITERAL,
+  NUMERIC,
   EQUAL,
   ARROW,
   BOLD_ARROW,
