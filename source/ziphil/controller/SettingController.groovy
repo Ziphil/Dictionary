@@ -18,14 +18,14 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import javax.script.ScriptEngineFactory
 import javax.script.ScriptEngineManager
+import ziphil.custom.ClickType
+import ziphil.custom.FontRenderingType
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.ScriptEngineFactoryCell
 import ziphil.custom.SwitchButton
 import ziphil.custom.UtilityStage
-import ziphil.module.ClickType
 import ziphil.module.CustomBindings
-import ziphil.module.FontRenderingType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 

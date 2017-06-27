@@ -9,6 +9,8 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.scene.text.Font
 import ziphil.Launcher
+import ziphil.custom.ClickType
+import ziphil.custom.FontRenderingType
 import ziphilib.transform.Ziphilify
 
 

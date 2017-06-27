@@ -3,7 +3,7 @@ package ziphil.dictionary.slime
 import groovy.transform.CompileStatic
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
-import ziphil.module.ClickType
+import ziphil.custom.ClickType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 

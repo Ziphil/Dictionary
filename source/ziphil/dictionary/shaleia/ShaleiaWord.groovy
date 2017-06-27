@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
-import ziphil.module.ClickType
+import ziphil.custom.ClickType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
