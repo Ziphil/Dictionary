@@ -107,7 +107,85 @@ public class AkrantiainSentenceParser {
     if (!rule.isConcrete()) {
       throw AkrantiainParseException.new("Right side of a sentence consists solely of dollars", $tokens.last())
     }
+    modifyConditions(rule)
     return rule
+  }
+
+  private void modifyConditions(AkrantiainRule rule) {
+    modifyLeftCondition(rule)
+    modifyRightCondition(rule)
+  }
+
+  private void modifyLeftCondition(AkrantiainRule rule) {
+    AkrantiainCondition leftCondition = AkrantiainCondition.new()
+    if (rule.hasLeftCondition()) {
+      leftCondition.getMatchables().add(rule.getLeftCondition())
+    }
+    Int selectionIndex = 0
+    for (Int i = 0 ; i < rule.getPhonemes().size() ; i ++) {
+      if (rule.getPhonemes()[i].getType() == AkrantiainTokenType.DOLLAR) {
+        Boolean first = true
+        while (true) {
+          AkrantiainMatchable selection = rule.getSelections()[selectionIndex]
+          if (first || !selection.isConcrete()) {
+            leftCondition.getMatchables().add(selection)
+            selectionIndex ++
+            first = false
+          } else {
+            break
+          }
+        }
+      } else {
+        for (Int j = 0 ; j < selectionIndex ; j ++) {
+          rule.getSelections().removeAt(0)
+        }
+        for (Int j = 0 ; j < i ; j ++) {
+          rule.getPhonemes().removeAt(0)
+        }
+        break
+      }
+    }
+    if (!leftCondition.getMatchables().isEmpty()) {
+      rule.setLeftCondition(leftCondition)
+    } else {
+      rule.setLeftCondition(null)
+    }
+  }
+
+  private void modifyRightCondition(AkrantiainRule rule) {
+    AkrantiainCondition rightCondition = AkrantiainCondition.new()
+    if (rule.hasRightCondition()) {
+      rightCondition.getMatchables().add(rule.getRightCondition())
+    }
+    Int selectionIndex = rule.getSelections().size() - 1
+    for (Int i = rule.getPhonemes().size() - 1 ; i >= 0 ; i --) {
+      if (rule.getPhonemes()[i].getType() == AkrantiainTokenType.DOLLAR) {
+        Boolean first = true
+        while (true) {
+          AkrantiainMatchable selection = rule.getSelections()[selectionIndex]
+          if (first || !selection.isConcrete()) {
+            rightCondition.getMatchables().add(0, selection)
+            selectionIndex --
+            first = false
+          } else {
+            break
+          }
+        }
+      } else {
+        for (Int j = rule.getSelections().size() - 1 ; j > selectionIndex ; j --) {
+          rule.getSelections().removeAt(rule.getSelections().size() - 1)
+        }
+        for (Int j = rule.getPhonemes().size() - 1 ; j > i ; j --) {
+          rule.getPhonemes().removeAt(rule.getPhonemes().size() - 1)
+        }
+        break
+      }
+    }
+    if (!rightCondition.getMatchables().isEmpty()) {
+      rule.setRightCondition(rightCondition)
+    } else {
+      rule.setRightCondition(null)
+    }
   }
 
   public List<AkrantiainModuleName> readModuleChain() {
