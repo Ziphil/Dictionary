@@ -57,11 +57,7 @@ public class AkrantiainParser {
           }
         } else if (sentenceParser.isRule()) {
           AkrantiainRule rule = sentenceParser.readRule()
-          if (rule.isConcrete()) {
-            currentModule.getRules().add(rule)
-          } else {
-            throw AkrantiainParseException.new("Right side of a sentence consists solely of dollars", token)
-          }
+          currentModule.getRules().add(rule)
         } else if (sentenceParser.isModuleChain()) {
           List<AkrantiainModuleName> moduleChain = sentenceParser.readModuleChain()
           currentModule.setModuleChain(moduleChain)

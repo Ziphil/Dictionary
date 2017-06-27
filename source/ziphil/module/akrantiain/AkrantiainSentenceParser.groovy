@@ -104,6 +104,9 @@ public class AkrantiainSentenceParser {
     if (!rule.isSizeValid()) {
       throw AkrantiainParseException.new("Mismatched number of concrete terms", $tokens.last())
     }
+    if (!rule.isConcrete()) {
+      throw AkrantiainParseException.new("Right side of a sentence consists solely of dollars", $tokens.last())
+    }
     return rule
   }
 
