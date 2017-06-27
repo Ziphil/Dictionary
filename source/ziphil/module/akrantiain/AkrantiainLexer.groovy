@@ -191,11 +191,12 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         }
       }
     }
+    String text = currentContent.toString()
     AkrantiainToken token = null
     if (separator == '"') {
-      token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, currentContent.toString(), separator + currentContent.toString() + separator, $reader)
+      token = AkrantiainToken.new(AkrantiainTokenType.QUOTE_LITERAL, text, separator + text + separator, $reader)
     } else if (separator == '/') {
-      token = AkrantiainToken.new(AkrantiainTokenType.SLASH_LITERAL, currentContent.toString(), separator + currentContent.toString() + separator, $reader)
+      token = AkrantiainToken.new(AkrantiainTokenType.SLASH_LITERAL, text, separator + text + separator, $reader)
     }
     return token
   }
@@ -221,7 +222,8 @@ public class AkrantiainLexer implements Closeable, AutoCloseable {
         }
       }
     }
-    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.ENVIRONMENT_LITERAL, currentContent.toString(), "@" + currentContent.toString(), $reader)
+    String text = currentContent.toString()
+    AkrantiainToken token = AkrantiainToken.new(AkrantiainTokenType.ENVIRONMENT_LITERAL, text, "@" + text, $reader)
     return token
   }
 
