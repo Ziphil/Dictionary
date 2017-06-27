@@ -111,6 +111,41 @@ public class AkrantiainSentenceParser {
     return rule
   }
 
+  public List<AkrantiainModuleName> readModuleChain() {
+    List<AkrantiainModuleName> moduleChain = ArrayList.new()
+    Boolean afterComponent = false
+    if ($tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT) {
+      $pointer += 1
+      while (true) {
+        AkrantiainToken token = $tokens[$pointer ++]
+        AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
+        if (tokenType == AkrantiainTokenType.ADVANCE) {
+          if (afterComponent) {
+            afterComponent = false
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
+          if (afterComponent) {
+            break
+          } else {
+            throw AkrantiainParseException.new("Invalid module chain", token)
+          }
+        } else {
+          if (!afterComponent) {
+            $pointer --
+            List<AkrantiainModuleName> moduleChainComponent = nextModuleChainComponent()
+            moduleChain.addAll(moduleChainComponent)
+            afterComponent = true
+          }
+        }
+      }
+    } else {
+      throw AkrantiainParseException.new("Invalid module chain", $tokens.last())
+    }
+    return moduleChain
+  }
+
   private void modifyConditions(AkrantiainRule rule) {
     modifyLeftCondition(rule)
     modifyRightCondition(rule)
@@ -186,41 +221,6 @@ public class AkrantiainSentenceParser {
     } else {
       rule.setRightCondition(null)
     }
-  }
-
-  public List<AkrantiainModuleName> readModuleChain() {
-    List<AkrantiainModuleName> moduleChain = ArrayList.new()
-    Boolean afterComponent = false
-    if ($tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT) {
-      $pointer += 1
-      while (true) {
-        AkrantiainToken token = $tokens[$pointer ++]
-        AkrantiainTokenType tokenType = (token != null) ? token.getType() : null
-        if (tokenType == AkrantiainTokenType.ADVANCE) {
-          if (afterComponent) {
-            afterComponent = false
-          } else {
-            throw AkrantiainParseException.new("Invalid module chain", token)
-          }
-        } else if (tokenType == AkrantiainTokenType.SEMICOLON) {
-          if (afterComponent) {
-            break
-          } else {
-            throw AkrantiainParseException.new("Invalid module chain", token)
-          }
-        } else {
-          if (!afterComponent) {
-            $pointer --
-            List<AkrantiainModuleName> moduleChainComponent = nextModuleChainComponent()
-            moduleChain.addAll(moduleChainComponent)
-            afterComponent = true
-          }
-        }
-      }
-    } else {
-      throw AkrantiainParseException.new("Invalid module chain", $tokens.last())
-    }
-    return moduleChain
   }
 
   private AkrantiainDisjunction nextDisjunction() {

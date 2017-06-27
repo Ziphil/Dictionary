@@ -119,6 +119,17 @@ public class AkrantiainRule {
     return false
   }
 
+  public Boolean isSizeValid() {
+    Int phonemeSize = $phonemes.size()
+    Int concreteSelectionSize = 0
+    for (AkrantiainMatchable selection : $selections) {
+      if (selection.isConcrete()) {
+        concreteSelectionSize ++
+      }
+    }
+    return phonemeSize == concreteSelectionSize
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append($leftCondition)
@@ -140,17 +151,6 @@ public class AkrantiainRule {
     }
     string.append("]")
     return string.toString()
-  }
-
-  public Boolean isSizeValid() {
-    Int phonemeSize = $phonemes.size()
-    Int concreteSelectionSize = 0
-    for (AkrantiainMatchable selection : $selections) {
-      if (selection.isConcrete()) {
-        concreteSelectionSize ++
-      }
-    }
-    return phonemeSize == concreteSelectionSize
   }
 
   public Boolean hasSelection() {
