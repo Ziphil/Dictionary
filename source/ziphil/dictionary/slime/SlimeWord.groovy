@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
 import ziphil.custom.ClickType
@@ -55,7 +56,8 @@ public class SlimeWord extends WordBase {
 
   public void updateComparisonString() {
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    if (alphabetOrder != null) {
+    AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
+    if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
       StringBuilder comparisonString = StringBuilder.new()
       for (Int i = 0 ; i < $name.length() ; i ++) {
         Int position = alphabetOrder.indexOf($name.codePointAt(i))
@@ -66,6 +68,8 @@ public class SlimeWord extends WordBase {
         }
       }
       $comparisonString = comparisonString.toString()
+    } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
+      $comparisonString = $name
     } else {
       $comparisonString = ""
     }
