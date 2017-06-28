@@ -58,16 +58,20 @@ public class SlimeWord extends WordBase {
     String alphabetOrder = $dictionary.getAlphabetOrder()
     AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
     if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
-      StringBuilder comparisonString = StringBuilder.new()
-      for (Int i = 0 ; i < $name.length() ; i ++) {
-        Int position = alphabetOrder.indexOf($name.codePointAt(i))
-        if (position >= 0) {
-          comparisonString.appendCodePoint(position + 174)
-        } else {
-          comparisonString.appendCodePoint(10000)
+      if (alphabetOrder != null) {
+        StringBuilder comparisonString = StringBuilder.new()
+        for (Int i = 0 ; i < $name.length() ; i ++) {
+          Int position = alphabetOrder.indexOf($name.codePointAt(i))
+          if (position >= 0) {
+            comparisonString.appendCodePoint(position + 174)
+          } else {
+            comparisonString.appendCodePoint(10000)
+          }
         }
+        $comparisonString = comparisonString.toString()
+      } else {
+        $comparisonString = ""
       }
-      $comparisonString = comparisonString.toString()
     } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
       $comparisonString = $name
     } else {
