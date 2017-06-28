@@ -89,7 +89,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   protected void commit() {
-    String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
+    String alphabetOrder = $alphabetOrderControl.getText() ?: ""
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
     SlimeWord defaultWord = $defaultWord
