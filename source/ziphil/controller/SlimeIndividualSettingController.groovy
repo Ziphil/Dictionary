@@ -86,6 +86,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
+    $pronunciationTitleControl.getItems().addAll(dictionary.getRegisteredInformationTitles())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
