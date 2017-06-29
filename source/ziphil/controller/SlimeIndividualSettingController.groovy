@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.concurrent.Callable
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -62,6 +63,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private void initialize() {
     setupSearchParameterPane()
     setupAlphabetOrderControl()
+    setupUsesAlphabetOrderControls()
     setupInformationTitleOrderView()
   }
 
@@ -228,6 +230,19 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     }
     BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeAlphabetOrderControl.selectedProperty(), $usesIdAlphabetOrderControl.selectedProperty()) 
     $alphabetOrderControl.disableProperty().bind(binding)
+  }
+
+  private void setupUsesAlphabetOrderControls() {
+    $usesUnicodeAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+      if (newValue == true) {
+        $usesIdAlphabetOrderControl.setSelected(false)
+      }
+    }
+    $usesIdAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+      if (newValue == true) {
+        $usesUnicodeAlphabetOrderControl.setSelected(false)
+      }
+    }
   }
 
   private void setupInformationTitleOrderView() {
