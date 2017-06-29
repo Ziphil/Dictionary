@@ -33,7 +33,7 @@ public class PersonalWord extends WordBase {
       if (!modifiedPronunciation.startsWith("/") && !modifiedPronunciation.startsWith("[")) {
         modifiedPronunciation = "/" + modifiedPronunciation
       }
-      if (!modifiedPronunciation.endsWith("/") && !modifiedPronunciation.endsWith("[")) {
+      if (!modifiedPronunciation.endsWith("/") && !modifiedPronunciation.endsWith("]")) {
         modifiedPronunciation = modifiedPronunciation + "/"
       }
     }
