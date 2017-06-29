@@ -10,6 +10,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
@@ -42,6 +43,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML private CheckBox $usesIdAlphabetOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
+  @FXML private ComboBox<String> $pronunciationTitleControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
   @FXML private CheckBox $usesIndividualTitleOrderControl
@@ -83,6 +85,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $usesIdAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
+    $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
@@ -109,6 +112,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
+    String pronunciationTitle = $pronunciationTitleControl.getValue()
     SlimeWord defaultWord = $defaultWord
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
     Boolean usesIndividualOrder = $usesIndividualTitleOrderControl.isSelected()
@@ -119,6 +123,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $dictionary.setAlphabetOrderType(alphabetOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
+    $dictionary.setPronunciationTitle(pronunciationTitle)
     $dictionary.setDefaultWord(defaultWord)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
@@ -158,6 +163,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private void removeSnoj() {
     $akrantiainSource = null
     $akrantiainSourceControl.setText("")
+  }
+
+  @FXML
+  private void removePronunciationTitle() {
+    $pronunciationTitleControl.setValue(null)
   }
 
   @FXML
