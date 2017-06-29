@@ -69,13 +69,24 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addNameNode(TextFlow pane, String name) {
-    Akrantiain akrantiain = $dictionary.getAkrantiain()
     String pronunciation = null
-    if (akrantiain != null) {
-      try {
-        pronunciation = akrantiain.convert(name)
-      } catch (AkrantiainException exception) {
-        pronunciation = null
+    String pronunciationTitle = $dictionary.getPronunciationTitle()
+    if (pronunciationTitle != null) {
+      for (SlimeInformation information : $word.getInformations()) {
+        if (information.getTitle() == pronunciationTitle) {
+          pronunciation = information.getText().replaceAll(/(\n|\r)/, "")
+          break
+        }
+      }
+    }
+    if (pronunciation == null) {
+      Akrantiain akrantiain = $dictionary.getAkrantiain()
+      if (akrantiain != null) {
+        try {
+          pronunciation = akrantiain.convert(name)
+        } catch (AkrantiainException exception) {
+          pronunciation = null
+        }
       }
     }
     if (pronunciation != null) {
