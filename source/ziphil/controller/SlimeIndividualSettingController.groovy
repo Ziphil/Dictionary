@@ -17,6 +17,7 @@ import ziphil.custom.ListSelectionView
 import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -33,6 +34,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
+  @FXML private CheckBox $usesUnicodeOrderControl
+  @FXML private CheckBox $usesIdOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
@@ -70,6 +73,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $usesUnicodeOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.UNICODE)
+    $usesIdOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $plainInformationTitleView.setSources(normalInformationTitles)
@@ -90,6 +95,12 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   protected void commit() {
     String alphabetOrder = $alphabetOrderControl.getText() ?: ""
+    AlphabetOrderType alphabetOrderType = AlphabetOrderType.CUSTOM
+    if ($usesUnicodeOrderControl.isSelected()) {
+      alphabetOrderType = AlphabetOrderType.UNICODE
+    } else if ($usesIdOrderControl.isSelected()) {
+      alphabetOrderType = AlphabetOrderType.ID
+    }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
     SlimeWord defaultWord = $defaultWord
@@ -99,6 +110,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
+    $dictionary.setAlphabetOrderType(alphabetOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setDefaultWord(defaultWord)
