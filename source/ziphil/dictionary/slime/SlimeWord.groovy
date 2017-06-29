@@ -1,10 +1,13 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
-import ziphil.module.ClickType
+import ziphil.custom.ClickType
 import ziphil.module.Setting
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.Ziphilify
 
 
@@ -55,17 +58,24 @@ public class SlimeWord extends WordBase {
 
   public void updateComparisonString() {
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    if (alphabetOrder != null) {
-      StringBuilder comparisonString = StringBuilder.new()
-      for (Int i = 0 ; i < $name.length() ; i ++) {
-        Int position = alphabetOrder.indexOf($name.codePointAt(i))
-        if (position >= 0) {
-          comparisonString.appendCodePoint(position + 174)
-        } else {
-          comparisonString.appendCodePoint(10000)
+    AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
+    if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
+      if (alphabetOrder != null) {
+        StringBuilder comparisonString = StringBuilder.new()
+        for (Int i = 0 ; i < $name.length() ; i ++) {
+          Int position = alphabetOrder.indexOf($name.codePointAt(i))
+          if (position >= 0) {
+            comparisonString.appendCodePoint(position + 174)
+          } else {
+            comparisonString.appendCodePoint(10000)
+          }
         }
+        $comparisonString = comparisonString.toString()
+      } else {
+        $comparisonString = ""
       }
-      $comparisonString = comparisonString.toString()
+    } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
+      $comparisonString = $name
     } else {
       $comparisonString = ""
     }
@@ -104,6 +114,37 @@ public class SlimeWord extends WordBase {
 
   public Map<String, List<SlimeRelation>> groupedRelations() {
     return $relations.groupBy{it.getTitle()}
+  }
+
+  public String createPronunciation() {
+    String pronunciation = ""
+    String pronunciationTitle = $dictionary.getPronunciationTitle()
+    if (pronunciationTitle != null) {
+      for (SlimeInformation information : $informations) {
+        if (information.getTitle() == pronunciationTitle) {
+          pronunciation = information.getText().replaceAll(/(\n|\r)/, "")
+          if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
+            pronunciation = "/" + pronunciation
+          }
+          if (!pronunciation.endsWith("/") && !pronunciation.endsWith("]")) {
+            pronunciation = pronunciation + "/"
+          }
+          break
+        }
+      }
+    }
+    if (pronunciation == "") {
+      Akrantiain akrantiain = $dictionary.getAkrantiain()
+      if (akrantiain != null) {
+        try {
+          pronunciation = akrantiain.convert(name)
+          pronunciation = "/" + pronunciation + "/"
+        } catch (AkrantiainException exception) {
+          pronunciation = ""
+        }
+      }
+    }
+    return pronunciation
   }
 
   protected PaneFactory createPaneFactory() {

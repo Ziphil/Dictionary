@@ -7,8 +7,8 @@ import javafx.application.Platform
 import javafx.stage.Stage
 import ziphil.Launcher
 import ziphil.controller.MainController
+import ziphil.custom.FontRenderingType
 import ziphil.module.AllPermissionPolicy
-import ziphil.module.FontRenderingType
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 

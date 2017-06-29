@@ -27,6 +27,19 @@ public class PersonalWord extends WordBase {
     $content = name + "\n" + translation + "\n" + usage
   }
 
+  public String createPronunciation() {
+    String modifiedPronunciation = $pronunciation
+    if (modifiedPronunciation != "") {
+      if (!modifiedPronunciation.startsWith("/") && !modifiedPronunciation.startsWith("[")) {
+        modifiedPronunciation = "/" + modifiedPronunciation
+      }
+      if (!modifiedPronunciation.endsWith("/") && !modifiedPronunciation.endsWith("]")) {
+        modifiedPronunciation = modifiedPronunciation + "/"
+      }
+    }
+    return modifiedPronunciation
+  }
+
   protected PaneFactory createPaneFactory() {
     Setting setting = Setting.getInstance()
     Boolean persisted = setting.getPersistsPanes()

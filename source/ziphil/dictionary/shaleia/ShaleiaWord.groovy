@@ -4,8 +4,10 @@ import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
-import ziphil.module.ClickType
+import ziphil.custom.ClickType
 import ziphil.module.Setting
+import ziphil.module.akrantiain.Akrantiain
+import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.Ziphilify
 
 
@@ -70,6 +72,20 @@ public class ShaleiaWord extends WordBase {
       }
     }
     $comparisonString = comparisonString.toString()
+  }
+
+  public String createPronunciation() {
+    String pronunciation = ""
+    Akrantiain akrantiain = $dictionary.getAkrantiain()
+    if (akrantiain != null) {
+      try {
+        pronunciation = akrantiain.convert(name)
+        pronunciation = "/" + pronunciation + "/"
+      } catch (AkrantiainException exception) {
+        pronunciation = ""
+      }
+    }
+    return pronunciation
   }
 
   protected PaneFactory createPaneFactory() {

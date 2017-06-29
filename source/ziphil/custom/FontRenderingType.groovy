@@ -1,4 +1,4 @@
-package ziphil.module
+package ziphil.custom
 
 import groovy.transform.CompileStatic
 import ziphilib.transform.Ziphilify

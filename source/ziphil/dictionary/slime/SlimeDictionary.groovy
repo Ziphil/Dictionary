@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
@@ -39,8 +40,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private List<String> $registeredInformationTitles = ArrayList.new()
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
-  private String $alphabetOrder = null
+  private String $alphabetOrder = ""
+  private AlphabetOrderType $alphabetOrderType = AlphabetOrderType.UNICODE
   private List<String> $punctuations = Arrays.asList(",", "、")
+  private String $pronunciationTitle = null
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
@@ -498,12 +501,28 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $alphabetOrder = alphabetOrder
   }
 
+  public AlphabetOrderType getAlphabetOrderType() {
+    return $alphabetOrderType
+  }
+
+  public void setAlphabetOrderType(AlphabetOrderType alphabetOrderType) {
+    $alphabetOrderType = alphabetOrderType
+  }
+
   public List<String> getPunctuations() {
     return $punctuations
   }
 
   public void setPunctuations(List<String> punctuations) {
     $punctuations = punctuations
+  }
+
+  public String getPronunciationTitle() {
+    return $pronunciationTitle
+  }
+
+  public void setPronunciationTitle(String pronunciationTitle) {
+    $pronunciationTitle = pronunciationTitle
   }
 
   public List<String> getPlainInformationTitles() {

@@ -1,9 +1,6 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
@@ -20,6 +17,8 @@ import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
+import ziphil.module.HairiaDate
+import ziphil.module.HairiaNumberField
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -128,7 +127,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public ShaleiaWord createWord(String defaultName) {
-    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    Long hairiaNumber = HairiaDate.nowShifted().getLong(HairiaNumberField.HAIRIA_NUMBER)
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
     word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
@@ -153,7 +152,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public ShaleiaWord inheritWord(ShaleiaWord oldWord) {
-    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    Long hairiaNumber = HairiaDate.nowShifted().getLong(HairiaNumberField.HAIRIA_NUMBER)
     ShaleiaWord newWord = prepareCopyWord(oldWord, false)
     newWord.setDescription(oldWord.getDescription().replaceAll(/^\+\s*(\d+)/, "+ ${hairiaNumber}"))
     newWord.update()
@@ -161,7 +160,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   public ShaleiaWord determineWord(String name, PseudoWord pseudoWord) {
-    Long hairiaNumber = LocalDateTime.of(2012, 1, 23, 6, 0).until(LocalDateTime.now(), ChronoUnit.DAYS) + 1
+    Long hairiaNumber = HairiaDate.nowShifted().getLong(HairiaNumberField.HAIRIA_NUMBER)
     ShaleiaWord word = ShaleiaWord.new()
     List<String> pseudoEquivalents = pseudoWord.getEquivalents()
     String pseudoContent = pseudoWord.getContent()

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.DictionaryLoader
 import ziphilib.transform.Ziphilify
 
@@ -47,8 +48,12 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
             parser.nextToken()
             if (specialFieldName == "alphabetOrder") {
               parseAlphabetOrder(parser)
+            } else if (specialFieldName == "alphabetOrderType") {
+              parseAlphabetOrderType(parser)
             } else if (specialFieldName == "punctuations") {
               parsePunctuations(parser)
+            } else if (specialFieldName == "pronunciationTitle") {
+              parsePronunciationTitle(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
@@ -202,12 +207,22 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
     $dictionary.setAlphabetOrder(alphabetOrder) 
   }
 
+  private void parseAlphabetOrderType(JsonParser parser) {
+    String alphabetOrderType = parser.getValueAsString()
+    $dictionary.setAlphabetOrderType(AlphabetOrderType.valueOf(alphabetOrderType)) 
+  }
+
   private void parsePunctuations(JsonParser parser) {
     $dictionary.setPunctuations(ArrayList.new())
     while (parser.nextToken() != JsonToken.END_ARRAY) {
       String punctuation = parser.getValueAsString()
       $dictionary.getPunctuations().add(punctuation)
     }
+  }
+
+  private void parsePronunciationTitle(JsonParser parser) {
+    String pronunciationTitle = parser.getValueAsString()
+    $dictionary.setPronunciationTitle(pronunciationTitle) 
   }
 
   private void parsePlainInformationTitles(JsonParser parser) {

@@ -35,7 +35,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
   @FXML
   private void initialize() {
     setupDragAndDrop()
-    bindProperties()
+    bindProperty()
   }
 
   @FXML
@@ -107,7 +107,7 @@ public class PermutableListViewSkin<T> extends CustomSkinBase<PermutableListView
     }
   }
 
-  private void bindProperties() {
+  private void bindProperty() {
     $itemView.itemsProperty().bindBidirectional(((PermutableListView<T>)$control).itemsProperty())
   }
 

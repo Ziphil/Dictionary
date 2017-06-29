@@ -78,7 +78,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
         if (conjugationResolver != null) {
           conjugationResolver.check(word)
         }
-        return parameter.matches(word)
+        if (suppressedException == null) {
+          return parameter.matches(word)
+        } else {
+          return false
+        }
       } catch (Exception exception) {
         suppressedException = exception
         return false

@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -66,7 +67,7 @@
             </PermutableListView>
             <HelpIndicator text="ここで内容の項目順を指定しておくと、必ずその順番で表示されます。"/>
           </HBox>
-          <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <CheckBox fx:id="$usesIndividualTitleOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -86,20 +87,25 @@
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
           <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="発音記号項目名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$alphabetOrderControl" HBox.hgrow="always"/>
-            <HelpIndicator text="アルファベットの順序をスペースなどを入れずに入力してください。&#10;何も入力しなかった場合はID順になります。"/>
+            <HelpIndicator text="アルファベットの順序をスペースなどを入れずに入力してください。"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <CheckBox fx:id="$usesUnicodeAlphabetOrderControl" text="Unicode順を用いる"/>
+            <CheckBox fx:id="$usesIdAlphabetOrderControl" text="ID順を用いる"/>
+          </VBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$punctuationsControl" HBox.hgrow="always"/>
             <HelpIndicator text="訳語と変化形を編集するときに用いる区切り文字を入力してください。&#10;複数の文字を設定することができます。&#10;単語データを表示するときは最初の文字が区切りに使用されます。"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
             <HBox HBox.hgrow="always">
               <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
@@ -111,7 +117,19 @@
             </Button>
             <HelpIndicator text="akrantiainのsnojファイルを読み込んで、辞書データに埋め込みます。&#10;これを設定しておくと、単語の綴りから自動的に発音記号が作成され表示されます。"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <spacing><Double rpx="5"/></spacing>
+            <ComboBox fx:id="$pronunciationTitleControl" editable="true">
+              <prefWidth><Double rpx="120"/></prefWidth>
+              <minWidth><Double rpx="120"/></minWidth>
+            </ComboBox>
+            <Button text="削除" onAction="#removePronunciationTitle">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </Button>
+            <HelpIndicator text="発音記号を記載する内容欄の項目名を指定してください。&#10;発音記号は見出し語のすぐ横に表示されます。&#10;ファイルにakrantiainが埋め込まれている場合は、akrantiainが自動生成したものより優先的に表示されます。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="5"/></spacing>
             <Button text="編集" onAction="#editDefaultWord">
               <prefWidth><Double rpx="70"/></prefWidth>

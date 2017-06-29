@@ -1,11 +1,16 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
@@ -17,6 +22,7 @@ import ziphil.custom.ListSelectionView
 import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -33,11 +39,14 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
+  @FXML private CheckBox $usesUnicodeAlphabetOrderControl
+  @FXML private CheckBox $usesIdAlphabetOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
+  @FXML private ComboBox<String> $pronunciationTitleControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
-  @FXML private CheckBox $usesIndividualOrderControl
+  @FXML private CheckBox $usesIndividualTitleOrderControl
   @FXML private GridPane $registeredParameterPane
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
@@ -55,7 +64,9 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   private void initialize() {
     setupSearchParameterPane()
-    bindInformationTitleOrderViewProperty()
+    setupAlphabetOrderControl()
+    setupUsesAlphabetOrderControls()
+    setupInformationTitleOrderView()
   }
 
   public void prepare(SlimeDictionary dictionary, SlimeIndividualSetting individualSetting) {
@@ -70,13 +81,17 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
+    $usesUnicodeAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.UNICODE)
+    $usesIdAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
+    $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
+    $pronunciationTitleControl.getItems().addAll(dictionary.getRegisteredInformationTitles())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
     if (dictionary.getInformationTitleOrder() == null) {
-      $usesIndividualOrderControl.setSelected(true)
+      $usesIndividualTitleOrderControl.setSelected(true)
     }
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
@@ -89,18 +104,27 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   protected void commit() {
-    String alphabetOrder = ($alphabetOrderControl.getText() == "") ? null : $alphabetOrderControl.getText()
+    String alphabetOrder = $alphabetOrderControl.getText() ?: ""
+    AlphabetOrderType alphabetOrderType = AlphabetOrderType.CUSTOM
+    if ($usesUnicodeAlphabetOrderControl.isSelected()) {
+      alphabetOrderType = AlphabetOrderType.UNICODE
+    } else if ($usesIdAlphabetOrderControl.isSelected()) {
+      alphabetOrderType = AlphabetOrderType.ID
+    }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
+    String pronunciationTitle = $pronunciationTitleControl.getValue()
     SlimeWord defaultWord = $defaultWord
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
-    Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
+    Boolean usesIndividualOrder = $usesIndividualTitleOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
+    $dictionary.setAlphabetOrderType(alphabetOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
+    $dictionary.setPronunciationTitle(pronunciationTitle)
     $dictionary.setDefaultWord(defaultWord)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
@@ -140,6 +164,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private void removeSnoj() {
     $akrantiainSource = null
     $akrantiainSourceControl.setText("")
+  }
+
+  @FXML
+  private void removePronunciationTitle() {
+    $pronunciationTitleControl.setValue(null)
   }
 
   @FXML
@@ -206,8 +235,29 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     }
   }
 
-  private void bindInformationTitleOrderViewProperty() {
-    $informationTitleOrderView.disableProperty().bind($usesIndividualOrderControl.selectedProperty())
+  private void setupAlphabetOrderControl() {
+    Callable<BooleanClass> function = (Callable){
+      return $usesUnicodeAlphabetOrderControl.isSelected() || $usesIdAlphabetOrderControl.isSelected()
+    }
+    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeAlphabetOrderControl.selectedProperty(), $usesIdAlphabetOrderControl.selectedProperty()) 
+    $alphabetOrderControl.disableProperty().bind(binding)
+  }
+
+  private void setupUsesAlphabetOrderControls() {
+    $usesUnicodeAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+      if (newValue == true) {
+        $usesIdAlphabetOrderControl.setSelected(false)
+      }
+    }
+    $usesIdAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+      if (newValue == true) {
+        $usesUnicodeAlphabetOrderControl.setSelected(false)
+      }
+    }
+  }
+
+  private void setupInformationTitleOrderView() {
+    $informationTitleOrderView.disableProperty().bind($usesIndividualTitleOrderControl.selectedProperty())
   }
 
 }

@@ -11,24 +11,40 @@ public class AkrantiainToken implements AkrantiainMatchable {
 
   private AkrantiainTokenType $type
   private String $text
-  private String $fullText = ""
+  private String $fullText
   private Int $lineNumber
   private Int $columnNumber
+
+  public AkrantiainToken(AkrantiainTokenType type, String text, String fullText, Int lineNumber, Int columnNumber) {
+    $type = type
+    $text = text
+    $fullText = fullText
+    $lineNumber = lineNumber
+    $columnNumber = columnNumber
+  }
 
   public AkrantiainToken(AkrantiainTokenType type, String text, Int lineNumber, Int columnNumber) {
     $type = type
     $text = text
+    $fullText = fullText
     $lineNumber = lineNumber
     $columnNumber = columnNumber
-    makeFullText()
+  }
+
+  public AkrantiainToken(AkrantiainTokenType type, String text, String fullText, ExtendedBufferedReader reader) {
+    $type = type
+    $text = text
+    $fullText = fullText
+    $lineNumber = reader.getLineNumber()
+    $columnNumber = reader.getColumnNumber()
   }
 
   public AkrantiainToken(AkrantiainTokenType type, String text, ExtendedBufferedReader reader) {
     $type = type
     $text = text
+    $fullText = text
     $lineNumber = reader.getLineNumber()
     $columnNumber = reader.getColumnNumber()
-    makeFullText()
   }
 
   public Int matchRight(AkrantiainElementGroup group, Int from, AkrantiainModule module) {
@@ -208,18 +224,6 @@ public class AkrantiainToken implements AkrantiainMatchable {
       return from
     } else {
       throw AkrantiainException.new("This cannot happen")
-    }
-  }
-
-  private void makeFullText() {
-    if ($type == AkrantiainTokenType.QUOTE_LITERAL) {
-      $fullText = "\"" + $text + "\""
-    } else if ($type == AkrantiainTokenType.SLASH_LITERAL) {
-      $fullText = "/" + $text + "/"
-    } else if ($type == AkrantiainTokenType.ENVIRONMENT_LITERAL) {
-      $fullText = "@" + $text
-    } else {
-      $fullText = $text
     }
   }
 

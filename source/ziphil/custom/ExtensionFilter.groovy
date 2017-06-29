@@ -16,18 +16,18 @@ public class ExtensionFilter {
   }
 
   public Boolean accepts(File file) {
-    if (extension != null) {
-      return file.getName().endsWith("." + extension)
+    if ($extension != null) {
+      return file.getName().endsWith("." + $extension)
     } else {
       return true
     }
   }
 
   public String toString() {
-    if (extension != null) {
-      return "${name} (*.${extension})"
+    if ($extension != null) {
+      return "${$name} (*.${$extension})"
     } else {
-      return name
+      return $name
     }
   }
 

@@ -57,11 +57,7 @@ public class AkrantiainParser {
           }
         } else if (sentenceParser.isRule()) {
           AkrantiainRule rule = sentenceParser.readRule()
-          if (rule.isConcrete()) {
-            currentModule.getRules().add(rule)
-          } else {
-            throw AkrantiainParseException.new("Right side of a sentence consists solely of dollars", token)
-          }
+          currentModule.getRules().add(rule)
         } else if (sentenceParser.isModuleChain()) {
           List<AkrantiainModuleName> moduleChain = sentenceParser.readModuleChain()
           currentModule.setModuleChain(moduleChain)
@@ -82,17 +78,17 @@ public class AkrantiainParser {
   }
 
   private void ensureSafety() {
-    AkrantiainToken deadIdentifier = $root.findUnknownIdentifier()
-    if (deadIdentifier != null) {
-      throw AkrantiainParseException.new("Undefined identifier", deadIdentifier)
+    AkrantiainToken unknownIdentifier = $root.findUnknownIdentifier()
+    if (unknownIdentifier != null) {
+      throw AkrantiainParseException.new("Undefined identifier", unknownIdentifier)
     }
     AkrantiainToken circularIdentifier = $root.findCircularIdentifier()
     if (circularIdentifier != null) {
       throw AkrantiainParseException.new("Circular reference involving identifier", circularIdentifier)
     }
-    AkrantiainModuleName deadModuleName = $root.findUnknownModuleName()
-    if (deadModuleName != null) {
-      throw AkrantiainParseException.new("Undefined module", deadModuleName.getTokens())
+    AkrantiainModuleName unknownModuleName = $root.findUnknownModuleName()
+    if (unknownModuleName != null) {
+      throw AkrantiainParseException.new("Undefined module", unknownModuleName.getTokens())
     }
     AkrantiainModuleName circularModuleName = $root.findCircularModuleName()
     if (circularModuleName != null) {
