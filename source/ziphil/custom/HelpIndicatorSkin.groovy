@@ -28,7 +28,7 @@ public class HelpIndicatorSkin extends CustomSkinBase<HelpIndicator, Group> {
   @FXML
   private void initialize() {
     setupTooltip()
-    bindProperty()
+    setupMarkLabel()
   }
 
   private void setupTooltip() {
@@ -37,7 +37,7 @@ public class HelpIndicatorSkin extends CustomSkinBase<HelpIndicator, Group> {
     tooltip.textProperty().bindBidirectional($control.textProperty())
   }
 
-  private void bindProperty() {
+  private void setupMarkLabel() {
     $markLabel.textProperty().bindBidirectional($control.markCharacterProperty())
   }
 

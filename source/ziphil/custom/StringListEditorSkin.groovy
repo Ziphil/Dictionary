@@ -38,7 +38,7 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
   private void initialize() {
     setupInputControl()
     setupDragAndDrop()
-    bindProperties()
+    bindProperty()
   }
 
   private void setupInputControl() {
@@ -108,7 +108,7 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
     }
   }
 
-  private void bindProperties() {
+  private void bindProperty() {
     $listView.itemsProperty().bindBidirectional($control.stringsProperty())
   }
 

@@ -140,13 +140,13 @@ public class MainController extends PrimitiveController<Stage> {
   public void initialize() {
     setupWordView()
     setupSearchControl()
+    setupSearchTypeControl()
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
     setupConvertDictionaryMenu()
     setupWordViewShortcuts()
     setupDebug()
-    bindSearchTypeControlProperty()
   }
 
   public void prepare() {
@@ -1026,28 +1026,6 @@ public class MainController extends PrimitiveController<Stage> {
     Platform.exit()
   }
 
-  private void bindSearchTypeControlProperty() {
-    Callable<String> textFunction = (Callable){
-      return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
-    }
-    Callable<BooleanClass> disableFunction = (Callable){
-      SearchMode searchMode = $searchModeControl.getValue()
-      if (searchMode == SearchMode.NAME) {
-        return false
-      } else if (searchMode == SearchMode.EQUIVALENT) {
-        return false
-      } else if (searchMode == SearchMode.CONTENT) {
-        return true
-      } else {
-        return true
-      }
-    }
-    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
-    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
-    $searchTypeControl.textProperty().bind(textBinding)
-    $searchTypeControl.disableProperty().bind(disableBinding)
-  }
-
   @VoidClosure
   private void setupWordView() {
     $wordView.setCellFactory() { ListView<Element> view ->
@@ -1086,6 +1064,28 @@ public class MainController extends PrimitiveController<Stage> {
         event.consume()
       }
     }
+  }
+
+  private void setupSearchTypeControl() {
+    Callable<String> textFunction = (Callable){
+      return ($searchTypeControl.isSelected()) ? "完全一致" : "部分一致"
+    }
+    Callable<BooleanClass> disableFunction = (Callable){
+      SearchMode searchMode = $searchModeControl.getValue()
+      if (searchMode == SearchMode.NAME) {
+        return false
+      } else if (searchMode == SearchMode.EQUIVALENT) {
+        return false
+      } else if (searchMode == SearchMode.CONTENT) {
+        return true
+      } else {
+        return true
+      }
+    }
+    StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
+    BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
+    $searchTypeControl.textProperty().bind(textBinding)
+    $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
   private void setupCreateDictionaryMenu() {

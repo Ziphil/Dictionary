@@ -62,7 +62,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private void initialize() {
     setupSearchParameterPane()
     setupAlphabetOrderControl()
-    bindInformationTitleOrderViewProperty()
+    setupInformationTitleOrderView()
   }
 
   public void prepare(SlimeDictionary dictionary, SlimeIndividualSetting individualSetting) {
@@ -230,7 +230,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $alphabetOrderControl.disableProperty().bind(binding)
   }
 
-  private void bindInformationTitleOrderViewProperty() {
+  private void setupInformationTitleOrderView() {
     $informationTitleOrderView.disableProperty().bind($usesIndividualTitleOrderControl.selectedProperty())
   }
 
