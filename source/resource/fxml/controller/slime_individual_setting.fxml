@@ -66,7 +66,7 @@
             </PermutableListView>
             <HelpIndicator text="ここで内容の項目順を指定しておくと、必ずその順番で表示されます。"/>
           </HBox>
-          <CheckBox fx:id="$usesIndividualOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <CheckBox fx:id="$usesIndividualTitleOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -95,8 +95,8 @@
             <HelpIndicator text="アルファベットの順序をスペースなどを入れずに入力してください。"/>
           </HBox>
           <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <CheckBox fx:id="$usesUnicodeOrderControl" text="Unicode順を用いる"/>
-            <CheckBox fx:id="$usesIdOrderControl" text="ID順を用いる"/>
+            <CheckBox fx:id="$usesUnicodeAlphabetOrderControl" text="Unicode順を用いる"/>
+            <CheckBox fx:id="$usesIdAlphabetOrderControl" text="ID順を用いる"/>
           </VBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>

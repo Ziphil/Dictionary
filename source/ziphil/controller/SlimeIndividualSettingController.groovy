@@ -34,13 +34,13 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
-  @FXML private CheckBox $usesUnicodeOrderControl
-  @FXML private CheckBox $usesIdOrderControl
+  @FXML private CheckBox $usesUnicodeAlphabetOrderControl
+  @FXML private CheckBox $usesIdAlphabetOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ListSelectionView<String> $plainInformationTitleView
   @FXML private PermutableListView<String> $informationTitleOrderView
-  @FXML private CheckBox $usesIndividualOrderControl
+  @FXML private CheckBox $usesIndividualTitleOrderControl
   @FXML private GridPane $registeredParameterPane
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
@@ -73,15 +73,15 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
-    $usesUnicodeOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.UNICODE)
-    $usesIdOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
+    $usesUnicodeAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.UNICODE)
+    $usesIdAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $plainInformationTitleView.setSources(normalInformationTitles)
     $plainInformationTitleView.setTargets(plainInformationTitles)
     $informationTitleOrderView.setItems(informationTitleOrder)
     if (dictionary.getInformationTitleOrder() == null) {
-      $usesIndividualOrderControl.setSelected(true)
+      $usesIndividualTitleOrderControl.setSelected(true)
     }
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
@@ -96,16 +96,16 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   protected void commit() {
     String alphabetOrder = $alphabetOrderControl.getText() ?: ""
     AlphabetOrderType alphabetOrderType = AlphabetOrderType.CUSTOM
-    if ($usesUnicodeOrderControl.isSelected()) {
+    if ($usesUnicodeAlphabetOrderControl.isSelected()) {
       alphabetOrderType = AlphabetOrderType.UNICODE
-    } else if ($usesIdOrderControl.isSelected()) {
+    } else if ($usesIdAlphabetOrderControl.isSelected()) {
       alphabetOrderType = AlphabetOrderType.ID
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
     SlimeWord defaultWord = $defaultWord
     List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
-    Boolean usesIndividualOrder = $usesIndividualOrderControl.isSelected()
+    Boolean usesIndividualOrder = $usesIndividualTitleOrderControl.isSelected()
     List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
@@ -219,7 +219,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   }
 
   private void bindInformationTitleOrderViewProperty() {
-    $informationTitleOrderView.disableProperty().bind($usesIndividualOrderControl.selectedProperty())
+    $informationTitleOrderView.disableProperty().bind($usesIndividualTitleOrderControl.selectedProperty())
   }
 
 }
