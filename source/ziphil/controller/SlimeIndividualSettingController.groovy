@@ -1,6 +1,9 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
 import javafx.fxml.FXML
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -58,6 +61,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   private void initialize() {
     setupSearchParameterPane()
+    setupAlphabetOrderControl()
     bindInformationTitleOrderViewProperty()
   }
 
@@ -216,6 +220,14 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
       $registeredParameterPane.add(numberLabel, 0, i)
       $registeredParameterPane.add(box, 1, i)
     }
+  }
+
+  private void setupAlphabetOrderControl() {
+    Callable<BooleanClass> function = (Callable){
+      return $usesUnicodeAlphabetOrderControl.isSelected() || $usesIdAlphabetOrderControl.isSelected()
+    }
+    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeAlphabetOrderControl.selectedProperty(), $usesIdAlphabetOrderControl.selectedProperty()) 
+    $alphabetOrderControl.disableProperty().bind(binding)
   }
 
   private void bindInformationTitleOrderViewProperty() {
