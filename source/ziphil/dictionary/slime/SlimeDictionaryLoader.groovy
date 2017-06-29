@@ -52,6 +52,8 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
               parseAlphabetOrderType(parser)
             } else if (specialFieldName == "punctuations") {
               parsePunctuations(parser)
+            } else if (specialFieldName == "pronunciationTitle") {
+              parsePronunciationTitle(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
@@ -216,6 +218,11 @@ public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, Sli
       String punctuation = parser.getValueAsString()
       $dictionary.getPunctuations().add(punctuation)
     }
+  }
+
+  private void parsePronunciationTitle(JsonParser parser) {
+    String pronunciationTitle = parser.getValueAsString()
+    $dictionary.setPronunciationTitle(pronunciationTitle) 
   }
 
   private void parsePlainInformationTitles(JsonParser parser) {

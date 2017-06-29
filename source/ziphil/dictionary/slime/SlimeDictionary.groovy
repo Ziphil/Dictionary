@@ -43,6 +43,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $alphabetOrder = ""
   private AlphabetOrderType $alphabetOrderType = AlphabetOrderType.UNICODE
   private List<String> $punctuations = Arrays.asList(",", "、")
+  private String $pronunciationTitle = null
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
   private SlimeWord $defaultWord = SlimeWord.new()
@@ -514,6 +515,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setPunctuations(List<String> punctuations) {
     $punctuations = punctuations
+  }
+
+  public String getPronunciationTitle() {
+    return $pronunciationTitle
+  }
+
+  public void setPronunciationTitle(String pronunciationTitle) {
+    $pronunciationTitle = pronunciationTitle
   }
 
   public List<String> getPlainInformationTitles() {
