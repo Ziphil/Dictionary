@@ -123,6 +123,12 @@ public class SlimeWord extends WordBase {
       for (SlimeInformation information : $informations) {
         if (information.getTitle() == pronunciationTitle) {
           pronunciation = information.getText().replaceAll(/(\n|\r)/, "")
+          if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
+            pronunciation = "/" + pronunciation
+          }
+          if (!pronunciation.endsWith("/") && !pronunciation.endsWith("]")) {
+            pronunciation = pronunciation + "/"
+          }
           break
         }
       }
