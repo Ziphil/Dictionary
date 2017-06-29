@@ -14,8 +14,6 @@ import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
-import ziphil.module.akrantiain.Akrantiain
-import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -47,7 +45,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Boolean hasRelation = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     pane.setLineSpacing(lineSpacing)
-    addNameNode(pane, $word.getName())
+    addNameNode(pane, $word.getName(), $word.createPronunciation())
     addTagNode(pane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
       addEquivalentNode(pane, equivalent.getTitle(), equivalent.getNames())
@@ -68,30 +66,10 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     return pane
   }
 
-  private void addNameNode(TextFlow pane, String name) {
-    String pronunciation = null
-    String pronunciationTitle = $dictionary.getPronunciationTitle()
-    if (pronunciationTitle != null) {
-      for (SlimeInformation information : $word.getInformations()) {
-        if (information.getTitle() == pronunciationTitle) {
-          pronunciation = information.getText().replaceAll(/(\n|\r)/, "")
-          break
-        }
-      }
-    }
-    if (pronunciation == null) {
-      Akrantiain akrantiain = $dictionary.getAkrantiain()
-      if (akrantiain != null) {
-        try {
-          pronunciation = akrantiain.convert(name)
-        } catch (AkrantiainException exception) {
-          pronunciation = null
-        }
-      }
-    }
-    if (pronunciation != null) {
+  private void addNameNode(TextFlow pane, String name, String pronunciation) {
+    if (pronunciation != "") {
       Text nameText = Text.new(name + " ")
-      Text pronunciationText = Text.new("/" + pronunciation + "/")
+      Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PRONUNCIATION_CLASS)

@@ -17,8 +17,6 @@ import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Strings
-import ziphil.module.akrantiain.Akrantiain
-import ziphil.module.akrantiain.AkrantiainException
 import ziphilib.transform.InnerClass
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
@@ -67,7 +65,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       while (reader.readLine() != null) {
         if (pane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
-          addNameNode(pane, name)
+          addNameNode(pane, name, $word.createPronunciation())
         }
         if (reader.findCreationDate()) {
           String totalPart = reader.lookupTotalPart()
@@ -98,19 +96,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     return pane
   }
 
-  private void addNameNode(TextFlow pane, String name) {
-    Akrantiain akrantiain = $dictionary.getAkrantiain()
-    String pronunciation = null
-    if (akrantiain != null) {
-      try {
-        pronunciation = akrantiain.convert(name)
-      } catch (AkrantiainException exception) {
-        pronunciation = null
-      }
-    }
-    if (pronunciation != null) {
+  private void addNameNode(TextFlow pane, String name, String pronunciation) {
+    if (pronunciation != "") {
       Text nameText = Text.new(name + " ")
-      Text pronunciationText = Text.new("/" + pronunciation + "/")
+      Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SHALEIA_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PRONUNCIATION_CLASS)

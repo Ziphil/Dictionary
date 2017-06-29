@@ -30,16 +30,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     pane.setLineSpacing(lineSpacing)
-    String pronunciation = $word.getPronunciation()
-    if (pronunciation != "") {
-      if (!pronunciation.startsWith("/") && !pronunciation.startsWith("[")) {
-        pronunciation = "/" + pronunciation
-      }
-      if (!pronunciation.endsWith("/") && !pronunciation.endsWith("[")) {
-        pronunciation = pronunciation + "/"
-      }
-    }
-    addNameNode(pane, $word.getName(), pronunciation)
+    addNameNode(pane, $word.getName(), $word.createPronunciation())
     addContentNode(pane, $word.getTranslation())
     addContentNode(pane, $word.getUsage())
     modifyBreak(pane)
