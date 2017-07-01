@@ -264,7 +264,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     chooseRelation($relationBox.getChildren()[-1])
   }
 
-  private void exchangeTagControl(Node box, Int amount) {
+  private void swapTagControl(Node box, Int amount) {
     Int index = $tagBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $tagBox.getChildren().size()) {
@@ -278,7 +278,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeEquivalentControl(Node box, Int amount) {
+  private void swapEquivalentControl(Node box, Int amount) {
     Int index = $equivalentBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $equivalentBox.getChildren().size()) {
@@ -295,7 +295,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeInformationControl(Node box, Int amount) {
+  private void swapInformationControl(Node box, Int amount) {
     Int index = $informationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $informationBox.getChildren().size()) {
@@ -312,7 +312,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeVariationControl(Node box, Int amount) {
+  private void swapVariationControl(Node box, Int amount) {
     Int index = $variationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $variationBox.getChildren().size()) {
@@ -329,7 +329,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeRelationControl(Node box, Int amount) {
+  private void swapRelationControl(Node box, Int amount) {
     Int index = $relationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $relationBox.getChildren().size()) {
@@ -494,29 +494,29 @@ public class SlimeEditorController extends Controller<BooleanClass> {
   private void addTagControl(String tag, List<String> registeredTags) {
     HBox box = HBox.new(Measurement.rpx(5))
     HBox dammyBox = HBox.new()
-    HBox exchangeBox = HBox.new()
+    HBox swapBox = HBox.new()
     ComboBox<String> tagControl = ComboBox.new()
-    Button exchangeUpButton = UnfocusableButton.new("↑")
-    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button swapUpButton = UnfocusableButton.new("↑")
+    Button swapDownButton = UnfocusableButton.new("↓")
     Button removeButton = UnfocusableButton.new("－")
     tagControl.setEditable(true)
     tagControl.getItems().addAll(registeredTags)
     tagControl.setValue(tag)
     tagControl.setPrefWidth(Measurement.rpx(120))
     tagControl.setMinWidth(Measurement.rpx(120))
-    exchangeUpButton.getStyleClass().add("left-pill")
-    exchangeUpButton.setOnAction() {
-      exchangeTagControl(box, -1)
+    swapUpButton.getStyleClass().add("left-pill")
+    swapUpButton.setOnAction() {
+      swapTagControl(box, -1)
     }
-    exchangeDownButton.getStyleClass().add("right-pill")
-    exchangeDownButton.setOnAction() {
-      exchangeTagControl(box, 1)
+    swapDownButton.getStyleClass().add("right-pill")
+    swapDownButton.setOnAction() {
+      swapTagControl(box, 1)
     }
     removeButton.setOnAction() {
       removeTagControl(box)
     }
-    exchangeBox.getChildren().addAll(exchangeUpButton, exchangeDownButton)
-    box.getChildren().addAll(tagControl, dammyBox, exchangeBox, removeButton)
+    swapBox.getChildren().addAll(swapUpButton, swapDownButton)
+    box.getChildren().addAll(tagControl, dammyBox, swapBox, removeButton)
     box.setHgrow(dammyBox, Priority.ALWAYS)
     $tagControls.add(tagControl)
     $tagBox.getChildren().add(box)
@@ -524,11 +524,11 @@ public class SlimeEditorController extends Controller<BooleanClass> {
 
   private void addEquivalentControl(String title, String name, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
-    HBox exchangeBox = HBox.new()
+    HBox swapBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
-    Button exchangeUpButton = UnfocusableButton.new("↑")
-    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button swapUpButton = UnfocusableButton.new("↑")
+    Button swapDownButton = UnfocusableButton.new("↓")
     Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
@@ -536,19 +536,19 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
-    exchangeUpButton.getStyleClass().add("left-pill")
-    exchangeUpButton.setOnAction() {
-      exchangeEquivalentControl(box, -1)
+    swapUpButton.getStyleClass().add("left-pill")
+    swapUpButton.setOnAction() {
+      swapEquivalentControl(box, -1)
     }
-    exchangeDownButton.getStyleClass().add("right-pill")
-    exchangeDownButton.setOnAction() {
-      exchangeEquivalentControl(box, 1)
+    swapDownButton.getStyleClass().add("right-pill")
+    swapDownButton.setOnAction() {
+      swapEquivalentControl(box, 1)
     }
     removeButton.setOnAction() {
       removeEquivalentControl(box)
     }
-    exchangeBox.getChildren().addAll(exchangeUpButton, exchangeDownButton)
-    box.getChildren().addAll(titleControl, nameControl, exchangeBox, removeButton)
+    swapBox.getChildren().addAll(swapUpButton, swapDownButton)
+    box.getChildren().addAll(titleControl, nameControl, swapBox, removeButton)
     box.setHgrow(nameControl, Priority.ALWAYS)
     $equivalentTitleControls.add(titleControl)
     $equivalentNameControls.add(nameControl)
@@ -558,14 +558,14 @@ public class SlimeEditorController extends Controller<BooleanClass> {
 
   private void addInformationControl(String title, String text, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
-    HBox exchangeBox = HBox.new()
+    HBox swapBox = HBox.new()
     HBox removeBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextArea textControl = TextArea.new()
-    Button exchangeUpButton = UnfocusableButton.new("↑")
-    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button swapUpButton = UnfocusableButton.new("↑")
+    Button swapDownButton = UnfocusableButton.new("↓")
     Button removeButton = UnfocusableButton.new("－")
-    exchangeBox.setAlignment(Pos.BOTTOM_CENTER)
+    swapBox.setAlignment(Pos.BOTTOM_CENTER)
     removeBox.setAlignment(Pos.BOTTOM_CENTER)
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
@@ -577,20 +577,20 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     textControl.setText(text)
     textControl.setPrefHeight(Measurement.rpx(120))
     textControl.setMinHeight(Measurement.rpx(120))
-    exchangeUpButton.getStyleClass().add("left-pill")
-    exchangeUpButton.setOnAction() {
-      exchangeInformationControl(box, -1)
+    swapUpButton.getStyleClass().add("left-pill")
+    swapUpButton.setOnAction() {
+      swapInformationControl(box, -1)
     }
-    exchangeDownButton.getStyleClass().add("right-pill")
-    exchangeDownButton.setOnAction() {
-      exchangeInformationControl(box, 1)
+    swapDownButton.getStyleClass().add("right-pill")
+    swapDownButton.setOnAction() {
+      swapInformationControl(box, 1)
     }
     removeButton.setOnAction() {
       removeInformationControl(box)
     }
-    exchangeBox.getChildren().addAll(exchangeUpButton, exchangeDownButton)
+    swapBox.getChildren().addAll(swapUpButton, swapDownButton)
     removeBox.getChildren().add(removeButton)
-    box.getChildren().addAll(titleControl, textControl, exchangeBox, removeBox)
+    box.getChildren().addAll(titleControl, textControl, swapBox, removeBox)
     box.setHgrow(textControl, Priority.ALWAYS)
     $informationTitleControls.add(titleControl)
     $informationTextControls.add(textControl)
@@ -600,11 +600,11 @@ public class SlimeEditorController extends Controller<BooleanClass> {
 
   private void addVariationControl(String title, String name, List<String> registeredTitles) {
     HBox box = HBox.new(Measurement.rpx(5))
-    HBox exchangeBox = HBox.new()
+    HBox swapBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
-    Button exchangeUpButton = UnfocusableButton.new("↑")
-    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button swapUpButton = UnfocusableButton.new("↑")
+    Button swapDownButton = UnfocusableButton.new("↓")
     Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
@@ -612,19 +612,19 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
-    exchangeUpButton.getStyleClass().add("left-pill")
-    exchangeUpButton.setOnAction() {
-      exchangeVariationControl(box, -1)
+    swapUpButton.getStyleClass().add("left-pill")
+    swapUpButton.setOnAction() {
+      swapVariationControl(box, -1)
     }
-    exchangeDownButton.getStyleClass().add("right-pill")
-    exchangeDownButton.setOnAction() {
-      exchangeVariationControl(box, 1)
+    swapDownButton.getStyleClass().add("right-pill")
+    swapDownButton.setOnAction() {
+      swapVariationControl(box, 1)
     }
     removeButton.setOnAction() {
       removeVariationControl(box)
     }
-    exchangeBox.getChildren().addAll(exchangeUpButton, exchangeDownButton)
-    box.getChildren().addAll(titleControl, nameControl, exchangeBox, removeButton)
+    swapBox.getChildren().addAll(swapUpButton, swapDownButton)
+    box.getChildren().addAll(titleControl, nameControl, swapBox, removeButton)
     box.setHgrow(nameControl, Priority.ALWAYS)
     $variationTitleControls.add(titleControl)
     $variationNameControls.add(nameControl)
@@ -636,12 +636,12 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     HBox box = HBox.new(Measurement.rpx(5))
     HBox nameBox = HBox.new()
     HBox dammyBox = HBox.new()
-    HBox exchangeBox = HBox.new()
+    HBox swapBox = HBox.new()
     ComboBox<String> titleControl = ComboBox.new()
     TextField nameControl = TextField.new()
     Button chooseButton = Button.new("…")
-    Button exchangeUpButton = UnfocusableButton.new("↑")
-    Button exchangeDownButton = UnfocusableButton.new("↓")
+    Button swapUpButton = UnfocusableButton.new("↑")
+    Button swapDownButton = UnfocusableButton.new("↓")
     Button removeButton = UnfocusableButton.new("－")
     titleControl.setEditable(true)
     titleControl.getItems().addAll(registeredTitles)
@@ -657,20 +657,20 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     chooseButton.setOnAction() {
       chooseRelation(box)
     }
-    exchangeUpButton.getStyleClass().add("left-pill")
-    exchangeUpButton.setOnAction() {
-      exchangeRelationControl(box, -1)
+    swapUpButton.getStyleClass().add("left-pill")
+    swapUpButton.setOnAction() {
+      swapRelationControl(box, -1)
     }
-    exchangeDownButton.getStyleClass().add("right-pill")
-    exchangeDownButton.setOnAction() {
-      exchangeRelationControl(box, 1)
+    swapDownButton.getStyleClass().add("right-pill")
+    swapDownButton.setOnAction() {
+      swapRelationControl(box, 1)
     }
     removeButton.setOnAction() {
       removeRelationControl(box)
     }
     nameBox.getChildren().addAll(nameControl, chooseButton)
-    exchangeBox.getChildren().addAll(exchangeUpButton, exchangeDownButton)
-    box.getChildren().addAll(titleControl, nameBox, dammyBox, exchangeBox, removeButton)
+    swapBox.getChildren().addAll(swapUpButton, swapDownButton)
+    box.getChildren().addAll(titleControl, nameBox, dammyBox, swapBox, removeButton)
     box.setHgrow(dammyBox, Priority.ALWAYS)
     $relations.add(relation)
     $relationTitleControls.add(titleControl)
