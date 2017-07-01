@@ -21,10 +21,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import ziphil.custom.ClickType?>
+<?import ziphil.custom.FontRenderingType?>
 <?import ziphil.custom.HelpIndicator?>
 <?import ziphil.custom.SwitchButton?>
-<?import ziphil.module.ClickType?>
-<?import ziphil.module.FontRenderingType?>
 <?import ziphil.module.Setting?>
 
 
