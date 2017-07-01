@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 18, 0, 1985)
+  public static final Version VERSION = Version.new(1, 18, 1, 1987)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.18. 1 | 環境設定画面を開こうとするとエラーになる不具合を修正。
+//          | OneToMany 形式で発音記号の項目名を設定したときに発音記号が 2 ヶ所に表示される不具合を修正。
 //  1.18. 0 | OneToMany 形式で発音記号が記載されている内容欄の項目名を設定する機能を追加。
 //  1.17. 0 | 単語を自動生成する機能を追加。
 //          | 文字頻度解析において 1 文字扱いする文字列を設定できるよう変更。
