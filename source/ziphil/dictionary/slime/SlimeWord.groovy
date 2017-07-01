@@ -82,8 +82,12 @@ public class SlimeWord extends WordBase {
   }
 
   public List<SlimeInformation> sortedInformations() {
+    List<SlimeInformation> sortedInformations = ArrayList.new($informations)
+    if ($dictionary.getPronunciationTitle() != null) {
+      sortedInformations.removeAll{it.getTitle() == $dictionary.getPronunciationTitle()}
+    }
     if ($dictionary.getInformationTitleOrder() != null) {
-      List<SlimeInformation> sortedInformations = $informations.toSorted() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
+      sortedInformations.sort() { SlimeInformation firstInformation, SlimeInformation secondInformation ->
         String firstTitle = firstInformation.getTitle()
         String secondTitle = secondInformation.getTitle()
         Int firstIndex = $dictionary.getInformationTitleOrder().indexOf(firstTitle)
@@ -102,10 +106,8 @@ public class SlimeWord extends WordBase {
           }
         }
       }
-      return sortedInformations
-    } else {
-      return $informations
     }
+    return sortedInformations
   }
 
   public Map<String, List<SlimeVariation>> groupedVariations() {
