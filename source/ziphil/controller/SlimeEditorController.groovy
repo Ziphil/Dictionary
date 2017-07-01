@@ -237,31 +237,31 @@ public class SlimeEditorController extends Controller<BooleanClass> {
   @FXML
   private void insertTagControl() {
     addTagControl("", $dictionary.getRegisteredTags())
-    $tagControls[-1].requestFocus()
+    $tagControls.last().requestFocus()
   }
 
   @FXML
   private void insertEquivalentControl() {
     addEquivalentControl("", "", $dictionary.getRegisteredEquivalentTitles())
-    $equivalentNameControls[-1].requestFocus()
+    $equivalentNameControls.last().requestFocus()
   }
 
   @FXML
   private void insertInformationControl() {
     addInformationControl("", "", $dictionary.getRegisteredInformationTitles())
-    $informationTextControls[-1].requestFocus()
+    $informationTextControls.last().requestFocus()
   }
 
   @FXML
   private void insertVariationControl() {
     addVariationControl("", "", $dictionary.getRegisteredVariationTitles())
-    $variationNameControls[-1].requestFocus()
+    $variationNameControls.last().requestFocus()
   }
 
   @FXML
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.getRegisteredRelationTitles())
-    chooseRelation($relationBox.getChildren()[-1])
+    chooseRelation($relationBox.getChildren().last())
   }
 
   private void swapTagControl(Node box, Int amount) {
