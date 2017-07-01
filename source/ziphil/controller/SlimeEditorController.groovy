@@ -194,7 +194,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
         for (Int i = 0 ; i < $relationTitleControls.size() ; i ++) {
           String title = $relationTitleControls[i].getValue()
           SlimeRelation relation = $relations[i]
-          HBox box = (HBox)$relationBox.getChildren()[i]
+          Node box = $relationBox.getChildren()[i]
           if (relation != null) {
             relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
           }
@@ -265,10 +265,10 @@ public class SlimeEditorController extends Controller<BooleanClass> {
   @FXML
   private void insertRelationControl() {
     addRelationControl("", "", null, $dictionary.getRegisteredRelationTitles())
-    chooseRelation((HBox)$relationBox.getChildren()[-1])
+    chooseRelation($relationBox.getChildren()[-1])
   }
 
-  private void exchangeTagControl(HBox box, Int amount) {
+  private void exchangeTagControl(Node box, Int amount) {
     Int index = $tagBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $tagBox.getChildren().size()) {
@@ -282,7 +282,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeEquivalentControl(HBox box, Int amount) {
+  private void exchangeEquivalentControl(Node box, Int amount) {
     Int index = $equivalentBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $equivalentBox.getChildren().size()) {
@@ -299,7 +299,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeInformationControl(HBox box, Int amount) {
+  private void exchangeInformationControl(Node box, Int amount) {
     Int index = $informationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $informationBox.getChildren().size()) {
@@ -316,7 +316,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeVariationControl(HBox box, Int amount) {
+  private void exchangeVariationControl(Node box, Int amount) {
     Int index = $variationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $variationBox.getChildren().size()) {
@@ -333,7 +333,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void exchangeRelationControl(HBox box, Int amount) {
+  private void exchangeRelationControl(Node box, Int amount) {
     Int index = $relationBox.getChildren().indexOf(box)
     Int otherIndex = index + amount
     if (index >= 0 && otherIndex >= 0 && otherIndex < $relationBox.getChildren().size()) {
@@ -353,7 +353,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void removeTagControl(HBox box) {
+  private void removeTagControl(Node box) {
     Int index = $tagBox.getChildren().indexOf(box)
     if (index >= 0) {
       $tagBox.getChildren().removeAt(index)
@@ -361,7 +361,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void removeEquivalentControl(HBox box) {
+  private void removeEquivalentControl(Node box) {
     Int index = $equivalentBox.getChildren().indexOf(box)
     if (index >= 0) {
       $equivalentBox.getChildren().removeAt(index)
@@ -370,7 +370,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void removeInformationControl(HBox box) {
+  private void removeInformationControl(Node box) {
     Int index = $informationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $informationBox.getChildren().removeAt(index)
@@ -379,7 +379,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void removeVariationControl(HBox box) {
+  private void removeVariationControl(Node box) {
     Int index = $variationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $variationBox.getChildren().removeAt(index)
@@ -388,7 +388,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void removeRelationControl(HBox box) {
+  private void removeRelationControl(Node box) {
     Int index = $relationBox.getChildren().indexOf(box)
     if (index >= 0) {
       $relationBox.getChildren().removeAt(index)
@@ -463,7 +463,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
-  private void chooseRelation(HBox box) {
+  private void chooseRelation(Node box) {
     UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)
     Boolean asksMutualRelation = Setting.getInstance().getAsksMutualRelation()
@@ -754,9 +754,9 @@ private static class RelationRequest extends SlimeRelationRequest {
 
   private SlimeWord $word
   private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
-  private HBox $box
+  private Node $box
 
-  public RelationRequest(SlimeWord word, HBox box) {
+  public RelationRequest(SlimeWord word, Node box) {
     $word = word
     $box = box
   }
@@ -769,7 +769,7 @@ private static class RelationRequest extends SlimeRelationRequest {
     return $relation
   }
 
-  public HBox getBox() {
+  public Node getBox() {
     return $box
   }
 
