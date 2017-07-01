@@ -49,7 +49,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private SlimeWord $defaultWord = SlimeWord.new()
   private Akrantiain $akrantiain = null
   private String $akrantiainSource = null
-  private List<RelationRequest> $relationRequests = ArrayList.new()
+  private List<SlimeRelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
 
   public SlimeDictionary(String name, String path) {
@@ -67,7 +67,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     if (containsId(newWord.getId(), newWord)) {
-      for (RelationRequest request : $relationRequests) {
+      for (SlimeRelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
         if (requestRelation.getId() == newWord.getId()) {
           requestRelation.setId($validMinId)
@@ -92,7 +92,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private void addWordWithoutUpdate(SlimeWord word) {
     if (containsId(word.getId(), word)) {
-      for (RelationRequest request : $relationRequests) {
+      for (SlimeRelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
         if (requestRelation.getId() == word.getId()) {
           requestRelation.setId($validMinId)
@@ -129,13 +129,12 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
-  public void requestRelation(SlimeWord word, SlimeRelation relation) {
-    RelationRequest request = RelationRequest.new(word, relation)
+  public void requestRelation(SlimeRelationRequest request) {
     $relationRequests.add(request)
   }
 
   private void complyRelationRequests() {
-    for (RelationRequest request : $relationRequests) {
+    for (SlimeRelationRequest request : $relationRequests) {
       SlimeWord word = request.getWord()
       word.getRelations().add(request.getRelation())
       word.update()
@@ -567,29 +566,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void setExternalData(Map<String, TreeNode> externalData) {
     $externalData = externalData
-  }
-
-}
-
-
-@InnerClass(SlimeDictionary)
-@Ziphilify
-private static class RelationRequest {
-
-  private SlimeWord $word
-  private SlimeRelation $relation
-
-  public RelationRequest(SlimeWord word, SlimeRelation relation) {
-    $word = word
-    $relation = relation
-  }
-
-  public SlimeWord getWord() {
-    return $word
-  }
-
-  public SlimeRelation getRelation() {
-    return $relation
   }
 
 }

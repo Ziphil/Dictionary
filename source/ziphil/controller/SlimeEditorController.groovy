@@ -34,6 +34,7 @@ import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeEquivalent
 import ziphil.dictionary.slime.SlimeInformation
 import ziphil.dictionary.slime.SlimeRelation
+import ziphil.dictionary.slime.SlimeRelationRequest
 import ziphil.dictionary.slime.SlimeVariation
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
@@ -199,7 +200,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
           }
           for (RelationRequest request : $relationRequests) {
             if (request.getBox() == box) {
-              request.setTitle(title)
+              request.getRelation().setTitle(title)
             }
           }
         }
@@ -212,9 +213,10 @@ public class SlimeEditorController extends Controller<BooleanClass> {
         $word.setRelations(relations)
         $word.update()
         for (RelationRequest request : $relationRequests) {
-          String title = request.getTitle()
-          if (title != null) {
-            $dictionary.requestRelation(request.getWord(), SlimeRelation.new(title, id, name))
+          if (request.getRelation().getTitle() != null) {
+            request.getRelation().setId(id)
+            request.getRelation().setName(name)
+            $dictionary.requestRelation(request)
           }
         }
         $stage.commit(true)
@@ -484,7 +486,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
           dialog.setCancelText("いいえ")
           dialog.showAndWait()
           if (dialog.isCommitted()) {
-            $relationRequests.add(RelationRequest.new(null, word, box))
+            $relationRequests.add(RelationRequest.new(word, box))
           }
         }
       }
@@ -748,28 +750,23 @@ public class SlimeEditorController extends Controller<BooleanClass> {
 
 @InnerClass(SlimeEditorController)
 @Ziphilify
-private static class RelationRequest {
+private static class RelationRequest extends SlimeRelationRequest {
 
-  private String $title
   private SlimeWord $word
+  private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
   private HBox $box
 
-  public RelationRequest(String title, SlimeWord word, HBox box) {
-    $title = title
+  public RelationRequest(SlimeWord word, HBox box) {
     $word = word
     $box = box
   }
 
-  public String getTitle() {
-    return $title
-  }
-
-  public void setTitle(String title) {
-    $title = title
-  }
-
   public SlimeWord getWord() {
     return $word
+  }
+
+  public SlimeRelation getRelation() {
+    return $relation
   }
 
   public HBox getBox() {
