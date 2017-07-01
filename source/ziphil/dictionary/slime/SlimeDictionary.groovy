@@ -408,6 +408,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return $words.any{it != excludedWord && it.getId() == id}
   }
 
+  public String firstPunctuation() {
+    String punctuation = $punctuations[0] ?: ""
+    if (punctuation == ",") {
+      punctuation = punctuation + " "
+    }
+    return punctuation
+  }
+
   private void setupWords() {
     $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
       Int firstId = firstWord.getId()

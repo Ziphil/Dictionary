@@ -99,12 +99,8 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     for (String tag : word.getTags()) {
       addTagControl(tag, dictionary.getRegisteredTags())
     }
-    String punctuation = $dictionary.getPunctuations()[0] ?: ""
-    if (punctuation == ",") {
-      punctuation = punctuation + " "
-    }
     for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
-      String nameString = equivalent.getNames().join(punctuation)
+      String nameString = equivalent.getNames().join($dictionary.firstPunctuation())
       addEquivalentControl(equivalent.getTitle(), nameString, dictionary.getRegisteredEquivalentTitles())
     }
     for (SlimeInformation information : word.getInformations()) {

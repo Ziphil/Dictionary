@@ -95,12 +95,8 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addEquivalentNode(TextFlow pane, String title, List<String> equivalents) {
-    String punctuation = $dictionary.getPunctuations()[0] ?: ""
-    if (punctuation == ",") {
-      punctuation = punctuation + " "
-    }
     Label titleText = Label.new(title)
-    Text equivalentText = Text.new(" " + equivalents.join(punctuation))
+    Text equivalentText = Text.new(" " + equivalents.join($dictionary.firstPunctuation()))
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
