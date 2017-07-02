@@ -4,8 +4,11 @@ import groovy.transform.CompileStatic
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.scene.control.Spinner
 import javafx.scene.control.TextFormatter
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.HBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
 import ziphil.custom.IntegerUnaryOperator
@@ -30,13 +33,17 @@ public class WordGeneratorController extends Controller<WordGeneratorController.
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = -1
 
+  @FXML private GridPane $gridPane
   @FXML private StringListEditor $vowelsControl
   @FXML private StringListEditor $consonantsControl
   @FXML private StringListEditor $syllablePatternsControl
   @FXML private Spinner<IntegerClass> $minSyllableSizeControl
   @FXML private Spinner<IntegerClass> $maxSyllableSizeControl
+  @FXML private Label $collectionTypeLabel
+  @FXML private HBox $collectionTypeBox
   @FXML private ComboBox $collectionTypeControl
   private EditableDictionary $dictionary
+  private Boolean $usesCollection
 
   public WordGeneratorController(UtilityStage<WordGeneratorController.Result> stage) {
     super(stage)
@@ -50,8 +57,17 @@ public class WordGeneratorController extends Controller<WordGeneratorController.
     setupIntegerControls()
   }
 
-  public void prepare(EditableDictionary dictionary) {
+  public void prepare(EditableDictionary dictionary, Boolean usesCollection) {
     $dictionary = dictionary
+    $usesCollection = usesCollection
+    if (!usesCollection) {
+      $gridPane.getChildren().remove($collectionTypeLabel)
+      $gridPane.getChildren().remove($collectionTypeBox)
+    }
+  }
+
+  public void prepare(EditableDictionary dictionary) {
+    prepare(dictionary, true)
   }
 
   @FXML
@@ -71,23 +87,30 @@ public class WordGeneratorController extends Controller<WordGeneratorController.
   protected void commit() {
     List<Word> words = ArrayList.new()
     EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    NameGenerator generator = NameGenerator.new()
     Result result = null
-    if (collectionType != null) {
-      EquivalentCollection collection = EquivalentCollection.load(collectionType)
-      NameGenerator generator = NameGenerator.new()
-      List<String> names = ArrayList.new()
-      generator.setVowels($vowelsControl.getStrings())
-      generator.setConsonants($consonantsControl.getStrings())
-      generator.setSyllablePatterns($syllablePatternsControl.getStrings())
-      generator.setMinSyllableSize($minSyllableSizeControl.getValue())
-      generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
-      for (PseudoWord pseudoWord : collection.getPseudoWords()) {
-        String name = generator.generate()
-        names.add(name)
+    generator.setVowels($vowelsControl.getStrings())
+    generator.setConsonants($consonantsControl.getStrings())
+    generator.setSyllablePatterns($syllablePatternsControl.getStrings())
+    generator.setMinSyllableSize($minSyllableSizeControl.getValue())
+    generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+    if ($usesCollection) {
+      if (collectionType != null) {
+        EquivalentCollection collection = EquivalentCollection.load(collectionType)
+        List<String> names = ArrayList.new()
+        for (PseudoWord pseudoWord : collection.getPseudoWords()) {
+          String name = generator.generate()
+          names.add(name)
+        }
+        result = Result.new(collection.getPseudoWords(), names)
+      } else {
+        result = Result.new(ArrayList.new(), ArrayList.new())
       }
-      result = Result.new(collection.getPseudoWords(), names)
     } else {
-      result = Result.new(ArrayList.new(), ArrayList.new())
+      List<String> names = ArrayList.new()
+      String name = generator.generate()
+      names.add(name)
+      result = Result.new(null, names)
     }
     $stage.commit(result)
   }

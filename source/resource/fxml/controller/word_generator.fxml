@@ -29,7 +29,7 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
-    <GridPane>
+    <GridPane fx:id="$gridPane">
       <vgap><Double rpx="5"/></vgap>
       <hgap><Double rpx="5"/></hgap>
       <padding>
@@ -48,7 +48,7 @@
       <Label text="子音字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="音節パターン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Label text="音節数:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-      <Label text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <Label fx:id="$collectionTypeLabel" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
         <StringListEditor fx:id="$vowelsControl" HBox.hgrow="always">
@@ -101,7 +101,7 @@
           <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="3" amountToStepBy="1"/></valueFactory>
         </Spinner>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <HBox fx:id="$collectionTypeBox" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <spacing><Double rpx="5"/></spacing>
         <ComboBox fx:id="$collectionTypeControl">
           <prefWidth><Double rpx="200"/></prefWidth>
