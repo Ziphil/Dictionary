@@ -18,11 +18,12 @@ import ziphil.dictionary.EquivalentCollectionType
 import ziphil.dictionary.NameGenerator
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Word
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class WordGeneratorController extends Controller<List<Word>> {
+public class WordGeneratorController extends Controller<WordGeneratorController.Result> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/word_generator.fxml"
   private static final String TITLE = "単語自動生成"
@@ -37,7 +38,7 @@ public class WordGeneratorController extends Controller<List<Word>> {
   @FXML private ComboBox $collectionTypeControl
   private EditableDictionary $dictionary
 
-  public WordGeneratorController(UtilityStage<List<Word>> stage) {
+  public WordGeneratorController(UtilityStage<WordGeneratorController.Result> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -70,9 +71,11 @@ public class WordGeneratorController extends Controller<List<Word>> {
   protected void commit() {
     List<Word> words = ArrayList.new()
     EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    Result result = null
     if (collectionType != null) {
       EquivalentCollection collection = EquivalentCollection.load(collectionType)
       NameGenerator generator = NameGenerator.new()
+      List<String> names = ArrayList.new()
       generator.setVowels($vowelsControl.getStrings())
       generator.setConsonants($consonantsControl.getStrings())
       generator.setSyllablePatterns($syllablePatternsControl.getStrings())
@@ -80,11 +83,13 @@ public class WordGeneratorController extends Controller<List<Word>> {
       generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
       for (PseudoWord pseudoWord : collection.getPseudoWords()) {
         String name = generator.generate()
-        Word word = $dictionary.determineWord(name, pseudoWord)
-        words.add(word)
+        names.add(name)
       }
+      result = Result.new(collection.getPseudoWords(), names)
+    } else {
+      result = Result.new(ArrayList.new(), ArrayList.new())
     }
-    $stage.commit(words)
+    $stage.commit(result)
   }
 
   private void setupSyllableSizeControls() {
@@ -111,6 +116,29 @@ public class WordGeneratorController extends Controller<List<Word>> {
   private void setupIntegerControls() {
     $minSyllableSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $maxSyllableSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  }
+
+}
+
+
+@InnerClass(WordGeneratorController)
+@Ziphilify
+public static class Result {
+
+  private List<PseudoWord> $pseudoWords
+  private List<String> $names
+
+  public Result(List<PseudoWord> pseudoWords, List<String> names) {
+    $pseudoWords = pseudoWords
+    $names = names
+  }
+
+  public List<PseudoWord> getPseudoWords() {
+    return $pseudoWords
+  }
+
+  public List<String> getNames() {
+    return $names
   }
 
 }

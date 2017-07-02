@@ -61,6 +61,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.ScriptSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
@@ -482,14 +483,21 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void addGeneratedWords() {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
-      UtilityStage<List<Word>> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<WordGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
       WordGeneratorController controller = WordGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare($dictionary)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        List<Word> newWords = nextStage.getResult()
+        WordGeneratorController.Result result = nextStage.getResult()
+        List<Word> newWords = ArrayList.new()
+        for (Int i = 0 ; i < result.getPseudoWords().size() ; i ++) {
+          PseudoWord pseudoWord = result.getPseudoWords()[i]
+          String name = result.getNames()[i]
+          Word newWord = $dictionary.determineWord(name, pseudoWord)
+          newWords.add(newWord)
+        }
         SearchParameter parameter = SelectionSearchParameter.new(newWords)
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
