@@ -74,7 +74,7 @@
             <graphic>
               <HelpIndicator text="右側の欄には、訳語を半角コンマか全角読点で区切って入力してください。&#10;ここで用いる区切り文字は、辞書の個別設定から変更できます。&#10;左側の欄には、訳語の種類(品詞など)を入力してください。"/>
             </graphic>
-            <VBox alignment="center_right">
+            <VBox alignment="centerRight">
               <padding>
                 <Insets>
                   <top><Double rpx="10"/></top>
@@ -91,7 +91,7 @@
             </VBox>
           </TitledPane>
           <TitledPane text="タグ" animated="false">
-            <VBox alignment="center_right">
+            <VBox alignment="centerRight">
               <padding>
                 <Insets>
                   <top><Double rpx="10"/></top>
@@ -108,7 +108,7 @@
             </VBox>
           </TitledPane>
           <TitledPane text="内容" animated="false" contentDisplay="right">
-            <VBox alignment="center_right">
+            <VBox alignment="centerRight">
               <padding>
                 <Insets>
                   <top><Double rpx="10"/></top>
@@ -128,7 +128,7 @@
             <graphic>
               <HelpIndicator text="右側の欄には、複数形や活用形などの変化形を、半角コンマか全角読点で区切って入力してください。&#10;ここで用いる区切り文字は、辞書の個別設定から変更できます。&#10;指定された変換形が検索されると、この単語がサジェストされます。"/>
             </graphic>
-            <VBox alignment="center_right">
+            <VBox alignment="centerRight">
               <padding>
                 <Insets>
                   <top><Double rpx="10"/></top>
@@ -148,7 +148,7 @@
             <graphic>
               <HelpIndicator text="右側の欄には、類義語や対義語などのこの単語に関連する単語を選択してください。&#10;すでに辞書に登録されている単語しか選べないので注意してください。&#10;左側の欄には、「類義語」などのようにどのように関連しているかを入力してください。"/>
             </graphic>
-            <VBox alignment="center_right">
+            <VBox alignment="centerRight">
               <padding>
                 <Insets>
                   <top><Double rpx="10"/></top>
