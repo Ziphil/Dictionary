@@ -459,6 +459,20 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     }
   }
 
+  @FXML
+  private void generateName() {
+    UtilityStage<WordGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    WordGeneratorController controller = WordGeneratorController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare($dictionary, false)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      WordGeneratorController.Result result = nextStage.getResult()
+      $nameControl.setText(result.getNames().first())
+    }
+  }
+
   private void chooseRelation(Node box) {
     UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)

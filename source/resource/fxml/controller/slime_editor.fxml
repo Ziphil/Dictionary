@@ -57,11 +57,18 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <maxWidth><Double rpx="70"/></maxWidth>
             </TextField>
-            <TextField fx:id="$nameControl" GridPane.columnIndex="1" GridPane.rowIndex="1">
-              <prefWidth><Double rpx="150"/></prefWidth>
-              <minWidth><Double rpx="150"/></minWidth>
-              <maxWidth><Double rpx="150"/></maxWidth>
-            </TextField>
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <spacing><Double rpx="5"/></spacing>
+              <TextField fx:id="$nameControl">
+                <prefWidth><Double rpx="150"/></prefWidth>
+                <minWidth><Double rpx="150"/></minWidth>
+                <maxWidth><Double rpx="150"/></maxWidth>
+              </TextField>
+              <Button text="生成" onAction="#generateName">
+                <prefWidth><Double rpx="70"/></prefWidth>
+                <minWidth><Double rpx="70"/></minWidth>
+              </Button>
+            </HBox>
           </GridPane>
           <TitledPane text="訳語" animated="false" contentDisplay="right">
             <graphic>
