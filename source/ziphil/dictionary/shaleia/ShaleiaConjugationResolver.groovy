@@ -182,45 +182,42 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     }
   }
 
-}
 
+  private static class ConjugationCandidate {
 
-@InnerClass(ShaleiaConjugationResolver)
-@Ziphilify
-private static class ConjugationCandidate {
+    private ConjugationType $type
+    private String $explanation
+    private String $name
 
-  private ConjugationType $type
-  private String $explanation
-  private String $name
+    public ConjugationCandidate(ConjugationType type, String explanation, String name) {
+      $type = type
+      $explanation = explanation
+      $name = name
+    }
 
-  public ConjugationCandidate(ConjugationType type, String explanation, String name) {
-    $type = type
-    $explanation = explanation
-    $name = name
+    public ConjugationType getType() {
+      return $type
+    }
+
+    public String getExplanation() {
+      return $explanation
+    }
+
+    public String getName() {
+      return $name
+    }
+
   }
 
-  public ConjugationType getType() {
-    return $type
+
+  @InnerClass @Ziphilify
+  private static enum ConjugationType {
+
+    VERB,
+    NOUN,
+    ADVERB,
+    PREPOSITION
+
   }
-
-  public String getExplanation() {
-    return $explanation
-  }
-
-  public String getName() {
-    return $name
-  }
-
-}
-
-
-@InnerClass(ShaleiaConjugationResolver)
-@Ziphilify
-private static enum ConjugationType {
-
-  VERB,
-  NOUN,
-  ADVERB,
-  PREPOSITION
 
 }

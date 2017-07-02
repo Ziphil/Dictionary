@@ -118,27 +118,26 @@ public class WordGeneratorController extends Controller<WordGeneratorController.
     $maxSyllableSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
-}
 
+  @InnerClass @Ziphilify
+  public static class Result {
 
-@InnerClass(WordGeneratorController)
-@Ziphilify
-public static class Result {
+    private List<PseudoWord> $pseudoWords
+    private List<String> $names
 
-  private List<PseudoWord> $pseudoWords
-  private List<String> $names
+    public Result(List<PseudoWord> pseudoWords, List<String> names) {
+      $pseudoWords = pseudoWords
+      $names = names
+    }
 
-  public Result(List<PseudoWord> pseudoWords, List<String> names) {
-    $pseudoWords = pseudoWords
-    $names = names
-  }
+    public List<PseudoWord> getPseudoWords() {
+      return $pseudoWords
+    }
 
-  public List<PseudoWord> getPseudoWords() {
-    return $pseudoWords
-  }
+    public List<String> getNames() {
+      return $names
+    }
 
-  public List<String> getNames() {
-    return $names
   }
 
 }

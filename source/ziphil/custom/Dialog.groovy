@@ -127,15 +127,14 @@ public class Dialog extends Stage {
     return $allowsCancel
   }
 
-}
 
+  @InnerClass @Ziphilify
+  private static enum Status {
 
-@InnerClass(Dialog)
-@Ziphilify
-private static enum Status {
+    COMMITTED,
+    NEGATED,
+    CANCELLED
 
-  COMMITTED,
-  NEGATED,
-  CANCELLED
+  }
 
 }

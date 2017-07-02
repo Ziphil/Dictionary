@@ -142,29 +142,28 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     $reader.close()
   }
 
-}
 
+  @InnerClass @Ziphilify
+  private static enum DescriptionType {
 
-@InnerClass(ShaleiaDescriptionReader)
-@Ziphilify
-private static enum DescriptionType {
+    CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),
+    EQUIVALENT(/^\=\s*〈(.+)〉\s*(.+)$/),
+    HIDDEN_EQUIVALENT(/^\=:\s*(.+)$/),
+    CONTENT(/^([A-Z])>\s*(.+)$/),
+    NOTE(/^([A-Z])~\s*(.+)$/),
+    SYNONYM(/^\-\s*(.+)$/)
 
-  CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),
-  EQUIVALENT(/^\=\s*〈(.+)〉\s*(.+)$/),
-  HIDDEN_EQUIVALENT(/^\=:\s*(.+)$/),
-  CONTENT(/^([A-Z])>\s*(.+)$/),
-  NOTE(/^([A-Z])~\s*(.+)$/),
-  SYNONYM(/^\-\s*(.+)$/)
+    private String $regex
 
-  private String $regex
+    private DescriptionType(String regex) {
+      $regex = regex
+    }
 
-  private DescriptionType(String regex) {
-    $regex = regex
-  }
+    public Pattern compilePattern() {
+      Pattern pattern = Pattern.compile($regex)
+      return pattern
+    }
 
-  public Pattern compilePattern() {
-    Pattern pattern = Pattern.compile($regex)
-    return pattern
   }
 
 }

@@ -80,26 +80,25 @@ public class SentenceSearcher {
     $punctuations = punctuations
   }
 
-}
 
+  @InnerClass @Ziphilify
+  public static class Result {
 
-@InnerClass(SentenceSearcher)
-@Ziphilify
-public static class Result {
+    private String $name = ""
+    private List<Word> $words = ArrayList.new()
 
-  private String $name = ""
-  private List<Word> $words = ArrayList.new()
+    public Result(String name) {
+      $name = name
+    }
 
-  public Result(String name) {
-    $name = name
-  }
+    public String getName() {
+      return $name
+    }
 
-  public String getName() {
-    return $name
-  }
+    public List<Word> getWords() {
+      return $words
+    }
 
-  public List<Word> getWords() {
-    return $words
   }
 
 }

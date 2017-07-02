@@ -78,37 +78,36 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
     $fileChooser.setAdjustsExtension(false)
   }
 
-}
 
+  @InnerClass @Ziphilify
+  public static class Result {
 
-@InnerClass(SnojChooserController)
-@Ziphilify
-public static class Result {
+    private File $file
+    private String $source
+    private Boolean $fileSelected
 
-  private File $file
-  private String $source
-  private Boolean $fileSelected
+    public Result(File file, String source, Boolean fileSelected) {
+      $file = file
+      $source = source
+      $fileSelected = fileSelected
+    }
 
-  public Result(File file, String source, Boolean fileSelected) {
-    $file = file
-    $source = source
-    $fileSelected = fileSelected
-  }
+    public Boolean isFileSelected() {
+      return $fileSelected
+    }
 
-  public Boolean isFileSelected() {
-    return $fileSelected
-  }
+    public Boolean isStringSelected() {
+      return !$fileSelected
+    }
 
-  public Boolean isStringSelected() {
-    return !$fileSelected
-  }
+    public File getFile() {
+      return $file
+    }
 
-  public File getFile() {
-    return $file
-  }
+    public String getSource() {
+      return $source
+    }
 
-  public String getSource() {
-    return $source
   }
 
 }

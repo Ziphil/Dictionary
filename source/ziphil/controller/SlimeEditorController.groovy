@@ -741,32 +741,31 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
-}
 
+  @InnerClass @Ziphilify
+  private static class RelationRequest extends SlimeRelationRequest {
 
-@InnerClass(SlimeEditorController)
-@Ziphilify
-private static class RelationRequest extends SlimeRelationRequest {
+    private SlimeWord $word
+    private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
+    private Node $box
 
-  private SlimeWord $word
-  private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
-  private Node $box
+    public RelationRequest(SlimeWord word, Node box) {
+      $word = word
+      $box = box
+    }
 
-  public RelationRequest(SlimeWord word, Node box) {
-    $word = word
-    $box = box
-  }
+    public SlimeWord getWord() {
+      return $word
+    }
 
-  public SlimeWord getWord() {
-    return $word
-  }
+    public SlimeRelation getRelation() {
+      return $relation
+    }
 
-  public SlimeRelation getRelation() {
-    return $relation
-  }
+    public Node getBox() {
+      return $box
+    }
 
-  public Node getBox() {
-    return $box
   }
 
 }
