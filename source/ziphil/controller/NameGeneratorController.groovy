@@ -42,7 +42,6 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   @FXML private Label $collectionTypeLabel
   @FXML private HBox $collectionTypeBox
   @FXML private ComboBox $collectionTypeControl
-  private EditableDictionary $dictionary
   private Boolean $usesCollection
 
   public NameGeneratorController(UtilityStage<NameGeneratorController.Result> stage) {
@@ -57,8 +56,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     setupIntegerControls()
   }
 
-  public void prepare(EditableDictionary dictionary, Boolean usesCollection) {
-    $dictionary = dictionary
+  public void prepare(Boolean usesCollection) {
     $usesCollection = usesCollection
     if (!usesCollection) {
       $gridPane.getChildren().remove($collectionTypeLabel)
@@ -66,8 +64,8 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     }
   }
 
-  public void prepare(EditableDictionary dictionary) {
-    prepare(dictionary, true)
+  public void prepare() {
+    prepare(true)
   }
 
   @FXML

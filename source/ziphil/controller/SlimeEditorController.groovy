@@ -465,7 +465,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
     NameGeneratorController controller = NameGeneratorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($dictionary, false)
+    controller.prepare(false)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       NameGeneratorController.Result result = nextStage.getResult()

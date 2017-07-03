@@ -487,7 +487,7 @@ public class MainController extends PrimitiveController<Stage> {
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare($dictionary)
+      controller.prepare()
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         NameGeneratorController.Result result = nextStage.getResult()
