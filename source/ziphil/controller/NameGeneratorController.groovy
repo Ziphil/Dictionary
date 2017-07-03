@@ -26,7 +26,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class WordGeneratorController extends Controller<WordGeneratorController.Result> {
+public class NameGeneratorController extends Controller<NameGeneratorController.Result> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/word_generator.fxml"
   private static final String TITLE = "単語自動生成"
@@ -45,7 +45,7 @@ public class WordGeneratorController extends Controller<WordGeneratorController.
   private EditableDictionary $dictionary
   private Boolean $usesCollection
 
-  public WordGeneratorController(UtilityStage<WordGeneratorController.Result> stage) {
+  public NameGeneratorController(UtilityStage<NameGeneratorController.Result> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

@@ -483,14 +483,14 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void addGeneratedWords() {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
-      UtilityStage<WordGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      WordGeneratorController controller = WordGeneratorController.new(nextStage)
+      UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      NameGeneratorController controller = NameGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       controller.prepare($dictionary)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        WordGeneratorController.Result result = nextStage.getResult()
+        NameGeneratorController.Result result = nextStage.getResult()
         List<Word> newWords = ArrayList.new()
         for (Int i = 0 ; i < result.getPseudoWords().size() ; i ++) {
           PseudoWord pseudoWord = result.getPseudoWords()[i]
