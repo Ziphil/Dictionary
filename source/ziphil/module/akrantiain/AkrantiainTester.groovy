@@ -15,7 +15,7 @@ public class AkrantiainTester {
     }
     akrantiain.load(File.new(path))
     Long totalElapsedTime = 0
-    for (Int i = 0 ; i < stepSize; i ++) {
+    for (Int i = 0 ; i < stepSize ; i ++) {
       Long beforeTime = System.nanoTime()
       akrantiain.convert(input.toString())
       Long afterTime = System.nanoTime()

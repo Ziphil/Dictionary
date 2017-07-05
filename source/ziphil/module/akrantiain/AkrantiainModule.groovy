@@ -80,7 +80,7 @@ public class AkrantiainModule {
   }
 
   public AkrantiainToken findUnknownIdentifier() {
-    for (AkrantiainDefinition definition: $definitions) {
+    for (AkrantiainDefinition definition : $definitions) {
       AkrantiainToken unknownIdentifier = definition.findUnknownIdentifier(this)
       if (unknownIdentifier != null) {
         return unknownIdentifier
@@ -96,7 +96,7 @@ public class AkrantiainModule {
   }
 
   public AkrantiainToken findCircularIdentifier() {
-    for (AkrantiainDefinition definition: $definitions) {
+    for (AkrantiainDefinition definition : $definitions) {
       AkrantiainToken circularIdentifier = definition.findCircularIdentifier(this)
       if (circularIdentifier != null) {
         return circularIdentifier
