@@ -30,7 +30,7 @@ public class AkrantiainSentenceParser {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
       if (AkrantiainEnvironment.contains(token.getText())) {
-        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf(token.getText())
+        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOfName(token.getText())
         return environment
       } else {
         return null
