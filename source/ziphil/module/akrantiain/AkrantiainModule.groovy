@@ -86,6 +86,12 @@ public class AkrantiainModule {
         return unknownIdentifier
       }
     }
+    for (AkrantiainRule rule : $rules) {
+      AkrantiainToken unknownIdentifier = rule.findUnknownIdentifier(this)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
     return null
   }
 

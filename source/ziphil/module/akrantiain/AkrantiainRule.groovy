@@ -108,6 +108,23 @@ public class AkrantiainRule {
     return $rightCondition == null || $rightCondition.matchRight(leftGroup + rightGroup, leftGroup.getElements().size(), module) >= 0
   }
 
+  public AkrantiainToken findUnknownIdentifier(AkrantiainModule module) {
+    for (AkrantiainMatchable selection : $selections) {
+      AkrantiainToken unknownIdentifier = selection.findUnknownIdentifier(module)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
+    AkrantiainToken unknownIdentifier = null
+    if ($leftCondition != null && (unknownIdentifier = $leftCondition.findUnknownIdentifier(module)) != null) {
+      return unknownIdentifier
+    }
+    if ($rightCondition != null && (unknownIdentifier = $rightCondition.findUnknownIdentifier(module)) != null) {
+      return unknownIdentifier
+    }
+    return null
+  }
+
   // 変換先が存在するなら true を返し、そうでなければ false を返します。
   // 現状では、右辺に「$」以外の文字列リテラルが 1 つ以上含まれているときに、変換先が存在すると見なされます。
   public Boolean isConcrete() {
