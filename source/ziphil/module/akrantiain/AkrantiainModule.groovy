@@ -160,12 +160,16 @@ public class AkrantiainModule {
   } 
 
   public Boolean containsDefinitionOf(String identifierName) {
-    for (AkrantiainDefinition definition : $definitions) {
-      if (definition.getIdentifier().getText() == identifierName) {
-        return true
+    if (identifierName != PUNCTUATION_IDENTIIER_NAME) {
+      for (AkrantiainDefinition definition : $definitions) {
+        if (definition.getIdentifier().getText() == identifierName) {
+          return true
+        }
       }
+      return false
+    } else {
+      return false
     }
-    return false
   }
 
   public String toString() {
