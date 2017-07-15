@@ -39,6 +39,8 @@ public class ZatlinSelection implements ZatlinGeneratable {
     string.append("(")
     for (Int i = 0 ; i < $generatables.size() ; i ++) {
       string.append($generatables[i])
+      string.append(" ")
+      string.append($weights[i])
       if (i < $generatables.size() - 1) {
         string.append(" | ")
       }
