@@ -215,7 +215,6 @@ public class AkrantiainSentenceParser {
   }
 
   private AkrantiainDisjunction nextDisjunction() {
-    Int firstPointer = $pointer
     AkrantiainDisjunction disjunction = AkrantiainDisjunction.new()
     AkrantiainSequence sequence = AkrantiainSequence.new()
     while (true) {
@@ -224,14 +223,14 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.QUOTE_LITERAL || tokenType == AkrantiainTokenType.IDENTIFIER) {
         sequence.getMatchables().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
-        if (sequence.hasToken()) {
+        if (sequence.hasMatchable()) {
           disjunction.getMatchables().add(sequence)
           sequence = AkrantiainSequence.new()
         } else {
           throw AkrantiainParseException.new("Invalid disjunction expression", token)
         }
       } else {
-        if (sequence.hasToken()) {
+        if (sequence.hasMatchable()) {
           $pointer --
           disjunction.getMatchables().add(sequence)
           break
