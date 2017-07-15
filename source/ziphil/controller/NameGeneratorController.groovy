@@ -18,9 +18,9 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EquivalentCollection
 import ziphil.dictionary.EquivalentCollectionType
-import ziphil.dictionary.NameGenerator
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Word
+import ziphil.module.NameGenerator
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
