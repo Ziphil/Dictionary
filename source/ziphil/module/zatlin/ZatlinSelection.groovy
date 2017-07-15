@@ -8,9 +8,31 @@ import ziphilib.transform.Ziphilify
 public class ZatlinSelection implements ZatlinGeneratable {
 
   public static final ZatlinSelection EMPTY_SELECTION = ZatlinSelection.new()
+  private static final Random RANDOM = Random.new()
 
   private List<ZatlinGeneratable> $generatables = ArrayList.new()
   private List<IntegerClass> $weights = ArrayList.new()
+
+  public String generate(ZatlinRoot root) {
+    String output = ""
+    Int number = RANDOM.nextInt(totalWeight())
+    Int currentWeight = 0
+    for (Int i = 0 ; i < $generatables.size() ; i ++) {
+      currentWeight += $weights[i]
+      if (number < currentWeight) {
+        output = $generatables[i].generate(root)
+      }
+    }
+    return output
+  }
+
+  private Int totalWeight() {
+    Int totalWeight = 0
+    for (Int weight : $weights) {
+      totalWeight += weight
+    }
+    return totalWeight
+  }
 
   public String toString() {
     StringBuilder string = StringBuilder.new()

@@ -11,6 +11,15 @@ public class ZatlinRoot {
   private ZatlinGeneratable $mainGeneratable = null
 
   public String generate() {
+    return $mainGeneratable.generate(this)
+  }
+
+  public ZatlinGeneratable findContentOf(String identifierName) {
+    for (ZatlinDefinition definition : $definitions) {
+      if (definition.getIdentifier().getText() == identifierName) {
+        return definition.getContent()
+      }
+    }
     return null
   }
 

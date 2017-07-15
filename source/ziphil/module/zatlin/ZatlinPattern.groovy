@@ -11,6 +11,20 @@ public class ZatlinPattern implements ZatlinMatchable {
   private Boolean $leading = false
   private Boolean $trailing = false
 
+  public Boolean match(String input, ZatlinRoot root) {
+    Boolean predicate = false
+    if ($leading && $trailing) {
+      predicate = input.equals($token.getText())
+    } else if ($leading && !$trailing) {
+      predicate = input.startsWith($token.getText())
+    } else if (!$leading && $trailing) {
+      predicate = input.endsWith($token.getText())
+    } else {
+      predicate = input.contains($token.getText())
+    }
+    return predicate
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     if ($leading) {

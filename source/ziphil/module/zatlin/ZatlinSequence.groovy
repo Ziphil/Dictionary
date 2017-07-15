@@ -11,6 +11,14 @@ public class ZatlinSequence implements ZatlinGeneratable {
 
   private List<ZatlinGeneratable> $generatables = ArrayList.new()
 
+  public String generate(ZatlinRoot root) {
+    StringBuilder output = StringBuilder.new()
+    for (ZatlinGeneratable generatable : $generatables) {
+      output.append(generatable.generate(root))
+    }
+    return output.toString()
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     for (Int i = 0 ; i < $generatables.size() ; i ++) {

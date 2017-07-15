@@ -7,8 +7,22 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ZatlinCompound implements ZatlinGeneratable {
 
+  private static final Int MAX_TRIAL_NUMBER = 100
+
   private ZatlinGeneratable $generatable = null
   private ZatlinMatchable $matchable = null
+
+  public String generate(ZatlinRoot root) {
+    String output = ""
+    for (Int i = 0 ; i < MAX_TRIAL_NUMBER ; i ++) {
+      String temporaryOutput = $generatable.generate(root)
+      if ($matchable == null || !$matchable.match(temporaryOutput, root)) {
+        output = temporaryOutput
+        break
+      }
+    }
+    return output
+  }
 
   public String toString() {
     StringBuilder string = StringBuilder.new()

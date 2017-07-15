@@ -46,6 +46,30 @@ public class ZatlinToken implements ZatlinGeneratable {
     $columnNumber = reader.getColumnNumber()
   }
 
+  public String generate(ZatlinRoot root) {
+    String output = null
+    if ($type == ZatlinTokenType.QUOTE_LITERAL) {
+      output = generateByQuoteLiteral(root)
+    } else if ($type == ZatlinTokenType.IDENTIFIER) {
+      output = generateByIdentifier(root)
+    }
+    return output
+  }
+
+  private String generateByQuoteLiteral(ZatlinRoot root) {
+    return $text
+  }
+
+  private String generateByIdentifier(ZatlinRoot root) {
+    ZatlinGeneratable content = root.findContentOf($text)
+    if (content != null) {
+      String output = content.generate(root)
+      return output
+    } else {
+      throw ZatlinException.new("This cannot happen")
+    }
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("<")

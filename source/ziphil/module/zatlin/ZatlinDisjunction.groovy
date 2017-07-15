@@ -11,6 +11,17 @@ public class ZatlinDisjunction implements ZatlinMatchable {
 
   private List<ZatlinMatchable> $matchables = ArrayList.new()
 
+  public Boolean match(String input, ZatlinRoot root) {
+    Boolean predicate = false
+    for (ZatlinMatchable matchable : $matchables) {
+      if (matchable.match(input, root)) {
+        predicate = true
+        break
+      }
+    }
+    return predicate
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("(")
