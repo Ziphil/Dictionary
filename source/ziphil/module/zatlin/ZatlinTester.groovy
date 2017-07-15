@@ -14,4 +14,15 @@ public class ZatlinTester {
     }
   }
 
+  public static void parse(String source) {
+    ZatlinParser parser = ZatlinParser.new(StringReader.new(source))
+    ZatlinRoot root = parser.readRoot()
+    println("Definitions:")
+    for (ZatlinDefinition definition : root.getDefinitions()) {
+      println(definition)
+    }
+    println("Main Pattern:")
+    println(root.getMainGeneratable())
+  }
+
 }
