@@ -23,6 +23,10 @@ public class ZatlinPattern implements ZatlinMatchable {
     return string.toString()
   }
 
+  public Boolean hasToken() {
+    return $token != null
+  }
+
   public ZatlinToken getToken() {
     return $token
   }

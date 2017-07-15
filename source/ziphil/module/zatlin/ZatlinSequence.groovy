@@ -22,6 +22,10 @@ public class ZatlinSequence implements ZatlinGeneratable {
     return string.toString()
   }
 
+  public Boolean hasGeneratable() {
+    return !$generatables.isEmpty()
+  }
+
   public List<ZatlinGeneratable> getGeneratables() {
     return $generatables
   }

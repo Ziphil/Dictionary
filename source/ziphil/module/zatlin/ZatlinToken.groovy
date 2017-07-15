@@ -6,7 +6,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ZatlinToken {
+public class ZatlinToken implements ZatlinGeneratable {
 
   private ZatlinTokenType $type
   private String $text

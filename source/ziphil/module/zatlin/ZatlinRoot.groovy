@@ -14,6 +14,19 @@ public class ZatlinRoot {
     return null
   }
 
+  public Boolean containsDefinitionOf(String identifierName) {
+    for (ZatlinDefinition definition : $definitions) {
+      if (definition.getIdentifier().getText() == identifierName) {
+        return true
+      }
+    }
+    return false
+  }
+
+  public Boolean hasMainGeneratable() {
+    return $mainGeneratable != null
+  }
+
   public List<ZatlinDefinition> getDefinitions() {
     return $definitions
   }

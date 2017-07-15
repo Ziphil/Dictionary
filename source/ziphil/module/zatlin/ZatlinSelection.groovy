@@ -10,6 +10,7 @@ public class ZatlinSelection implements ZatlinGeneratable {
   public static final ZatlinSelection EMPTY_SELECTION = ZatlinSelection.new()
 
   private List<ZatlinGeneratable> $generatables = ArrayList.new()
+  private List<IntegerClass> $weights = ArrayList.new()
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
@@ -30,6 +31,14 @@ public class ZatlinSelection implements ZatlinGeneratable {
 
   public void setGeneratables(List<ZatlinGeneratable> generatables) {
     $generatables = generatables
+  }
+
+  public List<IntegerClass> getWeights() {
+    return $weights
+  }
+
+  public void setWeights(List<IntegerClass> weights) {
+    $weights = weights
   }
 
 }
