@@ -7,24 +7,25 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class NameGenerator {
 
+  private static final Random RANDOM = Random.new()
+
   private List<String> $vowels = ArrayList.new()
   private List<String> $consonants = ArrayList.new()
   private List<String> $syllablePatterns = ArrayList.new()
   private Int $minSyllableSize = 1
   private Int $maxSyllableSize = 3
-  private Random $random = Random.new()
 
   public String generate() {
     StringBuilder name = StringBuilder.new()
-    Int syllableSize = $random.nextInt($maxSyllableSize - $minSyllableSize + 1) + $minSyllableSize
+    Int syllableSize = RANDOM.nextInt($maxSyllableSize - $minSyllableSize + 1) + $minSyllableSize
     for (Int i = 0 ; i < syllableSize ; i ++) {
-      String syllablePattern = ($syllablePatterns.isEmpty()) ? "" : $syllablePatterns[$random.nextInt($syllablePatterns.size())]
+      String syllablePattern = ($syllablePatterns.isEmpty()) ? "" : $syllablePatterns[RANDOM.nextInt($syllablePatterns.size())]
       String syllable = syllablePattern.replaceAll(/(.)/) { List<String> match ->
         String character = match[1]
         if (character == "V" || character == "v") {
-          return ($vowels.isEmpty()) ? "" : $vowels[$random.nextInt($vowels.size())]
+          return ($vowels.isEmpty()) ? "" : $vowels[RANDOM.nextInt($vowels.size())]
         } else if (character == "C" || character == "c") {
-          return ($consonants.isEmpty()) ? "" : $consonants[$random.nextInt($consonants.size())]
+          return ($consonants.isEmpty()) ? "" : $consonants[RANDOM.nextInt($consonants.size())]
         } else {
           return ""
         }
