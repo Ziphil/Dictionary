@@ -25,4 +25,12 @@ public class ZatlinTester {
     println(root.getMainGeneratable())
   }
 
+  public static void generate(String source, Int size) {
+    ZatlinParser parser = ZatlinParser.new(StringReader.new(source))
+    ZatlinRoot root = parser.readRoot()
+    for (Int i = 0 ; i < size ; i ++) {
+      println(root.generate())
+    }
+  }
+
 }
