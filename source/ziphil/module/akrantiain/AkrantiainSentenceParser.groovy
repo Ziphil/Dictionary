@@ -17,15 +17,6 @@ public class AkrantiainSentenceParser {
   public AkrantiainSentenceParser() {
   }
 
-  public void addToken(AkrantiainToken token) {
-    $tokens.add(token)
-  }
-
-  public void clear() {
-    $tokens.clear()
-    $pointer = 0
-  }
-
   public AkrantiainEnvironment readEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
@@ -382,6 +373,15 @@ public class AkrantiainSentenceParser {
 
   public Boolean isModuleChain() {
     return !$tokens.isEmpty() && $tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT
+  }
+
+  public void clear() {
+    $tokens.clear()
+    $pointer = 0
+  }
+
+  public void addToken(AkrantiainToken token) {
+    $tokens.add(token)
   }
 
   public List<AkrantiainToken> getTokens() {
