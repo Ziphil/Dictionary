@@ -12,6 +12,7 @@ public enum ZatlinTokenType {
   NUMERIC,
   EQUAL,
   VERTICAL,
+  MINUS,
   CIRCUMFLEX,
   PERCENT,
   SEMICOLON
