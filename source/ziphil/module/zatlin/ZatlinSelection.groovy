@@ -21,6 +21,7 @@ public class ZatlinSelection implements ZatlinGeneratable {
       currentWeight += $weights[i]
       if (number < currentWeight) {
         output = $generatables[i].generate(root)
+        break
       }
     }
     return output
