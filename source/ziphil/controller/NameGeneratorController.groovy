@@ -3,6 +3,7 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
@@ -59,8 +60,14 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   public void prepare(Boolean usesCollection) {
     $usesCollection = usesCollection
     if (!usesCollection) {
-      $gridPane.getChildren().remove($collectionTypeLabel)
-      $gridPane.getChildren().remove($collectionTypeBox)
+      List<Node> removedChildren = ArrayList.new()
+      for (Node node : $gridPane.getChildren()) {
+        List<String> styleClass = node.getStyleClass()
+        if (styleClass.contains("option") && styleClass.contains("collection")) {
+          removedChildren.add(node)
+        }
+      }
+      $gridPane.getChildren().removeAll(removedChildren)
     }
   }
 
