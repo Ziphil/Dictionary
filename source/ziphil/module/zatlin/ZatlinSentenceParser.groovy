@@ -62,6 +62,9 @@ public class ZatlinSentenceParser {
       ZatlinMatchable matchable = nextDisjunction()
       compound.setGeneratable(generatable)
       compound.setMatchable(matchable)
+    } else if (tokenType == ZatlinTokenType.SEMICOLON) {
+      $pointer --
+      compound.setGeneratable(generatable)
     } else {
       throw ZatlinParseException.new("Invalid definition sentence", token)
     }
