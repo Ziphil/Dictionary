@@ -63,7 +63,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   private void openSnoj() {
     UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
-    ExtensionFilter filter = ExtensionFilter.new("snoj¥Õ¥¡¥¤¥ë", "snoj")
+    ExtensionFilter filter = ExtensionFilter.new("snojãƒ•ã‚¡ã‚¤ãƒ«", "snoj")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare(filter, $result)
