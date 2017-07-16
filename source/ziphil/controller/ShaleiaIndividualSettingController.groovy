@@ -57,7 +57,7 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
     UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
-    FileStringChooserController.Result previousResult = FileStringChooserController.Result.new(null, $akrantiainSource, false)
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)     
     controller.prepare(filter, previousResult)
@@ -72,7 +72,7 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
           $akrantiainSourceControl.setText(source)
         }
       } else {
-        String source = result.getSource()
+        String source = result.getString()
         $akrantiainSource = source
         $akrantiainSourceControl.setText(source)
       }

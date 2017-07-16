@@ -22,11 +22,11 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private RadioButton $fileSelectedControl
-  @FXML private RadioButton $sourceSelectedControl
+  @FXML private RadioButton $stringSelectedControl
   @FXML private VBox $fileBox
-  @FXML private VBox $sourceBox
+  @FXML private VBox $stringBox
   @FXML private FileChooser $fileChooser
-  @FXML private TextArea $sourceControl
+  @FXML private TextArea $stringControl
 
   public FileStringChooserController(UtilityStage<FileStringChooserController.Result> stage) {
     super(stage)
@@ -42,17 +42,17 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   public void prepare(ExtensionFilter filter, Result previousResult) {
     if (previousResult != null) {
       File file = previousResult.getFile()
-      String source = previousResult.getSource()
+      String string = previousResult.getString()
       if (file != null) {
         $fileChooser.setCurrentDirectory(file.getParentFile())
       }
-      if (source != null) {
-        $sourceControl.setText(source)
+      if (string != null) {
+        $stringControl.setText(string)
       }
       if (previousResult.isFileSelected()) {
         $fileSelectedControl.setSelected(true)
       } else {
-        $sourceSelectedControl.setSelected(true)
+        $stringSelectedControl.setSelected(true)
       }
     }
     if (filter != null) {  
@@ -64,15 +64,20 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   @FXML
   protected void commit() {
     File file = $fileChooser.getSelectedFile()
-    String source = $sourceControl.getText()
+    String string = $stringControl.getText()
     Boolean fileSelected = $fileSelectedControl.isSelected()
-    Result result = Result.new(file, source, fileSelected)
-    $stage.commit(result)
+    if (fileSelected) {
+      Result result = Result.ofFile(file)
+      $stage.commit(result)
+    } else {
+      Result result = Result.ofString(string)
+      $stage.commit(result)
+    }
   }
 
   private void setupBoxes() {
     $fileBox.visibleProperty().bind($fileSelectedControl.selectedProperty())
-    $sourceBox.visibleProperty().bind($sourceSelectedControl.selectedProperty())
+    $stringBox.visibleProperty().bind($stringSelectedControl.selectedProperty())
   }
 
   private void setupChooser() {
@@ -84,13 +89,21 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   public static class Result {
 
     private File $file
-    private String $source
+    private String $string
     private Boolean $fileSelected
 
-    public Result(File file, String source, Boolean fileSelected) {
+    private Result(File file, String string, Boolean fileSelected) {
       $file = file
-      $source = source
+      $string = string
       $fileSelected = fileSelected
+    }
+
+    public static Result ofFile(File file) {
+      return Result.new(file, null, true)
+    }
+
+    public static Result ofString(String string) {
+      return Result.new(null, string, false)
     }
 
     public Boolean isFileSelected() {
@@ -105,8 +118,8 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
       return $file
     }
 
-    public String getSource() {
-      return $source
+    public String getString() {
+      return $string
     }
 
   }

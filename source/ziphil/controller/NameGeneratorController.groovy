@@ -92,7 +92,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("生成規則ファイル", "ztl")
-    FileStringChooserController.Result previousResult = FileStringChooserController.Result.new(null, $zatlinSource, false)
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($zatlinSource)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)     
     controller.prepare(filter, previousResult)
@@ -107,7 +107,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
           $zatlinSourceControl.setText(source)
         }
       } else {
-        String source = result.getSource()
+        String source = result.getString()
         $zatlinSource = source
         $zatlinSourceControl.setText(source)
       }

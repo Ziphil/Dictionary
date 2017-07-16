@@ -88,7 +88,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $akrantiain = null
         }
       } else {
-        String source = $result.getSource()
+        String source = $result.getString()
         $snojPathControl.setText("[テキスト]")
         $akrantiain = Akrantiain.new()
         try {
