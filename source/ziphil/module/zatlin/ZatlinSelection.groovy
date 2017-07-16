@@ -27,6 +27,26 @@ public class ZatlinSelection implements ZatlinGeneratable {
     return output
   }
 
+  public ZatlinToken findUnknownIdentifier(ZatlinRoot root) {
+    for (ZatlinGeneratable generatable : $generatables) {
+      ZatlinToken unknownIdentifier = generatable.findUnknownIdentifier(root)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
+    return null
+  }
+
+  public ZatlinToken findCircularIdentifier(List<ZatlinToken> identifiers, ZatlinRoot root) {
+    for (ZatlinGeneratable generatable : $generatables) {
+      ZatlinToken circularIdentifier = generatable.findCircularIdentifier(identifiers, root)
+      if (circularIdentifier != null) {
+        return circularIdentifier
+      }
+    }
+    return null
+  }
+
   private Int totalWeight() {
     Int totalWeight = 0
     for (Int weight : $weights) {

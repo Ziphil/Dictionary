@@ -19,6 +19,26 @@ public class ZatlinSequence implements ZatlinGeneratable {
     return output.toString()
   }
 
+  public ZatlinToken findUnknownIdentifier(ZatlinRoot root) {
+    for (ZatlinGeneratable generatable : $generatables) {
+      ZatlinToken unknownIdentifier = generatable.findUnknownIdentifier(root)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
+    return null
+  }
+
+  public ZatlinToken findCircularIdentifier(List<ZatlinToken> identifiers, ZatlinRoot root) {
+    for (ZatlinGeneratable generatable : $generatables) {
+      ZatlinToken circularIdentifier = generatable.findCircularIdentifier(identifiers, root)
+      if (circularIdentifier != null) {
+        return circularIdentifier
+      }
+    }
+    return null
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     for (Int i = 0 ; i < $generatables.size() ; i ++) {

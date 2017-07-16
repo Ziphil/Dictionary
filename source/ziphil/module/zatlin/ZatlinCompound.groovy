@@ -24,6 +24,14 @@ public class ZatlinCompound implements ZatlinGeneratable {
     return output
   }
 
+  public ZatlinToken findUnknownIdentifier(ZatlinRoot root) {
+    return $generatable.findUnknownIdentifier(root)
+  }
+
+  public ZatlinToken findCircularIdentifier(List<ZatlinToken> identifiers, ZatlinRoot root) {
+    return $generatable.findCircularIdentifier(identifiers, root)
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append($generatable)

@@ -14,10 +14,43 @@ public class ZatlinRoot {
     return $mainGeneratable.generate(this)
   }
 
+  public ZatlinDefinition findDefinitionOf(String identifierName) {
+    for (ZatlinDefinition definition : $definitions) {
+      if (definition.getIdentifier().getText() == identifierName) {
+        return definition
+      }
+    }
+    return null
+  }
+
   public ZatlinGeneratable findContentOf(String identifierName) {
     for (ZatlinDefinition definition : $definitions) {
       if (definition.getIdentifier().getText() == identifierName) {
         return definition.getContent()
+      }
+    }
+    return null
+  }
+
+  public ZatlinToken findUnknownIdentifier() {
+    for (ZatlinDefinition definition : $definitions) {
+      ZatlinToken unknownIdentifier = definition.findUnknownIdentifier(this)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
+    ZatlinToken unknownIdentifier = $mainGeneratable.findUnknownIdentifier(this)
+    if (unknownIdentifier != null) {
+      return unknownIdentifier
+    }
+    return null
+  }
+
+  public ZatlinToken findCircularIdentifier() {
+    for (ZatlinDefinition definition : $definitions) {
+      ZatlinToken circularIdentifier = definition.findCircularIdentifier(this)
+      if (circularIdentifier != null) {
+        return circularIdentifier
       }
     }
     return null

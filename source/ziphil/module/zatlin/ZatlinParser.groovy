@@ -52,6 +52,14 @@ public class ZatlinParser {
     if (!$root.hasMainGeneratable()) {
       throw ZatlinParseException.new("No main pattern", (ZatlinToken)null)
     }
+    ZatlinToken unknownIdentifier = $root.findUnknownIdentifier()
+    if (unknownIdentifier != null) {
+      throw ZatlinParseException.new("Undefined identifier", unknownIdentifier)
+    }
+    ZatlinToken circularIdentifier = $root.findCircularIdentifier()
+    if (circularIdentifier != null) {
+      throw ZatlinParseException.new("Circular reference involving identifier", circularIdentifier)
+    }
   }
 
 }

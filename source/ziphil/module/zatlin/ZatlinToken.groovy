@@ -70,6 +70,42 @@ public class ZatlinToken implements ZatlinGeneratable {
     }
   }
 
+  public ZatlinToken findUnknownIdentifier(ZatlinRoot root) {
+    if ($type == ZatlinTokenType.IDENTIFIER) {
+      if (!root.containsDefinitionOf($text)) {
+        return this
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+  }
+
+  public ZatlinToken findCircularIdentifier(List<ZatlinToken> identifiers, ZatlinRoot root) {
+    if ($type == ZatlinTokenType.IDENTIFIER) {
+      ZatlinToken containedIdentifier = null
+      for (ZatlinToken identifier : identifiers) {
+        if (this == identifier) {
+          containedIdentifier = identifier
+          break
+        }
+      }
+      if (containedIdentifier != null) {
+        return containedIdentifier
+      } else {
+        ZatlinDefinition definition = root.findDefinitionOf($text)
+        if (definition != null) {
+          return definition.findCircularIdentifier(identifiers, root)
+        } else {
+          return null
+        }
+      }
+    } else {
+      return null
+    }
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("<")
