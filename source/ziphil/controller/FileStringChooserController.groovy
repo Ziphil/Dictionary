@@ -16,7 +16,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class FileStringChooserController extends Controller<FileStringChooserController.Result> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/controller/snoj_chooser.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/file_string_chooser.fxml"
   private static final String TITLE = "参照"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
