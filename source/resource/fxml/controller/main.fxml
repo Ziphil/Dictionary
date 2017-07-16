@@ -144,6 +144,7 @@
           </graphic>
         </MenuItem>
         <MenuItem text="akrantiain" onAction="#executeAkrantiain" accelerator="Shortcut+Alt+A"/>
+        <MenuItem text="Zatlin" onAction="#executeZatlin" accelerator="Shortcut+Alt+Z"/>
         <MenuItem text="文字頻度解析" onAction="#executeCharacterAnalysis" accelerator="Shortcut+Alt+K"/>
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,shaleia,slime" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>

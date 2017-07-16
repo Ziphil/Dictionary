@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import ziphil.module.Setting?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
+  </stylesheets>
+  <center>
+    <GridPane>
+      <vgap><Double rpx="5"/></vgap>
+      <hgap><Double rpx="5"/></hgap>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <bottom><Double rpx="10"/></bottom>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <columnConstraints>
+        <ColumnConstraints hgrow="never"/>
+        <ColumnConstraints hgrow="always"/>
+      </columnConstraints>
+      <Label text="生成規則データ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="結果:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <TextField fx:id="$zatlinPathControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
+        <Button text="…" onAction="#openZatlin" styleClass="right-pill"/>
+      </HBox>
+      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+        <GridPane.margin>
+          <Insets>
+            <top><Double rpx="5"/></top>
+            <bottom><Double rpx="5"/></bottom>
+          </Insets>
+        </GridPane.margin>
+        <Button text="生成" onAction="#execute" defaultButton="true">
+          <prefWidth><Double rpx="80"/></prefWidth>
+          <minWidth><Double rpx="80"/></minWidth>
+        </Button>
+      </HBox>
+      <TextField fx:id="$outputControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <TextArea fx:id="$logControl" editable="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <prefHeight><Double rpx="70"/></prefHeight>
+        <minHeight><Double rpx="70"/></minHeight>
+      </TextArea>
+    </GridPane>
+  </center>
+</BorderPane>
