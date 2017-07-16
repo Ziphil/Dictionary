@@ -82,7 +82,7 @@ public class ZatlinExecutorController extends Controller<Void> {
         }
       } else {
         String source = $result.getSource()
-        $zatlinPathControl.setText("[テキストから]")
+        $zatlinPathControl.setText("[テキスト]")
         $zatlin = Zatlin.new()
         try {
           $zatlin.load(source)
