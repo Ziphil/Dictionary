@@ -31,7 +31,7 @@ public class HelpController extends Controller<Void> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/help.fxml"
   private static final String TITLE = "ヘルプ"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private ListView<HelpItem> $sectionView
@@ -98,13 +98,18 @@ public class HelpController extends Controller<Void> {
   @InnerClass @Ziphilify
   private static enum HelpItem {
 
-    BASIC_EDIT("基本操作(編集)", "basic_edit"),
-    BASIC_SEARCH("基本操作(検索)", "basic_search"),
-    SLIME_EDIT("OneToMany形式の編集", "slime_edit"),
+    BASIC_EDIT("基本操作/編集", "basic_edit"),
+    BASIC_SEARCH("基本操作/検索", "basic_search"),
+    SLIME_EDIT("編集方法詳細/OneToMany形式", "slime_edit"),
     SCRIPT_SEARCH("スクリプト検索", "script_search"),
-    SLIME_SPECIFICATION("API(OneToMany-JSON)", "slime_specification"),
-    PERSONAL_SPECIFICATION("API(PDIC-CSV)", "personal_specification"),
-    TOOL("ツール", "tool"),
+    SENTENCE_SEARCH("文一括検索", "sentence_search"),
+    SETTING("環境設定", "setting"),
+    SLIME_INDIVIDUAL_SETTING("個別設定/OneToMany形式", "slime_individual_setting"),
+    SLIME_SPECIFICATION("単語API/OneToMany形式", "slime_specification"),
+    PERSONAL_SPECIFICATION("単語API/PDIC形式", "personal_specification"),
+    HAH_COMPRESSION("ツール/hah圧縮", "hah_compression"),
+    AKRANTIAIN("ツール/akrantiain", "akrantiain"),
+    ZATLIN("ツール/Zatlin", "zatlin"),
     SHORTCUT("ショートカットキー", "shortcut"),
     OTHER("その他", "other"),
     LICENSE("ライセンス", "license"),
