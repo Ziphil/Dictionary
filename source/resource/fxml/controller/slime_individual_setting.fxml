@@ -123,7 +123,7 @@
               <prefWidth><Double rpx="120"/></prefWidth>
               <minWidth><Double rpx="120"/></minWidth>
             </ComboBox>
-            <Button text="削除" onAction="#removePronunciationTitle">
+            <Button text="解除" onAction="#removePronunciationTitle">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </Button>
