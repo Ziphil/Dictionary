@@ -106,6 +106,14 @@ public class ZatlinToken implements ZatlinGeneratable {
     }
   }
 
+  public Boolean equals(Object object) {
+    if (object instanceof ZatlinToken) {
+      return $type == object.getType() && $text == object.getText()
+    } else {
+      return false
+    }
+  }
+
   public String toString() {
     StringBuilder string = StringBuilder.new()
     string.append("<")
