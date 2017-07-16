@@ -17,20 +17,11 @@ public class AkrantiainSentenceParser {
   public AkrantiainSentenceParser() {
   }
 
-  public void addToken(AkrantiainToken token) {
-    $tokens.add(token)
-  }
-
-  public void clear() {
-    $tokens.clear()
-    $pointer = 0
-  }
-
   public AkrantiainEnvironment readEnvironment() {
     if ($tokens.size() == 2 && $tokens[0].getType() == AkrantiainTokenType.ENVIRONMENT_LITERAL && $tokens[1].getType() == AkrantiainTokenType.SEMICOLON) {
       AkrantiainToken token = $tokens[0]
       if (AkrantiainEnvironment.contains(token.getText())) {
-        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOf(token.getText())
+        AkrantiainEnvironment environment = AkrantiainEnvironment.valueOfName(token.getText())
         return environment
       } else {
         return null
@@ -224,7 +215,6 @@ public class AkrantiainSentenceParser {
   }
 
   private AkrantiainDisjunction nextDisjunction() {
-    Int firstPointer = $pointer
     AkrantiainDisjunction disjunction = AkrantiainDisjunction.new()
     AkrantiainSequence sequence = AkrantiainSequence.new()
     while (true) {
@@ -233,14 +223,14 @@ public class AkrantiainSentenceParser {
       if (tokenType == AkrantiainTokenType.QUOTE_LITERAL || tokenType == AkrantiainTokenType.IDENTIFIER) {
         sequence.getMatchables().add(token)
       } else if (tokenType == AkrantiainTokenType.VERTICAL) {
-        if (sequence.hasToken()) {
+        if (sequence.hasMatchable()) {
           disjunction.getMatchables().add(sequence)
           sequence = AkrantiainSequence.new()
         } else {
           throw AkrantiainParseException.new("Invalid disjunction expression", token)
         }
       } else {
-        if (sequence.hasToken()) {
+        if (sequence.hasMatchable()) {
           $pointer --
           disjunction.getMatchables().add(sequence)
           break
@@ -382,6 +372,15 @@ public class AkrantiainSentenceParser {
 
   public Boolean isModuleChain() {
     return !$tokens.isEmpty() && $tokens[0].getType() == AkrantiainTokenType.DOUBLE_PERCENT
+  }
+
+  public void clear() {
+    $tokens.clear()
+    $pointer = 0
+  }
+
+  public void addToken(AkrantiainToken token) {
+    $tokens.add(token)
   }
 
   public List<AkrantiainToken> getTokens() {

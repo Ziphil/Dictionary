@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.module.akrantiain.Akrantiain
@@ -30,7 +31,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $outputControl
   @FXML private TextArea $logControl
   private Akrantiain $akrantiain = null
-  private SnojChooserController.Result $result = null
+  private FileStringChooserController.Result $result = null
 
   public AkrantiainExecutorController(UtilityStage<Void> stage) {
     super(stage)
@@ -60,11 +61,12 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void openSnoj() {
-    UtilityStage<SnojChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    SnojChooserController controller = SnojChooserController.new(nextStage)
+    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileStringChooserController controller = FileStringChooserController.new(nextStage)
+    ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare($result)
+    controller.prepare(filter, $result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       $result = nextStage.getResult()
@@ -86,7 +88,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
           $akrantiain = null
         }
       } else {
-        String source = $result.getSource()
+        String source = $result.getString()
         $snojPathControl.setText("[テキスト]")
         $akrantiain = Akrantiain.new()
         try {

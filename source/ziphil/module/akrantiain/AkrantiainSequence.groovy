@@ -82,16 +82,12 @@ public class AkrantiainSequence implements AkrantiainMatchable {
     return string.toString()
   }
 
-  public Boolean hasToken() {
+  public Boolean hasMatchable() {
     return !$matchables.isEmpty()
   }
 
   public Boolean isSingleton() {
     return $matchables.size() == 1
-  }
-
-  public AkrantiainMatchable getMatchable() {
-    return $matchables[0]
   }
 
   public List<AkrantiainMatchable> getMatchables() {

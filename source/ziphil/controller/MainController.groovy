@@ -61,6 +61,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
+import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.ScriptSearchParameter
 import ziphil.dictionary.SearchHistory
 import ziphil.dictionary.SearchMode
@@ -482,14 +483,21 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void addGeneratedWords() {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
-      UtilityStage<List<Word>> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      WordGeneratorController controller = WordGeneratorController.new(nextStage)
+      UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      NameGeneratorController controller = NameGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare($dictionary)
+      controller.prepare()
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        List<Word> newWords = nextStage.getResult()
+        NameGeneratorController.Result result = nextStage.getResult()
+        List<Word> newWords = ArrayList.new()
+        for (Int i = 0 ; i < result.getPseudoWords().size() ; i ++) {
+          PseudoWord pseudoWord = result.getPseudoWords()[i]
+          String name = result.getNames()[i]
+          Word newWord = $dictionary.determineWord(name, pseudoWord)
+          newWords.add(newWord)
+        }
         SearchParameter parameter = SelectionSearchParameter.new(newWords)
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
@@ -894,6 +902,19 @@ public class MainController extends PrimitiveController<Stage> {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     AkrantiainExecutorController controller = AkrantiainExecutorController.new(nextStage)
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
+    $openStages.add(nextStage)
+    nextStage.showAndWait()
+    $openStages.remove(nextStage)
+  }
+
+  @FXML
+  private void executeZatlin() {
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    ZatlinExecutorController controller = ZatlinExecutorController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }

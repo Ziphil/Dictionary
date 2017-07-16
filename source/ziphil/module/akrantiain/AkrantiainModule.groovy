@@ -80,8 +80,14 @@ public class AkrantiainModule {
   }
 
   public AkrantiainToken findUnknownIdentifier() {
-    for (AkrantiainDefinition definition: $definitions) {
+    for (AkrantiainDefinition definition : $definitions) {
       AkrantiainToken unknownIdentifier = definition.findUnknownIdentifier(this)
+      if (unknownIdentifier != null) {
+        return unknownIdentifier
+      }
+    }
+    for (AkrantiainRule rule : $rules) {
+      AkrantiainToken unknownIdentifier = rule.findUnknownIdentifier(this)
       if (unknownIdentifier != null) {
         return unknownIdentifier
       }
@@ -90,7 +96,7 @@ public class AkrantiainModule {
   }
 
   public AkrantiainToken findCircularIdentifier() {
-    for (AkrantiainDefinition definition: $definitions) {
+    for (AkrantiainDefinition definition : $definitions) {
       AkrantiainToken circularIdentifier = definition.findCircularIdentifier(this)
       if (circularIdentifier != null) {
         return circularIdentifier
@@ -154,12 +160,16 @@ public class AkrantiainModule {
   } 
 
   public Boolean containsDefinitionOf(String identifierName) {
-    for (AkrantiainDefinition definition : $definitions) {
-      if (definition.getIdentifier().getText() == identifierName) {
-        return true
+    if (identifierName != PUNCTUATION_IDENTIIER_NAME) {
+      for (AkrantiainDefinition definition : $definitions) {
+        if (definition.getIdentifier().getText() == identifierName) {
+          return true
+        }
       }
+      return false
+    } else {
+      return false
     }
-    return false
   }
 
   public String toString() {

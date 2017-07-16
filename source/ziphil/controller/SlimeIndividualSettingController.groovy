@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.stage.StageStyle
 import javafx.stage.Modality
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.ListSelectionView
 import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
@@ -136,15 +137,16 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void editSnoj() {
-    UtilityStage<SnojChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    SnojChooserController controller = SnojChooserController.new(nextStage)
-    SnojChooserController.Result previousResult = SnojChooserController.Result.new(null, $akrantiainSource, false)
+    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileStringChooserController controller = FileStringChooserController.new(nextStage)
+    ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)     
-    controller.prepare(previousResult)
+    controller.prepare(filter, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
-      SnojChooserController.Result result = nextStage.getResult()
+      FileStringChooserController.Result result = nextStage.getResult()
       if (result.isFileSelected()) {
         File file = result.getFile()
         if (file != null) {
@@ -153,7 +155,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
           $akrantiainSourceControl.setText(source)
         }
       } else {
-        String source = result.getSource()
+        String source = result.getString()
         $akrantiainSource = source
         $akrantiainSourceControl.setText(source)
       }

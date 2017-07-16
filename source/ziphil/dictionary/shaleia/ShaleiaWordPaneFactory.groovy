@@ -338,18 +338,17 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     return handler
   }
 
-}
 
+  @InnerClass @Ziphilify
+  private static enum TextMode {
 
-@InnerClass(ShaleiaWordPaneFactory)
-@Ziphilify
-private static enum TextMode {
+    NORMAL,
+    NORMAL_ITALIC,
+    NAME,
+    NAME_ITALIC,
+    LINK,
+    LINK_ITALIC
 
-  NORMAL,
-  NORMAL_ITALIC,
-  NAME,
-  NAME_ITALIC,
-  LINK,
-  LINK_ITALIC
+  }
 
 }
