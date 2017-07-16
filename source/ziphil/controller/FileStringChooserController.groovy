@@ -14,7 +14,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SnojChooserController extends Controller<SnojChooserController.Result> {
+public class FileStringChooserController extends Controller<FileStringChooserController.Result> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/snoj_chooser.fxml"
   private static final String TITLE = "参照"
@@ -28,7 +28,7 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   @FXML private FileChooser $fileChooser
   @FXML private TextArea $sourceControl
 
-  public SnojChooserController(UtilityStage<SnojChooserController.Result> stage) {
+  public FileStringChooserController(UtilityStage<FileStringChooserController.Result> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }
@@ -39,7 +39,7 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
     setupChooser()
   }
 
-  public void prepare(Result previousResult) {
+  public void prepare(ExtensionFilter filter, Result previousResult) {
     if (previousResult != null) {
       File file = previousResult.getFile()
       String source = previousResult.getSource()
@@ -54,6 +54,10 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
       } else {
         $sourceSelectedControl.setSelected(true)
       }
+    }
+    if (filter != null) {  
+      $fileChooser.getExtensionFilters().add(filter)
+      $fileChooser.setCurrentFileType(filter)
     }
   }
 
@@ -72,9 +76,6 @@ public class SnojChooserController extends Controller<SnojChooserController.Resu
   }
 
   private void setupChooser() {
-    ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
-    $fileChooser.getExtensionFilters().add(filter)
-    $fileChooser.setCurrentFileType(filter)
     $fileChooser.setAdjustsExtension(false)
   }
 
