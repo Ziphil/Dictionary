@@ -25,7 +25,11 @@ import ziphil.dictionary.EquivalentCollection
 import ziphil.dictionary.EquivalentCollectionType
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Word
+import ziphil.module.EasyNameGenerator
 import ziphil.module.NameGenerator
+import ziphil.module.zatlin.Zatlin
+import ziphil.module.zatlin.ZatlinException
+import ziphil.module.zatlin.ZatlinParseException
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
@@ -127,20 +131,19 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   protected void commit() {
     List<Word> words = ArrayList.new()
     EquivalentCollectionType collectionType = selectedCollectionTypeControl().getValue()
-    NameGenerator generator = NameGenerator.new()
+    NameGenerator generator = createGenerator()
     Result result = null
-    generator.setVowels($vowelsControl.getStrings())
-    generator.setConsonants($consonantsControl.getStrings())
-    generator.setSyllablePatterns($syllablePatternsControl.getStrings())
-    generator.setMinSyllableSize($minSyllableSizeControl.getValue())
-    generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
     if ($usesCollection) {
       if (collectionType != null) {
         EquivalentCollection collection = EquivalentCollection.load(collectionType)
         List<String> names = ArrayList.new()
         for (PseudoWord pseudoWord : collection.getPseudoWords()) {
-          String name = generator.generate()
-          names.add(name)
+          try {
+            String name = (generator != null) ? generator.generate() : ""
+            names.add(name)
+          } catch (ZatlinException exception) {
+            names.add("")
+          }
         }
         result = Result.new(collection.getPseudoWords(), names)
       } else {
@@ -148,11 +151,35 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
       }
     } else {
       List<String> names = ArrayList.new()
-      String name = generator.generate()
-      names.add(name)
+      try {
+        String name = (generator != null) ? generator.generate() : ""
+        names.add(name)
+      } catch (ZatlinException exception) {
+        names.add("")
+      }
       result = Result.new(null, names)
     }
     $stage.commit(result)
+  }
+
+  private NameGenerator createGenerator() {
+    if ($tabPane.getSelectionModel().getSelectedIndex() == 0) {
+      EasyNameGenerator generator = EasyNameGenerator.new()
+      generator.setVowels($vowelsControl.getStrings())
+      generator.setConsonants($consonantsControl.getStrings())
+      generator.setSyllablePatterns($syllablePatternsControl.getStrings())
+      generator.setMinSyllableSize($minSyllableSizeControl.getValue())
+      generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+      return generator
+    } else {
+      Zatlin zatlin = Zatlin.new()
+      try {
+        zatlin.load($zatlinSource)
+        return zatlin
+      } catch (ZatlinParseException exception) {
+        return null
+      } 
+    }
   }
 
   private ComboBox selectedCollectionTypeControl() {

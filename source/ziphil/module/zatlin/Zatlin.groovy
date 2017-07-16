@@ -1,11 +1,12 @@
 package ziphil.module.zatlin
 
 import groovy.transform.CompileStatic
+import ziphil.module.NameGenerator
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class Zatlin {
+public class Zatlin implements NameGenerator {
 
   private ZatlinRoot $root
 
