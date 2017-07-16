@@ -31,9 +31,9 @@
     <URL value="@../../css/main/modification.css"/>
   </stylesheets>
   <center>
-    <TabPane styleClass="setting-pane">
+    <TabPane fx:id="$tabPane" styleClass="setting-pane">
       <Tab text="簡易" closable="false">
-        <GridPane fx:id="$gridPane">
+        <GridPane>
           <vgap><Double rpx="5"/></vgap>
           <hgap><Double rpx="5"/></hgap>
           <padding>
@@ -52,7 +52,7 @@
           <Label text="子音字:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <Label text="音節パターン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <Label text="音節数:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-          <Label fx:id="$collectionTypeLabel" styleClass="option,collection" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label styleClass="option-collection" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <StringListEditor fx:id="$vowelsControl" HBox.hgrow="always">
@@ -105,9 +105,9 @@
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="3" amountToStepBy="1"/></valueFactory>
             </Spinner>
           </HBox>
-          <HBox fx:id="$collectionTypeBox" styleClass="option,collection" GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <HBox styleClass="option-collection" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$collectionTypeControl">
+            <ComboBox styleClass="option-type">
               <prefWidth><Double rpx="200"/></prefWidth>
               <minWidth><Double rpx="200"/></minWidth>
             </ComboBox>
@@ -136,14 +136,14 @@
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
           <Label text="生成規則データ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label styleClass="option,collection" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label styleClass="option-collection" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <TextField fx:id="$zatlinSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
             <Button text="…" onAction="#editZatlin" styleClass="right-pill"/>
           </HBox>
-          <HBox styleClass="option,collection" GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <HBox styleClass="option-collection" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$collectionTypeControl">
+            <ComboBox styleClass="option-type">
               <prefWidth><Double rpx="200"/></prefWidth>
               <minWidth><Double rpx="200"/></minWidth>
             </ComboBox>

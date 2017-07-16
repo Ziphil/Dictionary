@@ -7,6 +7,8 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
+import javafx.scene.control.Tab
+import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import javafx.scene.layout.GridPane
@@ -36,15 +38,12 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private GridPane $gridPane
+  @FXML private TabPane $tabPane
   @FXML private StringListEditor $vowelsControl
   @FXML private StringListEditor $consonantsControl
   @FXML private StringListEditor $syllablePatternsControl
   @FXML private Spinner<IntegerClass> $minSyllableSizeControl
   @FXML private Spinner<IntegerClass> $maxSyllableSizeControl
-  @FXML private Label $collectionTypeLabel
-  @FXML private HBox $collectionTypeBox
-  @FXML private ComboBox $collectionTypeControl
   @FXML private TextField $zatlinSourceControl
   private String $zatlinSource = ""
   private Boolean $usesCollection
@@ -57,21 +56,26 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   @FXML
   private void initialize() {
     setupSyllableSizeControls()
-    setupCollectionTypeControl()
+    setupCollectionTypeControls()
     setupIntegerControls()
   }
 
   public void prepare(Boolean usesCollection) {
     $usesCollection = usesCollection
     if (!usesCollection) {
-      List<Node> removedChildren = ArrayList.new()
-      for (Node node : $gridPane.getChildren()) {
-        List<String> styleClass = node.getStyleClass()
-        if (styleClass.contains("option") && styleClass.contains("collection")) {
-          removedChildren.add(node)
+      for (Tab tab : $tabPane.getTabs()) {
+        Node node = tab.getContent()
+        if (node instanceof GridPane) {
+          List<Node> removedChildren = ArrayList.new()
+          for (Node childNode : node.getChildren()) {
+            List<String> styleClass = childNode.getStyleClass()
+            if (styleClass.contains("option-collection")) {
+              removedChildren.add(childNode)
+            }
+          }
+          node.getChildren().removeAll(removedChildren)
         }
       }
-      $gridPane.getChildren().removeAll(removedChildren)
     }
   }
 
@@ -108,7 +112,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   @FXML
   private void showEquivalents() {
-    EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    EquivalentCollectionType collectionType = selectedCollectionTypeControl().getValue()
     if (collectionType != null) {
       EquivalentCollection collection = EquivalentCollection.load(collectionType)
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -122,7 +126,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   protected void commit() {
     List<Word> words = ArrayList.new()
-    EquivalentCollectionType collectionType = $collectionTypeControl.getValue()
+    EquivalentCollectionType collectionType = selectedCollectionTypeControl().getValue()
     NameGenerator generator = NameGenerator.new()
     Result result = null
     generator.setVowels($vowelsControl.getStrings())
@@ -151,6 +155,12 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     $stage.commit(result)
   }
 
+  private ComboBox selectedCollectionTypeControl() {
+    Tab selectedTab = $tabPane.getSelectionModel().getSelectedItem()
+    Node node = selectedTab.getContent().lookup(".option-type")
+    return (ComboBox)node
+  }
+
   private void setupSyllableSizeControls() {
     $minSyllableSizeControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
       if (newValue > $maxSyllableSizeControl.getValue()) {
@@ -164,11 +174,16 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     }
   }
 
-  private void setupCollectionTypeControl() {
+  private void setupCollectionTypeControls() {
     List<EquivalentCollectionType> collectionTypes = EquivalentCollectionType.getCollectionTypes()
-    $collectionTypeControl.getItems().addAll(collectionTypes)
-    if (!collectionTypes.isEmpty()) {
-      $collectionTypeControl.setValue(collectionTypes.first())
+    for (Node node : $tabPane.lookupAll(".option-type")) {
+      if (node instanceof ComboBox) {
+        ComboBox collectionTypeControl = (ComboBox)node
+        collectionTypeControl.getItems().addAll(collectionTypes)
+        if (!collectionTypes.isEmpty()) {
+          collectionTypeControl.setValue(collectionTypes.first())
+        }
+      }
     }
   }
 
