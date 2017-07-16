@@ -7,11 +7,13 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.Spinner
+import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.StringListEditor
@@ -43,6 +45,8 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   @FXML private Label $collectionTypeLabel
   @FXML private HBox $collectionTypeBox
   @FXML private ComboBox $collectionTypeControl
+  @FXML private TextField $zatlinSourceControl
+  private String $zatlinSource = ""
   private Boolean $usesCollection
 
   public NameGeneratorController(UtilityStage<NameGeneratorController.Result> stage) {
@@ -73,6 +77,33 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   public void prepare() {
     prepare(true)
+  }
+
+  @FXML
+  private void editZatlin() {
+    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileStringChooserController controller = FileStringChooserController.new(nextStage)
+    ExtensionFilter filter = ExtensionFilter.new("生成規則ファイル", "ztl")
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.new(null, $zatlinSource, false)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)     
+    controller.prepare(filter, previousResult)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      FileStringChooserController.Result result = nextStage.getResult()
+      if (result.isFileSelected()) {
+        File file = result.getFile()
+        if (file != null) {
+          String source = file.getText()
+          $zatlinSource = source
+          $zatlinSourceControl.setText(source)
+        }
+      } else {
+        String source = result.getSource()
+        $zatlinSource = source
+        $zatlinSourceControl.setText(source)
+      }
+    }
   }
 
   @FXML
