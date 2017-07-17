@@ -4,7 +4,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -30,10 +30,10 @@
       </padding>
       <HBox>
         <spacing><Double rpx="5"/></spacing>
-        <ListView fx:id="$sectionView">
-          <prefWidth><Double rpx="200"/></prefWidth>
-          <minWidth><Double rpx="200"/></minWidth>
-        </ListView>
+        <TreeView fx:id="$sectionView" showRoot="false">
+          <prefWidth><Double rpx="180"/></prefWidth>
+          <minWidth><Double rpx="180"/></minWidth>
+        </TreeView>
         <WebView fx:id="$helpView"/>
       </HBox>
     </VBox>
