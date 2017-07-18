@@ -95,47 +95,13 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     $word = word
     $dictionary = dictionary
     $normal = normal
-    $idControl.setText(word.getId().toString())
-    $nameControl.setText(word.getName())
-    for (String tag : word.getTags()) {
-      addTagControl(tag, dictionary.getRegisteredTags())
-    }
-    for (SlimeEquivalent equivalent : word.getRawEquivalents()) {
-      String nameString = equivalent.getNames().join($dictionary.firstPunctuation())
-      addEquivalentControl(equivalent.getTitle(), nameString, dictionary.getRegisteredEquivalentTitles())
-    }
-    for (SlimeInformation information : word.getInformations()) {
-      addInformationControl(information.getTitle(), information.getText(), dictionary.getRegisteredInformationTitles())
-    }
-    for (Map.Entry<String, List<SlimeVariation>> entry : word.groupedVariations()) {
-      String title = entry.getKey()
-      List<SlimeVariation> variationGroup = entry.getValue()
-      String nameString = variationGroup.collect{it.getName()}.join(", ")
-      addVariationControl(title, nameString, dictionary.getRegisteredVariationTitles())
-    }
-    for (SlimeRelation relation : word.getRelations()) {
-      addRelationControl(relation.getTitle(), relation.getName(), relation, dictionary.getRegisteredRelationTitles())
-    }
-    if ($informationTextControls.isEmpty()) {
-      insertInformationControl()
-    }
-    if (editsEmptyWord) {
-      $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
-        if (oldValue == null && newValue != null) {
-          $nameControl.requestFocus()
-        }
-      }
-    } else {
-      $informationTextControls[0].sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
-        if (oldValue == null & newValue != null) {
-          $informationTextControls[0].requestFocus()
-        }
-      }
-    }
-    if (!normal) {
-      $idControl.setDisable(true)
-      $nameControl.setDisable(true)
-    }
+    prepareBasicControls()
+    prepareTagControls()
+    prepareEquivalentControls()
+    prepareInformationControls()
+    prepareVariationControls()
+    prepareRelationControls()
+    prepareFocus(editsEmptyWord)
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord) {
@@ -150,72 +116,18 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   protected void commit() {
     Boolean ignoresDuplicateId = Setting.getInstance().getIgnoresDuplicateSlimeId()
     try {
-      Int id = IntegerClass.parseInt($idControl.getText())
+      Int id = createId()
+      String name = createName()
       if (ignoresDuplicateId || !$normal || !$dictionary.containsId(id, $word)) {
-        String name = $nameControl.getText()
-        List<SlimeEquivalent> rawEquivalents = ArrayList.new()
-        List<String> tags = ArrayList.new()
-        List<SlimeInformation> informations = ArrayList.new()
-        List<SlimeVariation> variations = ArrayList.new()
-        List<SlimeRelation> relations = ArrayList.new()
-        for (Int i = 0 ; i < $tagControls.size() ; i ++) {
-          String tag = $tagControls[i].getValue()
-          if (tag != "") {
-            tags.add(tag)
-          }
-        }
-        String punctuationPattern = /\s*(${$dictionary.getPunctuations().join("|")})\s*/
-        for (Int i = 0 ; i < $equivalentTitleControls.size() ; i ++) {
-          String title = $equivalentTitleControls[i].getValue()
-          List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
-          if (!equivalentNames.isEmpty()) {
-            rawEquivalents.add(SlimeEquivalent.new(title, equivalentNames))
-          }
-        }
-        for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
-          String title = $informationTitleControls[i].getValue()
-          String text = $informationTextControls[i].getText()
-          if (text != "") {
-            informations.add(SlimeInformation.new(title, text))
-          }
-        }
-        for (Int i = 0 ; i < $variationTitleControls.size() ; i ++) {
-          String title = $variationTitleControls[i].getValue()
-          List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
-          for (String variationName : variationNames) {
-            if (variationName != "") {
-              variations.add(SlimeVariation.new(title, variationName))
-            }
-          }
-        }
-        for (Int i = 0 ; i < $relationTitleControls.size() ; i ++) {
-          String title = $relationTitleControls[i].getValue()
-          SlimeRelation relation = $relations[i]
-          Node box = $relationBox.getChildren()[i]
-          if (relation != null) {
-            relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
-          }
-          for (RelationRequest request : $relationRequests) {
-            if (request.getBox() == box) {
-              request.getRelation().setTitle(title)
-            }
-          }
-        }
         $word.setId(id)
         $word.setName(name)
-        $word.setRawEquivalents(rawEquivalents)
-        $word.setTags(tags)
-        $word.setInformations(informations)
-        $word.setVariations(variations)
-        $word.setRelations(relations)
+        $word.setRawEquivalents(createEquivalents())
+        $word.setTags(createTags())
+        $word.setInformations(createInformations())
+        $word.setVariations(createVariations())
+        $word.setRelations(createRelations())
         $word.update()
-        for (RelationRequest request : $relationRequests) {
-          if (request.getRelation().getTitle() != null) {
-            request.getRelation().setId(id)
-            request.getRelation().setName(name)
-            $dictionary.requestRelation(request)
-          }
-        }
+        requestRelations(id, name)
         WordEditResult result = WordEditResult.new($word)
         $stage.commit(result)
       } else {
@@ -233,6 +145,68 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       dialog.setContentText("IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
       dialog.setAllowsCancel(false)
       dialog.showAndWait()
+    }
+  }
+
+  private void prepareBasicControls() {
+    $idControl.setText($word.getId().toString())
+    $nameControl.setText($word.getName())
+    if (!$normal) {
+      $idControl.setDisable(true)
+      $nameControl.setDisable(true)
+    }
+  }
+
+  private void prepareTagControls() {
+    for (String tag : $word.getTags()) {
+      addTagControl(tag, $dictionary.getRegisteredTags())
+    }
+  }
+
+  private void prepareEquivalentControls() {
+    for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
+      String nameString = equivalent.getNames().join($dictionary.firstPunctuation())
+      addEquivalentControl(equivalent.getTitle(), nameString, $dictionary.getRegisteredEquivalentTitles())
+    }
+  }
+
+  private void prepareInformationControls() {
+    for (SlimeInformation information : $word.getInformations()) {
+      addInformationControl(information.getTitle(), information.getText(), $dictionary.getRegisteredInformationTitles())
+    }
+    if ($informationTextControls.isEmpty()) {
+      insertInformationControl()
+    }
+  }
+
+  private void prepareVariationControls() {
+    for (Map.Entry<String, List<SlimeVariation>> entry : $word.groupedVariations()) {
+      String title = entry.getKey()
+      List<SlimeVariation> variationGroup = entry.getValue()
+      String nameString = variationGroup.collect{it.getName()}.join(", ")
+      addVariationControl(title, nameString, $dictionary.getRegisteredVariationTitles())
+    }
+  }
+
+  private void prepareRelationControls() {
+    for (SlimeRelation relation : $word.getRelations()) {
+      addRelationControl(relation.getTitle(), relation.getName(), relation, $dictionary.getRegisteredRelationTitles())
+    }
+  }
+
+  private void prepareFocus(Boolean editsEmptyWord) {
+    if (editsEmptyWord) {
+      $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null && newValue != null) {
+          $nameControl.requestFocus()
+        }
+      }
+    } else {
+      $informationTextControls[0].sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
+        if (oldValue == null & newValue != null) {
+          $informationTextControls[0].requestFocus()
+        }
+      }
     }
   }
 
@@ -472,6 +446,95 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     if (nextStage.isCommitted()) {
       NameGeneratorController.Result result = nextStage.getResult()
       $nameControl.setText(result.getNames().first())
+    }
+  }
+
+  private Int createId() {
+    return IntegerClass.parseInt($idControl.getText())
+  }
+
+  private String createName() {
+    return $nameControl.getText()
+  }
+
+  private List<SlimeEquivalent> createEquivalents() {
+    List<SlimeEquivalent> equivalents = ArrayList.new()
+    String punctuationPattern = /\s*(${$dictionary.getPunctuations().join("|")})\s*/
+    for (Int i = 0 ; i < $equivalentTitleControls.size() ; i ++) {
+      String title = $equivalentTitleControls[i].getValue()
+      List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
+      if (!equivalentNames.isEmpty()) {
+        equivalents.add(SlimeEquivalent.new(title, equivalentNames))
+      }
+    }
+    return equivalents
+  }
+
+  private List<String> createTags() {
+    List<String> tags = ArrayList.new()
+    for (Int i = 0 ; i < $tagControls.size() ; i ++) {
+      String tag = $tagControls[i].getValue()
+      if (tag != "") {
+        tags.add(tag)
+      }
+    }
+    return tags
+  }
+
+  private List<SlimeInformation> createInformations() {
+    List<SlimeInformation> informations = ArrayList.new()
+    for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
+      String title = $informationTitleControls[i].getValue()
+      String text = $informationTextControls[i].getText()
+      if (text != "") {
+        informations.add(SlimeInformation.new(title, text))
+      }
+    }
+    return informations
+  }
+
+  private List<SlimeVariation> createVariations() {
+    List<SlimeVariation> variations = ArrayList.new()
+    String punctuationPattern = /\s*(${$dictionary.getPunctuations().join("|")})\s*/
+    for (Int i = 0 ; i < $variationTitleControls.size() ; i ++) {
+      String title = $variationTitleControls[i].getValue()
+      List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
+      for (String variationName : variationNames) {
+        if (variationName != "") {
+          variations.add(SlimeVariation.new(title, variationName))
+        }
+      }
+    }
+    return variations
+  }
+
+  // 入力された情報から関連語オブジェクトのリストを生成します。
+  // 同時に相互参照依頼のデータを更新します。
+  private List<SlimeRelation> createRelations() {
+    List<SlimeRelation> relations = ArrayList.new()
+    for (Int i = 0 ; i < $relationTitleControls.size() ; i ++) {
+      String title = $relationTitleControls[i].getValue()
+      SlimeRelation relation = $relations[i]
+      Node box = $relationBox.getChildren()[i]
+      if (relation != null) {
+        relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+      }
+      for (RelationRequest request : $relationRequests) {
+        if (request.getBox() == box) {
+          request.getRelation().setTitle(title)
+        }
+      }
+    }
+    return relations
+  }
+
+  private void requestRelations(Int id, String name) {
+    for (RelationRequest request : $relationRequests) {
+      if (request.getRelation().getTitle() != null) {
+        request.getRelation().setId(id)
+        request.getRelation().setName(name)
+        $dictionary.requestRelation(request)
+      }
     }
   }
 
