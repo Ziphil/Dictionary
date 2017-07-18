@@ -270,6 +270,7 @@
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
@@ -292,7 +293,15 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。&#10;無効の場合は相互参照にはならずに編集が完了します。"/>
+            <HelpIndicator text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。&#10;無効の場合は、相互参照にはならずに編集が完了します。"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$asksDuplicateNameControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="単語を編集したときに、同じ単語がすでに登録されていることを通知するダイアログを表示します。&#10;無効の場合は、別の単語データとして保存されます。"/>
           </HBox>
         </GridPane>
       </Tab>

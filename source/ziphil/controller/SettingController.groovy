@@ -66,6 +66,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
   @FXML private SwitchButton $asksMutualRelationControl
+  @FXML private SwitchButton $asksDuplicateNameControl
   @FXML private SwitchButton $persistsPanesControl
 
   public SettingController(UtilityStage<BooleanClass> nextStage) {
@@ -105,6 +106,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
+    Boolean asksDuplicateName = setting.getAsksDuplicateName()
     Boolean persistsPanes = setting.getPersistsPanes()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
@@ -152,6 +154,7 @@ public class SettingController extends Controller<BooleanClass> {
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
+    $asksDuplicateNameControl.setSelected(asksDuplicateName)
     $persistsPanesControl.setSelected(persistsPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
@@ -186,6 +189,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
+    Boolean asksDuplicateName = $asksDuplicateNameControl.isSelected()
     Boolean persistsPanes = $persistsPanesControl.isSelected()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
@@ -209,6 +213,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setAsksMutualRelation(asksMutualRelation)
+    setting.setAsksDuplicateName(asksDuplicateName)
     setting.setPersistsPanes(persistsPanes)
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
