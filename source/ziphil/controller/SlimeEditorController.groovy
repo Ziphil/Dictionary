@@ -822,7 +822,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 
 
   @InnerClass @Ziphilify
-  private static class RelationRequest extends SlimeRelationRequest {
+  private static class RelationRequest implements SlimeRelationRequest {
 
     private SlimeWord $word
     private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
