@@ -96,11 +96,16 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
 
   private void addEquivalentNode(TextFlow pane, String title, List<String> equivalents) {
     Label titleText = Label.new(title)
-    Text equivalentText = Text.new(" " + equivalents.join($dictionary.firstPunctuation()))
+    Text spaceText = Text.new(" ")
+    Text equivalentText = Text.new(equivalents.join($dictionary.firstPunctuation()))
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    pane.getChildren().addAll(titleText, equivalentText, breakText)
+    if (title != "") {
+      pane.getChildren().addAll(titleText, spaceText, equivalentText, breakText)
+    } else {
+      pane.getChildren().addAll(equivalentText, spaceText)
+    }
   }
 
   private void addInformationNode(TextFlow pane, String title, String information) {
