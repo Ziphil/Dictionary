@@ -407,6 +407,15 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return $words.any{it != excludedWord && it.getId() == id}
   }
 
+  public SlimeWord findName(String name, SlimeWord excludedWord) {
+    for (SlimeWord word : $words) {
+      if (word != excludedWord && word.getName() == name) {
+        return word
+      }
+    }
+    return null
+  }
+
   public String firstPunctuation() {
     String punctuation = $punctuations[0] ?: ""
     if (punctuation == ",") {
