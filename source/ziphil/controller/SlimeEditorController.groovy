@@ -30,6 +30,7 @@ import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UnfocusableButton
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeEquivalent
 import ziphil.dictionary.slime.SlimeInformation
@@ -43,7 +44,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeEditorController extends Controller<BooleanClass> {
+public class SlimeEditorController extends Controller<WordEditResult> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -75,7 +76,7 @@ public class SlimeEditorController extends Controller<BooleanClass> {
   private Boolean $normal
   private List<RelationRequest> $relationRequests = ArrayList.new()
 
-  public SlimeEditorController(UtilityStage<BooleanClass> nextStage) {
+  public SlimeEditorController(UtilityStage<WordEditResult> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
@@ -215,7 +216,8 @@ public class SlimeEditorController extends Controller<BooleanClass> {
             $dictionary.requestRelation(request)
           }
         }
-        $stage.commit(true)
+        WordEditResult result = WordEditResult.new($word)
+        $stage.commit(result)
       } else {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)

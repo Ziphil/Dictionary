@@ -70,6 +70,7 @@ import ziphil.dictionary.SearchType
 import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -357,7 +358,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void modifyWord(Element word) {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
-        UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -376,8 +377,8 @@ public class MainController extends PrimitiveController<Stage> {
         $openStages.add(nextStage)
         nextStage.showAndWait()
         $openStages.remove(nextStage)
-        if (nextStage.isCommitted() && nextStage.getResult()) {
-          $dictionary.modifyWord(oldWord, word)
+        if (nextStage.isCommitted()) {
+          $dictionary.modifyWord(oldWord, nextStage.getResult().getWord())
           $wordView.refresh()
         }
       }
@@ -408,7 +409,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void addWord() {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       Word newWord
-      UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
@@ -433,8 +434,8 @@ public class MainController extends PrimitiveController<Stage> {
       $openStages.add(nextStage)
       nextStage.showAndWait()
       $openStages.remove(nextStage)
-      if (nextStage.isCommitted() && nextStage.getResult()) {
-        $dictionary.addWord(newWord)
+      if (nextStage.isCommitted()) {
+        $dictionary.addWord(nextStage.getResult().getWord())
       }
     }
   }
@@ -443,7 +444,7 @@ public class MainController extends PrimitiveController<Stage> {
     if ($dictionary != null && $dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
-        UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -467,8 +468,8 @@ public class MainController extends PrimitiveController<Stage> {
         $openStages.add(nextStage)
         nextStage.showAndWait()
         $openStages.remove(nextStage)
-        if (nextStage.isCommitted() && nextStage.getResult()) {
-          $dictionary.addWord(newWord)
+        if (nextStage.isCommitted()) {
+          $dictionary.addWord(nextStage.getResult().getWord())
         }
       }
     }

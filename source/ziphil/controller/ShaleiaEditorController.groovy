@@ -10,13 +10,14 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaEditorController extends Controller<BooleanClass> {
+public class ShaleiaEditorController extends Controller<WordEditResult> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -27,7 +28,7 @@ public class ShaleiaEditorController extends Controller<BooleanClass> {
   @FXML private TextArea $descriptionControl
   private ShaleiaWord $word
 
-  public ShaleiaEditorController(UtilityStage<BooleanClass> stage) {
+  public ShaleiaEditorController(UtilityStage<WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
@@ -53,7 +54,8 @@ public class ShaleiaEditorController extends Controller<BooleanClass> {
     $word.setUniqueName($nameControl.getText())
     $word.setDescription($descriptionControl.getText())
     $word.update()
-    $stage.commit(true)
+    WordEditResult result = WordEditResult.new($word)
+    $stage.commit(result)
   }
 
   private void setupShortcuts() {

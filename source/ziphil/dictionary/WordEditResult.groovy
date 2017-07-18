@@ -5,25 +5,25 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class WordEditResult<W extends Word> {
+public class WordEditResult {
 
-  private W $word
-  private W $removedWord
+  private Word $word
+  private Word $removedWord
 
-  public WordEditResult(W word) {
+  public WordEditResult(Word word) {
     $word = word
   }
 
-  public WordEditResult(W word, W removedWord) {
+  public WordEditResult(Word word, Word removedWord) {
     $word = word
     $removedWord = removedWord
   }
 
-  public W getWord() {
+  public Word getWord() {
     return $word
   }
 
-  public W getRemovedWord() {
+  public Word getRemovedWord() {
     return $removedWord
   }
 

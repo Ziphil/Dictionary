@@ -24,6 +24,7 @@ import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.AlphabetOrderType
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -176,12 +177,15 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   private void editDefaultWord() {
     SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.createWord(null)
-    UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     controller.prepare(defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      $defaultWord = (SlimeWord)nextStage.getResult().getWord()
+    }
   }
 
   private void editSearchParameter(Int index) {
