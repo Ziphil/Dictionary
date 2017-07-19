@@ -114,22 +114,49 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 
   @FXML
   protected void commit() {
-    Boolean ignoresDuplicateId = Setting.getInstance().getIgnoresDuplicateSlimeId()
+    Setting setting = Setting.getInstance()
+    Boolean ignoresDuplicateId = setting.getIgnoresDuplicateSlimeId()
+    Boolean asksDuplicateName = setting.getAsksDuplicateName()
     try {
       Int id = createId()
       String name = createName()
       if (ignoresDuplicateId || !$normal || !$dictionary.containsId(id, $word)) {
-        $word.setId(id)
-        $word.setName(name)
-        $word.setRawEquivalents(createEquivalents())
-        $word.setTags(createTags())
-        $word.setInformations(createInformations())
-        $word.setVariations(createVariations())
-        $word.setRelations(createRelations())
-        $word.update()
-        requestRelations(id, name)
-        WordEditResult result = WordEditResult.new($word)
-        $stage.commit(result)
+        Boolean committed = true
+        SlimeWord removedWord = null
+        if ($normal && asksDuplicateName) {
+          SlimeWord otherWord = $dictionary.findName(name, $word)
+          if (otherWord != null) {
+            Dialog dialog = Dialog.new(StageStyle.UTILITY)
+            dialog.initOwner($stage)
+            dialog.setTitle("重複単語名の確認")
+            dialog.setContentText("この単語名はすでに登録されています。このまま別単語として登録しますか? それとも1つの単語に統合しますか?")
+            dialog.setCommitText("別単語")
+            dialog.setNegateText("統合")
+            dialog.setAllowsNegate(true)
+            dialog.showAndWait()
+            if (dialog.isNegated()) {
+              removedWord = otherWord
+            } else if (dialog.isCancelled()) {
+              committed = false
+            }
+          }
+        }
+        if (committed) {
+          $word.setId(id)
+          $word.setName(name)
+          $word.setRawEquivalents(createEquivalents())
+          $word.setTags(createTags())
+          $word.setInformations(createInformations())
+          $word.setVariations(createVariations())
+          $word.setRelations(createRelations())
+          if (removedWord != null) {
+            $word.merge(removedWord)
+          }
+          $word.update()
+          requestRelations(id, name)
+          WordEditResult result = WordEditResult.new($word, removedWord)
+          $stage.commit(result)
+        }
       } else {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)

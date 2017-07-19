@@ -378,7 +378,11 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         $openStages.remove(nextStage)
         if (nextStage.isCommitted()) {
-          $dictionary.modifyWord(oldWord, nextStage.getResult().getWord())
+          WordEditResult result = nextStage.getResult()
+          $dictionary.modifyWord(oldWord, result.getWord())
+          if (result.getRemovedWord() != null) {
+            $dictionary.removeWord(result.getRemovedWord())
+          }
           $wordView.refresh()
         }
       }
@@ -435,7 +439,11 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
-        $dictionary.addWord(nextStage.getResult().getWord())
+        WordEditResult result = nextStage.getResult()
+        $dictionary.addWord(result.getWord())
+        if (result.getRemovedWord() != null) {
+          $dictionary.removeWord(result.getRemovedWord())
+        }
       }
     }
   }
@@ -469,7 +477,11 @@ public class MainController extends PrimitiveController<Stage> {
         nextStage.showAndWait()
         $openStages.remove(nextStage)
         if (nextStage.isCommitted()) {
-          $dictionary.addWord(nextStage.getResult().getWord())
+          WordEditResult result = nextStage.getResult()
+          $dictionary.addWord(result.getWord())
+          if (result.getRemovedWord() != null) {
+            $dictionary.removeWord(result.getRemovedWord())
+          }
         }
       }
     }
