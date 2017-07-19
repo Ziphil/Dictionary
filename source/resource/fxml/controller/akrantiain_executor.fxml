@@ -39,7 +39,7 @@
         <ColumnConstraints hgrow="never"/>
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
-      <Label text="snojファイル:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Label text="入力:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
       <Label text="結果:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
