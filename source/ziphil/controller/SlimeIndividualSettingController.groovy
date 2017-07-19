@@ -183,9 +183,6 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     nextStage.initOwner($stage)
     controller.prepare(defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      $defaultWord = (SlimeWord)nextStage.getResult().getWord()
-    }
   }
 
   private void editSearchParameter(Int index) {
