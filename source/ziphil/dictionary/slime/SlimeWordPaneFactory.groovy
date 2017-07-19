@@ -104,7 +104,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     if (title != "") {
       pane.getChildren().addAll(titleText, spaceText, equivalentText, breakText)
     } else {
-      pane.getChildren().addAll(equivalentText, spaceText)
+      pane.getChildren().addAll(equivalentText, breakText)
     }
   }
 
