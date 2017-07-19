@@ -84,6 +84,7 @@ public class SettingController extends Controller<BooleanClass> {
     setupFontFamilyControls()
     setupIntegerControls()
     bindFontControlProperties()
+    bindMainWindowSizeControlProperties()
     applySettings()
   }
 
@@ -326,6 +327,11 @@ public class SettingController extends Controller<BooleanClass> {
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
     $systemFontFamilyControl.disableProperty().bind($usesDefaultSystemFontFamilyControl.selectedProperty())
+  }
+
+  private void bindMainWindowSizeControlProperties() {
+    $mainWindowWidthControl.disableProperty().bind($preservesMainWindowSizeControl.selectedProperty())
+    $mainWindowHeightControl.disableProperty().bind($preservesMainWindowSizeControl.selectedProperty())
   }
 
 }
