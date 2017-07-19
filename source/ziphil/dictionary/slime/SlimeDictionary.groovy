@@ -128,6 +128,24 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
+  public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
+    for (SlimeWord otherWord : $words) {
+      Boolean changed = false
+      for (SlimeRelation relation : otherWord.getRelations()) {
+        if (relation.getId() == removedWord.getId()) {
+          relation.setId(mergedWord.getId())
+          relation.setName(mergedWord.getName())
+          changed = true
+        }
+      }
+      if (changed) {
+        otherWord.change()
+      }
+    }
+    $words.remove(removedWord)
+    updateOnBackground()
+  }
+
   public void requestRelation(SlimeRelationRequest request) {
     $relationRequests.add(request)
   }

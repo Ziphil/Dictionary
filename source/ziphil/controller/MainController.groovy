@@ -379,7 +379,7 @@ public class MainController extends PrimitiveController<Stage> {
           WordEditResult result = nextStage.getResult()
           $dictionary.modifyWord(oldWord, result.getWord())
           if (result.getRemovedWord() != null) {
-            $dictionary.removeWord(result.getRemovedWord())
+            $dictionary.mergeWord(result.getWord(), result.getRemovedWord())
           }
           $wordView.refresh()
         }
@@ -440,7 +440,7 @@ public class MainController extends PrimitiveController<Stage> {
         WordEditResult result = nextStage.getResult()
         $dictionary.addWord(result.getWord())
         if (result.getRemovedWord() != null) {
-          $dictionary.removeWord(result.getRemovedWord())
+          $dictionary.mergeWord(result.getWord(), result.getRemovedWord())
         }
       }
     }
@@ -478,7 +478,7 @@ public class MainController extends PrimitiveController<Stage> {
           WordEditResult result = nextStage.getResult()
           $dictionary.addWord(result.getWord())
           if (result.getRemovedWord() != null) {
-            $dictionary.removeWord(result.getRemovedWord())
+            $dictionary.mergeWord(result.getWord(), result.getRemovedWord())
           }
         }
       }

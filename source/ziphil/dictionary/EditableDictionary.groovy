@@ -16,6 +16,8 @@ public interface EditableDictionary<W extends Word, V extends Word> {
 
   public void removeWord(V word)
 
+  public void mergeWord(V mergedWord, V removedWord)
+
   public V createWord(String defaultName)
 
   public V copyWord(W oldWord)

@@ -54,6 +54,11 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
+  public void mergeWord(PersonalWord mergedWord, PersonalWord removedWord) {
+    $words.remove(removedWord)
+    $changed = true
+  }
+
   public void update() {
     $changed = true
   }
