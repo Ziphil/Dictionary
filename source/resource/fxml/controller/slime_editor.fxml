@@ -144,7 +144,7 @@
               <Button text="＋" onAction="#insertVariationControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="関連語" animated="false" contentDisplay="right">
+          <TitledPane fx:id="$relationPane" text="関連語" animated="false" contentDisplay="right">
             <graphic>
               <HelpIndicator text="右側の欄には、類義語や対義語などのこの単語に関連する単語を選択してください。&#10;すでに辞書に登録されている単語しか選べないので注意してください。&#10;左側の欄には、「類義語」などのようにどのように関連しているかを入力してください。"/>
             </graphic>

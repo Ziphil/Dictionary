@@ -26,7 +26,7 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   @FXML private TextField $descriptionControl
   @FXML private ComboBox<SearchType> $descriptionSearchTypeControl
 
-  public ShaleiaSearcherController(UtilityStage<ShaleiaSearchParameter> stage) {
+  public ShaleiaSearcherController(UtilityStage<? super ShaleiaSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

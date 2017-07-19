@@ -14,13 +14,14 @@ import javafx.scene.input.KeyEvent
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalEditorController extends Controller<BooleanClass> {
+public class PersonalEditorController extends Controller<WordEditResult> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/personal_editor.fxml"
   private static final String TITLE = "単語編集"
@@ -36,7 +37,7 @@ public class PersonalEditorController extends Controller<BooleanClass> {
   @FXML private CheckBox $modificationControl
   private PersonalWord $word
 
-  public PersonalEditorController(UtilityStage<BooleanClass> stage) {
+  public PersonalEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()
@@ -47,7 +48,7 @@ public class PersonalEditorController extends Controller<BooleanClass> {
     setupLevelControl()
   }
 
-  public void prepare(PersonalWord word, Boolean editsEmptyWord) {
+  public void prepare(PersonalWord word, Boolean empty) {
     $word = word
     $nameControl.setText(word.getName())
     $pronunciationControl.setText(word.getPronunciation())
@@ -56,7 +57,7 @@ public class PersonalEditorController extends Controller<BooleanClass> {
     $levelControl.getValueFactory().setValue(word.getLevel())
     $memoryControl.setSelected(word.getMemory() == 1)
     $modificationControl.setSelected(word.getModification() == 1)
-    if (editsEmptyWord) {
+    if (empty) {
       $nameControl.requestFocus()
     } else {
       $translationControl.requestFocus()
@@ -77,7 +78,8 @@ public class PersonalEditorController extends Controller<BooleanClass> {
     $word.setMemory(($memoryControl.isSelected()) ? 1 : 0)
     $word.setModification(($modificationControl.isSelected()) ? 1 : 0)
     $word.update()
-    $stage.commit(true)
+    WordEditResult result = WordEditResult.new($word)
+    $stage.commit(result)
   }
 
   private void setupShortcuts() {

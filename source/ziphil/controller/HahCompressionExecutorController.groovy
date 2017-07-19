@@ -35,7 +35,7 @@ public class HahCompressionExecutorController extends Controller<Void> {
   @FXML private CheckBox $usesUnicodeOrderControl
   private String $dictionaryAlphabetOrder = null
 
-  public HahCompressionExecutorController(UtilityStage<Void> stage) {
+  public HahCompressionExecutorController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

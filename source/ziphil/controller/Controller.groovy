@@ -7,20 +7,20 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class Controller<T> extends PrimitiveController<UtilityStage<T>> {
+public class Controller<T> extends PrimitiveController<UtilityStage<? super T>> {
 
-  public Controller(UtilityStage<T> stage) {
+  public Controller(UtilityStage<? super T> stage) {
     super(stage)
   }
 
   @FXML
   protected void commit() {
-    ((UtilityStage<T>)$stage).commit(null)
+    ((UtilityStage<? super T>)$stage).commit(null)
   }
 
   @FXML
   protected void cancel() {
-    ((UtilityStage<T>)$stage).cancel()
+    ((UtilityStage<? super T>)$stage).cancel()
   }
 
 }

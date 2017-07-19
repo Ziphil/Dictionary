@@ -20,7 +20,7 @@ public class EquivalentCollectionController extends Controller<Void> {
 
   @FXML private ListView<String> $equivalentView
 
-  public EquivalentCollectionController(UtilityStage<Void> stage) {
+  public EquivalentCollectionController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

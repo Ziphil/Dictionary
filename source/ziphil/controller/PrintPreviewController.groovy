@@ -32,7 +32,7 @@ public class PrintPreviewController extends Controller<Void> {
   private PrinterJob $printerJob
   private PageBuilder $pageBuilder
 
-  public PrintPreviewController(UtilityStage<Void> stage) {
+  public PrintPreviewController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

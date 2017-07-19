@@ -46,29 +46,33 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $editorFontSizeControl
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
-  @FXML private ComboBox<String> $systemFontFamilyControl
-  @FXML private CheckBox $usesDefaultSystemFontFamilyControl
   @FXML private Spinner<IntegerClass> $lineSpacingControl
-  @FXML private Spinner<IntegerClass> $separativeIntervalControl
-  @FXML private ComboBox<ScriptEngineFactory> $scriptControl
-  @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
-  @FXML private ComboBox<ClickType> $linkClickTypeControl
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
-  @FXML private GridPane $registeredDictionaryPane
-  @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
-  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
-  @FXML private SwitchButton $savesAutomaticallyControl
+  @FXML private Spinner<IntegerClass> $mainWindowWidthControl
+  @FXML private Spinner<IntegerClass> $mainWindowHeightControl
+  @FXML private CheckBox $preservesMainWindowSizeControl
+  @FXML private ComboBox<String> $systemFontFamilyControl
+  @FXML private CheckBox $usesDefaultSystemFontFamilyControl
+  @FXML private ComboBox<FontRenderingType> $fontRenderingTypeControl
   @FXML private SwitchButton $ignoresAccentControl
   @FXML private SwitchButton $ignoresCaseControl
   @FXML private SwitchButton $searchesPrefixControl
+  @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
   @FXML private SwitchButton $asksMutualRelationControl
+  @FXML private SwitchButton $asksDuplicateNameControl
+  @FXML private SwitchButton $savesAutomaticallyControl
   @FXML private SwitchButton $persistsPanesControl
+  @FXML private Spinner<IntegerClass> $separativeIntervalControl
+  @FXML private ComboBox<ClickType> $linkClickTypeControl
+  @FXML private GridPane $registeredDictionaryPane
+  @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
+  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
 
-  public SettingController(UtilityStage<BooleanClass> nextStage) {
+  public SettingController(UtilityStage<? super BooleanClass> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
@@ -80,6 +84,7 @@ public class SettingController extends Controller<BooleanClass> {
     setupFontFamilyControls()
     setupIntegerControls()
     bindFontControlProperties()
+    bindMainWindowSizeControlProperties()
     applySettings()
   }
 
@@ -89,23 +94,27 @@ public class SettingController extends Controller<BooleanClass> {
     Int contentFontSize = setting.getContentFontSize()
     String editorFontFamily = setting.getEditorFontFamily()
     Int editorFontSize = setting.getEditorFontSize()
-    String systemFontFamily = setting.getSystemFontFamily()
     Int lineSpacing = setting.getLineSpacing()
-    Int separativeInterval = setting.getSeparativeInterval()
-    String scriptName = setting.getScriptName()
-    FontRenderingType fontRenderingType = setting.getFontRenderingType()
-    ClickType linkClickType = setting.getLinkClickType()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
-    Boolean savesAutomatically = setting.getSavesAutomatically()
+    Int mainWindowWidth = setting.getMainWindowWidth()
+    Int mainWindowHeight = setting.getMainWindowHeight()
+    Boolean preservesMainWindowSize = setting.getPreservesMainWindowSize()
+    String systemFontFamily = setting.getSystemFontFamily()
+    FontRenderingType fontRenderingType = setting.getFontRenderingType()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
+    String scriptName = setting.getScriptName()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
+    Boolean asksDuplicateName = setting.getAsksDuplicateName()
+    Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean persistsPanes = setting.getPersistsPanes()
+    Int separativeInterval = setting.getSeparativeInterval()
+    ClickType linkClickType = setting.getLinkClickType()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
     if (contentFontFamily != null) {
@@ -128,31 +137,35 @@ public class SettingController extends Controller<BooleanClass> {
     } else {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
+    $lineSpacingControl.getValueFactory().setValue(lineSpacing)
+    $modifiesPunctuationControl.setSelected(modifiesPunctuation)
+    $keepsMainOnTopControl.setSelected(keepsMainOnTop)
+    $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
+    $mainWindowWidthControl.getValueFactory().setValue(mainWindowWidth)
+    $mainWindowHeightControl.getValueFactory().setValue(mainWindowHeight)
+    $preservesMainWindowSizeControl.setSelected(preservesMainWindowSize)
     if (systemFontFamily != null) {
       $systemFontFamilyControl.getSelectionModel().select(systemFontFamily)
     } else {
       $usesDefaultSystemFontFamilyControl.setSelected(true)
     }
+    $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
+    $ignoresAccentControl.setSelected(ignoresAccent)
+    $ignoresCaseControl.setSelected(ignoresCase)
+    $searchesPrefixControl.setSelected(searchesPrefix)
     for (ScriptEngineFactory scriptEngineFactory : $scriptControl.getItems()) {
       if (scriptEngineFactory.getNames().contains(scriptName)) {
         $scriptControl.getSelectionModel().select(scriptEngineFactory)
       }
     }
-    $lineSpacingControl.getValueFactory().setValue(lineSpacing)
-    $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
-    $fontRenderingTypeControl.getSelectionModel().select(fontRenderingType)
-    $linkClickTypeControl.getSelectionModel().select(linkClickType)
-    $modifiesPunctuationControl.setSelected(modifiesPunctuation)
-    $keepsMainOnTopControl.setSelected(keepsMainOnTop)
-    $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
-    $savesAutomaticallyControl.setSelected(savesAutomatically)
-    $ignoresAccentControl.setSelected(ignoresAccent)
-    $ignoresCaseControl.setSelected(ignoresCase)
-    $searchesPrefixControl.setSelected(searchesPrefix)
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
+    $asksDuplicateNameControl.setSelected(asksDuplicateName)
+    $savesAutomaticallyControl.setSelected(savesAutomatically)
     $persistsPanesControl.setSelected(persistsPanes)
+    $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
+    $linkClickTypeControl.getSelectionModel().select(linkClickType)
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
@@ -169,47 +182,55 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean usesDefaultEditorFontSize = $usesDefaultEditorFontSizeControl.isSelected()
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getValue()
     Int editorFontSize = (usesDefaultEditorFontSize) ? -1 : $editorFontSizeControl.getValue()
-    Boolean usesDefaultSystemFontFamily = $usesDefaultSystemFontFamilyControl.isSelected()
-    String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getValue()
     Int lineSpacing = $lineSpacingControl.getValue()
-    Int separativeInterval = $separativeIntervalControl.getValue()
-    String scriptName = $scriptControl.getValue().getNames()[0]
-    FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
-    ClickType linkClickType = $linkClickTypeControl.getValue()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
-    Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
+    Int mainWindowWidth = $mainWindowWidthControl.getValue()
+    Int mainWindowHeight = $mainWindowHeightControl.getValue()
+    Boolean preservesMainWindowSize = $preservesMainWindowSizeControl.isSelected()
+    Boolean usesDefaultSystemFontFamily = $usesDefaultSystemFontFamilyControl.isSelected()
+    String systemFontFamily = (usesDefaultSystemFontFamily) ? null : $systemFontFamilyControl.getValue()
+    FontRenderingType fontRenderingType = $fontRenderingTypeControl.getValue()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
+    String scriptName = $scriptControl.getValue().getNames()[0]
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
+    Boolean asksDuplicateName = $asksDuplicateNameControl.isSelected()
+    Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean persistsPanes = $persistsPanesControl.isSelected()
+    Int separativeInterval = $separativeIntervalControl.getValue()
+    ClickType linkClickType = $linkClickTypeControl.getValue()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
     setting.setContentFontFamily(contentFontFamily)
     setting.setContentFontSize(contentFontSize)
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
-    setting.setSystemFontFamily(systemFontFamily)
     setting.setLineSpacing(lineSpacing)
-    setting.setSeparativeInterval(separativeInterval)
-    setting.setScriptName(scriptName)
-    setting.setFontRenderingType(fontRenderingType)
-    setting.setLinkClickType(linkClickType)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
-    setting.setSavesAutomatically(savesAutomatically)
+    setting.setMainWindowWidth(mainWindowWidth)
+    setting.setMainWindowHeight(mainWindowHeight)
+    setting.setPreservesMainWindowSize(preservesMainWindowSize)
+    setting.setSystemFontFamily(systemFontFamily)
+    setting.setFontRenderingType(fontRenderingType)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)
     setting.setSearchesPrefix(searchesPrefix)
+    setting.setScriptName(scriptName)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setAsksMutualRelation(asksMutualRelation)
+    setting.setAsksDuplicateName(asksDuplicateName)
+    setting.setSavesAutomatically(savesAutomatically)
     setting.setPersistsPanes(persistsPanes)
+    setting.setSeparativeInterval(separativeInterval)
+    setting.setLinkClickType(linkClickType)
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
@@ -306,6 +327,11 @@ public class SettingController extends Controller<BooleanClass> {
     $editorFontFamilyControl.disableProperty().bind($usesSystemEditorFontFamilyControl.selectedProperty())
     $editorFontSizeControl.disableProperty().bind($usesDefaultEditorFontSizeControl.selectedProperty())
     $systemFontFamilyControl.disableProperty().bind($usesDefaultSystemFontFamilyControl.selectedProperty())
+  }
+
+  private void bindMainWindowSizeControlProperties() {
+    $mainWindowWidthControl.disableProperty().bind($preservesMainWindowSizeControl.selectedProperty())
+    $mainWindowHeightControl.disableProperty().bind($preservesMainWindowSizeControl.selectedProperty())
   }
 
 }

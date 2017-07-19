@@ -31,7 +31,7 @@ public class ZatlinExecutorController extends Controller<Void> {
   private Zatlin $zatlin = null
   private FileStringChooserController.Result $result = null
 
-  public ZatlinExecutorController(UtilityStage<Void> stage) {
+  public ZatlinExecutorController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

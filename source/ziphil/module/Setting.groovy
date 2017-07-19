@@ -38,12 +38,15 @@ public class Setting {
   private String $systemFontFamily
   private Int $lineSpacing = 0
   private Int $separativeInterval = 700
+  private Int $mainWindowWidth = 720
+  private Int $mainWindowHeight = 720
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
   private Boolean $keepsMainOnTop = false
   private Boolean $keepsEditorOnTop = true
+  private Boolean $preservesMainWindowSize = false
   private Boolean $savesAutomatically = false
   private Boolean $ignoresAccent = false
   private Boolean $ignoresCase = false
@@ -51,6 +54,7 @@ public class Setting {
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private Boolean $asksMutualRelation = true
+  private Boolean $asksDuplicateName = true
   private Boolean $persistsPanes = false
   private String $password = ""
   private Version $version = Version.new(-1, 0, 0)
@@ -268,6 +272,22 @@ public class Setting {
     $separativeInterval = separativeInterval
   }
 
+  public Int getMainWindowWidth() {
+    return $mainWindowWidth
+  }
+
+  public void setMainWindowWidth(Int mainWindowWidth) {
+    $mainWindowWidth = mainWindowWidth
+  }
+
+  public Int getMainWindowHeight() {
+    return $mainWindowHeight
+  }
+
+  public void setMainWindowHeight(Int mainWindowHeight) {
+    $mainWindowHeight = mainWindowHeight
+  }
+
   public String getScriptName() {
     return $scriptName
   }
@@ -314,6 +334,14 @@ public class Setting {
 
   public void setKeepsEditorOnTop(Boolean keepsEditorOnTop) {
     $keepsEditorOnTop = keepsEditorOnTop
+  }
+
+  public Boolean getPreservesMainWindowSize() {
+    return $preservesMainWindowSize
+  }
+
+  public void setPreservesMainWindowSize(Boolean preservesMainWindowSize) {
+    $preservesMainWindowSize = preservesMainWindowSize
   }
 
   public Boolean getSavesAutomatically() {
@@ -370,6 +398,14 @@ public class Setting {
 
   public void setAsksMutualRelation(Boolean asksMutualRelation) {
     $asksMutualRelation = asksMutualRelation
+  }
+
+  public Boolean getAsksDuplicateName() {
+    return $asksDuplicateName
+  }
+
+  public void setAsksDuplicateName(Boolean asksDuplicateName) {
+    $asksDuplicateName = asksDuplicateName
   }
 
   public Boolean getPersistsPanes() {

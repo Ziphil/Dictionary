@@ -20,7 +20,7 @@ public class ApplicationInformationController extends Controller<Void> {
   @FXML private Label $versionLabel
   @FXML private Label $copyrightLabel
 
-  public ApplicationInformationController(UtilityStage<Void> stage) {
+  public ApplicationInformationController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

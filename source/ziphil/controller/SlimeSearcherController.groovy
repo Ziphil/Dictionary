@@ -19,7 +19,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_searcher.fxml"
   private static final String TITLE = "高度な検索"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(560)
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $idControl
@@ -35,7 +35,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private SlimeDictionary $dictionary
   private SlimeSearchParameter $searchParameter
 
-  public SlimeSearcherController(UtilityStage<SlimeSearchParameter> stage) {
+  public SlimeSearcherController(UtilityStage<? super SlimeSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

@@ -128,6 +128,24 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
+  public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
+    for (SlimeWord otherWord : $words) {
+      Boolean changed = false
+      for (SlimeRelation relation : otherWord.getRelations()) {
+        if (relation.getId() == removedWord.getId()) {
+          relation.setId(mergedWord.getId())
+          relation.setName(mergedWord.getName())
+          changed = true
+        }
+      }
+      if (changed) {
+        otherWord.change()
+      }
+    }
+    $words.remove(removedWord)
+    updateOnBackground()
+  }
+
   public void requestRelation(SlimeRelationRequest request) {
     $relationRequests.add(request)
   }
@@ -305,6 +323,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeWord word = prepareCopyWord($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
+    word.getRelations().clear()
     word.setDictionary(this)
     word.update()
     return word
@@ -405,6 +424,15 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public Boolean containsId(Int id, SlimeWord excludedWord) {
     return $words.any{it != excludedWord && it.getId() == id}
+  }
+
+  public SlimeWord findName(String name, SlimeWord excludedWord) {
+    for (SlimeWord word : $words) {
+      if (word != excludedWord && word.getName() == name) {
+        return word
+      }
+    }
+    return null
   }
 
   public String firstPunctuation() {

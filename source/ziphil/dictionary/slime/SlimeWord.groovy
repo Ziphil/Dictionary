@@ -81,6 +81,16 @@ public class SlimeWord extends WordBase {
     }
   }
 
+  // word に渡された単語オブジェクトの ID と単語名以外のデータを、このオブジェクトに追加します。
+  // このメソッドは、セッターと同様にオブジェクトの内部データの更新を行わないので、一連の更新処理が終わった後は必ず update メソッドを呼んでください。 
+  public void merge(SlimeWord word) {
+    $rawEquivalents.addAll(word.getRawEquivalents())
+    $tags.addAll(word.getTags())
+    $informations.addAll(word.getInformations())
+    $variations.addAll(word.getVariations())
+    $relations.addAll(word.getRelations())
+  }
+
   public List<SlimeInformation> sortedInformations() {
     List<SlimeInformation> sortedInformations = ArrayList.new($informations)
     if ($dictionary.getPronunciationTitle() != null) {

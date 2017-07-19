@@ -38,7 +38,7 @@ public class SlimeWordChooserController extends Controller<SlimeWord> {
   @FXML private ToggleButton $searchTypeControl
   private SlimeDictionary $dictionary
 
-  public SlimeWordChooserController(UtilityStage<SlimeWord> stage) {
+  public SlimeWordChooserController(UtilityStage<? super SlimeWord> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }
