@@ -123,7 +123,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       if (ignoresDuplicateId || !$normal || !$dictionary.containsId(id, $word)) {
         Boolean committed = true
         SlimeWord removedWord = null
-        if ($normal && asksDuplicateName) {
+        if (asksDuplicateName && $normal) {
           SlimeWord otherWord = $dictionary.findName(name, $word)
           if (otherWord != null) {
             Dialog dialog = Dialog.new(StageStyle.UTILITY)
