@@ -41,7 +41,7 @@ public class PrintController extends Controller<Void> {
   private List<Element> $words
   private PrinterJob $printerJob = PrinterJob.createPrinterJob()
 
-  public PrintController(UtilityStage<Void> stage) {
+  public PrintController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

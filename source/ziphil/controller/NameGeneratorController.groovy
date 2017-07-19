@@ -52,7 +52,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private String $zatlinSource = ""
   private Boolean $usesCollection
 
-  public NameGeneratorController(UtilityStage<NameGeneratorController.Result> stage) {
+  public NameGeneratorController(UtilityStage<? super NameGeneratorController.Result> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

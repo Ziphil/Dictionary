@@ -22,7 +22,7 @@ public class SentenceSearchResultController extends Controller<Void> {
 
   @FXML private ListView<SentenceSearcher.Result> $resultView
 
-  public SentenceSearchResultController(UtilityStage<Void> stage) {
+  public SentenceSearchResultController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }

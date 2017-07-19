@@ -25,7 +25,7 @@ public class DictionaryChooserController extends Controller<File> {
 
   @FXML private FileChooser $chooser
 
-  public DictionaryChooserController(UtilityStage<File> stage) {
+  public DictionaryChooserController(UtilityStage<? super File> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }

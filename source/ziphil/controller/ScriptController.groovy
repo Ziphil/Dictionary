@@ -21,7 +21,7 @@ public class ScriptController extends Controller<ScriptSearchParameter> {
 
   @FXML private TextArea $scriptControl
 
-  public ScriptController(UtilityStage<ScriptSearchParameter> stage) {
+  public ScriptController(UtilityStage<? super ScriptSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

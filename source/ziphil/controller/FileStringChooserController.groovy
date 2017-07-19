@@ -28,7 +28,7 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   @FXML private FileChooser $fileChooser
   @FXML private TextArea $stringControl
 
-  public FileStringChooserController(UtilityStage<FileStringChooserController.Result> stage) {
+  public FileStringChooserController(UtilityStage<? super FileStringChooserController.Result> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }

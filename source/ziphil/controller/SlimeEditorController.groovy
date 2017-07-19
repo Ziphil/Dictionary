@@ -76,7 +76,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   private Boolean $normal
   private List<RelationRequest> $relationRequests = ArrayList.new()
 
-  public SlimeEditorController(UtilityStage<WordEditResult> nextStage) {
+  public SlimeEditorController(UtilityStage<? super WordEditResult> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()

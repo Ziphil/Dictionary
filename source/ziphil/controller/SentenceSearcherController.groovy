@@ -24,7 +24,7 @@ public class SentenceSearcherController extends Controller<Void> {
   @FXML private TextField $punctuationsControl
   private Dictionary $dictionary
 
-  public SentenceSearcherController(UtilityStage<Void> stage) {
+  public SentenceSearcherController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }

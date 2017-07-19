@@ -38,7 +38,7 @@ public class HelpController extends Controller<Void> {
   @FXML private TreeView<HelpSection> $sectionView
   @FXML private WebView $helpView
 
-  public HelpController(UtilityStage<Void> stage) {
+  public HelpController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   }

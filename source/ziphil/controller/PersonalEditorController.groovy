@@ -37,7 +37,7 @@ public class PersonalEditorController extends Controller<WordEditResult> {
   @FXML private CheckBox $modificationControl
   private PersonalWord $word
 
-  public PersonalEditorController(UtilityStage<WordEditResult> stage) {
+  public PersonalEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()

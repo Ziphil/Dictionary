@@ -34,7 +34,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   @FXML private TableColumn<CharacterStatus, DoubleClass> $frequencyPercentageColumn
   @FXML private TableColumn<CharacterStatus, DoubleClass> $usingWordSizePercentageColumn
 
-  public CharacterFrequencyController(UtilityStage<Void> stage) {
+  public CharacterFrequencyController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }

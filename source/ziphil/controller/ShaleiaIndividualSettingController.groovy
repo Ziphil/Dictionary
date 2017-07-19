@@ -28,7 +28,7 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
   private String $akrantiainSource
   private ShaleiaDictionary $dictionary
 
-  public ShaleiaIndividualSettingController(UtilityStage<BooleanClass> stage) {
+  public ShaleiaIndividualSettingController(UtilityStage<? super BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

@@ -26,7 +26,7 @@ public class CharacterFrequencyAnalyzerController extends Controller<Void> {
   @FXML private TextField $excludedCharactersControl
   @FXML private StringListEditor $multigraphsControl
 
-  public CharacterFrequencyAnalyzerController(UtilityStage<Void> stage) {
+  public CharacterFrequencyAnalyzerController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }

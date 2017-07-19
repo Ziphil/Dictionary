@@ -58,7 +58,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private SlimeDictionary $dictionary
   private SlimeIndividualSetting $individualSetting
 
-  public SlimeIndividualSettingController(UtilityStage<BooleanClass> stage) {
+  public SlimeIndividualSettingController(UtilityStage<? super BooleanClass> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

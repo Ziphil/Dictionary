@@ -28,7 +28,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   @FXML private TextArea $descriptionControl
   private ShaleiaWord $word
 
-  public ShaleiaEditorController(UtilityStage<WordEditResult> stage) {
+  public ShaleiaEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
     setupShortcuts()

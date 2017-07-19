@@ -69,7 +69,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $asksDuplicateNameControl
   @FXML private SwitchButton $persistsPanesControl
 
-  public SettingController(UtilityStage<BooleanClass> nextStage) {
+  public SettingController(UtilityStage<? super BooleanClass> nextStage) {
     super(nextStage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

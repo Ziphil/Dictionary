@@ -13,7 +13,7 @@ public class UpdateInformationController extends Controller<Void> {
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
-  public UpdateInformationController(UtilityStage<Void> stage) {
+  public UpdateInformationController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

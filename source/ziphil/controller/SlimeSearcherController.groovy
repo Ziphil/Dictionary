@@ -35,7 +35,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private SlimeDictionary $dictionary
   private SlimeSearchParameter $searchParameter
 
-  public SlimeSearcherController(UtilityStage<SlimeSearchParameter> stage) {
+  public SlimeSearcherController(UtilityStage<? super SlimeSearchParameter> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

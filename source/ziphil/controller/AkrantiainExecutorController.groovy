@@ -33,7 +33,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
   private Akrantiain $akrantiain = null
   private FileStringChooserController.Result $result = null
 
-  public AkrantiainExecutorController(UtilityStage<Void> stage) {
+  public AkrantiainExecutorController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }

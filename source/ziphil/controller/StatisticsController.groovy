@@ -28,7 +28,7 @@ public class StatisticsController extends Controller<Void> {
   @FXML private Label $richnessText
   private DictionaryAnalyzer $analyzer
 
-  public StatisticsController(UtilityStage<Void> stage) {
+  public StatisticsController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
