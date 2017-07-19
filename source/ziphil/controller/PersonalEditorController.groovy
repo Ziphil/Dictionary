@@ -48,7 +48,7 @@ public class PersonalEditorController extends Controller<WordEditResult> {
     setupLevelControl()
   }
 
-  public void prepare(PersonalWord word, Boolean editsEmptyWord) {
+  public void prepare(PersonalWord word, Boolean empty) {
     $word = word
     $nameControl.setText(word.getName())
     $pronunciationControl.setText(word.getPronunciation())
@@ -57,7 +57,7 @@ public class PersonalEditorController extends Controller<WordEditResult> {
     $levelControl.getValueFactory().setValue(word.getLevel())
     $memoryControl.setSelected(word.getMemory() == 1)
     $modificationControl.setSelected(word.getModification() == 1)
-    if (editsEmptyWord) {
+    if (empty) {
       $nameControl.requestFocus()
     } else {
       $translationControl.requestFocus()

@@ -34,11 +34,11 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     setupShortcuts()
   }
 
-  public void prepare(ShaleiaWord word, Boolean editsEmptyWord) {
+  public void prepare(ShaleiaWord word, Boolean empty) {
     $word = word
     $nameControl.setText(word.getUniqueName())
     $descriptionControl.setText(word.getDescription())
-    if (editsEmptyWord) {
+    if (empty) {
       $nameControl.requestFocus()
     } else {
       $descriptionControl.requestFocus()

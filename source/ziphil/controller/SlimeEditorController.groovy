@@ -88,10 +88,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   }
 
   // コントローラーの準備を行います。
-  // editsEmptyWord に true を指定すると、新規単語の編集だと判断され、単語名の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
-  // 一方、editsEmptyWord に false を指定すると、既存の単語の編集だと判断され、内容の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
+  // empty に true を指定すると、新規単語の編集だと判断され、単語名の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
+  // 一方、empty に false を指定すると、既存の単語の編集だと判断され、内容の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
   // normal に false を指定すると、辞書に登録される単語データ以外の編集だと判断され、ID と単語名の編集欄が無効化されます。
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord, Boolean normal) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean empty, Boolean normal) {
     $word = word
     $dictionary = dictionary
     $normal = normal
@@ -101,11 +101,11 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     prepareInformationControls()
     prepareVariationControls()
     prepareRelationControls()
-    prepareFocus(editsEmptyWord)
+    prepareFocus(empty)
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean editsEmptyWord) {
-    prepare(word, dictionary, editsEmptyWord, true)
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean empty) {
+    prepare(word, dictionary, empty, true)
   }
 
   public void prepare(SlimeWord word, SlimeDictionary dictionary) {
@@ -194,8 +194,8 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     }
   }
 
-  private void prepareFocus(Boolean editsEmptyWord) {
-    if (editsEmptyWord) {
+  private void prepareFocus(Boolean empty) {
+    if (empty) {
       $nameControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
         if (oldValue == null && newValue != null) {
           $nameControl.requestFocus()
