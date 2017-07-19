@@ -323,6 +323,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeWord word = prepareCopyWord($defaultWord, false)
     word.setId($validMinId)
     word.setName(defaultName ?: "")
+    word.getRelations().clear()
     word.setDictionary(this)
     word.update()
     return word

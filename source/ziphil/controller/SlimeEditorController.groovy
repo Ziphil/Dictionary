@@ -15,6 +15,7 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
+import javafx.scene.control.TitledPane
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -60,6 +61,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   @FXML private VBox $informationBox
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
+  @FXML private TitledPane $relationPane
   @FXML private Label $idLabel
   private List<ComboBox<String>> $tagControls = ArrayList.new()
   private List<ComboBox<String>> $equivalentTitleControls = ArrayList.new()
@@ -218,6 +220,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   private void prepareRelationControls() {
     for (SlimeRelation relation : $word.getRelations()) {
       addRelationControl(relation.getTitle(), relation.getName(), relation, $dictionary.getRegisteredRelationTitles())
+    }
+    if (!$normal) {
+      VBox parent = (VBox)$relationPane.getParent()
+      parent.getChildren().remove($relationPane)
     }
   }
 
