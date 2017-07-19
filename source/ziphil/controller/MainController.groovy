@@ -95,8 +95,6 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
   private static final String OFFICIAL_SITE_URI = "http://ziphil.web.fc2.com/application/download/2.html"
   private static final String TITLE = "ZpDIC fetith"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(720)
-  private static final Double DEFAULT_HEIGHT = Measurement.rpx(720)
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
 
@@ -130,7 +128,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   public MainController(Stage stage) {
     super(stage)
-    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, MIN_WIDTH, MIN_HEIGHT)
+    loadOriginalResource()
     setupSearchHistory()
     setupDragAndDrop()
     setupShortcuts()
@@ -1032,6 +1030,14 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void saveMainWindowSize() {
+    Setting setting = Setting.getInstance()
+    if (setting.getPreservesMainWindowSize()) {
+      setting.setMainWindowWidth((Int)$scene.getWidth())
+      setting.setMainWindowHeight((Int)$scene.getHeight())
+    }
+  }
+
   private void handleException(Throwable throwable) {
     PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     String name = throwable.getClass().getSimpleName()
@@ -1057,6 +1063,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void exit() {
+    closeOpenStages()
+    saveMainWindowSize()
     Platform.exit()
   }
 
@@ -1282,8 +1290,9 @@ public class MainController extends PrimitiveController<Stage> {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
       Boolean allowsClose = checkDictionaryChange()
       if (allowsClose) {
-        Setting.getInstance().save()
         closeOpenStages()
+        saveMainWindowSize()
+        Setting.getInstance().save()
       } else {
         event.consume()
       }
@@ -1292,6 +1301,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupDebug() {
     Boolean debugging = Setting.getInstance().isDebugging()
+  }
+
+  private void loadOriginalResource() {
+    Setting setting = Setting.getInstance()
+    Double defaultWidth = setting.getMainWindowWidth()
+    Double defaultHeight = setting.getMainWindowHeight()
+    loadResource(RESOURCE_PATH, TITLE, defaultWidth, defaultHeight, MIN_WIDTH, MIN_HEIGHT)
   }
 
 }
