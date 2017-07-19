@@ -56,6 +56,9 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
+  @FXML private Spinner<IntegerClass> $mainWindowWidthControl
+  @FXML private Spinner<IntegerClass> $mainWindowHeightControl
+  @FXML private CheckBox $preservesMainWindowSizeControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
@@ -99,6 +102,9 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
+    Int mainWindowWidth = setting.getMainWindowWidth()
+    Int mainWindowHeight = setting.getMainWindowHeight()
+    Boolean preservesMainWindowSize = setting.getPreservesMainWindowSize()
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -147,6 +153,9 @@ public class SettingController extends Controller<BooleanClass> {
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainOnTopControl.setSelected(keepsMainOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
+    $mainWindowWidthControl.getValueFactory().setValue(mainWindowWidth)
+    $mainWindowHeightControl.getValueFactory().setValue(mainWindowHeight)
+    $preservesMainWindowSizeControl.setSelected(preservesMainWindowSize)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $ignoresAccentControl.setSelected(ignoresAccent)
     $ignoresCaseControl.setSelected(ignoresCase)
@@ -182,6 +191,9 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
+    Int mainWindowWidth = $mainWindowWidthControl.getValue()
+    Int mainWindowHeight = $mainWindowHeightControl.getValue()
+    Boolean preservesMainWindowSize = $preservesMainWindowSizeControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
@@ -206,6 +218,9 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
+    setting.setMainWindowWidth(mainWindowWidth)
+    setting.setMainWindowHeight(mainWindowHeight)
+    setting.setPreservesMainWindowSize(preservesMainWindowSize)
     setting.setSavesAutomatically(savesAutomatically)
     setting.setIgnoresAccent(ignoresAccent)
     setting.setIgnoresCase(ignoresCase)

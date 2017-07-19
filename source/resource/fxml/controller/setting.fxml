@@ -124,6 +124,7 @@
           </padding>
           <Label text="最前面メインウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="前面編集ウィンドウ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="メインウィンドウサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$keepsMainOnTopControl">
@@ -140,6 +141,24 @@
             </SwitchButton>
             <HelpIndicator text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
           </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <spacing><Double rpx="5"/></spacing>
+            <HBox alignment="baselineLeft">
+              <Spinner fx:id="$mainWindowWidthControl" editable="true" >
+                <prefWidth><Double rpx="80"/></prefWidth>
+                <minWidth><Double rpx="80"/></minWidth>
+                <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="360" max="3000" initialValue="720" amountToStepBy="10"/></valueFactory>
+              </Spinner>
+              <Label text=" × "/>
+              <Spinner fx:id="$mainWindowHeightControl" editable="true" >
+                <prefWidth><Double rpx="80"/></prefWidth>
+                <minWidth><Double rpx="80"/></minWidth>
+                <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="240" max="3000" initialValue="720" amountToStepBy="10"/></valueFactory>
+              </Spinner>
+            </HBox>
+            <HelpIndicator text="起動時のメインウィンドウのサイズが設定できます。"/>
+          </HBox>
+          <CheckBox fx:id="$preservesMainWindowSizeControl" text="前回終了時のサイズにする" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         </GridPane>
       </Tab>
       <Tab text="GUI" closable="false">
