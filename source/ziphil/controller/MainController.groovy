@@ -662,7 +662,7 @@ public class MainController extends PrimitiveController<Stage> {
     cancelLoadDictionary()
     closeOpenStages()
     $dictionary = dictionary
-    updateIndividualSetting()
+    $individualSetting = Dictionaries.createIndividualSetting(dictionary)
     updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
@@ -684,18 +684,6 @@ public class MainController extends PrimitiveController<Stage> {
       stage.close()
     }
     $openStages.clear()
-  }
-
-  private void updateIndividualSetting() {
-    if ($dictionary != null) {
-      if ($dictionary instanceof SlimeDictionary) {
-        $individualSetting = SlimeIndividualSetting.create($dictionary)
-      } else {
-        $individualSetting = null
-      }
-    } else {
-      $individualSetting = null
-    }
   }
 
   private void updateSearchStatuses() {

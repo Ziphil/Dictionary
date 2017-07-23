@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphilib.transform.Ziphilify
 
 
@@ -66,6 +67,18 @@ public class Dictionaries {
         dictionary = SlimeDictionary.new(fileName, filePath, oldDictionary)
       }
       return dictionary
+    } else {
+      return null
+    }
+  }
+
+  public static IndividualSetting createIndividualSetting(Dictionary dictionary) {
+    if (dictionary != null) {
+      if (dictionary instanceof SlimeDictionary) {
+        return SlimeIndividualSetting.create(dictionary)
+      } else {
+        return null
+      }
     } else {
       return null
     }
