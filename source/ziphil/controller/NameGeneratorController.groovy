@@ -116,7 +116,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   @FXML
   private void showEquivalents() {
-    EquivalentCollectionType collectionType = selectedCollectionTypeControl().getValue()
+    EquivalentCollectionType collectionType = selectedCollectionType()
     if (collectionType != null) {
       EquivalentCollection collection = EquivalentCollection.load(collectionType)
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -130,7 +130,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   protected void commit() {
     List<Word> words = ArrayList.new()
-    EquivalentCollectionType collectionType = selectedCollectionTypeControl().getValue()
+    EquivalentCollectionType collectionType = selectedCollectionType()
     NameGenerator generator = createGenerator()
     Result result = null
     if ($usesCollection) {
@@ -182,10 +182,14 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     }
   }
 
-  private ComboBox selectedCollectionTypeControl() {
+  private EquivalentCollectionType selectedCollectionType() {
     Tab selectedTab = $tabPane.getSelectionModel().getSelectedItem()
     Node node = selectedTab.getContent().lookup(".option-type")
-    return (ComboBox)node
+    if (node instanceof ComboBox) {
+      return node.getValue()
+    } else {
+      return null
+    }
   }
 
   private void setupSyllableSizeControls() {
