@@ -11,12 +11,12 @@ public class ZatlinSelection implements ZatlinGeneratable {
   private static final Random RANDOM = Random.new()
 
   private List<ZatlinGeneratable> $generatables = ArrayList.new()
-  private List<IntegerClass> $weights = ArrayList.new()
+  private List<DoubleClass> $weights = ArrayList.new()
 
   public String generate(ZatlinRoot root) {
     String output = ""
-    Int number = RANDOM.nextInt(totalWeight())
-    Int currentWeight = 0
+    Double number = RANDOM.nextDouble() * totalWeight()
+    Double currentWeight = 0
     for (Int i = 0 ; i < $generatables.size() ; i ++) {
       currentWeight += $weights[i]
       if (number < currentWeight) {
@@ -47,9 +47,9 @@ public class ZatlinSelection implements ZatlinGeneratable {
     return null
   }
 
-  private Int totalWeight() {
-    Int totalWeight = 0
-    for (Int weight : $weights) {
+  private Double totalWeight() {
+    Double totalWeight = 0
+    for (Double weight : $weights) {
       totalWeight += weight
     }
     return totalWeight
@@ -78,11 +78,11 @@ public class ZatlinSelection implements ZatlinGeneratable {
     $generatables = generatables
   }
 
-  public List<IntegerClass> getWeights() {
+  public List<DoubleClass> getWeights() {
     return $weights
   }
 
-  public void setWeights(List<IntegerClass> weights) {
+  public void setWeights(List<DoubleClass> weights) {
     $weights = weights
   }
 
