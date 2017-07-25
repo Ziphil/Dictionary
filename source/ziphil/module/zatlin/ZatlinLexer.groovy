@@ -88,15 +88,21 @@ public class ZatlinLexer implements Closeable, AutoCloseable {
 
   private ZatlinToken nextNumeric() {
     StringBuilder currentNumber = StringBuilder.new()
+    Boolean hasRadixPoint = false
     while (true) {
       $reader.mark(1)
       Int codePoint = $reader.read()
-      if (ZatlinLexer.isLetter(codePoint)) {
-        if (ZatlinLexer.isNumeric(codePoint)) {
-          currentNumber.appendCodePoint(codePoint)
-        } else {
-          throw ZatlinParseException.new("Invalid numeric literal", codePoint, $reader)
+      if (ZatlinLexer.isNumeric(codePoint)) {
+        currentNumber.appendCodePoint(codePoint)
+        if (codePoint == '.') {
+          if (!hasRadixPoint) {
+            hasRadixPoint = true
+          } else {
+            throw ZatlinParseException.new("Invalid numeric literal", codePoint, $reader)
+          }
         }
+      } else if (ZatlinLexer.isLetter(codePoint)) {
+        throw ZatlinParseException.new("Invalid numeric literal", codePoint, $reader)
       } else {
         $reader.reset()
         break
@@ -192,7 +198,7 @@ public class ZatlinLexer implements Closeable, AutoCloseable {
   }
 
   public static Boolean isNumeric(Int codePoint) {
-    return codePoint >= 48 && codePoint <= 57
+    return (codePoint >= 48 && codePoint <= 57) || codePoint == 46
   }
 
   public static Boolean isLetter(Int codePoint) {
