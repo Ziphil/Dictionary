@@ -87,7 +87,11 @@ public class ZatlinSentenceParser {
         }
       } else if (tokenType == ZatlinTokenType.NUMERIC) {
         weight = DoubleClass.parseDouble(token.getText())
-        hasWeight = true
+        if (weight != 0) {
+          hasWeight = true
+        } else {
+          throw ZatlinParseException.new("Weight is zero", token)
+        }
       } else if (tokenType == ZatlinTokenType.VERTICAL) {
         if (sequence.hasGeneratable()) {
           selection.getGeneratables().add(sequence)
