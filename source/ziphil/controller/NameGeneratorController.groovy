@@ -82,9 +82,9 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private void prepareEasyControls(Config previousConfig) {
     if (previousConfig != null) {
       EasyNameGenerator.Config easyConfig = previousConfig.getEasyConfig()
-      $vowelsControl.getStrings().addAll(easyConfig.getVowels())
-      $consonantsControl.getStrings().addAll(easyConfig.getConsonants())
-      $syllablePatternsControl.getStrings().addAll(easyConfig.getSyllablePatterns())
+      $vowelsControl.getStrings().setAll(easyConfig.getVowels())
+      $consonantsControl.getStrings().setAll(easyConfig.getConsonants())
+      $syllablePatternsControl.getStrings().setAll(easyConfig.getSyllablePatterns())
       $minSyllableSizeControl.getValueFactory().setValue(easyConfig.getMinSyllableSize())
       $maxSyllableSizeControl.getValueFactory().setValue(easyConfig.getMaxSyllableSize())
     }
