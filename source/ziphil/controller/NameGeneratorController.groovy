@@ -66,6 +66,20 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   public void prepare(Boolean usesCollection, Config previousConfig) {
     $usesCollection = usesCollection
+    prepareEasyControls(previousConfig)
+    prepareZatlinControls(previousConfig)
+    prepareTabPane(previousConfig)
+  }
+
+  public void prepare(Boolean usesCollection) {
+    prepare(usesCollection, null)
+  }
+
+  public void prepare() {
+    prepare(true, null)
+  }
+
+  private void prepareEasyControls(Config previousConfig) {
     if (previousConfig != null) {
       EasyNameGenerator.Config easyConfig = previousConfig.getEasyConfig()
       $vowelsControl.getStrings().addAll(easyConfig.getVowels())
@@ -73,8 +87,19 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
       $syllablePatternsControl.getStrings().addAll(easyConfig.getSyllablePatterns())
       $minSyllableSizeControl.getValueFactory().setValue(easyConfig.getMinSyllableSize())
       $maxSyllableSizeControl.getValueFactory().setValue(easyConfig.getMaxSyllableSize())
-      $zatlinSourceControl.setText(previousConfig.getZatlinSource())
-      $zatlinSource = previousConfig.getZatlinSource()
+    }
+  }
+
+  private void prepareZatlinControls(Config previousConfig) {
+    if (previousConfig != null) {
+      String zatlinSource = previousConfig.getZatlinSource()
+      $zatlinSourceControl.setText(zatlinSource)
+      $zatlinSource = zatlinSource
+    }
+  }
+
+  private void prepareTabPane(Config previousConfig) {
+    if (previousConfig != null) {
       for (Tab tab : $tabPane.getTabs()) {
         if (tab.getText() == previousConfig.getSelectedTabText()) {
           $tabPane.getSelectionModel().select(tab)
@@ -82,7 +107,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
         }
       }
     }
-    if (!usesCollection) {
+    if (!$usesCollection) {
       for (Tab tab : $tabPane.getTabs()) {
         Node node = tab.getContent()
         if (node instanceof GridPane) {
@@ -97,14 +122,6 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
         }
       }
     }
-  }
-
-  public void prepare(Boolean usesCollection) {
-    prepare(usesCollection, null)
-  }
-
-  public void prepare() {
-    prepare(true, null)
   }
 
   @FXML
@@ -185,13 +202,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private NameGenerator createGenerator() {
     if ($tabPane.getSelectionModel().getSelectedIndex() == 0) {
       EasyNameGenerator generator = EasyNameGenerator.new()
-      EasyNameGenerator.Config config = EasyNameGenerator.Config.new()
-      config.setVowels($vowelsControl.getStrings())
-      config.setConsonants($consonantsControl.getStrings())
-      config.setSyllablePatterns($syllablePatternsControl.getStrings())
-      config.setMinSyllableSize($minSyllableSizeControl.getValue())
-      config.setMaxSyllableSize($maxSyllableSizeControl.getValue())
-      generator.load(config)
+      generator.load(createEasyConfig())
       return generator
     } else {
       Zatlin zatlin = Zatlin.new()
@@ -206,16 +217,20 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   public Config createConfig() {
     Config config = Config.new()
+    config.setEasyConfig(createEasyConfig())
+    config.setZatlinSource($zatlinSource)
+    config.setSelectedTabText($tabPane.getSelectionModel().getSelectedItem().getText())
+    return config
+  }
+
+  private EasyNameGenerator.Config createEasyConfig() {
     EasyNameGenerator.Config easyConfig = EasyNameGenerator.Config.new()
     easyConfig.setVowels($vowelsControl.getStrings())
     easyConfig.setConsonants($consonantsControl.getStrings())
     easyConfig.setSyllablePatterns($syllablePatternsControl.getStrings())
     easyConfig.setMinSyllableSize($minSyllableSizeControl.getValue())
     easyConfig.setMaxSyllableSize($maxSyllableSizeControl.getValue())
-    config.setEasyConfig(easyConfig)
-    config.setZatlinSource($zatlinSource)
-    config.setSelectedTabText($tabPane.getSelectionModel().getSelectedItem().getText())
-    return config
+    return easyConfig
   }
 
   private EquivalentCollectionType selectedCollectionType() {
