@@ -64,8 +64,24 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     setupIntegerControls()
   }
 
-  public void prepare(Boolean usesCollection) {
+  public void prepare(Boolean usesCollection, Config previousConfig) {
     $usesCollection = usesCollection
+    if (previousConfig != null) {
+      EasyNameGenerator.Config easyConfig = previousConfig.getEasyConfig()
+      $vowelsControl.getStrings().addAll(easyConfig.getVowels())
+      $consonantsControl.getStrings().addAll(easyConfig.getConsonants())
+      $syllablePatternsControl.getStrings().addAll(easyConfig.getSyllablePatterns())
+      $minSyllableSizeControl.getValueFactory().setValue(easyConfig.getMinSyllableSize())
+      $maxSyllableSizeControl.getValueFactory().setValue(easyConfig.getMaxSyllableSize())
+      $zatlinSourceControl.setText(previousConfig.getZatlinSource())
+      $zatlinSource = previousConfig.getZatlinSource()
+      for (Tab tab : $tabPane.getTabs()) {
+        if (tab.getText() == previousConfig.getSelectedTabText()) {
+          $tabPane.getSelectionModel().select(tab)
+          break
+        }
+      }
+    }
     if (!usesCollection) {
       for (Tab tab : $tabPane.getTabs()) {
         Node node = tab.getContent()
@@ -83,8 +99,12 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     }
   }
 
+  public void prepare(Boolean usesCollection) {
+    prepare(usesCollection, null)
+  }
+
   public void prepare() {
-    prepare(true)
+    prepare(true, null)
   }
 
   @FXML
@@ -184,6 +204,20 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     }
   }
 
+  public Config createConfig() {
+    Config config = Config.new()
+    EasyNameGenerator.Config easyConfig = EasyNameGenerator.Config.new()
+    easyConfig.setVowels($vowelsControl.getStrings())
+    easyConfig.setConsonants($consonantsControl.getStrings())
+    easyConfig.setSyllablePatterns($syllablePatternsControl.getStrings())
+    easyConfig.setMinSyllableSize($minSyllableSizeControl.getValue())
+    easyConfig.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+    config.setEasyConfig(easyConfig)
+    config.setZatlinSource($zatlinSource)
+    config.setSelectedTabText($tabPane.getSelectionModel().getSelectedItem().getText())
+    return config
+  }
+
   private EquivalentCollectionType selectedCollectionType() {
     Tab selectedTab = $tabPane.getSelectionModel().getSelectedItem()
     Node node = selectedTab.getContent().lookup(".option-type")
@@ -243,6 +277,40 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
     public List<String> getNames() {
       return $names
+    }
+
+  }
+
+
+  @InnerClass @Ziphilify
+  public static class Config {
+
+    private EasyNameGenerator.Config $easyConfig
+    private String $zatlinSource
+    private String $selectedTabText
+
+    public EasyNameGenerator.Config getEasyConfig() {
+      return $easyConfig
+    }
+
+    public void setEasyConfig(EasyNameGenerator.Config easyConfig) {
+      $easyConfig = easyConfig
+    }
+
+    public String getZatlinSource() {
+      return $zatlinSource
+    }
+
+    public void setZatlinSource(String zatlinSource) {
+      $zatlinSource = zatlinSource
+    }
+
+    public String getSelectedTabText() {
+      return $selectedTabText
+    }
+
+    public void setSelectedTabText(String selectedTabText) {
+      $selectedTabText = selectedTabText
     }
 
   }
