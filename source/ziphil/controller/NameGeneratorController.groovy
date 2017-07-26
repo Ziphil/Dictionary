@@ -165,11 +165,13 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private NameGenerator createGenerator() {
     if ($tabPane.getSelectionModel().getSelectedIndex() == 0) {
       EasyNameGenerator generator = EasyNameGenerator.new()
-      generator.setVowels($vowelsControl.getStrings())
-      generator.setConsonants($consonantsControl.getStrings())
-      generator.setSyllablePatterns($syllablePatternsControl.getStrings())
-      generator.setMinSyllableSize($minSyllableSizeControl.getValue())
-      generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+      EasyNameGenerator.Config config = EasyNameGenerator.Config.new()
+      config.setVowels($vowelsControl.getStrings())
+      config.setConsonants($consonantsControl.getStrings())
+      config.setSyllablePatterns($syllablePatternsControl.getStrings())
+      config.setMinSyllableSize($minSyllableSizeControl.getValue())
+      config.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+      generator.load(config)
       return generator
     } else {
       Zatlin zatlin = Zatlin.new()
