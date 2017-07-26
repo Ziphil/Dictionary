@@ -40,6 +40,7 @@ import ziphil.dictionary.slime.SlimeRelationRequest
 import ziphil.dictionary.slime.SlimeVariation
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.Setting
+import ziphil.module.TemporarySetting
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
@@ -75,6 +76,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   private List<TextField> $relationNameControls = ArrayList.new()
   private SlimeWord $word
   private SlimeDictionary $dictionary
+  private TemporarySetting $temporarySetting
   private Boolean $normal
   private List<RelationRequest> $relationRequests = ArrayList.new()
 
@@ -93,9 +95,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   // empty に true を指定すると、新規単語の編集だと判断され、単語名の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
   // 一方、empty に false を指定すると、既存の単語の編集だと判断され、内容の編集欄にフォーカスが当たっている状態で編集ウィンドウが開きます。
   // normal に false を指定すると、辞書に登録される単語データ以外の編集だと判断され、ID と単語名の編集欄が無効化されます。
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean empty, Boolean normal) {
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, TemporarySetting temporarySetting, Boolean empty, Boolean normal) {
     $word = word
     $dictionary = dictionary
+    $temporarySetting = temporarySetting
     $normal = normal
     prepareBasicControls()
     prepareTagControls()
@@ -106,12 +109,12 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     prepareFocus(empty)
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary, Boolean empty) {
-    prepare(word, dictionary, empty, true)
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, TemporarySetting temporarySetting, Boolean empty) {
+    prepare(word, dictionary, temporarySetting, empty, true)
   }
 
-  public void prepare(SlimeWord word, SlimeDictionary dictionary) {
-    prepare(word, dictionary, false, true)
+  public void prepare(SlimeWord word, SlimeDictionary dictionary, TemporarySetting temporarySetting) {
+    prepare(word, dictionary, temporarySetting, false, true)
   }
 
   @FXML
@@ -472,13 +475,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   private void generateName() {
     UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
     NameGeneratorController controller = NameGeneratorController.new(nextStage)
+    NameGeneratorController.Config config = ($temporarySetting != null) ? $temporarySetting.getGeneratorConfig() : null
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(false)
+    controller.prepare(false, config)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       NameGeneratorController.Result result = nextStage.getResult()
       $nameControl.setText(result.getNames().first())
+      if ($temporarySetting != null) {
+        $temporarySetting.setGeneratorConfig(controller.createConfig())
+      }
     }
   }
 
