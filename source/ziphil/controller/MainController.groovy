@@ -82,6 +82,7 @@ import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
+import ziphil.module.TemporarySetting
 import ziphil.module.Version
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
@@ -122,6 +123,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private ProgressIndicator $progressIndicator
   private Dictionary $dictionary = null
   private IndividualSetting $individualSetting = null
+  private TemporarySetting $temporarySetting = null
   private SearchHistory $searchHistory = SearchHistory.new()
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
@@ -370,7 +372,7 @@ public class MainController extends PrimitiveController<Stage> {
           controller.prepare(word)
         } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          controller.prepare(word, $dictionary)
+          controller.prepare(word, $dictionary, $temporarySetting)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
@@ -431,7 +433,7 @@ public class MainController extends PrimitiveController<Stage> {
         SlimeEditorController controller = SlimeEditorController.new(nextStage)
         SlimeWord localNewWord = $dictionary.createWord(defaultName)
         newWord = localNewWord
-        controller.prepare(localNewWord, $dictionary, true)
+        controller.prepare(localNewWord, $dictionary, $temporarySetting, true)
       }
       $openStages.add(nextStage)
       nextStage.showAndWait()
@@ -469,7 +471,7 @@ public class MainController extends PrimitiveController<Stage> {
           SlimeEditorController controller = SlimeEditorController.new(nextStage)
           SlimeWord localNewWord = $dictionary.inheritWord(word)
           newWord = localNewWord
-          controller.prepare(localNewWord, $dictionary)
+          controller.prepare(localNewWord, $dictionary, $temporarySetting)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
@@ -498,7 +500,7 @@ public class MainController extends PrimitiveController<Stage> {
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare()
+      controller.prepare(true, $temporarySetting.getGeneratorConfig())
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         NameGeneratorController.Result result = nextStage.getResult()
@@ -513,6 +515,7 @@ public class MainController extends PrimitiveController<Stage> {
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
         $searchHistory.add(parameter)
+        $temporarySetting.setGeneratorConfig(controller.createConfig())
       }
     }
   }
@@ -662,7 +665,8 @@ public class MainController extends PrimitiveController<Stage> {
     cancelLoadDictionary()
     closeOpenStages()
     $dictionary = dictionary
-    updateIndividualSetting()
+    $individualSetting = Dictionaries.createIndividualSetting(dictionary)
+    $temporarySetting = TemporarySetting.new()
     updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
@@ -684,18 +688,6 @@ public class MainController extends PrimitiveController<Stage> {
       stage.close()
     }
     $openStages.clear()
-  }
-
-  private void updateIndividualSetting() {
-    if ($dictionary != null) {
-      if ($dictionary instanceof SlimeDictionary) {
-        $individualSetting = SlimeIndividualSetting.create($dictionary)
-      } else {
-        $individualSetting = null
-      }
-    } else {
-      $individualSetting = null
-    }
   }
 
   private void updateSearchStatuses() {

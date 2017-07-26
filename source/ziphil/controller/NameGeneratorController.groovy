@@ -64,9 +64,50 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     setupIntegerControls()
   }
 
-  public void prepare(Boolean usesCollection) {
+  public void prepare(Boolean usesCollection, Config previousConfig) {
     $usesCollection = usesCollection
-    if (!usesCollection) {
+    prepareEasyControls(previousConfig)
+    prepareZatlinControls(previousConfig)
+    prepareTabPane(previousConfig)
+  }
+
+  public void prepare(Boolean usesCollection) {
+    prepare(usesCollection, null)
+  }
+
+  public void prepare() {
+    prepare(true, null)
+  }
+
+  private void prepareEasyControls(Config previousConfig) {
+    if (previousConfig != null) {
+      EasyNameGenerator.Config easyConfig = previousConfig.getEasyConfig()
+      $vowelsControl.getStrings().setAll(easyConfig.getVowels())
+      $consonantsControl.getStrings().setAll(easyConfig.getConsonants())
+      $syllablePatternsControl.getStrings().setAll(easyConfig.getSyllablePatterns())
+      $minSyllableSizeControl.getValueFactory().setValue(easyConfig.getMinSyllableSize())
+      $maxSyllableSizeControl.getValueFactory().setValue(easyConfig.getMaxSyllableSize())
+    }
+  }
+
+  private void prepareZatlinControls(Config previousConfig) {
+    if (previousConfig != null) {
+      String zatlinSource = previousConfig.getZatlinSource()
+      $zatlinSourceControl.setText(zatlinSource)
+      $zatlinSource = zatlinSource
+    }
+  }
+
+  private void prepareTabPane(Config previousConfig) {
+    if (previousConfig != null) {
+      for (Tab tab : $tabPane.getTabs()) {
+        if (tab.getText() == previousConfig.getSelectedTabText()) {
+          $tabPane.getSelectionModel().select(tab)
+          break
+        }
+      }
+    }
+    if (!$usesCollection) {
       for (Tab tab : $tabPane.getTabs()) {
         Node node = tab.getContent()
         if (node instanceof GridPane) {
@@ -81,10 +122,6 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
         }
       }
     }
-  }
-
-  public void prepare() {
-    prepare(true)
   }
 
   @FXML
@@ -165,11 +202,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
   private NameGenerator createGenerator() {
     if ($tabPane.getSelectionModel().getSelectedIndex() == 0) {
       EasyNameGenerator generator = EasyNameGenerator.new()
-      generator.setVowels($vowelsControl.getStrings())
-      generator.setConsonants($consonantsControl.getStrings())
-      generator.setSyllablePatterns($syllablePatternsControl.getStrings())
-      generator.setMinSyllableSize($minSyllableSizeControl.getValue())
-      generator.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+      generator.load(createEasyConfig())
       return generator
     } else {
       Zatlin zatlin = Zatlin.new()
@@ -180,6 +213,24 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
         return null
       } 
     }
+  }
+
+  public Config createConfig() {
+    Config config = Config.new()
+    config.setEasyConfig(createEasyConfig())
+    config.setZatlinSource($zatlinSource)
+    config.setSelectedTabText($tabPane.getSelectionModel().getSelectedItem().getText())
+    return config
+  }
+
+  private EasyNameGenerator.Config createEasyConfig() {
+    EasyNameGenerator.Config easyConfig = EasyNameGenerator.Config.new()
+    easyConfig.setVowels($vowelsControl.getStrings())
+    easyConfig.setConsonants($consonantsControl.getStrings())
+    easyConfig.setSyllablePatterns($syllablePatternsControl.getStrings())
+    easyConfig.setMinSyllableSize($minSyllableSizeControl.getValue())
+    easyConfig.setMaxSyllableSize($maxSyllableSizeControl.getValue())
+    return easyConfig
   }
 
   private EquivalentCollectionType selectedCollectionType() {
@@ -241,6 +292,40 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
     public List<String> getNames() {
       return $names
+    }
+
+  }
+
+
+  @InnerClass @Ziphilify
+  public static class Config {
+
+    private EasyNameGenerator.Config $easyConfig
+    private String $zatlinSource
+    private String $selectedTabText
+
+    public EasyNameGenerator.Config getEasyConfig() {
+      return $easyConfig
+    }
+
+    public void setEasyConfig(EasyNameGenerator.Config easyConfig) {
+      $easyConfig = easyConfig
+    }
+
+    public String getZatlinSource() {
+      return $zatlinSource
+    }
+
+    public void setZatlinSource(String zatlinSource) {
+      $zatlinSource = zatlinSource
+    }
+
+    public String getSelectedTabText() {
+      return $selectedTabText
+    }
+
+    public void setSelectedTabText(String selectedTabText) {
+      $selectedTabText = selectedTabText
     }
 
   }

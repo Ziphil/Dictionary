@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 20, 1, 2011)
+  public static final Version VERSION = Version.new(1, 21, 0, 2012)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.21. 0 | 単語を自動生成したときに前回のパラメータを保持するよう変更。
+//          | ver 1.1.0 相当の Zatlin に対応。
 //  1.20. 1 | OneToMany 形式の編集画面から単語生成するとエラーになる不具合を修正。
 //  1.20. 0 | OneToMany 形式の編集時に同名の単語があった場合にどう処理するかを選択できるよう変更。
 //          | 起動時のメインウィンドウのサイズを変更する機能を追加。

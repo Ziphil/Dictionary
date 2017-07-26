@@ -74,7 +74,7 @@ public class ZatlinSentenceParser {
   private ZatlinSelection nextSelection() {
     ZatlinSelection selection = ZatlinSelection.new()
     ZatlinSequence sequence = ZatlinSequence.new()
-    Int weight = 1
+    Double weight = 1
     Boolean hasWeight = false
     while (true) {
       ZatlinToken token = $tokens[$pointer ++]
@@ -86,8 +86,12 @@ public class ZatlinSentenceParser {
           throw ZatlinParseException.new("Weight is not at the rightmost", token)
         }
       } else if (tokenType == ZatlinTokenType.NUMERIC) {
-        weight = IntegerClass.parseInt(token.getText())
-        hasWeight = true
+        weight = DoubleClass.parseDouble(token.getText())
+        if (weight != 0) {
+          hasWeight = true
+        } else {
+          throw ZatlinParseException.new("Weight is zero", token)
+        }
       } else if (tokenType == ZatlinTokenType.VERTICAL) {
         if (sequence.hasGeneratable()) {
           selection.getGeneratables().add(sequence)
