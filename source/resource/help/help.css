@@ -38,7 +38,7 @@ p {
 }
 
 pre {
-  font-family: monospaced;
+  font-family: monospace;
   margin: 5px 0px;
   padding: 1px 3px;
   line-height: 18px;
@@ -46,8 +46,8 @@ pre {
   border-bottom: rgb(200, 200, 200) 1px solid;
 }
 
-span.monospaced {
-  font-family: monospaced;
+span.monospace {
+  font-family: monospace;
 }
 
 a {
