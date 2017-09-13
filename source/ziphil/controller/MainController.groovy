@@ -11,6 +11,7 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
@@ -140,14 +141,14 @@ public class MainController extends PrimitiveController<Stage> {
     MainWordListController controller = MainWordListController.new($stage, tab)
     tab.setText(dictionary.getName())
     controller.update(dictionary)
+    $wordListControllers.add(controller)
     $tabPane.getTabs().add(tab)
     $tabPane.getSelectionModel().select(tab)
-    $wordListControllers.add(controller)
   }
 
   private MainWordListController currentWordListController() {
     Int index = $tabPane.getSelectionModel().getSelectedIndex()
-    if (index > 0) {
+    if (index >= 0) {
       return $wordListControllers[index]
     } else {
       return null
@@ -349,6 +350,35 @@ public class MainController extends PrimitiveController<Stage> {
     $menuBar.layout()
   }
 
+  private void updateSearchRegisteredParameterMenu() {
+    $searchRegisteredParameterMenu.getItems().clear()
+    IndividualSetting individualSetting = currentIndividualSetting()
+    if (individualSetting != null) {
+      if (individualSetting instanceof SlimeIndividualSetting) {
+        List<SlimeSearchParameter> parameters = individualSetting.getRegisteredParameters()
+        List<String> parameterNames = individualSetting.getRegisteredParameterNames()
+        for (Int i = 0 ; i < 10 ; i ++) {
+          SlimeSearchParameter parameter = parameters[i]
+          String parameterName = parameterNames[i]
+          MenuItem item = MenuItem.new()
+          if (parameter != null) {
+            item.setText(parameterNames[i] ?: "")
+            item.setOnAction() {
+              currentWordListController().measureAndSearch(parameter)
+            }
+          } else {
+            item.setText("未登録")
+            item.setDisable(true)
+          }
+          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+          item.setGraphic(ImageView.new(icon))
+          item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
+          $searchRegisteredParameterMenu.getItems().add(item)
+        }
+      }
+    }
+  }
+
   private void registerCurrentDictionary(Int index) {
     Setting.getInstance().getRegisteredDictionaryPaths()[index] = currentDictionary().getPath()
     setupOpenRegisteredDictionaryMenu()
@@ -372,7 +402,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        setupSearchRegisteredParameterMenu()
+        updateSearchRegisteredParameterMenu()
       }
     }
   }
@@ -672,6 +702,10 @@ public class MainController extends PrimitiveController<Stage> {
         }
       }
     }
+    $tabPane.getSelectionModel().selectedItemProperty().addListener() { ObservableValue<? extends Tab> observableValue, Tab oldValue, Tab newValue ->
+      updateMenuItems()
+      updateSearchRegisteredParameterMenu()
+    }
   }
 
   private void setupCreateDictionaryMenu() {
@@ -732,35 +766,6 @@ public class MainController extends PrimitiveController<Stage> {
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       $registerCurrentDictionaryMenu.getItems().add(item)
-    }
-  }
-
-  private void setupSearchRegisteredParameterMenu() {
-    $searchRegisteredParameterMenu.getItems().clear()
-    IndividualSetting individualSetting = currentIndividualSetting()
-    if (individualSetting != null) {
-      if (individualSetting instanceof SlimeIndividualSetting) {
-        List<SlimeSearchParameter> parameters = individualSetting.getRegisteredParameters()
-        List<String> parameterNames = individualSetting.getRegisteredParameterNames()
-        for (Int i = 0 ; i < 10 ; i ++) {
-          SlimeSearchParameter parameter = parameters[i]
-          String parameterName = parameterNames[i]
-          MenuItem item = MenuItem.new()
-          if (parameter != null) {
-            item.setText(parameterNames[i] ?: "")
-            item.setOnAction() {
-              currentWordListController().measureAndSearch(parameter)
-            }
-          } else {
-            item.setText("未登録")
-            item.setDisable(true)
-          }
-          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
-          item.setGraphic(ImageView.new(icon))
-          item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
-          $searchRegisteredParameterMenu.getItems().add(item)
-        }
-      }
     }
   }
 
