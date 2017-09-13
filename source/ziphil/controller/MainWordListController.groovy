@@ -76,7 +76,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class MainWordListController {
+public class MainWordListController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/main_word_list.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
@@ -98,7 +98,6 @@ public class MainWordListController {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
-  private Stage $stage
   private Tab $tab
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
@@ -108,7 +107,7 @@ public class MainWordListController {
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
   public MainWordListController(Stage stage, Tab tab) {
-    $stage = stage
+    super(stage)
     $tab = tab
     loadOriginalResource()
     setupSearchHistory()
