@@ -510,8 +510,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void exit() {
-    closeOpenStages()
-    saveMainWindowSize()
+    close()
     Platform.exit()
   }
 
@@ -619,6 +618,29 @@ public class MainController extends PrimitiveController<Stage> {
       stage.close()
     }
     $openStages.clear()
+  }
+
+  private Boolean close() {
+    Boolean allowsClose = true
+    for (Int i = 0 ; i < $tabPane.getTabs().size() ; i ++) {
+      Tab tab = $tabPane.getTabs()[i]
+      MainWordListController controller = $wordListControllers[i]
+      if (controller != null) {
+        Boolean allowsCloseTab = controller.close()
+        if (!allowsCloseTab) {
+          allowsClose = false
+          break
+        }
+      }
+    }
+    if (allowsClose) {
+      closeOpenStages()
+      saveMainWindowSize()
+      Setting.getInstance().save()
+      return true
+    } else {
+      return false
+    }
   }
 
   private void handleException(Throwable throwable) {
@@ -781,12 +803,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
-      Boolean allowsClose = true
-      if (allowsClose) {
-        closeOpenStages()
-        saveMainWindowSize()
-        Setting.getInstance().save()
-      } else {
+      Boolean allowsClose = close()
+      if (!allowsClose) {
         event.consume()
       }
     }
