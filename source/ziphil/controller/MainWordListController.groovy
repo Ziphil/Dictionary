@@ -10,6 +10,7 @@ import javafx.beans.binding.StringBinding
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
 import javafx.concurrent.WorkerStateEvent
+import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -475,7 +476,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
       searchNormal(true)
     }
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-      $wordView.setItems(null)
+      Event.fireEvent($tab, Event.new(Tab.TAB_CLOSE_REQUEST_EVENT))
+      $tab.getTabPane().getTabs().remove($tab)
       failUpdateDictionary(event.getSource().getException())
     }
   }
