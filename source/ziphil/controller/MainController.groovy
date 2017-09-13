@@ -94,6 +94,15 @@ public class MainController extends PrimitiveController<Stage> {
     Tab tab = Tab.new()
     MainWordListController controller = MainWordListController.new($stage, tab)
     tab.setText(dictionary.getName())
+    tab.setOnCloseRequest() { Event event ->
+      Int index = $tabPane.getTabs().indexOf(tab)
+      Boolean allowsClose = $wordListControllers[index].close()
+      if (allowsClose) {
+        $wordListControllers.removeAt(index)
+      } else {
+        event.consume()
+      }
+    }
     controller.update(dictionary)
     $wordListControllers.add(controller)
     $tabPane.getTabs().add(tab)
@@ -669,15 +678,6 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void setupTabPane() {
-    $tabPane.addEventHandler(Tab.TAB_CLOSE_REQUEST_EVENT) { Event event ->
-      Int index = $tabPane.getSelectionModel().getSelectedIndex()
-      if (index > 0) {
-        Boolean allowsClose = $wordListControllers[index].close()
-        if (!allowsClose) {
-          event.consume()
-        }
-      }
-    }
     $tabPane.getSelectionModel().selectedItemProperty().addListener() { ObservableValue<? extends Tab> observableValue, Tab oldValue, Tab newValue ->
       updateMenuItems()
       updateSearchRegisteredParameterMenu()
