@@ -129,17 +129,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
     updateOnLinkClicked()
   }
 
-  public Boolean close() {
-    Boolean allowsClose = checkDictionaryChange()
-    if (allowsClose) {
-      cancelLoadDictionary()
-      closeOpenStages()
-      return true
-    } else {
-      return false
-    }
-  }
-
   public void searchNormal(Boolean forcesSearch) {
     if ($dictionary != null) {
       String search = $searchControl.getText()
@@ -547,6 +536,17 @@ public class MainWordListController extends PrimitiveController<Stage> {
       stage.close()
     }
     $openStages.clear()
+  }
+
+  public Boolean close() {
+    Boolean allowsClose = checkDictionaryChange()
+    if (allowsClose) {
+      cancelLoadDictionary()
+      closeOpenStages()
+      return true
+    } else {
+      return false
+    }
   }
 
   private Boolean checkDictionaryChange() {

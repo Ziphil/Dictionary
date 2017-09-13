@@ -509,6 +509,13 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void exit() {
+    closeOpenStages()
+    saveMainWindowSize()
+    Platform.exit()
+  }
+
+  @FXML
   public void searchNormal(KeyEvent event) {
     currentWordListController().searchNormal()
   }
@@ -636,13 +643,6 @@ public class MainController extends PrimitiveController<Stage> {
     writer.flush()
     writer.close()
     dialog.showAndWait()
-    Platform.exit()
-  }
-
-  @FXML
-  private void exit() {
-    closeOpenStages()
-    saveMainWindowSize()
     Platform.exit()
   }
 
