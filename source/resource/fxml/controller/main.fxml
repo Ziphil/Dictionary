@@ -152,6 +152,6 @@
     </MenuBar>
   </top>
   <center>
-    <TabPane fx:id="$tabPane" tabClosingPolicy="allTabs"/>
+    <TabPane fx:id="$tabPane" side="bottom" tabClosingPolicy="allTabs"/>
   </center>
 </BorderPane>

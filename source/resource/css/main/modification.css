@@ -63,6 +63,10 @@
   -fx-close-tab-animation: none;
 }
 
+.tab-pane:bottom > .tab-header-area > .tab-header-background {
+  -fx-background-insets: 0px, 0px 0px 1px 0px, 1px;
+}
+
 .chart {
   -fx-padding: 0px;
 }
