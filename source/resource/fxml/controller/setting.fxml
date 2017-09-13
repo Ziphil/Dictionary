@@ -63,7 +63,7 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
-            <HelpIndicator text="このフォントは単語データの表示に用いられます。&#10;フォントが太字に対応していれば、見出し語が太字で表示されます。"/>
+            <HelpIndicator text="%help.setting.contentFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="10"/></spacing>
@@ -81,7 +81,7 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="8" max="60" initialValue="12" amountToStepBy="1"/></valueFactory>
             </Spinner>
-            <HelpIndicator text="このフォントは単語データの編集時のテキストエリアで用いられます。"/>
+            <HelpIndicator text="%help.setting.editorFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="10"/></spacing>
@@ -98,7 +98,7 @@
               </Spinner>
               <Label text=" px"/>
             </HBox>
-            <HelpIndicator text="単語データ表示欄の行間のスペースを調整します。&#10;指定したピクセル分だけ余分に行間が空きます。"/>
+            <HelpIndicator text="%help.setting.lineSpacing"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="5"/></spacing>
@@ -106,7 +106,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="句読点や括弧類の周りのスペースを調整します。&#10;フォントによってはこれを有効にすると読みやすくなる可能性があります。"/>
+            <HelpIndicator text="%help.setting.modifiesPunctuation"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -131,7 +131,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="有効にすると、メインウィンドウが常に最前面に表示されます。&#10;これを有効にする場合は、下の前面編集ウィンドウの項目も有効にしておくことをお勧めします。"/>
+            <HelpIndicator text="%help.setting.keepsMainOnTop"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -139,7 +139,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="有効にすると、単語編集ウィンドウがメインウィンドウより前面に表示されます。"/>
+            <HelpIndicator text="help.setting.keepsEditorOnTop"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -156,7 +156,7 @@
                 <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="240" max="3000" initialValue="720" amountToStepBy="10"/></valueFactory>
               </Spinner>
             </HBox>
-            <HelpIndicator text="起動時のメインウィンドウのサイズが設定できます。"/>
+            <HelpIndicator text="%help.setting.mainWindowSize"/>
           </HBox>
           <CheckBox fx:id="$preservesMainWindowSizeControl" text="前回終了時のサイズにする" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         </GridPane>
@@ -181,7 +181,7 @@
               <prefWidth><Double rpx="350"/></prefWidth>
               <minWidth><Double rpx="350"/></minWidth>
             </ComboBox>
-            <HelpIndicator text="このフォントはGUI全体で用いられます。"/>
+            <HelpIndicator text="%help.setting.systemFont"/>
           </HBox>
           <CheckBox fx:id="$usesDefaultSystemFontFamilyControl" text="デフォルトフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -198,7 +198,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <HelpIndicator text="フォントのレンダリング方法を変更できます。&#10;環境によっては設定が反映されない場合があります。"/>
+            <HelpIndicator text="%help.setting.fontRenderingType"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -224,7 +224,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語完全一致検索の際に単語名のアクセント記号の有無を無視します。"/>
+            <HelpIndicator text="%help.setting.ignoresAccent"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -232,7 +232,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語完全一致検索の際に単語名の大文字と小文字の違いを無視します。"/>
+            <HelpIndicator text="%help.setting.ignoresCase"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -240,7 +240,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="検索方式が完全一致のときに代わりに前方一致検索を行うようにします。&#10;有効にすると、検索欄に入力された文字列から始まるデータ全てが表示されます。"/>
+            <HelpIndicator text="%help.setting.searchesPrefix"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
@@ -248,7 +248,7 @@
               <prefWidth><Double rpx="250"/></prefWidth>
               <minWidth><Double rpx="250"/></minWidth>
             </ComboBox>
-            <HelpIndicator text="スクリプト検索で利用する言語を設定できます。&#10;libraryフォルダにjarファイルを追加することで、利用できる言語を増やすことができます。"/>
+            <HelpIndicator text="%help.setting.script"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -270,7 +270,7 @@
             <ColumnConstraints hgrow="never"/>
           </columnConstraints>
           <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="10">
-            <HelpIndicator text="左側の入力欄に辞書の名前を入れておくと、その名前がメニューに表示されます。&#10;空欄にするとファイル名が表示されます。"/>
+            <HelpIndicator text="%help.setting.registeredDictionary"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -296,7 +296,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語の編集時に重複したIDが指定された場合、警告を出さずに使われていないIDを割り振ります。"/>
+            <HelpIndicator text="%help.setting.ignoresDuplicateSlimeId"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -304,7 +304,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語の編集画面にIDを表示します。"/>
+            <HelpIndicator text="%help.setting.showsSlimeId"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -312,7 +312,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語の編集画面で関連語を追加したときに、それを相互参照にするかどうか尋ねます。&#10;無効の場合は、相互参照にはならずに編集が完了します。"/>
+            <HelpIndicator text="%help.setting.asksMutualRelation"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
@@ -320,7 +320,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語を編集したときに、同じ単語がすでに登録されていることを通知するダイアログを表示します。&#10;無効の場合は、別の単語データとして保存されます。"/>
+            <HelpIndicator text="%help.setting.asksDuplicateName"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -346,7 +346,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語データの編集時に自動的に変更を保存します。&#10;無効にすると、メニューから保存を選ばない限り変更がファイルに反映されません。"/>
+            <HelpIndicator text="%help.setting.savesAutomatically"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -354,7 +354,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="単語リストへの表示用データをメモリ上に保持します。&#10;有効にすると、メモリ使用量が増加する代わりに検索が高速になる場合があります。"/>
+            <HelpIndicator text="%help.setting.persistsPanes"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -366,7 +366,7 @@
               </Spinner>
               <Label text=" ms"/>
             </HBox>
-            <HelpIndicator text="検索欄が変更されたとき、前の変更からこの時間以上経っているときのみ検索履歴に追加します。"/>
+            <HelpIndicator text="%help.setting.separativeInterval"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
@@ -382,7 +382,7 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <HelpIndicator text="単語リンクで新しい検索結果を表示させる条件を変更できます。"/>
+            <HelpIndicator text="%help.setting.linkClickType"/>
           </HBox>
         </GridPane>
       </Tab>

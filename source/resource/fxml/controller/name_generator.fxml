@@ -63,7 +63,7 @@
                 </FXCollections>
               </strings>
             </StringListEditor>
-            <HelpIndicator text="母音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+            <HelpIndicator text="%help.nameGenerator.vowels"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -77,7 +77,7 @@
                 </FXCollections>
               </strings>
             </StringListEditor>
-            <HelpIndicator text="子音字として利用する文字を指定してください。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+            <HelpIndicator text="%help.nameGenerator.consonants"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -89,7 +89,7 @@
                 </FXCollections>
               </strings>
             </StringListEditor>
-            <HelpIndicator text="許容する音節のパターンを指定してください。&#10;パターンは、母音を表す「V」と子音を表す「C」から成る文字列です。&#10;例えば、「CVC」は母音字の前後に子音字が存在するような音節を表します。&#10;右側のテキストボックスに指定したい文字列を入力した後、スペースを入力するとリストに追加されます。"/>
+            <HelpIndicator text="%help.nameGenerator.syllablePatterns"/>
           </HBox>
           <HBox alignment="baselineLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
@@ -115,7 +115,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </Button>
-            <HelpIndicator text="自動生成する訳語セットを選択してください。&#10;「表示」をクリックするとそのセットに含まれる全ての訳語を閲覧できます。&#10;data/collectionフォルダ内に訳語データファイルを置いておくと、選択できる訳語セットを追加編集することができます。"/>
+            <HelpIndicator text="%help.nameGenerator.collectionType"/>
           </HBox>
         </GridPane>
       </Tab>
@@ -151,7 +151,7 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </Button>
-            <HelpIndicator text="自動生成する訳語セットを選択してください。&#10;「表示」をクリックするとそのセットに含まれる全ての訳語を閲覧できます。&#10;data/collectionフォルダ内に訳語データファイルを置いておくと、選択できる訳語セットを追加編集することができます。"/>
+            <HelpIndicator text="%help.nameGenerator.collectionType"/>
           </HBox>
         </GridPane>
       </Tab>
