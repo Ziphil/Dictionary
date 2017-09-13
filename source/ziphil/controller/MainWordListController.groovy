@@ -124,7 +124,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $dictionary = dictionary
     $individualSetting = Dictionaries.createIndividualSetting(dictionary)
     $temporarySetting = TemporarySetting.new()
-    updateSearchStatuses()
     updateLoader()
     updateOnLinkClicked()
   }
@@ -466,17 +465,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  private void updateSearchStatuses() {
-    $dictionaryNameLabel.setText($dictionary.getName())
-    $searchControl.requestFocus()
-  }
-
   private void updateLoader() {
     Task<?> loader = $dictionary.getLoader()
     $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
     $progressIndicator.progressProperty().bind(loader.progressProperty())
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
       $wordView.setItems($dictionary.getWholeWords())
+      $searchControl.requestFocus()
       searchNormal(true)
     }
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
