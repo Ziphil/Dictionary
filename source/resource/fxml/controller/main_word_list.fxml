@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.RefreshableListView?>
+<?import ziphil.dictionary.SearchMode?>
+<?import ziphil.module.Setting?>
+
+
+<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <stylesheets>
+    <Setting fx:constant="CUSTOM_STYLESHEET_URL"/>
+    <URL value="@../../css/main/main.css"/>
+    <URL value="@../../css/main/modification.css"/>
+  </stylesheets>
+  <VBox>
+    <VBox alignment="center" VBox.vgrow="always">
+      <spacing><Double rpx="10"/></spacing>
+      <padding>
+        <Insets>
+          <top><Double rpx="10"/></top>
+          <right><Double rpx="10"/></right>
+          <left><Double rpx="10"/></left>
+        </Insets>
+      </padding>
+      <HBox>
+        <spacing><Double rpx="5"/></spacing>
+        <TextField fx:id="$searchControl" onKeyReleased="#searchNormal" HBox.hgrow="always"/>
+        <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <SearchMode fx:value="NAME"/>
+              <SearchMode fx:value="EQUIVALENT"/>
+              <SearchMode fx:value="CONTENT"/>
+            </FXCollections>
+          </items>
+          <value><SearchMode fx:value="NAME"/></value>
+        </ComboBox>
+        <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
+        </ToggleButton>
+      </HBox>
+      <RefreshableListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
+    </VBox>
+    <HBox fx:id="$footerBox" styleClass="footer">
+      <spacing><Double rpx="5"/></spacing>
+      <padding>
+        <Insets>
+          <left><Double rpx="10"/></left>
+          <right><Double rpx="10"/></right>
+        </Insets>
+      </padding>
+      <Label fx:id="$dictionaryNameLabel"/>
+      <HBox HBox.hgrow="always"/>
+      <Label fx:id="$hitWordSizeLabel" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
+      <Label text="/"/>
+      <Label fx:id="$totalWordSizeLabel" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
+      <Separator orientation="vertical"/>
+      <Label fx:id="$elapsedTimeLabel" text="0">
+        <prefWidth><Double rpx="35"/></prefWidth>
+        <minWidth><Double rpx="35"/></minWidth>
+      </Label>
+    </HBox>
+  </VBox>
+  <VBox fx:id="$loadingBox" styleClass="opaque" alignment="center">
+    <ProgressIndicator fx:id="$progressIndicator" progress="0">
+      <prefWidth><Double rpx="100"/></prefWidth>
+      <prefHeight><Double rpx="100"/></prefHeight>
+    </ProgressIndicator>
+  </VBox>
+  <fx:define>
+    <ContextMenu fx:id="$editMenu">
+      <items>
+        <MenuItem fx:id="$addWordContextItem" text="新規作成"/>
+        <MenuItem fx:id="$addInheritedWordContextItem" text="この単語から新規作成"/>
+        <MenuItem fx:id="$modifyWordContextItem" text="編集"/>
+        <MenuItem fx:id="$removeWordContextItem" text="削除"/>        
+      </items>
+    </ContextMenu>
+  </fx:define>
+</StackPane>
