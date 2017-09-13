@@ -130,19 +130,17 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchNormal(Boolean forcesSearch) {
-    if ($dictionary != null) {
-      String search = $searchControl.getText()
-      SearchMode searchMode = $searchModeControl.getValue()
-      Boolean strict = $searchTypeControl.isSelected()
-      NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
-      if (forcesSearch || search != $previousSearch) {
-        measureAndSearch(parameter)
-        $previousSearch = search
-        if (forcesSearch) {
-          $searchHistory.add(parameter, false)
-        } else {
-          $searchHistory.add(parameter, true)
-        }
+    String search = $searchControl.getText()
+    SearchMode searchMode = $searchModeControl.getValue()
+    Boolean strict = $searchTypeControl.isSelected()
+    NormalSearchParameter parameter = NormalSearchParameter.new(search, searchMode, strict, false)
+    if (forcesSearch || search != $previousSearch) {
+      measureAndSearch(parameter)
+      $previousSearch = search
+      if (forcesSearch) {
+        $searchHistory.add(parameter, false)
+      } else {
+        $searchHistory.add(parameter, true)
       }
     }
   }
@@ -152,120 +150,108 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchDetail() {
-    if ($dictionary != null) {
-      if ($dictionary instanceof ShaleiaDictionary) {
-        UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
-        nextStage.initOwner($stage)
-        nextStage.showAndWait()
-        if (nextStage.isCommitted()) {
-          ShaleiaSearchParameter parameter = nextStage.getResult()
-          measureAndSearch(parameter)
-          $searchHistory.add(parameter)
-        }
-      } else if ($dictionary instanceof SlimeDictionary) {
-        UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
-        nextStage.initOwner($stage)
-        controller.prepare($dictionary)
-        nextStage.showAndWait()
-        if (nextStage.isCommitted()) {
-          SlimeSearchParameter parameter = nextStage.getResult()
-          measureAndSearch(parameter)
-          $searchHistory.add(parameter)
-        }
+    if ($dictionary instanceof ShaleiaDictionary) {
+      UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
+      nextStage.initOwner($stage)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        ShaleiaSearchParameter parameter = nextStage.getResult()
+        measureAndSearch(parameter)
+        $searchHistory.add(parameter)
+      }
+    } else if ($dictionary instanceof SlimeDictionary) {
+      UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
+      nextStage.initOwner($stage)
+      controller.prepare($dictionary)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        SlimeSearchParameter parameter = nextStage.getResult()
+        measureAndSearch(parameter)
+        $searchHistory.add(parameter)
       }
     }
   }
 
   public void searchScript() {
-    if ($dictionary != null) {
-      UtilityStage<ScriptSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      ScriptController controller = ScriptController.new(nextStage)
-      nextStage.initOwner($stage)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        try {
-          ScriptSearchParameter parameter = nextStage.getResult()
-          measureAndSearch(parameter)
-        } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
-          PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("実行エラー")
-          dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
-          dialog.setAllowsCancel(false)
-          exception.printStackTrace(writer)
-          writer.flush()
-          writer.close()
-          dialog.showAndWait()
-        } catch (NoSuchScriptEngineException exception) {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("スクリプトエンジンエラー")
-          dialog.setContentText("指定されたスクリプトエンジンが見つかりません。実行用のjarファイルがライブラリに追加されているか確認してください。")
-          dialog.setAllowsCancel(false)
-          dialog.showAndWait()
-        }
+    UtilityStage<ScriptSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    ScriptController controller = ScriptController.new(nextStage)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      try {
+        ScriptSearchParameter parameter = nextStage.getResult()
+        measureAndSearch(parameter)
+      } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
+        PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        dialog.initOwner($stage)
+        dialog.setTitle("実行エラー")
+        dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
+        dialog.setAllowsCancel(false)
+        exception.printStackTrace(writer)
+        writer.flush()
+        writer.close()
+        dialog.showAndWait()
+      } catch (NoSuchScriptEngineException exception) {
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        dialog.initOwner($stage)
+        dialog.setTitle("スクリプトエンジンエラー")
+        dialog.setContentText("指定されたスクリプトエンジンが見つかりません。実行用のjarファイルがライブラリに追加されているか確認してください。")
+        dialog.setAllowsCancel(false)
+        dialog.showAndWait()
       }
     }
   }
 
   public void searchPrevious() {
-    if ($dictionary != null) {
-      SearchParameter parameter = $searchHistory.previous()
-      if (parameter != null) {
-        if (parameter instanceof NormalSearchParameter) {
-          String search = parameter.getSearch()
-          SearchMode searchMode = parameter.getSearchMode()
-          Boolean strict = parameter.isStrict()
-          $searchControl.setText(search)
-          $searchModeControl.setValue(searchMode)
-          $searchTypeControl.setSelected(strict)
-          $previousSearch = search
-          measureAndSearch(parameter)
-        } else if (parameter instanceof DetailedSearchParameter) {
-          measureAndSearch(parameter)
-        }
+    SearchParameter parameter = $searchHistory.previous()
+    if (parameter != null) {
+      if (parameter instanceof NormalSearchParameter) {
+        String search = parameter.getSearch()
+        SearchMode searchMode = parameter.getSearchMode()
+        Boolean strict = parameter.isStrict()
+        $searchControl.setText(search)
+        $searchModeControl.setValue(searchMode)
+        $searchTypeControl.setSelected(strict)
+        $previousSearch = search
+        measureAndSearch(parameter)
+      } else if (parameter instanceof DetailedSearchParameter) {
+        measureAndSearch(parameter)
       }
     }
   }
 
   public void searchNext() {
-    if ($dictionary != null) {
-      SearchParameter parameter = $searchHistory.next()
-      if (parameter != null) {
-        if (parameter instanceof NormalSearchParameter) {
-          String search = parameter.getSearch()
-          SearchMode searchMode = parameter.getSearchMode()
-          Boolean strict = parameter.isStrict()
-          $searchControl.setText(search)
-          $searchModeControl.setValue(searchMode)
-          $searchTypeControl.setSelected(strict)
-          $previousSearch = search
-          measureAndSearch(parameter)
-        } else if (parameter instanceof DetailedSearchParameter) {
-          measureAndSearch(parameter)
-        }
+    SearchParameter parameter = $searchHistory.next()
+    if (parameter != null) {
+      if (parameter instanceof NormalSearchParameter) {
+        String search = parameter.getSearch()
+        SearchMode searchMode = parameter.getSearchMode()
+        Boolean strict = parameter.isStrict()
+        $searchControl.setText(search)
+        $searchModeControl.setValue(searchMode)
+        $searchTypeControl.setSelected(strict)
+        $previousSearch = search
+        measureAndSearch(parameter)
+      } else if (parameter instanceof DetailedSearchParameter) {
+        measureAndSearch(parameter)
       }
     }
   }
 
   public void searchSentence() {
-    if ($dictionary != null) {
-      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
-      controller.prepare($dictionary.copy())
-      nextStage.showAndWait()
-    }
+    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare($dictionary.copy())
+    nextStage.showAndWait()
   }
 
   public void shuffleWords() {
-    if ($dictionary != null) {
-      $dictionary.shuffleWords()
-    }
+    $dictionary.shuffleWords()
   }
 
   public void measureAndSearch(SearchParameter parameter) {
@@ -314,7 +300,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void modifyWord(Element word) {
-    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+    if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
@@ -353,7 +339,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void removeWord(Element word) {
-    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+    if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         $dictionary.removeWord(word)
       }
@@ -366,7 +352,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void addWord() {
-    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+    if ($dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
@@ -404,7 +390,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void addInheritedWord(Element word) {
-    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+    if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -448,7 +434,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void addGeneratedWords() {
-    if ($dictionary != null && $dictionary instanceof EditableDictionary) {
+    if ($dictionary instanceof EditableDictionary) {
       UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -474,11 +460,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   private void cancelLoadDictionary() {
-    if ($dictionary != null) {
-      Task<?> loader = $dictionary.getLoader()
-      if (loader.isRunning()) {
-        loader.cancel()
-      }
+    Task<?> loader = $dictionary.getLoader()
+    if (loader.isRunning()) {
+      loader.cancel()
     }
   }
 
@@ -554,30 +538,26 @@ public class MainWordListController extends PrimitiveController<Stage> {
     if ($individualSetting != null) {
       $individualSetting.save()
     }
-    if ($dictionary != null) {
-      if ($dictionary.isChanged()) {
-        if (!savesAutomatically) {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("確認")
-          dialog.setContentText("辞書データは変更されています。保存しますか?")
-          dialog.setCommitText("保存する")
-          dialog.setNegateText("保存しない")
-          dialog.setAllowsNegate(true)
-          dialog.showAndWait()
-          if (dialog.isCommitted()) {
-            $dictionary.save()
-            return true
-          } else if (dialog.isNegated()) {
-            return true
-          } else {
-            return false
-          }
-        } else {
+    if ($dictionary.isChanged()) {
+      if (!savesAutomatically) {
+        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        dialog.initOwner($stage)
+        dialog.setTitle("確認")
+        dialog.setContentText("辞書データは変更されています。保存しますか?")
+        dialog.setCommitText("保存する")
+        dialog.setNegateText("保存しない")
+        dialog.setAllowsNegate(true)
+        dialog.showAndWait()
+        if (dialog.isCommitted()) {
           $dictionary.save()
           return true
+        } else if (dialog.isNegated()) {
+          return true
+        } else {
+          return false
         }
       } else {
+        $dictionary.save()
         return true
       }
     } else {
