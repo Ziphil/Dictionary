@@ -70,7 +70,7 @@
               </Button>
             </HBox>
           </GridPane>
-          <TitledPane text="訳語" animated="false" contentDisplay="right">
+          <TitledPane text="訳語" contentDisplay="right">
             <graphic>
               <HelpIndicator text="右側の欄には、訳語を半角コンマか全角読点で区切って入力してください。&#10;ここで用いる区切り文字は、辞書の個別設定から変更できます。&#10;左側の欄には、訳語の種類(品詞など)を入力してください。"/>
             </graphic>
@@ -90,7 +90,7 @@
               <Button text="＋" onAction="#insertEquivalentControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="タグ" animated="false">
+          <TitledPane text="タグ">
             <VBox alignment="centerRight">
               <padding>
                 <Insets>
@@ -107,7 +107,7 @@
               <Button text="＋" onAction="#insertTagControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="内容" animated="false" contentDisplay="right">
+          <TitledPane text="内容" contentDisplay="right">
             <VBox alignment="centerRight">
               <padding>
                 <Insets>
@@ -124,7 +124,7 @@
               <Button text="＋" onAction="#insertInformationControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane text="変化形" animated="false" contentDisplay="right">
+          <TitledPane text="変化形" contentDisplay="right">
             <graphic>
               <HelpIndicator text="右側の欄には、複数形や活用形などの変化形を、半角コンマか全角読点で区切って入力してください。&#10;ここで用いる区切り文字は、辞書の個別設定から変更できます。&#10;指定された変換形が検索されると、この単語がサジェストされます。"/>
             </graphic>
@@ -144,7 +144,7 @@
               <Button text="＋" onAction="#insertVariationControl"/>
             </VBox>
           </TitledPane>
-          <TitledPane fx:id="$relationPane" text="関連語" animated="false" contentDisplay="right">
+          <TitledPane fx:id="$relationPane" text="関連語" contentDisplay="right">
             <graphic>
               <HelpIndicator text="右側の欄には、類義語や対義語などのこの単語に関連する単語を選択してください。&#10;すでに辞書に登録されている単語しか選べないので注意してください。&#10;左側の欄には、「類義語」などのようにどのように関連しているかを入力してください。"/>
             </graphic>

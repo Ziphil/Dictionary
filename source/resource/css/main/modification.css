@@ -54,6 +54,10 @@
   -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
+.titled-pane {
+  -fx-animated: false;
+}
+
 .tab-pane {
   -fx-open-tab-animation: none;
   -fx-close-tab-animation: none;
