@@ -631,12 +631,15 @@ public class MainController extends PrimitiveController<Stage> {
 
   private Boolean close() {
     Boolean allowsClose = true
-    for (Int i = 0 ; i < $tabPane.getTabs().size() ; i ++) {
-      Tab tab = $tabPane.getTabs()[i]
+    List<Tab> tabs = ArrayList.new($tabPane.getTabs())
+    for (Int i = 0 ; i < tabs.size() ; i ++) {
+      Tab tab = tabs[i]
       MainWordListController controller = $wordListControllers[i]
       if (controller != null) {
         Boolean allowsCloseTab = controller.close()
-        if (!allowsCloseTab) {
+        if (allowsCloseTab) {
+          $tabPane.getTabs().remove(tab)
+        } else {
           allowsClose = false
           break
         }
