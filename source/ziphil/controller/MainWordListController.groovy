@@ -475,7 +475,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       searchNormal(true)
     }
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-      $tab.close()
+      $tab.requestClose()
       failUpdateDictionary(event.getSource().getException())
     }
   }

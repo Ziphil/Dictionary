@@ -9,9 +9,13 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ClosableTab extends Tab {
 
-  public void close() {
-    Event.fireEvent(this, Event.new(TAB_CLOSE_REQUEST_EVENT))
-    getTabPane().getTabs().remove(this)
+  public void requestClose() {
+    Event event = Event.new(TAB_CLOSE_REQUEST_EVENT)
+    Event.fireEvent(this, event)
+    if (!event.isConsumed()) {
+      getTabPane().getTabs().remove(this)
+      event.consume()
+    }
   }
 
 }
