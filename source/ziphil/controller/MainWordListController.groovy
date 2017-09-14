@@ -116,6 +116,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML
   public void initialize() {
     setupWordView()
+    setupWordViewShortcut()
     setupSearchControl()
     setupSearchTypeControl()
   }
@@ -583,6 +584,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  private void setupWordViewShortcut() {
+    $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
+      if (event.getCode() == KeyCode.ENTER) {
+        modifyWord()
+      }
+    }
+  }
+
   private void setupSearchControl() {
     $searchControl.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (KeyCodeCombination.new(KeyCode.Z, KeyCombination.SHORTCUT_DOWN).match(event)) {
@@ -620,14 +629,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void setupSearchHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
     $searchHistory.setSeparativeInterval(separativeInterval)
-  }
-
-  private void setupWordViewShortcuts() {
-    $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
-      if (event.getCode() == KeyCode.ENTER) {
-        modifyWord()
-      }
-    }
   }
 
   private void loadOriginalResource() {
