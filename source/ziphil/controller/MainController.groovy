@@ -287,6 +287,16 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
+  private void selectPreviousDictionary() {
+    $tabPane.getSelectionModel().selectPrevious()
+  }
+
+  @FXML
+  private void selectNextDictionary() {
+    $tabPane.getSelectionModel().selectNext()
+  }
+
   private void updateMenuItems() {
     Dictionary dictionary = currentDictionary()
     String plainName = Dictionaries.plainNameOf(dictionary) ?: "missing"
