@@ -10,7 +10,6 @@ import javafx.beans.binding.StringBinding
 import javafx.concurrent.Task
 import javafx.concurrent.Worker
 import javafx.concurrent.WorkerStateEvent
-import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -20,7 +19,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
-import javafx.scene.control.Tab
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.input.KeyCode
@@ -36,6 +34,7 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import javax.script.ScriptException
 import ziphil.Launcher
+import ziphil.custom.ClosableTab
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
@@ -99,7 +98,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
-  private Tab $tab
+  private ClosableTab $tab
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
   private TemporarySetting $temporarySetting = null
@@ -107,7 +106,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
-  public MainWordListController(Stage stage, Tab tab) {
+  public MainWordListController(Stage stage, ClosableTab tab) {
     super(stage)
     $tab = tab
     loadOriginalResource()
@@ -476,8 +475,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       searchNormal(true)
     }
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-      Event.fireEvent($tab, Event.new(Tab.TAB_CLOSE_REQUEST_EVENT))
-      $tab.getTabPane().getTabs().remove($tab)
+      $tab.close()
       failUpdateDictionary(event.getSource().getException())
     }
   }

@@ -28,6 +28,7 @@ import javafx.stage.Modality
 import javafx.stage.WindowEvent
 import javax.script.ScriptException
 import ziphil.Launcher
+import ziphil.custom.ClosableTab
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -91,7 +92,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void addDictionaryTab(Dictionary dictionary) {
-    Tab tab = Tab.new()
+    ClosableTab tab = ClosableTab.new()
     MainWordListController controller = MainWordListController.new($stage, tab)
     tab.setText(dictionary.getName())
     tab.setOnCloseRequest() { Event event ->
