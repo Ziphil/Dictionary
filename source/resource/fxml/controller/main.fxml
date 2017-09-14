@@ -37,8 +37,16 @@
         <Menu fx:id="$registerCurrentDictionaryMenu" styleClass="option,all,dammy" text="開いている辞書を登録"/>
         <MenuItem styleClass="option,missing,dammy" text="開いている辞書を登録" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem text="前の辞書を表示" onAction="#selectPreviousDictionary" accelerator="Shortcut+COMMA"/>
-        <MenuItem text="次の辞書を表示" onAction="#selectNextDictionary" accelerator="Shortcut+PERIOD"/>        
+        <MenuItem text="前の辞書を表示" onAction="#selectPreviousDictionary" accelerator="Shortcut+COMMA">
+          <graphic>
+            <ImageView><Image url="@../../icon/previous_dictionary.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem text="次の辞書を表示" onAction="#selectNextDictionary" accelerator="Shortcut+PERIOD">
+          <graphic>
+            <ImageView><Image url="@../../icon/next_dictionary.png"/></ImageView>
+          </graphic>
+        </MenuItem>        
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
