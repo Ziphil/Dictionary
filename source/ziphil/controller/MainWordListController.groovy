@@ -519,7 +519,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $openStages.clear()
   }
 
-  public Boolean close() {
+  public Boolean requestClose() {
     Boolean allowsClose = checkDictionaryChange()
     if (allowsClose) {
       cancelLoadDictionary()

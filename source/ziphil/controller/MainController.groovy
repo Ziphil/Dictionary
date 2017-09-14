@@ -96,7 +96,7 @@ public class MainController extends PrimitiveController<Stage> {
     tab.setText(dictionary.getName())
     tab.setOnCloseRequest() { Event event ->
       Int index = $tabPane.getTabs().indexOf(tab)
-      Boolean allowsClose = $wordListControllers[index].close()
+      Boolean allowsClose = $wordListControllers[index].requestClose()
       if (allowsClose) {
         $wordListControllers.removeAt(index)
       } else {
@@ -519,7 +519,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void exit() {
-    close()
+    requestClose()
     Platform.exit()
   }
 
@@ -629,14 +629,14 @@ public class MainController extends PrimitiveController<Stage> {
     $openStages.clear()
   }
 
-  private Boolean close() {
+  private Boolean requestClose() {
     Boolean allowsClose = true
     List<Tab> tabs = ArrayList.new($tabPane.getTabs())
     for (Int i = 0 ; i < tabs.size() ; i ++) {
       Tab tab = tabs[i]
       MainWordListController controller = $wordListControllers[i]
       if (controller != null) {
-        Boolean allowsCloseTab = controller.close()
+        Boolean allowsCloseTab = controller.requestClose()
         if (allowsCloseTab) {
           $tabPane.getTabs().remove(tab)
         } else {
@@ -806,7 +806,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupCloseConfirmation() {
     $stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST) { WindowEvent event ->
-      Boolean allowsClose = close()
+      Boolean allowsClose = requestClose()
       if (!allowsClose) {
         event.consume()
       }
