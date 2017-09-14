@@ -533,7 +533,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
         dialog.setTitle("確認")
-        dialog.setContentText("辞書データは変更されています。保存しますか?")
+        dialog.setContentText("${$dictionary.getName()}は変更されています。保存しますか?")
         dialog.setCommitText("保存する")
         dialog.setNegateText("保存しない")
         dialog.setAllowsNegate(true)
