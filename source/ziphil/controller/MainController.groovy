@@ -519,8 +519,10 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void exit() {
-    requestClose()
-    Platform.exit()
+    Boolean allowsClose = requestClose()
+    if (allowsClose) {
+      Platform.exit()
+    }
   }
 
   @FXML
