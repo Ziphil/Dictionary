@@ -264,36 +264,31 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $wordView.scrollTo(0)
   }
 
-  @FXML
-  private void changeSearchMode() {
-    $searchControl.requestFocus()
-    searchNormal(true)
-  }
 
   public void changeSearchModeToWord() {
     $searchModeControl.setValue(SearchMode.NAME)
-    changeSearchMode()
+    focusSearchControl()
   }
 
   public void changeSearchModeToEquivalent() {
     $searchModeControl.setValue(SearchMode.EQUIVALENT)
-    changeSearchMode()
+    focusSearchControl()
   }
 
   public void changeSearchModeToContent() {
     $searchModeControl.setValue(SearchMode.CONTENT)
-    changeSearchMode()
+    focusSearchControl()
   }
 
-  public void changeSearchType() {
+  public void toggleSearchType() {
     if (!$searchTypeControl.isDisable()) {
       $searchTypeControl.setSelected(!$searchTypeControl.isSelected())
-      searchNormal(true)
+      focusSearchControl()
     }
   }
 
   @FXML
-  private void toggleSearchType() {
+  private void focusSearchControl() {
     $searchControl.requestFocus()
     searchNormal(true)
   }

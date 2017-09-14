@@ -41,7 +41,7 @@
       <HBox>
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$searchControl" onKeyReleased="#searchNormal" HBox.hgrow="always"/>
-        <ComboBox fx:id="$searchModeControl" onAction="#changeSearchMode">
+        <ComboBox fx:id="$searchModeControl" onAction="#focusSearchControl">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
           <items>
@@ -53,7 +53,7 @@
           </items>
           <value><SearchMode fx:value="NAME"/></value>
         </ComboBox>
-        <ToggleButton fx:id="$searchTypeControl" onAction="#toggleSearchType" text="完全一致" selected="true">
+        <ToggleButton fx:id="$searchTypeControl" onAction="#focusSearchControl" text="完全一致" selected="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
         </ToggleButton>

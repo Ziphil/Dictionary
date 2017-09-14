@@ -577,8 +577,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void changeSearchType() {
-    currentWordListController().changeSearchType()
+  private void toggleSearchType() {
+    currentWordListController().toggleSearchType()
   }
 
   @FXML
