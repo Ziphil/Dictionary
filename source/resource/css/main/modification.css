@@ -54,6 +54,19 @@
   -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
+.titled-pane {
+  -fx-animated: false;
+}
+
+.tab-pane {
+  -fx-open-tab-animation: none;
+  -fx-close-tab-animation: none;
+}
+
+.tab-pane:bottom > .tab-header-area > .tab-header-background {
+  -fx-background-insets: 0px, 0px 0px 1px 0px, 1px;
+}
+
 .chart {
   -fx-padding: 0px;
 }

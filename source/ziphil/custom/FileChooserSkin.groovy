@@ -5,7 +5,6 @@ import java.util.concurrent.Callable
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.property.ObjectProperty
-import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -184,11 +183,10 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   }
 
   private void bindDirectoryControlProperty() {
-    ChangeListener<File> listener = { ObservableValue<? extends File> observableValue, File oldValue, File newValue ->
+    $control.currentDirectoryProperty().addListener() { ObservableValue<? extends File> observableValue, File oldValue, File newValue ->
       $directoryControl.setText(newValue.getAbsolutePath())
       $fileView.scrollTo(0)
     }
-    $control.currentDirectoryProperty().addListener(listener)
   }
 
   private void bindFileControlProperty() {
@@ -196,10 +194,9 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   }
 
   private void bindFileTypeControlProperty() {
-    ChangeListener<ExtensionFilter> listener = { ObservableValue<? extends ExtensionFilter> observableValue, ExtensionFilter oldValue, ExtensionFilter newValue ->
+    $control.currentFileTypeProperty().addListener() { ObservableValue<? extends ExtensionFilter> observableValue, ExtensionFilter oldValue, ExtensionFilter newValue ->
       $fileTypeControl.getSelectionModel().select(newValue)
     }
-    $control.currentFileTypeProperty().addListener(listener)
   }
 
   private void applyDefaultValues() {

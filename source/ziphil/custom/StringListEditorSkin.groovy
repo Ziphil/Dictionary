@@ -41,11 +41,16 @@ public class StringListEditorSkin extends CustomSkinBase<StringListEditor, HBox>
     bindProperty()
   }
 
+  @FXML
+  private void addString() {
+    $listView.getItems().add($inputControl.getText().trim())
+    $inputControl.setText("")
+  }
+
   private void setupInputControl() {
     $inputControl.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.SPACE) {
-        $listView.getItems().add($inputControl.getText().trim())
-        $inputControl.setText("")
+        addString()
       }
     }
     $inputControl.addEventHandler(KeyEvent.KEY_TYPED) { KeyEvent event ->

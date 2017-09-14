@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.ResourceBundle
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
@@ -12,6 +13,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PrimitiveController<S extends Stage> {
 
+  private static final String RESOUCE_BASE_NAME = "resource.text.fxml"
+
   protected S $stage
   protected Scene $scene
 
@@ -20,7 +23,8 @@ public class PrimitiveController<S extends Stage> {
   }
 
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Double minWidth, Double minHeight, Boolean resizable) {
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), null, CustomBuilderFactory.new())
+    ResourceBundle resources = ResourceBundle.getBundle(RESOUCE_BASE_NAME)
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), resources, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, defaultWidth, defaultHeight)
