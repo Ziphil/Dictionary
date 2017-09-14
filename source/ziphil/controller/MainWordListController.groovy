@@ -289,7 +289,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void focusSearchControl() {
+  public void focusSearchControl() {
     $searchControl.requestFocus()
     searchNormal(true)
   }

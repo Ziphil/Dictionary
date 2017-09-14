@@ -695,6 +695,12 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupTabPane() {
     $tabPane.getSelectionModel().selectedItemProperty().addListener() { ObservableValue<? extends Tab> observableValue, Tab oldValue, Tab newValue ->
+      Platform.runLater() {
+        MainWordListController controller = currentWordListController()
+        if (controller != null) {
+          controller.focusSearchControl()
+        }
+      }
       updateMenuItems()
       updateSearchRegisteredParameterMenu()
     }
