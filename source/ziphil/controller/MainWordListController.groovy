@@ -41,7 +41,6 @@ import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
-import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
