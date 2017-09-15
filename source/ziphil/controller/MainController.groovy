@@ -592,13 +592,13 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void modifyWord() {
-    currentWordListController().modifyWord()
+  private void modifyWords() {
+    currentWordListController().modifyWords()
   }
 
   @FXML
-  private void removeWord() {
-    currentWordListController().removeWord()
+  private void removeWords() {
+    currentWordListController().removeWords()
   }
 
   @FXML
@@ -607,8 +607,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void addInheritedWord() {
-    currentWordListController().addInheritedWord()
+  private void addInheritedWords() {
+    currentWordListController().addInheritedWords()
   }
 
   @FXML

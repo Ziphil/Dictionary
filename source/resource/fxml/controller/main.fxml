@@ -115,17 +115,17 @@
             <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
+        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWords" accelerator="Shortcut+I">
           <graphic>
             <ImageView><Image url="@../../icon/inherited_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
+        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWords" accelerator="Shortcut+M">
           <graphic>
             <ImageView><Image url="@../../icon/modify_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
+        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWords" accelerator="Shortcut+D">
           <graphic>
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>

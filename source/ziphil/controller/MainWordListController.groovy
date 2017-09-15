@@ -296,7 +296,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     searchNormal(true)
   }
 
-  public void modifyWord(Element word) {
+  private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -330,7 +330,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void modifyWord() {
+  public void modifyWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
       Element cachedWord = word
@@ -340,7 +340,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void removeWord(Element word) {
+  private void removeWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         $dictionary.removeWord(word)
@@ -348,7 +348,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void removeWord() {
+  public void removeWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
       Element cachedWord = word
@@ -396,7 +396,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void addInheritedWord(Element word) {
+  private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
@@ -435,7 +435,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void addInheritedWord() {
+  public void addInheritedWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
       Element cachedWord = word
@@ -605,7 +605,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void setupWordViewShortcut() {
     $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
-        modifyWord()
+        modifyWords()
       }
     }
   }
