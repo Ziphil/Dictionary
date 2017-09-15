@@ -1,6 +1,9 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.UnsupportedFlavorException
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
 import java.util.concurrent.Callable
@@ -60,6 +63,7 @@ import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
+import ziphil.dictionary.WordSelection
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -465,6 +469,52 @@ public class MainWordListController extends PrimitiveController<Stage> {
         measureAndSearch(parameter)
         $searchHistory.add(parameter)
         $temporarySetting.setGeneratorConfig(controller.createConfig())
+      }
+    }
+  }
+
+  private void cutOrCopyWords(Boolean copy) {
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> candidates = $wordView.getSelectionModel().getSelectedItems()
+      List<Word> words = ArrayList.new()
+      for (Element candidate : candidates) {
+        if (candidate instanceof Word) {
+          words.add((Word)candidate)
+        }
+      }
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      WordSelection contents = WordSelection.new(words)
+      clipboard.setContents(contents, contents)
+      if (!copy) {
+        for (Word word : words) {
+          $dictionary.removeWord(word)
+        }
+      }
+    }
+  }
+
+  @FXML
+  private void cutWords() {
+    cutOrCopyWords(false)
+  }
+
+  @FXML
+  private void copyWords() {
+    cutOrCopyWords(true)
+  }
+
+  @FXML
+  private void pasteWords() {
+    if ($dictionary instanceof EditableDictionary) {
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      try {
+        List<Word> words = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
+        for (Word word : words) {
+          $dictionary.addWord(word)
+        }
+      } catch (UnsupportedFlavorException exception) {
+        println("unsupported flavor")
+      } catch (IOException exception) {
       }
     }
   }
