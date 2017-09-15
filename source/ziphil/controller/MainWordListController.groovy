@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
 import java.util.concurrent.Callable
+import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
@@ -21,6 +22,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -39,6 +41,7 @@ import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
+import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
@@ -328,8 +331,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void modifyWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    modifyWord(word)
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        modifyWord(cachedWord)
+      }
+    }
   }
 
   public void removeWord(Element word) {
@@ -341,8 +349,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void removeWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    removeWord(word)
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        removeWord(cachedWord)
+      }
+    }
   }
 
   public void addWord() {
@@ -423,8 +436,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void addInheritedWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    addInheritedWord(word)
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        addInheritedWord(cachedWord)
+      }
+    }
   }
 
   public void addGeneratedWords() {
@@ -581,6 +599,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       }
       return cell
     }
+    $wordView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
   }
 
   private void setupWordViewShortcut() {
