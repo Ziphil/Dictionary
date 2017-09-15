@@ -95,10 +95,10 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$addWordContextItem" text="新規作成"/>
-        <MenuItem fx:id="$addInheritedWordContextItem" text="この単語から新規作成"/>
-        <MenuItem fx:id="$modifyWordContextItem" text="編集"/>
-        <MenuItem fx:id="$removeWordContextItem" text="削除"/>        
+        <MenuItem onAction="#addWord" text="新規作成"/>
+        <MenuItem onAction="#addInheritedWords" text="選択単語から新規作成"/>
+        <MenuItem onAction="#modifyWords" text="編集"/>
+        <MenuItem onAction="#removeWords" text="削除"/>        
       </items>
     </ContextMenu>
   </fx:define>

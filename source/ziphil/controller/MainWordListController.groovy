@@ -18,7 +18,6 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
@@ -85,10 +84,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
 
   @FXML private ContextMenu $editMenu
-  @FXML private MenuItem $addWordContextItem
-  @FXML private MenuItem $addInheritedWordContextItem
-  @FXML private MenuItem $modifyWordContextItem
-  @FXML private MenuItem $removeWordContextItem
   @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
@@ -329,6 +324,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
   public void modifyWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
@@ -347,6 +343,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
   public void removeWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
@@ -357,6 +354,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
   public void addWord() {
     if ($dictionary instanceof EditableDictionary) {
       Word newWord
@@ -434,6 +432,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  @FXML
   public void addInheritedWords() {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
@@ -580,23 +579,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
         }
-        if (event.getButton() == MouseButton.SECONDARY) {
-          cell.setContextMenu($editMenu)
-          $modifyWordContextItem.setOnAction() {
-            modifyWord(cell.getItem())
-          }
-          $removeWordContextItem.setOnAction() {
-            removeWord(cell.getItem())
-          }
-          $addWordContextItem.setOnAction() {
-            addWord()
-          }
-          $addInheritedWordContextItem.setOnAction() {
-            addInheritedWord(cell.getItem())
-          }
-        }
       }
       return cell
+    }
+    $wordView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
+      if (event.getButton() == MouseButton.SECONDARY) {
+        $wordView.setContextMenu($editMenu)
+      }
     }
     $wordView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
   }
