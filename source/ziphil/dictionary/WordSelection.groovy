@@ -15,20 +15,26 @@ public class WordSelection implements Transferable, ClipboardOwner {
   public static final DataFlavor WORD_FLAVOR = DataFlavor.new(List, "zpdic-word-list")
 
   private List<Word> $words
-  private ClipboardOwner $owner
+  private ClipboardOwner $owner = null
 
   public WordSelection(List<Word> words, ClipboardOwner owner) {
     $words = words
     $owner = owner
   }
 
+  public WordSelection(List<Word> words) {
+    $words = words
+  }
+
   public void lostOwnership(Clipboard clipboard, Transferable contents) {
-    $owner.lostOwnership(clipboard, contents)
+    if ($owner != null) {
+      $owner.lostOwnership(clipboard, contents)
+    }
     $words = null
     $owner = null
   }
 
-  public List<Word> getTransferData(DataFlavor flavor) {
+  public Object getTransferData(DataFlavor flavor) {
     if (flavor == WORD_FLAVOR) {
       return $words
     } else {
