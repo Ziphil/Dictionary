@@ -504,7 +504,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
           $dictionary.addWord(word)
         }
       } catch (UnsupportedFlavorException exception) {
-        println("unsupported flavor")
+        showErrorDialog("failPasteWords")
       } catch (IOException exception) {
       }
     }
