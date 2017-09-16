@@ -318,11 +318,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void modifyWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        modifyWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+      for (Element word : words) {
+        Element cachedWord = word
+        Platform.runLater() {
+          modifyWord(cachedWord)
+        }
       }
     }
   }
@@ -337,12 +339,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void removeWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        removeWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> candidates = $wordView.getSelectionModel().getSelectedItems()
+      List<Word> words = ArrayList.new()
+      for (Element candidate : candidates) {
+        if (candidate != null && candidate instanceof Word) {
+          words.add((Word)candidate)
+        }
       }
+      $dictionary.removeWords(words)
     }
   }
 
@@ -426,11 +431,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void addInheritedWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        addInheritedWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+      for (Element word : words) {
+        Element cachedWord = word
+        Platform.runLater() {
+          addInheritedWord(cachedWord)
+        }
       }
     }
   }
@@ -474,9 +481,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       WordSelection contents = WordSelection.new(words)
       clipboard.setContents(contents, contents)
       if (!copy) {
-        for (Word word : words) {
-          $dictionary.removeWord(word)
-        }
+        $dictionary.removeWords(words)
       }
     }
   }
@@ -496,13 +501,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
       try {
-        List<Word> words = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
-        for (Word word : words) {
-          if (Dictionaries.checkWordType($dictionary, word)) {
-            Word copiedWord = $dictionary.copyWord(word)
-            $dictionary.addWord(copiedWord)
+        List<Word> candidates = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
+        List<Word> words = ArrayList.new()
+        for (Word candidate : candidates) {
+          if (Dictionaries.checkWordType($dictionary, candidate)) {
+            Word word = $dictionary.copyWord(candidate)
+            words.add(word)
           }
         }
+        $dictionary.addWords(words)
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
