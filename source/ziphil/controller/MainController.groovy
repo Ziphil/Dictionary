@@ -572,6 +572,21 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().addGeneratedWords()
   }
 
+  @FXML
+  private void cutWords() {
+    currentWordListController().cutWords()
+  }
+
+  @FXML
+  private void copyWords() {
+    currentWordListController().copyWords()
+  }
+
+  @FXML
+  private void pasteWords() {
+    currentWordListController().pasteWords()
+  }
+
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
     if (false && previousVersion < Launcher.VERSION) {

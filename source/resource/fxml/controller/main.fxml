@@ -132,6 +132,10 @@
         </MenuItem>
         <MenuItem styleClass="option,all" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
         <SeparatorMenuItem/>
+        <MenuItem styleClass="option,all" text="単語の切取り" onAction="#cutWords" accelerator="Shortcut+X"/>
+        <MenuItem styleClass="option,all" text="単語のコピー" onAction="#copyWords" accelerator="Shortcut+C"/>
+        <MenuItem styleClass="option,all" text="単語の貼付け" onAction="#pasteWords" accelerator="Shortcut+V"/>
+        <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu text="ツール">

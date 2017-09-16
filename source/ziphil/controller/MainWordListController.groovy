@@ -482,17 +482,17 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void cutWords() {
+  public void cutWords() {
     cutOrCopyWords(false)
   }
 
   @FXML
-  private void copyWords() {
+  public void copyWords() {
     cutOrCopyWords(true)
   }
 
   @FXML
-  private void pasteWords() {
+  public void pasteWords() {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
       try {
