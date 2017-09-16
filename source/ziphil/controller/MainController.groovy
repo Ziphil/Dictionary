@@ -223,8 +223,10 @@ public class MainController extends PrimitiveController<Stage> {
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
         if (file != null) {
+          Tab tab = $tabPane.getSelectionModel().getSelectedItem()
           dictionary.setName(file.getName())
           dictionary.setPath(file.getAbsolutePath())
+          tab.setText(dictionary.getName())
           dictionary.save()
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
