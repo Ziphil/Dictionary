@@ -175,7 +175,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
-    updateAkrantiain()
     $changed = true
   }
 
