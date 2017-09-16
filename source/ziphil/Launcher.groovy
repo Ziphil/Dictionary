@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 22, 0, 2062)
+  public static final Version VERSION = Version.new(1, 23, 0, 2064)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.23. 0 | 単語データのコピーやペーストを行う機能を追加。
 //  1.22. 0 | 同時に複数の辞書を開く機能を追加。
 //  1.21. 0 | 単語を自動生成したときに前回のパラメータを保持するよう変更。
 //          | ver 1.1.0 相当の Zatlin に対応。
