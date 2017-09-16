@@ -1,9 +1,14 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.UnsupportedFlavorException
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
+import java.text.MessageFormat
 import java.util.concurrent.Callable
+import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
@@ -17,10 +22,10 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -59,6 +64,7 @@ import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
+import ziphil.dictionary.WordSelection
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -83,10 +89,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
 
   @FXML private ContextMenu $editMenu
-  @FXML private MenuItem $addWordContextItem
-  @FXML private MenuItem $addInheritedWordContextItem
-  @FXML private MenuItem $modifyWordContextItem
-  @FXML private MenuItem $removeWordContextItem
   @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
@@ -184,23 +186,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
         ScriptSearchParameter parameter = nextStage.getResult()
         measureAndSearch(parameter)
       } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
-        PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("実行エラー")
-        dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
-        dialog.setAllowsCancel(false)
-        exception.printStackTrace(writer)
-        writer.flush()
-        writer.close()
-        dialog.showAndWait()
+        outputStackTrace(exception, Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
+        showErrorDialog("failSearchScript")
       } catch (NoSuchScriptEngineException exception) {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("スクリプトエンジンエラー")
-        dialog.setContentText("指定されたスクリプトエンジンが見つかりません。実行用のjarファイルがライブラリに追加されているか確認してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
+        showErrorDialog("missingScriptEngine")
       }
     }
   }
@@ -293,7 +282,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     searchNormal(true)
   }
 
-  public void modifyWord(Element word) {
+  private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -327,12 +316,18 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void modifyWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    modifyWord(word)
+  @FXML
+  public void modifyWords() {
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        modifyWord(cachedWord)
+      }
+    }
   }
 
-  public void removeWord(Element word) {
+  private void removeWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         $dictionary.removeWord(word)
@@ -340,11 +335,18 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void removeWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    removeWord(word)
+  @FXML
+  public void removeWords() {
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        removeWord(cachedWord)
+      }
+    }
   }
 
+  @FXML
   public void addWord() {
     if ($dictionary instanceof EditableDictionary) {
       Word newWord
@@ -383,7 +385,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void addInheritedWord(Element word) {
+  private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
         Word newWord
@@ -422,9 +424,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public void addInheritedWord() {
-    Element word = $wordView.getSelectionModel().getSelectedItem()
-    addInheritedWord(word)
+  @FXML
+  public void addInheritedWords() {
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      Element cachedWord = word
+      Platform.runLater() {
+        addInheritedWord(cachedWord)
+      }
+    }
   }
 
   public void addGeneratedWords() {
@@ -449,6 +457,53 @@ public class MainWordListController extends PrimitiveController<Stage> {
         measureAndSearch(parameter)
         $searchHistory.add(parameter)
         $temporarySetting.setGeneratorConfig(controller.createConfig())
+      }
+    }
+  }
+
+  private void cutOrCopyWords(Boolean copy) {
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> candidates = $wordView.getSelectionModel().getSelectedItems()
+      List<Word> words = ArrayList.new()
+      for (Element candidate : candidates) {
+        if (candidate instanceof Word) {
+          words.add((Word)candidate)
+        }
+      }
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      WordSelection contents = WordSelection.new(words)
+      clipboard.setContents(contents, contents)
+      if (!copy) {
+        for (Word word : words) {
+          $dictionary.removeWord(word)
+        }
+      }
+    }
+  }
+
+  @FXML
+  public void cutWords() {
+    cutOrCopyWords(false)
+  }
+
+  @FXML
+  public void copyWords() {
+    cutOrCopyWords(true)
+  }
+
+  @FXML
+  public void pasteWords() {
+    if ($dictionary instanceof EditableDictionary) {
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      try {
+        List<Word> words = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
+        for (Word word : words) {
+          if (Dictionaries.checkWordType($dictionary, word)) {
+            Word copiedWord = $dictionary.copyWord(word)
+            $dictionary.addWord(copiedWord)
+          }
+        }
+      } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
   }
@@ -483,18 +538,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   private void failUpdateDictionary(Throwable throwable) {
-    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new(StageStyle.UTILITY)
-    dialog.initOwner($stage)
-    dialog.setTitle("読み込みエラー")
-    dialog.setContentText("エラーが発生しました(${name})。データが壊れている可能性があります。詳細はエラーログを確認してください。")
-    dialog.setAllowsCancel(false)
-    throwable.printStackTrace()
-    throwable.printStackTrace(writer)
-    writer.flush()
-    writer.close()
-    dialog.showAndWait()
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failUpdateDictionary")
   }
 
   public void focusWordList() {
@@ -532,10 +577,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (!savesAutomatically) {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
-        dialog.setTitle("確認")
-        dialog.setContentText("${$dictionary.getName()}は変更されています。保存しますか?")
-        dialog.setCommitText("保存する")
-        dialog.setNegateText("保存しない")
+        dialog.setTitle(DIALOG_RESOURCES.getString("title.checkDictionaryChange"))
+        dialog.setContentText(MessageFormat.format(DIALOG_RESOURCES.getString("contentText.checkDictionaryChange"), $dictionary.getName()))
+        dialog.setCommitText(DIALOG_RESOURCES.getString("commitText.checkDictionaryChange"))
+        dialog.setNegateText(DIALOG_RESOURCES.getString("cancelText.checkDictionaryChange"))
         dialog.setAllowsNegate(true)
         dialog.showAndWait()
         if (dialog.isCommitted()) {
@@ -563,30 +608,21 @@ public class MainWordListController extends PrimitiveController<Stage> {
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
         }
-        if (event.getButton() == MouseButton.SECONDARY) {
-          cell.setContextMenu($editMenu)
-          $modifyWordContextItem.setOnAction() {
-            modifyWord(cell.getItem())
-          }
-          $removeWordContextItem.setOnAction() {
-            removeWord(cell.getItem())
-          }
-          $addWordContextItem.setOnAction() {
-            addWord()
-          }
-          $addInheritedWordContextItem.setOnAction() {
-            addInheritedWord(cell.getItem())
-          }
-        }
       }
       return cell
     }
+    $wordView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
+      if (event.getButton() == MouseButton.SECONDARY) {
+        $wordView.setContextMenu($editMenu)
+      }
+    }
+    $wordView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
   }
 
   private void setupWordViewShortcut() {
     $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
-        modifyWord()
+        modifyWords()
       }
     }
   }

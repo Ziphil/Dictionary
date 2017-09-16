@@ -11,6 +11,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -95,10 +96,14 @@
   <fx:define>
     <ContextMenu fx:id="$editMenu">
       <items>
-        <MenuItem fx:id="$addWordContextItem" text="新規作成"/>
-        <MenuItem fx:id="$addInheritedWordContextItem" text="この単語から新規作成"/>
-        <MenuItem fx:id="$modifyWordContextItem" text="編集"/>
-        <MenuItem fx:id="$removeWordContextItem" text="削除"/>        
+        <MenuItem onAction="#addWord" text="新規作成"/>
+        <MenuItem onAction="#addInheritedWords" text="選択単語から新規作成"/>
+        <MenuItem onAction="#modifyWords" text="編集"/>
+        <MenuItem onAction="#removeWords" text="削除"/>        
+        <SeparatorMenuItem/>
+        <MenuItem onAction="#cutWords" text="切取り"/>
+        <MenuItem onAction="#copyWords" text="コピー"/>
+        <MenuItem onAction="#pasteWords" text="貼付け"/>
       </items>
     </ContextMenu>
   </fx:define>

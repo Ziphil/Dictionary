@@ -151,13 +151,8 @@ public class MainController extends PrimitiveController<Stage> {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         addDictionaryTab(dictionary)
       } else {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("読み込みエラー")
-        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
         Setting.getInstance().setDefaultDictionaryPath(null)
+        showErrorDialog("failOpenDictionary")
       }
     }
   }
@@ -170,13 +165,8 @@ public class MainController extends PrimitiveController<Stage> {
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("読み込みエラー")
-        dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
         Setting.getInstance().setDefaultDictionaryPath(null)
+        showErrorDialog("failOpenDictionary")
       }
     }
   }
@@ -187,13 +177,8 @@ public class MainController extends PrimitiveController<Stage> {
       Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       addDictionaryTab(dictionary)
     } else {
-      Dialog dialog = Dialog.new(StageStyle.UTILITY)
-      dialog.initOwner($stage)
-      dialog.setTitle("読み込みエラー")
-      dialog.setContentText("辞書データが読み込めませんでした。正しいファイルかどうか確認してください。")
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
       Setting.getInstance().setDefaultDictionaryPath(null)
+      showErrorDialog("failOpenDictionary")
     }
   }
 
@@ -211,13 +196,8 @@ public class MainController extends PrimitiveController<Stage> {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         addDictionaryTab(dictionary)
       } else {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("新規作成エラー")
-        dialog.setContentText("辞書の新規作成ができませんでした。辞書形式を正しく選択したか確認してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
         Setting.getInstance().setDefaultDictionaryPath(null)
+        showErrorDialog("failCreateDictionary")
       }
     }
   }
@@ -248,12 +228,8 @@ public class MainController extends PrimitiveController<Stage> {
           dictionary.save()
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         } else {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("保存エラー")
-          dialog.setContentText("辞書の保存ができませんでした。正しいファイルかどうか確認してください。")
-          dialog.setAllowsCancel(false)
-          dialog.showAndWait()
+          Setting.getInstance().setDefaultDictionaryPath(null)
+          showErrorDialog("failSaveDictionary")
         }
       }
     }
@@ -275,13 +251,8 @@ public class MainController extends PrimitiveController<Stage> {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
           addDictionaryTab(newDictionary)
         } else {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
-          dialog.initOwner($stage)
-          dialog.setTitle("変換エラー")
-          dialog.setContentText("辞書の変換ができませんでした。正しいファイルかどうか確認してください。")
-          dialog.setAllowsCancel(false)
-          dialog.showAndWait()
           Setting.getInstance().setDefaultDictionaryPath(null)
+          showErrorDialog("failConvertDictionary")
         }
       }
     }
@@ -465,12 +436,7 @@ public class MainController extends PrimitiveController<Stage> {
       controller.prepare(dictionary)
       nextStage.showAndWait()
     } else {
-      Dialog dialog = Dialog.new(StageStyle.UTILITY)
-      dialog.initOwner($stage)
-      dialog.setTitle("印刷内容エラー")
-      dialog.setContentText("印刷する単語データがありません。")
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
+      showErrorDialog("missingPrintedWord")
     }
   }
 
@@ -502,20 +468,10 @@ public class MainController extends PrimitiveController<Stage> {
         URI uri = URI.new(OFFICIAL_SITE_URI)
         desktop.browse(uri)
       } else {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("デスクトップエラー")
-        dialog.setContentText("この環境はブラウザの起動がサポートされていません。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
+        showErrorDialog("browserUnsupported")
       }
     } else {
-      Dialog dialog = Dialog.new(StageStyle.UTILITY)
-      dialog.initOwner($stage)
-      dialog.setTitle("デスクトップエラー")
-      dialog.setContentText("この環境はデスクトップの操作がサポートされていません。")
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
+      showErrorDialog("desktopUnsupported")
     }
   }
 
@@ -592,13 +548,13 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void modifyWord() {
-    currentWordListController().modifyWord()
+  private void modifyWords() {
+    currentWordListController().modifyWords()
   }
 
   @FXML
-  private void removeWord() {
-    currentWordListController().removeWord()
+  private void removeWords() {
+    currentWordListController().removeWords()
   }
 
   @FXML
@@ -607,13 +563,28 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void addInheritedWord() {
-    currentWordListController().addInheritedWord()
+  private void addInheritedWords() {
+    currentWordListController().addInheritedWords()
   }
 
   @FXML
   private void addGeneratedWords() {
     currentWordListController().addGeneratedWords()
+  }
+
+  @FXML
+  private void cutWords() {
+    currentWordListController().cutWords()
+  }
+
+  @FXML
+  private void copyWords() {
+    currentWordListController().copyWords()
+  }
+
+  @FXML
+  private void pasteWords() {
+    currentWordListController().pasteWords()
   }
 
   private void checkVersion() {
@@ -671,9 +642,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void handleException(Throwable throwable) {
     Dictionary dictionary = currentDictionary()
     IndividualSetting individualSetting = currentIndividualSetting()
-    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new(StageStyle.UTILITY)
     if (dictionary != null) {
       dictionary.saveBackup()
     }
@@ -681,15 +649,8 @@ public class MainController extends PrimitiveController<Stage> {
       individualSetting.save()
     }
     Setting.getInstance().save()
-    dialog.initOwner($stage)
-    dialog.setTitle("エラー")
-    dialog.setContentText("エラーが発生しました(${name})。詳細はエラーログを確認してください。")
-    dialog.setAllowsCancel(false)
-    throwable.printStackTrace()
-    throwable.printStackTrace(writer)
-    writer.flush()
-    writer.close()
-    dialog.showAndWait()
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("error")
     Platform.exit()
   }
 

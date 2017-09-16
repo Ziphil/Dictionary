@@ -115,22 +115,38 @@
             <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWord" accelerator="Shortcut+I">
+        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWords" accelerator="Shortcut+I">
           <graphic>
             <ImageView><Image url="@../../icon/inherited_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWord" accelerator="Shortcut+M">
+        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWords" accelerator="Shortcut+M">
           <graphic>
             <ImageView><Image url="@../../icon/modify_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWord" accelerator="Shortcut+D">
+        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWords" accelerator="Shortcut+D">
           <graphic>
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
         <MenuItem styleClass="option,all" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
+        <SeparatorMenuItem/>
+        <MenuItem styleClass="option,all" text="単語の切取り" onAction="#cutWords" accelerator="Shortcut+X">
+          <graphic>
+            <ImageView><Image url="@../../icon/cut.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem styleClass="option,all" text="単語のコピー" onAction="#copyWords" accelerator="Shortcut+C">
+          <graphic>
+            <ImageView><Image url="@../../icon/copy.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem styleClass="option,all" text="単語の貼付け" onAction="#pasteWords" accelerator="Shortcut+V">
+          <graphic>
+            <ImageView><Image url="@../../icon/paste.png"/></ImageView>
+          </graphic>
+        </MenuItem>
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>

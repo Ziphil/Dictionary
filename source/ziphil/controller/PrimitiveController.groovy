@@ -6,14 +6,17 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
+import javafx.stage.StageStyle
 import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Dialog
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class PrimitiveController<S extends Stage> {
 
-  private static final String RESOUCE_BASE_NAME = "resource.text.fxml"
+  public static final ResourceBundle FXML_RESOURCES = ResourceBundle.getBundle("resource.text.fxml")
+  public static final ResourceBundle DIALOG_RESOURCES = ResourceBundle.getBundle("resource.text.dialog")
 
   protected S $stage
   protected Scene $scene
@@ -22,9 +25,25 @@ public class PrimitiveController<S extends Stage> {
     $stage = stage
   }
 
+  protected void showErrorDialog(String key) {
+    Dialog dialog = Dialog.new(StageStyle.UTILITY) 
+    dialog.initOwner($stage)
+    dialog.setTitle(DIALOG_RESOURCES.getString("title." + key))
+    dialog.setContentText(DIALOG_RESOURCES.getString("contentText." + key))
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
+  }
+
+  protected void outputStackTrace(Throwable throwable, String path) {
+    PrintWriter writer = PrintWriter.new(path)
+    throwable.printStackTrace()
+    throwable.printStackTrace(writer)
+    writer.flush()
+    writer.close()
+  }
+
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Double minWidth, Double minHeight, Boolean resizable) {
-    ResourceBundle resources = ResourceBundle.getBundle(RESOUCE_BASE_NAME)
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), resources, CustomBuilderFactory.new())
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), FXML_RESOURCES, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, defaultWidth, defaultHeight)

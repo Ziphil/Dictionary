@@ -2,9 +2,12 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.personal.PersonalDictionary
+import ziphil.dictionary.personal.PersonalWord
 import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
+import ziphil.dictionary.slime.SlimeWord
 import ziphilib.transform.Ziphilify
 
 
@@ -81,6 +84,22 @@ public class Dictionaries {
       }
     } else {
       return null
+    }
+  }
+
+  public static Boolean checkWordType(Dictionary dictionary, Word word) {
+    if (dictionary != null && word != null) {
+      if (dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
+        return true
+      } else if (dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
+        return true
+      } else if (dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
     }
   }
 
