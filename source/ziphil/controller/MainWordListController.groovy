@@ -474,9 +474,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       WordSelection contents = WordSelection.new(words)
       clipboard.setContents(contents, contents)
       if (!copy) {
-        for (Word word : words) {
-          $dictionary.removeWord(word)
-        }
+        $dictionary.removeWords(words)
       }
     }
   }
@@ -496,13 +494,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
       try {
-        List<Word> words = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
-        for (Word word : words) {
-          if (Dictionaries.checkWordType($dictionary, word)) {
-            Word copiedWord = $dictionary.copyWord(word)
-            $dictionary.addWord(copiedWord)
+        List<Word> candidates = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
+        List<Word> words = ArrayList.new()
+        for (Word candidate : candidates) {
+          if (Dictionaries.checkWordType($dictionary, candidate)) {
+            Word word = $dictionary.copyWord(candidate)
+            words.add(word)
           }
         }
+        $dictionary.addWords(words)
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }

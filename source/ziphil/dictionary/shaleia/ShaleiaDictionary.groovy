@@ -69,6 +69,11 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $changed = true
   }
 
+  public void removeWords(List<? extends ShaleiaWord> words) {
+    $words.removeAll(words)
+    $changed = true
+  }
+
   public void mergeWord(ShaleiaWord mergedWord, ShaleiaWord removedWord) {
     $words.remove(removedWord)
     $changed = true

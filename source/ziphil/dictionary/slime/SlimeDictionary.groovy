@@ -117,7 +117,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     updateOnBackground()
   }
 
-  public void removeWord(SlimeWord word) {
+  private void removeWordWithoutUpdate(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
       Boolean changed = otherWord.getRelations().removeAll{it.getId() == word.getId()}
       if (changed) {
@@ -125,6 +125,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     $words.remove(word)
+  }
+
+  public void removeWord(SlimeWord word) {
+    removeWordWithoutUpdate(word)
+    updateOnBackground()
+  }
+
+  public void removeWords(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      removeWordWithoutUpdate(word)
+    }
     updateOnBackground()
   }
 
