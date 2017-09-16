@@ -34,6 +34,14 @@ public class PrimitiveController<S extends Stage> {
     dialog.showAndWait()
   }
 
+  protected void outputStackTrace(Throwable throwable, String path) {
+    PrintWriter writer = PrintWriter.new(path)
+    throwable.printStackTrace()
+    throwable.printStackTrace(writer)
+    writer.flush()
+    writer.close()
+  }
+
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Double minWidth, Double minHeight, Boolean resizable) {
     FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), FXML_RESOURCES, CustomBuilderFactory.new())
     loader.setController(this)

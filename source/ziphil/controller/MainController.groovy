@@ -627,8 +627,6 @@ public class MainController extends PrimitiveController<Stage> {
   private void handleException(Throwable throwable) {
     Dictionary dictionary = currentDictionary()
     IndividualSetting individualSetting = currentIndividualSetting()
-    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
     if (dictionary != null) {
       dictionary.saveBackup()
     }
@@ -636,10 +634,7 @@ public class MainController extends PrimitiveController<Stage> {
       individualSetting.save()
     }
     Setting.getInstance().save()
-    throwable.printStackTrace()
-    throwable.printStackTrace(writer)
-    writer.flush()
-    writer.close()
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     showErrorDialog("error")
     Platform.exit()
   }

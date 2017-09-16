@@ -186,10 +186,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         ScriptSearchParameter parameter = nextStage.getResult()
         measureAndSearch(parameter)
       } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
-        PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
-        exception.printStackTrace(writer)
-        writer.flush()
-        writer.close()
+        outputStackTrace(exception, Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
         showErrorDialog("failSearchScript")
       } catch (NoSuchScriptEngineException exception) {
         showErrorDialog("missingScriptEngine")
@@ -540,11 +537,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   private void failUpdateDictionary(Throwable throwable) {
-    PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    throwable.printStackTrace()
-    throwable.printStackTrace(writer)
-    writer.flush()
-    writer.close()
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     showErrorDialog("failUpdateDictionary")
   }
 
