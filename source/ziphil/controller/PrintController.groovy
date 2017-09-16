@@ -64,8 +64,8 @@ public class PrintController extends Controller<Void> {
     if (version < JavaVersion.parseString("1.8.0_112")) {
       Dialog dialog = Dialog.new(StageStyle.UTILITY)
       dialog.initOwner($stage)
-      dialog.setTitle("注意")
-      dialog.setContentText("現在実行中のJavaのバージョンでは、印刷開始までに数分かかる可能性があります。Javaを最新のものにアップデートすることをお勧めします。このまま印刷を実行しますか?")
+      dialog.setTitle(DIALOG_RESOURCES.getString("title.slowPrint"))
+      dialog.setContentText(DIALOG_RESOURCES.getString("contentText.slowPrint"))
       dialog.showAndWait()
       if (dialog.isCancelled()) {
         cancelled = true
