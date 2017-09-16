@@ -171,6 +171,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void update() {
+    updateValidMinId()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -180,6 +181,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void updateFirst() {
     validate()
+    updateValidMinId()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -240,17 +242,23 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     }
   }
 
+  private void updateValidMinId() {
+    Int validMinId = 0
+    for (SlimeWord word : $words) {
+      if (word.getId() >= validMinId) {
+        validMinId = word.getId()
+      }
+    }
+    $validMinId = validMinId + 1
+  }
+
   private void updateRegisteredTitles() {
-    $validMinId = 0
     $registeredTags.clear()
     $registeredEquivalentTitles.clear()
     $registeredInformationTitles.clear()
     $registeredVariationTitles.clear()
     $registeredRelationTitles.clear()
     for (SlimeWord word : $words) {
-      if (word.getId() >= $validMinId) {
-        $validMinId = word.getId()
-      }
       for (String tag : word.getTags()) {
         if (!$registeredTags.contains(tag)) {
           $registeredTags.addAll(tag)
@@ -281,7 +289,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
-    $validMinId ++
   }
 
   private void updatePlainInformationTitles() {
