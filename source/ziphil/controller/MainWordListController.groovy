@@ -337,12 +337,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void removeWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        removeWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> candidates = $wordView.getSelectionModel().getSelectedItems()
+      List<Word> words = ArrayList.new()
+      for (Element candidate : candidates) {
+        if (candidate != null && candidate instanceof Word) {
+          words.add((Word)candidate)
+        }
       }
+      $dictionary.removeWords(words)
     }
   }
 
