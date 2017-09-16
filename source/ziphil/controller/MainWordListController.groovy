@@ -498,8 +498,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
       try {
         List<Word> words = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
         for (Word word : words) {
-          Word copiedWord = $dictionary.copyWord(word)
-          $dictionary.addWord(copiedWord)
+          if (Dictionaries.checkWordType($dictionary, word)) {
+            Word copiedWord = $dictionary.copyWord(word)
+            $dictionary.addWord(copiedWord)
+          }
         }
       } catch (UnsupportedFlavorException exception) {
         showErrorDialog("failPasteWords")
