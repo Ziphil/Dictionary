@@ -503,9 +503,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
             $dictionary.addWord(copiedWord)
           }
         }
-      } catch (UnsupportedFlavorException exception) {
-        showErrorDialog("failPasteWords")
-      } catch (IOException exception) {
+      } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
   }
