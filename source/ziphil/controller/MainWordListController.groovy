@@ -318,11 +318,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void modifyWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        modifyWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+      for (Element word : words) {
+        Element cachedWord = word
+        Platform.runLater() {
+          modifyWord(cachedWord)
+        }
       }
     }
   }
@@ -429,11 +431,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void addInheritedWords() {
-    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
-    for (Element word : words) {
-      Element cachedWord = word
-      Platform.runLater() {
-        addInheritedWord(cachedWord)
+    if ($dictionary instanceof EditableDictionary) {
+      List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+      for (Element word : words) {
+        Element cachedWord = word
+        Platform.runLater() {
+          addInheritedWord(cachedWord)
+        }
       }
     }
   }
