@@ -6,6 +6,7 @@ import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.UnsupportedFlavorException
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
+import java.text.MessageFormat
 import java.util.concurrent.Callable
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
@@ -186,22 +187,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
         measureAndSearch(parameter)
       } catch (ScriptException | AccessControlException | PrivilegedActionException exception) {
         PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + SCRIPT_EXCEPTION_OUTPUT_PATH)
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("実行エラー")
-        dialog.setContentText("スクリプト実行中にエラーが発生しました。詳細はエラーログを確認してください。")
-        dialog.setAllowsCancel(false)
         exception.printStackTrace(writer)
         writer.flush()
         writer.close()
-        dialog.showAndWait()
+        showErrorDialog("failSearchScript")
       } catch (NoSuchScriptEngineException exception) {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("スクリプトエンジンエラー")
-        dialog.setContentText("指定されたスクリプトエンジンが見つかりません。実行用のjarファイルがライブラリに追加されているか確認してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
+        showErrorDialog("missingScriptEngine")
       }
     }
   }
@@ -550,17 +541,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void failUpdateDictionary(Throwable throwable) {
     PrintWriter writer = PrintWriter.new(Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
-    String name = throwable.getClass().getSimpleName()
-    Dialog dialog = Dialog.new(StageStyle.UTILITY)
-    dialog.initOwner($stage)
-    dialog.setTitle("読み込みエラー")
-    dialog.setContentText("エラーが発生しました(${name})。データが壊れている可能性があります。詳細はエラーログを確認してください。")
-    dialog.setAllowsCancel(false)
     throwable.printStackTrace()
     throwable.printStackTrace(writer)
     writer.flush()
     writer.close()
-    dialog.showAndWait()
+    showErrorDialog("failUpdateDictionary")
   }
 
   public void focusWordList() {
@@ -598,10 +583,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (!savesAutomatically) {
         Dialog dialog = Dialog.new(StageStyle.UTILITY)
         dialog.initOwner($stage)
-        dialog.setTitle("確認")
-        dialog.setContentText("${$dictionary.getName()}は変更されています。保存しますか?")
-        dialog.setCommitText("保存する")
-        dialog.setNegateText("保存しない")
+        dialog.setTitle(DIALOG_RESOURCES.getString("title.checkDictionaryChange"))
+        dialog.setContentText(MessageFormat.format(DIALOG_RESOURCES.getString("contentText.checkDictionaryChange"), $dictionary.getName()))
+        dialog.setCommitText(DIALOG_RESOURCES.getString("commitText.checkDictionaryChange"))
+        dialog.setNegateText(DIALOG_RESOURCES.getString("cancelText.checkDictionaryChange"))
         dialog.setAllowsNegate(true)
         dialog.showAndWait()
         if (dialog.isCommitted()) {

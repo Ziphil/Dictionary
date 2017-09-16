@@ -6,7 +6,9 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
+import javafx.stage.StageStyle
 import ziphil.custom.CustomBuilderFactory
+import ziphil.custom.Dialog
 import ziphilib.transform.Ziphilify
 
 
@@ -14,12 +16,22 @@ import ziphilib.transform.Ziphilify
 public class PrimitiveController<S extends Stage> {
 
   public static final ResourceBundle FXML_RESOURCES = ResourceBundle.getBundle("resource.text.fxml")
+  public static final ResourceBundle DIALOG_RESOURCES = ResourceBundle.getBundle("resource.text.dialog")
 
   protected S $stage
   protected Scene $scene
 
   public PrimitiveController(S stage) {
     $stage = stage
+  }
+
+  protected void showErrorDialog(String key) {
+    Dialog dialog = Dialog.new(StageStyle.UTILITY) 
+    dialog.initOwner($stage)
+    dialog.setTitle(DIALOG_RESOURCES.getString("title." + key))
+    dialog.setContentText(DIALOG_RESOURCES.getString("contentText." + key))
+    dialog.setAllowsCancel(false)
+    dialog.showAndWait()
   }
 
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Double minWidth, Double minHeight, Boolean resizable) {
