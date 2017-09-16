@@ -13,7 +13,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PrimitiveController<S extends Stage> {
 
-  private static final String RESOUCE_BASE_NAME = "resource.text.fxml"
+  public static final ResourceBundle FXML_RESOURCES = ResourceBundle.getBundle("resource.text.fxml")
 
   protected S $stage
   protected Scene $scene
@@ -23,8 +23,7 @@ public class PrimitiveController<S extends Stage> {
   }
 
   protected void loadResource(String resourcePath, String title, Double defaultWidth, Double defaultHeight, Double minWidth, Double minHeight, Boolean resizable) {
-    ResourceBundle resources = ResourceBundle.getBundle(RESOUCE_BASE_NAME)
-    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), resources, CustomBuilderFactory.new())
+    FXMLLoader loader = FXMLLoader.new(getClass().getClassLoader().getResource(resourcePath), FXML_RESOURCES, CustomBuilderFactory.new())
     loader.setController(this)
     Parent root = (Parent)loader.load()
     $scene = Scene.new(root, defaultWidth, defaultHeight)
