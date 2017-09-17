@@ -233,10 +233,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void searchSentence() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
     controller.prepare($dictionary.copy())
+    $openStages.add(nextStage)
     nextStage.showAndWait()
+    $openStages.remove(nextStage)
   }
 
   public void shuffleWords() {
