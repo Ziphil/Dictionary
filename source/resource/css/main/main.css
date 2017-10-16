@@ -14,6 +14,18 @@
   -fx-font-weight: bold;
 }
 
+.dictionary-list .separator .line {
+  -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
+  -fx-border-insets: 1px 0px 0px 0px;
+  -fx-border-style: dotted;
+}
+
+.dictionary-list:focused .list-cell:filled:selected .separator .line {
+  -fx-border-color: derive(-fx-selection-bar, 50%) transparent transparent transparent;
+  -fx-border-insets: 1px 0px 0px 0px;
+  -fx-border-style: dotted;
+}
+
 .dictionary-list .shaleia-total-part,
 .dictionary-list .shaleia-part,
 .dictionary-list .slime-tag,
