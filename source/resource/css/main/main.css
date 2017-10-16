@@ -48,7 +48,6 @@
 }
 
 .dictionary-list .shaleia-pronunciation,
-.dictionary-list .shaleia-creation-date,
 .dictionary-list .shaleia-title,
 .dictionary-list .shaleia-possibility,
 .dictionary-list .personal-pronunciation,
@@ -57,6 +56,10 @@
 .dictionary-list .slime-id,
 .dictionary-list .slime-possibility {
   -fx-font-size: 0.9em;
+}
+
+.dictionary-list .shaleia-creation-date {
+  -fx-font-size: 0.8em;
 }
 
 .dictionary-list .shaleia-link,
