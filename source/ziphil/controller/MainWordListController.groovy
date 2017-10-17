@@ -355,8 +355,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  @FXML
-  public void addWord() {
+  public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -364,7 +363,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
-      String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
         ShaleiaWord localNewWord = $dictionary.createWord(defaultName)
@@ -392,6 +390,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
         }
       }
     }
+  }
+
+  @FXML
+  public void addWord() {
+    String defaultName = $searchControl.getText()
+    addWord(defaultName)
   }
 
   private void addInheritedWord(Element word) {
