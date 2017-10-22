@@ -140,7 +140,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     Long hairiaNumber = HairiaDate.nowShifted().getLong(HairiaNumberField.HAIRIA_NUMBER)
     ShaleiaWord word = ShaleiaWord.new()
     word.setUniqueName(defaultName ?: "")
-    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉")
+    word.setDescription("+ ${hairiaNumber} 〈〉\n\n=〈〉")
     word.setDictionary(this)
     word.update()
     return word
@@ -175,7 +175,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     List<String> pseudoEquivalents = pseudoWord.getEquivalents()
     String pseudoContent = pseudoWord.getContent()
     word.setUniqueName(name)
-    word.setDescription("+ ${hairiaNumber} 〈不〉\n\n=〈〉 ${pseudoEquivalents.join(", ")}")
+    word.setDescription("+ ${hairiaNumber} 〈〉\n\n=〈〉 ${pseudoEquivalents.join(", ")}")
     word.setDictionary(this)
     word.update()
     return word
