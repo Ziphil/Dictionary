@@ -2,7 +2,9 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.scene.control.Label
+import javafx.scene.control.Separator
 import javafx.scene.layout.Pane
+import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.dictionary.PaneFactoryBase
@@ -27,13 +29,29 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow pane = TextFlow.new()
+    VBox pane = VBox.new()
+    TextFlow mainPane = TextFlow.new()
+    TextFlow contentPane = TextFlow.new()
+    Boolean hasContent = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
-    pane.setLineSpacing(lineSpacing)
-    addNameNode(pane, $word.getName(), $word.createPronunciation())
-    addContentNode(pane, $word.getTranslation())
-    addContentNode(pane, $word.getUsage())
-    modifyBreak(pane)
+    mainPane.setLineSpacing(lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
+    addNameNode(mainPane, $word.getName(), $word.createPronunciation())
+    if ($word.getTranslation() != "") {
+      addContentNode(contentPane, $word.getTranslation())
+      hasContent = true
+    }
+    if ($word.getUsage() != "") {
+      addContentNode(contentPane, $word.getUsage())
+      hasContent = true
+    }
+    modifyBreak(mainPane)
+    modifyBreak(contentPane)
+    pane.getChildren().add(mainPane)
+    if (hasContent) {
+      addSeparator(pane)
+      pane.getChildren().add(contentPane)
+    }
     return pane
   }
 
@@ -59,9 +77,13 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
     Text contentText = Text.new(modifiedContent)
     Text breakText = Text.new("\n")
     contentText.getStyleClass().add(CONTENT_CLASS)
-    if (content != "") {
-      pane.getChildren().addAll(contentText, breakText)
-    }
+    pane.getChildren().addAll(contentText, breakText)
+  }
+
+  private void addSeparator(Pane pane) {
+    Separator separator = Separator.new()
+    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+    pane.getChildren().addAll(separator)
   }
 
 }
