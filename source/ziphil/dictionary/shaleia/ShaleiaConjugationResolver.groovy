@@ -150,28 +150,28 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
       for (ConjugationCandidate candidate : $candidates) {
         ConjugationType type = candidate.getType()
         if (type == ConjugationType.VERB) {
-          if (convertedName == candidate.getName() && word.getDescription().contains("〈不動")) {
+          if (convertedName == candidate.getName() && word.getDescription() =~ /^\+.*〈.*動.*〉/) {
             ShaleiaPossibility possibility = ShaleiaPossibility.new(name, candidate.getExplanation())
             $suggestions[0].getPossibilities().add(possibility)
             $suggestions[0].setDisplayed(true)
             $suggestions[0].update()
           }
         } else if (type == ConjugationType.NOUN) {
-          if (convertedName == candidate.getName() && word.getDescription().contains("〈不名")) {
+          if (convertedName == candidate.getName() && word.getDescription() =~ /^\+.*〈.*名.*〉/) {
             ShaleiaPossibility possibility = ShaleiaPossibility.new(name, candidate.getExplanation())
             $suggestions[0].getPossibilities().add(possibility)
             $suggestions[0].setDisplayed(true)
             $suggestions[0].update()
           }
         } else if (type == ConjugationType.ADVERB) {
-          if (convertedName == candidate.getName() && word.getDescription().contains("〈不副")) {
+          if (convertedName == candidate.getName() && word.getDescription() =~ /^\+.*〈.*副.*〉/) {
             ShaleiaPossibility possibility = ShaleiaPossibility.new(name, candidate.getExplanation())
             $suggestions[0].getPossibilities().add(possibility)
             $suggestions[0].setDisplayed(true)
             $suggestions[0].update()
           }
         } else if (type == ConjugationType.PREPOSITION) {
-          if (convertedName == candidate.getName() && word.getDescription().contains("〈助")) {
+          if (convertedName == candidate.getName() && word.getDescription() =~ /^\+.*〈.*助.*〉/) {
             ShaleiaPossibility possibility = ShaleiaPossibility.new(name, candidate.getExplanation())
             $suggestions[0].getPossibilities().add(possibility)
             $suggestions[0].setDisplayed(true)
