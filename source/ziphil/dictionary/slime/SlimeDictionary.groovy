@@ -205,7 +205,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       if (!ids.contains(word.getId())) {
         ids.add(word.getId()) 
       } else {
-        throw SlimeValidationException.new("Duplicate id")
+        throw SlimeValidationException.new("ID ${word.getId()} is duplicate")
       }
     }
   }
@@ -223,14 +223,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           relationNames[relation.getId()] = relation.getName()
         } else {
           if (relation.getName() != previousRelationName) {
-            throw SlimeValidationException.new("Invalid relation")
+            throw SlimeValidationException.new("Form of relation [${relation.getId()}: ${relation.getName()}] in [${word.getId()}: ${word.getName()}] is inconsistent")
           }
         }
       }
     }
     for (Map.Entry<IntegerClass, String> entry : relationNames) {
-      if (wordNames[entry.getKey()] != entry.getValue()) {
-        throw SlimeValidationException.new("Invalid relation")
+      String expectedName = wordNames[entry.getKey()]
+      if (expectedName == null) {
+        throw SlimeValidationException.new("There is no such ID ${entry.getKey()}")
+      } else if (expectedName != entry.getValue()) {
+        throw SlimeValidationException.new("Form of relation [${entry.getKey()}: ${entry.getValue()}] is inconsistent; must be ${expectedName}")
       }
     }
   }
