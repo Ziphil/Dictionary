@@ -3,13 +3,9 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.geometry.Pos
 import javafx.scene.control.ListCell
-import javafx.scene.control.Separator
 import javafx.scene.layout.Pane
-import javafx.scene.layout.VBox
-import javafx.scene.text.Text
-import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.SentenceSearcher
-import ziphil.dictionary.Word
+import ziphil.dictionary.SentenceSearchResultPaneFactory
 import ziphilib.transform.Ziphilify
 
 
@@ -22,27 +18,16 @@ public class SentenceSearchResultCell extends ListCell<SentenceSearcher.Result> 
 
   protected void updateItem(SentenceSearcher.Result result, Boolean empty) {
     super.updateItem(result, empty)
-    VBox graphic = VBox.new()
-    graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
-    if (!empty && result != null) {
-      Text searchText = Text.new(result.getSearch())
-      Separator separator = Separator.new()
-      searchText.getStyleClass().add(PaneFactory.CONTENT_CLASS)
-      separator.getStyleClass().addAll(PaneFactory.CONTENT_CLASS, PaneFactory.SEPARATOR_CLASS)
-      graphic.getChildren().addAll(searchText, separator)
-      for (Word word : result.getWords()) {
-        Pane pane = word.getPlainPaneFactory().create(true)
-        graphic.getChildren().add(pane)
-      }
-      if (result.getWords().isEmpty()) {
-        Text emptyText = Text.new("該当なし")
-        emptyText.getStyleClass().add(PaneFactory.CONTENT_CLASS)
-        graphic.getChildren().add(emptyText)
-      }
-    } 
-    setAlignment(Pos.TOP_CENTER)
-    setText(null)
-    setGraphic(graphic)
+    if (empty || result == null) {
+      setText(null)
+      setGraphic(null)
+    } else {
+      Pane graphic = SentenceSearchResultPaneFactory.new(result).create(true)
+      graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
+      setAlignment(Pos.TOP_CENTER)
+      setText(null)
+      setGraphic(graphic)
+    }
   }
 
 }
