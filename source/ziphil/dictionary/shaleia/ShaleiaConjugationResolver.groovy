@@ -183,6 +183,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   }
 
 
+  @InnerClass @Ziphilify
   private static class ConjugationCandidate {
 
     private ConjugationType $type
