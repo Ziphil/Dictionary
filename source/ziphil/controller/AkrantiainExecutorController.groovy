@@ -1,9 +1,13 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.concurrent.Callable
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.Scene
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.stage.StageStyle
@@ -30,7 +34,9 @@ public class AkrantiainExecutorController extends Controller<Void> {
   @FXML private TextField $inputControl
   @FXML private TextField $outputControl
   @FXML private TextArea $logControl
+  @FXML private CheckBox $usesDictionaryAkrantiainControl
   private Akrantiain $akrantiain = null
+  private Akrantiain $dictionaryAkrantiain = null
   private FileStringChooserController.Result $result = null
 
   public AkrantiainExecutorController(UtilityStage<? super Void> stage) {
@@ -40,14 +46,22 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void initialize() {
+    setupSnojPathControl()
     setupInputControl()
+  }
+
+  public void prepare(Akrantiain dictionaryAkrantiain) {
+    $dictionaryAkrantiain = dictionaryAkrantiain
+    setupUsesDictionaryAkrantiainControl()
   }
 
   @FXML
   private void execute() {
-    if ($akrantiain != null) {
+    Boolean usesDictionarySnoj = $usesDictionaryAkrantiainControl.isSelected()
+    Akrantiain akrantiain = (usesDictionarySnoj) ? $dictionaryAkrantiain : $akrantiain
+    if (akrantiain != null) {
       try {
-        String output = $akrantiain.convert($inputControl.getText())
+        String output = akrantiain.convert($inputControl.getText())
         $outputControl.setText(output)
         $logControl.setText("")
       } catch (AkrantiainException exception) {
@@ -113,11 +127,25 @@ public class AkrantiainExecutorController extends Controller<Void> {
     return warningText.toString()
   }
 
+  private void setupSnojPathControl() {
+    Callable<BooleanClass> function = (Callable){
+      return $usesDictionaryAkrantiainControl.isSelected()
+    }
+    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesDictionaryAkrantiainControl.selectedProperty()) 
+    $snojPathControl.disableProperty().bind(binding)
+  }
+
   private void setupInputControl() {
     $inputControl.sceneProperty().addListener() { ObservableValue<? extends Scene> observableValue, Scene oldValue, Scene newValue ->
       if (oldValue == null && newValue != null) {
         $inputControl.requestFocus()
       }
+    }
+  }
+
+  private void setupUsesDictionaryAkrantiainControl() {
+    if ($dictionaryAkrantiain != null) {
+      $usesDictionaryAkrantiainControl.setDisable(false)
     }
   }
 

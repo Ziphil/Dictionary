@@ -6,6 +6,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -40,15 +41,16 @@
         <ColumnConstraints hgrow="always"/>
       </columnConstraints>
       <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label text="入力:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-      <Label text="結果:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-      <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <Label text="入力:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Label text="結果:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <TextField fx:id="$snojPathControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
         <Button text="…" onAction="#openSnoj" styleClass="right-pill"/>
       </HBox>
-      <TextField fx:id="$inputControl" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+      <CheckBox fx:id="$usesDictionaryAkrantiainControl" text="開いている辞書のsnojデータを用いる" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <TextField fx:id="$inputControl" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
         <GridPane.margin>
           <Insets>
             <top><Double rpx="5"/></top>
@@ -60,8 +62,8 @@
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
       </HBox>
-      <TextField fx:id="$outputControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-      <TextArea fx:id="$logControl" editable="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <TextField fx:id="$outputControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+      <TextArea fx:id="$logControl" editable="false" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
         <prefHeight><Double rpx="70"/></prefHeight>
         <minHeight><Double rpx="70"/></minHeight>
       </TextArea>

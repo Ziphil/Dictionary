@@ -391,10 +391,18 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void executeAkrantiain() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    Dictionary dictionary = currentDictionary()
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     AkrantiainExecutorController controller = AkrantiainExecutorController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
+    }
+    if (dictionary instanceof ShaleiaDictionary) {
+      controller.prepare(dictionary.getAkrantiain())
+    } else if (dictionary instanceof SlimeDictionary) {
+      controller.prepare(dictionary.getAkrantiain())
+    } else {
+      controller.prepare(null)
     }
     $openStages.add(nextStage)
     nextStage.showAndWait()
