@@ -33,18 +33,18 @@ public class SentenceSearcher {
 
   public ObservableList<Result> search() {
     ObservableList<Result> results = FXCollections.observableArrayList()
-    for (String wordName : $sentence.split(/\s+/)) {
-      StringBuilder nextWordName = StringBuilder.new()
-      for (String character : wordName) {
+    for (String search : $sentence.split(/\s+/)) {
+      StringBuilder nextSearch = StringBuilder.new()
+      for (String character : search) {
         if ($punctuations.indexOf(character) < 0) {
-          nextWordName.append(character)
+          nextSearch.append(character)
         }
       }
-      if (nextWordName.length() > 0) {
-        NormalSearchParameter parameter = NormalSearchParameter.new(nextWordName.toString(), SearchMode.NAME, true, true)
+      if (nextSearch.length() > 0) {
+        NormalSearchParameter parameter = NormalSearchParameter.new(nextSearch.toString(), SearchMode.NAME, true, true)
         $dictionary.search(parameter)
         List<Element> hitWords = ArrayList.new($dictionary.getWholeWords())
-        Result result = Result.new(nextWordName.toString())
+        Result result = Result.new(nextSearch.toString())
         for (Element word : hitWords) {
           if (word instanceof Word) {
             result.getWords().add((Word)word)
@@ -84,15 +84,15 @@ public class SentenceSearcher {
   @InnerClass @Ziphilify
   public static class Result {
 
-    private String $name = ""
+    private String $search = ""
     private List<Word> $words = ArrayList.new()
 
-    public Result(String name) {
-      $name = name
+    public Result(String search) {
+      $search = search
     }
 
-    public String getName() {
-      return $name
+    public String getSearch() {
+      return $search
     }
 
     public List<Word> getWords() {

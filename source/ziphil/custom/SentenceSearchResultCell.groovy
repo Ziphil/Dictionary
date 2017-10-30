@@ -25,11 +25,11 @@ public class SentenceSearchResultCell extends ListCell<SentenceSearcher.Result> 
     VBox graphic = VBox.new()
     graphic.prefWidthProperty().bind(getListView().fixedCellSizeProperty().subtract(Measurement.rpx(14)))
     if (!empty && result != null) {
-      Text nameText = Text.new(result.getName())
+      Text searchText = Text.new(result.getSearch())
       Separator separator = Separator.new()
-      nameText.getStyleClass().add(PaneFactory.CONTENT_CLASS)
+      searchText.getStyleClass().add(PaneFactory.CONTENT_CLASS)
       separator.getStyleClass().addAll(PaneFactory.CONTENT_CLASS, PaneFactory.SEPARATOR_CLASS)
-      graphic.getChildren().addAll(nameText, separator)
+      graphic.getChildren().addAll(searchText, separator)
       for (Word word : result.getWords()) {
         Pane pane = word.getPlainPaneFactory().create(true)
         graphic.getChildren().add(pane)
