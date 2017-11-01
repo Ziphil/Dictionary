@@ -6,8 +6,10 @@ import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
+import javafx.scene.control.Separator
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
@@ -55,41 +57,49 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow pane = TextFlow.new()
+    VBox pane = VBox.new()
+    TextFlow mainPane = TextFlow.new()
+    TextFlow contentPane = TextFlow.new()
     Boolean hasContent = false
-    Boolean hasSynonym = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
-    pane.setLineSpacing(lineSpacing)
+    mainPane.setLineSpacing(lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
     ShaleiaDescriptionReader reader = ShaleiaDescriptionReader.new($word.getDescription())
     try {
       while (reader.readLine() != null) {
-        if (pane.getChildren().isEmpty()) {
+        if (mainPane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
-          addNameNode(pane, name, $word.createPronunciation())
+          addNameNode(mainPane, name, $word.createPronunciation())
         }
         if (reader.findCreationDate()) {
           String totalPart = reader.lookupTotalPart()
           String creationDate = reader.lookupCreationDate()
-          addCreationDateNode(pane, totalPart, creationDate)
+          addCreationDateNode(mainPane, totalPart, creationDate)
         }
         if (reader.findEquivalent()) {
           String part = reader.lookupPart()
           String equivalent = reader.lookupEquivalent()
-          addEquivalentNode(pane, part, equivalent)
+          addEquivalentNode(mainPane, part, equivalent)
         }
         if (reader.findContent()) {
           String title = reader.title()
           String content = reader.lookupContent()
-          addContentNode(pane, title, content)
+          addContentNode(contentPane, title, content)
           hasContent = true
         }
         if (reader.findSynonym()) {
           String synonym = reader.lookupSynonym()
-          addSynonymNode(pane, synonym)
-          hasSynonym = true
+          addSynonymNode(contentPane, synonym)
+          hasContent = true
         }
       }
-      modifyBreak(pane)
+      modifyBreak(mainPane)
+      modifyBreak(contentPane)
+      pane.getChildren().add(mainPane)
+      if (hasContent) {
+        addSeparator(pane)
+        pane.getChildren().add(contentPane)
+      }
     } finally {
       reader.close()
     }
@@ -163,6 +173,12 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     pane.getChildren().add(titleText)
     pane.getChildren().addAll(synonymTexts)
     pane.getChildren().add(breakText)
+  }
+
+  private void addSeparator(Pane pane) {
+    Separator separator = Separator.new()
+    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+    pane.getChildren().addAll(separator)
   }
 
   private List<Text> createRichTexts(String string, Boolean decoratesLink) {

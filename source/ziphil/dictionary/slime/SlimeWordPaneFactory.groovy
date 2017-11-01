@@ -5,8 +5,10 @@ import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
+import javafx.scene.control.Separator
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
@@ -40,29 +42,37 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
 
   protected Pane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
-    TextFlow pane = TextFlow.new()
-    Boolean hasInformation = false
-    Boolean hasRelation = false
+    VBox pane = VBox.new()
+    TextFlow mainPane = TextFlow.new()
+    TextFlow contentPane = TextFlow.new()
+    Boolean hasContent = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
-    pane.setLineSpacing(lineSpacing)
-    addNameNode(pane, $word.getName(), $word.createPronunciation())
-    addTagNode(pane, $word.getTags())
+    mainPane.setLineSpacing(lineSpacing)
+    contentPane.setLineSpacing(lineSpacing)
+    addNameNode(mainPane, $word.getName(), $word.createPronunciation())
+    addTagNode(mainPane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
-      addEquivalentNode(pane, equivalent.getTitle(), equivalent.getNames())
+      addEquivalentNode(mainPane, equivalent.getTitle(), equivalent.getNames())
     }
     for (SlimeInformation information : $word.sortedInformations()) {
-      addInformationNode(pane, information.getTitle(), information.getText())
-      hasInformation = true
+      addInformationNode(contentPane, information.getTitle(), information.getText())
+      hasContent = true
     }
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
       List<IntegerClass> ids = relationGroup.collect{it.getId()}
       List<String> names = relationGroup.collect{it.getName()}
-      addRelationNode(pane, title, ids, names)
-      hasRelation = true
+      addRelationNode(contentPane, title, ids, names)
+      hasContent = true
     }
-    modifyBreak(pane)
+    modifyBreak(mainPane)
+    modifyBreak(contentPane)
+    pane.getChildren().add(mainPane)
+    if (hasContent) {
+      addSeparator(pane)
+      pane.getChildren().add(contentPane)
+    }
     return pane
   }
 
@@ -149,6 +159,12 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     }
     Text breakText = Text.new("\n")
     pane.getChildren().add(breakText)
+  }
+
+  private void addSeparator(Pane pane) {
+    Separator separator = Separator.new()
+    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+    pane.getChildren().addAll(separator)
   }
 
   private EventHandler<MouseEvent> createLinkEventHandler(Int id) {

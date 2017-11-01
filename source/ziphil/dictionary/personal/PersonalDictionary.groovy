@@ -64,7 +64,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     $changed = true
   }
 
-  public void update() {
+  private void update() {
     $changed = true
   }
 

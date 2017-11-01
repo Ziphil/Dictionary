@@ -133,10 +133,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
           if (otherWord != null) {
             Dialog dialog = Dialog.new(StageStyle.UTILITY)
             dialog.initOwner($stage)
-            dialog.setTitle("重複単語名の確認")
-            dialog.setContentText("この単語名はすでに登録されています。このまま別単語として登録しますか? それとも1つの単語に統合しますか?")
-            dialog.setCommitText("別単語")
-            dialog.setNegateText("統合")
+            dialog.setTitle(DIALOG_RESOURCES.getString("title.duplicateName"))
+            dialog.setContentText(DIALOG_RESOURCES.getString("contentText.duplicateName"))
+            dialog.setCommitText(DIALOG_RESOURCES.getString("commitText.duplicateName"))
+            dialog.setNegateText(DIALOG_RESOURCES.getString("negateText.duplicateName"))
             dialog.setAllowsNegate(true)
             dialog.showAndWait()
             if (dialog.isNegated()) {
@@ -163,20 +163,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
           $stage.commit(result)
         }
       } else {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
-        dialog.initOwner($stage)
-        dialog.setTitle("重複IDエラー")
-        dialog.setContentText("このIDはすでに利用されています。別のIDを指定してください。")
-        dialog.setAllowsCancel(false)
-        dialog.showAndWait()
+        showErrorDialog("duplicateId")
       }
     } catch (NumberFormatException exception) {
-      Dialog dialog = Dialog.new(StageStyle.UTILITY)
-      dialog.initOwner($stage)
-      dialog.setTitle("フォーマットエラー")
-      dialog.setContentText("IDが異常です。数値が大きすぎるか小さすぎる可能性があります。")
-      dialog.setAllowsCancel(false)
-      dialog.showAndWait()
+      showErrorDialog("invalidId")
     }
   }
 
@@ -595,10 +585,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
         if (asksMutualRelation) {
           Dialog dialog = Dialog.new(StageStyle.UTILITY)
           dialog.initOwner($stage)
-          dialog.setTitle("関連語相互参照")
-          dialog.setContentText("この関連語を相互参照にしますか? ここで関連語に設定した単語に、この単語が関連語として追加されます。")
-          dialog.setCommitText("はい")
-          dialog.setCancelText("いいえ")
+          dialog.setTitle(DIALOG_RESOURCES.getString("title.mutualRelation"))
+          dialog.setContentText(DIALOG_RESOURCES.getString("contentText.mutualRelation"))
+          dialog.setCommitText(DIALOG_RESOURCES.getString("yes"))
+          dialog.setCancelText(DIALOG_RESOURCES.getString("no"))
           dialog.showAndWait()
           if (dialog.isCommitted()) {
             $relationRequests.add(RelationRequest.new(word, box))

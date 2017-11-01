@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 23, 1, 2064)
+  public static final Version VERSION = Version.new(1, 24, 0, 2110)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.24. 0 | akrantiain 実行ダイアログに辞典に埋め込まれたデータを使うオプションを追加。
+//          | メインウィンドウの単語リストで訳語と内容の間に罫線を表示するよう変更。
+//          | 文一括検索の検索結果の表示方法を変更。
 //  1.23. 1 | OneToMany 形式の単語をペーストすると ID が重複する可能性があった不具合を修正。
 //          | 名前をつけて保存したときにタブのファイル名が変わらない不具合を修正。
 //  1.23. 0 | 単語データのコピーやペーストを行う機能を追加。

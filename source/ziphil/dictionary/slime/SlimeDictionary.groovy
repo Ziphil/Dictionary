@@ -86,7 +86,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   private void addWordWithoutUpdate(SlimeWord word) {
@@ -105,7 +105,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   public void addWord(SlimeWord word) {
     addWordWithoutUpdate(word)
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   public void addWords(List<? extends SlimeWord> words) {
@@ -114,7 +114,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       incrementValidMinId(word)
     }
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   private void removeWordWithoutUpdate(SlimeWord word) {
@@ -129,14 +129,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void removeWord(SlimeWord word) {
     removeWordWithoutUpdate(word)
-    updateOnBackground()
+    update()
   }
 
   public void removeWords(List<? extends SlimeWord> words) {
     for (SlimeWord word : words) {
       removeWordWithoutUpdate(word)
     }
-    updateOnBackground()
+    update()
   }
 
   public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
@@ -154,7 +154,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     $words.remove(removedWord)
-    updateOnBackground()
+    update()
   }
 
   public void requestRelation(SlimeRelationRequest request) {
@@ -170,7 +170,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $relationRequests.clear()
   }
 
-  public void update() {
+  private void update() {
     updateValidMinId()
     updateRegisteredTitles()
     updatePlainInformationTitles()
@@ -205,7 +205,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       if (!ids.contains(word.getId())) {
         ids.add(word.getId()) 
       } else {
-        throw SlimeValidationException.new("Duplicate id")
+        throw SlimeValidationException.new("ID ${word.getId()} is duplicate")
       }
     }
   }
@@ -223,14 +223,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
           relationNames[relation.getId()] = relation.getName()
         } else {
           if (relation.getName() != previousRelationName) {
-            throw SlimeValidationException.new("Invalid relation")
+            throw SlimeValidationException.new("Form of relation [${relation.getId()}: ${relation.getName()}] in [${word.getId()}: ${word.getName()}] is inconsistent")
           }
         }
       }
     }
     for (Map.Entry<IntegerClass, String> entry : relationNames) {
-      if (wordNames[entry.getKey()] != entry.getValue()) {
-        throw SlimeValidationException.new("Invalid relation")
+      String expectedName = wordNames[entry.getKey()]
+      if (expectedName == null) {
+        throw SlimeValidationException.new("There is no such ID ${entry.getKey()}")
+      } else if (expectedName != entry.getValue()) {
+        throw SlimeValidationException.new("Form of relation [${entry.getKey()}: ${entry.getValue()}] is inconsistent; must be ${expectedName}")
       }
     }
   }

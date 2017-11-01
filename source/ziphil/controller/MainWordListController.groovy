@@ -233,10 +233,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void searchSentence() {
     UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
+    Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+    if (keepsEditorOnTop) {
+      nextStage.initOwner($stage)
+    }
     controller.prepare($dictionary.copy())
+    $openStages.add(nextStage)
     nextStage.showAndWait()
+    $openStages.remove(nextStage)
   }
 
   public void shuffleWords() {
@@ -351,8 +355,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  @FXML
-  public void addWord() {
+  public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
       Word newWord
       UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
@@ -360,7 +363,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
-      String defaultName = $searchControl.getText()
       if ($dictionary instanceof ShaleiaDictionary) {
         ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
         ShaleiaWord localNewWord = $dictionary.createWord(defaultName)
@@ -388,6 +390,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
         }
       }
     }
+  }
+
+  @FXML
+  public void addWord() {
+    String defaultName = $searchControl.getText()
+    addWord(defaultName)
   }
 
   private void addInheritedWord(Element word) {
