@@ -112,20 +112,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.shuffle()
   }
 
-  public abstract void update()
-
   public abstract void updateFirst()
 
   public abstract void updateMinimum()
-
-  protected void updateOnBackground() {
-    Task<Void> task = SimpleTask.new() {
-      update()
-    }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
-  }
 
   protected void updateMinimumOnBackground() {
     Task<Void> task = SimpleTask.new() {

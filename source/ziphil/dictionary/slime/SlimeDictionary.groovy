@@ -170,7 +170,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     $relationRequests.clear()
   }
 
-  public void update() {
+  private void update() {
     updateValidMinId()
     updateRegisteredTitles()
     updatePlainInformationTitles()

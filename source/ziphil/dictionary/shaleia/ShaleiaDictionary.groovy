@@ -79,7 +79,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $changed = true
   }
 
-  public void update() {
+  private void update() {
     calculateSystemWordSize()
     $changed = true
   }
