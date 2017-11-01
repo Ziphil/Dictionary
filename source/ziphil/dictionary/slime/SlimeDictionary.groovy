@@ -86,7 +86,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   private void addWordWithoutUpdate(SlimeWord word) {
@@ -105,7 +105,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   public void addWord(SlimeWord word) {
     addWordWithoutUpdate(word)
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   public void addWords(List<? extends SlimeWord> words) {
@@ -114,7 +114,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       incrementValidMinId(word)
     }
     complyRelationRequests()
-    updateOnBackground()
+    update()
   }
 
   private void removeWordWithoutUpdate(SlimeWord word) {
@@ -129,14 +129,14 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   public void removeWord(SlimeWord word) {
     removeWordWithoutUpdate(word)
-    updateOnBackground()
+    update()
   }
 
   public void removeWords(List<? extends SlimeWord> words) {
     for (SlimeWord word : words) {
       removeWordWithoutUpdate(word)
     }
-    updateOnBackground()
+    update()
   }
 
   public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
@@ -154,7 +154,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
     }
     $words.remove(removedWord)
-    updateOnBackground()
+    update()
   }
 
   public void requestRelation(SlimeRelationRequest request) {
