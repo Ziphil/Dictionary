@@ -1,6 +1,7 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.personal.BinaryDictionary
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -24,6 +25,8 @@ public class Dictionaries {
           dictionary = ShaleiaDictionary.new(fileName, filePath)
         } else if (filePath.endsWith(".csv")) {
           dictionary = PersonalDictionary.new(fileName, filePath)
+        } else if (filePath.endsWith(".dic")) {
+          dictionary = BinaryDictionary.new(fileName, filePath)
         } else if (filePath.endsWith(".json")) {
           dictionary = SlimeDictionary.new(fileName, filePath)
         }
