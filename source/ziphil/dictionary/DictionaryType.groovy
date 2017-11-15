@@ -12,21 +12,25 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum DictionaryType {
 
-  SLIME("OneToMany-JSON形式", "json", "otm_dictionary.png"),
-  PERSONAL("PDIC-CSV形式", "csv", "csv_dictionary.png"),
-  BINARY("PDIC-DIC形式", "dic", "csv_dictionary.png"),
-  SHALEIA("シャレイア語辞典形式", "xdc", "xdc_dictionary.png")
+  SLIME("OneToMany-JSON形式", "json", "otm_dictionary.png", true, true),
+  PERSONAL("PDIC-CSV形式", "csv", "csv_dictionary.png", true, true),
+  BINARY("PDIC-DIC形式", "dic", "csv_dictionary.png", false, false),
+  SHALEIA("シャレイア語辞典形式", "xdc", "xdc_dictionary.png", true, false)
 
   private static final String ICON_DIRECTORY = "resource/icon/"
 
-  private String $name = ""
-  private String $extension = ""
-  private String $iconPath = ""
+  private String $name
+  private String $extension
+  private String $iconPath
+  private Boolean $creatable
+  private Boolean $convertable
 
-  private DictionaryType(String name, String extension, String iconPath) {
+  private DictionaryType(String name, String extension, String iconPath, Boolean creatable, Boolean convertable) {
     $name = name
     $extension = extension
     $iconPath = iconPath
+    $creatable = creatable
+    $convertable = convertable
   }
 
   public Image createIcon() {
@@ -56,6 +60,14 @@ public enum DictionaryType {
 
   public String getExtension() {
     return $extension
+  }
+
+  public Boolean isCreatable() {
+    return $creatable
+  }
+
+  public Boolean isConvertable() {
+    return $convertable
   }
 
 }
