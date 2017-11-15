@@ -1,6 +1,7 @@
 package ziphil.module
 
 import groovy.transform.CompileStatic
+import java.nio.charset.MalformedInputException
 import ziphilib.transform.Ziphilify
 
 
@@ -112,7 +113,7 @@ public class BocuDecodableInputStream extends BufferedInputStream {
           if (next <= 0x20) {
             trail = TRAILS[next]
             if (trail < 0) {
-              throw IllegalArgumentException.new("Illegal trail byte values")
+              throw MalformedInputException.new(0)
             }
           } else {
             trail = next - TRAIL_BYTE_OFFSET
@@ -124,7 +125,7 @@ public class BocuDecodableInputStream extends BufferedInputStream {
               count = 0
               break
             } else {
-              throw IllegalArgumentException.new("Illegal code point result: 0x${String.format("%x", codePoint)}")
+              throw MalformedInputException.new(0)
             }
           } else if (count == 2) {
             codePoint += trail * TRAIL_COUNT
@@ -134,7 +135,7 @@ public class BocuDecodableInputStream extends BufferedInputStream {
           count --
         }
         if (count != 0) {
-          throw IllegalArgumentException.new("Deficient trail bytes")
+          throw MalformedInputException.new(0)
         }
       }
       if (codePoint >= 0x0 && codePoint <= 0x10FFFF) {
