@@ -76,56 +76,56 @@ public class BocuDecodableInputStream extends BufferedInputStream {
   public String decodeStringUntilNull() {
     StringBuilder result = StringBuilder.new()
     Int previous = ASCII_PREVIOUS
-    Int next = 0
-    while ((next = read()) > 0) {
+    Int current = 0
+    while ((current = read()) > 0) {
       Int codePoint = -1
       Int count = 0
-      if (next <= 0x20) {
-        if (next != 0x20) {
+      if (current <= 0x20) {
+        if (current != 0x20) {
           previous = ASCII_PREVIOUS
         }
-        result.appendCodePoint(next)
+        result.appendCodePoint(current)
         continue
       }
-      if (next >= SECOND_NEGATIVE_START && next < SECOND_POSITIVE_START) {
-        codePoint = previous + next - MIDDLE
+      if (current >= SECOND_NEGATIVE_START && current < SECOND_POSITIVE_START) {
+        codePoint = previous + current - MIDDLE
         previous = nextPrevious(codePoint)
-      } else if (next == RESET) {
+      } else if (current == RESET) {
         previous = ASCII_PREVIOUS
         continue
       } else {
-        if (next >= SECOND_NEGATIVE_START) {
-          if (next < THIRD_POSITIVE_START) {
-            codePoint = (next - SECOND_POSITIVE_START) * TRAIL_COUNT + FIRST_POSITIVE_REACH + 1
+        if (current >= SECOND_NEGATIVE_START) {
+          if (current < THIRD_POSITIVE_START) {
+            codePoint = (current - SECOND_POSITIVE_START) * TRAIL_COUNT + FIRST_POSITIVE_REACH + 1
             count = 1
-          } else if (next < FOURTH_POSITIVE_START) {
-            codePoint = (next - THIRD_POSITIVE_START) * TRAIL_COUNT * TRAIL_COUNT + SECOND_POSITIVE_REACH + 1
+          } else if (current < FOURTH_POSITIVE_START) {
+            codePoint = (current - THIRD_POSITIVE_START) * TRAIL_COUNT * TRAIL_COUNT + SECOND_POSITIVE_REACH + 1
             count = 2
           } else {
             codePoint = THIRD_POSITIVE_REACH + 1
             count = 3
           }
         } else {
-          if (next >= THIRD_NEGATIVE_START) {
-            codePoint = (next - SECOND_NEGATIVE_START) * TRAIL_COUNT + FIRST_NEGATIVE_REACH
+          if (current >= THIRD_NEGATIVE_START) {
+            codePoint = (current - SECOND_NEGATIVE_START) * TRAIL_COUNT + FIRST_NEGATIVE_REACH
             count = 1
-          } else if (next > MIN) {
-            codePoint = (next - THIRD_NEGATIVE_START) * TRAIL_COUNT * TRAIL_COUNT + SECOND_NEGATIVE_REACH
+          } else if (current > MIN) {
+            codePoint = (current - THIRD_NEGATIVE_START) * TRAIL_COUNT * TRAIL_COUNT + SECOND_NEGATIVE_REACH
             count = 2
           } else {
             codePoint = -TRAIL_COUNT * TRAIL_COUNT * TRAIL_COUNT + THIRD_NEGATIVE_REACH
             count = 3
           }
         }
-        while (count > 0 && (next = read()) >= 0) {
+        while (count > 0 && (current = read()) >= 0) {
           Int trail = 0
-          if (next <= 0x20) {
-            trail = TRAILS[next]
+          if (current <= 0x20) {
+            trail = TRAILS[current]
             if (trail < 0) {
               throw MalformedInputException.new(0)
             }
           } else {
-            trail = next - TRAIL_BYTE_OFFSET
+            trail = current - TRAIL_BYTE_OFFSET
           }
           if (count == 1) {
             codePoint = previous + codePoint + trail
