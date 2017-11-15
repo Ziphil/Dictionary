@@ -74,6 +74,7 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
   }
 
   private void addWords(BocuDecodableInputStream stream, Int fieldLength, Int wordSize) {
+    Byte[] previousRawName = Byte[].new(0)
     while (true) {
       if (isCancelled()) {
         break
@@ -81,18 +82,22 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
       Long length = (fieldLength == 2) ? stream.readUnsignedShort() : stream.readUnsignedInt()
       if (length > 0) {
         PersonalWord word = PersonalWord.new()
-        Int omittedKeywordLength = stream.read()
+        Int omittedNameLength = stream.read()
         Int flag = stream.read()
-        Byte[] buffer = Byte[].new(length)
-        stream.read(buffer)
+        Byte[] buffer = Byte[].new(length + omittedNameLength)
+        for (Int i = 0 ; i < omittedNameLength ; i ++) {
+          buffer[i] = previousRawName[i]
+        }
+        stream.read(buffer, omittedNameLength, (Int)length)
         BocuDecodableInputStream nextStream = BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
         try {
           Int level = flag & 0x0F
           Int memory = ((flag & 0x20) != 0) ? 1 : 0
           Int modification = ((flag & 0x40) != 0) ? 1 : 0
-          String rawName = nextStream.decodeStringUntilNull()
-          Int nameTabIndex = rawName.indexOf("\t")
-          String name = (nameTabIndex >= 0) ? rawName.substring(nameTabIndex + 1) : rawName
+          Byte[] rawName = nextStream.readUntilNull()
+          String decodedName = BocuDecodableInputStream.decode(rawName)
+          Int nameTabIndex = decodedName.indexOf("\t")
+          String name = (nameTabIndex >= 0) ? decodedName.substring(nameTabIndex + 1) : decodedName
           String translation = nextStream.decodeStringUntilNull()
           word.setName(name)
           word.setTranslation(translation)
@@ -102,6 +107,7 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
           if ((flag & 0x10) != 0) {
             fillExtensions(nextStream, fieldLength, word)
           }
+          previousRawName = rawName
           $words.add(word)
           updateProgress($words.size(), wordSize)
         } finally {

@@ -62,7 +62,16 @@ public class BocuDecodableInputStream extends BufferedInputStream {
     }
   }
 
-  // ストリームからデータを読み込み、それを BOCU-1 でエンコードされた文字列だと解釈してデコードした結果を返します。
+  // ストリームが終端もしくは 0x0 に到達するまでバイトを読み込み、読み込んだバイトの配列を返します。
+  public Byte[] readUntilNull() {
+    List<ByteClass> buffer = ArrayList.new()
+    for (Int current ; (current = read()) > 0 ;) {
+      buffer.add((Byte)current)
+    }
+    return (Byte[])buffer.toArray()
+  }
+
+  // ストリームからデータを読み込み、それを BOCU-1 でエンコードされた文字列だと解釈して、デコードした結果を返します。
   // ストリームが終端もしくは 0x0 に到達するまでバイトを読み込みます。 
   public String decodeStringUntilNull() {
     StringBuilder result = StringBuilder.new()
@@ -143,6 +152,18 @@ public class BocuDecodableInputStream extends BufferedInputStream {
       }
     }
     return result.toString()
+  }
+
+  // 与えられたバイト列を BOCU-1 でエンコードされた文字列だと解釈して、デコードした結果を返します。
+  // バイト列に 0x0 が含まれていた場合は、そこまでのバイト列をデコードします。
+  public static String decode(Byte[] buffer) {
+    BocuDecodableInputStream stream =  BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
+    try {
+      String string = stream.decodeStringUntilNull()
+      return string
+    } finally {
+      stream.close()
+    }
   }
 
   private Int nextPrevious(Int codePoint) {
