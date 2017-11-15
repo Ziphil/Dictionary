@@ -34,14 +34,14 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
       for (Int i = 0 ; i < skippedSize ; i ++) {
         stream.read()
       }
-      readDataBlocks(stream)
+      readDataBlocks(stream, wordSize)
     } finally {
       stream.close()
     }
     return true
   }
 
-  private void readDataBlocks(BocuDecodableInputStream stream) {
+  private void readDataBlocks(BocuDecodableInputStream stream, Int wordSize) {
     while (true) {
       Int rawLength = stream.readUnsignedShort()
       Int length = (rawLength & 0x7FFF) * 1024
@@ -51,7 +51,7 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
           Byte[] buffer = Byte[].new(length - 2)
           stream.read(buffer)
           BocuDecodableInputStream nextStream = BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
-          addWords(nextStream, fieldLength)
+          addWords(nextStream, fieldLength, wordSize)
         } else {
           for (Int i = 0 ; i < 1022 ; i ++) {
             stream.read()
@@ -63,7 +63,7 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
     }
   }
 
-  private void addWords(BocuDecodableInputStream stream, Int fieldLength) {
+  private void addWords(BocuDecodableInputStream stream, Int fieldLength, Int wordSize) {
     while (true) {
       Long length = (fieldLength == 2) ? stream.readUnsignedShort() : stream.readUnsignedInt()
       if (length > 0) {
@@ -89,6 +89,7 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
           fillExtensions(nextStream, fieldLength, word)
         }
         $words.add(word)
+        updateProgress($words.size(), wordSize)
       } else {
         break
       }
