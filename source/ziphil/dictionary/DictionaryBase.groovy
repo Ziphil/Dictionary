@@ -131,45 +131,59 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   private void load() {
     DictionaryLoader loader = createLoader()
-    loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      if (!$firstEmpty) {
-        $changed = false
+    if (loader != null) {
+      loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        if (!$firstEmpty) {
+          $changed = false
+        }
       }
+      $loader = loader
+      Thread thread = Thread.new(loader)
+      thread.setDaemon(true)
+      thread.start()
+    } else {
+      $loader = null
     }
-    $loader = loader
-    Thread thread = Thread.new(loader)
-    thread.setDaemon(true)
-    thread.start()
   }
 
   private void convert(Dictionary oldDictionary) {
     DictionaryConverter converter = createConverter(oldDictionary)
-    converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      if (!$firstEmpty) {
-        $changed = false
+    if (converter != null) {
+      converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        if (!$firstEmpty) {
+          $changed = false
+        }
       }
+      $loader = converter
+      Thread thread = Thread.new(converter)
+      thread.setDaemon(true)
+      thread.start()
+    } else {
+      $loader = null
     }
-    $loader = converter
-    Thread thread = Thread.new(converter)
-    thread.setDaemon(true)
-    thread.start()
   }
 
   public void save() {
     DictionarySaver saver = createSaver()
-    $saver = saver
-    saver.run()
-    if (saver.getPath() != null) {
-      $changed = false
+    if (saver != null) {
+      $saver = saver
+      saver.run()
+      if (saver.getPath() != null) {
+        $changed = false
+      }
+    } else {
+      $saver = null
     }
   }
 
   public void saveBackup() {
     DictionarySaver saver = createSaver()
-    if (saver.getPath() != null) {
-      String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
-      saver.setPath(newPath)
-      saver.run()
+    if (saver != null) {
+      if (saver.getPath() != null) {
+        String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
+        saver.setPath(newPath)
+        saver.run()
+      }
     }
   }
 
