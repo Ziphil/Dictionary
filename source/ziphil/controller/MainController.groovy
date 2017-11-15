@@ -207,6 +207,9 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
       dictionary.save()
+      if (dictionary.getSaver() == null) {
+        showErrorDialog("saveUnsupported")
+      }
     }
   }
 

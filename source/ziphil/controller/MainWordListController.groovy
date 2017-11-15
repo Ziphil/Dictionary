@@ -600,7 +600,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
         dialog.showAndWait()
         if (dialog.isCommitted()) {
           $dictionary.save()
-          return true
+          if ($dictionary.getSaver() != null) {
+            return true
+          } else {
+            showErrorDialog("saveUnsupported")
+            return false
+          }
         } else if (dialog.isNegated()) {
           return true
         } else {
