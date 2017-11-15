@@ -40,11 +40,41 @@ public class BocuDecodableInputStream extends BufferedInputStream {
     super(stream)
   }
 
+  public Byte readByte() {
+    return (Byte)read()
+  }
+
+  public Int readUnsignedByte() {
+    return read()
+  }
+
+  public Short readShort() {
+    Int first = read()
+    Int second = read()
+    if (first >= 0 && second >= 0) {
+      return (Short)(first + (second << 8))
+    } else {
+      return -1
+    }
+  }
+
   public Int readUnsignedShort() {
     Int first = read()
     Int second = read()
     if (first >= 0 && second >= 0) {
       return first + (second << 8)
+    } else {
+      return -1
+    }
+  }
+
+  public Int readInt() {
+    Int first = read()
+    Int second = read()
+    Int third = read()
+    Int fourth = read()
+    if (first >= 0 && second >= 0 && third >= 0 && fourth >= 0) {
+      return first + (second << 8) + (third << 16) + (fourth << 24)
     } else {
       return -1
     }
