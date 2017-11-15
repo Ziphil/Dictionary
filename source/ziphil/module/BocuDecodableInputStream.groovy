@@ -5,7 +5,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class BocuDecoder {
+public class BocuDecodableInputStream extends BufferedInputStream {
 
   private static final Int ASCII_PREVIOUS = 0x40
   private static final Int MIN = 0x21
@@ -35,19 +35,39 @@ public class BocuDecoder {
   private static final Int FOURTH_NEGATIVE_START = THIRD_NEGATIVE_START - THIRD_LEAD
   private static final Int[] TRAILS = [-1, 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, -1, -1, 0x10, 0x11, 0x12, 0x13, -1]
 
-  private InputStream $stream
-
-  public BocuDecoder(InputStream stream) {
-    $stream = stream
+  public BocuDecodableInputStream(InputStream stream) {
+    super(stream)
   }
 
-  // ストリームから BOCU-1 エンコードされたデータを読み込み、デコードした結果の文字列を返します。
-  // ストリームが終端もしくは 0x0 に到達するまで文字列を読み込みます。 
-  public String decodeUntilNull() {
+  public Int readUnsignedShort() {
+    Int first = read()
+    Int second = read()
+    if (first >= 0 && second >= 0) {
+      return first + (second << 8)
+    } else {
+      return -1
+    }
+  }
+
+  public Long readUnsignedInt() {
+    Int first = read()
+    Int second = read()
+    Int third = read()
+    Long fourth = read()
+    if (first >= 0 && second >= 0 && third >= 0 && fourth >= 0) {
+      return first + (second << 8) + (third << 16) + (fourth << 24)
+    } else {
+      return -1
+    }
+  }
+
+  // ストリームからデータを読み込み、それを BOCU-1 でエンコードされた文字列だと解釈してデコードした結果を返します。
+  // ストリームが終端もしくは 0x0 に到達するまでバイトを読み込みます。 
+  public String decodeStringUntilNull() {
     StringBuilder result = StringBuilder.new()
     Int previous = ASCII_PREVIOUS
     Int next = 0
-    while ((next = $stream.read()) > 0) {
+    while ((next = read()) > 0) {
       Int codePoint = -1
       Int count = 0
       if (next <= 0x20) {
@@ -87,7 +107,7 @@ public class BocuDecoder {
             count = 3
           }
         }
-        while (count > 0 && (next = $stream.read()) >= 0) {
+        while (count > 0 && (next = read()) >= 0) {
           Int trail = 0
           if (next <= 0x20) {
             trail = TRAILS[next]
