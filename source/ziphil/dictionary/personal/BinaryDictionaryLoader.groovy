@@ -51,7 +51,11 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
           Byte[] buffer = Byte[].new(length - 2)
           stream.read(buffer)
           BocuDecodableInputStream nextStream = BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
-          addWords(nextStream, fieldLength, wordSize)
+          try {
+            addWords(nextStream, fieldLength, wordSize)
+          } finally {
+            nextStream.close()
+          }
         } else {
           for (Int i = 0 ; i < 1022 ; i ++) {
             stream.read()
@@ -73,23 +77,27 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
         Byte[] buffer = Byte[].new(length)
         stream.read(buffer)
         BocuDecodableInputStream nextStream = BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
-        Int level = flag & 0x0F
-        Int memory = ((flag & 0x20) != 0) ? 1 : 0
-        Int modification = ((flag & 0x40) != 0) ? 1 : 0
-        String rawName = nextStream.decodeStringUntilNull()
-        Int nameTabIndex = rawName.indexOf("\t")
-        String name = (nameTabIndex >= 0) ? rawName.substring(nameTabIndex + 1) : rawName
-        String translation = nextStream.decodeStringUntilNull()
-        word.setName(name)
-        word.setTranslation(translation)
-        word.setLevel(level)
-        word.setMemory(memory)
-        word.setModification(modification)
-        if ((flag & 0x10) != 0) {
-          fillExtensions(nextStream, fieldLength, word)
+        try {
+          Int level = flag & 0x0F
+          Int memory = ((flag & 0x20) != 0) ? 1 : 0
+          Int modification = ((flag & 0x40) != 0) ? 1 : 0
+          String rawName = nextStream.decodeStringUntilNull()
+          Int nameTabIndex = rawName.indexOf("\t")
+          String name = (nameTabIndex >= 0) ? rawName.substring(nameTabIndex + 1) : rawName
+          String translation = nextStream.decodeStringUntilNull()
+          word.setName(name)
+          word.setTranslation(translation)
+          word.setLevel(level)
+          word.setMemory(memory)
+          word.setModification(modification)
+          if ((flag & 0x10) != 0) {
+            fillExtensions(nextStream, fieldLength, word)
+          }
+          $words.add(word)
+          updateProgress($words.size(), wordSize)
+        } finally {
+          nextStream.close()
         }
-        $words.add(word)
-        updateProgress($words.size(), wordSize)
       } else {
         break
       }
