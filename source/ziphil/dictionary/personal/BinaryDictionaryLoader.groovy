@@ -35,6 +35,9 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
         stream.read()
       }
       readDataBlocks(stream, wordSize)
+      if (isCancelled()) {
+        return false
+      }
     } finally {
       stream.close()
     }
@@ -43,6 +46,9 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
 
   private void readDataBlocks(BocuDecodableInputStream stream, Int wordSize) {
     while (true) {
+      if (isCancelled()) {
+        break
+      }
       Int rawLength = stream.readUnsignedShort()
       Int length = (rawLength & 0x7FFF) * 1024
       Int fieldLength = ((rawLength & 0x8000) != 0) ? 4 : 2
@@ -69,6 +75,9 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
 
   private void addWords(BocuDecodableInputStream stream, Int fieldLength, Int wordSize) {
     while (true) {
+      if (isCancelled()) {
+        break
+      }
       Long length = (fieldLength == 2) ? stream.readUnsignedShort() : stream.readUnsignedInt()
       if (length > 0) {
         PersonalWord word = PersonalWord.new()
@@ -106,6 +115,9 @@ public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, P
 
   private void fillExtensions(BocuDecodableInputStream stream, Int fieldLength, PersonalWord word) {
     while (true) {
+      if (isCancelled()) {
+        break
+      }
       Int flag = stream.read()
       Int type = flag & 0xF
       if ((flag & 0x80) == 0) {
