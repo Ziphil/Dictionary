@@ -65,28 +65,30 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
-    if (containsId(newWord.getId(), newWord)) {
-      for (SlimeRelationRequest request : $relationRequests) {
-        SlimeRelation requestRelation = request.getRelation()
-        if (requestRelation.getId() == newWord.getId()) {
-          requestRelation.setId($validMinId)
+    synchronized (this) {
+      if (containsId(newWord.getId(), newWord)) {
+        for (SlimeRelationRequest request : $relationRequests) {
+          SlimeRelation requestRelation = request.getRelation()
+          if (requestRelation.getId() == newWord.getId()) {
+            requestRelation.setId($validMinId)
+          }
         }
+        newWord.setId($validMinId)
       }
-      newWord.setId($validMinId)
-    }
-    if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
-      for (SlimeWord otherWord : $words) {
-        for (SlimeRelation relation : otherWord.getRelations()) {
-          if (relation.getId() == oldWord.getId()) {
-            relation.setId(newWord.getId())
-            relation.setName(newWord.getName())
-            otherWord.change()
+      if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
+        for (SlimeWord otherWord : $words) {
+          for (SlimeRelation relation : otherWord.getRelations()) {
+            if (relation.getId() == oldWord.getId()) {
+              relation.setId(newWord.getId())
+              relation.setName(newWord.getName())
+              otherWord.change()
+            }
           }
         }
       }
+      complyRelationRequests()
+      update()
     }
-    complyRelationRequests()
-    update()
   }
 
   private void addWordWithoutUpdate(SlimeWord word) {
@@ -103,18 +105,22 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void addWord(SlimeWord word) {
-    addWordWithoutUpdate(word)
-    complyRelationRequests()
-    update()
+    synchronized (this) {
+      addWordWithoutUpdate(word)
+      complyRelationRequests()
+      update()
+    }
   }
 
   public void addWords(List<? extends SlimeWord> words) {
-    for (SlimeWord word : words) {
-      addWordWithoutUpdate(word)
-      incrementValidMinId(word)
+    synchronized (this) {
+      for (SlimeWord word : words) {
+        addWordWithoutUpdate(word)
+        incrementValidMinId(word)
+      }
+      complyRelationRequests()
+      update()
     }
-    complyRelationRequests()
-    update()
   }
 
   private void removeWordWithoutUpdate(SlimeWord word) {
@@ -128,33 +134,39 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void removeWord(SlimeWord word) {
-    removeWordWithoutUpdate(word)
-    update()
+    synchronized (this) {
+      removeWordWithoutUpdate(word)
+      update()
+    }
   }
 
   public void removeWords(List<? extends SlimeWord> words) {
-    for (SlimeWord word : words) {
-      removeWordWithoutUpdate(word)
+    synchronized (this) {
+      for (SlimeWord word : words) {
+        removeWordWithoutUpdate(word)
+      }
+      update()
     }
-    update()
   }
 
   public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
-    for (SlimeWord otherWord : $words) {
-      Boolean changed = false
-      for (SlimeRelation relation : otherWord.getRelations()) {
-        if (relation.getId() == removedWord.getId()) {
-          relation.setId(mergedWord.getId())
-          relation.setName(mergedWord.getName())
-          changed = true
+    synchronized (this) {
+      for (SlimeWord otherWord : $words) {
+        Boolean changed = false
+        for (SlimeRelation relation : otherWord.getRelations()) {
+          if (relation.getId() == removedWord.getId()) {
+            relation.setId(mergedWord.getId())
+            relation.setName(mergedWord.getName())
+            changed = true
+          }
+        }
+        if (changed) {
+          otherWord.change()
         }
       }
-      if (changed) {
-        otherWord.change()
-      }
+      $words.remove(removedWord)
+      update()
     }
-    $words.remove(removedWord)
-    update()
   }
 
   public void requestRelation(SlimeRelationRequest request) {
