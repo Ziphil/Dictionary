@@ -207,6 +207,9 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
       dictionary.save()
+      if (dictionary.getSaver() == null) {
+        showErrorDialog("saveUnsupported")
+      }
     }
   }
 
@@ -686,6 +689,9 @@ public class MainController extends PrimitiveController<Stage> {
       item.setOnAction() {
         createDictionary(cachedType)
       }
+      if (!type.isCreatable()) {
+        item.setDisable(true)
+      }
       $createDictionaryMenu.getItems().add(item)
     }
   }
@@ -747,7 +753,7 @@ public class MainController extends PrimitiveController<Stage> {
       item.setOnAction() {
         convertDictionary(cachedType)
       }
-      if (type == DictionaryType.SHALEIA) {
+      if (!type.isConvertable()) {
         item.setDisable(true)
       }
       $convertDictionaryMenu.getItems().add(item)

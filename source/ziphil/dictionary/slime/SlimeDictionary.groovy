@@ -64,16 +64,38 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     setupSuggestions()
   }
 
-  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
-    if (containsId(newWord.getId(), newWord)) {
+  // これから追加もしくは変更される単語データである word の ID を、追加もしくは変更の後に矛盾が生じないように修正します。
+  // また、この修正に応じて変更が必要となる内部データの修正も同時に行います。
+  private void correctId(SlimeWord word) {
+    if (containsId(word.getId(), word)) {
       for (SlimeRelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
-        if (requestRelation.getId() == newWord.getId()) {
+        if (requestRelation.getId() == word.getId()) {
           requestRelation.setId($validMinId)
         }
       }
-      newWord.setId($validMinId)
+      word.setId($validMinId)
     }
+  }
+
+  // これから追加もしくは変更される単語データである word の関連語データを、追加もしくは変更の後に矛盾が生じないように修正します。
+  // 具体的には、存在しない単語を参照している関連語データを word から削除します。
+  private void correctRelations(SlimeWord word) {
+    Map<IntegerClass, String> otherWordNames = HashMap.new()
+    for (SlimeWord otherWord : $words) {
+      otherWordNames[otherWord.getId()] = otherWord.getName()
+    }
+    List<SlimeRelation> removedRelations = ArrayList.new()
+    for (SlimeRelation relation : word.getRelations()) {
+      if (otherWordNames[relation.getId()] != relation.getName()) {
+        removedRelations.add(relation)
+      }
+    }
+    word.getRelations().removeAll(removedRelations)
+  }
+
+  // oldWord を newWord に修正したことによって生じ得る関連語参照の矛盾を修正します。
+  private void correctOtherRelations(SlimeWord oldWord, SlimeWord newWord) {
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
       for (SlimeWord otherWord : $words) {
         for (SlimeRelation relation : otherWord.getRelations()) {
@@ -85,36 +107,41 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
         }
       }
     }
-    complyRelationRequests()
-    update()
+  }
+
+  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    synchronized (this) {
+      correctId(newWord)
+      correctOtherRelations(oldWord, newWord)
+      correctRelations(newWord)
+      complyRelationRequests()
+      update()
+    }
   }
 
   private void addWordWithoutUpdate(SlimeWord word) {
-    if (containsId(word.getId(), word)) {
-      for (SlimeRelationRequest request : $relationRequests) {
-        SlimeRelation requestRelation = request.getRelation()
-        if (requestRelation.getId() == word.getId()) {
-          requestRelation.setId($validMinId)
-        }
-      }
-      word.setId($validMinId)
-    }
+    correctId(word)
+    correctRelations(word)
     $words.add(word)
   }
 
   public void addWord(SlimeWord word) {
-    addWordWithoutUpdate(word)
-    complyRelationRequests()
-    update()
+    synchronized (this) {
+      addWordWithoutUpdate(word)
+      complyRelationRequests()
+      update()
+    }
   }
 
   public void addWords(List<? extends SlimeWord> words) {
-    for (SlimeWord word : words) {
-      addWordWithoutUpdate(word)
-      incrementValidMinId(word)
+    synchronized (this) {
+      for (SlimeWord word : words) {
+        addWordWithoutUpdate(word)
+        incrementValidMinId(word)
+      }
+      complyRelationRequests()
+      update()
     }
-    complyRelationRequests()
-    update()
   }
 
   private void removeWordWithoutUpdate(SlimeWord word) {
@@ -128,33 +155,27 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   }
 
   public void removeWord(SlimeWord word) {
-    removeWordWithoutUpdate(word)
-    update()
+    synchronized (this) {
+      removeWordWithoutUpdate(word)
+      update()
+    }
   }
 
   public void removeWords(List<? extends SlimeWord> words) {
-    for (SlimeWord word : words) {
-      removeWordWithoutUpdate(word)
+    synchronized (this) {
+      for (SlimeWord word : words) {
+        removeWordWithoutUpdate(word)
+      }
+      update()
     }
-    update()
   }
 
   public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
-    for (SlimeWord otherWord : $words) {
-      Boolean changed = false
-      for (SlimeRelation relation : otherWord.getRelations()) {
-        if (relation.getId() == removedWord.getId()) {
-          relation.setId(mergedWord.getId())
-          relation.setName(mergedWord.getName())
-          changed = true
-        }
-      }
-      if (changed) {
-        otherWord.change()
-      }
+    synchronized (this) {
+      correctOtherRelations(removedWord, mergedWord)
+      $words.remove(removedWord)
+      update()
     }
-    $words.remove(removedWord)
-    update()
   }
 
   public void requestRelation(SlimeRelationRequest request) {
