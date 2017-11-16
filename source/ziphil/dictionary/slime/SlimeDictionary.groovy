@@ -64,34 +64,9 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     setupSuggestions()
   }
 
-  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
-    synchronized (this) {
-      if (containsId(newWord.getId(), newWord)) {
-        for (SlimeRelationRequest request : $relationRequests) {
-          SlimeRelation requestRelation = request.getRelation()
-          if (requestRelation.getId() == newWord.getId()) {
-            requestRelation.setId($validMinId)
-          }
-        }
-        newWord.setId($validMinId)
-      }
-      if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
-        for (SlimeWord otherWord : $words) {
-          for (SlimeRelation relation : otherWord.getRelations()) {
-            if (relation.getId() == oldWord.getId()) {
-              relation.setId(newWord.getId())
-              relation.setName(newWord.getName())
-              otherWord.change()
-            }
-          }
-        }
-      }
-      complyRelationRequests()
-      update()
-    }
-  }
-
-  private void addWordWithoutUpdate(SlimeWord word) {
+  // これから追加もしくは変更される単語データである word の ID を、追加もしくは変更の後に矛盾が生じないように修正します。
+  // また、この修正に応じて変更が必要となる内部データの修正も同時に行います。
+  private void correctId(SlimeWord word) {
     if (containsId(word.getId(), word)) {
       for (SlimeRelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
@@ -101,6 +76,34 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
       }
       word.setId($validMinId)
     }
+  }
+
+  // oldWord を newWord に修正したことによって生じ得る関連語参照の矛盾を修正します。
+  private void correctOtherRelations(SlimeWord oldWord, SlimeWord newWord) {
+    if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
+      for (SlimeWord otherWord : $words) {
+        for (SlimeRelation relation : otherWord.getRelations()) {
+          if (relation.getId() == oldWord.getId()) {
+            relation.setId(newWord.getId())
+            relation.setName(newWord.getName())
+            otherWord.change()
+          }
+        }
+      }
+    }
+  }
+
+  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    synchronized (this) {
+      correctId(newWord)
+      correctOtherRelations(oldWord, newWord)
+      complyRelationRequests()
+      update()
+    }
+  }
+
+  private void addWordWithoutUpdate(SlimeWord word) {
+    correctId(word)
     $words.add(word)
   }
 
