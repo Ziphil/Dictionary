@@ -78,6 +78,22 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     }
   }
 
+  // これから追加もしくは変更される単語データである word の関連語データを、追加もしくは変更の後に矛盾が生じないように修正します。
+  // 具体的には、存在しない単語を参照している関連語データを word から削除します。
+  private void correctRelations(SlimeWord word) {
+    Map<IntegerClass, String> otherWordNames = HashMap.new()
+    for (SlimeWord otherWord : $words) {
+      otherWordNames[otherWord.getId()] = otherWord.getName()
+    }
+    List<SlimeRelation> removedRelations = ArrayList.new()
+    for (SlimeRelation relation : word.getRelations()) {
+      if (otherWordNames[relation.getId()] != relation.getName()) {
+        removedRelations.add(relation)
+      }
+    }
+    word.getRelations().removeAll(removedRelations)
+  }
+
   // oldWord を newWord に修正したことによって生じ得る関連語参照の矛盾を修正します。
   private void correctOtherRelations(SlimeWord oldWord, SlimeWord newWord) {
     if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
@@ -97,6 +113,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     synchronized (this) {
       correctId(newWord)
       correctOtherRelations(oldWord, newWord)
+      correctRelations(newWord)
       complyRelationRequests()
       update()
     }
@@ -104,6 +121,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
 
   private void addWordWithoutUpdate(SlimeWord word) {
     correctId(word)
+    correctRelations(word)
     $words.add(word)
   }
 
