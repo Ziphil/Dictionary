@@ -105,12 +105,12 @@
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
         <Button text="キャンセル" onAction="#cancel" cancelButton="true">
-          <prefWidth><Double rpx="80"/></prefWidth>
-          <minWidth><Double rpx="80"/></minWidth>
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
         </Button>
         <Button text="OK" onAction="#commit" defaultButton="true">
-          <prefWidth><Double rpx="80"/></prefWidth>
-          <minWidth><Double rpx="80"/></minWidth>
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <minWidth><Double rpx="70"/></minWidth>
         </Button>
       </HBox>
     </AnchorPane>
