@@ -100,6 +100,12 @@
           <minWidth><Double rpx="80"/></minWidth>
         </Button>
       </HBox>
+      <Button text="CSV出力" onAction="#saveCsv">
+        <prefWidth><Double rpx="80"/></prefWidth>
+        <minWidth><Double rpx="80"/></minWidth>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.leftAnchor><Double rpx="10"/></AnchorPane.leftAnchor>
+      </Button>
     </AnchorPane>
   </bottom>
 </BorderPane>

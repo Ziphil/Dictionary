@@ -6,6 +6,8 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.geometry.Side
+import javafx.stage.StageStyle
+import javafx.stage.Modality
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.TableColumn
@@ -34,6 +36,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   @FXML private TableView<CharacterStatus> $frequencyView
   @FXML private TableColumn<CharacterStatus, DoubleClass> $frequencyPercentageColumn
   @FXML private TableColumn<CharacterStatus, DoubleClass> $usingWordSizePercentageColumn
+  private CharacterFrequencyAnalyzer $analyzer
 
   public CharacterFrequencyController(UtilityStage<? super Void> stage) {
     super(stage)
@@ -72,6 +75,21 @@ public class CharacterFrequencyController extends Controller<Void> {
       }
     }
     $frequencyView.getItems().addAll(characterStatuses)
+    $analyzer = analyzer
+  }
+
+  @FXML
+  private void saveCsv() {
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare(false)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      File file = nextStage.getResult()
+      $analyzer.save(file.getAbsolutePath())
+    }
   }
 
   private void setupFrequencyViewColumns() {
