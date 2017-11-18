@@ -8,6 +8,7 @@ import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
+import javafx.util.converter.NumberStringConverter
 import ziphil.controller.ProgressController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
@@ -52,6 +53,8 @@ public class ShaleiaProgressPlugin implements Plugin {
       }
       NumberAxis xAxis = NumberAxis.new(1000, maxDate, 100)
       NumberAxis yAxis = NumberAxis.new(0, accumulatedWordSize, 200)
+      xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
+      yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       ProgressController controller = ProgressController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)

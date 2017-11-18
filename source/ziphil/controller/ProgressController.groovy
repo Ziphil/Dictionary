@@ -2,11 +2,10 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.scene.chart.Axis
 import javafx.scene.chart.LineChart
-import javafx.scene.chart.ValueAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.VBox
-import javafx.util.converter.NumberStringConverter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
@@ -27,14 +26,12 @@ public class ProgressController extends Controller<Void> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }
 
-  public void prepare(ValueAxis<Number> xAxis, ValueAxis<Number> yAxis, XYChart.Series<Number, Number> series) {
+  public void prepare(Axis<Number> xAxis, Axis<Number> yAxis, XYChart.Series<Number, Number> series) {
     LineChart<Number, Number> chart = LineChart.new(xAxis, yAxis)
     chart.getData().add(series)
     chart.setCreateSymbols(false)
     chart.setLegendVisible(false)
     chart.setAnimated(false)
-    xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
-    yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
     $mainPane.getChildren().add(chart)
   }
 
