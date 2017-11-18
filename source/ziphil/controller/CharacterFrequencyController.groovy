@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.PercentageTableCell
 import ziphil.custom.PopupPieChart
@@ -81,10 +82,13 @@ public class CharacterFrequencyController extends Controller<Void> {
   @FXML
   private void saveCsv() {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+    FileChooserController controller = FileChooserController.new(nextStage)
+    List<ExtensionFilter> extensionFilters = ArrayList.new()
+    ExtensionFilter extensionFilter = ExtensionFilter.new("CSV", "csv")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(false)
+    extensionFilters.add(extensionFilter)
+    controller.prepare(extensionFilters, extensionFilter, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
