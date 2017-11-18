@@ -12,8 +12,8 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
   protected String $path
 
   public DictionarySaver(D dictionary, String path) {
-    $path = path
     $dictionary = dictionary
+    $path = path
   }
 
   protected abstract BooleanClass save()
