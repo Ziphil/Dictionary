@@ -335,13 +335,12 @@ public class MainController extends PrimitiveController<Stage> {
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    DictionaryType dictionaryType = DictionaryType.valueOfDictionary(dictionary)
     for (Plugin plugin : PLUGINS) {
-      if (plugin.getDictionaryType() == dictionaryType) {
+      if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new(plugin.getName())
         Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
         item.setOnAction() {
-          plugin.call()
+          plugin.call(dictionary)
         }
         item.setGraphic(ImageView.new(icon))
         $pluginMenu.getItems().add(item)
