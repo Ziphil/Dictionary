@@ -91,7 +91,7 @@
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5">
+      <HBox>
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
