@@ -41,7 +41,7 @@ public class CharacterFrequencyAnalyzerController extends Controller<Void> {
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(analyzer.characterStatuses())
+    controller.prepare(analyzer)
     nextStage.showAndWait()
   }
 

@@ -16,6 +16,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.PercentageTableCell
 import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
+import ziphil.module.CharacterFrequencyAnalyzer
 import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
 
@@ -44,7 +45,8 @@ public class CharacterFrequencyController extends Controller<Void> {
     setupFrequencyViewColumns()
   }
 
-  public void prepare(List<CharacterStatus> characterStatuses) {
+  public void prepare(CharacterFrequencyAnalyzer analyzer) {
+    List<CharacterStatus> characterStatuses = analyzer.characterStatuses()
     List<PieChart.Data> data = ArrayList.new()
     Int otherFrequency = 0
     for (Int i = 0 ; i < characterStatuses.size() ; i ++) {
