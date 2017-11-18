@@ -337,12 +337,17 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     for (Plugin plugin : PLUGINS) {
       if (plugin.isSupported(dictionary)) {
-        MenuItem item = MenuItem.new(plugin.getName())
-        Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+        MenuItem item = MenuItem.new()
+        String name = plugin.getName()
+        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+        KeyCode keyCode = plugin.getKeyCode()
+        KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
+        item.setText(name)
+        item.setGraphic(ImageView.new(icon))
+        item.setAccelerator(accelerator)
         item.setOnAction() {
           plugin.call(dictionary)
         }
-        item.setGraphic(ImageView.new(icon))
         $pluginMenu.getItems().add(item)
       }
     }

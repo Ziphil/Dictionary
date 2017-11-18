@@ -1,6 +1,8 @@
 package ziphil.plugin
 
 import groovy.transform.CompileStatic
+import javafx.scene.image.Image
+import javafx.scene.input.KeyCode
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryType
 import ziphilib.transform.Ziphilify
@@ -22,6 +24,14 @@ public class SamplePlugin implements Plugin {
 
   public String getName() {
     return NAME
+  }
+
+  public KeyCode getKeyCode() {
+    return KeyCode.BACK_SLASH
+  }
+
+  public Image getIcon() {
+    return null
   }
 
 }
