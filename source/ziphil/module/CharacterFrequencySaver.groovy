@@ -21,7 +21,7 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
 
   private BooleanClass save() {
     File file = File.new($path)
-    BufferedWriter rawWriter = file.newWriter()
+    BufferedWriter rawWriter = file.newWriter("UTF-8")
     CsvConfig config = createConfig()
     CsvWriter writer = CsvWriter.new(rawWriter, config)
     try {
