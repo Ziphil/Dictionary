@@ -12,16 +12,16 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ProgressController extends Controller<Void> {
+public class LineChartController extends Controller<Void> {
 
-  private static final String RESOURCE_PATH = "resource/fxml/controller/progress.fxml"
+  private static final String RESOURCE_PATH = "resource/fxml/controller/line_chart.fxml"
   private static final String TITLE = "単語数グラフ"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private VBox $mainPane
 
-  public ProgressController(UtilityStage<? super Void> stage) {
+  public LineChartController(UtilityStage<? super Void> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }
