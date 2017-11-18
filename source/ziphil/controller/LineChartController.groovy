@@ -3,7 +3,7 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.chart.Axis
-import javafx.scene.chart.LineChart
+import javafx.scene.chart.AreaChart
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.VBox
 import ziphil.custom.Measurement
@@ -27,7 +27,7 @@ public class LineChartController extends Controller<Void> {
   }
 
   public void prepare(Axis<Number> xAxis, Axis<Number> yAxis, XYChart.Series<Number, Number> series) {
-    LineChart<Number, Number> chart = LineChart.new(xAxis, yAxis)
+    AreaChart<Number, Number> chart = AreaChart.new(xAxis, yAxis)
     chart.getData().add(series)
     chart.setCreateSymbols(false)
     chart.setLegendVisible(false)
