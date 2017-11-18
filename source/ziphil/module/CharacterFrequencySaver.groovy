@@ -2,6 +2,7 @@ package ziphil.module
 
 import com.orangesignal.csv.CsvConfig
 import com.orangesignal.csv.CsvWriter
+import com.orangesignal.csv.QuotePolicy
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphilib.transform.Ziphilify
@@ -51,6 +52,7 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
   private CsvConfig createConfig() {
     CsvConfig config = CsvConfig.new()
     config.setQuoteDisabled(false)
+    config.setQuotePolicy(QuotePolicy.MINIMAL)
     config.setEscapeDisabled(false)
     config.setEscape((Char)'"')
     return config
