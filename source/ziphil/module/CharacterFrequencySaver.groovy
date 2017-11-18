@@ -1,8 +1,5 @@
 package ziphil.module
 
-import com.orangesignal.csv.CsvConfig
-import com.orangesignal.csv.CsvWriter
-import com.orangesignal.csv.QuotePolicy
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphilib.transform.Ziphilify
@@ -21,18 +18,20 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
 
   private BooleanClass save() {
     File file = File.new($path)
-    BufferedWriter rawWriter = file.newWriter("UTF-8")
-    CsvConfig config = createConfig()
-    CsvWriter writer = CsvWriter.new(rawWriter, config)
+    BufferedWriter writer = file.newWriter("UTF-8")
     try {
       for (CharacterStatus status : $analyzer.characterStatuses()) {
-        List<String> values = ArrayList.new()
-        values.add(status.getCharacter())
-        values.add(status.getFrequency().toString())
-        values.add(status.getFrequencyPercentage().toString())
-        values.add(status.getUsingWordSize().toString())
-        values.add(status.getUsingWordSizePercentage().toString())
-        writer.writeValues(values)
+        writer.write("\"")
+        writer.write(status.getCharacter().replaceAll(/"/, "\"\""))
+        writer.write("\",")
+        writer.write(status.getFrequency().toString())
+        writer.write(",")
+        writer.write(status.getFrequencyPercentage().toString())
+        writer.write(",")
+        writer.write(status.getUsingWordSize().toString())
+        writer.write(",")
+        writer.write(status.getUsingWordSizePercentage().toString())
+        writer.newLine()
       }
     } finally {
       writer.close()
@@ -47,15 +46,6 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
     } else {
       return false
     }
-  }
-
-  private CsvConfig createConfig() {
-    CsvConfig config = CsvConfig.new()
-    config.setQuoteDisabled(false)
-    config.setQuotePolicy(QuotePolicy.MINIMAL)
-    config.setEscapeDisabled(false)
-    config.setEscape((Char)'"')
-    return config
   }
 
 }
