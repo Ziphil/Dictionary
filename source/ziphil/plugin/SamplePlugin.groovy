@@ -18,8 +18,7 @@ public class SamplePlugin implements Plugin {
   }
 
   public Boolean isSupported(Dictionary dictionary) {
-    DictionaryType dictionaryType = DictionaryType.valueOfDictionary(dictionary)
-    return dictionaryType == DictionaryType.SHALEIA
+    return true
   }
 
   public String getName() {
