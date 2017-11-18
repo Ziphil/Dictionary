@@ -1,0 +1,41 @@
+package ziphil.controller
+
+import groovy.transform.CompileStatic
+import javafx.fxml.FXML
+import javafx.scene.chart.LineChart
+import javafx.scene.chart.ValueAxis
+import javafx.scene.chart.XYChart
+import javafx.scene.layout.VBox
+import javafx.util.converter.NumberStringConverter
+import ziphil.custom.Measurement
+import ziphil.custom.UtilityStage
+import ziphilib.transform.Ziphilify
+
+
+@CompileStatic @Ziphilify
+public class ProgressController extends Controller<Void> {
+
+  private static final String RESOURCE_PATH = "resource/fxml/controller/progress.fxml"
+  private static final String TITLE = "単語数グラフ"
+  private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
+
+  @FXML private VBox $mainPane
+
+  public ProgressController(UtilityStage<? super Void> stage) {
+    super(stage)
+    loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
+  }
+
+  public void prepare(ValueAxis<Number> xAxis, ValueAxis<Number> yAxis, XYChart.Series<Number, Number> series) {
+    LineChart<Number, Number> chart = LineChart.new(xAxis, yAxis)
+    chart.getData().add(series)
+    chart.setCreateSymbols(false)
+    chart.setLegendVisible(false)
+    chart.setAnimated(false)
+    xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
+    yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
+    $mainPane.getChildren().add(chart)
+  }
+
+}
