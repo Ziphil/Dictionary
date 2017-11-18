@@ -52,7 +52,7 @@ public class ShaleiaProgressPlugin implements Plugin {
         series.getData().add(XYChart.Data.new(date, accumulatedWordSize))
       }
       NumberAxis xAxis = NumberAxis.new(1000, maxDate, 100)
-      NumberAxis yAxis = NumberAxis.new(0, accumulatedWordSize, 200)
+      NumberAxis yAxis = NumberAxis.new()
       xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
