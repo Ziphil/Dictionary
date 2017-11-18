@@ -11,6 +11,9 @@ import ziphilib.transform.ConvertPrimitives
 @CompileStatic @ConvertPrimitives
 public interface Plugin {
 
+  // プラグインを実行します。
+  // 基本的に isSupported メソッドが true を返す辞書データのみが引数に渡されますが、そうでない辞書データが渡されることもあり得ます。
+  // したがって、isSupported メソッドが true を返すことに依存した実装はしないようにしてください。
   public void call(Dictionary dictionary)
 
   // このプラグインが dictionary の操作に対応していれば true を返し、対応していなければ false を返します。
