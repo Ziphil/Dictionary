@@ -19,17 +19,19 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
   private BooleanClass save() {
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
+    String separator = separator()
     try {
       for (CharacterStatus status : $analyzer.characterStatuses()) {
         writer.write("\"")
         writer.write(status.getCharacter().replaceAll(/"/, "\"\""))
-        writer.write("\",")
+        writer.write("\"")
+        writer.write(separator)
         writer.write(status.getFrequency().toString())
-        writer.write(",")
+        writer.write(separator)
         writer.write(status.getFrequencyPercentage().toString())
-        writer.write(",")
+        writer.write(separator)
         writer.write(status.getUsingWordSize().toString())
-        writer.write(",")
+        writer.write(separator)
         writer.write(status.getUsingWordSizePercentage().toString())
         writer.newLine()
       }
@@ -45,6 +47,16 @@ public class CharacterFrequencySaver<D extends Dictionary> extends Task<BooleanC
       return result
     } else {
       return false
+    }
+  }
+
+  private String separator() {
+    if ($path.endsWith(".csv")) {
+      return ","
+    } else if ($path.endsWith(".tsv")) {
+      return "\t"
+    } else {
+      return ","
     }
   }
 
