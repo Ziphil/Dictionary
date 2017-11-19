@@ -336,6 +336,7 @@ public class MainController extends PrimitiveController<Stage> {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
     for (Plugin plugin : PLUGINS) {
+      Plugin cachedPlugin = plugin
       if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new()
         String name = plugin.getName()
@@ -346,7 +347,7 @@ public class MainController extends PrimitiveController<Stage> {
         item.setGraphic(ImageView.new(icon))
         item.setAccelerator(accelerator)
         item.setOnAction() {
-          plugin.call(dictionary)
+          cachedPlugin.call(dictionary)
         }
         $pluginMenu.getItems().add(item)
       }
