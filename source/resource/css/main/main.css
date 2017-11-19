@@ -155,7 +155,8 @@
   -fx-background-color: radial-gradient(radius 100%, derive(hsb(0, 0%, 55%), 20%), derive(hsb(0, 0%, 55%), -10%));
 }
 
-.pie-caption {
+.pie-caption,
+.chart-caption {
   -fx-background-color: -fx-background;
   -fx-background-insets: 0px, 1px;
   -fx-background-radius: 3px, 2px;
@@ -197,4 +198,8 @@
 
 .other.pie-caption {
   -fx-background-color: derive(hsb(0, 0%, 55%), -30%), -fx-background;
+}
+
+.default-color0.chart-caption {
+  -fx-background-color: CHART_COLOR_1, -fx-background;
 }

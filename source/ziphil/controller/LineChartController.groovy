@@ -3,10 +3,10 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.chart.Axis
-import javafx.scene.chart.AreaChart
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.VBox
 import ziphil.custom.Measurement
+import ziphil.custom.PopupAreaChart
 import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
@@ -27,11 +27,10 @@ public class LineChartController extends Controller<Void> {
   }
 
   public void prepare(Axis<Number> xAxis, Axis<Number> yAxis, XYChart.Series<Number, Number> series) {
-    AreaChart<Number, Number> chart = AreaChart.new(xAxis, yAxis)
-    chart.getData().add(series)
-    chart.setCreateSymbols(false)
-    chart.setLegendVisible(false)
-    chart.setAnimated(false)
+    PopupAreaChart<Number, Number> chart = PopupAreaChart.new(xAxis, yAxis)
+    chart.getChart().getData().add(series)
+    chart.getChart().setLegendVisible(false)
+    chart.getChart().setAnimated(false)
     $mainPane.getChildren().add(chart)
   }
 
