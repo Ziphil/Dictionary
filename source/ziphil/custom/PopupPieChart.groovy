@@ -14,11 +14,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PopupPieChart extends Control {
 
-  private ReadOnlyObjectWrapper<PieChart> $chart = ReadOnlyObjectWrapper.new(PieChart.new())
+  private ReadOnlyObjectWrapper<PieChart> $chart = ReadOnlyObjectWrapper.new()
   private IntegerProperty $pieValuePrecision = SimpleIntegerProperty.new(0)
   private IntegerProperty $percentagePrecision = SimpleIntegerProperty.new(2)
 
   public PopupPieChart() {
+    $chart.set(PieChart.new())
   }
 
   protected Skin<PopupPieChart> createDefaultSkin() {
