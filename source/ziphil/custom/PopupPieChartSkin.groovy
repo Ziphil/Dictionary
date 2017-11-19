@@ -44,19 +44,23 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       for (PieChart.Data singleData : newValue) {
         setupSingleData(singleData)
       }
-      newValue.addListener() { Change<? extends PieChart.Data> change ->
-        while (change.next()) {
-          if (change.wasAdded()) {
-            for (PieChart.Data singleData : change.getAddedSubList()) {
-              setupSingleData(singleData)
-            }
-          }
-        }
-      }
+      setupData(newValue)
     }
     $captionLabel.setMouseTransparent(true)
     $captionLabel.setVisible(false)
     $captionLabel.getStyleClass().add("pie-caption")
+  }
+
+  private void setupData(ObservableList<PieChart.Data> data) {
+    data.addListener() { Change<? extends PieChart.Data> change ->
+      while (change.next()) {
+        if (change.wasAdded()) {
+          for (PieChart.Data singleData : change.getAddedSubList()) {
+            setupSingleData(singleData)
+          }
+        }
+      }
+    }
   }
 
   private void setupSingleData(PieChart.Data singleData) {
