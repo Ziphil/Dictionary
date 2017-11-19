@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import javafx.application.Platform
 import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ObservableValue
-import javafx.collections.ListChangeListener
 import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.geometry.Point2D
