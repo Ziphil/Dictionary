@@ -1,11 +1,10 @@
-package ziphil.plugin.shaleiaupload
+package ziphil.plugin
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.plugin.Plugin
 import ziphilib.transform.Ziphilify
 
 

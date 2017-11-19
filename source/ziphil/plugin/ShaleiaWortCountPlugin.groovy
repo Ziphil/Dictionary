@@ -1,4 +1,4 @@
-package ziphil.plugin.shaleiaprogress
+package ziphil.plugin
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
@@ -9,17 +9,16 @@ import javafx.scene.chart.XYChart
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.util.converter.NumberStringConverter
-import ziphil.controller.LineChartController
+import ziphil.controller.ShaleiaWordCountController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
-import ziphil.plugin.Plugin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaProgressPlugin implements Plugin {
+public class ShaleiaWordCountPlugin implements Plugin {
 
   private static final String NAME = "単語数グラフ"
 
@@ -56,7 +55,7 @@ public class ShaleiaProgressPlugin implements Plugin {
       xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      LineChartController controller = LineChartController.new(nextStage)
+      ShaleiaWordCountController controller = ShaleiaWordCountController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner(null)
       controller.prepare(xAxis, yAxis, series)
