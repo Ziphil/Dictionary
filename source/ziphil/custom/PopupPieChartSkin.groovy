@@ -28,6 +28,7 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
     $control = control
     setupPane()
     setupCaptionLabel()
+    setupChart()
   }
 
   private void setupPane() {
@@ -36,6 +37,12 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
   }
 
   private void setupCaptionLabel() {
+    $captionLabel.setMouseTransparent(true)
+    $captionLabel.setVisible(false)
+    $captionLabel.getStyleClass().add("pie-caption")
+  }
+
+  private void setupChart() {
     ObjectProperty<ObservableList<PieChart.Data>> data = $control.getChart().dataProperty()
     for (PieChart.Data singleData : data.get()) {
       setupSingleData(singleData)
@@ -46,9 +53,6 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       }
       setupData(newValue)
     }
-    $captionLabel.setMouseTransparent(true)
-    $captionLabel.setVisible(false)
-    $captionLabel.getStyleClass().add("pie-caption")
   }
 
   private void setupData(ObservableList<PieChart.Data> data) {
