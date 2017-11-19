@@ -28,6 +28,7 @@ public class ShaleiaUploaderController extends Controller<ShaleiaUploaderControl
 
   public void prepare(String urlText) {
     $urlTextControl.setText(urlText)
+    $passwordControl.requestFocus()
   }
 
   @FXML
