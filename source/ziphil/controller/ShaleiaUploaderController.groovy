@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -18,7 +19,7 @@ public class ShaleiaUploaderController extends Controller<ShaleiaUploaderControl
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $urlTextControl
-  @FXML private TextField $passwordControl
+  @FXML private PasswordField $passwordControl
 
   public ShaleiaUploaderController(UtilityStage<? super ShaleiaUploaderController.Result> stage) {
     super(stage)
