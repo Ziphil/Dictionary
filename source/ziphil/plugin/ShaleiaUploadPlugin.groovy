@@ -18,6 +18,7 @@ import ziphilib.transform.Ziphilify
 public class ShaleiaUploadPlugin implements Plugin {
 
   private static final String NAME = "辞典アップロード"
+  private static final String DEFAULT_URL_TEXT = "http://ziphil.com/conlang/database/2.cgi"
   private static final String BOUNDARY = createBoundary()
 
   public void call(Dictionary dictionary) {
@@ -26,6 +27,7 @@ public class ShaleiaUploadPlugin implements Plugin {
       ShaleiaUploaderController controller = ShaleiaUploaderController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner(null)
+      controller.prepare(DEFAULT_URL_TEXT)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         upload(dictionary, nextStage.getResult())

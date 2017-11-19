@@ -25,6 +25,10 @@ public class ShaleiaUploaderController extends Controller<ShaleiaUploaderControl
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
+  public void prepare(String urlText) {
+    $urlTextControl.setText(urlText)
+  }
+
   @FXML
   protected void commit() {
     String urlText = $urlTextControl.getText()
