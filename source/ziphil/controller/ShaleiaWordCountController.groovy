@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.geometry.Side
 import javafx.scene.chart.Axis
 import javafx.scene.chart.XYChart
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import ziphil.custom.Measurement
 import ziphil.custom.PopupAreaChart
@@ -34,6 +35,7 @@ public class ShaleiaWordCountController extends Controller<Void> {
     chart.getChart().setAnimated(false)
     chart.getChart().getStyleClass().add("right-legend-chart")
     $mainPane.getChildren().add(chart)
+    $mainPane.setVgrow(chart, Priority.ALWAYS)
   }
 
 }
