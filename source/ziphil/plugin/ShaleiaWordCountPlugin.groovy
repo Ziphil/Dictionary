@@ -50,6 +50,7 @@ public class ShaleiaWordCountPlugin implements Plugin {
         }
         series.getData().add(XYChart.Data.new(date, accumulatedWordSize))
       }
+      series.setName("単語数")
       NumberAxis xAxis = NumberAxis.new(1000, maxDate, 100)
       NumberAxis yAxis = NumberAxis.new()
       xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))

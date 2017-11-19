@@ -147,6 +147,10 @@
   -fx-background-color: -fx-background;
 }
 
+.right-legend-chart .chart-content {
+  -fx-padding: 0px 10px 0px 0px;
+}
+
 .other.chart-pie {
   -fx-pie-color: hsb(0, 0%, 55%);
 }

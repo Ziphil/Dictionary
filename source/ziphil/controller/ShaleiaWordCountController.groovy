@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.geometry.Side
 import javafx.scene.chart.Axis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.VBox
@@ -29,8 +30,9 @@ public class ShaleiaWordCountController extends Controller<Void> {
   public void prepare(Axis<Number> xAxis, Axis<Number> yAxis, XYChart.Series<Number, Number> series) {
     PopupAreaChart<Number, Number> chart = PopupAreaChart.new(xAxis, yAxis)
     chart.getChart().getData().add(series)
-    chart.getChart().setLegendVisible(false)
+    chart.getChart().setLegendSide(Side.RIGHT)
     chart.getChart().setAnimated(false)
+    chart.getChart().getStyleClass().add("right-legend-chart")
     $mainPane.getChildren().add(chart)
   }
 
