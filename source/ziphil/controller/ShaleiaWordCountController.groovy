@@ -65,10 +65,10 @@ public class ShaleiaWordCountController extends Controller<Void> {
     IntegerSpinnerValueFactory startDateValueFactory = (IntegerSpinnerValueFactory)$startDateControl.getValueFactory()
     IntegerSpinnerValueFactory endDateValueFactory = (IntegerSpinnerValueFactory)$endDateControl.getValueFactory()
     Int maxDate = (Int)$data.last().getXValue()
-    startDateValueFactory.setMin(1)
     startDateValueFactory.setMax(maxDate)
-    endDateValueFactory.setMin(1)
+    startDateValueFactory.setMin(1000)
     endDateValueFactory.setMax(maxDate)
+    endDateValueFactory.setMin(1)
     $startDateControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
       if (newValue > $endDateControl.getValue()) {
         $endDateControl.getValueFactory().setValue(newValue)
