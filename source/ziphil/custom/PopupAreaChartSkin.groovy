@@ -35,7 +35,7 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     setupPane()
     setupCaptionBox()
     setupCaptionLabel()
-    setupAxis()
+    setupData()
     setupChart()
   }
 
@@ -65,16 +65,14 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     $captionLabel.getStyleClass().addAll("chart-caption", "default-color0")
   }
 
-  private void setupAxis() {
-    Axis<X> xAxis = $control.getChart().getXAxis()
-    if (xAxis instanceof ValueAxis) {
-      xAxis.lowerBoundProperty().addListener() { ObservableValue<? extends DoubleClass> observableValue, DoubleClass oldValue, DoubleClass newValue ->
-        XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
-        relocateCaptionBox(singleData)
-      }
-      xAxis.upperBoundProperty().addListener() { ObservableValue<? extends DoubleClass> observableValue, DoubleClass oldValue, DoubleClass newValue ->
-        XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
-        relocateCaptionBox(singleData)
+  private void setupData() {
+    ObservableList<XYChart.Series<X, Y>> data = $control.getChart().getData()
+    data.addListener() { Change<? extends XYChart.Data<X, Y>> change ->
+      while (change.next()) {
+        if (change.wasAdded()) {
+          XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
+          relocateCaptionBox(singleData)
+        }
       }
     }
   }

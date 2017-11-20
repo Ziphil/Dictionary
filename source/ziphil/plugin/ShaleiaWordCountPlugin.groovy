@@ -8,7 +8,6 @@ import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
-import javafx.util.converter.NumberStringConverter
 import ziphil.controller.ShaleiaWordCountController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
@@ -25,7 +24,7 @@ public class ShaleiaWordCountPlugin implements Plugin {
   public void call(Dictionary dictionary) {
     if (dictionary instanceof ShaleiaDictionary) {
       Map<IntegerClass, IntegerClass> wordSizes = HashMap.new()
-      XYChart.Series series = XYChart.Series.new()
+      List<XYChart.Data<Number, Number>> data = ArrayList.new()
       Int maxDate = 0
       Int accumulatedWordSize = 0
       for (ShaleiaWord word : dictionary.getRawWords()) {
@@ -48,18 +47,13 @@ public class ShaleiaWordCountPlugin implements Plugin {
         if (wordSizes.containsKey(date)) {
           accumulatedWordSize += wordSizes[date]
         }
-        series.getData().add(XYChart.Data.new(date, accumulatedWordSize))
+        data.add(XYChart.Data.new(date, accumulatedWordSize))
       }
-      series.setName("単語数")
-      NumberAxis xAxis = NumberAxis.new(1000, maxDate, 100)
-      NumberAxis yAxis = NumberAxis.new()
-      xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
-      yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       ShaleiaWordCountController controller = ShaleiaWordCountController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner(null)
-      controller.prepare(xAxis, yAxis, series)
+      controller.prepare(data)
       nextStage.showAndWait()
     }
   }
