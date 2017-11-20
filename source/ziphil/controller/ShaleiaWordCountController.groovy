@@ -73,19 +73,21 @@ public class ShaleiaWordCountController extends Controller<Void> {
       if (newValue > $endDateControl.getValue()) {
         $endDateControl.getValueFactory().setValue(newValue)
       }
-      resetData(newValue, $endDateControl.getValue())
+      resetData()
     }
     $endDateControl.valueProperty().addListener() { ObservableValue<? extends IntegerClass> observableValue, IntegerClass oldValue, IntegerClass newValue ->
       if (newValue < $startDateControl.getValue()) {
         $startDateControl.getValueFactory().setValue(newValue)
       }
-      resetData($startDateControl.getValue(), newValue)
+      resetData()
     }
     startDateValueFactory.setValue(1000)
     endDateValueFactory.setValue(maxDate)
   }
 
-  private void resetData(Int startDate, Int endDate) {
+  private void resetData() {
+    Int startDate = $startDateControl.getValue()
+    Int endDate = $endDateControl.getValue()
     ObservableList<XYChart.Data<Number, Number>> nextData = FXCollections.observableArrayList()
     for (XYChart.Data<Number, Number> singleData : $data) {
       if (singleData.getXValue() >= startDate && singleData.getXValue() <= endDate) {
