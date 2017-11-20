@@ -205,7 +205,7 @@
 }
 
 .default-color0.chart-caption {
-  -fx-background-color: CHART_COLOR_1, -fx-background;
+  -fx-background-color: derive(CHART_COLOR_1, -30%), -fx-background;
 }
 
 .caption-arrow {
@@ -213,5 +213,5 @@
 }
 
 .default-color0.caption-arrow {
-  -fx-background-color: CHART_COLOR_1;
+  -fx-background-color: derive(CHART_COLOR_1, -30%);
 }
