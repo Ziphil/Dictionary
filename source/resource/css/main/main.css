@@ -207,3 +207,11 @@
 .default-color0.chart-caption {
   -fx-background-color: CHART_COLOR_1, -fx-background;
 }
+
+.caption-arrow {
+  -fx-shape: "M 2.5,0 L 0,6 5,6 Z";
+}
+
+.default-color0.caption-arrow {
+  -fx-background-color: CHART_COLOR_1;
+}

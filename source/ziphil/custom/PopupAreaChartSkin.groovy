@@ -5,8 +5,11 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
+import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.layout.Region
 import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
 import javafx.scene.chart.AreaChart
 import javafx.scene.chart.Axis
 import javafx.scene.chart.ValueAxis
@@ -22,24 +25,36 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
 
   private PopupAreaChart<X, Y> $control
   private StackPane $pane = StackPane.new()
+  private VBox $captionBox = VBox.new()
   private Label $captionLabel = Label.new()
 
   public PopupAreaChartSkin(PopupAreaChart control) {
     super(control)
     $control = control
     setupPane()
+    setupCaptionBox()
     setupCaptionLabel()
     setupChart()
   }
 
   private void setupPane() {
-    $pane.getChildren().addAll($control.getChart(), $captionLabel)
+    Region arrow = Region.new()
+    arrow.setPrefSize(5, 6)
+    arrow.getStyleClass().addAll("caption-arrow", "default-color0")
+    $captionBox.setMaxSize(VBox.USE_PREF_SIZE, VBox.USE_PREF_SIZE)
+    $captionBox.setFillWidth(false)
+    $captionBox.setAlignment(Pos.CENTER)
+    $captionBox.getChildren().addAll(arrow, $captionLabel)
+    $pane.getChildren().addAll($control.getChart(), $captionBox)
     getChildren().add($pane)
   }
 
+  private void setupCaptionBox() {
+    $captionBox.setMouseTransparent(true)
+    $captionBox.setVisible(false)
+  }
+
   private void setupCaptionLabel() {
-    $captionLabel.setMouseTransparent(true)
-    $captionLabel.setVisible(false)
     $captionLabel.getStyleClass().addAll("chart-caption", "default-color0")
   }
 
@@ -57,13 +72,13 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
         $captionLabel.setText(text)
       }
       Double translateX = xAxis.getDisplayPosition(singleData.getXValue()) - $pane.getWidth() / 2 + yAxis.getWidth()
-      Double translateY = yAxis.getDisplayPosition(singleData.getYValue()) - $pane.getHeight() / 2 
-      $captionLabel.setTranslateX((Int)translateX)
-      $captionLabel.setTranslateY((Int)translateY)
-      $captionLabel.setVisible(true)
+      Double translateY = yAxis.getDisplayPosition(singleData.getYValue()) - $pane.getHeight() / 2 + $captionBox.getHeight() / 2 + 2 
+      $captionBox.setTranslateX((Int)translateX)
+      $captionBox.setTranslateY((Int)translateY)
+      $captionBox.setVisible(true)
     }
     background.addEventHandler(MouseEvent.MOUSE_EXITED) { MouseEvent event ->
-      $captionLabel.setVisible(false)
+      $captionBox.setVisible(false)
     }
     for (Node node : background.getParent().getChildrenUnmodifiable()) {
       if (node != background) {
