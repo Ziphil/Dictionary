@@ -1,6 +1,7 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener.Change
@@ -52,6 +53,11 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
   private void setupCaptionBox() {
     $captionBox.setMouseTransparent(true)
     $captionBox.setVisible(false)
+    Platform.runLater() {
+      XYChart.Data<X, Y> singleData = rightmostSingleData()
+      relocateCaptionBox(singleData)
+      $captionBox.setVisible(true)
+    }
   }
 
   private void setupCaptionLabel() {
@@ -61,24 +67,12 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
   private void setupChart() {
     Node background = $control.getChart().lookup(".chart-plot-background")
     background.addEventHandler(MouseEvent.MOUSE_MOVED) { MouseEvent event ->
-      Axis<X> xAxis = $control.getChart().getXAxis()
-      Axis<Y> yAxis = $control.getChart().getYAxis()
       XYChart.Data<X, Y> singleData = correspondingSingleData(nearestXValue(event.getX()))
-      if (yAxis instanceof ValueAxis) {
-        String text = yAxis.getTickLabelFormatter().toString(singleData.getYValue())
-        $captionLabel.setText(text)
-      } else {
-        String text = singleData.getYValue().toString()
-        $captionLabel.setText(text)
-      }
-      Double translateX = xAxis.getDisplayPosition(singleData.getXValue()) - $pane.getWidth() / 2 + yAxis.getWidth()
-      Double translateY = yAxis.getDisplayPosition(singleData.getYValue()) - $pane.getHeight() / 2 + $captionBox.getHeight() / 2 + 2 
-      $captionBox.setTranslateX((Int)translateX)
-      $captionBox.setTranslateY((Int)translateY)
-      $captionBox.setVisible(true)
+      relocateCaptionBox(singleData)
     }
     background.addEventHandler(MouseEvent.MOUSE_EXITED) { MouseEvent event ->
-      $captionBox.setVisible(false)
+      XYChart.Data<X, Y> singleData = rightmostSingleData()
+      relocateCaptionBox(singleData)
     }
     for (Node node : background.getParent().getChildrenUnmodifiable()) {
       if (node != background) {
@@ -86,6 +80,22 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
       }
     }
     $control.getChart().setCreateSymbols(false)
+  }
+
+  private void relocateCaptionBox(XYChart.Data<X, Y> singleData) {
+    Axis<X> xAxis = $control.getChart().getXAxis()
+    Axis<Y> yAxis = $control.getChart().getYAxis()
+    if (yAxis instanceof ValueAxis) {
+      String text = yAxis.getTickLabelFormatter().toString(singleData.getYValue())
+      $captionLabel.setText(text)
+    } else {
+      String text = singleData.getYValue().toString()
+      $captionLabel.setText(text)
+    }
+    Double translateX = xAxis.getDisplayPosition(singleData.getXValue()) - $pane.getWidth() / 2 + yAxis.getWidth()
+    Double translateY = yAxis.getDisplayPosition(singleData.getYValue()) - $pane.getHeight() / 2 + $captionBox.getHeight() / 2 + 2 
+    $captionBox.setTranslateX((Int)translateX)
+    $captionBox.setTranslateY((Int)translateY)
   }
 
   private X nearestXValue(Double mouseX) {
@@ -115,6 +125,11 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
       }
     }
     return null
+  }
+
+  private XYChart.Data<X, Y> rightmostSingleData() {
+    List<XYChart.Data<X, Y>> data = $control.getChart().getData()[0].getData()
+    return data[data.size() - 1]
   }
 
 }
