@@ -35,6 +35,7 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     setupPane()
     setupCaptionBox()
     setupCaptionLabel()
+    setupAxis()
     setupChart()
   }
 
@@ -54,7 +55,7 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     $captionBox.setMouseTransparent(true)
     $captionBox.setVisible(false)
     Platform.runLater() {
-      XYChart.Data<X, Y> singleData = rightmostSingleData()
+      XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
       relocateCaptionBox(singleData)
       $captionBox.setVisible(true)
     }
@@ -64,14 +65,29 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     $captionLabel.getStyleClass().addAll("chart-caption", "default-color0")
   }
 
+  private void setupAxis() {
+    Axis<X> xAxis = $control.getChart().getXAxis()
+    if (xAxis instanceof ValueAxis) {
+      xAxis.lowerBoundProperty().addListener() { ObservableValue<? extends DoubleClass> observableValue, DoubleClass oldValue, DoubleClass newValue ->
+        XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
+        relocateCaptionBox(singleData)
+      }
+      xAxis.upperBoundProperty().addListener() { ObservableValue<? extends DoubleClass> observableValue, DoubleClass oldValue, DoubleClass newValue ->
+        XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
+        relocateCaptionBox(singleData)
+      }
+    }
+  }
+
   private void setupChart() {
     Node background = $control.getChart().lookup(".chart-plot-background")
     background.addEventHandler(MouseEvent.MOUSE_MOVED) { MouseEvent event ->
-      XYChart.Data<X, Y> singleData = correspondingSingleData(nearestXValue(event.getX()))
+      X xValue = $control.getChart().getXAxis().getValueForDisplay(event.getX())
+      XYChart.Data<X, Y> singleData = correspondingSingleData(nearestXValue(xValue))
       relocateCaptionBox(singleData)
     }
     background.addEventHandler(MouseEvent.MOUSE_EXITED) { MouseEvent event ->
-      XYChart.Data<X, Y> singleData = rightmostSingleData()
+      XYChart.Data<X, Y> singleData = correspondingSingleData(rightmostXValue())
       relocateCaptionBox(singleData)
     }
     for (Node node : background.getParent().getChildrenUnmodifiable()) {
@@ -98,9 +114,7 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     $captionBox.setTranslateY((Int)translateY)
   }
 
-  private X nearestXValue(Double mouseX) {
-    Axis<X> xAxis = $control.getChart().getXAxis()
-    X xValue = xAxis.getValueForDisplay(mouseX)
+  private X nearestXValue(X xValue) {
     if (xValue instanceof Number) {
       X nearestXValue = null
       Double minDistance = DoubleClass.POSITIVE_INFINITY
@@ -118,6 +132,18 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
     }
   }
 
+  private X rightmostXValue() {
+    Axis<X> xAxis = $control.getChart().getXAxis()
+    if (xAxis instanceof ValueAxis) {
+      Double xValue = xAxis.getUpperBound()
+      X nearestXValue = nearestXValue(xValue)
+      return nearestXValue
+    } else {
+      X xValue = $control.getChart().getData()[0].getData()[-1]
+      return xValue
+    }
+  }
+
   private XYChart.Data<X, Y> correspondingSingleData(X xValue) {
     for (XYChart.Data<X, Y> singleData : $control.getChart().getData()[0].getData()) {
       if (singleData.getXValue() == xValue) {
@@ -125,11 +151,6 @@ public class PopupAreaChartSkin<X, Y> extends SkinBase<PopupAreaChart<X, Y>> {
       }
     }
     return null
-  }
-
-  private XYChart.Data<X, Y> rightmostSingleData() {
-    List<XYChart.Data<X, Y>> data = $control.getChart().getData()[0].getData()
-    return data[data.size() - 1]
   }
 
 }
