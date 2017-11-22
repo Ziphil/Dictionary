@@ -52,8 +52,8 @@
           </Insets>
         </GridPane.margin>
         <Button text="検索" onAction="#search" defaultButton="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
       </HBox>
       <ListView fx:id="$resultView" styleClass="dictionary-list" orientation="horizontal" VBox.vgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="3">
