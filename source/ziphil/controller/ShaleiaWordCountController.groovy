@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -87,6 +88,46 @@ public class ShaleiaWordCountController extends Controller<Void> {
     NumberAxis xAxis = (NumberAxis)$wordCountChart.getChart().getXAxis()
     xAxis.setLowerBound(startDate)
     xAxis.setUpperBound(endDate)
+    Platform.runLater() {
+      adjustTickUnit(xAxis, 35)
+    }
+  }
+
+  // axis の大目盛り単位を、最小値と最大値から自動的に計算して設定し直します。
+  // このとき、大目盛りの個数が 20 個より多くはならないように、かつ大目盛りの間に少なくとも minGap の間隔が空くようにします。
+  // 大目盛り単位は、最小でも 1 以上の整数で、1, 2.5, 5 のいずれかに 10 の冪をかけたもの (2.5 だった場合は 2) になります。
+  // このメソッドは axis のサイズを取得して利用するので、axis がシーングラフに含まれていることを実行前に確認してください。
+  private void adjustTickUnit(NumberAxis axis, Double minGap) {
+    Double lowerBound = axis.getLowerBound()
+    Double upperBound = axis.getUpperBound()
+    Double range = upperBound - lowerBound
+    Double axisLength = (axis.getSide().isHorizontal()) ? axis.getWidth() : axis.getHeight()
+    Int tickMarkCount = (Int)Math.max(Math.floor(axisLength / minGap), 2)
+    Double tickUnit = range / tickMarkCount
+    Int count = 30
+    while (count > 20) {
+      Int exponent = (Int)Math.floor(Math.log10(tickUnit))
+      Double mantissa = tickUnit / Math.pow(10, exponent)
+      Double ratio = mantissa
+      if (mantissa > 5) {
+        exponent ++
+        ratio = 1
+      } else if (mantissa > 2.5) {
+        ratio = 5
+      } else {
+        ratio = 2.5
+      }
+      tickUnit = ratio * Math.pow(10, exponent)
+      count = (Int)Math.ceil((upperBound - lowerBound) / tickUnit)
+      if (tickMarkCount == 2) {
+        break
+      }
+      if (count > 20) {
+        tickUnit *= 2
+      }
+    }
+    tickUnit = Math.floor(Math.max(tickUnit, 1))
+    axis.setTickUnit(tickUnit)
   }
 
   private void setupChart() {
