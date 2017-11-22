@@ -113,6 +113,7 @@ public class HelpController extends Controller<Void> {
     SPECIFICATION("単語API", null, null),
     SLIME_SPECIFICATION("OneToMany形式", "slime_specification", SPECIFICATION),
     PERSONAL_SPECIFICATION("PDIC形式", "personal_specification", SPECIFICATION),
+    PLUGIN("固有操作", "plugin", null),
     TOOL("ツール", null, null),
     HAH_COMPRESSION("hah圧縮", "hah_compression", TOOL),
     AKRANTIAIN("akrantiain", "akrantiain", TOOL),
