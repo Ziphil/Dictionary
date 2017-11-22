@@ -35,7 +35,7 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
-      <PopupAreaChart fx:id="$chart" VBox.vgrow="always">
+      <PopupAreaChart fx:id="$wordCountChart" VBox.vgrow="always">
         <AreaChart styleClass="right-legend-chart" legendSide="right" animated="false">
           <xAxis><NumberAxis tickUnit="100" autoRanging="false"/></xAxis>
           <yAxis><NumberAxis forceZeroInRange="false"/></yAxis>

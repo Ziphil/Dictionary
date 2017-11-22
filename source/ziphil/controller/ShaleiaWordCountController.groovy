@@ -27,7 +27,7 @@ public class ShaleiaWordCountController extends Controller<Void> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private VBox $mainPane
-  @FXML private PopupAreaChart<Number, Number> $chart
+  @FXML private PopupAreaChart<Number, Number> $wordCountChart
   @FXML private Spinner<Integer> $startDateControl
   @FXML private Spinner<Integer> $endDateControl
   private List<XYChart.Data<Number, Number>> $data
@@ -82,16 +82,16 @@ public class ShaleiaWordCountController extends Controller<Void> {
     }
     XYChart.Series<Number, Number> series = XYChart.Series.new(nextData)
     series.setName("単語数")
-    $chart.getChart().getData().clear()
-    $chart.getChart().getData().add(series)
-    NumberAxis xAxis = (NumberAxis)$chart.getChart().getXAxis()
+    $wordCountChart.getChart().getData().clear()
+    $wordCountChart.getChart().getData().add(series)
+    NumberAxis xAxis = (NumberAxis)$wordCountChart.getChart().getXAxis()
     xAxis.setLowerBound(startDate)
     xAxis.setUpperBound(endDate)
   }
 
   private void setupChart() {
-    NumberAxis xAxis = (NumberAxis)$chart.getChart().getXAxis()
-    NumberAxis yAxis = (NumberAxis)$chart.getChart().getYAxis()
+    NumberAxis xAxis = (NumberAxis)$wordCountChart.getChart().getXAxis()
+    NumberAxis yAxis = (NumberAxis)$wordCountChart.getChart().getYAxis()
     xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
     yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
   }
