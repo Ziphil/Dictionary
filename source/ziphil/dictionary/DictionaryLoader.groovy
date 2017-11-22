@@ -13,8 +13,8 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
   protected List<W> $words = ArrayList.new()
 
   public DictionaryLoader(D dictionary, String path) {
-    $path = path
     $dictionary = dictionary
+    $path = path
     updateProgress(0, 1)
   }
 

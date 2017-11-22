@@ -54,8 +54,8 @@
           </Insets>
         </GridPane.margin>
         <Button text="生成" onAction="#execute" defaultButton="true">
-          <prefWidth><Double rpx="80"/></prefWidth>
-          <minWidth><Double rpx="80"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
       </HBox>
       <TextField fx:id="$outputControl" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2"/>

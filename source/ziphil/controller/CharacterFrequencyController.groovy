@@ -6,16 +6,20 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.geometry.Side
+import javafx.stage.StageStyle
+import javafx.stage.Modality
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Word
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.PercentageTableCell
 import ziphil.custom.PopupPieChart
 import ziphil.custom.UtilityStage
+import ziphil.module.CharacterFrequencyAnalyzer
 import ziphil.module.CharacterStatus
 import ziphilib.transform.Ziphilify
 
@@ -33,6 +37,7 @@ public class CharacterFrequencyController extends Controller<Void> {
   @FXML private TableView<CharacterStatus> $frequencyView
   @FXML private TableColumn<CharacterStatus, DoubleClass> $frequencyPercentageColumn
   @FXML private TableColumn<CharacterStatus, DoubleClass> $usingWordSizePercentageColumn
+  private CharacterFrequencyAnalyzer $analyzer
 
   public CharacterFrequencyController(UtilityStage<? super Void> stage) {
     super(stage)
@@ -44,7 +49,8 @@ public class CharacterFrequencyController extends Controller<Void> {
     setupFrequencyViewColumns()
   }
 
-  public void prepare(List<CharacterStatus> characterStatuses) {
+  public void prepare(CharacterFrequencyAnalyzer analyzer) {
+    List<CharacterStatus> characterStatuses = analyzer.characterStatuses()
     List<PieChart.Data> data = ArrayList.new()
     Int otherFrequency = 0
     for (Int i = 0 ; i < characterStatuses.size() ; i ++) {
@@ -70,6 +76,25 @@ public class CharacterFrequencyController extends Controller<Void> {
       }
     }
     $frequencyView.getItems().addAll(characterStatuses)
+    $analyzer = analyzer
+  }
+
+  @FXML
+  private void saveCsv() {
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileChooserController controller = FileChooserController.new(nextStage)
+    List<ExtensionFilter> extensionFilters = ArrayList.new()
+    ExtensionFilter csvExtensionFilter = ExtensionFilter.new("CSV", "csv")
+    ExtensionFilter tsvExtensionFilter = ExtensionFilter.new("TSV", "tsv")
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    extensionFilters.addAll(csvExtensionFilter, tsvExtensionFilter)
+    controller.prepare(extensionFilters, csvExtensionFilter, true)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      File file = nextStage.getResult()
+      $analyzer.save(file.getAbsolutePath())
+    }
   }
 
   private void setupFrequencyViewColumns() {

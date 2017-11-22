@@ -12,6 +12,7 @@ public class DictionaryFileCell extends FileCell {
   private static final Image XDC_DICTIONARY_ICON = createIcon("resource/icon/xdc_dictionary.png")
   private static final Image OTM_DICTIONARY_ICON = createIcon("resource/icon/otm_dictionary.png")
   private static final Image CSV_DICTIONARY_ICON = createIcon("resource/icon/csv_dictionary.png")
+  private static final Image DIC_DICTIONARY_ICON = createIcon("resource/icon/dic_dictionary.png")
 
   public DictionaryFileCell() {
     super()
@@ -25,6 +26,8 @@ public class DictionaryFileCell extends FileCell {
       icon = OTM_DICTIONARY_ICON
     } else if (fileName.endsWith(".csv")) {
       icon = CSV_DICTIONARY_ICON
+    } else if (fileName.endsWith(".dic")) {
+      icon = DIC_DICTIONARY_ICON
     }
     return icon
   }

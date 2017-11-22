@@ -43,6 +43,7 @@ import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
+import ziphil.plugin.Plugin
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -56,6 +57,7 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String TITLE = "ZpDIC fetith"
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
+  private static final List<Plugin> PLUGINS = lookupPlugins()
 
   @FXML private MenuBar $menuBar
   @FXML private Menu $createDictionaryMenu
@@ -63,6 +65,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $searchRegisteredParameterMenu
+  @FXML private Menu $pluginMenu
   @FXML private TabPane $tabPane
   private List<MainWordListController> $wordListControllers = ArrayList.new()
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
@@ -139,10 +142,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
+    Dictionary currentDictionary = currentDictionary()
+    File directory = (currentDictionary != null) ? File.new(currentDictionary.getPath()).getParentFile() : null
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
+    controller.prepare(null, directory, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
@@ -325,6 +331,28 @@ public class MainController extends PrimitiveController<Stage> {
           item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
           $searchRegisteredParameterMenu.getItems().add(item)
         }
+      }
+    }
+  }
+
+  private void updatePluginMenu() {
+    $pluginMenu.getItems().clear()
+    Dictionary dictionary = currentDictionary()
+    for (Plugin plugin : PLUGINS) {
+      Plugin cachedPlugin = plugin
+      if (plugin.isSupported(dictionary)) {
+        MenuItem item = MenuItem.new()
+        String name = plugin.getName()
+        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+        KeyCode keyCode = plugin.getKeyCode()
+        KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
+        item.setText(name)
+        item.setGraphic(ImageView.new(icon))
+        item.setAccelerator(accelerator)
+        item.setOnAction() {
+          cachedPlugin.call(dictionary)
+        }
+        $pluginMenu.getItems().add(item)
       }
     }
   }
@@ -677,6 +705,7 @@ public class MainController extends PrimitiveController<Stage> {
       }
       updateMenuItems()
       updateSearchRegisteredParameterMenu()
+      updatePluginMenu()
     }
   }
 
@@ -811,6 +840,15 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupDebug() {
     Boolean debugging = Setting.getInstance().isDebugging()
+  }
+
+  private static List<Plugin> lookupPlugins() {
+    List<Plugin> plugins = ArrayList.new()
+    ServiceLoader<Plugin> loader = ServiceLoader.load(Plugin, Thread.currentThread().getContextClassLoader())
+    for (Plugin plugin : loader) {
+      plugins.add(plugin)
+    }
+    return plugins
   }
 
   private void loadOriginalResource() {

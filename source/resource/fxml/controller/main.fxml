@@ -150,6 +150,7 @@
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
+      <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
         <MenuItem text="hah圧縮" onAction="#executeHahCompression" accelerator="Shortcut+Alt+H">
           <graphic>

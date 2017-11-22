@@ -75,6 +75,10 @@
   -fx-padding: 0px;
 }
 
+.chart-series-area-line {
+  -fx-stroke-width: 3px;
+}
+
 .tooltip {
   -fx-padding: 0.416667em 0.583333em;
   -fx-font-size: 0.9em;
@@ -108,6 +112,33 @@
 .help-indicator .circle {
   -fx-fill: -fx-control-inner-background;
   -fx-stroke: -fx-outer-border;
+}
+
+.root {
+  CHART_COLOR_1: hsb(0, 60%, 80%);
+  CHART_COLOR_2: hsb(30, 60%, 80%);
+  CHART_COLOR_3: hsb(60, 65%, 80%);
+  CHART_COLOR_4: hsb(120, 65%, 80%);
+  CHART_COLOR_5: hsb(180, 70%, 80%);
+  CHART_COLOR_6: hsb(230, 70%, 80%);
+  CHART_COLOR_7: hsb(270, 65%, 80%);
+  CHART_COLOR_8: hsb(320, 60%, 80%);
+  CHART_COLOR_1_TRANS_20: hsba(0, 60%, 80%, 0.2);
+  CHART_COLOR_2_TRANS_20: hsba(30, 60%, 80%, 0.2);
+  CHART_COLOR_3_TRANS_20: hsba(60, 65%, 80%, 0.2);
+  CHART_COLOR_4_TRANS_20: hsba(120, 65%, 80%, 0.2);
+  CHART_COLOR_5_TRANS_20: hsba(180, 70%, 80%, 0.2);
+  CHART_COLOR_6_TRANS_20: hsba(230, 70%, 80%, 0.2);
+  CHART_COLOR_7_TRANS_20: hsba(270, 65%, 80%, 0.2);
+  CHART_COLOR_8_TRANS_20: hsba(320, 60%, 80%, 0.2);
+  CHART_COLOR_1_TRANS_70: hsba(0, 60%, 80%, 0.7);
+  CHART_COLOR_2_TRANS_70: hsba(30, 60%, 80%, 0.7);
+  CHART_COLOR_3_TRANS_70: hsba(60, 65%, 80%, 0.7);
+  CHART_COLOR_4_TRANS_70: hsba(120, 65%, 80%, 0.7);
+  CHART_COLOR_5_TRANS_70: hsba(180, 70%, 80%, 0.7);
+  CHART_COLOR_6_TRANS_70: hsba(230, 70%, 80%, 0.7);
+  CHART_COLOR_7_TRANS_70: hsba(270, 65%, 80%, 0.7);
+  CHART_COLOR_8_TRANS_70: hsba(320, 60%, 80%, 0.7);
 }
 
 Text {

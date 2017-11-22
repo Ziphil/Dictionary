@@ -84,6 +84,11 @@ public class CharacterFrequencyAnalyzer {
     return $characterStatuses
   }
 
+  public void save(String path) {
+    CharacterFrequencySaver saver = CharacterFrequencySaver.new(this, path)
+    saver.run()
+  }
+
   public void setExcludedCharacters(String excludedCharacters) {
     $excludedCharacters = excludedCharacters
   }

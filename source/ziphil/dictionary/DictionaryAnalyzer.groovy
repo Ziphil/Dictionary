@@ -12,7 +12,7 @@ public class DictionaryAnalyzer {
   private Dictionary $dictionary
   private Int $wordNameLength = 0
   private Int $contentLength = 0
-  private CharacterFrequencyAnalyzer $frequencyAnalyzer = CharacterFrequencyAnalyzer.new()
+  private CharacterFrequencyAnalyzer $characterFrequencyAnalyzer = CharacterFrequencyAnalyzer.new()
 
   public DictionaryAnalyzer(Dictionary dictionary) {
     $dictionary = dictionary
@@ -33,7 +33,7 @@ public class DictionaryAnalyzer {
 
   private void calculateCharacterFrequency() {
     for (Word word : $dictionary.getRawWords()) {
-      $frequencyAnalyzer.addWordName(word.getName())
+      $characterFrequencyAnalyzer.addWordName(word.getName())
     }
   }
 
@@ -63,8 +63,8 @@ public class DictionaryAnalyzer {
     return (wordSize > 0) ? (Double)($contentLength / wordSize) : 0
   }
 
-  public List<CharacterStatus> characterStatuses() {
-    return $frequencyAnalyzer.characterStatuses()
+  public CharacterFrequencyAnalyzer getCharacterFrequencyAnalyzer() {
+    return $characterFrequencyAnalyzer
   }
 
 }

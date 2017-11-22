@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import javafx.application.Platform
 import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ObservableValue
-import javafx.collections.ListChangeListener
 import javafx.collections.ListChangeListener.Change
 import javafx.collections.ObservableList
 import javafx.geometry.Point2D
@@ -29,6 +28,7 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
     $control = control
     setupPane()
     setupCaptionLabel()
+    setupChart()
   }
 
   private void setupPane() {
@@ -37,6 +37,12 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
   }
 
   private void setupCaptionLabel() {
+    $captionLabel.setMouseTransparent(true)
+    $captionLabel.setVisible(false)
+    $captionLabel.getStyleClass().add("pie-caption")
+  }
+
+  private void setupChart() {
     ObjectProperty<ObservableList<PieChart.Data>> data = $control.getChart().dataProperty()
     for (PieChart.Data singleData : data.get()) {
       setupSingleData(singleData)
@@ -45,19 +51,20 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       for (PieChart.Data singleData : newValue) {
         setupSingleData(singleData)
       }
-      newValue.addListener() { Change<? extends PieChart.Data> change ->
-        while (change.next()) {
-          if (change.wasAdded()) {
-            for (PieChart.Data singleData : change.getAddedSubList()) {
-              setupSingleData(singleData)
-            }
+      setupData(newValue)
+    }
+  }
+
+  private void setupData(ObservableList<PieChart.Data> data) {
+    data.addListener() { Change<? extends PieChart.Data> change ->
+      while (change.next()) {
+        if (change.wasAdded()) {
+          for (PieChart.Data singleData : change.getAddedSubList()) {
+            setupSingleData(singleData)
           }
         }
       }
     }
-    $captionLabel.setMouseTransparent(true)
-    $captionLabel.setVisible(false)
-    $captionLabel.getStyleClass().add("pie-caption")
   }
 
   private void setupSingleData(PieChart.Data singleData) {
@@ -71,7 +78,6 @@ public class PopupPieChartSkin extends SkinBase<PopupPieChart> {
       String pieValueString = String.format("%.${$control.getPieValuePrecision()}f", singleData.getPieValue())
       String percentageString = String.format("%.${$control.getPercentagePrecision()}f", singleData.getPieValue() * 100 / totalPieValue)
       $captionLabel.setText("${pieValueString}\n(${percentageString}%)")
-      $pane.layout()
       Point2D localPoint = $pane.sceneToLocal(event.getSceneX(), event.getSceneY())
       Double translateX = localPoint.getX() - $pane.getWidth() / 2 + $captionLabel.getWidth() / 2 + 10
       Double translateY = localPoint.getY() - $pane.getHeight() / 2 + $captionLabel.getHeight() / 2 + 15

@@ -4,6 +4,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TableColumn?>
@@ -38,7 +39,7 @@
             </Insets>
           </padding>
           <PopupPieChart fx:id="$frequencyChart">
-            <chart legendSide="right" startAngle="90" animated="false"/>
+            <PieChart legendSide="right" startAngle="90" animated="false"/>
           </PopupPieChart>
         </VBox>
       </Tab>
@@ -91,15 +92,21 @@
   </center>
   <bottom>
     <AnchorPane>
-      <HBox spacing="5">
+      <HBox>
         <spacing><Double rpx="5"/></spacing>
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
         <Button text="OK" onAction="#commit" defaultButton="true">
-          <prefWidth><Double rpx="80"/></prefWidth>
-          <minWidth><Double rpx="80"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
       </HBox>
+      <Button text="CSV出力" onAction="#saveCsv">
+        <prefWidth><Double frpx="70"/></prefWidth>
+        <minWidth><Double frpx="70"/></minWidth>
+        <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
+        <AnchorPane.leftAnchor><Double rpx="10"/></AnchorPane.leftAnchor>
+      </Button>
     </AnchorPane>
   </bottom>
 </BorderPane>

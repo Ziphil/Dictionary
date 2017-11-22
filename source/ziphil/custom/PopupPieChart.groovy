@@ -1,24 +1,30 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import javafx.beans.DefaultProperty
 import javafx.beans.property.IntegerProperty
-import javafx.beans.property.ReadOnlyObjectProperty
-import javafx.beans.property.ReadOnlyObjectWrapper
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.chart.PieChart
 import javafx.scene.control.Control
 import javafx.scene.control.Skin
 import ziphilib.transform.Ziphilify
 
 
+@DefaultProperty("chart")
 @CompileStatic @Ziphilify
 public class PopupPieChart extends Control {
 
-  private ReadOnlyObjectWrapper<PieChart> $chart = ReadOnlyObjectWrapper.new(PieChart.new())
+  private ObjectProperty<PieChart> $chart = SimpleObjectProperty.new(null)
   private IntegerProperty $pieValuePrecision = SimpleIntegerProperty.new(0)
   private IntegerProperty $percentagePrecision = SimpleIntegerProperty.new(2)
 
   public PopupPieChart() {
+  }
+
+  public PopupPieChart(PieChart chart) {
+    $chart.set(chart)
   }
 
   protected Skin<PopupPieChart> createDefaultSkin() {
@@ -29,8 +35,12 @@ public class PopupPieChart extends Control {
     return $chart.get()
   }
 
-  public ReadOnlyObjectProperty<PieChart> chartProperty() {
-    return $chart.getReadOnlyProperty()
+  public void setChart(PieChart chart) {
+    $chart.set(chart)
+  }
+
+  public ObjectProperty<PieChart> chartProperty() {
+    return $chart
   }
 
   public Int getPieValuePrecision() {
