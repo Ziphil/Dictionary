@@ -142,10 +142,13 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
+    Dictionary currentDictionary = currentDictionary()
+    File directory = (currentDictionary != null) ? File.new(currentDictionary.getPath()).getParentFile() : null
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
+    controller.prepare(null, directory, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
