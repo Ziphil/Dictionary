@@ -6,12 +6,10 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.fxml.FXML
-import javafx.geometry.Side
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
-import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.util.converter.NumberStringConverter
 import ziphil.custom.Measurement
@@ -29,9 +27,9 @@ public class ShaleiaWordCountController extends Controller<Void> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(480)
 
   @FXML private VBox $mainPane
+  @FXML private PopupAreaChart<Number, Number> $chart
   @FXML private Spinner<Integer> $startDateControl
   @FXML private Spinner<Integer> $endDateControl
-  private PopupAreaChart<Number, Number> $chart
   private List<XYChart.Data<Number, Number>> $data
 
   public ShaleiaWordCountController(UtilityStage<? super Void> stage) {
@@ -39,26 +37,14 @@ public class ShaleiaWordCountController extends Controller<Void> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, true)
   }
 
-  public void prepare(List<XYChart.Data<Number, Number>> data) {
-    $data = data
-    prepareMainPane()
-    prepareDateControls()
+  @FXML
+  private void initialize() {
+    setupChart()
   }
 
-  private void prepareMainPane() {
-    NumberAxis xAxis = NumberAxis.new()
-    NumberAxis yAxis = NumberAxis.new()
-    xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
-    xAxis.setTickUnit(100)
-    xAxis.setAutoRanging(false)
-    yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
-    yAxis.setForceZeroInRange(false)
-    $chart = PopupAreaChart.new(xAxis, yAxis)
-    $chart.getChart().setLegendSide(Side.RIGHT)
-    $chart.getChart().setAnimated(false)
-    $chart.getChart().getStyleClass().add("right-legend-chart")
-    $mainPane.getChildren().add(0, $chart)
-    $mainPane.setVgrow($chart, Priority.ALWAYS)
+  public void prepare(List<XYChart.Data<Number, Number>> data) {
+    $data = data
+    prepareDateControls()
   }
 
   private void prepareDateControls() {
@@ -101,6 +87,13 @@ public class ShaleiaWordCountController extends Controller<Void> {
     NumberAxis xAxis = (NumberAxis)$chart.getChart().getXAxis()
     xAxis.setLowerBound(startDate)
     xAxis.setUpperBound(endDate)
+  }
+
+  private void setupChart() {
+    NumberAxis xAxis = (NumberAxis)$chart.getChart().getXAxis()
+    NumberAxis yAxis = (NumberAxis)$chart.getChart().getYAxis()
+    xAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
+    yAxis.setTickLabelFormatter(NumberStringConverter.new("0"))
   }
 
 }

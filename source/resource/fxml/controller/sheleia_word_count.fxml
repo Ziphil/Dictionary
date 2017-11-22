@@ -4,6 +4,8 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
@@ -12,6 +14,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.PopupAreaChart?>
 <?import ziphil.module.Setting?>
 
 
@@ -32,6 +35,12 @@
           <left><Double rpx="10"/></left>
         </Insets>
       </padding>
+      <PopupAreaChart fx:id="$chart" VBox.vgrow="always">
+        <AreaChart styleClass="right-legend-chart" legendSide="right" animated="false">
+          <xAxis><NumberAxis tickUnit="100" autoRanging="false"/></xAxis>
+          <yAxis><NumberAxis forceZeroInRange="false"/></yAxis>
+        </AreaChart>
+      </PopupAreaChart>
       <HBox alignment="baselineCenter">
         <Spinner fx:id="$startDateControl" editable="true">
           <prefWidth><Double rpx="80"/></prefWidth>
