@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 25, 0, 2125)
+  public static final Version VERSION = Version.new(1, 26, 0, 2131)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.26. 0 | 文字頻度解析の結果を CSV や TSV に出力する機能を追加。
+//          | OneToMany 形式の ID を連番に振り直す機能を追加。
 //  1.25. 0 | PDIC-DIC 形式を読み込む機能を追加。
 //          | OneToMany 形式の単語データをコピーペーストすると不正な関連語データができ得た不具合を修正。
 //          | OneToMany 形式で関連語の相互参照をしようとするとエラーになる不具合を修正。
