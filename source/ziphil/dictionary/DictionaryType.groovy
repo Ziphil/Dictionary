@@ -14,7 +14,7 @@ public enum DictionaryType {
 
   SLIME("OneToMany-JSON形式", "json", "otm_dictionary.png", true, true),
   PERSONAL("PDIC-CSV形式", "csv", "csv_dictionary.png", true, true),
-  BINARY("PDIC-DIC形式", "dic", "csv_dictionary.png", false, false),
+  BINARY("PDIC-DIC形式", "dic", "dic_dictionary.png", false, false),
   SHALEIA("シャレイア語辞典形式", "xdc", "xdc_dictionary.png", true, false)
 
   private static final String ICON_DIRECTORY = "resource/icon/"
