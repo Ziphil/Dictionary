@@ -45,6 +45,8 @@ public class SlimeWord extends WordBase {
 
   private void updateContent() {
     StringBuilder content = StringBuilder.new()
+    content.append($name)
+    content.append("\n")
     for (SlimeEquivalent equivalent : $rawEquivalents) {
       for (String equivalentName : equivalent.getNames()) {
         content.append(equivalentName)
