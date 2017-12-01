@@ -24,7 +24,7 @@ public class PersonalWord extends WordBase {
   }
 
   private void updateContent() {
-    $content = name + "\n" + translation + "\n" + usage
+    $content = $name + "\n" + $translation + "\n" + $usage
   }
 
   public String createPronunciation() {
