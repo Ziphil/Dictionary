@@ -34,8 +34,8 @@
           </graphic>
         </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
-        <Menu fx:id="$registerCurrentDictionaryMenu" styleClass="option,all,dammy" text="表示している辞書を登録"/>
-        <MenuItem styleClass="option,missing,dammy" text="表示している辞書を登録" disable="true"/>
+        <Menu fx:id="$registerCurrentDictionaryMenu" styleClass="option,dammy,nonnull" text="表示している辞書を登録"/>
+        <MenuItem styleClass="option,dammy,null" text="表示している辞書を登録" disable="true"/>
         <SeparatorMenuItem/>
         <MenuItem text="前の辞書を表示" onAction="#selectPreviousDictionary" accelerator="Shortcut+COMMA">
           <graphic>
@@ -48,16 +48,16 @@
           </graphic>
         </MenuItem>        
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
+        <MenuItem styleClass="option,nonnull" text="上書き保存" onAction="#saveDictionary" accelerator="Shortcut+S">
           <graphic>
             <ImageView><Image url="@../../icon/save.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
-        <Menu fx:id="$convertDictionaryMenu" styleClass="option,all,dammy" text="別形式に変換"/>
-        <MenuItem styleClass="option,missing,dammy" text="別形式に変換" disable="true"/>
+        <MenuItem styleClass="option,nonnull" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
+        <Menu fx:id="$convertDictionaryMenu" styleClass="option,dammy,nonnull" text="別形式に変換"/>
+        <MenuItem styleClass="option,dammy,null" text="別形式に変換" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="印刷" onAction="#printDictionary"/>
+        <MenuItem styleClass="option,nonnull" text="印刷" onAction="#printDictionary"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">
           <graphic>
@@ -66,7 +66,7 @@
         </MenuItem>
       </Menu>
       <Menu text="検索">
-        <Menu styleClass="option,all,dammy" text="検索範囲の変更">
+        <Menu styleClass="option,dammy,nonnull" text="検索範囲の変更">
           <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W">
             <graphic>
               <ImageView><Image url="@../../icon/empty.png"/></ImageView>
@@ -75,80 +75,80 @@
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
-        <MenuItem styleClass="option,missing,dammy" text="検索方式の変更"/>
-        <MenuItem styleClass="option,all" text="検索方式の変更" onAction="#toggleSearchType" accelerator="Shortcut+T"/>
+        <MenuItem styleClass="option,dammy,null" text="検索方式の変更"/>
+        <MenuItem styleClass="option,nonnull" text="検索方式の変更" onAction="#toggleSearchType" accelerator="Shortcut+T"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
+        <MenuItem styleClass="option,nonnull" text="検索結果のシャッフル" onAction="#shuffleWords" accelerator="Shortcut+R">
           <graphic>
             <ImageView><Image url="@../../icon/shuffle.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
+        <MenuItem styleClass="option,nonnull" text="1つ前の検索結果" onAction="#searchPrevious" accelerator="Shortcut+Z">
           <graphic>
             <ImageView><Image url="@../../icon/previous.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="1つ後の検索結果" onAction="#searchNext" accelerator="Shortcut+Y">
+        <MenuItem styleClass="option,nonnull" text="1つ後の検索結果" onAction="#searchNext" accelerator="Shortcut+Y">
           <graphic>
             <ImageView><Image url="@../../icon/next.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,shaleia,slime" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
+        <MenuItem styleClass="option,can-search-detail" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>
             <ImageView><Image url="@../../icon/detail_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
+        <MenuItem styleClass="option,nonnull" text="スクリプト検索" onAction="#searchScript" accelerator="Shortcut+Shift+U">
           <graphic>
             <ImageView><Image url="@../../icon/script_search.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <Menu fx:id="$searchRegisteredParameterMenu" styleClass="option,slime,dammy" text="登録条件で検索"/>
-        <MenuItem styleClass="option,shaleia,personal,missing,dammy" text="登録条件で検索" disable="true"/>
+        <Menu fx:id="$searchRegisteredParameterMenu" styleClass="option,dammy,can-register-search-parameter" text="登録条件で検索"/>
+        <MenuItem styleClass="option,dammy,cannot-register-search-parameter" text="登録条件で検索" disable="true"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="文一括検索" onAction="#searchSentence" accelerator="Shortcut+B"/>
+        <MenuItem styleClass="option,nonnull" text="文一括検索" onAction="#searchSentence" accelerator="Shortcut+B"/>
       </Menu>
       <Menu text="編集">
-        <MenuItem styleClass="option,all" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
+        <MenuItem styleClass="option,nonnull" text="単語の新規作成" onAction="#addWord" accelerator="Shortcut+N">
           <graphic>
             <ImageView><Image url="@../../icon/new_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語から新規作成" onAction="#addInheritedWords" accelerator="Shortcut+I">
+        <MenuItem styleClass="option,nonnull" text="選択単語から新規作成" onAction="#addInheritedWords" accelerator="Shortcut+I">
           <graphic>
             <ImageView><Image url="@../../icon/inherited_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の編集" onAction="#modifyWords" accelerator="Shortcut+M">
+        <MenuItem styleClass="option,nonnull" text="選択単語の編集" onAction="#modifyWords" accelerator="Shortcut+M">
           <graphic>
             <ImageView><Image url="@../../icon/modify_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="選択単語の削除" onAction="#removeWords" accelerator="Shortcut+D">
+        <MenuItem styleClass="option,nonnull" text="選択単語の削除" onAction="#removeWords" accelerator="Shortcut+D">
           <graphic>
             <ImageView><Image url="@../../icon/remove_word.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
+        <MenuItem styleClass="option,nonnull" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="単語の切取り" onAction="#cutWords" accelerator="Shortcut+X">
+        <MenuItem styleClass="option,nonnull" text="単語の切取り" onAction="#cutWords" accelerator="Shortcut+X">
           <graphic>
             <ImageView><Image url="@../../icon/cut.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="単語のコピー" onAction="#copyWords" accelerator="Shortcut+C">
+        <MenuItem styleClass="option,nonnull" text="単語のコピー" onAction="#copyWords" accelerator="Shortcut+C">
           <graphic>
             <ImageView><Image url="@../../icon/copy.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,all" text="単語の貼付け" onAction="#pasteWords" accelerator="Shortcut+V">
+        <MenuItem styleClass="option,nonnull" text="単語の貼付け" onAction="#pasteWords" accelerator="Shortcut+V">
           <graphic>
             <ImageView><Image url="@../../icon/paste.png"/></ImageView>
           </graphic>
         </MenuItem>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,all" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
+        <MenuItem styleClass="option,nonnull" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
@@ -161,7 +161,7 @@
         <MenuItem text="Zatlin" onAction="#executeZatlin" accelerator="Shortcut+Alt+Z"/>
         <MenuItem text="文字頻度解析" onAction="#executeCharacterAnalysis" accelerator="Shortcut+Alt+K"/>
         <SeparatorMenuItem/>
-        <MenuItem styleClass="option,shaleia,slime" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
+        <MenuItem styleClass="option,has-individual-setting" text="辞書の個別設定" onAction="#editIndividualSetting" accelerator="Shortcut+P"/>
         <MenuItem text="環境設定" onAction="#editSetting" accelerator="Shortcut+Shift+P">
           <graphic>
             <ImageView><Image url="@../../icon/setting.png"/></ImageView>

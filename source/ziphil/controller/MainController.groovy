@@ -280,13 +280,12 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateMenuItems() {
-    Dictionary dictionary = currentDictionary()
-    String plainName = Dictionaries.plainNameOf(dictionary) ?: "missing"
     for (Menu menu : $menuBar.getMenus()) {
       for (MenuItem item : menu.getItems()) {
         List<String> styleClass = item.getStyleClass()
         if (styleClass.contains("option")) {
-          if (styleClass.contains(plainName) || (dictionary != null && styleClass.contains("all"))) {
+          Boolean matched = checkValidStyleClass(styleClass)
+          if (matched) {
             item.setDisable(false)
             if (styleClass.contains("dammy")) {
               if (!styleClass.contains("menu")) {
@@ -304,6 +303,32 @@ public class MainController extends PrimitiveController<Stage> {
       }
     }
     $menuBar.layout()
+  }
+
+  private Boolean checkValidStyleClass(List<String> styleClass) {
+    Boolean matched = false
+    Dictionary dictionary = currentDictionary()
+    Boolean isNonnull = dictionary != null
+    if (styleClass.contains("nonnull") && isNonnull) {
+      matched = true
+    } else if (styleClass.contains("null") && !isNonnull) {
+      matched = true
+    }
+    Boolean canSearchDetail = dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()
+    if (styleClass.contains("can-search-detail") && canSearchDetail) {
+      matched = true
+    }
+    Boolean canRegisterSearchParameter = dictionary != null && dictionary instanceof SlimeDictionary
+    if (styleClass.contains("can-register-search-parameter") && canRegisterSearchParameter) {
+      matched = true
+    } else if (styleClass.contains("cannot-register-search-parameter") && !canRegisterSearchParameter) {
+      matched = true
+    }
+    Boolean hasIndividualSetting = dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()
+    if (styleClass.contains("has-individual-setting") && hasIndividualSetting) {
+      matched = true
+    }
+    return matched
   }
 
   private void updateSearchRegisteredParameterMenu() {
@@ -386,15 +411,9 @@ public class MainController extends PrimitiveController<Stage> {
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Controller controller = dictionary.getControllerSupplier().getIndividualSettingController(nextStage, individualSetting)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      if (dictionary instanceof ShaleiaDictionary) {
-        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
-        controller.prepare(dictionary)
-      } else if (dictionary instanceof SlimeDictionary && individualSetting instanceof SlimeIndividualSetting) {
-        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-        controller.prepare(dictionary, individualSetting)
-      }
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         updateSearchRegisteredParameterMenu()
