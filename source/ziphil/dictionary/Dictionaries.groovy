@@ -15,45 +15,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify 
 public class Dictionaries {
 
-  public static Dictionary loadEmptyDictionary(DictionaryType type, File file) {
-    if (file != null) {
-      Dictionary dictionary = null
-      String fileName = file.getName()
-      String filePath = file.getPath()
-      if (type == DictionaryType.SHALEIA) {
-        dictionary = ShaleiaDictionary.new(fileName, null)
-        dictionary.setPath(filePath)
-      } else if (type == DictionaryType.PERSONAL) {
-        dictionary = PersonalDictionary.new(fileName, null)
-        dictionary.setPath(filePath)
-      } else if (type == DictionaryType.SLIME) {
-        dictionary = SlimeDictionary.new(fileName, null)
-        dictionary.setPath(filePath)
-      }
-      return dictionary
-    } else {
-      return null
-    }
-  }
-
-  public static Dictionary convertDictionary(DictionaryType type, Dictionary oldDictionary, File file) {
-    if (file != null) {
-      Dictionary dictionary = null
-      String fileName = file.getName()
-      String filePath = file.getPath()
-      if (type == DictionaryType.SHALEIA) {
-        dictionary = ShaleiaDictionary.new(fileName, filePath, oldDictionary)
-      } else if (type == DictionaryType.PERSONAL) {
-        dictionary = PersonalDictionary.new(fileName, filePath, oldDictionary)
-      } else if (type == DictionaryType.SLIME) {
-        dictionary = SlimeDictionary.new(fileName, filePath, oldDictionary)
-      }
-      return dictionary
-    } else {
-      return null
-    }
-  }
-
   public static IndividualSetting createIndividualSetting(Dictionary dictionary) {
     if (dictionary != null) {
       if (dictionary instanceof SlimeDictionary) {

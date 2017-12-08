@@ -1,6 +1,8 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.scene.image.Image
+import ziphil.custom.ExtensionFilter
 import ziphilib.transform.Ziphilify
 
 
@@ -15,6 +17,19 @@ public abstract class DictionaryFactory {
 
   public abstract Dictionary convertDictionary(Dictionary oldDictionary, File file)
 
+  public abstract Image createIcon()
+
+  public ExtensionFilter createExtensionFilter() {
+    ExtensionFilter extensionFilter = ExtensionFilter.new(getName(), getExtension())
+    return extensionFilter
+  }
+
+  public abstract Boolean isConvertableFrom(Dictionary dictionary)
+
+  public abstract Boolean isCreatable()
+
+  public abstract String getName()
+
   public abstract String getExtension()
 
   public static Dictionary loadProperDictionary(File file) {
@@ -25,6 +40,7 @@ public abstract class DictionaryFactory {
         for (DictionaryFactory factory : FACTORIES) {
           if (filePath.endsWith("." + factory.getExtension())) {
             dictionary = factory.loadDictionary(file)
+            dictionary.setDictionaryFactory(factory)
             break
           }
         }
@@ -32,6 +48,26 @@ public abstract class DictionaryFactory {
       } else {
         return null
       }
+    } else {
+      return null
+    }
+  }
+
+  public static Dictionary loadProperEmptyDictionary(DictionaryFactory factory, File file) {
+    if (file != null) {
+      Dictionary dictionary = factory.loadEmptyDictionary(file)
+      dictionary.setDictionaryFactory(factory)
+      return dictionary
+    } else {
+      return null
+    }
+  }
+
+  public static Dictionary convertProperDictionary(DictionaryFactory factory, Dictionary oldDictionary, File file) {
+    if (file != null) {
+      Dictionary dictionary = factory.convertDictionary(oldDictionary, file)
+      dictionary.setDictionaryFactory(factory)
+      return dictionary
     } else {
       return null
     }

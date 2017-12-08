@@ -86,7 +86,6 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
-    setupConvertDictionaryMenu()
     setupDebug()
   }
 
@@ -189,16 +188,16 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void createDictionary(DictionaryType type) {
+  private void createDictionary(DictionaryFactory factory) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(type, null, true)
+    controller.prepare(factory, null, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = Dictionaries.loadEmptyDictionary(type, file)
+      Dictionary dictionary = DictionaryFactory.loadProperEmptyDictionary(factory, file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         addDictionaryTab(dictionary)
@@ -228,7 +227,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(DictionaryType.valueOfDictionary(dictionary), File.new(dictionary.getPath()).getParentFile(), true)
+      controller.prepare(dictionary.getDictionaryFactory(), File.new(dictionary.getPath()).getParentFile(), true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -247,18 +246,18 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
-  private void convertDictionary(DictionaryType type) {
+  private void convertDictionary(DictionaryFactory factory) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(type, File.new(dictionary.getPath()).getParentFile(), true)
+      controller.prepare(factory, File.new(dictionary.getPath()).getParentFile(), true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary newDictionary = Dictionaries.convertDictionary(type, dictionary, file)
+        Dictionary newDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
         if (newDictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
           addDictionaryTab(newDictionary)
@@ -333,6 +332,23 @@ public class MainController extends PrimitiveController<Stage> {
           $searchRegisteredParameterMenu.getItems().add(item)
         }
       }
+    }
+  }
+
+  private void updateConvertDictionaryMenu() {
+    $convertDictionaryMenu.getItems().clear()
+    Dictionary dictionary = currentDictionary()
+    for (DictionaryFactory factory : DictionaryFactory.FACTORIES) {
+      DictionaryFactory cachedFactory = factory
+      MenuItem item = MenuItem.new(factory.getName())
+      item.setGraphic(ImageView.new(factory.createIcon()))
+      item.setOnAction() {
+        convertDictionary(cachedFactory)
+      }
+      if (!factory.isConvertableFrom(dictionary)) {
+        item.setDisable(true)
+      }
+      $convertDictionaryMenu.getItems().add(item)
     }
   }
 
@@ -706,20 +722,21 @@ public class MainController extends PrimitiveController<Stage> {
       }
       updateMenuItems()
       updateSearchRegisteredParameterMenu()
+      updateConvertDictionaryMenu()
       updatePluginMenu()
     }
   }
 
   private void setupCreateDictionaryMenu() {
     $createDictionaryMenu.getItems().clear()
-    for (DictionaryType type : DictionaryType.values()) {
-      DictionaryType cachedType = type
-      MenuItem item = MenuItem.new(type.getName())
-      item.setGraphic(ImageView.new(type.createIcon()))
+    for (DictionaryFactory factory : DictionaryFactory.FACTORIES) {
+      DictionaryFactory cachedFactory = factory
+      MenuItem item = MenuItem.new(factory.getName())
+      item.setGraphic(ImageView.new(factory.createIcon()))
       item.setOnAction() {
-        createDictionary(cachedType)
+        createDictionary(cachedFactory)
       }
-      if (!type.isCreatable()) {
+      if (!factory.isCreatable()) {
         item.setDisable(true)
       }
       $createDictionaryMenu.getItems().add(item)
@@ -771,22 +788,6 @@ public class MainController extends PrimitiveController<Stage> {
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       $registerCurrentDictionaryMenu.getItems().add(item)
-    }
-  }
-
-  private void setupConvertDictionaryMenu() {
-    $convertDictionaryMenu.getItems().clear()
-    for (DictionaryType type : DictionaryType.values()) {
-      DictionaryType cachedType = type
-      MenuItem item = MenuItem.new(type.getName())
-      item.setGraphic(ImageView.new(type.createIcon()))
-      item.setOnAction() {
-        convertDictionary(cachedType)
-      }
-      if (!type.isConvertable()) {
-        item.setDisable(true)
-      }
-      $convertDictionaryMenu.getItems().add(item)
     }
   }
 

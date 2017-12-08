@@ -61,6 +61,10 @@ public interface Dictionary<W extends Word> {
 
   public Task<?> getSaver()
 
+  public DictionaryFactory getDictionaryFactory()
+
+  public void setDictionaryFactory(DictionaryFactory dictionaryFactory)
+
   public Boolean isChanged()
 
 }

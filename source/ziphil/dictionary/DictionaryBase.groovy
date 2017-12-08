@@ -35,6 +35,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
+  private DictionaryFactory $dictionaryFactory
   protected Boolean $changed = false
   protected Boolean $firstEmpty = false
 
@@ -264,6 +265,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public Task<?> getSaver() {
     return $saver
+  }
+
+  public DictionaryFactory getDictionaryFactory() {
+    return $dictionaryFactory
+  }
+
+  public void setDictionaryFactory(DictionaryFactory dictionaryFactory) {
+    $dictionaryFactory = dictionaryFactory
   }
 
   public Boolean isChanged() {
