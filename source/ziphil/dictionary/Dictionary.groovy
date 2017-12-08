@@ -55,6 +55,8 @@ public interface Dictionary<W extends Word> {
 
   public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 
 
+  public ControllerSupplier getControllerSupplier()
+
   public Task<?> getLoader()
 
   public Task<?> getSaver()
