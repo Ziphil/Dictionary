@@ -15,18 +15,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify 
 public class Dictionaries {
 
-  public static IndividualSetting createIndividualSetting(Dictionary dictionary) {
-    if (dictionary != null) {
-      if (dictionary instanceof SlimeDictionary) {
-        return SlimeIndividualSetting.create(dictionary)
-      } else {
-        return null
-      }
-    } else {
-      return null
-    }
-  }
-
   public static String plainNameOf(Dictionary dictionary) {
     if (dictionary != null) {
       String plainName = null

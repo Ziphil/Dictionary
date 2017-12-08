@@ -127,7 +127,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void update(Dictionary dictionary) {
     $dictionary = dictionary
-    $individualSetting = Dictionaries.createIndividualSetting(dictionary)
+    $individualSetting = dictionary.createIndividualSetting()
     $temporarySetting = TemporarySetting.new()
     updateLoader()
     updateOnLinkClicked()

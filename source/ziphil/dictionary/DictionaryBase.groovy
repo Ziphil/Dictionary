@@ -223,6 +223,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract DictionarySaver createSaver()
 
+  public IndividualSetting createIndividualSetting() {
+    return null
+  }
+
   public String getName() {
     return $name
   }

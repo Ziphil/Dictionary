@@ -18,6 +18,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerSupplier
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
@@ -540,6 +541,11 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
     saver.setMapper($$mapper)
     return saver
+  }
+
+  public IndividualSetting createIndividualSetting() {
+    SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
+    return individualSetting
   }
 
   private static ObjectMapper createObjectMapper() {

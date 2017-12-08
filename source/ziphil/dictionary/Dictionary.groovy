@@ -37,6 +37,8 @@ public interface Dictionary<W extends Word> {
 
   public Int totalWordSize()
 
+  public IndividualSetting createIndividualSetting()
+
   public String getName() 
 
   public void setName(String name)
