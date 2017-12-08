@@ -49,9 +49,7 @@ import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
-import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting

@@ -32,10 +32,8 @@ import ziphil.custom.ClosableTab
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
-import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
