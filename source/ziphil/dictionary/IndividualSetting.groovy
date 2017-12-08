@@ -9,4 +9,8 @@ public abstract class IndividualSetting {
 
   public abstract void save()
 
+  public abstract List<SearchParameter> getRegisteredParameters()
+
+  public abstract List<String> getRegisteredParameterNames()
+
 }

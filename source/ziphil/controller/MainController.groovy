@@ -35,6 +35,7 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.IndividualSetting
+import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -306,25 +307,34 @@ public class MainController extends PrimitiveController<Stage> {
   private Boolean checkValidStyleClass(List<String> styleClass) {
     Boolean matched = false
     Dictionary dictionary = currentDictionary()
-    Boolean isNonnull = dictionary != null
-    if (styleClass.contains("nonnull") && isNonnull) {
-      matched = true
-    } else if (styleClass.contains("null") && !isNonnull) {
-      matched = true
+    IndividualSetting individualSetting = currentIndividualSetting()
+    if (dictionary != null) {
+      if (styleClass.contains("nonnull")) {
+        matched = true
+      }
+    } else {
+      if (styleClass.contains("null")) {
+        matched = true
+      }
     }
-    Boolean canSearchDetail = dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()
-    if (styleClass.contains("can-search-detail") && canSearchDetail) {
-      matched = true
+    if (dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()) {
+      if (styleClass.contains("can-search-detail")) {
+        matched = true
+      }
     }
-    Boolean canRegisterSearchParameter = dictionary != null && dictionary instanceof SlimeDictionary
-    if (styleClass.contains("can-register-search-parameter") && canRegisterSearchParameter) {
-      matched = true
-    } else if (styleClass.contains("cannot-register-search-parameter") && !canRegisterSearchParameter) {
-      matched = true
+    if (individualSetting != null && individualSetting.getRegisteredParameters() != null) {
+      if (styleClass.contains("can-register-search-parameter")) {
+        matched = true
+      }
+    } else {
+      if (styleClass.contains("cannot-register-search-parameter")) {
+        matched = true
+      }
     }
-    Boolean hasIndividualSetting = dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()
-    if (styleClass.contains("has-individual-setting") && hasIndividualSetting) {
-      matched = true
+    if (dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()) {
+      if (styleClass.contains("has-individual-setting")) {
+        matched = true
+      }
     }
     return matched
   }
@@ -333,11 +343,11 @@ public class MainController extends PrimitiveController<Stage> {
     $searchRegisteredParameterMenu.getItems().clear()
     IndividualSetting individualSetting = currentIndividualSetting()
     if (individualSetting != null) {
-      if (individualSetting instanceof SlimeIndividualSetting) {
-        List<SlimeSearchParameter> parameters = individualSetting.getRegisteredParameters()
-        List<String> parameterNames = individualSetting.getRegisteredParameterNames()
+      List<SearchParameter> parameters = individualSetting.getRegisteredParameters()
+      List<String> parameterNames = individualSetting.getRegisteredParameterNames()
+      if (parameters != null) {
         for (Int i = 0 ; i < 10 ; i ++) {
-          SlimeSearchParameter parameter = parameters[i]
+          SearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
           if (parameter != null) {
