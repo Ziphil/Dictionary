@@ -76,10 +76,7 @@ public abstract class DictionaryFactory {
   private static List<DictionaryFactory> lookupFactories() {
     List<DictionaryFactory> factories = ArrayList.new()
     ServiceLoader<DictionaryFactory> loader = ServiceLoader.load(DictionaryFactory, Thread.currentThread().getContextClassLoader())
-    println("**")
     for (DictionaryFactory factory : loader) {
-      print("found: ")
-      println(factory.getClass().getName())
       factories.add(factory)
     }
     return factories
