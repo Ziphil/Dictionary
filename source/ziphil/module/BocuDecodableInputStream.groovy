@@ -187,7 +187,7 @@ public class BocuDecodableInputStream extends BufferedInputStream {
   // 与えられたバイト列を BOCU-1 でエンコードされた文字列だと解釈して、デコードした結果を返します。
   // バイト列に 0x0 が含まれていた場合は、そこまでのバイト列をデコードします。
   public static String decode(Byte[] buffer) {
-    BocuDecodableInputStream stream =  BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
+    BocuDecodableInputStream stream = BocuDecodableInputStream.new(ByteArrayInputStream.new(buffer))
     try {
       String string = stream.decodeStringUntilNull()
       return string
