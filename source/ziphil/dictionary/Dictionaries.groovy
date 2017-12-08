@@ -27,22 +27,6 @@ public class Dictionaries {
     }
   }
 
-  public static Boolean checkWordType(Dictionary dictionary, Word word) {
-    if (dictionary != null && word != null) {
-      if (dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
-        return true
-      } else if (dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
-        return true
-      } else if (dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
-        return true
-      } else {
-        return false
-      }
-    } else {
-      return false
-    }
-  }
-
   public static String plainNameOf(Dictionary dictionary) {
     if (dictionary != null) {
       String plainName = null

@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.UnsupportedFlavorException
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
 import java.text.MessageFormat
@@ -456,11 +458,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void pasteWords() {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      Class<?> wordClass = calculateWordClass()
       try {
         List<Word> candidates = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
         List<Word> words = ArrayList.new()
         for (Word candidate : candidates) {
-          if (Dictionaries.checkWordType($dictionary, candidate)) {
+          if (wordClass != null && wordClass.isInstance(candidate)) {
             Word word = $dictionary.copyWord(candidate)
             words.add(word)
           }
@@ -469,6 +472,20 @@ public class MainWordListController extends PrimitiveController<Stage> {
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
+  }
+
+  public Class<?> calculateWordClass() {
+    Class<?> wordClass = null
+    for (Type type : $dictionary.getClass().getGenericInterfaces()) {
+      if (type instanceof ParameterizedType) {
+        Type rawType = ((ParameterizedType)type).getRawType()
+        Type typeArgument = ((ParameterizedType)type).getActualTypeArguments()[0]
+        if (rawType == EditableDictionary) {
+          wordClass = (Class)typeArgument
+        }
+      }
+    }
+    return wordClass
   }
 
   private void cancelLoadDictionary() {
