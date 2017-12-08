@@ -36,11 +36,6 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
-import ziphil.dictionary.personal.PersonalDictionary
-import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.dictionary.slime.SlimeIndividualSetting
-import ziphil.dictionary.slime.SlimeSearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
 import ziphil.plugin.Plugin
