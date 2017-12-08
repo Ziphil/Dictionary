@@ -16,6 +16,7 @@ import ziphil.custom.SimpleTask
 import ziphil.custom.ShufflableList
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.Ziphilify
 
 
@@ -241,6 +242,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public void setPath(String path) {
     $path = path
+  }
+
+  public String getAlphabetOrder() {
+    return null
+  }
+
+  public Akrantiain getAkrantiain() {
+    return null
   }
 
   public ObservableList<Element> getWholeWords() {

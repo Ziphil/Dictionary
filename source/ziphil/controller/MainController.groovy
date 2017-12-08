@@ -451,13 +451,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
-    if (dictionary instanceof ShaleiaDictionary) {
-      controller.prepare(dictionary.getAlphabetOrder())
-    } else if (dictionary instanceof SlimeDictionary) {
-      controller.prepare(dictionary.getAlphabetOrder())
-    } else {
-      controller.prepare(null)
-    }
+    controller.prepare(dictionary.getAlphabetOrder())
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
@@ -472,13 +466,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
-    if (dictionary instanceof ShaleiaDictionary) {
-      controller.prepare(dictionary.getAkrantiain())
-    } else if (dictionary instanceof SlimeDictionary) {
-      controller.prepare(dictionary.getAkrantiain())
-    } else {
-      controller.prepare(null)
-    }
+    controller.prepare(dictionary.getAkrantiain())
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)

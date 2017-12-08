@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.ConvertPrimitives
 
 
@@ -46,6 +47,10 @@ public interface Dictionary<W extends Word> {
   public String getPath()
 
   public void setPath(String path)
+
+  public String getAlphabetOrder()
+
+  public Akrantiain getAkrantiain()
 
   public ObservableList<Element> getWholeWords()
 
