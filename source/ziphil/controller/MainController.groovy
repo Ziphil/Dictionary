@@ -34,6 +34,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.personal.PersonalDictionary
@@ -152,7 +153,7 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
+      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
         addDictionaryTab(dictionary)
@@ -167,7 +168,7 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
+      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
@@ -178,7 +179,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void openRegisteredDictionary(File file) {
-    Dictionary dictionary = Dictionaries.loadDictionary(file)
+    Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
     if (dictionary != null) {
       Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
       addDictionaryTab(dictionary)
