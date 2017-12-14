@@ -47,12 +47,13 @@ public class EquivalentCollectionType {
               }
             }
           }
+          EquivalentCollectionType collectionType = EquivalentCollectionType.new(name, file.getAbsolutePath(), size)
+          collectionTypes.add(collectionType)
+        } catch (Exception exception) {
         } finally {
           parser.close()
           stream.close()
         }
-        EquivalentCollectionType collectionType = EquivalentCollectionType.new(name, file.getAbsolutePath(), size)
-        collectionTypes.add(collectionType)
       }
     }
     collectionTypes.sort() { EquivalentCollectionType firstCollectionType, EquivalentCollectionType secondCollectionType ->

@@ -156,7 +156,7 @@ public class Setting {
       Setting instance
       try {
         instance = $$mapper.readValue(stream, Setting)
-      } catch (JsonParseException | JsonMappingException exception) {
+      } catch (Exception exception) {
         instance = Setting.new()
       } finally {
         stream.close()
