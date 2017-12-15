@@ -136,8 +136,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    Dictionary currentDictionary = currentDictionary()
-    File directory = (currentDictionary != null) ? File.new(currentDictionary.getPath()).getParentFile() : null
+    Dictionary dictionary = currentDictionary()
+    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -146,10 +146,10 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
-      if (dictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
-        addDictionaryTab(dictionary)
+      Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+      if (nextDictionary != null) {
+        Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
+        addDictionaryTab(nextDictionary)
       } else {
         showErrorDialog("failOpenDictionary")
       }
@@ -158,11 +158,12 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void reopenDictionary() {
-    File file = File.new(currentDictionary().getPath())
-    Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
-    if (dictionary != null) {
+    Dictionary dictionary = currentDictionary()
+    File file = File.new(dictionary.getPath())
+    Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+    if (nextDictionary != null) {
       MainWordListController controller = currentWordListController()
-      controller.update(dictionary)
+      controller.update(nextDictionary)
     } else {
       showErrorDialog("failOpenDictionary")
     }
@@ -258,10 +259,10 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary newDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
-        if (newDictionary != null) {
-          Setting.getInstance().setDefaultDictionaryPath(newDictionary.getPath())
-          addDictionaryTab(newDictionary)
+        Dictionary nextDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
+        if (nextDictionary != null) {
+          Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
+          addDictionaryTab(nextDictionary)
         } else {
           showErrorDialog("failConvertDictionary")
         }
