@@ -517,6 +517,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $wordView.getSelectionModel().selectFirst()
       $wordView.scrollTo(0)
     }
+    $wordView.refresh()
   }
 
   private void closeOpenStages() {
