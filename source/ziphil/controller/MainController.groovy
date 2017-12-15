@@ -179,6 +179,8 @@ public class MainController extends PrimitiveController<Stage> {
       } else {
         showErrorDialog("failOpenDictionary")
       }
+    } else {
+      update()
     }
   }
 
