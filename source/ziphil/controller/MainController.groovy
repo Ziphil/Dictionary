@@ -148,10 +148,9 @@ public class MainController extends PrimitiveController<Stage> {
       File file = nextStage.getResult()
       Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
       if (dictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         addDictionaryTab(dictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failOpenDictionary")
       }
     }
@@ -165,7 +164,6 @@ public class MainController extends PrimitiveController<Stage> {
       MainWordListController controller = currentWordListController()
       controller.update(dictionary)
     } else {
-      Setting.getInstance().setDefaultDictionaryPath(null)
       showErrorDialog("failOpenDictionary")
     }
   }
@@ -178,7 +176,6 @@ public class MainController extends PrimitiveController<Stage> {
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failOpenDictionary")
       }
     }
@@ -187,10 +184,9 @@ public class MainController extends PrimitiveController<Stage> {
   private void openRegisteredDictionary(File file) {
     Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
     if (dictionary != null) {
-      Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       addDictionaryTab(dictionary)
     } else {
-      Setting.getInstance().setDefaultDictionaryPath(null)
       showErrorDialog("failOpenDictionary")
     }
   }
@@ -206,10 +202,9 @@ public class MainController extends PrimitiveController<Stage> {
       File file = nextStage.getResult()
       Dictionary dictionary = DictionaryFactory.loadProperEmptyDictionary(factory, file)
       if (dictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         addDictionaryTab(dictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failCreateDictionary")
       }
     }
@@ -244,9 +239,8 @@ public class MainController extends PrimitiveController<Stage> {
           dictionary.setPath(file.getAbsolutePath())
           tab.setText(dictionary.getName())
           dictionary.save()
-          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           showErrorDialog("failSaveDictionary")
         }
       }
@@ -266,10 +260,9 @@ public class MainController extends PrimitiveController<Stage> {
         File file = nextStage.getResult()
         Dictionary newDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
         if (newDictionary != null) {
-          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          Setting.getInstance().setDefaultDictionaryPath(newDictionary.getPath())
           addDictionaryTab(newDictionary)
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           showErrorDialog("failConvertDictionary")
         }
       }
@@ -739,8 +732,12 @@ public class MainController extends PrimitiveController<Stage> {
     $tabPane.getSelectionModel().selectedItemProperty().addListener() { ObservableValue<? extends Tab> observableValue, Tab oldValue, Tab newValue ->
       Platform.runLater() {
         MainWordListController controller = currentWordListController()
+        Dictionary dictionary = currentDictionary()
         if (controller != null) {
           controller.focusSearchControl()
+        }
+        if (dictionary != null) {
+          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         }
       }
       updateMenuItems()
