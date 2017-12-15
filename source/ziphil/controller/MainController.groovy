@@ -101,7 +101,7 @@ public class MainController extends PrimitiveController<Stage> {
         event.consume()
       }
     }
-    controller.update(dictionary)
+    controller.open(dictionary)
     $wordListControllers.add(controller)
     $tabPane.getTabs().add(tab)
     $tabPane.getSelectionModel().select(tab)
@@ -163,7 +163,7 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
     if (nextDictionary != null) {
       MainWordListController controller = currentWordListController()
-      controller.update(nextDictionary)
+      controller.open(nextDictionary)
     } else {
       showErrorDialog("failOpenDictionary")
     }

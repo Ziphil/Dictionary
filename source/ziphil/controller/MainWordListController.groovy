@@ -114,7 +114,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     setupSearchTypeControl()
   }
 
-  public void update(Dictionary dictionary) {
+  public void open(Dictionary dictionary) {
     $dictionary = dictionary
     $individualSetting = dictionary.createIndividualSetting()
     $temporarySetting = TemporarySetting.new()
