@@ -34,6 +34,7 @@
           </graphic>
         </MenuItem>
         <Menu fx:id="$openRegisteredDictionaryMenu" text="登録辞書を開く"/>
+        <MenuItem styleClass="option,nonnull" text="表示している辞書を再読み込み" onAction="#reopenDictionary" accelerator="Shortcut+Shift+O"/>
         <Menu fx:id="$registerCurrentDictionaryMenu" styleClass="option,dammy,nonnull" text="表示している辞書を登録"/>
         <MenuItem styleClass="option,dammy,null" text="表示している辞書を登録" disable="true"/>
         <SeparatorMenuItem/>
