@@ -409,6 +409,13 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void update() {
+    updateMenuItems()
+    updateSearchRegisteredParameterMenu()
+    updateConvertDictionaryMenu()
+    updatePluginMenu()
+  }
+
   private void registerCurrentDictionary(Int index) {
     Setting.getInstance().getRegisteredDictionaryPaths()[index] = currentDictionary().getPath()
     setupOpenRegisteredDictionaryMenu()
@@ -740,11 +747,8 @@ public class MainController extends PrimitiveController<Stage> {
         if (dictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         }
+        update()
       }
-      updateMenuItems()
-      updateSearchRegisteredParameterMenu()
-      updateConvertDictionaryMenu()
-      updatePluginMenu()
     }
   }
 
