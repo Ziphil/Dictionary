@@ -41,7 +41,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   protected Pane doCreate() {
-    Int lineSpacing = Setting.getInstance().getLineSpacing()
+    Setting setting = Setting.getInstance()
+    Int lineSpacing = setting.getLineSpacing()
+    Boolean showsVariation = setting.getShowsVariation()
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
@@ -58,12 +60,14 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       addInformationNode(contentPane, information.getTitle(), information.getText())
       hasContent = true
     }
-    for (Map.Entry<String, List<SlimeVariation>> entry : $word.groupedVariations()) {
-      String title = entry.getKey()
-      List<SlimeVariation> variationGroup = entry.getValue()
-      List<String> names = variationGroup.collect{it.getName()}
-      addVariationNode(contentPane, title, names)
-      hasContent = true
+    if (showsVariation) {
+      for (Map.Entry<String, List<SlimeVariation>> entry : $word.groupedVariations()) {
+        String title = entry.getKey()
+        List<SlimeVariation> variationGroup = entry.getValue()
+        List<String> names = variationGroup.collect{it.getName()}
+        addVariationNode(contentPane, title, names)
+        hasContent = true
+      }
     }
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()

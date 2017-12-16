@@ -64,6 +64,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
+  @FXML private SwitchButton $showsVariationControl
   @FXML private SwitchButton $asksMutualRelationControl
   @FXML private SwitchButton $asksDuplicateNameControl
   @FXML private SwitchButton $savesAutomaticallyControl
@@ -113,6 +114,7 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = setting.getScriptName()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
+    Boolean showsVariation = setting.getShowsVariation()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
     Boolean asksDuplicateName = setting.getAsksDuplicateName()
     Boolean savesAutomatically = setting.getSavesAutomatically()
@@ -166,6 +168,7 @@ public class SettingController extends Controller<BooleanClass> {
     }
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
+    $showsVariationControl.setSelected(showsVariation)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
     $asksDuplicateNameControl.setSelected(asksDuplicateName)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
@@ -206,6 +209,7 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = $scriptControl.getValue().getNames()[0]
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
+    Boolean showsVariation = $showsVariationControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
     Boolean asksDuplicateName = $asksDuplicateNameControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
@@ -235,6 +239,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setScriptName(scriptName)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
+    setting.setShowsVariation(showsVariation)
     setting.setAsksMutualRelation(asksMutualRelation)
     setting.setAsksDuplicateName(asksDuplicateName)
     setting.setSavesAutomatically(savesAutomatically)

@@ -305,8 +305,9 @@
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="変化形の表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
@@ -325,13 +326,20 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$showsVariationControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$asksMutualRelationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
             <HelpIndicator text="%help.setting.asksMutualRelation"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$asksDuplicateNameControl">
               <prefWidth><Double rpx="70"/></prefWidth>
