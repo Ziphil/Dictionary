@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import java.util.function.Consumer
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.ConvertPrimitives
 
 
@@ -37,6 +38,8 @@ public interface Dictionary<W extends Word> {
 
   public Int totalWordSize()
 
+  public IndividualSetting createIndividualSetting()
+
   public String getName() 
 
   public void setName(String name)
@@ -44,6 +47,10 @@ public interface Dictionary<W extends Word> {
   public String getPath()
 
   public void setPath(String path)
+
+  public String getAlphabetOrder()
+
+  public Akrantiain getAkrantiain()
 
   public ObservableList<Element> getWholeWords()
 
@@ -55,9 +62,15 @@ public interface Dictionary<W extends Word> {
 
   public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 
 
+  public ControllerSupplier getControllerSupplier()
+
   public Task<?> getLoader()
 
   public Task<?> getSaver()
+
+  public DictionaryFactory getDictionaryFactory()
+
+  public void setDictionaryFactory(DictionaryFactory dictionaryFactory)
 
   public Boolean isChanged()
 

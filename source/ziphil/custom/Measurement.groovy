@@ -81,7 +81,7 @@ public class Measurement implements Builder<DoubleClass> {
   private static Double calculateUnitFrpx() {
     String system = System.getProperty("os.name").toLowerCase()
     if (system.startsWith("mac")) {
-      return calculateUnitRpx() * 1.15
+      return calculateUnitRpx() * 1.2
     } else {
       return calculateUnitRpx()
     }

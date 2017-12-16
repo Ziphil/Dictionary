@@ -13,6 +13,7 @@
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -51,7 +52,9 @@
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="編集フォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <Label text="行間追加幅:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="変化形マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="関連語マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -102,6 +105,20 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$variationMarkerControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </TextField>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$relationMarkerControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </TextField>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$modifiesPunctuationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
@@ -127,11 +144,11 @@
           <Label text="メインウィンドウサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <SwitchButton fx:id="$keepsMainOnTopControl">
+            <SwitchButton fx:id="$keepsMainWindowOnTopControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="%help.setting.keepsMainOnTop"/>
+            <HelpIndicator text="%help.setting.keepsMainWindowOnTop"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
@@ -288,8 +305,9 @@
           </padding>
           <Label text="重複IDの無視:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="IDの表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="変化形の表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+          <Label text="関連語相互参照:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
@@ -308,13 +326,21 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$showsVariationControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+            <HelpIndicator text="%help.setting.showsVariation"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$asksMutualRelationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
             <HelpIndicator text="%help.setting.asksMutualRelation"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$asksDuplicateNameControl">
               <prefWidth><Double rpx="70"/></prefWidth>

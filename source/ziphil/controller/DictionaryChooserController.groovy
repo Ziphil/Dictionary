@@ -11,7 +11,7 @@ import ziphil.custom.DictionaryFileCell
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.DictionaryType
+import ziphil.dictionary.DictionaryFactory
 import ziphilib.transform.Ziphilify
 
 
@@ -35,9 +35,9 @@ public class DictionaryChooserController extends Controller<File> {
     setupChooser()
   }
 
-  public void prepare(DictionaryType type, File directory, Boolean adjustsExtension) {
-    if (type != null) {
-      ExtensionFilter extensionFilter = type.createExtensionFilter()
+  public void prepare(DictionaryFactory factory, File directory, Boolean adjustsExtension) {
+    if (factory != null) {
+      ExtensionFilter extensionFilter = factory.createExtensionFilter()
       $chooser.getExtensionFilters().clear()
       $chooser.getExtensionFilters().add(extensionFilter)
       $chooser.setCurrentFileType(extensionFilter)
@@ -61,8 +61,8 @@ public class DictionaryChooserController extends Controller<File> {
   }
 
   private void setupChooser() {
-    for (DictionaryType type : DictionaryType.values()) {
-      ExtensionFilter extensionFilter = type.createExtensionFilter()
+    for (DictionaryFactory factory : DictionaryFactory.FACTORIES) {
+      ExtensionFilter extensionFilter = factory.createExtensionFilter()
       $chooser.getExtensionFilters().add(extensionFilter)
     }
     $chooser.setFileCellFactory() { ListView<File> view ->

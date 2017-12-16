@@ -47,8 +47,10 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private Spinner<IntegerClass> $lineSpacingControl
+  @FXML private TextField $variationMarkerControl
+  @FXML private TextField $relationMarkerControl
   @FXML private SwitchButton $modifiesPunctuationControl
-  @FXML private SwitchButton $keepsMainOnTopControl
+  @FXML private SwitchButton $keepsMainWindowOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
   @FXML private Spinner<IntegerClass> $mainWindowWidthControl
   @FXML private Spinner<IntegerClass> $mainWindowHeightControl
@@ -62,6 +64,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
+  @FXML private SwitchButton $showsVariationControl
   @FXML private SwitchButton $asksMutualRelationControl
   @FXML private SwitchButton $asksDuplicateNameControl
   @FXML private SwitchButton $savesAutomaticallyControl
@@ -95,8 +98,10 @@ public class SettingController extends Controller<BooleanClass> {
     String editorFontFamily = setting.getEditorFontFamily()
     Int editorFontSize = setting.getEditorFontSize()
     Int lineSpacing = setting.getLineSpacing()
+    String variationMarker = setting.getVariationMarker()
+    String relationMarker = setting.getRelationMarker()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
+    Boolean keepsMainWindowOnTop = setting.getKeepsMainWindowOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
     Int mainWindowWidth = setting.getMainWindowWidth()
     Int mainWindowHeight = setting.getMainWindowHeight()
@@ -109,6 +114,7 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = setting.getScriptName()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
+    Boolean showsVariation = setting.getShowsVariation()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
     Boolean asksDuplicateName = setting.getAsksDuplicateName()
     Boolean savesAutomatically = setting.getSavesAutomatically()
@@ -138,8 +144,10 @@ public class SettingController extends Controller<BooleanClass> {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
+    $variationMarkerControl.setText(variationMarker)
+    $relationMarkerControl.setText(relationMarker)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
-    $keepsMainOnTopControl.setSelected(keepsMainOnTop)
+    $keepsMainWindowOnTopControl.setSelected(keepsMainWindowOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
     $mainWindowWidthControl.getValueFactory().setValue(mainWindowWidth)
     $mainWindowHeightControl.getValueFactory().setValue(mainWindowHeight)
@@ -160,6 +168,7 @@ public class SettingController extends Controller<BooleanClass> {
     }
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
+    $showsVariationControl.setSelected(showsVariation)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
     $asksDuplicateNameControl.setSelected(asksDuplicateName)
     $savesAutomaticallyControl.setSelected(savesAutomatically)
@@ -183,8 +192,10 @@ public class SettingController extends Controller<BooleanClass> {
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getValue()
     Int editorFontSize = (usesDefaultEditorFontSize) ? -1 : $editorFontSizeControl.getValue()
     Int lineSpacing = $lineSpacingControl.getValue()
+    String variationMarker = $variationMarkerControl.getText()
+    String relationMarker = $relationMarkerControl.getText()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
-    Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
+    Boolean keepsMainWindowOnTop = $keepsMainWindowOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
     Int mainWindowWidth = $mainWindowWidthControl.getValue()
     Int mainWindowHeight = $mainWindowHeightControl.getValue()
@@ -198,6 +209,7 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = $scriptControl.getValue().getNames()[0]
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
+    Boolean showsVariation = $showsVariationControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
     Boolean asksDuplicateName = $asksDuplicateNameControl.isSelected()
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
@@ -211,8 +223,10 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
     setting.setLineSpacing(lineSpacing)
+    setting.setVariationMarker(variationMarker)
+    setting.setRelationMarker(relationMarker)
     setting.setModifiesPunctuation(modifiesPunctuation)
-    setting.setKeepsMainOnTop(keepsMainOnTop)
+    setting.setKeepsMainWindowOnTop(keepsMainWindowOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
     setting.setMainWindowWidth(mainWindowWidth)
     setting.setMainWindowHeight(mainWindowHeight)
@@ -225,6 +239,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setScriptName(scriptName)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
+    setting.setShowsVariation(showsVariation)
     setting.setAsksMutualRelation(asksMutualRelation)
     setting.setAsksDuplicateName(asksDuplicateName)
     setting.setSavesAutomatically(savesAutomatically)

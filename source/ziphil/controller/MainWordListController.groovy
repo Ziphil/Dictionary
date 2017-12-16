@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.UnsupportedFlavorException
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import java.security.AccessControlException
 import java.security.PrivilegedActionException
 import java.text.MessageFormat
@@ -47,9 +49,7 @@ import ziphil.custom.RefreshableListView
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
-import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryType
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
@@ -65,15 +65,6 @@ import ziphil.dictionary.Suggestion
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.WordSelection
-import ziphil.dictionary.personal.PersonalDictionary
-import ziphil.dictionary.personal.PersonalWord
-import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.dictionary.shaleia.ShaleiaSearchParameter
-import ziphil.dictionary.shaleia.ShaleiaWord
-import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.dictionary.slime.SlimeIndividualSetting
-import ziphil.dictionary.slime.SlimeSearchParameter
-import ziphil.dictionary.slime.SlimeWord
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphil.module.TemporarySetting
@@ -123,9 +114,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
     setupSearchTypeControl()
   }
 
-  public void update(Dictionary dictionary) {
+  public void open(Dictionary dictionary) {
     $dictionary = dictionary
-    $individualSetting = Dictionaries.createIndividualSetting(dictionary)
+    $individualSetting = dictionary.createIndividualSetting()
     $temporarySetting = TemporarySetting.new()
     updateLoader()
     updateOnLinkClicked()
@@ -152,27 +143,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchDetail() {
-    if ($dictionary instanceof ShaleiaDictionary) {
-      UtilityStage<ShaleiaSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      ShaleiaSearcherController controller = ShaleiaSearcherController.new(nextStage)
-      nextStage.initOwner($stage)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        ShaleiaSearchParameter parameter = nextStage.getResult()
-        measureAndSearch(parameter)
-        $searchHistory.add(parameter)
-      }
-    } else if ($dictionary instanceof SlimeDictionary) {
-      UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
-      nextStage.initOwner($stage)
-      controller.prepare($dictionary)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        SlimeSearchParameter parameter = nextStage.getResult()
-        measureAndSearch(parameter)
-        $searchHistory.add(parameter)
-      }
+    UtilityStage<SearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    Controller controller = $dictionary.getControllerSupplier().getSearcherController(nextStage)
+    nextStage.initOwner($stage)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SearchParameter parameter = nextStage.getResult()
+      measureAndSearch(parameter)
+      $searchHistory.add(parameter)
     }
   }
 
@@ -289,21 +267,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
-        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+        Word oldWord = $dictionary.copyWord(word)
+        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
-        }
-        Word oldWord = $dictionary.copyWord(word)
-        if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
-          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-          controller.prepare(word)
-        } else if ($dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
-          PersonalEditorController controller = PersonalEditorController.new(nextStage)
-          controller.prepare(word)
-        } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
-          SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          controller.prepare(word, $dictionary, $temporarySetting)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
@@ -357,27 +326,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
-      Word newWord
-      UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+      Word newWord = $dictionary.createWord(defaultName)
+      UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Controller controller = $dictionary.getEditorControllerSupplier().getCreatorController(nextStage, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
-      }
-      if ($dictionary instanceof ShaleiaDictionary) {
-        ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-        ShaleiaWord localNewWord = $dictionary.createWord(defaultName)
-        newWord = localNewWord
-        controller.prepare(localNewWord, true)
-      } else if ($dictionary instanceof PersonalDictionary) {
-        PersonalEditorController controller = PersonalEditorController.new(nextStage)
-        PersonalWord localNewWord = $dictionary.createWord(defaultName)
-        newWord = localNewWord
-        controller.prepare(localNewWord, true)
-      } else if ($dictionary instanceof SlimeDictionary) {
-        SlimeEditorController controller = SlimeEditorController.new(nextStage)
-        SlimeWord localNewWord = $dictionary.createWord(defaultName)
-        newWord = localNewWord
-        controller.prepare(localNewWord, $dictionary, $temporarySetting, true)
       }
       $openStages.add(nextStage)
       nextStage.showAndWait()
@@ -401,27 +355,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
       if (word != null && word instanceof Word) {
-        Word newWord
-        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
+        Word newWord = $dictionary.inheritWord(word)
+        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
-        }
-        if ($dictionary instanceof ShaleiaDictionary && word instanceof ShaleiaWord) {
-          ShaleiaEditorController controller = ShaleiaEditorController.new(nextStage)
-          ShaleiaWord localNewWord = $dictionary.inheritWord(word)
-          newWord = localNewWord
-          controller.prepare(localNewWord)
-        } else if ($dictionary instanceof PersonalDictionary && word instanceof PersonalWord) {
-          PersonalEditorController controller = PersonalEditorController.new(nextStage)
-          PersonalWord localNewWord = $dictionary.inheritWord(word)
-          newWord = localNewWord
-          controller.prepare(localNewWord)
-        } else if ($dictionary instanceof SlimeDictionary && word instanceof SlimeWord) {
-          SlimeEditorController controller = SlimeEditorController.new(nextStage)
-          SlimeWord localNewWord = $dictionary.inheritWord(word)
-          newWord = localNewWord
-          controller.prepare(localNewWord, $dictionary, $temporarySetting)
         }
         $openStages.add(nextStage)
         nextStage.showAndWait()
@@ -508,11 +447,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void pasteWords() {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
+      Class<?> wordClass = calculateWordClass()
       try {
         List<Word> candidates = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
         List<Word> words = ArrayList.new()
         for (Word candidate : candidates) {
-          if (Dictionaries.checkWordType($dictionary, candidate)) {
+          if (wordClass != null && wordClass.isInstance(candidate)) {
             Word word = $dictionary.copyWord(candidate)
             words.add(word)
           }
@@ -521,6 +461,20 @@ public class MainWordListController extends PrimitiveController<Stage> {
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
+  }
+
+  public Class<?> calculateWordClass() {
+    Class<?> wordClass = null
+    for (Type type : $dictionary.getClass().getGenericInterfaces()) {
+      if (type instanceof ParameterizedType) {
+        Type rawType = ((ParameterizedType)type).getRawType()
+        Type typeArgument = ((ParameterizedType)type).getActualTypeArguments()[0]
+        if (rawType == EditableDictionary) {
+          wordClass = (Class)typeArgument
+        }
+      }
+    }
+    return wordClass
   }
 
   private void cancelLoadDictionary() {
@@ -563,6 +517,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $wordView.getSelectionModel().selectFirst()
       $wordView.scrollTo(0)
     }
+    $wordView.refresh()
   }
 
   private void closeOpenStages() {

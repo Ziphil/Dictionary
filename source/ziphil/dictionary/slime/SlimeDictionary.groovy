@@ -8,14 +8,17 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
+import ziphil.dictionary.ControllerSupplier
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditorControllerSupplier
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
@@ -50,6 +53,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $akrantiainSource = null
   private List<SlimeRelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
+  private ControllerSupplier $controllerSupplier = SlimeControllerSupplier.new(this)
+  private EditorControllerSupplier $editorControllerSupplier = SlimeEditorControllerSupplier.new(this)
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -538,10 +543,23 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return saver
   }
 
+  public IndividualSetting createIndividualSetting() {
+    SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
+    return individualSetting
+  }
+
   private static ObjectMapper createObjectMapper() {
     ObjectMapper mapper = ObjectMapper.new()
     mapper.enable(SerializationFeature.INDENT_OUTPUT)
     return mapper
+  }
+
+  public ControllerSupplier getControllerSupplier() {
+    return $controllerSupplier
+  }
+
+  public EditorControllerSupplier getEditorControllerSupplier() {
+    return $editorControllerSupplier
   }
 
   public Int getValidMinId() {

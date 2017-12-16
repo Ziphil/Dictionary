@@ -45,13 +45,17 @@ public class SlimeWord extends WordBase {
 
   private void updateContent() {
     StringBuilder content = StringBuilder.new()
+    content.append($name)
+    content.append("\n")
     for (SlimeEquivalent equivalent : $rawEquivalents) {
       for (String equivalentName : equivalent.getNames()) {
-        content.append(equivalentName).append("\n")
+        content.append(equivalentName)
+        content.append("\n")
       }
     }
     for (SlimeInformation information : $informations) {
-      content.append(information.getText()).append("\n")
+      content.append(information.getText())
+      content.append("\n")
     }
     $content = content.toString()
   }

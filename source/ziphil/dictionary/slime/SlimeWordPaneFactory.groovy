@@ -41,7 +41,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   protected Pane doCreate() {
-    Int lineSpacing = Setting.getInstance().getLineSpacing()
+    Setting setting = Setting.getInstance()
+    Int lineSpacing = setting.getLineSpacing()
+    Boolean showsVariation = setting.getShowsVariation()
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
@@ -57,6 +59,15 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     for (SlimeInformation information : $word.sortedInformations()) {
       addInformationNode(contentPane, information.getTitle(), information.getText())
       hasContent = true
+    }
+    if (showsVariation) {
+      for (Map.Entry<String, List<SlimeVariation>> entry : $word.groupedVariations()) {
+        String title = entry.getKey()
+        List<SlimeVariation> variationGroup = entry.getValue()
+        List<String> names = variationGroup.collect{it.getName()}
+        addVariationNode(contentPane, title, names)
+        hasContent = true
+      }
     }
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
@@ -132,8 +143,37 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     pane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }
 
+  private void addVariationNode(TextFlow pane, String title, List<String> names) {
+    String variationMarker = Setting.getInstance().getVariationMarker()
+    Text formerTitleText = Text.new(variationMarker)
+    Label titleText = Label.new(title)
+    Text spaceText = Text.new(" ")
+    formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    if (title != "") {
+      pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+    } else {
+      pane.getChildren().addAll(formerTitleText, spaceText)
+    }
+    for (Int i = 0 ; i < names.size() ; i ++) {
+      String name = names[i]
+      Text nameText = Text.new(name)
+      nameText.getStyleClass().add(CONTENT_CLASS)
+      pane.getChildren().add(nameText)
+      if (i < names.size() - 1) {
+        Text punctuationText = Text.new(", ")
+        punctuationText.getStyleClass().add(CONTENT_CLASS)
+        pane.getChildren().add(punctuationText)
+      }
+    }
+    Text breakText = Text.new("\n")
+    pane.getChildren().add(breakText)
+  }
+
   private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
-    Text formerTitleText = Text.new("cf:")
+    String relationMarker = Setting.getInstance().getRelationMarker()
+    Text formerTitleText = Text.new(relationMarker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)

@@ -16,6 +16,7 @@ import ziphil.custom.SimpleTask
 import ziphil.custom.ShufflableList
 import ziphil.module.Setting
 import ziphil.module.Strings
+import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.Ziphilify
 
 
@@ -35,6 +36,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
+  private DictionaryFactory $dictionaryFactory
   protected Boolean $changed = false
   protected Boolean $firstEmpty = false
 
@@ -222,6 +224,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract DictionarySaver createSaver()
 
+  public IndividualSetting createIndividualSetting() {
+    return null
+  }
+
   public String getName() {
     return $name
   }
@@ -236,6 +242,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public void setPath(String path) {
     $path = path
+  }
+
+  public String getAlphabetOrder() {
+    return null
+  }
+
+  public Akrantiain getAkrantiain() {
+    return null
   }
 
   public ObservableList<Element> getWholeWords() {
@@ -264,6 +278,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public Task<?> getSaver() {
     return $saver
+  }
+
+  public DictionaryFactory getDictionaryFactory() {
+    return $dictionaryFactory
+  }
+
+  public void setDictionaryFactory(DictionaryFactory dictionaryFactory) {
+    $dictionaryFactory = dictionaryFactory
   }
 
   public Boolean isChanged() {

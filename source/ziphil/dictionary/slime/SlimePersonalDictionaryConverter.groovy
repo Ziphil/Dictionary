@@ -26,6 +26,13 @@ public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeD
       SlimeWord newWord = SlimeWord.new()
       newWord.setId(i + 1)
       newWord.setName(oldWord.getName())
+      String oldPronunciation = oldWord.getPronunciation()
+      if (oldPronunciation != "") {
+        SlimeInformation newInformation = SlimeInformation.new()
+        newInformation.setTitle("発音")
+        newInformation.setText(oldPronunciation)
+        newWord.getInformations().add(newInformation)
+      }
       String oldTranslation = oldWord.getTranslation()
       if (oldTranslation != "") {
         SlimeInformation newInformation = SlimeInformation.new()

@@ -23,7 +23,7 @@ public class EquivalentCollection {
       EquivalentCollection collection
       try {
         collection = $$mapper.readValue(stream, EquivalentCollection)
-      } catch (JsonParseException exception) {
+      } catch (Exception exception) {
         collection = EquivalentCollection.new()
       } finally {
         stream.close()

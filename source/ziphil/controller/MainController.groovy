@@ -32,15 +32,10 @@ import ziphil.custom.ClosableTab
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.Dictionaries
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryType
+import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.IndividualSetting
-import ziphil.dictionary.personal.PersonalDictionary
-import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.dictionary.slime.SlimeIndividualSetting
-import ziphil.dictionary.slime.SlimeSearchParameter
+import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
 import ziphil.plugin.Plugin
@@ -53,7 +48,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/main.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
-  private static final String OFFICIAL_SITE_URI = "http://ziphil.web.fc2.com/application/download/2.html"
+  private static final String OFFICIAL_SITE_URI = "http://ziphil.com/application/download/2.html"
   private static final String TITLE = "ZpDIC fetith"
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
@@ -85,7 +80,6 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
-    setupConvertDictionaryMenu()
     setupDebug()
   }
 
@@ -107,7 +101,7 @@ public class MainController extends PrimitiveController<Stage> {
         event.consume()
       }
     }
-    controller.update(dictionary)
+    controller.open(dictionary)
     $wordListControllers.add(controller)
     $tabPane.getTabs().add(tab)
     $tabPane.getSelectionModel().select(tab)
@@ -142,8 +136,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    Dictionary currentDictionary = currentDictionary()
-    File directory = (currentDictionary != null) ? File.new(currentDictionary.getPath()).getParentFile() : null
+    Dictionary dictionary = currentDictionary()
+    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -152,14 +146,26 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
-      if (dictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
-        addDictionaryTab(dictionary)
+      Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+      if (nextDictionary != null) {
+        Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
+        addDictionaryTab(nextDictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failOpenDictionary")
       }
+    }
+  }
+
+  @FXML
+  private void reopenDictionary() {
+    Dictionary dictionary = currentDictionary()
+    File file = File.new(dictionary.getPath())
+    Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+    if (nextDictionary != null) {
+      MainWordListController controller = currentWordListController()
+      controller.open(nextDictionary)
+    } else {
+      showErrorDialog("failOpenDictionary")
     }
   }
 
@@ -167,42 +173,41 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = Dictionaries.loadDictionary(file)
+      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failOpenDictionary")
       }
+    } else {
+      update()
     }
   }
 
   private void openRegisteredDictionary(File file) {
-    Dictionary dictionary = Dictionaries.loadDictionary(file)
+    Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
     if (dictionary != null) {
-      Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+      Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       addDictionaryTab(dictionary)
     } else {
-      Setting.getInstance().setDefaultDictionaryPath(null)
       showErrorDialog("failOpenDictionary")
     }
   }
 
-  private void createDictionary(DictionaryType type) {
+  private void createDictionary(DictionaryFactory factory) {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(type, null, true)
+    controller.prepare(factory, null, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = Dictionaries.loadEmptyDictionary(type, file)
+      Dictionary dictionary = DictionaryFactory.loadProperEmptyDictionary(factory, file)
       if (dictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         addDictionaryTab(dictionary)
       } else {
-        Setting.getInstance().setDefaultDictionaryPath(null)
         showErrorDialog("failCreateDictionary")
       }
     }
@@ -227,7 +232,7 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(DictionaryType.valueOfDictionary(dictionary), File.new(dictionary.getPath()).getParentFile(), true)
+      controller.prepare(dictionary.getDictionaryFactory(), File.new(dictionary.getPath()).getParentFile(), true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
@@ -237,32 +242,30 @@ public class MainController extends PrimitiveController<Stage> {
           dictionary.setPath(file.getAbsolutePath())
           tab.setText(dictionary.getName())
           dictionary.save()
-          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
+          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           showErrorDialog("failSaveDictionary")
         }
       }
     }
   }
 
-  private void convertDictionary(DictionaryType type) {
+  private void convertDictionary(DictionaryFactory factory) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
       UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
       DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      controller.prepare(type, File.new(dictionary.getPath()).getParentFile(), true)
+      controller.prepare(factory, File.new(dictionary.getPath()).getParentFile(), true)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary newDictionary = Dictionaries.convertDictionary(type, dictionary, file)
-        if (newDictionary != null) {
-          Setting.getInstance().setDefaultDictionaryPath(file.getAbsolutePath())
-          addDictionaryTab(newDictionary)
+        Dictionary nextDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
+        if (nextDictionary != null) {
+          Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
+          addDictionaryTab(nextDictionary)
         } else {
-          Setting.getInstance().setDefaultDictionaryPath(null)
           showErrorDialog("failConvertDictionary")
         }
       }
@@ -280,13 +283,12 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void updateMenuItems() {
-    Dictionary dictionary = currentDictionary()
-    String plainName = Dictionaries.plainNameOf(dictionary) ?: "missing"
     for (Menu menu : $menuBar.getMenus()) {
       for (MenuItem item : menu.getItems()) {
         List<String> styleClass = item.getStyleClass()
         if (styleClass.contains("option")) {
-          if (styleClass.contains(plainName) || (dictionary != null && styleClass.contains("all"))) {
+          Boolean matched = checkValidStyleClass(styleClass)
+          if (matched) {
             item.setDisable(false)
             if (styleClass.contains("dammy")) {
               if (!styleClass.contains("menu")) {
@@ -306,15 +308,50 @@ public class MainController extends PrimitiveController<Stage> {
     $menuBar.layout()
   }
 
+  private Boolean checkValidStyleClass(List<String> styleClass) {
+    Boolean matched = false
+    Dictionary dictionary = currentDictionary()
+    IndividualSetting individualSetting = currentIndividualSetting()
+    if (dictionary != null) {
+      if (styleClass.contains("nonnull")) {
+        matched = true
+      }
+    } else {
+      if (styleClass.contains("null")) {
+        matched = true
+      }
+    }
+    if (dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()) {
+      if (styleClass.contains("can-search-detail")) {
+        matched = true
+      }
+    }
+    if (individualSetting != null && individualSetting.getRegisteredParameters() != null) {
+      if (styleClass.contains("can-register-search-parameter")) {
+        matched = true
+      }
+    } else {
+      if (styleClass.contains("cannot-register-search-parameter")) {
+        matched = true
+      }
+    }
+    if (dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()) {
+      if (styleClass.contains("has-individual-setting")) {
+        matched = true
+      }
+    }
+    return matched
+  }
+
   private void updateSearchRegisteredParameterMenu() {
     $searchRegisteredParameterMenu.getItems().clear()
     IndividualSetting individualSetting = currentIndividualSetting()
     if (individualSetting != null) {
-      if (individualSetting instanceof SlimeIndividualSetting) {
-        List<SlimeSearchParameter> parameters = individualSetting.getRegisteredParameters()
-        List<String> parameterNames = individualSetting.getRegisteredParameterNames()
+      List<SearchParameter> parameters = individualSetting.getRegisteredParameters()
+      List<String> parameterNames = individualSetting.getRegisteredParameterNames()
+      if (parameters != null) {
         for (Int i = 0 ; i < 10 ; i ++) {
-          SlimeSearchParameter parameter = parameters[i]
+          SearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
           if (parameter != null) {
@@ -332,6 +369,23 @@ public class MainController extends PrimitiveController<Stage> {
           $searchRegisteredParameterMenu.getItems().add(item)
         }
       }
+    }
+  }
+
+  private void updateConvertDictionaryMenu() {
+    $convertDictionaryMenu.getItems().clear()
+    Dictionary dictionary = currentDictionary()
+    for (DictionaryFactory factory : DictionaryFactory.FACTORIES) {
+      DictionaryFactory cachedFactory = factory
+      MenuItem item = MenuItem.new(factory.getName())
+      item.setGraphic(ImageView.new(factory.createIcon()))
+      item.setOnAction() {
+        convertDictionary(cachedFactory)
+      }
+      if (!factory.isConvertableFrom(dictionary)) {
+        item.setDisable(true)
+      }
+      $convertDictionaryMenu.getItems().add(item)
     }
   }
 
@@ -357,6 +411,13 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void update() {
+    updateMenuItems()
+    updateSearchRegisteredParameterMenu()
+    updateConvertDictionaryMenu()
+    updatePluginMenu()
+  }
+
   private void registerCurrentDictionary(Int index) {
     Setting.getInstance().getRegisteredDictionaryPaths()[index] = currentDictionary().getPath()
     setupOpenRegisteredDictionaryMenu()
@@ -369,15 +430,9 @@ public class MainController extends PrimitiveController<Stage> {
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      Controller controller = dictionary.getControllerSupplier().getIndividualSettingController(nextStage, individualSetting)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
-      if (dictionary instanceof ShaleiaDictionary) {
-        ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(nextStage)
-        controller.prepare(dictionary)
-      } else if (dictionary instanceof SlimeDictionary && individualSetting instanceof SlimeIndividualSetting) {
-        SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(nextStage)
-        controller.prepare(dictionary, individualSetting)
-      }
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         updateSearchRegisteredParameterMenu()
@@ -407,13 +462,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
-    if (dictionary instanceof ShaleiaDictionary) {
-      controller.prepare(dictionary.getAlphabetOrder())
-    } else if (dictionary instanceof SlimeDictionary) {
-      controller.prepare(dictionary.getAlphabetOrder())
-    } else {
-      controller.prepare(null)
-    }
+    controller.prepare(dictionary.getAlphabetOrder())
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
@@ -428,13 +477,7 @@ public class MainController extends PrimitiveController<Stage> {
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
     }
-    if (dictionary instanceof ShaleiaDictionary) {
-      controller.prepare(dictionary.getAkrantiain())
-    } else if (dictionary instanceof SlimeDictionary) {
-      controller.prepare(dictionary.getAkrantiain())
-    } else {
-      controller.prepare(null)
-    }
+    controller.prepare(dictionary.getAkrantiain())
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
@@ -699,26 +742,28 @@ public class MainController extends PrimitiveController<Stage> {
     $tabPane.getSelectionModel().selectedItemProperty().addListener() { ObservableValue<? extends Tab> observableValue, Tab oldValue, Tab newValue ->
       Platform.runLater() {
         MainWordListController controller = currentWordListController()
+        Dictionary dictionary = currentDictionary()
         if (controller != null) {
           controller.focusSearchControl()
         }
+        if (dictionary != null) {
+          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
+        }
+        update()
       }
-      updateMenuItems()
-      updateSearchRegisteredParameterMenu()
-      updatePluginMenu()
     }
   }
 
   private void setupCreateDictionaryMenu() {
     $createDictionaryMenu.getItems().clear()
-    for (DictionaryType type : DictionaryType.values()) {
-      DictionaryType cachedType = type
-      MenuItem item = MenuItem.new(type.getName())
-      item.setGraphic(ImageView.new(type.createIcon()))
+    for (DictionaryFactory factory : DictionaryFactory.FACTORIES) {
+      DictionaryFactory cachedFactory = factory
+      MenuItem item = MenuItem.new(factory.getName())
+      item.setGraphic(ImageView.new(factory.createIcon()))
       item.setOnAction() {
-        createDictionary(cachedType)
+        createDictionary(cachedFactory)
       }
-      if (!type.isCreatable()) {
+      if (!factory.isCreatable()) {
         item.setDisable(true)
       }
       $createDictionaryMenu.getItems().add(item)
@@ -770,22 +815,6 @@ public class MainController extends PrimitiveController<Stage> {
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       $registerCurrentDictionaryMenu.getItems().add(item)
-    }
-  }
-
-  private void setupConvertDictionaryMenu() {
-    $convertDictionaryMenu.getItems().clear()
-    for (DictionaryType type : DictionaryType.values()) {
-      DictionaryType cachedType = type
-      MenuItem item = MenuItem.new(type.getName())
-      item.setGraphic(ImageView.new(type.createIcon()))
-      item.setOnAction() {
-        convertDictionary(cachedType)
-      }
-      if (!type.isConvertable()) {
-        item.setDisable(true)
-      }
-      $convertDictionaryMenu.getItems().add(item)
     }
   }
 

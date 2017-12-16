@@ -41,11 +41,13 @@ public class Setting {
   private Int $separativeInterval = 700
   private Int $mainWindowWidth = 720
   private Int $mainWindowHeight = 720
+  private String $variationMarker = "→"
+  private String $relationMarker = "cf:"
   private String $scriptName = "groovy"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
-  private Boolean $keepsMainOnTop = false
+  private Boolean $keepsMainWindowOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $preservesMainWindowSize = false
   private Boolean $savesAutomatically = false
@@ -54,6 +56,7 @@ public class Setting {
   private Boolean $searchesPrefix = true
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
+  private Boolean $showsVariation = true
   private Boolean $asksMutualRelation = true
   private Boolean $asksDuplicateName = true
   private Boolean $persistsPanes = false
@@ -289,6 +292,22 @@ public class Setting {
     $mainWindowHeight = mainWindowHeight
   }
 
+  public String getVariationMarker() {
+    return $variationMarker
+  }
+
+  public void setVariationMarker(String variationMarker) {
+    $variationMarker = variationMarker
+  }
+
+  public String getRelationMarker() {
+    return $relationMarker
+  }
+
+  public void setRelationMarker(String relationMarker) {
+    $relationMarker = relationMarker
+  }
+
   public String getScriptName() {
     return $scriptName
   }
@@ -321,12 +340,12 @@ public class Setting {
     $modifiesPunctuation = modifiesPunctuation
   }
 
-  public Boolean getKeepsMainOnTop() {
-    return $keepsMainOnTop
+  public Boolean getKeepsMainWindowOnTop() {
+    return $keepsMainWindowOnTop
   }
 
-  public void setKeepsMainOnTop(Boolean keepsMainOnTop) {
-    $keepsMainOnTop = keepsMainOnTop
+  public void setKeepsMainWindowOnTop(Boolean keepsMainWindowOnTop) {
+    $keepsMainWindowOnTop = keepsMainWindowOnTop
   }
 
   public Boolean getKeepsEditorOnTop() {
@@ -391,6 +410,14 @@ public class Setting {
 
   public void setShowsSlimeId(Boolean showsSlimeId) {
     $showsSlimeId = showsSlimeId
+  }
+
+  public Boolean getShowsVariation() {
+    return $showsVariation
+  }
+
+  public void setShowsVariation(Boolean showsVariation) {
+    $showsVariation = showsVariation
   }
 
   public Boolean getAsksMutualRelation() {
