@@ -47,6 +47,8 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private CheckBox $usesSystemEditorFontFamilyControl
   @FXML private CheckBox $usesDefaultEditorFontSizeControl
   @FXML private Spinner<IntegerClass> $lineSpacingControl
+  @FXML private TextField $variationMarkerControl
+  @FXML private TextField $relationMarkerControl
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
@@ -95,6 +97,8 @@ public class SettingController extends Controller<BooleanClass> {
     String editorFontFamily = setting.getEditorFontFamily()
     Int editorFontSize = setting.getEditorFontSize()
     Int lineSpacing = setting.getLineSpacing()
+    String variationMarker = setting.getVariationMarker()
+    String relationMarker = setting.getRelationMarker()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
@@ -138,6 +142,8 @@ public class SettingController extends Controller<BooleanClass> {
       $usesDefaultEditorFontSizeControl.setSelected(true)
     }
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
+    $variationMarkerControl.setText(variationMarker)
+    $relationMarkerControl.setText(relationMarker)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainOnTopControl.setSelected(keepsMainOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
@@ -183,6 +189,8 @@ public class SettingController extends Controller<BooleanClass> {
     String editorFontFamily = (usesSystemEditorFontFamily) ? null : $editorFontFamilyControl.getValue()
     Int editorFontSize = (usesDefaultEditorFontSize) ? -1 : $editorFontSizeControl.getValue()
     Int lineSpacing = $lineSpacingControl.getValue()
+    String variationMarker = $variationMarkerControl.getText()
+    String relationMarker = $relationMarkerControl.getText()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
@@ -211,6 +219,8 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setEditorFontFamily(editorFontFamily)
     setting.setEditorFontSize(editorFontSize)
     setting.setLineSpacing(lineSpacing)
+    setting.setVariationMarker(variationMarker)
+    setting.setRelationMarker(relationMarker)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainOnTop(keepsMainOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)

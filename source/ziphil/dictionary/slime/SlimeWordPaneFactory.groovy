@@ -140,7 +140,8 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addVariationNode(TextFlow pane, String title, List<String> names) {
-    Text formerTitleText = Text.new("→")
+    String variationMarker = Setting.getInstance().getVariationMarker()
+    Text formerTitleText = Text.new(variationMarker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
@@ -167,7 +168,8 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
-    Text formerTitleText = Text.new("cf:")
+    String relationMarker = Setting.getInstance().getRelationMarker()
+    Text formerTitleText = Text.new(relationMarker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
     formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
