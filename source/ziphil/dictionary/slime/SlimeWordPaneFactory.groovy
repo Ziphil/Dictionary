@@ -58,6 +58,13 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       addInformationNode(contentPane, information.getTitle(), information.getText())
       hasContent = true
     }
+    for (Map.Entry<String, List<SlimeVariation>> entry : $word.groupedVariations()) {
+      String title = entry.getKey()
+      List<SlimeVariation> variationGroup = entry.getValue()
+      List<String> names = variationGroup.collect{it.getName()}
+      addVariationNode(contentPane, title, names)
+      hasContent = true
+    }
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
@@ -130,6 +137,33 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     innerBreakText.getStyleClass().add(CONTENT_CLASS)
     informationText.getStyleClass().add(CONTENT_CLASS)
     pane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
+  }
+
+  private void addVariationNode(TextFlow pane, String title, List<String> names) {
+    Text formerTitleText = Text.new("→")
+    Label titleText = Label.new(title)
+    Text spaceText = Text.new(" ")
+    formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    if (title != "") {
+      pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+    } else {
+      pane.getChildren().addAll(formerTitleText, spaceText)
+    }
+    for (Int i = 0 ; i < names.size() ; i ++) {
+      String name = names[i]
+      Text nameText = Text.new(name)
+      nameText.getStyleClass().add(CONTENT_CLASS)
+      pane.getChildren().add(nameText)
+      if (i < names.size() - 1) {
+        Text punctuationText = Text.new(", ")
+        punctuationText.getStyleClass().add(CONTENT_CLASS)
+        pane.getChildren().add(punctuationText)
+      }
+    }
+    Text breakText = Text.new("\n")
+    pane.getChildren().add(breakText)
   }
 
   private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
