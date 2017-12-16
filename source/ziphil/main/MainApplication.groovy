@@ -26,9 +26,9 @@ public class MainApplication extends Application {
   }
 
   private void load(Stage stage) {
-    Boolean keepsMainOnTop = Setting.getInstance().getKeepsMainOnTop()
+    Boolean keepsMainWindowOnTop = Setting.getInstance().getKeepsMainWindowOnTop()
     MainController controller = MainController.new(stage)
-    stage.setAlwaysOnTop(keepsMainOnTop)
+    stage.setAlwaysOnTop(keepsMainWindowOnTop)
     controller.prepare()
     stage.show()
   }

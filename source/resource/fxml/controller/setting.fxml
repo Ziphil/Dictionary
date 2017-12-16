@@ -144,11 +144,11 @@
           <Label text="メインウィンドウサイズ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <SwitchButton fx:id="$keepsMainOnTopControl">
+            <SwitchButton fx:id="$keepsMainWindowOnTopControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="%help.setting.keepsMainOnTop"/>
+            <HelpIndicator text="%help.setting.keepsMainWindowOnTop"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>

@@ -47,7 +47,7 @@ public class Setting {
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
-  private Boolean $keepsMainOnTop = false
+  private Boolean $keepsMainWindowOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $preservesMainWindowSize = false
   private Boolean $savesAutomatically = false
@@ -340,12 +340,12 @@ public class Setting {
     $modifiesPunctuation = modifiesPunctuation
   }
 
-  public Boolean getKeepsMainOnTop() {
-    return $keepsMainOnTop
+  public Boolean getKeepsMainWindowOnTop() {
+    return $keepsMainWindowOnTop
   }
 
-  public void setKeepsMainOnTop(Boolean keepsMainOnTop) {
-    $keepsMainOnTop = keepsMainOnTop
+  public void setKeepsMainWindowOnTop(Boolean keepsMainWindowOnTop) {
+    $keepsMainWindowOnTop = keepsMainWindowOnTop
   }
 
   public Boolean getKeepsEditorOnTop() {

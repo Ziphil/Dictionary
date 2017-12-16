@@ -50,7 +50,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private TextField $variationMarkerControl
   @FXML private TextField $relationMarkerControl
   @FXML private SwitchButton $modifiesPunctuationControl
-  @FXML private SwitchButton $keepsMainOnTopControl
+  @FXML private SwitchButton $keepsMainWindowOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
   @FXML private Spinner<IntegerClass> $mainWindowWidthControl
   @FXML private Spinner<IntegerClass> $mainWindowHeightControl
@@ -101,7 +101,7 @@ public class SettingController extends Controller<BooleanClass> {
     String variationMarker = setting.getVariationMarker()
     String relationMarker = setting.getRelationMarker()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
-    Boolean keepsMainOnTop = setting.getKeepsMainOnTop()
+    Boolean keepsMainWindowOnTop = setting.getKeepsMainWindowOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
     Int mainWindowWidth = setting.getMainWindowWidth()
     Int mainWindowHeight = setting.getMainWindowHeight()
@@ -147,7 +147,7 @@ public class SettingController extends Controller<BooleanClass> {
     $variationMarkerControl.setText(variationMarker)
     $relationMarkerControl.setText(relationMarker)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
-    $keepsMainOnTopControl.setSelected(keepsMainOnTop)
+    $keepsMainWindowOnTopControl.setSelected(keepsMainWindowOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
     $mainWindowWidthControl.getValueFactory().setValue(mainWindowWidth)
     $mainWindowHeightControl.getValueFactory().setValue(mainWindowHeight)
@@ -195,7 +195,7 @@ public class SettingController extends Controller<BooleanClass> {
     String variationMarker = $variationMarkerControl.getText()
     String relationMarker = $relationMarkerControl.getText()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
-    Boolean keepsMainOnTop = $keepsMainOnTopControl.isSelected()
+    Boolean keepsMainWindowOnTop = $keepsMainWindowOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
     Int mainWindowWidth = $mainWindowWidthControl.getValue()
     Int mainWindowHeight = $mainWindowHeightControl.getValue()
@@ -226,7 +226,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setVariationMarker(variationMarker)
     setting.setRelationMarker(relationMarker)
     setting.setModifiesPunctuation(modifiesPunctuation)
-    setting.setKeepsMainOnTop(keepsMainOnTop)
+    setting.setKeepsMainWindowOnTop(keepsMainWindowOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
     setting.setMainWindowWidth(mainWindowWidth)
     setting.setMainWindowHeight(mainWindowHeight)
