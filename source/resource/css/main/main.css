@@ -16,14 +16,12 @@
 
 .dictionary-list .separator .line {
   -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
-  -fx-border-insets: 1px 0px 0px 0px;
+  -fx-border-insets: 3px 0px 0px 0px;
   -fx-border-style: dotted;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .separator .line {
   -fx-border-color: derive(-fx-selection-bar, 50%) transparent transparent transparent;
-  -fx-border-insets: 1px 0px 0px 0px;
-  -fx-border-style: dotted;
 }
 
 .dictionary-list .shaleia-total-part,
@@ -35,7 +33,7 @@
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
   -fx-border-radius: 3px;
-  -fx-padding: 0px 2px 0px 2px;
+  -fx-padding: -1px 2px -1px 2px;
   -fx-margin: 0px 5px 0px 0px;
 }
 
