@@ -16,7 +16,7 @@
 
 .dictionary-list .separator .line {
   -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
-  -fx-border-insets: 3px 0px 0px 0px;
+  -fx-border-insets: 2px 0px 0px 0px;
   -fx-border-style: dotted;
 }
 
