@@ -7,6 +7,7 @@ import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryExporter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
@@ -177,7 +178,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return saver
   }
 
-  protected DictionarySaver createExporter(ExportConfig config) {
+  protected DictionaryExporter createExporter(ExportConfig config) {
     return null
   }
 

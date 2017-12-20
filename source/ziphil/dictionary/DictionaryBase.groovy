@@ -191,7 +191,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   public void export(ExportConfig config) {
-    DictionarySaver exporter = createExporter(config)
+    DictionaryExporter exporter = createExporter(config)
     if (exporter != null) {
       $exporter = exporter
       exporter.run()
@@ -235,7 +235,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   protected abstract DictionarySaver createSaver()
 
-  protected abstract DictionarySaver createExporter(ExportConfig config)
+  protected abstract DictionaryExporter createExporter(ExportConfig config)
 
   public IndividualSetting createIndividualSetting() {
     return null
