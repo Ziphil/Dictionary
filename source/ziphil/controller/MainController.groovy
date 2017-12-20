@@ -273,6 +273,17 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void exportDictionary() {
+    Dictionary dictionary = currentDictionary()
+    if (dictionary != null) {
+      dictionary.export("")
+      if (dictionary.getExporter() == null) {
+        showErrorDialog("saveUnsupported")
+      }
+    }
+  }
+
+  @FXML
   private void selectPreviousDictionary() {
     $tabPane.getSelectionModel().selectPrevious()
   }

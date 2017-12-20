@@ -543,6 +543,10 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return saver
   }
 
+  protected DictionarySaver createExporter(String path) {
+    return null
+  }
+
   public IndividualSetting createIndividualSetting() {
     SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
     return individualSetting

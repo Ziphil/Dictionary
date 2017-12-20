@@ -34,6 +34,8 @@ public interface Dictionary<W extends Word> {
 
   public void saveBackup()
 
+  public void export(String path)
+
   public Int hitWordSize()
 
   public Int totalWordSize()
@@ -74,6 +76,11 @@ public interface Dictionary<W extends Word> {
   // この辞書データがファイルへの保存に対応していない場合は、null を返します。
   // ここで返される Task オブジェクトは、save メソッドおよび saveBackup メソッドで利用されます。
   public Task<?> getSaver()
+
+  // 辞書データを他の形式で別ファイルに保存するための Task オブジェクトを返します。
+  // この辞書データが他の形式での別ファイルへの保存に対応していない場合は、null を返します。
+  // ここで返される Task オブジェクトは、export メソッドで利用されます。
+  public Task<?> getExporter()
 
   public DictionaryFactory getDictionaryFactory()
 

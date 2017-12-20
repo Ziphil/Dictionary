@@ -36,6 +36,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
+  private Task<?> $exporter
   private DictionaryFactory $dictionaryFactory
   protected Boolean $changed = false
   protected Boolean $firstEmpty = false
@@ -189,6 +190,16 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
+  public void export(String path) {
+    DictionarySaver exporter = createExporter(path)
+    if (exporter != null) {
+      $exporter = exporter
+      exporter.run()
+    } else {
+      $exporter = null
+    }
+  }
+
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords)
@@ -223,6 +234,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
 
   protected abstract DictionarySaver createSaver()
+
+  protected abstract DictionarySaver createExporter(String path)
 
   public IndividualSetting createIndividualSetting() {
     return null
@@ -278,6 +291,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public Task<?> getSaver() {
     return $saver
+  }
+
+  public Task<?> getExporter() {
+    return $exporter
   }
 
   public DictionaryFactory getDictionaryFactory() {

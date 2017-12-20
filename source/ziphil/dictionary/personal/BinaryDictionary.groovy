@@ -27,4 +27,8 @@ public class BinaryDictionary extends PersonalDictionary {
     return null
   }
 
+  protected DictionarySaver createExporter(String path) {
+    return null
+  }
+
 }

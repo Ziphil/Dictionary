@@ -176,6 +176,10 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return saver
   }
 
+  protected DictionarySaver createExporter(String path) {
+    return null
+  }
+
   public ControllerSupplier getControllerSupplier() {
     return $controllerSupplier
   }

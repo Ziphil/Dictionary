@@ -247,6 +247,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return saver
   }
 
+  protected DictionarySaver createExporter(String path) {
+    return null
+  }
+
   public ControllerSupplier getControllerSupplier() {
     return $controllerSupplier
   }
