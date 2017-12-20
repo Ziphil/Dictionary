@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ziphil.controller.Controller
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.ControllerFactory
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphilib.transform.Ziphilify
@@ -18,12 +19,20 @@ public class PersonalControllerFactory implements ControllerFactory {
     $dictionary = dictionary
   }
 
+  public Controller createExporterController(UtilityStage<ExportConfig> stage) {
+    return null
+  }
+
   public Controller createSearcherController(UtilityStage<SearchParameter> stage) {
     return null
   }
 
   public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, IndividualSetting individualSetting) {
     return null
+  }
+
+  public Boolean isExporterSupported() {
+    return false
   }
  
   public Boolean isSearcherSupported() {

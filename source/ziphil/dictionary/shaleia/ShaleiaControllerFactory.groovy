@@ -6,6 +6,7 @@ import ziphil.controller.ShaleiaIndividualSettingController
 import ziphil.controller.ShaleiaSearcherController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.ControllerFactory
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphilib.transform.Ziphilify
@@ -20,6 +21,10 @@ public class ShaleiaControllerFactory implements ControllerFactory {
     $dictionary = dictionary
   }
 
+  public Controller createExporterController(UtilityStage<ExportConfig> stage) {
+    return null
+  }
+
   public Controller createSearcherController(UtilityStage<SearchParameter> stage) {
     ShaleiaSearcherController controller = ShaleiaSearcherController.new(stage)
     return controller
@@ -29,6 +34,10 @@ public class ShaleiaControllerFactory implements ControllerFactory {
     ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(stage)
     controller.prepare($dictionary)
     return controller
+  }
+
+  public Boolean isExporterSupported() {
+    return false
   }
 
   public Boolean isSearcherSupported() {

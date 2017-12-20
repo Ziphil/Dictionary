@@ -338,6 +338,11 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
+    if (dictionary != null && dictionary.getControllerFactory().isExporterSupported()) {
+      if (styleClass.contains("can-export")) {
+        matched = true
+      }
+    }
     if (dictionary != null && dictionary.getControllerFactory().isSearcherSupported()) {
       if (styleClass.contains("can-search-detail")) {
         matched = true

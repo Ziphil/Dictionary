@@ -57,7 +57,7 @@
         <MenuItem styleClass="option,nonnull" text="名前をつけて保存" onAction="#saveAndRenameDictionary" accelerator="Shortcut+Shift+S"/>
         <Menu fx:id="$convertDictionaryMenu" styleClass="option,dammy,nonnull" text="別形式に変換"/>
         <MenuItem styleClass="option,dammy,null" text="別形式に変換" disable="true"/>
-        <MenuItem styleClass="option,debugging,nonnull" text="別形式にエクスポート" onAction="#exportDictionary"/>
+        <MenuItem styleClass="option,debugging,can-export" text="別形式にエクスポート" onAction="#exportDictionary"/>
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,nonnull" text="印刷" onAction="#printDictionary"/>
         <SeparatorMenuItem/>
