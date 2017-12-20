@@ -3,14 +3,14 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerSupplier
+import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerSupplier
+import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
@@ -25,8 +25,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
 
-  private ControllerSupplier $controllerSupplier = PersonalControllerSupplier.new(this)
-  private EditorControllerSupplier $editorControllerSupplier = PersonalEditorControllerSupplier.new(this)
+  private ControllerFactory $controllerFactory = PersonalControllerFactory.new(this)
+  private EditorControllerFactory $editorControllerFactory = PersonalEditorControllerFactory.new(this)
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -180,12 +180,12 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return null
   }
 
-  public ControllerSupplier getControllerSupplier() {
-    return $controllerSupplier
+  public ControllerFactory getControllerFactory() {
+    return $controllerFactory
   }
 
-  public EditorControllerSupplier getEditorControllerSupplier() {
-    return $editorControllerSupplier
+  public EditorControllerFactory getEditorControllerFactory() {
+    return $editorControllerFactory
   }
 
 }

@@ -338,7 +338,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()) {
+    if (dictionary != null && dictionary.getControllerFactory().isSearcherSupported()) {
       if (styleClass.contains("can-search-detail")) {
         matched = true
       }
@@ -352,7 +352,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()) {
+    if (dictionary != null && dictionary.getControllerFactory().isIndividualSettingSupported()) {
       if (styleClass.contains("has-individual-setting")) {
         matched = true
       }
@@ -447,7 +447,7 @@ public class MainController extends PrimitiveController<Stage> {
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Controller controller = dictionary.getControllerSupplier().getIndividualSettingController(nextStage, individualSetting)
+      Controller controller = dictionary.getControllerFactory().createIndividualSettingController(nextStage, individualSetting)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()

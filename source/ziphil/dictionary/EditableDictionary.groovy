@@ -43,6 +43,6 @@ public interface EditableDictionary<W extends Word, V extends Word> {
 
   public V determineWord(String name, PseudoWord psuedoWord)
 
-  public EditorControllerSupplier getEditorControllerSupplier()
+  public EditorControllerFactory getEditorControllerFactory()
 
 }

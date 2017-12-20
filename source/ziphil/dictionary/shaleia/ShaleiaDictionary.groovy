@@ -6,14 +6,14 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerSupplier
+import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerSupplier
+import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
@@ -38,8 +38,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $akrantiainSource = null
   private String $version = ""
   private Int $systemWordSize = 0
-  private ControllerSupplier $controllerSupplier = ShaleiaControllerSupplier.new(this)
-  private EditorControllerSupplier $editorControllerSupplier = ShaleiaEditorControllerSupplier.new(this)
+  private ControllerFactory $controllerFactory = ShaleiaControllerFactory.new(this)
+  private EditorControllerFactory $editorControllerFactory = ShaleiaEditorControllerFactory.new(this)
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
@@ -251,12 +251,12 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return null
   }
 
-  public ControllerSupplier getControllerSupplier() {
-    return $controllerSupplier
+  public ControllerFactory getControllerFactory() {
+    return $controllerFactory
   }
 
-  public EditorControllerSupplier getEditorControllerSupplier() {
-    return $editorControllerSupplier
+  public EditorControllerFactory getEditorControllerFactory() {
+    return $editorControllerFactory
   }
 
   public String getAlphabetOrder() {

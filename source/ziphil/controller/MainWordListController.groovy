@@ -144,7 +144,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void searchDetail() {
     UtilityStage<SearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    Controller controller = $dictionary.getControllerSupplier().getSearcherController(nextStage)
+    Controller controller = $dictionary.getControllerFactory().createSearcherController(nextStage)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -270,7 +270,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, word, $temporarySetting)
+        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -329,7 +329,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Controller controller = $dictionary.getEditorControllerSupplier().getCreatorController(nextStage, newWord, $temporarySetting)      
+      Controller controller = $dictionary.getEditorControllerFactory().createCreatorController(nextStage, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -358,7 +358,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, newWord, $temporarySetting)
+        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
