@@ -13,6 +13,7 @@ import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
@@ -176,7 +177,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return saver
   }
 
-  protected DictionarySaver createExporter(String path) {
+  protected DictionarySaver createExporter(ExportConfig config) {
     return null
   }
 

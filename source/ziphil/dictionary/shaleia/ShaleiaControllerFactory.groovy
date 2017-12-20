@@ -7,6 +7,7 @@ import ziphil.controller.ShaleiaSearcherController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphilib.transform.Ziphilify
@@ -36,7 +37,7 @@ public class ShaleiaControllerFactory implements ControllerFactory {
     return controller
   }
 
-  public Boolean isExporterSupported() {
+  public Boolean isExporterSupported(ExportType type) {
     return false
   }
 

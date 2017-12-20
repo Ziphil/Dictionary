@@ -17,6 +17,7 @@ import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyDictionaryConverter
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
@@ -543,7 +544,7 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return saver
   }
 
-  protected DictionarySaver createExporter(String path) {
+  protected DictionarySaver createExporter(ExportConfig config) {
     return null
   }
 

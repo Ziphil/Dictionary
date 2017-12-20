@@ -15,7 +15,7 @@ public interface ControllerFactory {
 
   public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, IndividualSetting individualSetting)
 
-  public Boolean isExporterSupported()
+  public Boolean isExporterSupported(ExportType type)
  
   public Boolean isSearcherSupported()
 

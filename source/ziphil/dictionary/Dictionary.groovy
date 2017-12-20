@@ -34,7 +34,7 @@ public interface Dictionary<W extends Word> {
 
   public void saveBackup()
 
-  public void export(String path)
+  public void export(ExportConfig config)
 
   public Int hitWordSize()
 

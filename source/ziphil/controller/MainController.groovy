@@ -30,10 +30,13 @@ import javax.script.ScriptException
 import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.Dialog
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -59,6 +62,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
+  @FXML private Menu $exportDictionaryMenu
   @FXML private Menu $searchRegisteredParameterMenu
   @FXML private Menu $pluginMenu
   @FXML private TabPane $tabPane
@@ -273,12 +277,27 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
-  private void exportDictionary() {
+  private void exportDictionary(ExportType type) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      dictionary.export("")
-      if (dictionary.getExporter() == null) {
-        showErrorDialog("saveUnsupported")
+      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      FileChooserController controller = FileChooserController.new(nextStage)
+      List<ExtensionFilter> extensionFilters = ArrayList.new()
+      ExtensionFilter extensionFilter = type.createExtensionFilter()
+      nextStage.initModality(Modality.APPLICATION_MODAL)
+      nextStage.initOwner($stage)
+      extensionFilters.add(extensionFilter)
+      controller.prepare(extensionFilters, extensionFilter, true)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        String path = nextStage.getResult().getAbsolutePath()
+        ExportConfig config = ExportConfig.new()
+        config.setType(type)
+        config.setPath(path)
+        dictionary.export(config)
+        if (dictionary.getExporter() == null) {
+          showErrorDialog("saveUnsupported")
+        }
       }
     }
   }
@@ -335,11 +354,6 @@ public class MainController extends PrimitiveController<Stage> {
       }
     } else {
       if (styleClass.contains("null")) {
-        matched = true
-      }
-    }
-    if (dictionary != null && dictionary.getControllerFactory().isExporterSupported()) {
-      if (styleClass.contains("can-export")) {
         matched = true
       }
     }
@@ -411,6 +425,28 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void updateExportDictionaryMenu() {
+    $exportDictionaryMenu.getItems().clear()
+    Dictionary dictionary = currentDictionary()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+    for (ExportType type : ExportType.values()) {
+      ExportType cachedType = type
+      MenuItem item = MenuItem.new("${type.getName()}形式")
+      item.setGraphic(ImageView.new(icon))
+      if (dictionary != null) {
+        item.setOnAction() {
+          exportDictionary(cachedType)
+        }
+        if (!dictionary.getControllerFactory().isExporterSupported(type)) {
+          item.setDisable(true)
+        }
+      } else {
+        item.setDisable(true)
+      }
+      $exportDictionaryMenu.getItems().add(item)
+    }
+  }  
+
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
@@ -437,6 +473,7 @@ public class MainController extends PrimitiveController<Stage> {
     updateMenuItems()
     updateSearchRegisteredParameterMenu()
     updateConvertDictionaryMenu()
+    updateExportDictionaryMenu()
     updatePluginMenu()
   }
 
