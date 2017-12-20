@@ -13,6 +13,7 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
+import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
@@ -61,7 +62,7 @@ public class ShaleiaWordCountPlugin implements Plugin {
   public Boolean isSupported(Dictionary dictionary) {
     if (dictionary instanceof ShaleiaDictionary) {
       if (dictionary.getVersion() == "5.5") {
-        return true
+        return Setting.getInstance().isDebugging()
       } else {
         return false
       }
