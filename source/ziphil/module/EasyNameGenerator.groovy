@@ -41,56 +41,57 @@ public class EasyNameGenerator implements NameGenerator {
     return name.toString()
   }
 
+}
 
-  @InnerClass @Ziphilify
-  public static class Config {
 
-    private List<String> $vowels = ArrayList.new()
-    private List<String> $consonants = ArrayList.new()
-    private List<String> $syllablePatterns = ArrayList.new()
-    private Int $minSyllableSize = 1
-    private Int $maxSyllableSize = 3
+@InnerClass(EasyNameGenerator)
+@CompileStatic @Ziphilify
+public static class Config {
 
-    public List<String> getVowels() {
-      return $vowels
-    }
+  private List<String> $vowels = ArrayList.new()
+  private List<String> $consonants = ArrayList.new()
+  private List<String> $syllablePatterns = ArrayList.new()
+  private Int $minSyllableSize = 1
+  private Int $maxSyllableSize = 3
 
-    public void setVowels(List<String> vowels) {
-      $vowels = vowels
-    }
+  public List<String> getVowels() {
+    return $vowels
+  }
 
-    public List<String> getConsonants() {
-      return $consonants
-    }
+  public void setVowels(List<String> vowels) {
+    $vowels = vowels
+  }
 
-    public void setConsonants(List<String> consonants) {
-      $consonants = consonants
-    }
+  public List<String> getConsonants() {
+    return $consonants
+  }
 
-    public List<String> getSyllablePatterns() {
-      return $syllablePatterns
-    }
+  public void setConsonants(List<String> consonants) {
+    $consonants = consonants
+  }
 
-    public void setSyllablePatterns(List<String> syllablePatterns) {
-      $syllablePatterns = syllablePatterns
-    }
+  public List<String> getSyllablePatterns() {
+    return $syllablePatterns
+  }
 
-    public Int getMinSyllableSize() {
-      return $minSyllableSize
-    }
+  public void setSyllablePatterns(List<String> syllablePatterns) {
+    $syllablePatterns = syllablePatterns
+  }
 
-    public void setMinSyllableSize(Int minSyllableSize) {
-      $minSyllableSize = minSyllableSize
-    }
+  public Int getMinSyllableSize() {
+    return $minSyllableSize
+  }
 
-    public Int getMaxSyllableSize() {
-      return $maxSyllableSize
-    }
+  public void setMinSyllableSize(Int minSyllableSize) {
+    $minSyllableSize = minSyllableSize
+  }
 
-    public void setMaxSyllableSize(Int maxSyllableSize) {
-      $maxSyllableSize = maxSyllableSize
-    }
+  public Int getMaxSyllableSize() {
+    return $maxSyllableSize
+  }
 
+  public void setMaxSyllableSize(Int maxSyllableSize) {
+    $maxSyllableSize = maxSyllableSize
   }
 
 }

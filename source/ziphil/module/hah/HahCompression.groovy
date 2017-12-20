@@ -62,39 +62,40 @@ public class HahCompression {
     $alphabetOrder = alphabetOrder
   }
 
+}
 
-  @InnerClass @Ziphilify
-  private static class SortElement {
 
-    private String $character
-    private Int $comparisonIndex = -1
-    private Int $index = -1
+@InnerClass(HahCompression)
+@CompileStatic @Ziphilify
+private static class SortElement {
 
-    public SortElement(String character, Int index) {
-      $character = character
-      $index = index
+  private String $character
+  private Int $comparisonIndex = -1
+  private Int $index = -1
+
+  public SortElement(String character, Int index) {
+    $character = character
+    $index = index
+  }
+
+  public void updateComparisonIndex(String order) {
+    if (order != null) {
+      $comparisonIndex = order.indexOf($character)
+    } else {
+      $comparisonIndex = $character.codePointAt(0)
     }
+  }
 
-    public void updateComparisonIndex(String order) {
-      if (order != null) {
-        $comparisonIndex = order.indexOf($character)
-      } else {
-        $comparisonIndex = $character.codePointAt(0)
-      }
-    }
+  public String getCharacter() {
+    return $character
+  }
 
-    public String getCharacter() {
-      return $character
-    }
+  public Int getComparisonIndex() {
+    return $comparisonIndex
+  }
 
-    public Int getComparisonIndex() {
-      return $comparisonIndex
-    }
-
-    public Int getIndex() {
-      return $index
-    }
-
+  public Int getIndex() {
+    return $index
   }
 
 }

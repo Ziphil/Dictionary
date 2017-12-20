@@ -274,60 +274,62 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     $maxSyllableSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
+}
 
-  @InnerClass @Ziphilify
-  public static class Result {
 
-    private List<PseudoWord> $pseudoWords
-    private List<String> $names
+@InnerClass(NameGeneratorController)
+@CompileStatic @Ziphilify
+public static class Result {
 
-    public Result(List<PseudoWord> pseudoWords, List<String> names) {
-      $pseudoWords = pseudoWords
-      $names = names
-    }
+  private List<PseudoWord> $pseudoWords
+  private List<String> $names
 
-    public List<PseudoWord> getPseudoWords() {
-      return $pseudoWords
-    }
-
-    public List<String> getNames() {
-      return $names
-    }
-
+  public Result(List<PseudoWord> pseudoWords, List<String> names) {
+    $pseudoWords = pseudoWords
+    $names = names
   }
 
+  public List<PseudoWord> getPseudoWords() {
+    return $pseudoWords
+  }
 
-  @InnerClass @Ziphilify
-  public static class Config {
+  public List<String> getNames() {
+    return $names
+  }
 
-    private EasyNameGenerator.Config $easyConfig
-    private String $zatlinSource
-    private String $selectedTabText
+}
 
-    public EasyNameGenerator.Config getEasyConfig() {
-      return $easyConfig
-    }
 
-    public void setEasyConfig(EasyNameGenerator.Config easyConfig) {
-      $easyConfig = easyConfig
-    }
+@InnerClass(NameGeneratorController)
+@CompileStatic @Ziphilify
+public static class Config {
 
-    public String getZatlinSource() {
-      return $zatlinSource
-    }
+  private EasyNameGenerator.Config $easyConfig
+  private String $zatlinSource
+  private String $selectedTabText
 
-    public void setZatlinSource(String zatlinSource) {
-      $zatlinSource = zatlinSource
-    }
+  public EasyNameGenerator.Config getEasyConfig() {
+    return $easyConfig
+  }
 
-    public String getSelectedTabText() {
-      return $selectedTabText
-    }
+  public void setEasyConfig(EasyNameGenerator.Config easyConfig) {
+    $easyConfig = easyConfig
+  }
 
-    public void setSelectedTabText(String selectedTabText) {
-      $selectedTabText = selectedTabText
-    }
+  public String getZatlinSource() {
+    return $zatlinSource
+  }
 
+  public void setZatlinSource(String zatlinSource) {
+    $zatlinSource = zatlinSource
+  }
+
+  public String getSelectedTabText() {
+    return $selectedTabText
+  }
+
+  public void setSelectedTabText(String selectedTabText) {
+    $selectedTabText = selectedTabText
   }
 
 }

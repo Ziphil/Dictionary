@@ -84,44 +84,45 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
     $fileChooser.setAdjustsExtension(false)
   }
 
+}
 
-  @InnerClass @Ziphilify
-  public static class Result {
 
-    private File $file
-    private String $string
-    private Boolean $fileSelected
+@InnerClass(FileStringChooserController)
+@CompileStatic @Ziphilify
+public static class Result {
 
-    private Result(File file, String string, Boolean fileSelected) {
-      $file = file
-      $string = string
-      $fileSelected = fileSelected
-    }
+  private File $file
+  private String $string
+  private Boolean $fileSelected
 
-    public static Result ofFile(File file) {
-      return Result.new(file, null, true)
-    }
+  private Result(File file, String string, Boolean fileSelected) {
+    $file = file
+    $string = string
+    $fileSelected = fileSelected
+  }
 
-    public static Result ofString(String string) {
-      return Result.new(null, string, false)
-    }
+  public static Result ofFile(File file) {
+    return Result.new(file, null, true)
+  }
 
-    public Boolean isFileSelected() {
-      return $fileSelected
-    }
+  public static Result ofString(String string) {
+    return Result.new(null, string, false)
+  }
 
-    public Boolean isStringSelected() {
-      return !$fileSelected
-    }
+  public Boolean isFileSelected() {
+    return $fileSelected
+  }
 
-    public File getFile() {
-      return $file
-    }
+  public Boolean isStringSelected() {
+    return !$fileSelected
+  }
 
-    public String getString() {
-      return $string
-    }
+  public File getFile() {
+    return $file
+  }
 
+  public String getString() {
+    return $string
   }
 
 }

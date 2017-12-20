@@ -95,111 +95,113 @@ public class HelpController extends Controller<Void> {
     }
   }
 
+}
 
-  @InnerClass @Ziphilify
-  private static enum HelpSection {
 
-    BASIC("基本操作", null, null),
-    BASIC_EDIT("編集", "basic_edit", BASIC),
-    BASIC_SEARCH("検索", "basic_search", BASIC),
-    EDIT("編集方法詳細", null, null),
-    SLIME_EDIT("OneToMany形式", "slime_edit", EDIT),
-    SCRIPT_SEARCH("スクリプト検索", "script_search", null),
-    SENTENCE_SEARCH("文一括検索", "sentence_search", null),
-    WORD_GENERATION("単語の自動生成", "word_generation", null),
-    SETTING("環境設定", "setting", null),
-    INDIVIDUAL_SETTING("辞書の個別設定", null, null),
-    SLIME_INDIVIDUAL_SETTING("OneToMany形式", "slime_individual_setting", INDIVIDUAL_SETTING),
-    SPECIFICATION("単語API", null, null),
-    SLIME_SPECIFICATION("OneToMany形式", "slime_specification", SPECIFICATION),
-    PERSONAL_SPECIFICATION("PDIC形式", "personal_specification", SPECIFICATION),
-    PLUGIN("プラグイン", "plugin", null),
-    TOOL("ツール", null, null),
-    HAH_COMPRESSION("hah圧縮", "hah_compression", TOOL),
-    AKRANTIAIN("akrantiain", "akrantiain", TOOL),
-    ZATLIN("Zatlin", "zatlin", TOOL),
-    EASY_NAME_GENERATION("簡易単語生成", "easy_name_generation", TOOL),
-    SHORTCUT("ショートカットキー", "shortcut", null),
-    OTHER("その他", "other", null),
-    LICENSE("ライセンス", "license", null),
-    DICTIONARY_TYPE("各形式について", "dictionary_type", null)
+@InnerClass(HelpController)
+@CompileStatic @Ziphilify
+private static enum HelpSection {
 
-    private static final String RESOURCE_DIRECTORY = "resource/help/"
+  BASIC("基本操作", null, null),
+  BASIC_EDIT("編集", "basic_edit", BASIC),
+  BASIC_SEARCH("検索", "basic_search", BASIC),
+  EDIT("編集方法詳細", null, null),
+  SLIME_EDIT("OneToMany形式", "slime_edit", EDIT),
+  SCRIPT_SEARCH("スクリプト検索", "script_search", null),
+  SENTENCE_SEARCH("文一括検索", "sentence_search", null),
+  WORD_GENERATION("単語の自動生成", "word_generation", null),
+  SETTING("環境設定", "setting", null),
+  INDIVIDUAL_SETTING("辞書の個別設定", null, null),
+  SLIME_INDIVIDUAL_SETTING("OneToMany形式", "slime_individual_setting", INDIVIDUAL_SETTING),
+  SPECIFICATION("単語API", null, null),
+  SLIME_SPECIFICATION("OneToMany形式", "slime_specification", SPECIFICATION),
+  PERSONAL_SPECIFICATION("PDIC形式", "personal_specification", SPECIFICATION),
+  PLUGIN("プラグイン", "plugin", null),
+  TOOL("ツール", null, null),
+  HAH_COMPRESSION("hah圧縮", "hah_compression", TOOL),
+  AKRANTIAIN("akrantiain", "akrantiain", TOOL),
+  ZATLIN("Zatlin", "zatlin", TOOL),
+  EASY_NAME_GENERATION("簡易単語生成", "easy_name_generation", TOOL),
+  SHORTCUT("ショートカットキー", "shortcut", null),
+  OTHER("その他", "other", null),
+  LICENSE("ライセンス", "license", null),
+  DICTIONARY_TYPE("各形式について", "dictionary_type", null)
 
-    private String $name = null
-    private String $path = null
-    private HelpSection $parent = null
+  private static final String RESOURCE_DIRECTORY = "resource/help/"
 
-    private HelpSection(String name, String path, HelpSection parent) {
-      $name = name
-      $path = path
-      $parent = parent
-    }
+  private String $name = null
+  private String $path = null
+  private HelpSection $parent = null
 
-    public String toString() {
-      return $name
-    }
-
-    public String getPath() {
-      return ($path != null) ? $path + ".html" : null
-    }
-
-    public String getAbsolutePath() {
-      return ($path != null) ? RESOURCE_DIRECTORY + $path + ".html" : null
-    }
-
-    public HelpSection getParent() {
-      return $parent
-    }
-
+  private HelpSection(String name, String path, HelpSection parent) {
+    $name = name
+    $path = path
+    $parent = parent
   }
 
+  public String toString() {
+    return $name
+  }
 
-  @InnerClass @Ziphilify
-  private static class HelpItem extends TreeItem<HelpSection> {
+  public String getPath() {
+    return ($path != null) ? $path + ".html" : null
+  }
 
-    private Boolean $leaf = true
-    private Boolean $leafDetermined = false
-    private Boolean $childrenCreated = false
+  public String getAbsolutePath() {
+    return ($path != null) ? RESOURCE_DIRECTORY + $path + ".html" : null
+  }
 
-    private HelpItem(HelpSection section) {
-      super(section)
-      setExpanded(true)
-    }
+  public HelpSection getParent() {
+    return $parent
+  }
 
-    public static TreeItem<HelpSection> createRoot() {
-      return HelpItem.new(null)
-    }
+}
 
-    public Boolean isLeaf() {
-      if (!$leafDetermined) {
-        $leafDetermined = true
-        HelpSection section = getValue()
-        for (HelpSection eachSection : HelpSection.values()) {
-          if (eachSection.getParent() == section) {
-            $leaf = false
-            break
-          }
+
+@InnerClass(HelpController)
+@CompileStatic @Ziphilify
+private static class HelpItem extends TreeItem<HelpSection> {
+
+  private Boolean $leaf = true
+  private Boolean $leafDetermined = false
+  private Boolean $childrenCreated = false
+
+  private HelpItem(HelpSection section) {
+    super(section)
+    setExpanded(true)
+  }
+
+  public static TreeItem<HelpSection> createRoot() {
+    return HelpItem.new(null)
+  }
+
+  public Boolean isLeaf() {
+    if (!$leafDetermined) {
+      $leafDetermined = true
+      HelpSection section = getValue()
+      for (HelpSection eachSection : HelpSection.values()) {
+        if (eachSection.getParent() == section) {
+          $leaf = false
+          break
         }
       }
-      return $leaf
     }
+    return $leaf
+  }
 
-    public ObservableList<TreeItem<HelpSection>> getChildren() {
-      if (!$childrenCreated) {
-        $childrenCreated = true
-        HelpSection section = getValue()
-        List<TreeItem<HelpSection>> children = ArrayList.new()
-        for (HelpSection eachSection : HelpSection.values()) {
-          if ((section != null && eachSection.getParent() == section) || (section == null && eachSection.getParent() == null)) {
-            children.add(HelpItem.new(eachSection))
-          }
+  public ObservableList<TreeItem<HelpSection>> getChildren() {
+    if (!$childrenCreated) {
+      $childrenCreated = true
+      HelpSection section = getValue()
+      List<TreeItem<HelpSection>> children = ArrayList.new()
+      for (HelpSection eachSection : HelpSection.values()) {
+        if ((section != null && eachSection.getParent() == section) || (section == null && eachSection.getParent() == null)) {
+          children.add(HelpItem.new(eachSection))
         }
-        super.getChildren().setAll(children)
       }
-      return super.getChildren()
+      super.getChildren().setAll(children)
     }
-
+    return super.getChildren()
   }
 
 }
