@@ -48,8 +48,12 @@ public interface Dictionary<W extends Word> {
 
   public void setPath(String path)
 
+  // アルファベット順を格納した文字列を返します。
+  // この辞書データがアルファベット順の情報をもっていない場合は、null を返します。
   public String getAlphabetOrder()
 
+  // 埋め込み akrantiain のオブジェクトを返します。
+  // この辞書データが埋め込み akrantiain に対応していない場合は、null を返します。
   public Akrantiain getAkrantiain()
 
   public ObservableList<Element> getWholeWords()
@@ -66,6 +70,9 @@ public interface Dictionary<W extends Word> {
 
   public Task<?> getLoader()
 
+  // 辞書データをファイルに保存するための Task オブジェクトを返します。
+  // この辞書データがファイルへの保存に対応していない場合は、null を返します。
+  // ここで返される Task オブジェクトは、save メソッドおよび saveBackup メソッドで利用されます。
   public Task<?> getSaver()
 
   public DictionaryFactory getDictionaryFactory()
