@@ -58,6 +58,7 @@
         <Menu fx:id="$convertDictionaryMenu" styleClass="option,dammy,nonnull" text="別形式に変換"/>
         <MenuItem styleClass="option,dammy,null" text="別形式に変換" disable="true"/>
         <SeparatorMenuItem/>
+        <MenuItem styleClass="option,debugging,nonnull" text="PDFにエクスポート" onAction="#printDictionary"/>
         <MenuItem styleClass="option,nonnull" text="印刷" onAction="#printDictionary"/>
         <SeparatorMenuItem/>
         <MenuItem text="終了" onAction="#exit">

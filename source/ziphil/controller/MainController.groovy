@@ -303,6 +303,12 @@ public class MainController extends PrimitiveController<Stage> {
             }
           }
         }
+        if (!Setting.getInstance().isDebugging()) {
+          if (styleClass.contains("debugging")) {
+            item.setDisable(true)
+            item.setVisible(false)
+          }
+        }
       }
     }
     $menuBar.layout()
