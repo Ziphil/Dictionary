@@ -31,7 +31,7 @@ public class PersonalDictionaryConverterFactory extends DictionaryConverterFacto
       if (sourceDictionary instanceof ShaleiaDictionary) {
         return true
       } else if (sourceDictionary instanceof SlimeDictionary) {
-        return false
+        return true
       } else {
         return false
       }
