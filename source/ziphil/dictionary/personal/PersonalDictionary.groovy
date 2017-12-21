@@ -34,8 +34,8 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     super(name, path)
   }
 
-  public PersonalDictionary(String name, String path, Dictionary oldDictionary) {
-    super(name, path, oldDictionary)
+  public PersonalDictionary(String name, String path, DictionaryConverter converter) {
+    super(name, path, converter)
   }
 
   protected void prepare() {
@@ -156,22 +156,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
     return loader
   }
-
-  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof ShaleiaDictionary) {
-      PersonalShaleiaDictionaryConverter converter = PersonalShaleiaDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof PersonalDictionary) {
-      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (PersonalDictionary)oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof SlimeDictionary) {
-      PersonalSlimeDictionaryConverter converter = PersonalSlimeDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else {
-      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
-      return converter
-    }
-  } 
 
   protected DictionarySaver createSaver() {
     PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)

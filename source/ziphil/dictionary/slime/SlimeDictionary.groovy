@@ -62,8 +62,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     super(name, path)
   }
 
-  public SlimeDictionary(String name, String path, Dictionary oldDictionary) {
-    super(name, path, oldDictionary)
+  public SlimeDictionary(String name, String path, DictionaryConverter converter) {
+    super(name, path, converter)
   }
 
   protected void prepare() {
@@ -522,22 +522,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     loader.setMapper($$mapper)
     return loader
   }
-
-  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof ShaleiaDictionary) {
-      SlimeShaleiaDictionaryConverter converter = SlimeShaleiaDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof PersonalDictionary) {
-      SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof SlimeDictionary) {
-      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (SlimeDictionary)oldDictionary)
-      return converter
-    } else {
-      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
-      return converter
-    }
-  } 
 
   protected DictionarySaver createSaver() {
     SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)

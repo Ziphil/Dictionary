@@ -15,7 +15,25 @@ public abstract class DictionaryFactory {
 
   public abstract Dictionary loadEmptyDictionary(File file)
 
-  public abstract Dictionary convertDictionary(Dictionary oldDictionary, File file)
+  public abstract Dictionary convertDictionary(File file, DictionaryConverter converter)
+
+  public Dictionary convertDictionary(File file, Dictionary sourceDictionary) {
+    DictionaryConverter converter = null
+    if (sourceDictionary.getDictionaryFactory() != this) {
+      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+        if (factory.isAvailable(this, sourceDictionary)) {
+          converter = factory.create(this, sourceDictionary)
+          break
+        }
+      }
+    } else {
+      converter = IdentityDictionaryConverter.new(sourceDictionary)
+    }
+    if (converter == null) {
+      converter = EmptyDictionaryConverter.new(sourceDictionary)
+    }
+    return convertDictionary(file, converter)
+  }
 
   public abstract Image createIcon()
 
@@ -24,13 +42,26 @@ public abstract class DictionaryFactory {
     return extensionFilter
   }
 
-  public abstract Boolean isConvertableFrom(Dictionary dictionary)
+  public Boolean isConvertableFrom(Dictionary sourceDictionary) {
+    if (sourceDictionary.getDictionaryFactory() != this) {
+      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+        if (factory.isAvailable(this, sourceDictionary)) {
+          return true
+        }
+      }
+      return false
+    } else {
+      return true
+    }
+  }
 
   public abstract Boolean isCreatable()
 
   public abstract String getName()
 
   public abstract String getExtension()
+
+  public abstract Class<? extends Dictionary> getDictionaryClass()
 
   public static Dictionary loadProperDictionary(File file) {
     if (file != null) {
@@ -63,9 +94,9 @@ public abstract class DictionaryFactory {
     }
   }
 
-  public static Dictionary convertProperDictionary(DictionaryFactory factory, Dictionary oldDictionary, File file) {
+  public static Dictionary convertProperDictionary(DictionaryFactory factory, Dictionary sourceDictionary, File file) {
     if (file != null) {
-      Dictionary dictionary = factory.convertDictionary(oldDictionary, file)
+      Dictionary dictionary = factory.convertDictionary(file, sourceDictionary)
       dictionary.setDictionaryFactory(factory)
       return dictionary
     } else {

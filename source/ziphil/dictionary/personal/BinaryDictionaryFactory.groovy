@@ -3,6 +3,7 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
+import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -14,7 +15,6 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
 
   private static final String NAME = "PDIC-DIC形式"
   private static final String EXTENSION = "dic"
-  private static final Boolean CREATABLE = false
   private static final String ICON_PATH = "resource/icon/dic_dictionary.png"
 
   public Dictionary loadDictionary(File file) {
@@ -28,8 +28,8 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
     return dictionary
   }
 
-  public Dictionary convertDictionary(Dictionary oldDictionary, File file) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), oldDictionary)
+  public Dictionary convertDictionary(File file, DictionaryConverter converter) {
+    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), converter)
     return dictionary
   }
 
@@ -38,12 +38,8 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
     return icon
   }
 
-  public Boolean isConvertableFrom(Dictionary dictionary) {
-    return false
-  }
-
   public Boolean isCreatable() {
-    return CREATABLE
+    return false
   }
 
   public String getName() {
@@ -52,6 +48,10 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
 
   public String getExtension() {
     return EXTENSION
+  }
+
+  public Class<? extends Dictionary> getDictionaryClass() {
+    return BinaryDictionary
   }
 
 }

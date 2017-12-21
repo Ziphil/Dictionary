@@ -8,34 +8,37 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class DictionaryConverter<D extends Dictionary, E extends Dictionary, W extends Word> extends Task<BooleanClass> {
 
-  protected D $newDictionary
-  protected E $oldDictionary
-  protected List<W> $newWords = ArrayList.new()
+  protected D $dictionary
+  protected E $sourceDictionary
+  protected List<W> $words = ArrayList.new()
 
-  public DictionaryConverter(D newDictionary, E oldDictionary) {
-    $newDictionary = newDictionary
-    $oldDictionary = oldDictionary
+  public DictionaryConverter(E sourceDictionary) {
+    $sourceDictionary = sourceDictionary
     updateProgress(0, 1)
   }
 
   protected abstract BooleanClass convert()
 
   protected BooleanClass call() {
-    if ($oldDictionary != null) {
+    if ($sourceDictionary != null) {
       BooleanClass result = convert()
       updateProgress(1, 1)
-      $newDictionary.getRawWords().addAll($newWords)
-      $newDictionary.updateFirst()
-      for (Word newWord : $newWords) {
+      $dictionary.getRawWords().addAll($words)
+      $dictionary.updateFirst()
+      for (Word word : $words) {
         if (isCancelled()) {
           return false
         }
-        newWord.update()
+        word.update()
       }
       return result
     } else {
       return false
     }
+  }
+
+  public void setNewDictionary(D dictionary) {
+    $dictionary = dictionary
   }
 
 }

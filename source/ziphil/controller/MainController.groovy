@@ -415,10 +415,14 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryFactory cachedFactory = factory
       MenuItem item = MenuItem.new(factory.getName())
       item.setGraphic(ImageView.new(factory.createIcon()))
-      item.setOnAction() {
-        convertDictionary(cachedFactory)
-      }
-      if (!factory.isConvertableFrom(dictionary)) {
+      if (dictionary != null) {
+        item.setOnAction() {
+          convertDictionary(cachedFactory)
+        }
+        if (!factory.isConvertableFrom(dictionary)) {
+          item.setDisable(true)
+        }
+      } else {
         item.setDisable(true)
       }
       $convertDictionaryMenu.getItems().add(item)

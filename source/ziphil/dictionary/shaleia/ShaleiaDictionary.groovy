@@ -47,8 +47,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     super(name, path)
   }
 
-  public ShaleiaDictionary(String name, String path, Dictionary oldDictionary) {
-    super(name, path, oldDictionary)
+  public ShaleiaDictionary(String name, String path, DictionaryConverter converter) {
+    super(name, path, converter)
   }
 
   protected void prepare() {
@@ -232,16 +232,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
     return loader
   }
-
-  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof ShaleiaDictionary) {
-      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (ShaleiaDictionary)oldDictionary)
-      return converter
-    } else {
-      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
-      return converter
-    }
-  } 
 
   protected DictionarySaver createSaver() {
     ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)

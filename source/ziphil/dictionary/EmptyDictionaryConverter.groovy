@@ -7,8 +7,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class EmptyDictionaryConverter<D extends Dictionary, E extends Dictionary, W extends Word> extends DictionaryConverter<D, E, W> {
 
-  public EmptyDictionaryConverter(D newDictionary, E oldDictionary) {
-    super(newDictionary, oldDictionary)
+  public EmptyDictionaryConverter(E sourceDictionary) {
+    super(sourceDictionary)
     updateProgress(0, 1)
   }
 

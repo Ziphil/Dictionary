@@ -51,7 +51,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     load()
   }
 
-  public DictionaryBase(String name, String path, Dictionary oldDictionary) {
+  public DictionaryBase(String name, String path, DictionaryConverter converter) {
     $name = name
     $path = path
     $changed = true
@@ -59,7 +59,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     setupSortedWords()
     setupWholeWords()
     prepare()
-    convert(oldDictionary)
+    convert(converter)
   }
 
   protected abstract void prepare()
@@ -139,8 +139,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  private void convert(Dictionary oldDictionary) {
-    DictionaryConverter converter = createConverter(oldDictionary)
+  private void convert(DictionaryConverter converter) {
+    converter.setNewDictionary(this)
     if (converter != null) {
       converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
         if (!$firstEmpty) {
@@ -220,8 +220,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected abstract ConjugationResolver createConjugationResolver()
 
   protected abstract DictionaryLoader createLoader()
-
-  protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
 
   protected abstract DictionarySaver createSaver()
 
