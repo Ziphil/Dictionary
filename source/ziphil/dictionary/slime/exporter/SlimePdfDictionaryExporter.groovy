@@ -1,6 +1,9 @@
 package ziphil.dictionary.slime.exporter
 
 import groovy.transform.CompileStatic
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.Proxy
 import javax.xml.stream.XMLStreamWriter
 import javax.xml.stream.XMLOutputFactory
 import ziphil.dictionary.DictionarySaver
@@ -8,6 +11,7 @@ import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.slime.SlimeEquivalent
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeWord
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -30,7 +34,9 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
     File file = File.new(nextPath)
     BufferedWriter bufferedWriter = file.newWriter("UTF-8")
     XMLOutputFactory factory = XMLOutputFactory.newInstance()
-    XMLStreamWriter writer = factory.createXMLStreamWriter(bufferedWriter)
+    XMLStreamWriter rawWriter = factory.createXMLStreamWriter(bufferedWriter)
+    PrettyPrintHandler handler = PrettyPrintHandler.new(rawWriter)
+    XMLStreamWriter writer = (XMLStreamWriter)Proxy.newProxyInstance(XMLStreamWriter.getClassLoader(), (Class[])[XMLStreamWriter].toArray(), handler)
     try {
       writer.writeStartDocument()
       writer.writeStartElement("words")
@@ -78,6 +84,56 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
       writer.writeEndElement()
     }
     writer.writeEndElement()
+  }
+
+}
+
+
+@InnerClass(SlimePdfDictionaryExporter)
+@CompileStatic @Ziphilify
+private static class PrettyPrintHandler implements InvocationHandler {
+
+  private XMLStreamWriter $target
+  private Int $depth = 0
+  private Map<IntegerClass, BooleanClass> $childFlags = HashMap.new()
+
+  public PrettyPrintHandler(XMLStreamWriter target) {
+    $target = target
+  }
+
+  public Object invoke(Object proxy, Method method, Object[] args) {
+    String name = method.getName()
+    if (name == "writeStartElement") {
+      if ($depth > 0) {
+        $childFlags[$depth - 1] = true
+      }
+      $childFlags[$depth] = false
+      $target.writeCharacters("\n")
+      $target.writeCharacters(repeat($depth, "  "))
+      $depth ++
+    } else if (name == "writeEndElement") {
+      $depth --
+      if ($childFlags[$depth]) {
+        $target.writeCharacters("\n")
+        $target.writeCharacters(repeat($depth, "  "))
+      }
+    } else if (name == "writeEmptyElement") {
+      if ($depth > 0) {
+        $childFlags[$depth - 1] = true
+      }
+      $target.writeCharacters("\n")
+      $target.writeCharacters(repeat($depth, "  "))
+    }
+    method.invoke($target, args)
+    return null
+  }
+
+  private String repeat(Int depth, String string) {
+    String result = ""
+    while (depth -- > 0) {
+      result += string
+    }
+    return result
   }
 
 }
