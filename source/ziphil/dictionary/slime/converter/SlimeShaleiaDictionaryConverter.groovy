@@ -2,7 +2,7 @@ package ziphil.dictionary.slime.converter
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.Word
 import ziphil.dictionary.shaleia.ShaleiaDescriptionReader
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -15,13 +15,16 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeShaleiaDictionaryConverter extends DictionaryConverter<SlimeDictionary, ShaleiaDictionary, SlimeWord> {
+public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDictionary, SlimeWord> {
+
+  private ShaleiaDictionary $sourceDictionary
 
   public SlimeShaleiaDictionaryConverter(ShaleiaDictionary sourceDictionary) {
-    super(sourceDictionary)
+    super()
+    $sourceDictionary = sourceDictionary
   }
 
-  protected BooleanClass convert() {
+  protected BooleanClass load() {
     List<ShaleiaWord> sourceWords = $sourceDictionary.getRawWords()
     Int size = sourceWords.size()
     for (Int i = 0 ; i < size ; i ++) {

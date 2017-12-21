@@ -12,8 +12,11 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionary, PersonalWord> {
 
-  public PersonalDictionaryLoader(PersonalDictionary dictionary, String path) {
-    super(dictionary, path)
+  private String $path
+
+  public PersonalDictionaryLoader(String path) {
+    super()
+    $path = path
   }
 
   protected BooleanClass load() {

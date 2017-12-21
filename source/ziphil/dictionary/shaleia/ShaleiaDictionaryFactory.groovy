@@ -3,7 +3,7 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -18,17 +18,17 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
   private static final String ICON_PATH = "resource/icon/xdc_dictionary.png"
 
   public Dictionary loadDictionary(File file) {
-    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath())
+    ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(file.getPath())
+    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), loader)
     return dictionary
   }
 
   public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), null)
-    dictionary.setPath(file.getPath())
+    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath())
     return dictionary
   }
 
-  public Dictionary convertDictionary(File file, DictionaryConverter converter) {
+  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
     Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), converter)
     return dictionary
   }

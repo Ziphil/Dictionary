@@ -9,7 +9,7 @@ public abstract class DictionaryConverterFactory {
 
   public static final List<DictionaryConverterFactory> FACTORIES = loadFactories()
 
-  public abstract DictionaryConverter create(DictionaryFactory factory, Dictionary sourceDictionary)
+  public abstract DictionaryLoader create(DictionaryFactory factory, Dictionary sourceDictionary)
 
   public abstract Boolean isAvailable(DictionaryFactory factory, Dictionary sourceDictionary)
 

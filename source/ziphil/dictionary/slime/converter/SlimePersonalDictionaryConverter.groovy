@@ -1,7 +1,7 @@
 package ziphil.dictionary.slime.converter
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.Word
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
@@ -12,13 +12,16 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimePersonalDictionaryConverter extends DictionaryConverter<SlimeDictionary, PersonalDictionary, SlimeWord> {
+public class SlimePersonalDictionaryConverter extends DictionaryLoader<SlimeDictionary, SlimeWord> {
+
+  private PersonalDictionary $sourceDictionary
 
   public SlimePersonalDictionaryConverter(PersonalDictionary sourceDictionary) {
-    super(sourceDictionary)
+    super()
+    $sourceDictionary = sourceDictionary
   }
 
-  protected BooleanClass convert() {
+  protected BooleanClass load() {
     List<PersonalWord> sourceWords = $sourceDictionary.getRawWords()
     Int size = sourceWords.size()
     for (Int i = 0 ; i < size ; i ++) {

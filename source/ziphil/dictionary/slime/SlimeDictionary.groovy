@@ -11,7 +11,6 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryExporter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
@@ -62,8 +61,8 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     super(name, path)
   }
 
-  public SlimeDictionary(String name, String path, DictionaryConverter converter) {
-    super(name, path, converter)
+  public SlimeDictionary(String name, String path, DictionaryLoader loader) {
+    super(name, path, loader)
   }
 
   protected void prepare() {
@@ -515,12 +514,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   protected ConjugationResolver createConjugationResolver() {
     SlimeConjugationResolver conjugationResolver = SlimeConjugationResolver.new($suggestions)
     return conjugationResolver
-  }
-
-  protected DictionaryLoader createLoader() {
-    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
-    loader.setMapper($$mapper)
-    return loader
   }
 
   protected DictionarySaver createSaver() {

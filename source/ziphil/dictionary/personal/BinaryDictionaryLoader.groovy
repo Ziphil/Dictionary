@@ -9,8 +9,11 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, PersonalWord> {
 
-  public BinaryDictionaryLoader(BinaryDictionary dictionary, String path) {
-    super(dictionary, path)
+  private String $path
+
+  public BinaryDictionaryLoader(String path) {
+    super()
+    $path = path
   }
 
   protected BooleanClass load() {

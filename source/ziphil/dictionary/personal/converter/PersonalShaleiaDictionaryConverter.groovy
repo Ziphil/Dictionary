@@ -2,7 +2,7 @@ package ziphil.dictionary.personal.converter
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.Word
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
@@ -13,13 +13,16 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalShaleiaDictionaryConverter extends DictionaryConverter<PersonalDictionary, ShaleiaDictionary, PersonalWord> {
+public class PersonalShaleiaDictionaryConverter extends DictionaryLoader<PersonalDictionary, PersonalWord> {
+
+  private ShaleiaDictionary $sourceDictionary
 
   public PersonalShaleiaDictionaryConverter(ShaleiaDictionary sourceDictionary) {
-    super(sourceDictionary)
+    super()
+    $sourceDictionary = sourceDictionary
   }
 
-  protected BooleanClass convert() {
+  protected BooleanClass load() {
     List<ShaleiaWord> sourceWords = $sourceDictionary.getRawWords()
     Int size = sourceWords.size()
     for (Int i = 0 ; i < size ; i ++) {

@@ -9,7 +9,6 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryExporter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
@@ -47,8 +46,8 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     super(name, path)
   }
 
-  public ShaleiaDictionary(String name, String path, DictionaryConverter converter) {
-    super(name, path, converter)
+  public ShaleiaDictionary(String name, String path, DictionaryLoader loader) {
+    super(name, path, loader)
   }
 
   protected void prepare() {
@@ -226,11 +225,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   protected ConjugationResolver createConjugationResolver() {
     ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
     return conjugationResolver
-  }
-
-  protected DictionaryLoader createLoader() {
-    ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(this, $path)
-    return loader
   }
 
   protected DictionarySaver createSaver() {

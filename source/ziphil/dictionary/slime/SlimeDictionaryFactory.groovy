@@ -1,9 +1,11 @@
 package ziphil.dictionary.slime
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryConverter
+import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -17,18 +19,21 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
   private static final String EXTENSION = "json"
   private static final String ICON_PATH = "resource/icon/otm_dictionary.png"
 
+  private static ObjectMapper $$mapper = createObjectMapper()
+
   public Dictionary loadDictionary(File file) {
-    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath())
+    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(file.getPath())
+    loader.setMapper($$mapper)
+    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), loader)
     return dictionary
   }
 
   public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = SlimeDictionary.new(file.getName(), null)
-    dictionary.setPath(file.getPath())
+    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath())
     return dictionary
   }
 
-  public Dictionary convertDictionary(File file, DictionaryConverter converter) {
+  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
     Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), converter)
     return dictionary
   }
@@ -36,6 +41,12 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
   public Image createIcon() {
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream(ICON_PATH))
     return icon
+  }
+
+  private static ObjectMapper createObjectMapper() {
+    ObjectMapper mapper = ObjectMapper.new()
+    mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    return mapper
   }
 
   public Boolean isCreatable() {

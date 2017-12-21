@@ -15,10 +15,10 @@ public abstract class DictionaryFactory {
 
   public abstract Dictionary loadEmptyDictionary(File file)
 
-  public abstract Dictionary convertDictionary(File file, DictionaryConverter converter)
+  public abstract Dictionary convertDictionary(File file, DictionaryLoader converter)
 
   public Dictionary convertDictionary(File file, Dictionary sourceDictionary) {
-    DictionaryConverter converter = null
+    DictionaryLoader converter = null
     if (sourceDictionary.getDictionaryFactory() != this) {
       for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
         if (factory.isAvailable(this, sourceDictionary)) {

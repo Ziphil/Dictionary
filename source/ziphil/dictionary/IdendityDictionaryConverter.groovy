@@ -5,14 +5,16 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class IdentityDictionaryConverter<D extends Dictionary, W extends Word> extends DictionaryConverter<D, D, W> {
+public class IdentityDictionaryConverter<D extends Dictionary, W extends Word> extends DictionaryLoader<D, W> {
+
+  private D $sourceDictionary
 
   public IdentityDictionaryConverter(D sourceDictionary) {
-    super(sourceDictionary)
-    updateProgress(0, 1)
+    super()
+    $sourceDictionary = sourceDictionary
   }
 
-  protected BooleanClass convert() {
+  protected BooleanClass load() {
     $words.addAll($sourceDictionary.getRawWords())
     updateProgress(1, 1)
     return true

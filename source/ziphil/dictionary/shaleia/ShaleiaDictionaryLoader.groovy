@@ -10,8 +10,11 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
 
-  public ShaleiaDictionaryLoader(ShaleiaDictionary dictionary, String path) {
-    super(dictionary, path)
+  private String $path
+
+  public ShaleiaDictionaryLoader(String path) {
+    super()
+    $path = path
   }
 
   protected BooleanClass load() {

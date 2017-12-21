@@ -38,28 +38,18 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   private Task<?> $saver
   private DictionaryFactory $dictionaryFactory
   protected Boolean $changed = false
-  protected Boolean $firstEmpty = false
 
   public DictionaryBase(String name, String path) {
     $name = name
     $path = path
-    $changed = (path == null) ? true : false
-    $firstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
     prepare()
-    load()
   }
 
-  public DictionaryBase(String name, String path, DictionaryConverter converter) {
-    $name = name
-    $path = path
-    $changed = true
-    $firstEmpty = true
-    setupSortedWords()
-    setupWholeWords()
-    prepare()
-    convert(converter)
+  public DictionaryBase(String name, String path, DictionaryLoader loader) {
+    this(name, path)
+    load(loader)
   }
 
   protected abstract void prepare()
@@ -122,33 +112,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract Dictionary copy()
 
-  private void load() {
-    DictionaryLoader loader = createLoader()
+  private void load(DictionaryLoader loader) {
+    loader.setDictionary(this)
     if (loader != null) {
       loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        if (!$firstEmpty) {
-          $changed = false
-        }
+        $changed = false
       }
       $loader = loader
       Thread thread = Thread.new(loader)
-      thread.setDaemon(true)
-      thread.start()
-    } else {
-      $loader = null
-    }
-  }
-
-  private void convert(DictionaryConverter converter) {
-    converter.setNewDictionary(this)
-    if (converter != null) {
-      converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        if (!$firstEmpty) {
-          $changed = false
-        }
-      }
-      $loader = converter
-      Thread thread = Thread.new(converter)
       thread.setDaemon(true)
       thread.start()
     } else {
@@ -218,8 +189,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   protected abstract ConjugationResolver createConjugationResolver()
-
-  protected abstract DictionaryLoader createLoader()
 
   protected abstract DictionarySaver createSaver()
 

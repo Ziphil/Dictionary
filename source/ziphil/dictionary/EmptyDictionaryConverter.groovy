@@ -5,14 +5,13 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class EmptyDictionaryConverter<D extends Dictionary, E extends Dictionary, W extends Word> extends DictionaryConverter<D, E, W> {
+public class EmptyDictionaryConverter<D extends Dictionary, W extends Word> extends DictionaryLoader<D, W> {
 
-  public EmptyDictionaryConverter(E sourceDictionary) {
-    super(sourceDictionary)
-    updateProgress(0, 1)
+  public EmptyDictionaryConverter(Dictionary sourceDictionary) {
+    super()
   }
 
-  protected BooleanClass convert() {
+  protected BooleanClass load() {
     updateProgress(1, 1)
     return true
   }

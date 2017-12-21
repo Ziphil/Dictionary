@@ -15,10 +15,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, SlimeWord> {
 
+  private String $path
   private ObjectMapper $mapper
 
-  public SlimeDictionaryLoader(SlimeDictionary dictionary, String path) {
-    super(dictionary, path)
+  public SlimeDictionaryLoader(String path) {
+    super()
+    $path = path
   }
 
   protected BooleanClass load() {

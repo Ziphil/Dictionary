@@ -6,7 +6,6 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryConverter
 import ziphil.dictionary.DictionaryExporter
 import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
@@ -34,8 +33,8 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     super(name, path)
   }
 
-  public PersonalDictionary(String name, String path, DictionaryConverter converter) {
-    super(name, path, converter)
+  public PersonalDictionary(String name, String path, DictionaryLoader loader) {
+    super(name, path, loader)
   }
 
   protected void prepare() {
@@ -150,11 +149,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   protected ConjugationResolver createConjugationResolver() {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
-  }
-
-  protected DictionaryLoader createLoader() {
-    PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
-    return loader
   }
 
   protected DictionarySaver createSaver() {

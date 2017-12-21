@@ -9,12 +9,9 @@ import ziphilib.transform.Ziphilify
 public abstract class DictionaryLoader<D extends Dictionary, W extends Word> extends Task<BooleanClass> {
 
   protected D $dictionary
-  protected String $path
   protected List<W> $words = ArrayList.new()
 
-  public DictionaryLoader(D dictionary, String path) {
-    $dictionary = dictionary
-    $path = path
+  public DictionaryLoader() {
     updateProgress(0, 1)
   }
 
@@ -23,21 +20,21 @@ public abstract class DictionaryLoader<D extends Dictionary, W extends Word> ext
   protected abstract BooleanClass load()
 
   protected BooleanClass call() {
-    if ($path != null) {
-      BooleanClass result = load()
-      updateProgress(1, 1)
-      $dictionary.getRawWords().addAll($words)
-      $dictionary.updateFirst()
-      for (Word word : $words) {
-        if (isCancelled()) {
-          return false
-        }
-        word.update()
+    BooleanClass result = load()
+    updateProgress(1, 1)
+    $dictionary.getRawWords().addAll($words)
+    $dictionary.updateFirst()
+    for (Word word : $words) {
+      if (isCancelled()) {
+        return false
       }
-      return result
-    } else {
-      return false
+      word.update()
     }
+    return result
+  }
+
+  public void setDictionary(D dictionary) {
+    $dictionary = dictionary
   }
 
 }
