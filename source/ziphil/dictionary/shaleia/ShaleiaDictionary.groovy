@@ -14,9 +14,7 @@ import ziphil.dictionary.DictionaryLoader
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerFactory
-import ziphil.dictionary.EmptyDictionaryConverter
 import ziphil.dictionary.ExportConfig
-import ziphil.dictionary.IdentityDictionaryConverter
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.SearchType
