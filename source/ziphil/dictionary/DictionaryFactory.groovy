@@ -56,6 +56,7 @@ public abstract class DictionaryFactory {
     for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
       if (factory.isAvailable(dictionary, config.getType())) {
         exporter = factory.create(dictionary, config)
+        exporter.setPath(config.getPath())
         break
       }
     }
