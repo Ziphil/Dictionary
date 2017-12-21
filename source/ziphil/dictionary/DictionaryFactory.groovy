@@ -9,7 +9,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class DictionaryFactory {
 
-  public static final List<DictionaryFactory> FACTORIES = lookupFactories()
+  public static final List<DictionaryFactory> FACTORIES = loadFactories()
 
   public abstract Dictionary loadDictionary(File file)
 
@@ -73,7 +73,7 @@ public abstract class DictionaryFactory {
     }
   }
 
-  private static List<DictionaryFactory> lookupFactories() {
+  private static List<DictionaryFactory> loadFactories() {
     List<DictionaryFactory> factories = ArrayList.new()
     ServiceLoader<DictionaryFactory> loader = ServiceLoader.load(DictionaryFactory, Thread.currentThread().getContextClassLoader())
     for (DictionaryFactory factory : loader) {
