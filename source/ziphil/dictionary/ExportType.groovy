@@ -8,7 +8,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum ExportType {
 
-  PDF("PDF", "pdf")
+  PDF("PDF", "pdf"),
+  HTML("HTML", "html")
 
   private String $name
   private String $extension
