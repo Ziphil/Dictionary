@@ -45,7 +45,7 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
       Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
       TransformerFactory factory = TransformerFactory.newInstance()
       Transformer transformer = factory.newTransformer(xslSource)
-      FopFactory fopFactory = FopFactory.newInstance()
+      FopFactory fopFactory = FopFactory.newInstance(File.new(".").toURI())
       Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, stream)
       Result result = SAXResult.new(fop.getDefaultHandler())
       transformer.transform(source, result)
