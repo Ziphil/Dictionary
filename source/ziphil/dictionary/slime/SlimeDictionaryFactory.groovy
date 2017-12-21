@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -21,21 +22,26 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  public Dictionary loadDictionary(File file) {
+  protected Dictionary create(File file, DictionaryLoader loader) {
+    if (loader != null) {
+      Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
+  }
+
+  protected DictionaryLoader createLoader(File file) {
     SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(file.getPath())
     loader.setMapper($$mapper)
-    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), loader)
-    return dictionary
+    return loader
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath())
-    return dictionary
-  }
-
-  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
-    Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), converter)
-    return dictionary
+  protected DictionarySaver createSaver() {
+    SlimeDictionarySaver saver = SlimeDictionarySaver.new()
+    saver.setMapper($$mapper)
+    return saver
   }
 
   public Image createIcon() {

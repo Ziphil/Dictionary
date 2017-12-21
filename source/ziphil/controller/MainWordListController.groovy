@@ -554,7 +554,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         dialog.setAllowsNegate(true)
         dialog.showAndWait()
         if (dialog.isCommitted()) {
-          $dictionary.save()
+          $dictionary.getDictionaryFactory().save($dictionary)
           if ($dictionary.getSaver() != null) {
             return true
           } else {
@@ -567,7 +567,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
           return false
         }
       } else {
-        $dictionary.save()
+        $dictionary.getDictionaryFactory().save($dictionary)
         return true
       }
     } else {

@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -17,20 +18,23 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
   private static final String EXTENSION = "dic"
   private static final String ICON_PATH = "resource/icon/dic_dictionary.png"
 
-  public Dictionary loadDictionary(File file) {
+  protected Dictionary create(File file, DictionaryLoader loader) {
+    if (loader != null) {
+      BinaryDictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      BinaryDictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
+  }
+
+  protected DictionaryLoader createLoader(File file) {
     BinaryDictionaryLoader loader = BinaryDictionaryLoader.new(file.getPath())
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), loader)
-    return dictionary
+    return loader
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath())
-    return dictionary
-  }
-
-  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), converter)
-    return dictionary
+  protected DictionarySaver createSaver() {
+    return null
   }
 
   public Image createIcon() {

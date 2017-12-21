@@ -18,12 +18,4 @@ public class BinaryDictionary extends PersonalDictionary {
     super(name, path, loader)
   }
 
-  protected DictionarySaver createSaver() {
-    return null
-  }
-
-  protected DictionarySaver createExporter(String path) {
-    return null
-  }
-
 }

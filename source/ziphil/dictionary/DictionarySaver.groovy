@@ -11,20 +11,16 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
   protected D $dictionary
   protected String $path
 
-  public DictionarySaver(D dictionary, String path) {
-    $dictionary = dictionary
-    $path = path
+  public DictionarySaver() {
+    updateProgress(0, 1)
   }
 
   protected abstract BooleanClass save()
 
   protected BooleanClass call() {
-    if ($path != null) {
-      BooleanClass result = save()
-      return result
-    } else {
-      return false
-    }
+    BooleanClass result = save()
+    updateProgress(1, 1)
+    return result
   }
 
   public String getPath() {
@@ -33,6 +29,10 @@ public abstract class DictionarySaver<D extends Dictionary> extends Task<Boolean
 
   public void setPath(String path) {
     $path = path
+  }
+
+  public void setDictionary(D dictionary) {
+    $dictionary = dictionary
   }
 
 }

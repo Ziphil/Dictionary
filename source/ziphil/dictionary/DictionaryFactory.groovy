@@ -11,13 +11,18 @@ public abstract class DictionaryFactory {
 
   public static final List<DictionaryFactory> FACTORIES = loadFactories()
 
-  public abstract Dictionary loadDictionary(File file)
+  protected abstract Dictionary create(File file, DictionaryLoader converter)
 
-  public abstract Dictionary loadEmptyDictionary(File file)
+  public Dictionary load(File file) {
+    DictionaryLoader loader = createLoader(file)
+    return create(file, loader)
+  }
 
-  public abstract Dictionary convertDictionary(File file, DictionaryLoader converter)
+  public Dictionary loadEmpty(File file) {
+    return create(file, null)
+  }
 
-  public Dictionary convertDictionary(File file, Dictionary sourceDictionary) {
+  public Dictionary convert(File file, Dictionary sourceDictionary) {
     DictionaryLoader converter = null
     if (sourceDictionary.getDictionaryFactory() != this) {
       for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
@@ -32,8 +37,34 @@ public abstract class DictionaryFactory {
     if (converter == null) {
       converter = EmptyDictionaryConverter.new(sourceDictionary)
     }
-    return convertDictionary(file, converter)
+    return create(file, converter)
   }
+
+  public void save(Dictionary dictionary) {
+    DictionarySaver saver = createSaver()
+    dictionary.save(saver)
+  }
+
+  public void saveBackup(Dictionary dictionary) {
+    DictionarySaver saver = createSaver()
+    saver.setPath(dictionary.getPath().replaceAll(/(?=\.\w+$)/, "_backup"))
+    dictionary.save(saver)
+  }
+
+  public void export(Dictionary dictionary, ExportConfig config) {
+    DictionarySaver exporter = null
+    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+      if (factory.isAvailable(dictionary, config.getType())) {
+        exporter = factory.create(dictionary, config)
+        break
+      }
+    }
+    dictionary.save(exporter)
+  }
+
+  protected abstract DictionaryLoader createLoader(File file)
+
+  protected abstract DictionarySaver createSaver()
 
   public abstract Image createIcon()
 
@@ -55,6 +86,14 @@ public abstract class DictionaryFactory {
     }
   }
 
+  public Boolean isExportableTo(Dictionary dictionary, ExportType type) {
+    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+      if (factory.isAvailable(dictionary, type)) {
+        return true
+      }
+    }
+  }
+
   public abstract Boolean isCreatable()
 
   public abstract String getName()
@@ -63,14 +102,14 @@ public abstract class DictionaryFactory {
 
   public abstract Class<? extends Dictionary> getDictionaryClass()
 
-  public static Dictionary loadProperDictionary(File file) {
+  public static Dictionary loadProper(File file) {
     if (file != null) {
       if (file.exists() && file.isFile()) {
         Dictionary dictionary = null
         String filePath = file.getPath()
         for (DictionaryFactory factory : FACTORIES) {
           if (filePath.endsWith("." + factory.getExtension())) {
-            dictionary = factory.loadDictionary(file)
+            dictionary = factory.load(file)
             dictionary.setDictionaryFactory(factory)
             break
           }
@@ -84,9 +123,9 @@ public abstract class DictionaryFactory {
     }
   }
 
-  public static Dictionary loadProperEmptyDictionary(DictionaryFactory factory, File file) {
+  public static Dictionary loadProperEmpty(DictionaryFactory factory, File file) {
     if (file != null) {
-      Dictionary dictionary = factory.loadEmptyDictionary(file)
+      Dictionary dictionary = factory.loadEmpty(file)
       dictionary.setDictionaryFactory(factory)
       return dictionary
     } else {
@@ -94,9 +133,9 @@ public abstract class DictionaryFactory {
     }
   }
 
-  public static Dictionary convertProperDictionary(DictionaryFactory factory, Dictionary sourceDictionary, File file) {
+  public static Dictionary convertProper(DictionaryFactory factory, Dictionary sourceDictionary, File file) {
     if (file != null) {
-      Dictionary dictionary = factory.convertDictionary(file, sourceDictionary)
+      Dictionary dictionary = factory.convert(file, sourceDictionary)
       dictionary.setDictionaryFactory(factory)
       return dictionary
     } else {

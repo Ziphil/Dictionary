@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -17,20 +18,24 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
   private static final String EXTENSION = "csv"
   private static final String ICON_PATH = "resource/icon/csv_dictionary.png"
 
-  public Dictionary loadDictionary(File file) {
+  protected Dictionary create(File file, DictionaryLoader loader) {
+    if (loader != null) {
+      PersonalDictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      PersonalDictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
+  }
+
+  protected DictionaryLoader createLoader(File file) {
     PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(file.getPath())
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath(), loader)
-    return dictionary
+    return loader
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath())
-    return dictionary
-  }
-
-  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath(), converter)
-    return dictionary
+  protected DictionarySaver createSaver() {
+    PersonalDictionarySaver saver = PersonalDictionarySaver.new()
+    return saver
   }
 
   public Image createIcon() {

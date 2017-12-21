@@ -30,11 +30,10 @@ public interface Dictionary<W extends Word> {
   // 同じ辞書オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用できます。
   public Dictionary copy()
 
-  public void save()
-
-  public void saveBackup()
-
-  public void export(ExportConfig config)
+  // この単語を saver に渡されたセーバーによってファイルに保存します。
+  // saver に保存先のパスが指定されていない場合は、この辞典データが保持しているパスに保存します。
+  // なお、実際にデータをファイルに保存する際は、このメソッドを直接呼び出すのではなく DictionaryFactory 経由で行うことが推奨されています。
+  public void save(DictionarySaver saver)
 
   public Int hitWordSize()
 
@@ -73,8 +72,7 @@ public interface Dictionary<W extends Word> {
   public Task<?> getLoader()
 
   // 辞書データをファイルに保存するための Task オブジェクトを返します。
-  // ここで返される Task オブジェクトは、save メソッドや export メソッドなどの保存処理が呼び出されたときに作成されます。
-  // この辞書データが呼び出された保存処理に対応していない場合は、null を返します。
+  // ここで返される Task オブジェクトは、save メソッドが呼び出されたときに作成されます。
   public Task<?> getSaver()
 
   public DictionaryFactory getDictionaryFactory()

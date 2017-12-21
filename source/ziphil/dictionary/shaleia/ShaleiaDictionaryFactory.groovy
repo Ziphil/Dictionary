@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -17,20 +18,24 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
   private static final String EXTENSION = "xdc"
   private static final String ICON_PATH = "resource/icon/xdc_dictionary.png"
 
-  public Dictionary loadDictionary(File file) {
+  protected Dictionary create(File file, DictionaryLoader loader) {
+    if (loader != null) {
+      Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
+  }
+
+  protected DictionaryLoader createLoader(File file) {
     ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(file.getPath())
-    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), loader)
-    return dictionary
+    return loader
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath())
-    return dictionary
-  }
-
-  public Dictionary convertDictionary(File file, DictionaryLoader converter) {
-    Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), converter)
-    return dictionary
+  protected DictionarySaver createSaver() {
+    ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new()
+    return saver
   }
 
   public Image createIcon() {

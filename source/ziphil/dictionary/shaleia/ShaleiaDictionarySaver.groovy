@@ -10,17 +10,16 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
 
-  private Comparator<? super ShaleiaWord> $comparator
-
-  public ShaleiaDictionarySaver(ShaleiaDictionary dictionary, String path) {
-    super(dictionary, path)
+  public ShaleiaDictionarySaver() {
+    super()
   }
 
   protected BooleanClass save() {
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
     try {
-      List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted((Comparator<ShaleiaWord>)$comparator)
+      Comparator<ShaleiaWord> comparator = (Comparator<ShaleiaWord>)$dictionary.getWordComparator()
+      List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted(comparator)
       for (ShaleiaWord word : sortedWord) {
         writer.write("* ")
         writer.write(word.getUniqueName())
@@ -61,10 +60,6 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
       writer.close()
     }
     return true
-  }
-
-  public void setComparator(Comparator<? super ShaleiaWord> comparator) {
-    $comparator = comparator
   }
 
 }

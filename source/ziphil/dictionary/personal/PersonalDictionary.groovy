@@ -147,15 +147,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return conjugationResolver
   }
 
-  protected DictionarySaver createSaver() {
-    PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
-    return saver
-  }
-
-  protected DictionaryExporter createExporter(ExportConfig config) {
-    return null
-  }
-
   public ControllerFactory getControllerFactory() {
     return $controllerFactory
   }

@@ -150,7 +150,7 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+      Dictionary nextDictionary = DictionaryFactory.loadProper(file)
       if (nextDictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
         addDictionaryTab(nextDictionary)
@@ -164,7 +164,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void reopenDictionary() {
     Dictionary dictionary = currentDictionary()
     File file = File.new(dictionary.getPath())
-    Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
+    Dictionary nextDictionary = DictionaryFactory.loadProper(file)
     if (nextDictionary != null) {
       MainWordListController controller = currentWordListController()
       controller.open(nextDictionary)
@@ -177,7 +177,7 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
@@ -189,7 +189,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void openRegisteredDictionary(File file) {
-    Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
+    Dictionary dictionary = DictionaryFactory.loadProper(file)
     if (dictionary != null) {
       Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       addDictionaryTab(dictionary)
@@ -207,7 +207,7 @@ public class MainController extends PrimitiveController<Stage> {
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       File file = nextStage.getResult()
-      Dictionary dictionary = DictionaryFactory.loadProperEmptyDictionary(factory, file)
+      Dictionary dictionary = DictionaryFactory.loadProperEmpty(factory, file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         addDictionaryTab(dictionary)
@@ -221,7 +221,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void saveDictionary() {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      dictionary.save()
+      dictionary.getDictionaryFactory().save(dictionary)
       if (dictionary.getSaver() == null) {
         showErrorDialog("saveUnsupported")
       }
@@ -245,7 +245,7 @@ public class MainController extends PrimitiveController<Stage> {
           dictionary.setName(file.getName())
           dictionary.setPath(file.getAbsolutePath())
           tab.setText(dictionary.getName())
-          dictionary.save()
+          dictionary.getDictionaryFactory().save(dictionary)
           Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         } else {
           showErrorDialog("failSaveDictionary")
@@ -265,7 +265,7 @@ public class MainController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         File file = nextStage.getResult()
-        Dictionary nextDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
+        Dictionary nextDictionary = DictionaryFactory.convertProper(factory, dictionary, file)
         if (nextDictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
           addDictionaryTab(nextDictionary)
@@ -294,7 +294,7 @@ public class MainController extends PrimitiveController<Stage> {
         ExportConfig config = ExportConfig.new()
         config.setType(type)
         config.setPath(path)
-        dictionary.export(config)
+        dictionary.getDictionaryFactory().export(dictionary, config)
         if (dictionary.getSaver() == null) {
           showErrorDialog("saveUnsupported")
         }
@@ -441,7 +441,7 @@ public class MainController extends PrimitiveController<Stage> {
         item.setOnAction() {
           exportDictionary(cachedType)
         }
-        if (!dictionary.getControllerFactory().isExporterSupported(type)) {
+        if (!dictionary.getDictionaryFactory().isExportableTo(dictionary, type)) {
           item.setDisable(true)
         }
       } else {
@@ -790,7 +790,7 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
-      dictionary.saveBackup()
+      dictionary.getDictionaryFactory().saveBackup(dictionary)
     }
     if (individualSetting != null) {
       individualSetting.save()

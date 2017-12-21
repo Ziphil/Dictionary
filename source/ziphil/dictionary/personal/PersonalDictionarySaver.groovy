@@ -10,8 +10,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary> {
 
-  public PersonalDictionarySaver(PersonalDictionary dictionary, String path) {
-    super(dictionary, path)
+  public PersonalDictionarySaver() {
+    super()
   }
 
   protected BooleanClass save() {

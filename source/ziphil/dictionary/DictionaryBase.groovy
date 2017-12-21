@@ -113,8 +113,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public abstract Dictionary copy()
 
   private void load(DictionaryLoader loader) {
-    loader.setDictionary(this)
     if (loader != null) {
+      loader.setDictionary(this)
       loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
         $changed = false
       }
@@ -127,35 +127,19 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void save() {
-    DictionarySaver saver = createSaver()
+  public void save(DictionarySaver saver) {
     if (saver != null) {
+      saver.setDictionary(this)
+      if (saver.getPath() == null) {
+        saver.setPath($path)
+        saver.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+          $changed = false
+        }
+      }
       $saver = saver
-      saver.run()
-      if (saver.getPath() != null) {
-        $changed = false
-      }
-    } else {
-      $saver = null
-    }
-  }
-
-  public void saveBackup() {
-    DictionarySaver saver = createSaver()
-    if (saver != null) {
-      if (saver.getPath() != null) {
-        String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
-        saver.setPath(newPath)
-        saver.run()
-      }
-    }
-  }
-
-  public void export(ExportConfig config) {
-    DictionaryExporter exporter = createExporter(config)
-    if (exporter != null) {
-      $saver = exporter
-      exporter.run()
+      Thread thread = Thread.new(saver)
+      thread.setDaemon(false)
+      thread.start()
     } else {
       $saver = null
     }
@@ -189,10 +173,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   protected abstract ConjugationResolver createConjugationResolver()
-
-  protected abstract DictionarySaver createSaver()
-
-  protected abstract DictionaryExporter createExporter(ExportConfig config)
 
   public IndividualSetting createIndividualSetting() {
     return null

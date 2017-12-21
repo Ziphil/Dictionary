@@ -225,16 +225,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return conjugationResolver
   }
 
-  protected DictionarySaver createSaver() {
-    ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new(this, $path)
-    saver.setComparator($sortedWords.getComparator())
-    return saver
-  }
-
-  protected DictionaryExporter createExporter(ExportConfig config) {
-    return null
-  }
-
   public ControllerFactory getControllerFactory() {
     return $controllerFactory
   }
@@ -277,6 +267,10 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
 
   public void setAkrantiainSource(String akrantiainSource) {
     $akrantiainSource = akrantiainSource
+  }
+
+  public Comparator<? super ShaleiaWord> getWordComparator() {
+    return $sortedWords.getComparator()
   }
 
 }

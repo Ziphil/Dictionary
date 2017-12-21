@@ -1,8 +1,6 @@
 package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -30,8 +28,6 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord> {
-
-  private static ObjectMapper $$mapper = createObjectMapper()
 
   private Int $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()
@@ -512,25 +508,9 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return conjugationResolver
   }
 
-  protected DictionarySaver createSaver() {
-    SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
-    saver.setMapper($$mapper)
-    return saver
-  }
-
-  protected DictionaryExporter createExporter(ExportConfig config) {
-    return null
-  }
-
   public IndividualSetting createIndividualSetting() {
     SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
     return individualSetting
-  }
-
-  private static ObjectMapper createObjectMapper() {
-    ObjectMapper mapper = ObjectMapper.new()
-    mapper.enable(SerializationFeature.INDENT_OUTPUT)
-    return mapper
   }
 
   public ControllerFactory getControllerFactory() {

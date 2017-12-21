@@ -15,8 +15,8 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
 
   private ObjectMapper $mapper
 
-  public SlimeDictionarySaver(SlimeDictionary dictionary, String path) {
-    super(dictionary, path)
+  public SlimeDictionarySaver() {
+    super()
   }
 
   protected BooleanClass save() {
