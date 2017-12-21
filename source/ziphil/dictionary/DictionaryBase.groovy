@@ -118,15 +118,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract void updateMinimum()
 
-  protected void updateMinimumOnBackground() {
-    Task<Void> task = SimpleTask.new() {
-      updateMinimum()
-    }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
   public abstract Object createPlainWord(W word)
 
   public abstract Dictionary copy()
