@@ -289,7 +289,7 @@ public class MainController extends PrimitiveController<Stage> {
       extensionFilters.add(extensionFilter)
       controller.prepare(extensionFilters, extensionFilter, true)
       nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
+      if (nextStage.isCommitted() && nextStage.getResult() != null) {
         String path = nextStage.getResult().getAbsolutePath()
         ExportConfig config = ExportConfig.new()
         config.setType(type)

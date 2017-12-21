@@ -91,7 +91,7 @@ public class CharacterFrequencyController extends Controller<Void> {
     extensionFilters.addAll(csvExtensionFilter, tsvExtensionFilter)
     controller.prepare(extensionFilters, csvExtensionFilter, true)
     nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
       File file = nextStage.getResult()
       $analyzer.save(file.getAbsolutePath())
     }
