@@ -295,7 +295,7 @@ public class MainController extends PrimitiveController<Stage> {
         config.setType(type)
         config.setPath(path)
         dictionary.export(config)
-        if (dictionary.getExporter() == null) {
+        if (dictionary.getSaver() == null) {
           showErrorDialog("saveUnsupported")
         }
       }

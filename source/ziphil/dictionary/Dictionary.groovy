@@ -73,14 +73,9 @@ public interface Dictionary<W extends Word> {
   public Task<?> getLoader()
 
   // 辞書データをファイルに保存するための Task オブジェクトを返します。
-  // この辞書データがファイルへの保存に対応していない場合は、null を返します。
-  // ここで返される Task オブジェクトは、save メソッドおよび saveBackup メソッドで利用されます。
+  // ここで返される Task オブジェクトは、save メソッドや export メソッドなどの保存処理が呼び出されたときに作成されます。
+  // この辞書データが呼び出された保存処理に対応していない場合は、null を返します。
   public Task<?> getSaver()
-
-  // 辞書データを他の形式で別ファイルに保存するための Task オブジェクトを返します。
-  // この辞書データが他の形式での別ファイルへの保存に対応していない場合は、null を返します。
-  // ここで返される Task オブジェクトは、export メソッドで利用されます。
-  public Task<?> getExporter()
 
   public DictionaryFactory getDictionaryFactory()
 
