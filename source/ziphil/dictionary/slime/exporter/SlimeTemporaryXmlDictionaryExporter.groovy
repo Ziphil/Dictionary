@@ -20,8 +20,23 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class SlimeTemporaryXmlDictionaryExporter extends DictionarySaver<SlimeDictionary> {
 
-  protected void saveTemporary(String nextPath) {
-    File file = File.new(nextPath)
+  protected String $temporaryPath
+
+  public SlimeTemporaryXmlDictionaryExporter() {
+    super()
+  }
+
+  protected BooleanClass save() {
+    $temporaryPath = $path.replaceAll(/\.\w+$/, "_temp.xml")
+    BooleanClass temporaryResult = saveTemporary()
+    BooleanClass mainResult = saveMain()
+    return temporaryResult && mainResult
+  }
+
+  protected abstract BooleanClass saveMain()
+
+  protected BooleanClass saveTemporary() {
+    File file = File.new($temporaryPath)
     BufferedWriter bufferedWriter = file.newWriter("UTF-8")
     XMLOutputFactory factory = XMLOutputFactory.newInstance()
     XMLStreamWriter rawWriter = factory.createXMLStreamWriter(bufferedWriter)
@@ -39,6 +54,7 @@ public abstract class SlimeTemporaryXmlDictionaryExporter extends DictionarySave
       writer.close()
       bufferedWriter.close()
     }
+    return true
   }
 
   private void writeWord(XMLStreamWriter writer, SlimeWord word) {
