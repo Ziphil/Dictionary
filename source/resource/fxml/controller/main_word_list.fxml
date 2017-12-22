@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
@@ -61,7 +62,7 @@
       </HBox>
       <RefreshableListView fx:id="$wordView" styleClass="dictionary-list" VBox.vgrow="always"/>
     </VBox>
-    <HBox fx:id="$footerBox" styleClass="footer">
+    <HBox fx:id="$footerBox" styleClass="footer" alignment="centerLeft">
       <spacing><Double rpx="5"/></spacing>
       <padding>
         <Insets>
@@ -69,7 +70,9 @@
           <right><Double rpx="10"/></right>
         </Insets>
       </padding>
-      <Label fx:id="$dictionaryNameLabel"/>
+      <ProgressBar fx:id="$progressBar" styleClass="save-progress-bar" visible="false">
+        <prefWidth><Double rpx="100"/></prefWidth>
+      </ProgressBar>
       <HBox HBox.hgrow="always"/>
       <Label fx:id="$hitWordSizeLabel" text="0">
         <prefWidth><Double rpx="35"/></prefWidth>

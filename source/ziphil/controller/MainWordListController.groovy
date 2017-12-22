@@ -24,6 +24,7 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.ProgressBar
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
@@ -86,7 +87,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   @FXML private HBox $footerBox
-  @FXML private Label $dictionaryNameLabel
+  @FXML private ProgressBar $progressBar
   @FXML private Label $hitWordSizeLabel
   @FXML private Label $totalWordSizeLabel
   @FXML private Label $elapsedTimeLabel
@@ -515,6 +516,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public Boolean saveDictionary() {
     $dictionary.getDictionaryFactory().save($dictionary)
     if ($dictionary.getSaver() != null) {
+      updateSaver()
       return true
     } else {
       showErrorDialog("saveUnsupported")
@@ -525,6 +527,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public Boolean exportDictionary(ExportConfig config) {
     $dictionary.getDictionaryFactory().export($dictionary, config)
     if ($dictionary.getSaver() != null) {
+      updateSaver()
       return true
     } else {
       showErrorDialog("saveUnsupported")
@@ -532,7 +535,23 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public Boolean 
+  private void updateSaver() {
+    Task<?> saver = $dictionary.getSaver()
+    $progressBar.setVisible(true)
+    $progressBar.progressProperty().bind(saver.progressProperty())
+    saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $progressBar.setVisible(false)
+    }
+    saver.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+      $progressBar.setVisible(false)
+      failSaveDictionary(event.getSource().getException())
+    }
+  }
+
+  private void failSaveDictionary(Throwable throwable) {
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failSaveDictionary")
+  }
 
   public void focusWordList() {
     $wordView.requestFocus()

@@ -119,6 +119,10 @@
   -fx-alignment: baseline-center;
 }
 
+.save-progress-bar .bar {
+  -fx-padding: 0.5em;
+}
+
 .large {
   -fx-font-size: 1.2em;
   -fx-text-fill: -fx-text-inner-color;
