@@ -44,13 +44,11 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
     BufferedOutputStream stream = file.newOutputStream()
     BufferedInputStream temporaryStream = temporaryFile.newInputStream()
     try {
-      Source source = StreamSource.new(temporaryStream)
-      Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
-      TransformerFactory factory = TransformerFactory.newInstance()
-      Transformer transformer = factory.newTransformer(xslSource)
       FopFactory fopFactory = FopFactory.newInstance(File.new(".").toURI(), getClass().getClassLoader().getResourceAsStream(CONFIG_PATH))
       Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, stream)
       Result result = SAXResult.new(fop.getDefaultHandler())
+      Source source = StreamSource.new(temporaryStream)
+      Transformer transformer = createTransformer()
       transformer.transform(source, result)
     } finally {
       stream.close()
@@ -64,16 +62,22 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
     BufferedOutputStream stream = file.newOutputStream()
     BufferedInputStream temporaryStream = temporaryFile.newInputStream()
     try {
-      Source source = StreamSource.new(temporaryStream)
-      Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
-      TransformerFactory factory = TransformerFactory.newInstance()
-      Transformer transformer = factory.newTransformer(xslSource)
       Result result = StreamResult.new(stream)
+      Source source = StreamSource.new(temporaryStream)
+      Transformer transformer = createTransformer()
       transformer.transform(source, result)
     } finally {
       stream.close()
       temporaryStream.close()
     }
+  }
+
+  private Transformer createTransformer() {
+    Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
+    TransformerFactory factory = TransformerFactory.newInstance()
+    Transformer transformer = factory.newTransformer(xslSource)
+    transformer.setParameter("punctuation", ", ")
+    return transformer
   }
 
 }

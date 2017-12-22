@@ -2,9 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:variable name="head-name-font-family" select="'Arial, IPAゴシック'"/>
-  <xsl:variable name="font-family" select="'Times New Roman, IPA明朝'"/>
-  <xsl:variable name="punctuation" select="', '"/>
+  <xsl:param name="head-name-font-family" select="'Arial, IPAゴシック'"/>
+  <xsl:param name="font-family" select="'Times New Roman, IPA明朝'"/>
+  <xsl:param name="punctuation" select="', '"/>
 
   <xsl:template match="/">
     <fo:root>
