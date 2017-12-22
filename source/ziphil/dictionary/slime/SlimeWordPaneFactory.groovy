@@ -118,7 +118,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   private void addEquivalentNode(TextFlow pane, String title, List<String> equivalents) {
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
-    Text equivalentText = Text.new(equivalents.join($dictionary.firstPunctuation()))
+    Text equivalentText = Text.new(equivalents.join($dictionary.firstPunctuation()) ?: " ")
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
@@ -152,13 +152,21 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     if (title != "") {
-      pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      if (variationMarker != "") {
+        pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      } else {
+        pane.getChildren().addAll(titleText, spaceText)
+      }
     } else {
-      pane.getChildren().addAll(formerTitleText, spaceText)
+      if (variationMarker != "") {
+        pane.getChildren().addAll(formerTitleText, spaceText)
+      } else {
+        pane.getChildren().addAll(spaceText)
+      }
     }
     for (Int i = 0 ; i < names.size() ; i ++) {
       String name = names[i]
-      Text nameText = Text.new(name)
+      Text nameText = Text.new(name ?: " ")
       nameText.getStyleClass().add(CONTENT_CLASS)
       pane.getChildren().add(nameText)
       if (i < names.size() - 1) {
@@ -180,14 +188,22 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     if (title != "") {
-      pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      if (relationMarker != "") {
+        pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      } else {
+        pane.getChildren().addAll(titleText, spaceText)
+      }
     } else {
-      pane.getChildren().addAll(formerTitleText, spaceText)
+      if (relationMarker != "") {
+        pane.getChildren().addAll(formerTitleText, spaceText)
+      } else {
+        pane.getChildren().add(spaceText)
+      }
     }
     for (Int i = 0 ; i < names.size() ; i ++) {
       Int id = ids[i]
       String name = names[i]
-      Text nameText = Text.new(name)
+      Text nameText = Text.new(name ?: " ")
       nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(id))
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       pane.getChildren().add(nameText)
