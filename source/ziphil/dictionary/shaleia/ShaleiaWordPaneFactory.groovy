@@ -162,9 +162,9 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   }
 
   private void addSynonymNode(TextFlow pane, String synonym) {
-    String relationMarker = Setting.getInstance().getRelationMarker()
+    String marker = Setting.getInstance().getRelationMarker()
     TextFlow textFlow = TextFlow.new()
-    Text titleText = Text.new(relationMarker)
+    Text titleText = Text.new(marker)
     Text breakText = Text.new("\n")
     List<Text> synonymTexts = createRichTexts(" " + synonym, true)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)

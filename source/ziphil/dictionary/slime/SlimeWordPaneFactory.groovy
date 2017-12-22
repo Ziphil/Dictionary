@@ -144,22 +144,22 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addVariationNode(TextFlow pane, String title, List<String> names) {
-    String variationMarker = Setting.getInstance().getVariationMarker()
-    Text formerTitleText = Text.new(variationMarker)
+    String marker = Setting.getInstance().getVariationMarker()
+    Text markerText = Text.new(marker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
-    formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     if (title != "") {
-      if (variationMarker != "") {
-        pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      if (marker != "") {
+        pane.getChildren().addAll(markerText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
-      if (variationMarker != "") {
-        pane.getChildren().addAll(formerTitleText, spaceText)
+      if (marker != "") {
+        pane.getChildren().addAll(markerText, spaceText)
       } else {
         pane.getChildren().addAll(spaceText)
       }
@@ -180,22 +180,22 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
-    String relationMarker = Setting.getInstance().getRelationMarker()
-    Text formerTitleText = Text.new(relationMarker)
+    String marker = Setting.getInstance().getRelationMarker()
+    Text markerText = Text.new(marker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
-    formerTitleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
     if (title != "") {
-      if (relationMarker != "") {
-        pane.getChildren().addAll(formerTitleText, titleText, spaceText)
+      if (marker != "") {
+        pane.getChildren().addAll(markerText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
-      if (relationMarker != "") {
-        pane.getChildren().addAll(formerTitleText, spaceText)
+      if (marker != "") {
+        pane.getChildren().addAll(markerText, spaceText)
       } else {
         pane.getChildren().add(spaceText)
       }
