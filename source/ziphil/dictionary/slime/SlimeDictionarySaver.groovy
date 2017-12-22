@@ -23,13 +23,16 @@ public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
     FileOutputStream stream = FileOutputStream.new($path)
     JsonFactory factory = $mapper.getFactory()
     JsonGenerator generator = factory.createGenerator(stream)
+    Int size = $dictionary.getRawWords().size()
     try {
       generator.useDefaultPrettyPrinter()
       generator.writeStartObject()
       generator.writeFieldName("words")
       generator.writeStartArray()
-      for (SlimeWord word : $dictionary.getRawWords()) {
+      for (Int i = 0 ; i < size ; i ++) {
+        SlimeWord word = $dictionary.getRawWords()[i]
         writeWord(generator, word)
+        updateProgress(i + 1, size)
       }
       generator.writeEndArray()
       generator.writeFieldName("zpdic")

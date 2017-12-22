@@ -31,8 +31,10 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
   protected BooleanClass saveMain() {
     println("start")
     transformDebug()
+    updateProgress(1, 2)
     println("finish debug")
     transform()
+    updateProgress(2, 2)    
     println("finish")
   }
 

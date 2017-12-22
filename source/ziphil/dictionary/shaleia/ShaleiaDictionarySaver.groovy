@@ -17,16 +17,19 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
   protected BooleanClass save() {
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
+    Comparator<ShaleiaWord> comparator = (Comparator<ShaleiaWord>)$dictionary.getWordComparator()
+    List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted(comparator)
+    Int size = sortedWord.size()
     try {
-      Comparator<ShaleiaWord> comparator = (Comparator<ShaleiaWord>)$dictionary.getWordComparator()
-      List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted(comparator)
-      for (ShaleiaWord word : sortedWord) {
+      for (Int i = 0 ; i < size ; i ++) {
+        ShaleiaWord word = sortedWord[i]
         writer.write("* ")
         writer.write(word.getUniqueName())
         writer.newLine()
         writer.write(word.getDescription().trim())
         writer.newLine()
         writer.newLine()
+        updateProgress(i + 1, size)
       }
       writer.write("* META-ALPHABET-ORDER")
       writer.newLine()
