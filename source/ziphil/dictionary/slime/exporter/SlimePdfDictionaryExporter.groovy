@@ -19,6 +19,7 @@ import ziphilib.transform.Ziphilify
 public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExporter {
 
   private static final String XSL_PATH = "resource/xsl/slime_pdf.xsl"
+  private static final String CONFIG_PATH = "resource/xsl/config.xml"
 
   private ExportConfig $config
 
@@ -45,7 +46,7 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
       Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
       TransformerFactory factory = TransformerFactory.newInstance()
       Transformer transformer = factory.newTransformer(xslSource)
-      FopFactory fopFactory = FopFactory.newInstance(File.new(".").toURI())
+      FopFactory fopFactory = FopFactory.newInstance(File.new(".").toURI(), getClass().getClassLoader().getResourceAsStream(CONFIG_PATH))
       Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, stream)
       Result result = SAXResult.new(fop.getDefaultHandler())
       transformer.transform(source, result)
