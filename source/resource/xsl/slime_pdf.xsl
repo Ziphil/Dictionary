@@ -4,9 +4,14 @@
 
   <xsl:param name="head-font-family" select="'Source Han Serif'"/>
   <xsl:param name="font-family" select="'Source Han Serif'"/>
-  <xsl:param name="head-font-size" select="'11pt'"/>
-  <xsl:param name="font-size" select="'9pt'"/>
-  <xsl:param name="font-weight" select="'400'"/>
+  <xsl:param name="head-font-size" select="'10pt'"/>
+  <xsl:param name="font-size" select="'8pt'"/>
+  <xsl:param name="color" select="'#0A5B5B'"/><!--180°,80%,20%-->
+  <xsl:param name="light-color" select="'#B2E5E5'"/><!--180°,50%,80%-->
+  <xsl:param name="line-height" select="1.4"/>
+  <xsl:param name="border-width" select="'0.2mm'"/>
+  <xsl:param name="inner-space" select="'0.5mm'"/>
+  <xsl:param name="inner-margin" select="'1mm'"/>
   <xsl:param name="punctuation" select="', '"/>
 
   <xsl:template match="/">
@@ -25,24 +30,47 @@
   </xsl:template>
 
   <xsl:template match="words/word">
-    <fo:block space-before="5mm" space-after="5mm">
+    <fo:block space-before="3mm"
+              space-before.minimum="2mm"
+              space-before.maximum="5mm"
+              space-after="3mm"
+              space-after.minimum="2mm"
+              space-after.maximum="5mm"
+              border="{$border-width} {$color} solid">
       <xsl:call-template name="name"/>
       <xsl:call-template name="equivalents"/>
+      <xsl:call-template name="leader"/>
       <xsl:call-template name="informations"/>
     </fo:block>
   </xsl:template>
 
   <xsl:template name="name">
-    <fo:block font-family="{$head-font-family}" font-size="{$head-font-size}" font-weight="{$font-weight}">
-      <xsl:value-of select="name"/>
+    <fo:block font-family="{$head-font-family}"
+              font-size="{$head-font-size}"
+              font-weight="bold"
+              line-height="{$line-height}"
+              color="#FFFFFF"
+              background-color="{$color}">
+      <fo:inline padding="0mm 1.5mm 0mm 1.5mm">
+        <xsl:value-of select="name"/>
+      </fo:inline>
     </fo:block>
   </xsl:template>
 
   <xsl:template name="equivalents">
-    <fo:block>
+    <fo:block space-before="{$inner-space}"
+              space-after="{$inner-space}"
+              margin-left="{$inner-margin}"
+              margin-right="{$inner-margin}">
       <xsl:for-each select="equivalents/equivalent">
-        <fo:block font-family="{$font-family}" font-size="{$font-size}" font-weight="{$font-weight}">
-          <fo:inline font-size="0.8em" border="0.2mm #888888 solid" padding="0.2mm 0.5mm 0.2mm 0.5mm" space-end="1mm">
+        <fo:block font-family="{$font-family}"
+                  font-size="{$font-size}"
+                  line-height="{$line-height}">
+          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                     space-end="0.8mm"
+                     font-size="0.8em"
+                     border="{$border-width} {$color} solid"
+                     background-color="{$light-color}">
             <xsl:value-of select="title"/>
           </fo:inline>
           <fo:inline>
@@ -58,14 +86,35 @@
     </fo:block>
   </xsl:template>
 
+  <xsl:template name="leader">
+    <xsl:if test="count(informations/information) > 0">
+      <fo:block space-before="{$inner-space}"
+                space-after="{$inner-space}"
+                border-bottom="{$border-width} {$color} solid">
+      </fo:block>
+    </xsl:if> 
+  </xsl:template>
+
   <xsl:template name="informations">
-    <fo:block>
+    <fo:block space-before="{$inner-space}"
+              space-after="{$inner-space}"
+              margin-left="{$inner-margin}"
+              margin-right="{$inner-margin}">
       <xsl:for-each select="informations/information">
-        <fo:block font-family="{$font-family}" font-size="{$font-size}" font-weight="{$font-weight}">
-          <fo:block font-size="0.8em">
-            <xsl:value-of select="title"/>
+        <fo:block font-family="{$font-family}"
+                  font-size="{$font-size}"
+                  line-height="{$line-height}">
+          <fo:block margin-left="-{$inner-margin}"
+                    margin-bottom="0.2mm"
+                    line-height="1">
+            <fo:inline padding="0mm 3mm 0mm 0.8mm"
+                       font-size="0.8em"
+                       color="{$color}"
+                       border-bottom="{$border-width} {$color} solid">
+              <xsl:value-of select="title"/>
+            </fo:inline>
           </fo:block>
-          <fo:block>
+          <fo:block text-align="justify">
             <xsl:value-of select="text"/>
           </fo:block>
         </fo:block>
