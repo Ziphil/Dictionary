@@ -52,6 +52,7 @@ import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
@@ -511,6 +512,28 @@ public class MainWordListController extends PrimitiveController<Stage> {
     showErrorDialog("failUpdateDictionary")
   }
 
+  public Boolean saveDictionary() {
+    $dictionary.getDictionaryFactory().save($dictionary)
+    if ($dictionary.getSaver() != null) {
+      return true
+    } else {
+      showErrorDialog("saveUnsupported")
+      return false
+    }
+  }
+
+  public Boolean exportDictionary(ExportConfig config) {
+    $dictionary.getDictionaryFactory().export($dictionary, config)
+    if ($dictionary.getSaver() != null) {
+      return true
+    } else {
+      showErrorDialog("saveUnsupported")
+      return false
+    }
+  }
+
+  public Boolean 
+
   public void focusWordList() {
     $wordView.requestFocus()
     if ($wordView.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -554,21 +577,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
         dialog.setAllowsNegate(true)
         dialog.showAndWait()
         if (dialog.isCommitted()) {
-          $dictionary.getDictionaryFactory().save($dictionary)
-          if ($dictionary.getSaver() != null) {
-            return true
-          } else {
-            showErrorDialog("saveUnsupported")
-            return false
-          }
+          return saveDictionary()
         } else if (dialog.isNegated()) {
           return true
         } else {
           return false
         }
       } else {
-        $dictionary.getDictionaryFactory().save($dictionary)
-        return true
+        return saveDictionary()
       }
     } else {
       return true

@@ -219,13 +219,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void saveDictionary() {
-    Dictionary dictionary = currentDictionary()
-    if (dictionary != null) {
-      dictionary.getDictionaryFactory().save(dictionary)
-      if (dictionary.getSaver() == null) {
-        showErrorDialog("saveUnsupported")
-      }
-    }
+    currentWordListController().saveDictionary()
   }
 
   @FXML
@@ -245,7 +239,7 @@ public class MainController extends PrimitiveController<Stage> {
           dictionary.setName(file.getName())
           dictionary.setPath(file.getAbsolutePath())
           tab.setText(dictionary.getName())
-          dictionary.getDictionaryFactory().save(dictionary)
+          currentWordListController().saveDictionary()
           Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         } else {
           showErrorDialog("failSaveDictionary")
@@ -294,10 +288,7 @@ public class MainController extends PrimitiveController<Stage> {
         ExportConfig config = ExportConfig.new()
         config.setType(type)
         config.setPath(path)
-        dictionary.getDictionaryFactory().export(dictionary, config)
-        if (dictionary.getSaver() == null) {
-          showErrorDialog("saveUnsupported")
-        }
+        currentWordListController().exportDictionary(config)
       }
     }
   }
