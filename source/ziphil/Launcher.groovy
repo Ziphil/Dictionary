@@ -10,7 +10,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 27, 0, 2155)
+  public static final Version VERSION = Version.new(1, 27, 1, 2161)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -56,6 +56,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.27. 1 | OneToMany 形式の単語データの表示が特定の場合に崩れる不具合を修正。
 //  1.27. 0 | 表示している辞書を再読み込みする機能を追加。
 //          | OneToMany 形式で変化形を単語リストに表示するかどうかを設定する機能を追加。
 //  1.26. 1 | 単語自動生成時に不正なファイルがあるとエラーになる不具合を修正。
