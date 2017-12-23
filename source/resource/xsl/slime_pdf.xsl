@@ -19,11 +19,47 @@
   <xsl:template match="/">
     <fo:root>
       <fo:layout-master-set>
-        <fo:simple-page-master master-name="body" page-height="29.7cm" page-width="21.0cm" margin="2cm">
-          <fo:region-body column-count="2" column-gap="5mm"/>
+        <fo:simple-page-master master-name="body"
+                               page-width="21.0cm"
+                               page-height="29.7cm"
+                               margin="10mm 10mm 10mm 10mm">
+          <fo:region-body margin="10mm 10mm 10mm 10mm"
+                          column-count="2"
+                          column-gap="5mm"/>
+          <fo:region-before extent="5mm" precedence="true"/>
+          <fo:region-after extent="5mm" precedence="true"/>
         </fo:simple-page-master>
       </fo:layout-master-set>
       <fo:page-sequence master-reference="body">
+        <fo:static-content flow-name="xsl-region-before">
+          <fo:block-container height="5mm" display-align="after">
+            <fo:block font-family="{$font-family}"
+                      font-size="{$font-size}"
+                      text-align-last="justify"
+                      border-bottom="{$border-width} #000000 solid">
+              <fo:inline padding="0mm 1mm 0mm 1mm">
+                <xsl:text>$</xsl:text>
+              </fo:inline>
+              <fo:leader leader-pattern="space"/>
+              <fo:inline padding="0mm 1mm 0mm 1mm">
+                <xsl:text>$</xsl:text>
+              </fo:inline>
+            </fo:block>
+          </fo:block-container>
+        </fo:static-content>
+        <fo:static-content flow-name="xsl-region-after">
+          <fo:block-container height="5mm" display-align="before">
+            <fo:block font-family="{$font-family}"
+                      font-size="{$font-size}"
+                      text-align="center">
+              <fo:inline>
+                <xsl:text>— </xsl:text>
+                <fo:page-number/>
+                <xsl:text> —</xsl:text>
+              </fo:inline>
+            </fo:block>
+          </fo:block-container>
+        </fo:static-content>
         <fo:flow flow-name="xsl-region-body">
           <xsl:apply-templates/>
         </fo:flow>
