@@ -70,8 +70,6 @@ public class SlimeWord extends WordBase {
           Int position = alphabetOrder.indexOf($name.codePointAt(i))
           if (position >= 0) {
             comparisonString.appendCodePoint(position + 174)
-          } else {
-            comparisonString.appendCodePoint(10000)
           }
         }
         $comparisonString = comparisonString.toString()
