@@ -170,7 +170,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       nameText.getStyleClass().add(CONTENT_CLASS)
       pane.getChildren().add(nameText)
       if (i < names.size() - 1) {
-        Text punctuationText = Text.new(", ")
+        Text punctuationText = Text.new($dictionary.firstPunctuation())
         punctuationText.getStyleClass().add(CONTENT_CLASS)
         pane.getChildren().add(punctuationText)
       }
@@ -208,7 +208,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       pane.getChildren().add(nameText)
       if (i < names.size() - 1) {
-        Text punctuationText = Text.new(", ")
+        Text punctuationText = Text.new($dictionary.firstPunctuation())
         punctuationText.getStyleClass().add(CONTENT_CLASS)
         pane.getChildren().add(punctuationText)
       }      
