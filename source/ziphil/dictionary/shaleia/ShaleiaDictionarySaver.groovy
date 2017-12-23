@@ -17,8 +17,7 @@ public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
   protected BooleanClass save() {
     File file = File.new($path)
     BufferedWriter writer = file.newWriter("UTF-8")
-    Comparator<ShaleiaWord> comparator = (Comparator<ShaleiaWord>)$dictionary.getWordComparator()
-    List<ShaleiaWord> sortedWord = $dictionary.getRawWords().toSorted(comparator)
+    List<ShaleiaWord> sortedWord = $dictionary.getRawSortedWords()
     Int size = sortedWord.size()
     try {
       for (Int i = 0 ; i < size ; i ++) {

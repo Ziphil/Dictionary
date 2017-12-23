@@ -268,8 +268,4 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     $akrantiainSource = akrantiainSource
   }
 
-  public Comparator<? super ShaleiaWord> getWordComparator() {
-    return $sortedWords.getComparator()
-  }
-
 }
