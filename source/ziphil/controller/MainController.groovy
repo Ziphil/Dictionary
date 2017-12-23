@@ -442,7 +442,7 @@ public class MainController extends PrimitiveController<Stage> {
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
     for (ExportType type : ExportType.values()) {
       ExportType cachedType = type
-      MenuItem item = MenuItem.new("${type.getName()}形式")
+      MenuItem item = MenuItem.new(type.getName())
       item.setGraphic(ImageView.new(icon))
       if (dictionary != null) {
         item.setOnAction() {
