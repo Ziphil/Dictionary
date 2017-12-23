@@ -96,21 +96,33 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDicti
   }
 
   private void addEquivalent(SlimeWord word, String sourcePart, String sourceEquivalent) {
+    String nextSourceEquivalent = sourceEquivalent
+    nextSourceEquivalent = nextSourceEquivalent.replaceAll(/(\{|\}|\[|\]|\/)/, "")
+    nextSourceEquivalent = nextSourceEquivalent.replaceAll(/&#x([0-9A-Fa-f]+);/) { String all, String codePoint ->
+      return CharacterClass.toChars(IntegerClass.parseInt(codePoint, 16))[0]
+    }
     SlimeEquivalent equivalent = SlimeEquivalent.new()
     equivalent.setTitle(sourcePart)
-    equivalent.setNames(sourceEquivalent.replaceAll(/(\{|\}|\/|\(.*?\)\s*)/, "").split(/\s*,\s*/).toList())
+    equivalent.setNames(nextSourceEquivalent.split(/\s*,\s*/).toList())
     word.getRawEquivalents().add(equivalent)
   }
 
   private void addContent(SlimeWord word, String sourceTitle, String sourceContent) {
+    String nextSourceContent = sourceContent
+    nextSourceContent = nextSourceContent.replaceAll(/(\{|\}|\[|\]|\/)/, "")
+    nextSourceContent = nextSourceContent.replaceAll(/&#x([0-9A-Fa-f]+);/) { String all, String codePoint ->
+      return CharacterClass.toChars(IntegerClass.parseInt(codePoint, 16))[0]
+    }
     SlimeInformation information = SlimeInformation.new()
     information.setTitle(sourceTitle)
-    information.setText(sourceContent.replaceAll(/(\{|\}|\[|\]|\/)/, ""))
+    information.setText(nextSourceContent)
     word.getInformations().add(information)
   }
 
   private void addSynonym(SlimeWord word, String sourceSynonym, Map<String, IntegerClass> sourceIds) {
-    for (String sourceSynonymName : sourceSynonym.replaceAll(/(\{|\}|\*)/, "").split(/\s*(,|;)\s*/)) {
+    String nextSourceSynonym = sourceSynonym
+    nextSourceSynonym = nextSourceSynonym.replaceAll(/(\{|\}|\*)/, "")
+    for (String sourceSynonymName : nextSourceSynonym.split(/\s*(,|;)\s*/)) {
       IntegerClass sourceId = sourceIds[sourceSynonymName]
       if (sourceId != null) {
         SlimeRelation relation = SlimeRelation.new()
