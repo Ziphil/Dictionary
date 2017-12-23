@@ -2,9 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:param name="head-font-family" select="'Source Han Serif'"/>
-  <xsl:param name="caption-font-family" select="'Source Han Serif'"/>
-  <xsl:param name="font-family" select="'Source Han Serif'"/>
+  <xsl:param name="head-font-family" select="'Yu Mincho'"/>
+  <xsl:param name="caption-font-family" select="'Yu Mincho'"/>
+  <xsl:param name="font-family" select="'Yu Mincho'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
