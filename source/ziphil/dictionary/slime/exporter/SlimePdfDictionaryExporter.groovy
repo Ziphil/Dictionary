@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamSource
 import org.apache.fop.apps.FopFactory
 import org.apache.fop.apps.Fop
 import org.apache.fop.apps.MimeConstants
+import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.slime.SlimeEquivalent
@@ -108,9 +109,10 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
       writer.writeStartElement("words")
       String beforeInitialLetter = ""
       for (SlimeWord word : $dictionary.getRawSortedWords()) {
-        if (word.getName()[0] != beforeInitialLetter) {
-          beforeInitialLetter = word.getName()[0]
-          writeCaption(writer, beforeInitialLetter)
+        String initialLetter = calculateInitialLetter(word.getName())
+        if (initialLetter != beforeInitialLetter) {
+          beforeInitialLetter = initialLetter
+          writeCaption(writer, initialLetter)
         }
         writeWord(writer, word)
       }
@@ -121,6 +123,26 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
       bufferedWriter.close()
     }
     return true
+  }
+
+  private String calculateInitialLetter(String name) {
+    AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
+    if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
+      for (String character : name) {
+        if ($dictionary.getAlphabetOrder().indexOf(character) >= 0) {
+          return character
+        }
+      }
+      return ""
+    } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
+      if (name != "") {
+        return name[0]
+      } else {
+        return ""
+      }
+    } else {
+      return ""
+    }
   }
 
   private void writeCaption(XMLStreamWriter writer, String initialLetter) {
