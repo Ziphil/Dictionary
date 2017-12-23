@@ -141,6 +141,9 @@
               background-color="{$color}"
               keep-with-next.within-column="always"
               keep-with-next.within-page="always">
+      <xsl:attribute name="id">
+        <xsl:value-of select="id"/>
+      </xsl:attribute>
       <fo:inline padding="0mm 1.5mm 0mm 1.5mm">
         <xsl:value-of select="name"/>
       </fo:inline>
@@ -267,8 +270,10 @@
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
-            <xsl:for-each select="names/name">
-              <xsl:value-of select="."/>
+            <xsl:for-each select="entries/entry">
+              <fo:basic-link internal-destination="{id}">
+                <xsl:value-of select="name"/>
+              </fo:basic-link>
               <xsl:if test="position() != last()">
                 <xsl:value-of select="$punctuation"/>
               </xsl:if>

@@ -245,17 +245,15 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
       writer.writeStartElement("title")
       writer.writeCharacters(title)
       writer.writeEndElement()
-      writer.writeStartElement("ids")
+      writer.writeStartElement("entries")
       for (SlimeRelation relation : relationGroup) {
+        writer.writeStartElement("entry")
         writer.writeStartElement("id")
         writer.writeCharacters(relation.getId().toString())
         writer.writeEndElement()
-      }
-      writer.writeEndElement()
-      writer.writeStartElement("names")
-      for (SlimeRelation relation : relationGroup) {
         writer.writeStartElement("name")
         writer.writeCharacters(relation.getName())
+        writer.writeEndElement()
         writer.writeEndElement()
       }
       writer.writeEndElement()
