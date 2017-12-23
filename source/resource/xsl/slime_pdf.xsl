@@ -41,11 +41,21 @@
               border="{$border-width} {$color} solid">
       <xsl:call-template name="name"/>
       <xsl:call-template name="equivalents"/>
-      <xsl:call-template name="information-leader"/>
-      <xsl:call-template name="informations"/>
-      <xsl:call-template name="relation-leader"/>
-      <xsl:call-template name="variations"/>
-      <xsl:call-template name="relations"/>
+      <xsl:if test="count(informations/information) > 0">
+        <xsl:call-template name="leader"/>
+      </xsl:if>
+      <xsl:if test="count(informations/information) > 0">
+        <xsl:call-template name="informations"/>
+      </xsl:if>
+      <xsl:if test="count(variations/variation) > 0 or count(relations/relation) > 0">
+        <xsl:call-template name="leader"/>
+      </xsl:if>
+      <xsl:if test="count(variations/variation) > 0">
+        <xsl:call-template name="variations"/>
+      </xsl:if>
+      <xsl:if test="count(relations/relation) > 0">
+        <xsl:call-template name="relations"/>
+      </xsl:if>
     </fo:block>
   </xsl:template>
 
@@ -186,22 +196,11 @@
     </fo:block>
   </xsl:template>
 
-  <xsl:template name="information-leader">
-    <xsl:if test="count(informations/information) > 0">
-      <fo:block space-before="{$inner-space}"
-                space-after="{$inner-space}"
-                border-bottom="{$border-width} {$color} solid">
-      </fo:block>
-    </xsl:if> 
-  </xsl:template>
-
-  <xsl:template name="relation-leader">
-    <xsl:if test="count(variations/variation) > 0 or count(relations/relation) > 0">
-      <fo:block space-before="{$inner-space}"
-                space-after="{$inner-space}"
-                border-bottom="{$border-width} {$color} solid">
-      </fo:block>
-    </xsl:if> 
+  <xsl:template name="leader">
+    <fo:block space-before="{$inner-space}"
+              space-after="{$inner-space}"
+              border-bottom="{$border-width} {$color} solid">
+    </fo:block>
   </xsl:template>
 
 </xsl:stylesheet>
