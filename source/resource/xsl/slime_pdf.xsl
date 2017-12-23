@@ -10,8 +10,10 @@
   <xsl:param name="font-size" select="'8pt'"/>
   <xsl:param name="color" select="'#0A5B5B'"/><!--180°,80%,20%-->
   <xsl:param name="light-color" select="'#B2E5E5'"/><!--180°,50%,80%-->
+  <xsl:param name="leader-color" select="'#9DBDBD'"/>
   <xsl:param name="line-height" select="1.4"/>
   <xsl:param name="border-width" select="'0.2mm'"/>
+  <xsl:param name="leader-border-width" select="'0.1mm'"/>
   <xsl:param name="caption-border-width" select="'0.5mm'"/>
   <xsl:param name="inner-space" select="'0.5mm'"/>
   <xsl:param name="inner-margin" select="'1mm'"/>
@@ -136,7 +138,9 @@
               font-weight="bold"
               line-height="{$line-height}"
               color="#FFFFFF"
-              background-color="{$color}">
+              background-color="{$color}"
+              keep-with-next.within-column="always"
+              keep-with-next.within-page="always">
       <fo:inline padding="0mm 1.5mm 0mm 1.5mm">
         <xsl:value-of select="name"/>
       </fo:inline>
@@ -153,11 +157,13 @@
                   font-size="{$font-size}"
                   line-height="{$line-height}">
           <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     space-end="0.8mm"
                      font-size="0.8em"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
             <xsl:value-of select="title"/>
+          </fo:inline>
+          <fo:inline>
+            <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
@@ -183,7 +189,9 @@
                   line-height="{$line-height}">
           <fo:block margin-left="-{$inner-margin}"
                     margin-bottom="0.2mm"
-                    line-height="1">
+                    line-height="1"
+                    keep-with-next.within-column="always"
+                    keep-with-next.within-page="always">
             <fo:inline padding="0mm 3mm 0mm 0.8mm"
                        font-size="0.8em"
                        color="{$color}"
@@ -214,11 +222,13 @@
             <xsl:value-of select="$variation-marker"/>
           </fo:inline>
           <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     space-end="0.8mm"
                      font-size="0.8em"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
             <xsl:value-of select="title"/>
+          </fo:inline>
+          <fo:inline>
+            <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
@@ -248,11 +258,13 @@
             <xsl:value-of select="$relation-marker"/>
           </fo:inline>
           <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     space-end="0.8mm"
                      font-size="0.8em"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
             <xsl:value-of select="title"/>
+          </fo:inline>
+          <fo:inline>
+            <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
@@ -270,7 +282,9 @@
   <xsl:template name="leader">
     <fo:block space-before="{$inner-space}"
               space-after="{$inner-space}"
-              border-bottom="{$border-width} {$color} solid">
+              border-bottom="{$border-width} {$leader-color} dotted"
+              keep-with-previous.within-column="always"
+              keep-with-previous.within-page="always">
     </fo:block>
   </xsl:template>
 
