@@ -22,8 +22,8 @@
         <fo:simple-page-master master-name="body"
                                page-width="21.0cm"
                                page-height="29.7cm"
-                               margin="10mm 10mm 10mm 10mm">
-          <fo:region-body margin="10mm 10mm 10mm 10mm"
+                               margin="10mm 15mm 10mm 15mm">
+          <fo:region-body margin="13mm 5mm 13mm 5mm"
                           column-count="2"
                           column-gap="5mm"/>
           <fo:region-before extent="5mm" precedence="true"/>
