@@ -38,11 +38,15 @@
                       text-align-last="justify"
                       border-bottom="{$border-width} #000000 solid">
               <fo:inline padding="0mm 1mm 0mm 1mm">
-                <xsl:text>$</xsl:text>
+                <fo:retrieve-marker retrieve-class-name="name"
+                                    retrieve-position="first-including-carryover" 
+                                    retrieve-boundary="page-sequence"/>
               </fo:inline>
               <fo:leader leader-pattern="space"/>
               <fo:inline padding="0mm 1mm 0mm 1mm">
-                <xsl:text>$</xsl:text>
+                <fo:retrieve-marker retrieve-class-name="name"
+                                    retrieve-position="last-starting-within-page" 
+                                    retrieve-boundary="page-sequence"/>
               </fo:inline>
             </fo:block>
           </fo:block-container>
@@ -75,6 +79,9 @@
               space-after.minimum="2mm"
               space-after.maximum="5mm"
               border="{$border-width} {$color} solid">
+      <fo:marker marker-class-name="name">
+        <xsl:value-of select="name"/>
+      </fo:marker>
       <xsl:call-template name="name"/>
       <xsl:call-template name="equivalents"/>
       <xsl:if test="count(informations/information) > 0">
