@@ -35,6 +35,7 @@
           <fo:region-after extent="5mm" precedence="true"/>
         </fo:simple-page-master>
       </fo:layout-master-set>
+      <xsl:call-template name="bookmark"/>
       <fo:page-sequence master-reference="body">
         <fo:static-content flow-name="xsl-region-before">
           <fo:block-container height="5mm" display-align="after">
@@ -76,6 +77,22 @@
     </fo:root>
   </xsl:template>
 
+  <xsl:template name="bookmark">
+    <fo:bookmark-tree>
+      <fo:bookmark internal-destination="caption-{words/caption[1]}"
+                   starting-state="hide"> 
+        <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
+        <xsl:for-each select="words/caption">
+          <fo:bookmark internal-destination="caption-{.}">
+            <fo:bookmark-title>
+              <xsl:value-of select="."/>
+            </fo:bookmark-title>
+          </fo:bookmark>
+        </xsl:for-each>
+      </fo:bookmark>
+    </fo:bookmark-tree>
+  </xsl:template>
+
   <xsl:template match="words/caption">
     <fo:block space-before="3mm"
               space-before.minimum="2mm"
@@ -84,6 +101,10 @@
               space-after.minimum="2mm"
               space-after.maximum="5mm"
               text-align="center">
+      <xsl:attribute name="id">
+        <xsl:text>caption-</xsl:text>
+        <xsl:value-of select="."/>
+      </xsl:attribute>
       <fo:inline-container width="50%">
         <fo:block padding="{$caption-border-width}"
                   border="{$caption-border-width} {$color} solid">
@@ -142,6 +163,7 @@
               keep-with-next.within-column="always"
               keep-with-next.within-page="always">
       <xsl:attribute name="id">
+        <xsl:text>word-</xsl:text>
         <xsl:value-of select="id"/>
       </xsl:attribute>
       <fo:inline padding="0mm 1.5mm 0mm 1.5mm">
@@ -271,7 +293,7 @@
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="entries/entry">
-              <fo:basic-link internal-destination="{id}">
+              <fo:basic-link internal-destination="word-{id}">
                 <xsl:value-of select="name"/>
               </fo:basic-link>
               <xsl:if test="position() != last()">
