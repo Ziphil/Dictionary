@@ -20,6 +20,7 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
 
   private static final String XSL_PATH = "resource/xsl/slime_pdf.xsl"
   private static final String CONFIG_PATH = "resource/xsl/config.xml"
+  private static final Boolean USES_SAXON_TRANSFORMER = false
 
   private ExportConfig $config
 
@@ -74,7 +75,7 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
 
   private Transformer createTransformer() {
     Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
-    TransformerFactory factory = TransformerFactory.newInstance()
+    TransformerFactory factory = (USES_SAXON_TRANSFORMER) ? TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null) : TransformerFactory.newInstance()
     Transformer transformer = factory.newTransformer(xslSource)
     transformer.setParameter("punctuation", ", ")
     return transformer
