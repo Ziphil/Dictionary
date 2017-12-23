@@ -6,6 +6,8 @@ import java.awt.GraphicsEnvironment
 import java.lang.Thread.UncaughtExceptionHandler
 import javafx.application.Platform
 import javafx.beans.value.ObservableValue
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.scene.control.Menu
@@ -289,6 +291,20 @@ public class MainController extends PrimitiveController<Stage> {
         config.setType(type)
         config.setPath(path)
         currentWordListController().exportDictionary(config)
+        Task<?> saver = dictionary.getSaver()
+        if (saver != null) {
+          saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+            if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+              Desktop desktop = Desktop.getDesktop()
+              if (desktop.isSupported(Desktop.Action.OPEN)) {
+                try {
+                  desktop.open(File.new(config.getPath()))
+                } catch (Exception exception) {
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
