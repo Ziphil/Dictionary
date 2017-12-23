@@ -114,7 +114,7 @@
               <xsl:value-of select="title"/>
             </fo:inline>
           </fo:block>
-          <fo:block text-align="justify">
+          <fo:block>
             <xsl:value-of select="text"/>
           </fo:block>
         </fo:block>
