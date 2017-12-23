@@ -158,7 +158,6 @@
   <xsl:template name="name">
     <fo:block font-family="{$head-font-family}"
               font-size="{$head-font-size}"
-              font-weight="bold"
               line-height="{$line-height}"
               color="#FFFFFF"
               background-color="{$color}"
@@ -168,7 +167,8 @@
         <xsl:text>word-</xsl:text>
         <xsl:value-of select="id"/>
       </xsl:attribute>
-      <fo:inline padding="0mm 2.5mm 0mm 1.5mm">
+      <fo:inline padding="0mm 2.5mm 0mm 1.5mm"
+                 font-weight="bold">
         <xsl:value-of select="name"/>
       </fo:inline>
       <fo:inline font-size="{$title-font-size}">
