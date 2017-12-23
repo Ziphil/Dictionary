@@ -12,6 +12,7 @@ import org.apache.fop.apps.FopFactory
 import org.apache.fop.apps.Fop
 import org.apache.fop.apps.MimeConstants
 import ziphil.dictionary.ExportConfig
+import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
@@ -74,10 +75,13 @@ public class SlimePdfDictionaryExporter extends SlimeTemporaryXmlDictionaryExpor
   }
 
   private Transformer createTransformer() {
+    Setting setting = Setting.getInstance()
     Source xslSource = StreamSource.new(getClass().getClassLoader().getResourceAsStream(XSL_PATH))
     TransformerFactory factory = (USES_SAXON_TRANSFORMER) ? TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null) : TransformerFactory.newInstance()
     Transformer transformer = factory.newTransformer(xslSource)
     transformer.setParameter("punctuation", ", ")
+    transformer.setParameter("variation-marker", setting.getVariationMarker())
+    transformer.setParameter("relation-marker", setting.getRelationMarker())
     return transformer
   }
 

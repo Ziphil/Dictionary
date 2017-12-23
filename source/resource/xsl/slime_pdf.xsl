@@ -13,6 +13,8 @@
   <xsl:param name="inner-space" select="'0.5mm'"/>
   <xsl:param name="inner-margin" select="'1mm'"/>
   <xsl:param name="punctuation" select="', '"/>
+  <xsl:param name="variation-marker" select="'→'"/>
+  <xsl:param name="relation-marker" select="'cf:'"/>
 
   <xsl:template match="/">
     <fo:root>
@@ -39,8 +41,11 @@
               border="{$border-width} {$color} solid">
       <xsl:call-template name="name"/>
       <xsl:call-template name="equivalents"/>
-      <xsl:call-template name="leader"/>
+      <xsl:call-template name="information-leader"/>
       <xsl:call-template name="informations"/>
+      <xsl:call-template name="relation-leader"/>
+      <xsl:call-template name="variations"/>
+      <xsl:call-template name="relations"/>
     </fo:block>
   </xsl:template>
 
@@ -86,15 +91,6 @@
     </fo:block>
   </xsl:template>
 
-  <xsl:template name="leader">
-    <xsl:if test="count(informations/information) > 0">
-      <fo:block space-before="{$inner-space}"
-                space-after="{$inner-space}"
-                border-bottom="{$border-width} {$color} solid">
-      </fo:block>
-    </xsl:if> 
-  </xsl:template>
-
   <xsl:template name="informations">
     <fo:block space-before="{$inner-space}"
               space-after="{$inner-space}"
@@ -120,6 +116,92 @@
         </fo:block>
       </xsl:for-each>
     </fo:block>
-  </xsl:template>  
+  </xsl:template>
+
+  <xsl:template name="variations">
+    <fo:block space-before="{$inner-space}"
+              space-after="{$inner-space}"
+              margin-left="{$inner-margin}"
+              margin-right="{$inner-margin}">
+      <xsl:for-each select="variations/variation">
+        <fo:block font-family="{$font-family}"
+                  font-size="{$font-size}"
+                  line-height="{$line-height}">
+          <fo:inline space-end="0.2mm"
+                     font-size="0.8em"
+                     color="{$color}">
+            <xsl:value-of select="$variation-marker"/>
+          </fo:inline>
+          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                     space-end="0.8mm"
+                     font-size="0.8em"
+                     border="{$border-width} {$color} solid"
+                     background-color="{$light-color}">
+            <xsl:value-of select="title"/>
+          </fo:inline>
+          <fo:inline>
+            <xsl:for-each select="names/name">
+              <xsl:value-of select="."/>
+              <xsl:if test="position() != last()">
+                <xsl:value-of select="$punctuation"/>
+              </xsl:if>
+            </xsl:for-each>
+          </fo:inline>
+        </fo:block>
+      </xsl:for-each>
+    </fo:block>
+  </xsl:template>
+
+  <xsl:template name="relations">
+    <fo:block space-before="{$inner-space}"
+              space-after="{$inner-space}"
+              margin-left="{$inner-margin}"
+              margin-right="{$inner-margin}">
+      <xsl:for-each select="relations/relation">
+        <fo:block font-family="{$font-family}"
+                  font-size="{$font-size}"
+                  line-height="{$line-height}">
+          <fo:inline space-end="0.2mm"
+                     font-size="0.8em"
+                     color="{$color}">
+            <xsl:value-of select="$relation-marker"/>
+          </fo:inline>
+          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                     space-end="0.8mm"
+                     font-size="0.8em"
+                     border="{$border-width} {$color} solid"
+                     background-color="{$light-color}">
+            <xsl:value-of select="title"/>
+          </fo:inline>
+          <fo:inline>
+            <xsl:for-each select="names/name">
+              <xsl:value-of select="."/>
+              <xsl:if test="position() != last()">
+                <xsl:value-of select="$punctuation"/>
+              </xsl:if>
+            </xsl:for-each>
+          </fo:inline>
+        </fo:block>
+      </xsl:for-each>
+    </fo:block>
+  </xsl:template>
+
+  <xsl:template name="information-leader">
+    <xsl:if test="count(informations/information) > 0">
+      <fo:block space-before="{$inner-space}"
+                space-after="{$inner-space}"
+                border-bottom="{$border-width} {$color} solid">
+      </fo:block>
+    </xsl:if> 
+  </xsl:template>
+
+  <xsl:template name="relation-leader">
+    <xsl:if test="count(variations/variation) > 0 or count(relations/relation) > 0">
+      <fo:block space-before="{$inner-space}"
+                space-after="{$inner-space}"
+                border-bottom="{$border-width} {$color} solid">
+      </fo:block>
+    </xsl:if> 
+  </xsl:template>
 
 </xsl:stylesheet>

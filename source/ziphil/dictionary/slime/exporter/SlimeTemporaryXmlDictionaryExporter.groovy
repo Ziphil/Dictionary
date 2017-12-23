@@ -108,7 +108,7 @@ public abstract class SlimeTemporaryXmlDictionaryExporter extends DictionarySave
 
   private void writeInformations(XMLStreamWriter writer, SlimeWord word) {
     writer.writeStartElement("informations")
-    for (SlimeInformation information : word.getInformations()) {
+    for (SlimeInformation information : word.sortedInformations()) {
       writer.writeStartElement("information")
       writer.writeStartElement("title")
       writer.writeCharacters(information.getTitle())
@@ -123,13 +123,19 @@ public abstract class SlimeTemporaryXmlDictionaryExporter extends DictionarySave
 
   private void writeVariations(XMLStreamWriter writer, SlimeWord word) {
     writer.writeStartElement("variations")
-    for (SlimeVariation variation : word.getVariations()) {
+    for (Map.Entry<String, List<SlimeVariation>> entry : word.groupedVariations()) {
+      String title = entry.getKey()
+      List<SlimeVariation> variationGroup = entry.getValue()
       writer.writeStartElement("variation")
       writer.writeStartElement("title")
-      writer.writeCharacters(variation.getTitle())
+      writer.writeCharacters(title)
       writer.writeEndElement()
-      writer.writeStartElement("name")
-      writer.writeCharacters(variation.getName())
+      writer.writeStartElement("names")
+      for (SlimeVariation variation : variationGroup) {
+        writer.writeStartElement("name")
+        writer.writeCharacters(variation.getName())
+        writer.writeEndElement()
+      }
       writer.writeEndElement()
       writer.writeEndElement()
     }
@@ -138,16 +144,26 @@ public abstract class SlimeTemporaryXmlDictionaryExporter extends DictionarySave
 
   private void writeRelations(XMLStreamWriter writer, SlimeWord word) {
     writer.writeStartElement("relations")
-    for (SlimeRelation relation : word.getRelations()) {
+    for (Map.Entry<String, List<SlimeRelation>> entry : word.groupedRelations()) {
+      String title = entry.getKey()
+      List<SlimeRelation> relationGroup = entry.getValue()
       writer.writeStartElement("relation")
       writer.writeStartElement("title")
-      writer.writeCharacters(relation.getTitle())
+      writer.writeCharacters(title)
       writer.writeEndElement()
-      writer.writeStartElement("id")
-      writer.writeCharacters(relation.getId().toString())
+      writer.writeStartElement("ids")
+      for (SlimeRelation relation : relationGroup) {
+        writer.writeStartElement("id")
+        writer.writeCharacters(relation.getId().toString())
+        writer.writeEndElement()
+      }
       writer.writeEndElement()
-      writer.writeStartElement("name")
-      writer.writeCharacters(relation.getName())
+      writer.writeStartElement("names")
+      for (SlimeRelation relation : relationGroup) {
+        writer.writeStartElement("name")
+        writer.writeCharacters(relation.getName())
+        writer.writeEndElement()
+      }
       writer.writeEndElement()
       writer.writeEndElement()
     }
