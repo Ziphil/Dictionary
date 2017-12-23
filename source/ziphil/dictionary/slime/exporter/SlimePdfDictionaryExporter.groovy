@@ -106,7 +106,12 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
     try {
       writer.writeStartDocument()
       writer.writeStartElement("words")
-      for (SlimeWord word : $dictionary.getRawWords()) {
+      String beforeInitialLetter = ""
+      for (SlimeWord word : $dictionary.getRawSortedWords()) {
+        if (word.getName()[0] != beforeInitialLetter) {
+          beforeInitialLetter = word.getName()[0]
+          writeCaption(writer, beforeInitialLetter)
+        }
         writeWord(writer, word)
       }
       writer.writeEndElement()
@@ -116,6 +121,12 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
       bufferedWriter.close()
     }
     return true
+  }
+
+  private void writeCaption(XMLStreamWriter writer, String initialLetter) {
+    writer.writeStartElement("caption")
+    writer.writeCharacters(initialLetter)
+    writer.writeEndElement()
   }
 
   private void writeWord(XMLStreamWriter writer, SlimeWord word) {

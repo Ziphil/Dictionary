@@ -3,13 +3,16 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:param name="head-font-family" select="'Source Han Serif'"/>
+  <xsl:param name="caption-font-family" select="'Source Han Serif'"/>
   <xsl:param name="font-family" select="'Source Han Serif'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
+  <xsl:param name="caption-font-size" select="'20pt'"/>
   <xsl:param name="font-size" select="'8pt'"/>
   <xsl:param name="color" select="'#0A5B5B'"/><!--180°,80%,20%-->
   <xsl:param name="light-color" select="'#B2E5E5'"/><!--180°,50%,80%-->
   <xsl:param name="line-height" select="1.4"/>
   <xsl:param name="border-width" select="'0.2mm'"/>
+  <xsl:param name="caption-border-width" select="'0.5mm'"/>
   <xsl:param name="inner-space" select="'0.5mm'"/>
   <xsl:param name="inner-margin" select="'1mm'"/>
   <xsl:param name="punctuation" select="', '"/>
@@ -69,6 +72,31 @@
         </fo:flow>
       </fo:page-sequence>
     </fo:root>
+  </xsl:template>
+
+  <xsl:template match="words/caption">
+    <fo:block space-before="3mm"
+              space-before.minimum="2mm"
+              space-before.maximum="5mm"
+              space-after="3mm"
+              space-after.minimum="2mm"
+              space-after.maximum="5mm"
+              text-align="center">
+      <fo:inline-container width="50%">
+        <fo:block padding="{$caption-border-width}"
+                  border="{$caption-border-width} {$color} solid">
+          <fo:block font-family="{$caption-font-family}"
+                    font-size="{$caption-font-size}"
+                    font-weight="bold"
+                    line-height="1.8"
+                    color="#FFFFFF"
+                    background-color="{$color}"
+                    text-align="center">
+            <xsl:value-of select="."/>
+          </fo:block>
+        </fo:block>
+      </fo:inline-container>
+    </fo:block>
   </xsl:template>
 
   <xsl:template match="words/word">

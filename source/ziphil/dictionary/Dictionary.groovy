@@ -63,6 +63,8 @@ public interface Dictionary<W extends Word> {
 
   public ObservableList<W> getRawWords()
 
+  public List<W> getRawSortedWords()
+
   public Consumer<SearchParameter> getOnLinkClicked()
 
   public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 

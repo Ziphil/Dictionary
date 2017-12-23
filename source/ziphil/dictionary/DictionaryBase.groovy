@@ -214,6 +214,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $words
   }
 
+  public List<W> getRawSortedWords() {
+    return $words.toSorted($sortedWords.getComparator())
+  }
+
   public Consumer<SearchParameter> getOnLinkClicked() {
     return $onLinkClicked
   }
