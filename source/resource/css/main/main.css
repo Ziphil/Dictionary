@@ -28,6 +28,10 @@
   -fx-border-color: derive(-fx-selection-bar, 30%) transparent transparent transparent;
 }
 
+.dictionary-list .margin {
+  -fx-padding: 2px 0px 0px 0px;
+}
+
 .dictionary-list .shaleia-total-part,
 .dictionary-list .shaleia-part,
 .dictionary-list .slime-tag,

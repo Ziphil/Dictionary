@@ -225,9 +225,16 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addSeparator(Pane pane) {
-    Separator separator = Separator.new()
-    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
-    pane.getChildren().addAll(separator)
+    Boolean showsSeparator = Setting.getInstance().getShowsSeparator()
+    if (showsSeparator) {
+      Separator separator = Separator.new()
+      separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+      pane.getChildren().add(separator)
+    } else {
+      VBox box = VBox.new()
+      box.getStyleClass().addAll(CONTENT_CLASS, MARGIN_CLASS)
+      pane.getChildren().add(box)
+    }
   }
 
   private EventHandler<MouseEvent> createLinkEventHandler(Int id) {

@@ -13,6 +13,7 @@ public interface PaneFactory {
   public static final String HEAD_NAME_CLASS = "head-name"
   public static final String SMALL_CLASS = "small"
   public static final String SEPARATOR_CLASS = "separator"
+  public static final String MARGIN_CLASS = "margin"
 
   // 表示用のペインを生成します。
   // ペインがすでに生成されてそれが保持されている場合は、新たにペインを生成することはせずに、保持されているペインをそのまま返します。
