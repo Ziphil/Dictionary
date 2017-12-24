@@ -71,7 +71,7 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
   }
 
   protected BooleanClass transformDebug() {
-    File file = File.new($path.replaceAll(/\.\w+$/, "_debug.xml"))
+    File file = File.new($path.replaceAll(/\.\w+$/, "_fo.fo"))
     File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
     BufferedOutputStream stream = file.newOutputStream()
     BufferedInputStream temporaryStream = temporaryFile.newInputStream()
