@@ -47,7 +47,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
+    TextFlow relationPane = TextFlow.new()
     Boolean hasContent = false
+    Boolean hasRelation = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
@@ -65,8 +67,8 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
         String title = entry.getKey()
         List<SlimeVariation> variationGroup = entry.getValue()
         List<String> names = variationGroup.collect{it.getName()}
-        addVariationNode(contentPane, title, names)
-        hasContent = true
+        addVariationNode(relationPane, title, names)
+        hasRelation = true
       }
     }
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
@@ -74,15 +76,20 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       List<SlimeRelation> relationGroup = entry.getValue()
       List<IntegerClass> ids = relationGroup.collect{it.getId()}
       List<String> names = relationGroup.collect{it.getName()}
-      addRelationNode(contentPane, title, ids, names)
-      hasContent = true
+      addRelationNode(relationPane, title, ids, names)
+      hasRelation = true
     }
     modifyBreak(mainPane)
     modifyBreak(contentPane)
+    modifyBreak(relationPane)
     pane.getChildren().add(mainPane)
     if (hasContent) {
       addSeparator(pane)
       pane.getChildren().add(contentPane)
+    }
+    if (hasRelation) {
+      addSeparator(pane)
+      pane.getChildren().add(relationPane)
     }
     return pane
   }
@@ -133,12 +140,12 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
     String modifiedInformation = (modifiesPunctuation) ? Strings.modifyPunctuation(information) : information
     Boolean insertsBreak = !$dictionary.getPlainInformationTitles().contains(title)
-    Text titleText = Text.new("【${title}】")
+    Label titleText = Label.new(title)
     Text innerBreakText = Text.new((insertsBreak) ? " \n" : " ")
     Text informationText = Text.new(modifiedInformation)
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    innerBreakText.getStyleClass().add(CONTENT_CLASS)
+    innerBreakText.getStyleClass().addAll(CONTENT_CLASS, (insertsBreak) ? SMALL_CLASS : CONTENT_CLASS)
     informationText.getStyleClass().add(CONTENT_CLASS)
     pane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }

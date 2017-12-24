@@ -11,6 +11,7 @@ public interface PaneFactory {
   public static final String CONTENT_CLASS = "content"
   public static final String CONTENT_PANE_CLASS = "content-pane"
   public static final String HEAD_NAME_CLASS = "head-name"
+  public static final String SMALL_CLASS = "small"
   public static final String SEPARATOR_CLASS = "separator"
 
   // 表示用のペインを生成します。

@@ -60,7 +60,9 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
+    TextFlow synonymPane = TextFlow.new()
     Boolean hasContent = false
+    Boolean hasSynonym = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
@@ -89,16 +91,21 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
         if (reader.findSynonym()) {
           String synonym = reader.lookupSynonym()
-          addSynonymNode(contentPane, synonym)
-          hasContent = true
+          addSynonymNode(synonymPane, synonym)
+          hasSynonym = true
         }
       }
       modifyBreak(mainPane)
       modifyBreak(contentPane)
+      modifyBreak(synonymPane)
       pane.getChildren().add(mainPane)
       if (hasContent) {
         addSeparator(pane)
         pane.getChildren().add(contentPane)
+      }
+      if (hasSynonym) {
+        addSeparator(pane)
+        pane.getChildren().add(synonymPane)
       }
     } finally {
       reader.close()
@@ -147,12 +154,12 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private void addContentNode(TextFlow pane, String title, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
     String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
-    Text titleText = Text.new("【${title}】")
-    Text dammyText = Text.new(" \n")
+    Label titleText = Label.new(title)
+    Text dammyText = Text.new("\n")
     Text breakText = Text.new("\n")
     List<Text> contentTexts = createRichTexts(modifiedContent)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
-    dammyText.getStyleClass().add(CONTENT_CLASS)
+    dammyText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
     for (Text contentText : contentTexts) {
       contentText.getStyleClass().add(CONTENT_CLASS)
     }

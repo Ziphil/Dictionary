@@ -9,19 +9,23 @@
   -fx-fill: white;
 }
 
+.dictionary-list .content-pane {
+  -fx-padding: 0px 0px 2px 0px;
+}
+
 .dictionary-list .head-name {
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
 }
 
 .dictionary-list .separator .line {
-  -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
+  -fx-border-color: derive(-fx-control-inner-background, -18%) transparent transparent transparent;
   -fx-border-insets: 2px 0px 0px 0px;
   -fx-border-style: dotted;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .separator .line {
-  -fx-border-color: derive(-fx-selection-bar, 50%) transparent transparent transparent;
+  -fx-border-color: derive(-fx-selection-bar, 30%) transparent transparent transparent;
 }
 
 .dictionary-list .shaleia-total-part,
@@ -34,7 +38,6 @@
   -fx-border-style: solid;
   -fx-border-radius: 3px;
   -fx-padding: -1px 2px -1px 2px;
-  -fx-margin: 0px 5px 0px 0px;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
@@ -45,19 +48,38 @@
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
-.dictionary-list .shaleia-pronunciation,
 .dictionary-list .shaleia-title,
-.dictionary-list .shaleia-possibility,
+.dictionary-list .slime-title {
+  -fx-font-size: 0.85em;
+  -fx-border-color: transparent transparent derive(-fx-control-inner-background, -30%) transparent;
+  -fx-border-insets: 0px 0px 0px 0px;
+  -fx-border-style: solid;
+  -fx-padding: 0px 10px -2px 0px;
+}
+
+.dictionary-list:focused .list-cell:filled:selected .shaleia-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-title {
+  -fx-border-color: transparent transparent derive(-fx-selection-bar, 50%) transparent;
+}
+
+.dictionary-list .shaleia-pronunciation,
 .dictionary-list .personal-pronunciation,
-.dictionary-list .slime-pronunciation,
-.dictionary-list .slime-title,
+.dictionary-list .slime-pronunciation {
+  -fx-font-size: 0.9em;
+}
+
+.dictionary-list .shaleia-possibility,
 .dictionary-list .slime-id,
 .dictionary-list .slime-possibility {
-  -fx-font-size: 0.9em;
+  -fx-font-size: 0.85em;
 }
 
 .dictionary-list .shaleia-creation-date {
   -fx-font-size: 0.8em;
+}
+
+.dictionary-list .small {
+  -fx-font-size: 0.85em;
 }
 
 .dictionary-list .shaleia-link,
