@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum ExportType {
 
-  PDF("PDFドキュメント(XSL-FO出力)", "pdf"),
+  PDF("PDFドキュメント", "pdf"),
   HTML("HTMLページ", "html")
 
   private String $name
