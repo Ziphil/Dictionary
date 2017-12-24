@@ -47,6 +47,7 @@ public class Setting {
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
+  private Boolean $showsSeparator = true
   private Boolean $keepsMainWindowOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $preservesMainWindowSize = false
@@ -338,6 +339,14 @@ public class Setting {
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
     $modifiesPunctuation = modifiesPunctuation
+  }
+
+  public Boolean getShowsSeparator() {
+    return $showsSeparator
+  }
+
+  public void setShowsSeparator(Boolean showsSeparator) {
+    $showsSeparator = showsSeparator
   }
 
   public Boolean getKeepsMainWindowOnTop() {

@@ -54,7 +54,8 @@
           <Label text="行間追加幅:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <Label text="変化形マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
           <Label text="関連語マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+          <Label text="分割線表示:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+          <Label text="句読点調整:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
@@ -118,6 +119,13 @@
             </TextField>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <spacing><Double rpx="5"/></spacing>
+            <SwitchButton fx:id="$showsSeparatorControl">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+            </SwitchButton>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="8">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$modifiesPunctuationControl">
               <prefWidth><Double rpx="70"/></prefWidth>
