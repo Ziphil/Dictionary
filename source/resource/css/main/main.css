@@ -10,7 +10,7 @@
 }
 
 .dictionary-list .content-pane {
-  -fx-padding: 0px 0px 2px 0px;
+  -fx-padding: 0px 0px 1px 0px;
 }
 
 .dictionary-list .head-name {
@@ -19,13 +19,13 @@
 }
 
 .dictionary-list .separator .line {
-  -fx-border-color: derive(-fx-control-inner-background, -18%) transparent transparent transparent;
+  -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
   -fx-border-insets: 2px 0px 0px 0px;
   -fx-border-style: dotted;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .separator .line {
-  -fx-border-color: derive(-fx-selection-bar, 30%) transparent transparent transparent;
+  -fx-border-color: derive(-fx-selection-bar, 50%) transparent transparent transparent;
 }
 
 .dictionary-list .margin {
