@@ -33,6 +33,7 @@ public abstract class PdfDictionaryExporter<D extends Dictionary> extends Dictio
     updateProgress(1, 2)
     transformDebug()
     transform()
+    deleteTemporary()
     updateProgress(2, 2)
     return true
   }
@@ -84,6 +85,13 @@ public abstract class PdfDictionaryExporter<D extends Dictionary> extends Dictio
     } finally {
       writer.close()
       bufferedWriter.close()
+    }
+  }
+
+  private void deleteTemporary() {
+    File file = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
+    if (file.exists()) {
+      file.delete()
     }
   }
 
