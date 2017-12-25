@@ -2,9 +2,9 @@
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:param name="head-font-family" select="'Arial, IPAゴシック'"/>
-  <xsl:param name="caption-font-family" select="'Arial, IPAゴシック'"/>
-  <xsl:param name="font-family" select="'Times New Roman, IPA明朝'"/>
+  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="caption-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="font-family" select="'SourceHanSerif-Regular'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
@@ -250,7 +250,7 @@
               </xsl:call-template>
             </fo:inline>
           </fo:block>
-          <fo:block>
+          <fo:block text-align="justify">
             <xsl:call-template name="text">
               <xsl:with-param name="text" select="text"/>
             </xsl:call-template>
@@ -364,6 +364,36 @@
         <fo:inline xml:lang="en">
           <xsl:value-of select="regex-group(1)"/>
         </fo:inline>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:call-template name="modification">
+          <xsl:with-param name="text" select="."/>
+        </xsl:call-template>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
+  </xsl:template>
+
+  <xsl:template name="modification">
+    <xsl:param name="text"/>
+    <xsl:analyze-string select="$text" regex="(、|。|「|」)">
+      <xsl:matching-substring>
+        <xsl:choose>
+          <xsl:when test=". = '、'">
+            <xsl:text>､ </xsl:text>
+          </xsl:when>
+          <xsl:when test=". = '。'">
+            <xsl:text>｡ </xsl:text>
+          </xsl:when>
+          <xsl:when test=". = '「'">
+            <xsl:text> ｢</xsl:text>
+          </xsl:when>
+          <xsl:when test=". = '」'">
+            <xsl:text>｣ </xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
         <xsl:value-of select="."/>
