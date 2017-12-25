@@ -283,16 +283,50 @@
 
   <xsl:template name="text">
     <xsl:param name="text"/>
-    <xsl:choose>
-      <xsl:when test="$modifies">
-        <xsl:call-template name="separation">
-          <xsl:with-param name="text" select="$text"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$text"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:analyze-string select="$text" regex="\{{(.*?)\}}|\[(.*?)\]|/(.*?)/">
+      <xsl:matching-substring>
+        <xsl:choose>
+          <xsl:when test="matches(., '\{.*?\}')">
+            <fo:inline font-family="{$shaleia-font-family}">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="regex-group(1)"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:when>
+          <xsl:when test="matches(., '\[.*?\]')">
+            <fo:inline font-family="{$shaleia-font-family}">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="regex-group(2)"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:when>
+          <xsl:when test="matches(., '/.*?/')">
+            <fo:inline font-style="italic">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="regex-group(3)"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="."/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:choose>
+          <xsl:when test="$modifies">
+            <xsl:call-template name="separation">
+              <xsl:with-param name="text" select="replace(., '&amp;#x002F;', '/')"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="replace(., '&amp;#x002F;', '/')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
   </xsl:template>
 
   <xsl:template name="separation">
