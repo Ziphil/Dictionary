@@ -373,10 +373,10 @@
 
   <xsl:template name="separation">
     <xsl:param name="text"/>
-    <xsl:analyze-string select="$text" regex="([&#x0020;-&#x25CA;]+)">
+    <xsl:analyze-string select="$text" regex="[&#x0020;-&#x25CA;]+">
       <xsl:matching-substring>
         <fo:inline xml:lang="en">
-          <xsl:value-of select="regex-group(1)"/>
+          <xsl:value-of select="."/>
         </fo:inline>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
@@ -389,7 +389,7 @@
 
   <xsl:template name="modification">
     <xsl:param name="text"/>
-    <xsl:analyze-string select="$text" regex="(、|。|「|」)">
+    <xsl:analyze-string select="$text" regex="、|。|「|」">
       <xsl:matching-substring>
         <xsl:choose>
           <xsl:when test=". = '、'">
