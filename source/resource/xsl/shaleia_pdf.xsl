@@ -16,7 +16,6 @@
   <xsl:param name="leader-color" select="'#AAAAAA'"/>
   <xsl:param name="line-height" select="1.4"/>
   <xsl:param name="border-width" select="'0.2mm'"/>
-  <xsl:param name="leader-border-width" select="'0.1mm'"/>
   <xsl:param name="caption-border-width" select="'0.5mm'"/>
   <xsl:param name="inner-space" select="'0.5mm'"/>
   <xsl:param name="inner-margin" select="'1mm'"/>
