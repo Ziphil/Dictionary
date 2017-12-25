@@ -9,10 +9,10 @@
   <xsl:param name="caption-font-size" select="'20pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
   <xsl:param name="font-size" select="'8pt'"/>
-  <xsl:param name="color" select="'#0A5B5B'"/><!--180°,80%,20%-->
-  <xsl:param name="title-color" select="'#0A5B5B'"/>
-  <xsl:param name="light-color" select="'#B2E5E5'"/><!--180°,50%,80%-->
-  <xsl:param name="leader-color" select="'#9DBDBD'"/>
+  <xsl:param name="color" select="'#333333'"/>
+  <xsl:param name="title-color" select="'#333333'"/>
+  <xsl:param name="light-color" select="'#DDDDDD'"/>
+  <xsl:param name="leader-color" select="'#AAAAAA'"/>
   <xsl:param name="line-height" select="1.4"/>
   <xsl:param name="border-width" select="'0.2mm'"/>
   <xsl:param name="leader-border-width" select="'0.1mm'"/>
