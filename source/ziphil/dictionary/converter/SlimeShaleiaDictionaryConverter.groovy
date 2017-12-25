@@ -1,4 +1,4 @@
-package ziphil.dictionary.slime.converter
+package ziphil.dictionary.converter
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher

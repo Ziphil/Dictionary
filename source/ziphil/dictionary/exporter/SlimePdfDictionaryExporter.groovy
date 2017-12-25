@@ -1,4 +1,4 @@
-package ziphil.dictionary.slime.exporter
+package ziphil.dictionary.exporter
 
 import groovy.transform.CompileStatic
 import java.lang.reflect.InvocationHandler

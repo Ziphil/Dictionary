@@ -1,4 +1,4 @@
-package ziphil.dictionary.slime.converter
+package ziphil.dictionary.converter
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Dictionary
@@ -12,25 +12,25 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionaryConverterFactory extends DictionaryConverterFactory {
+public class PersonalDictionaryConverterFactory extends DictionaryConverterFactory {
 
   public DictionaryLoader create(DictionaryFactory factory, Dictionary sourceDictionary) {
     DictionaryLoader converter = null
-    if (factory.getDictionaryClass() == SlimeDictionary) {
-      if (sourceDictionary instanceof PersonalDictionary) {
-        converter = SlimePersonalDictionaryConverter.new(sourceDictionary)
-      } else if (sourceDictionary instanceof ShaleiaDictionary) {
-        converter = SlimeShaleiaDictionaryConverter.new(sourceDictionary)
+    if (factory.getDictionaryClass() == PersonalDictionary) {
+      if (sourceDictionary instanceof ShaleiaDictionary) {
+        converter = PersonalShaleiaDictionaryConverter.new(sourceDictionary)
+      } else if (sourceDictionary instanceof SlimeDictionary) {
+        converter = PersonalSlimeDictionaryConverter.new(sourceDictionary)
       }
     }
     return converter
   }
 
   public Boolean isAvailable(DictionaryFactory factory, Dictionary sourceDictionary) {
-    if (factory.getDictionaryClass() == SlimeDictionary) {
-      if (sourceDictionary instanceof PersonalDictionary) {
+    if (factory.getDictionaryClass() == PersonalDictionary) {
+      if (sourceDictionary instanceof ShaleiaDictionary) {
         return true
-      } else if (sourceDictionary instanceof ShaleiaDictionary) {
+      } else if (sourceDictionary instanceof SlimeDictionary) {
         return true
       } else {
         return false
