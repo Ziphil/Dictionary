@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:param name="head-font-family" select="'Yu Mincho'"/>
-  <xsl:param name="caption-font-family" select="'Yu Mincho'"/>
-  <xsl:param name="font-family" select="'Yu Mincho'"/>
+  <xsl:param name="head-font-family" select="'Arial, IPAゴシック'"/>
+  <xsl:param name="caption-font-family" select="'Arial, IPAゴシック'"/>
+  <xsl:param name="font-family" select="'Times New Roman, IPA明朝'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
@@ -24,7 +24,7 @@
   <xsl:param name="relation-marker" select="'cf:'"/>
 
   <xsl:template match="/">
-    <fo:root>
+    <fo:root xml:lang="ja">
       <fo:layout-master-set>
         <fo:simple-page-master master-name="body"
                                page-width="21.0cm"
@@ -41,7 +41,7 @@
       <fo:page-sequence master-reference="body">
         <fo:static-content flow-name="xsl-region-before">
           <fo:block-container height="5mm" display-align="after">
-            <fo:block font-family="{$font-family}"
+            <fo:block font-family="{$head-font-family}"
                       font-size="{$font-size}"
                       text-align-last="justify"
                       border-bottom="{$border-width} #000000 solid">
@@ -112,7 +112,6 @@
                   border="{$caption-border-width} {$color} solid">
           <fo:block font-family="{$caption-font-family}"
                     font-size="{$caption-font-size}"
-                    font-weight="bold"
                     line-height="1.8"
                     color="#FFFFFF"
                     background-color="{$color}"
@@ -156,10 +155,7 @@
   </xsl:template>
 
   <xsl:template name="name">
-    <fo:block font-family="{$head-font-family}"
-              font-size="{$head-font-size}"
-              line-height="{$line-height}"
-              color="#FFFFFF"
+    <fo:block color="#FFFFFF"
               background-color="{$color}"
               keep-with-next.within-column="always"
               keep-with-next.within-page="always">
@@ -168,16 +164,22 @@
         <xsl:value-of select="id"/>
       </xsl:attribute>
       <fo:inline padding="0mm 2.5mm 0mm 1.5mm"
-                 font-weight="bold">
+                 font-family="{$head-font-family}"
+                 font-size="{$head-font-size}"
+                 line-height="{$line-height}">
         <xsl:value-of select="name"/>
       </fo:inline>
-      <fo:inline font-size="{$title-font-size}">
+      <fo:inline font-family="{$font-family}"
+                 font-size="{$title-font-size}"
+                 line-height="{$line-height}">
         <xsl:for-each select="tags/tag">
           <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
                      color="{$title-color}"
                      background-color="{$light-color}"
                      alignment-baseline="central">
-            <xsl:value-of select="."/>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="."/>
+            </xsl:call-template>
           </fo:inline>
           <xsl:if test="position() != last()">
             <xsl:text> </xsl:text>
@@ -201,16 +203,22 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:value-of select="title"/>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="title"/>
+            </xsl:call-template>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
-              <xsl:value-of select="."/>
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="."/>
+              </xsl:call-template>
               <xsl:if test="position() != last()">
-                <xsl:value-of select="$punctuation"/>
+                <xsl:call-template name="text">
+                  <xsl:with-param name="text" select="$punctuation"/>
+                </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -237,11 +245,15 @@
                        font-size="{$title-font-size}"
                        color="{$color}"
                        border-bottom="{$border-width} {$color} solid">
-              <xsl:value-of select="title"/>
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="title"/>
+              </xsl:call-template>
             </fo:inline>
           </fo:block>
           <fo:block>
-            <xsl:value-of select="text"/>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="text"/>
+            </xsl:call-template>
           </fo:block>
         </fo:block>
       </xsl:for-each>
@@ -267,16 +279,22 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:value-of select="title"/>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="title"/>
+            </xsl:call-template>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
-              <xsl:value-of select="."/>
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="."/>
+              </xsl:call-template>
               <xsl:if test="position() != last()">
-                <xsl:value-of select="$punctuation"/>
+                <xsl:call-template name="text">
+                  <xsl:with-param name="text" select="$punctuation"/>
+                </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -304,7 +322,9 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:value-of select="title"/>
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="title"/>
+            </xsl:call-template>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
@@ -312,10 +332,14 @@
           <fo:inline>
             <xsl:for-each select="entries/entry">
               <fo:basic-link internal-destination="word-{id}">
-                <xsl:value-of select="name"/>
+                <xsl:call-template name="text">
+                  <xsl:with-param name="text" select="name"/>
+                </xsl:call-template>
               </fo:basic-link>
               <xsl:if test="position() != last()">
-                <xsl:value-of select="$punctuation"/>
+                <xsl:call-template name="text">
+                  <xsl:with-param name="text" select="$punctuation"/>
+                </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -331,6 +355,20 @@
               keep-with-previous.within-column="always"
               keep-with-previous.within-page="always">
     </fo:block>
+  </xsl:template>
+
+  <xsl:template name="text">
+    <xsl:param name="text"/>
+    <xsl:analyze-string select="$text" regex="([&#x0020;-&#x25CA;]+)">
+      <xsl:matching-substring>
+        <fo:inline xml:lang="en">
+          <xsl:value-of select="regex-group(1)"/>
+        </fo:inline>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:value-of select="."/>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
   </xsl:template>
 
 </xsl:stylesheet>

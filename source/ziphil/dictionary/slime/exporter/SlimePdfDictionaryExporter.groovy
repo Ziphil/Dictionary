@@ -35,7 +35,7 @@ public class SlimePdfDictionaryExporter extends DictionarySaver<SlimeDictionary>
 
   private static final String XSL_PATH = "resource/xsl/slime_pdf.xsl"
   private static final String CONFIG_PATH = "resource/xsl/config.xml"
-  private static final Boolean USES_SAXON_TRANSFORMER = false
+  private static final Boolean USES_SAXON_TRANSFORMER = true
 
   private ExportConfig $config
 
