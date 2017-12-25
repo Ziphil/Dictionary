@@ -22,6 +22,7 @@
   <xsl:param name="punctuation" select="', '"/>
   <xsl:param name="variation-marker" select="'→'"/>
   <xsl:param name="relation-marker" select="'cf:'"/>
+  <xsl:param name="modifies" select="true()"/>
 
   <xsl:template match="/">
     <fo:root xml:lang="ja">
@@ -358,6 +359,20 @@
   </xsl:template>
 
   <xsl:template name="text">
+    <xsl:param name="text"/>
+    <xsl:choose>
+      <xsl:when test="$modifies">
+        <xsl:call-template name="separation">
+          <xsl:with-param name="text" select="$text"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$text"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="separation">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="([&#x0020;-&#x25CA;]+)">
       <xsl:matching-substring>
