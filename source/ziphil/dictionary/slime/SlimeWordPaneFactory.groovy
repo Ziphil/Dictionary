@@ -28,9 +28,10 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   private static final String SLIME_TAG_CLASS = "slime-tag"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"
   private static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
+  private static final String SLIME_INFORMATION_TITLE_CLASS = "slime-information-title"
+  private static final String SLIME_PLAIN_INFORMATION_TITLE_CLASS = "slime-plain-information-title"
   private static final String SLIME_RELATION_TITLE_CLASS = "slime-relation-title"
-  private static final String SLIME_TITLE_CLASS = "slime-title"
-  private static final String SLIME_PLAIN_TITLE_CLASS = "slime-plain-title"
+  private static final String SLIME_MARKER_CLASS = "slime-marker"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
   public SlimeWordPaneFactory(SlimeWord word, SlimeDictionary dictionary, Boolean persisted) {
@@ -116,7 +117,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       Label tagText = Label.new(tag)
       Text spaceText = Text.new(" ")
       tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
-      spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_INFORMATION_TITLE_CLASS)
       pane.getChildren().addAll(tagText, spaceText)
     }
     Text breakText = Text.new("\n")
@@ -146,10 +147,10 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Text informationText = Text.new(modifiedInformation)
     Text breakText = Text.new("\n")
     if (insertsBreak) {
-      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_INFORMATION_TITLE_CLASS)
       innerBreakText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
     } else {
-      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PLAIN_TITLE_CLASS)
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PLAIN_INFORMATION_TITLE_CLASS)
       innerBreakText.getStyleClass().addAll(CONTENT_CLASS)
     }
     informationText.getStyleClass().add(CONTENT_CLASS)
@@ -161,9 +162,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Text markerText = Text.new(marker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
-    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
-    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
     if (title != "") {
       if (marker != "") {
         pane.getChildren().addAll(markerText, titleText, spaceText)
@@ -197,9 +198,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Text markerText = Text.new(marker)
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
-    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
-    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
     if (title != "") {
       if (marker != "") {
         pane.getChildren().addAll(markerText, titleText, spaceText)

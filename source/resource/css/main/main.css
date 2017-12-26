@@ -52,9 +52,9 @@
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
-.dictionary-list .shaleia-title,
-.dictionary-list .slime-title,
-.dictionary-list .slime-plain-title {
+.dictionary-list .shaleia-content-title,
+.dictionary-list .slime-information-title,
+.dictionary-list .slime-plain-information-title {
   -fx-font-size: 0.85em;
   -fx-border-color: transparent transparent derive(-fx-control-inner-background, -30%) transparent;
   -fx-border-insets: 0px 0px 0px 0px;
@@ -62,13 +62,13 @@
   -fx-padding: 0px 10px -2px 0px;
 }
 
-.dictionary-list .slime-plain-title {
+.dictionary-list .slime-plain-information-title {
   -fx-padding: 0px 0px -2px 0px;
 }
 
-.dictionary-list:focused .list-cell:filled:selected .shaleia-title,
-.dictionary-list:focused .list-cell:filled:selected .slime-title,
-.dictionary-list:focused .list-cell:filled:selected .slime-plain-title {
+.dictionary-list:focused .list-cell:filled:selected .shaleia-content-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-information-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-plain-information-title {
   -fx-border-color: transparent transparent derive(-fx-selection-bar, 50%) transparent;
 }
 
@@ -80,6 +80,7 @@
 
 .dictionary-list .shaleia-possibility,
 .dictionary-list .slime-id,
+.dictionary-list .slime-marker,
 .dictionary-list .slime-possibility {
   -fx-font-size: 0.85em;
 }

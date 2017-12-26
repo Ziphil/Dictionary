@@ -33,7 +33,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_TOTAL_PART_CLASS = "shaleia-total-part"
   private static final String SHALEIA_PART_CLASS = "shaleia-part"
   private static final String SHALEIA_CREATION_DATE_CLASS = "shaleia-creation-date"
-  private static final String SHALEIA_TITLE_CLASS = "shaleia-title"
+  private static final String SHALEIA_CONTENT_TITLE_CLASS = "shaleia-content-title"
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
@@ -158,7 +158,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Text dammyText = Text.new("\n")
     Text breakText = Text.new("\n")
     List<Text> contentTexts = createRichTexts(modifiedContent)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
     dammyText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
     for (Text contentText : contentTexts) {
       contentText.getStyleClass().add(CONTENT_CLASS)
@@ -174,7 +174,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Text titleText = Text.new(marker)
     Text breakText = Text.new("\n")
     List<Text> synonymTexts = createRichTexts(" " + synonym, true)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
