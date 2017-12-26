@@ -81,17 +81,19 @@
 
   <xsl:template name="bookmark">
     <fo:bookmark-tree>
-      <fo:bookmark internal-destination="caption-{words/caption[1]}"
-                   starting-state="hide"> 
-        <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
-        <xsl:for-each select="words/caption">
-          <fo:bookmark internal-destination="caption-{.}">
-            <fo:bookmark-title>
-              <xsl:value-of select="."/>
-            </fo:bookmark-title>
-          </fo:bookmark>
-        </xsl:for-each>
-      </fo:bookmark>
+      <xsl:if test="count(words/caption) > 0">
+        <fo:bookmark internal-destination="caption-{words/caption[1]}"
+                     starting-state="hide"> 
+          <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
+          <xsl:for-each select="words/caption">
+            <fo:bookmark internal-destination="caption-{.}">
+              <fo:bookmark-title>
+                <xsl:value-of select="."/>
+              </fo:bookmark-title>
+            </fo:bookmark>
+          </xsl:for-each>
+        </fo:bookmark>
+      </xsl:if>
     </fo:bookmark-tree>
   </xsl:template>
 
@@ -198,15 +200,17 @@
         <fo:block font-family="{$font-family}"
                   font-size="{$font-size}"
                   line-height="{$line-height}">
-          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     font-size="{$title-font-size}"
-                     color="{$title-color}"
-                     border="{$border-width} {$color} solid"
-                     background-color="{$light-color}">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="title"/>
-            </xsl:call-template>
-          </fo:inline>
+          <xsl:if test="title != ''">
+            <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                       font-size="{$title-font-size}"
+                       color="{$title-color}"
+                       border="{$border-width} {$color} solid"
+                       background-color="{$light-color}">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="title"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:if>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
@@ -274,15 +278,17 @@
                      color="{$color}">
             <xsl:value-of select="$variation-marker"/>
           </fo:inline>
-          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     font-size="{$title-font-size}"
-                     color="{$title-color}"
-                     border="{$border-width} {$color} solid"
-                     background-color="{$light-color}">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="title"/>
-            </xsl:call-template>
-          </fo:inline>
+          <xsl:if test="title != ''">
+            <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                       font-size="{$title-font-size}"
+                       color="{$title-color}"
+                       border="{$border-width} {$color} solid"
+                       background-color="{$light-color}">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="title"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:if>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
@@ -317,15 +323,17 @@
                      color="{$color}">
             <xsl:value-of select="$relation-marker"/>
           </fo:inline>
-          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
-                     font-size="{$title-font-size}"
-                     color="{$title-color}"
-                     border="{$border-width} {$color} solid"
-                     background-color="{$light-color}">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="title"/>
-            </xsl:call-template>
-          </fo:inline>
+          <xsl:if test="title != ''">
+            <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                       font-size="{$title-font-size}"
+                       color="{$title-color}"
+                       border="{$border-width} {$color} solid"
+                       background-color="{$light-color}">
+              <xsl:call-template name="text">
+                <xsl:with-param name="text" select="title"/>
+              </xsl:call-template>
+            </fo:inline>
+          </xsl:if>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
@@ -375,7 +383,7 @@
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="[&#x0020;-&#x25CA;]+">
       <xsl:matching-substring>
-        <fo:inline xml:lang="en">
+        <fo:inline>
           <xsl:value-of select="."/>
         </fo:inline>
       </xsl:matching-substring>

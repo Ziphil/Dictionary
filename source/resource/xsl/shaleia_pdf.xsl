@@ -81,17 +81,19 @@
 
   <xsl:template name="bookmark">
     <fo:bookmark-tree>
-      <fo:bookmark internal-destination="caption-{words/caption[1]}"
-                   starting-state="hide"> 
-        <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
-        <xsl:for-each select="words/caption">
-          <fo:bookmark internal-destination="caption-{.}">
-            <fo:bookmark-title>
-              <xsl:value-of select="."/>
-            </fo:bookmark-title>
-          </fo:bookmark>
-        </xsl:for-each>
-      </fo:bookmark>
+      <xsl:if test="count(words/caption) > 0">
+        <fo:bookmark internal-destination="caption-{words/caption[1]}"
+                     starting-state="hide"> 
+          <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
+          <xsl:for-each select="words/caption">
+            <fo:bookmark internal-destination="caption-{.}">
+              <fo:bookmark-title>
+                <xsl:value-of select="."/>
+              </fo:bookmark-title>
+            </fo:bookmark>
+          </xsl:for-each>
+        </fo:bookmark>
+      </xsl:if>
     </fo:bookmark-tree>
   </xsl:template>
 
@@ -156,10 +158,6 @@
               background-color="{$color}"
               keep-with-next.within-column="always"
               keep-with-next.within-page="always">
-      <xsl:attribute name="id">
-        <xsl:text>word-</xsl:text>
-        <xsl:value-of select="unique-name"/>
-      </xsl:attribute>
       <fo:inline padding="0mm 2.5mm 0mm 1.5mm"
                  font-family="{$head-font-family}"
                  font-size="{$head-font-size}"
@@ -333,7 +331,7 @@
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="[&#x0020;-&#x25CA;]+">
       <xsl:matching-substring>
-        <fo:inline xml:lang="en">
+        <fo:inline>
           <xsl:value-of select="."/>
         </fo:inline>
       </xsl:matching-substring>
