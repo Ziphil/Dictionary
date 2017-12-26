@@ -53,7 +53,8 @@
 }
 
 .dictionary-list .shaleia-title,
-.dictionary-list .slime-title {
+.dictionary-list .slime-title,
+.dictionary-list .slime-plain-title {
   -fx-font-size: 0.85em;
   -fx-border-color: transparent transparent derive(-fx-control-inner-background, -30%) transparent;
   -fx-border-insets: 0px 0px 0px 0px;
@@ -61,8 +62,13 @@
   -fx-padding: 0px 10px -2px 0px;
 }
 
+.dictionary-list .slime-plain-title {
+  -fx-padding: 0px 0px -2px 0px;
+}
+
 .dictionary-list:focused .list-cell:filled:selected .shaleia-title,
-.dictionary-list:focused .list-cell:filled:selected .slime-title {
+.dictionary-list:focused .list-cell:filled:selected .slime-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-plain-title {
   -fx-border-color: transparent transparent derive(-fx-selection-bar, 50%) transparent;
 }
 

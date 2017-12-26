@@ -30,6 +30,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   private static final String SLIME_EQUIVALENT_TITLE_CLASS = "slime-equivalent-title"
   private static final String SLIME_RELATION_TITLE_CLASS = "slime-relation-title"
   private static final String SLIME_TITLE_CLASS = "slime-title"
+  private static final String SLIME_PLAIN_TITLE_CLASS = "slime-plain-title"
   private static final String SLIME_LINK_CLASS = "slime-link"
 
   public SlimeWordPaneFactory(SlimeWord word, SlimeDictionary dictionary, Boolean persisted) {
@@ -144,8 +145,13 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Text innerBreakText = Text.new((insertsBreak) ? " \n" : " ")
     Text informationText = Text.new(modifiedInformation)
     Text breakText = Text.new("\n")
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
-    innerBreakText.getStyleClass().addAll(CONTENT_CLASS, (insertsBreak) ? SMALL_CLASS : CONTENT_CLASS)
+    if (insertsBreak) {
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TITLE_CLASS)
+      innerBreakText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
+    } else {
+      titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PLAIN_TITLE_CLASS)
+      innerBreakText.getStyleClass().addAll(CONTENT_CLASS)
+    }
     informationText.getStyleClass().add(CONTENT_CLASS)
     pane.getChildren().addAll(titleText, innerBreakText, informationText, breakText)
   }
