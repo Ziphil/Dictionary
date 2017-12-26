@@ -582,7 +582,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void printDictionary() {
     Dictionary dictionary = currentDictionary()
-    if (!dictionary.getWholeWords().isEmpty()) {
+    if (!dictionary.getElements().isEmpty()) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       PrintController controller = PrintController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)

@@ -57,7 +57,7 @@ public interface Dictionary<W extends Word> {
   // この辞書データが埋め込み akrantiain に対応していない場合は、null を返します。
   public Akrantiain getAkrantiain()
 
-  public ObservableList<Element> getWholeWords()
+  public ObservableList<Element> getElements()
 
   public ObservableList<W> getWords()
 

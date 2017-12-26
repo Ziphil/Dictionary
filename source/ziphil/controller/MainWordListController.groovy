@@ -491,7 +491,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
     $progressIndicator.progressProperty().bind(loader.progressProperty())
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $wordView.setItems($dictionary.getWholeWords())
+      $wordView.setItems($dictionary.getElements())
       $searchControl.requestFocus()
       searchNormal(true)
     }

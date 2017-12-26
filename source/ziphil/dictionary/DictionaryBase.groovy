@@ -32,7 +32,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
-  private ObservableList<Element> $wholeWords = FXCollections.observableArrayList()
+  private ObservableList<Element> $elements = FXCollections.observableArrayList()
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
@@ -155,9 +155,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   private void setupWholeWords() {
     ListChangeListener<?> listener = (ListChangeListener){ Change<?> change ->
-      $wholeWords.clear()
-      $wholeWords.addAll($sortedSuggestions)
-      $wholeWords.addAll($shufflableWords)
+      $elements.clear()
+      $elements.addAll($sortedSuggestions)
+      $elements.addAll($shufflableWords)
     }
     $filteredWords.addListener(listener)
     $filteredSuggestions.addListener(listener)
@@ -202,8 +202,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return null
   }
 
-  public ObservableList<Element> getWholeWords() {
-    return $wholeWords
+  public ObservableList<Element> getElements() {
+    return $elements
   }
 
   public ObservableList<W> getWords() {

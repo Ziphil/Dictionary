@@ -53,7 +53,7 @@ public class PrintController extends Controller<Void> {
   }
 
   public void prepare(Dictionary dictionary) {
-    $words = ArrayList.new(dictionary.getWholeWords())
+    $words = ArrayList.new(dictionary.getElements())
     setupIndexControls()
   }
 
