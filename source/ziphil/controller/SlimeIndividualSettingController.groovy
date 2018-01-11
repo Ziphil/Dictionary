@@ -176,7 +176,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void editDefaultWord() {
-    SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.createWord(null)
+    SlimeWord defaultWord = $defaultWord ?: $dictionary.createWord(null)
     UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
