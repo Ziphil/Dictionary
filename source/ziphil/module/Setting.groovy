@@ -98,6 +98,11 @@ public class Setting {
         }
         writer.write("}\n\n")
       }
+      if ($contentFontFamily == null && System.getProperty("os.name").toLowerCase().contains("windows 10")) {
+        writer.write(".dictionary-list .shaleia-italic {\n")
+        writer.write("  -fx-font-family: \"Segoe UI\";\n")
+        writer.write("}\n\n")
+      }
       if ($editorFontFamily != null || $editorFontSize > 0) {
         writer.write(".editor {\n")
         if ($editorFontFamily != null) {
