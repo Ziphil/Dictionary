@@ -397,6 +397,7 @@ public class MainController extends PrimitiveController<Stage> {
           SearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
+          item.setMnemonicParsing(false)
           if (parameter != null) {
             item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
@@ -849,6 +850,7 @@ public class MainController extends PrimitiveController<Stage> {
       String dictionaryPath = dictionaryPaths[i]
       String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
+      item.setMnemonicParsing(false)
       if (dictionaryPath != null) {
         File file = File.new(dictionaryPath)
         item.setText(dictionaryName ?: file.getName())
