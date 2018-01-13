@@ -43,16 +43,16 @@
         <AnchorPane.bottomAnchor><Double rpx="10"/></AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor><Double rpx="10"/></AnchorPane.rightAnchor>
         <Button fx:id="$cancelButton" text="キャンセル" onAction="#cancel" cancelButton="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
         <Button fx:id="$negateButton" text="NG" onAction="#negate">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
         <Button fx:id="$commitButton" text="OK" onAction="#commit" defaultButton="true">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double frpx="70"/></prefWidth>
+          <minWidth><Double frpx="70"/></minWidth>
         </Button>
       </HBox>
     </AnchorPane>
