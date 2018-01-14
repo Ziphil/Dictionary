@@ -44,8 +44,10 @@ public class MainApplication extends Application {
   }
 
   private void setupSecurityManager() {
-    Policy.setPolicy(AllPermissionPolicy.new())
-    System.setSecurityManager(SecurityManager.new())
+    if (!Setting.getInstance().isDebugging()) {
+      Policy.setPolicy(AllPermissionPolicy.new())
+      System.setSecurityManager(SecurityManager.new())
+    }
   }
 
   private void setupFontRendering() {
