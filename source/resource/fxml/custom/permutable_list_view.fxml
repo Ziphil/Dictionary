@@ -27,7 +27,11 @@
   <ListView fx:id="$itemView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
   <VBox alignment="center" GridPane.columnIndex="1" GridPane.rowIndex="0">
     <spacing><Double rpx="15"/></spacing>
-    <UnfocusableButton text="↑" onAction="#exchangeUp"/>
-    <UnfocusableButton text="↓" onAction="#exchangeDown"/>
+    <UnfocusableButton text="↑" onAction="#exchangeUp">
+      <minWidth><UnfocusableButton fx:constant="USE_PREF_SIZE"/></minWidth>
+    </UnfocusableButton>
+    <UnfocusableButton text="↓" onAction="#exchangeDown">
+      <minWidth><UnfocusableButton fx:constant="USE_PREF_SIZE"/></minWidth>
+    </UnfocusableButton>
   </VBox>
 </fx:root>

@@ -18,7 +18,9 @@
     <prefHeight><Double rpx="54"/></prefHeight>
     <minHeight><Double rpx="54"/></minHeight>
   </ListView>
-  <Button text="←" onAction="#addString"/>
+  <Button text="←" onAction="#addString">
+    <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+  </Button>
   <TextField fx:id="$inputControl">
     <prefWidth><Double rpx="100"/></prefWidth>
     <minWidth><Double rpx="100"/></minWidth>

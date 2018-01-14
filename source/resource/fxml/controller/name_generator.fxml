@@ -139,7 +139,9 @@
           <Label styleClass="option-collection" text="訳語セット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <TextField fx:id="$zatlinSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
-            <Button text="…" onAction="#editZatlin" styleClass="right-pill"/>
+            <Button text="…" onAction="#editZatlin" styleClass="right-pill">
+              <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+            </Button>
           </HBox>
           <HBox styleClass="option-collection" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>

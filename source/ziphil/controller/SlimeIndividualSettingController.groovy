@@ -218,6 +218,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
       registeredParameterStringControl.getStyleClass().add("left-pill")
       registeredParameterNameControl.setPrefWidth(Measurement.rpx(120))
       registeredParameterNameControl.setMinWidth(Measurement.rpx(120))
+      editButton.setMinWidth(Button.USE_PREF_SIZE)
       editButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))

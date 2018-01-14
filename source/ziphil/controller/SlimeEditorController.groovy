@@ -23,6 +23,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
+import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
@@ -613,14 +614,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     tagControl.setValue(tag)
     tagControl.setPrefWidth(Measurement.rpx(120))
     tagControl.setMinWidth(Measurement.rpx(120))
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapTagControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapTagControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeTagControl(box)
     }
@@ -645,14 +649,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapEquivalentControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapEquivalentControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeEquivalentControl(box)
     }
@@ -686,14 +693,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     textControl.setText(text)
     textControl.setPrefHeight(Measurement.rpx(120))
     textControl.setMinHeight(Measurement.rpx(120))
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapInformationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapInformationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeInformationControl(box)
     }
@@ -721,14 +731,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapVariationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapVariationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeVariationControl(box)
     }
@@ -762,18 +775,22 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     nameControl.setPrefWidth(Measurement.rpx(150))
     nameControl.setMinWidth(Measurement.rpx(150))
     nameControl.getStyleClass().add("left-pill")
+    chooseButton.setMinWidth(Button.USE_PREF_SIZE)
     chooseButton.getStyleClass().add("right-pill")
     chooseButton.setOnAction() {
       chooseRelation(box)
     }
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapRelationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapRelationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeRelationControl(box)
     }

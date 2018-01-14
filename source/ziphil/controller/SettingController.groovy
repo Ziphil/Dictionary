@@ -308,6 +308,7 @@ public class SettingController extends Controller<BooleanClass> {
       dictionaryPathControl.getStyleClass().add("left-pill")
       dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
       dictionaryNameControl.setMinWidth(Measurement.rpx(130))
+      browseButton.setMinWidth(Button.USE_PREF_SIZE)
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))

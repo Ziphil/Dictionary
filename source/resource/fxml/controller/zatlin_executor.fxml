@@ -44,7 +44,9 @@
       <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <TextField fx:id="$zatlinPathControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
-        <Button text="…" onAction="#openZatlin" styleClass="right-pill"/>
+        <Button text="…" onAction="#openZatlin" styleClass="right-pill">
+          <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+        </Button>
       </HBox>
       <HBox alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
         <GridPane.margin>
