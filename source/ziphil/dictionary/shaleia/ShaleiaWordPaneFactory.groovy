@@ -90,8 +90,9 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
           hasContent = true
         }
         if (reader.findSynonym()) {
+          String synonymType = reader.lookupSynonymType()
           String synonym = reader.lookupSynonym()
-          addSynonymNode(synonymPane, synonym)
+          addSynonymNode(synonymPane, synonymType, synonym)
           hasSynonym = true
         }
       }
@@ -168,17 +169,24 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     pane.getChildren().add(breakText)
   }
 
-  private void addSynonymNode(TextFlow pane, String synonym) {
+  private void addSynonymNode(TextFlow pane, String synonymType, String synonym) {
     String marker = Setting.getInstance().getRelationMarker()
-    TextFlow textFlow = TextFlow.new()
-    Text titleText = Text.new(marker)
+    Text markerText = Text.new(marker)
+    Label synonymTypeText = Label.new(synonymType)
+    Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> synonymTexts = createRichTexts(" " + synonym, true)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
+    List<Text> synonymTexts = createRichTexts(synonym, true)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
+    synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    pane.getChildren().add(titleText)
+    if (synonymType != "") {
+      pane.getChildren().addAll(markerText, synonymTypeText, spaceText)
+    } else {
+      pane.getChildren().addAll(markerText, spaceText)
+    }
     pane.getChildren().addAll(synonymTexts)
     pane.getChildren().add(breakText)
   }

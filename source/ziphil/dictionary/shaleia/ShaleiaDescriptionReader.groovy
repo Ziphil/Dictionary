@@ -63,7 +63,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
 
   private String lookup(DescriptionType type, Int group) {
     if ($matcher != null && $type == type) {
-      return $matcher.group(group)
+      return $matcher.group(group) ?: ""
     } else {
       return null
     }
@@ -98,8 +98,12 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     return lookup(DescriptionType.NOTE, 2)
   }
 
-  public String lookupSynonym() {
+  public String lookupSynonymType() {
     return lookup(DescriptionType.SYNONYM, 1)
+  }
+
+  public String lookupSynonym() {
+    return lookup(DescriptionType.SYNONYM, 2)
   }
 
   public String title() {
@@ -150,11 +154,11 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
 private static enum DescriptionType {
 
   CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),
-  EQUIVALENT(/^\=\s*〈(.+)〉\s*(.+)$/),
+  EQUIVALENT(/^\=\s*(?:〈(.+)〉)?\s*([^:].+)$/),
   HIDDEN_EQUIVALENT(/^\=:\s*(.+)$/),
   CONTENT(/^([A-Z])>\s*(.+)$/),
   NOTE(/^([A-Z])~\s*(.+)$/),
-  SYNONYM(/^\-\s*(.+)$/)
+  SYNONYM(/^\-\s*(?:〈(.+)〉)?\s*(.+)$/)
 
   private String $regex
 
