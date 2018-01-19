@@ -179,7 +179,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Label synonymTypeText = Label.new(synonymType)
     Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> synonymTexts = createRichTexts(synonym, true)
+    List<Text> synonymTexts = createRichTexts(synonym + " ", true)
     markerText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_MARKER_CLASS)
     markerText.getStyleClass().addAll(CONTENT_CLASS)
     synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
