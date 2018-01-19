@@ -97,7 +97,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
-    if (pronunciation != "") {
+    if (!pronunciation.isEmpty()) {
       Text nameText = Text.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
@@ -132,7 +132,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
-    if (title != "") {
+    if (!title.isEmpty()) {
       pane.getChildren().addAll(titleText, spaceText, equivalentText, breakText)
     } else {
       pane.getChildren().addAll(equivalentText, breakText)
@@ -169,14 +169,14 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     markerSpaceText.getStyleClass().addAll(CONTENT_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
-    if (title != "") {
-      if (marker != "") {
+    if (!title.isEmpty()) {
+      if (!marker.isEmpty()) {
         pane.getChildren().addAll(markerText, markerSpaceText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
-      if (marker != "") {
+      if (!marker.isEmpty()) {
         pane.getChildren().addAll(markerText, spaceText)
       }
     }
@@ -205,14 +205,14 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     markerSpaceText.getStyleClass().addAll(CONTENT_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
-    if (title != "") {
-      if (marker != "") {
+    if (!title.isEmpty()) {
+      if (!marker.isEmpty()) {
         pane.getChildren().addAll(markerText, markerSpaceText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
-      if (marker != "") {
+      if (!marker.isEmpty()) {
         pane.getChildren().addAll(markerText, spaceText)
       }
     }

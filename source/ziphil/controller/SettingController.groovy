@@ -254,8 +254,8 @@ public class SettingController extends Controller<BooleanClass> {
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
-      setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
-      setting.getRegisteredDictionaryNames()[i] = (name != "") ? name : null
+      setting.getRegisteredDictionaryPaths()[i] = (!path.isEmpty()) ? path : null
+      setting.getRegisteredDictionaryNames()[i] = (!name.isEmpty()) ? name : null
     }
   }
 

@@ -83,7 +83,7 @@ public class PersonalSlimeDictionaryConverter extends DictionaryLoader<PersonalD
 
   private void appendRelation(StringBuilder usage, String sourceTitle, List<String> sourceNames) {
     usage.append("cf:")
-    if (sourceTitle != "") {
+    if (!sourceTitle.isEmpty()) {
       usage.append("〈")
       usage.append(sourceTitle)
       usage.append("〉")

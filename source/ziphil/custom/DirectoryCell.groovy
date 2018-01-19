@@ -27,7 +27,7 @@ public class DirectoryCell extends TreeCell<File> {
     } else {
       String path = file.toString()
       String name = file.getName()
-      Image icon = (name == "") ? DRIVE_ICON : DIRECTORY_ICON
+      Image icon = (name.isEmpty()) ? DRIVE_ICON : DIRECTORY_ICON
       String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
       Matcher matcher = path =~ /.*${separator}(.+?)$/
       if (matcher.find()) {

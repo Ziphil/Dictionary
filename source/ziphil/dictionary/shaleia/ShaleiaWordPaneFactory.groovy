@@ -116,7 +116,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
-    if (pronunciation != "") {
+    if (!pronunciation.isEmpty()) {
       Text nameText = Text.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
@@ -187,7 +187,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    if (synonymType != "") {
+    if (!synonymType.isEmpty()) {
       pane.getChildren().addAll(markerText, markerSpaceText, synonymTypeText, spaceText)
     } else {
       pane.getChildren().addAll(markerText, spaceText)

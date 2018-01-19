@@ -505,7 +505,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     List<String> tags = ArrayList.new()
     for (Int i = 0 ; i < $tagControls.size() ; i ++) {
       String tag = $tagControls[i].getValue()
-      if (tag != "") {
+      if (!tag.isEmpty()) {
         tags.add(tag)
       }
     }
@@ -517,7 +517,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
       String title = $informationTitleControls[i].getValue()
       String text = $informationTextControls[i].getText()
-      if (text != "") {
+      if (!text.isEmpty()) {
         informations.add(SlimeInformation.new(title, text))
       }
     }
@@ -531,7 +531,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       String title = $variationTitleControls[i].getValue()
       List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
       for (String variationName : variationNames) {
-        if (variationName != "") {
+        if (!variationName.isEmpty()) {
           variations.add(SlimeVariation.new(title, variationName))
         }
       }

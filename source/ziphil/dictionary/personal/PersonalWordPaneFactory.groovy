@@ -37,11 +37,11 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
     addNameNode(mainPane, $word.getName(), $word.createPronunciation())
-    if ($word.getTranslation() != "") {
+    if (!$word.getTranslation().isEmpty()) {
       addContentNode(contentPane, $word.getTranslation())
       hasContent = true
     }
-    if ($word.getUsage() != "") {
+    if (!$word.getUsage().isEmpty()) {
       addContentNode(contentPane, $word.getUsage())
       hasContent = true
     }
@@ -56,7 +56,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
-    if (pronunciation != "") {
+    if (!pronunciation.isEmpty()) {
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")

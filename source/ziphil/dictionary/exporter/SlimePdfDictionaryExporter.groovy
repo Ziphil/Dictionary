@@ -53,7 +53,7 @@ public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDicti
       }
       return ""
     } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
-      if (name != "") {
+      if (!name.isEmpty()) {
         return name[0]
       } else {
         return ""

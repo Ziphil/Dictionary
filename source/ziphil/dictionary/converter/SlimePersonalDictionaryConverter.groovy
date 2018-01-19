@@ -33,21 +33,21 @@ public class SlimePersonalDictionaryConverter extends DictionaryLoader<SlimeDict
       word.setId(i + 1)
       word.setName(sourceWord.getName())
       String sourcePronunciation = sourceWord.getPronunciation()
-      if (sourcePronunciation != "") {
+      if (!sourcePronunciation.isEmpty()) {
         SlimeInformation information = SlimeInformation.new()
         information.setTitle("発音")
         information.setText(sourcePronunciation)
         word.getInformations().add(information)
       }
       String sourceTranslation = sourceWord.getTranslation()
-      if (sourceTranslation != "") {
+      if (!sourceTranslation.isEmpty()) {
         SlimeInformation information = SlimeInformation.new()
         information.setTitle("訳語")
         information.setText(sourceTranslation)
         word.getInformations().add(information)
       }
       String sourceUsage = sourceWord.getUsage()
-      if (sourceUsage != "") {
+      if (!sourceUsage.isEmpty()) {
         SlimeInformation information = SlimeInformation.new()
         information.setTitle("用例")
         information.setText(sourceUsage)

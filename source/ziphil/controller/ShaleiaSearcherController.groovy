@@ -34,17 +34,17 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
   @FXML
   protected void commit() {
     ShaleiaSearchParameter parameter = ShaleiaSearchParameter.new()
-    if ($nameControl.getText() != "") {
+    if (!$nameControl.getText().isEmpty()) {
       parameter.setHasName(true)
       parameter.setName($nameControl.getText())
       parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    if ($equivalentControl.getText() != "") {
+    if (!$equivalentControl.getText().isEmpty()) {
       parameter.setHasEquivalent(true)
       parameter.setEquivalent($equivalentControl.getText())
       parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     }
-    if ($descriptionControl.getText() != "") {
+    if (!$descriptionControl.getText().isEmpty()) {
       parameter.setHasDescription(true)
       parameter.setDescription($descriptionControl.getText())
       parameter.setDescriptionSearchType($descriptionSearchTypeControl.getValue())

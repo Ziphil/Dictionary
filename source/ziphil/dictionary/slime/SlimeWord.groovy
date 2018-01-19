@@ -147,7 +147,7 @@ public class SlimeWord extends WordBase {
         }
       }
     }
-    if (pronunciation == "") {
+    if (pronunciation.isEmpty()) {
       Akrantiain akrantiain = $dictionary.getAkrantiain()
       if (akrantiain != null) {
         try {
