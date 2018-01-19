@@ -117,7 +117,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       Label tagText = Label.new(tag)
       Text spaceText = Text.new(" ")
       tagText.getStyleClass().addAll(CONTENT_CLASS, SLIME_TAG_CLASS)
-      spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_INFORMATION_TITLE_CLASS)
+      spaceText.getStyleClass().addAll(CONTENT_CLASS)
       pane.getChildren().addAll(tagText, spaceText)
     }
     Text breakText = Text.new("\n")
@@ -130,6 +130,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Text equivalentText = Text.new(equivalents.join($dictionary.firstPunctuation()) ?: " ")
     Text breakText = Text.new("\n")
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_TITLE_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
     if (title != "") {
       pane.getChildren().addAll(titleText, spaceText, equivalentText, breakText)
@@ -160,22 +161,23 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
   private void addVariationNode(TextFlow pane, String title, List<String> names) {
     String marker = Setting.getInstance().getVariationMarker()
     Text markerText = Text.new(marker)
+    Text markerSpaceText = Text.new(" ")
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
+    Text breakText = Text.new("\n")
     markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
+    markerSpaceText.getStyleClass().addAll(CONTENT_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
-    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     if (title != "") {
       if (marker != "") {
-        pane.getChildren().addAll(markerText, titleText, spaceText)
+        pane.getChildren().addAll(markerText, markerSpaceText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
       if (marker != "") {
         pane.getChildren().addAll(markerText, spaceText)
-      } else {
-        pane.getChildren().addAll(spaceText)
       }
     }
     for (Int i = 0 ; i < names.size() ; i ++) {
@@ -189,29 +191,29 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
         pane.getChildren().add(punctuationText)
       }
     }
-    Text breakText = Text.new("\n")
     pane.getChildren().add(breakText)
   }
 
   private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
     String marker = Setting.getInstance().getRelationMarker()
     Text markerText = Text.new(marker)
+    Text markerSpaceText = Text.new(" ")
     Label titleText = Label.new(title)
     Text spaceText = Text.new(" ")
+    Text breakText = Text.new("\n")
     markerText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
+    markerSpaceText.getStyleClass().addAll(CONTENT_CLASS)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SLIME_RELATION_TITLE_CLASS)
-    spaceText.getStyleClass().addAll(CONTENT_CLASS, SLIME_MARKER_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     if (title != "") {
       if (marker != "") {
-        pane.getChildren().addAll(markerText, titleText, spaceText)
+        pane.getChildren().addAll(markerText, markerSpaceText, titleText, spaceText)
       } else {
         pane.getChildren().addAll(titleText, spaceText)
       }
     } else {
       if (marker != "") {
         pane.getChildren().addAll(markerText, spaceText)
-      } else {
-        pane.getChildren().add(spaceText)
       }
     }
     for (Int i = 0 ; i < names.size() ; i ++) {
@@ -227,7 +229,6 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
         pane.getChildren().add(punctuationText)
       }      
     }
-    Text breakText = Text.new("\n")
     pane.getChildren().add(breakText)
   }
 
