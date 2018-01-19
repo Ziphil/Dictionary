@@ -494,7 +494,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     for (Int i = 0 ; i < $equivalentTitleControls.size() ; i ++) {
       String title = $equivalentTitleControls[i].getValue()
       List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
-      if (!equivalentNames.isEmpty()) {
+      if (!$normal || !equivalentNames.isEmpty()) {
         equivalents.add(SlimeEquivalent.new(title, equivalentNames))
       }
     }
@@ -505,7 +505,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     List<String> tags = ArrayList.new()
     for (Int i = 0 ; i < $tagControls.size() ; i ++) {
       String tag = $tagControls[i].getValue()
-      if (!tag.isEmpty()) {
+      if (!$normal || !tag.isEmpty()) {
         tags.add(tag)
       }
     }
@@ -517,7 +517,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
       String title = $informationTitleControls[i].getValue()
       String text = $informationTextControls[i].getText()
-      if (!text.isEmpty()) {
+      if (!$normal || !text.isEmpty()) {
         informations.add(SlimeInformation.new(title, text))
       }
     }
@@ -531,7 +531,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       String title = $variationTitleControls[i].getValue()
       List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
       for (String variationName : variationNames) {
-        if (!variationName.isEmpty()) {
+        if (!$normal || !variationName.isEmpty()) {
           variations.add(SlimeVariation.new(title, variationName))
         }
       }
