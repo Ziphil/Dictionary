@@ -76,8 +76,9 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDicti
       try {
         while (sourceReader.readLine() != null) {
           if (sourceReader.findSynonym()) {
+            String sourceSynonymType = sourceReader.lookupSynonymType()
             String sourceSynonym = sourceReader.lookupSynonym()
-            addSynonym(word, sourceSynonym, sourceIds)
+            addSynonym(word, sourceSynonymType, sourceSynonym, sourceIds)
           }
         }
       } finally {
@@ -119,7 +120,7 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDicti
     word.getInformations().add(information)
   }
 
-  private void addSynonym(SlimeWord word, String sourceSynonym, Map<String, IntegerClass> sourceIds) {
+  private void addSynonym(SlimeWord word, String sourceSynonymType, String sourceSynonym, Map<String, IntegerClass> sourceIds) {
     String nextSourceSynonym = sourceSynonym
     nextSourceSynonym = nextSourceSynonym.replaceAll(/(\{|\}|\*)/, "")
     for (String sourceSynonymName : nextSourceSynonym.split(/\s*(,|;)\s*/)) {
@@ -128,6 +129,7 @@ public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDicti
         SlimeRelation relation = SlimeRelation.new()
         relation.setId(sourceId)
         relation.setName(sourceSynonymName)
+        relation.setTitle(sourceSynonymType)
         word.getRelations().add(relation)
       }
     }
