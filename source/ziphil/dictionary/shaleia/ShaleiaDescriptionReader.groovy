@@ -154,7 +154,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
 private static enum DescriptionType {
 
   CREATION_DATE(/^\+\s*(\d+)(?:\s*〈(.+)〉)?\s*$/),
-  EQUIVALENT(/^\=\s*(?:〈(.+)〉)?\s*([^:].+)$/),
+  EQUIVALENT(/^\=\s*(?:〈(.+)〉)?\s*([^:].*)$/),
   HIDDEN_EQUIVALENT(/^\=:\s*(.+)$/),
   CONTENT(/^([A-Z])>\s*(.+)$/),
   NOTE(/^([A-Z])~\s*(.+)$/),

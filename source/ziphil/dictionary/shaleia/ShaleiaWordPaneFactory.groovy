@@ -361,8 +361,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
       }
     }
-    Text text = Text.new(currentString.toString())
-    texts.add(text)
+    if (currentString.length() > 0) {
+      Text text = Text.new(currentString.toString())
+      texts.add(text)
+    }
     return texts
   }
 
