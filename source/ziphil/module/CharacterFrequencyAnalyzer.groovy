@@ -75,8 +75,8 @@ public class CharacterFrequencyAnalyzer {
 
   public List<CharacterStatus> characterStatuses() {
     for (CharacterStatus status : $characterStatuses) {
-      status.setFrequencyPercentage(status.getFrequency() * 100 / $totalFrequency)
-      status.setUsingWordSizePercentage(status.getUsingWordSize() * 100 / $totalWordSize)
+      status.setFrequencyPercentage(status.getFrequency() * 100D / $totalFrequency)
+      status.setUsingWordSizePercentage(status.getUsingWordSize() * 100D / $totalWordSize)
     }
     $characterStatuses.sort() { CharacterStatus firstStatus, CharacterStatus secondStatus ->
       return secondStatus.getFrequency() <=> firstStatus.getFrequency()

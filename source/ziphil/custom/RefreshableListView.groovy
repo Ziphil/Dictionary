@@ -1,6 +1,8 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 import javafx.collections.ObservableList
 import javafx.scene.control.ListView
 import javafx.scene.control.Skin
@@ -19,14 +21,15 @@ public class RefreshableListView<T> extends ListView<T> {
   }
 
   public void refresh() {
-    Skin<?> skin = getSkin()
-    if (skin instanceof RefreshableListViewSkin) {
-      skin.refresh()
+    try {
+      Skin<?> skin = getSkin()
+      Field flowField = skin.getClass().getSuperclass().getDeclaredField("flow")
+      flowField.setAccessible(true)
+      Object flow = flowField.get(skin)
+      Method method = flow.getClass().getMethod("rebuildCells")
+      method.invoke(flow)
+    } catch (Exception exception) {
     }
-  }
-
-  protected Skin<RefreshableListView<T>> createDefaultSkin() {
-    return RefreshableListViewSkin.new(this)
   }
 
 }
