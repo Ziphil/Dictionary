@@ -71,7 +71,7 @@ public class SlimePdfExportConfig extends ExportConfig {
     return $variationMarker
   }
 
-  public void setVariationMaker(String variationMarker) {
+  public void setVariationMarker(String variationMarker) {
     $variationMarker = variationMarker
   }
 

@@ -2,6 +2,7 @@ package ziphil.dictionary.exporter
 
 import groovy.transform.CompileStatic
 import ziphil.controller.Controller
+import ziphil.controller.SlimePdfExportConfigController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryExporterFactory
@@ -26,7 +27,13 @@ public class SlimeDictionaryExporterFactory extends DictionaryExporterFactory {
   }
 
   public Controller createConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type) {
-    return null
+    Controller controller = null
+    if (dictionary instanceof SlimeDictionary) {
+      if (type == ExportType.PDF) {
+        controller = SlimePdfExportConfigController.new(stage)
+      }
+    }
+    return controller
   }
 
   public Boolean isAvailable(Dictionary dictionary, ExportType type) {
