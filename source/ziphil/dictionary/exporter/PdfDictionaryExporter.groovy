@@ -37,14 +37,26 @@ public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfE
   protected BooleanClass save() {
     saveTemporary()
     updateProgress(1, 2)
-    transformDebug()
-    transform()
+    BooleanClass result = transform()
     deleteTemporary()
     updateProgress(2, 2)
-    return true
+    return result
   }
 
   private BooleanClass transform() {
+    if ($config.getExternalCommand() != null) {
+      BooleanClass transformResult = transformFormat()
+      if (transformResult) {
+        BooleanClass executeResult = executeExternalCommand()
+        return executeResult
+      }
+    } else {
+      BooleanClass result = transformPdf()
+      return result
+    }
+  }
+
+  private BooleanClass transformPdf() {
     File file = File.new($path)
     File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
     BufferedOutputStream stream = file.newOutputStream()
@@ -60,9 +72,10 @@ public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfE
       stream.close()
       temporaryStream.close()
     }
+    return true
   }
 
-  private BooleanClass transformDebug() {
+  private BooleanClass transformFormat() {
     File file = File.new($path.replaceAll(/\.\w+$/, "_fo.fo"))
     File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
     BufferedOutputStream stream = file.newOutputStream()
@@ -76,6 +89,21 @@ public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfE
       stream.close()
       temporaryStream.close()
     }
+    return true
+  }
+
+  private BooleanClass executeExternalCommand() {
+    String[] command = $config.getExternalCommand().split(/\s+/)
+    for (Int i = 0 ; i < command.length ; i ++) {
+      String commandFragment = command[i]
+      commandFragment = commandFragment.replaceAll(/%F/, $path.replaceAll(/\.\w+$/, "_fo.fo").replaceAll("\\\\", "\\\\\\\\"))
+      commandFragment = commandFragment.replaceAll(/%P/, $path.replaceAll("\\\\", "\\\\\\\\"))
+      command[i] = commandFragment
+    }
+    ProcessBuilder builder = ProcessBuilder.new(command)
+    Process process = builder.start()
+    process.waitFor()
+    return process.exitValue() == 0
   }
 
   private void saveTemporary() {
@@ -95,9 +123,13 @@ public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfE
   }
 
   private void deleteTemporary() {
-    File file = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
-    if (file.exists()) {
-      file.delete()
+    File xmlFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
+    if (xmlFile.exists()) {
+      xmlFile.delete()
+    }
+    File foFile = File.new($path.replaceAll(/\.\w+$/, "_fo.fo"))
+    if (foFile.exists()) {
+      foFile.delete()
     }
   }
 
