@@ -1,6 +1,8 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import ziphil.controller.Controller
+import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
 
@@ -10,6 +12,8 @@ public abstract class DictionaryExporterFactory {
   public static final List<DictionaryExporterFactory> FACTORIES = loadFactories()
 
   public abstract DictionarySaver create(Dictionary dictionary, ExportConfig config)
+
+  public abstract Controller createConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type)
 
   public abstract Boolean isAvailable(Dictionary dictionary, ExportType type)
 

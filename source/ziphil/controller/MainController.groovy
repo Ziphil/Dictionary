@@ -276,30 +276,43 @@ public class MainController extends PrimitiveController<Stage> {
   private void exportDictionary(ExportType type) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      FileChooserController controller = FileChooserController.new(nextStage)
+      UtilityStage<File> fileStage = UtilityStage.new(StageStyle.UTILITY)
+      FileChooserController fileController = FileChooserController.new(fileStage)
       List<ExtensionFilter> extensionFilters = ArrayList.new()
       ExtensionFilter extensionFilter = type.createExtensionFilter()
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
+      fileStage.initModality(Modality.APPLICATION_MODAL)
+      fileStage.initOwner($stage)
       extensionFilters.add(extensionFilter)
-      controller.prepare(extensionFilters, extensionFilter, true)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted() && nextStage.getResult() != null) {
-        String path = nextStage.getResult().getAbsolutePath()
-        ExportConfig config = ExportConfig.new()
-        config.setType(type)
-        config.setPath(path)
-        currentWordListController().exportDictionary(config)
-        Task<?> saver = dictionary.getSaver()
-        if (saver != null) {
-          saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-            if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
-              Desktop desktop = Desktop.getDesktop()
-              if (desktop.isSupported(Desktop.Action.OPEN)) {
-                try {
-                  desktop.open(File.new(config.getPath()))
-                } catch (Exception exception) {
+      fileController.prepare(extensionFilters, extensionFilter, true)
+      fileStage.showAndWait()
+      if (fileStage.isCommitted() && fileStage.getResult() != null) {
+        UtilityStage<ExportConfig> configStage = UtilityStage.new(StageStyle.UTILITY)
+        Controller configController = dictionary.getDictionaryFactory().createExportConfigController(configStage, dictionary, type)
+        ExportConfig config = null
+        if (configController != null) {
+          configStage.initModality(Modality.APPLICATION_MODAL)
+          configStage.initOwner($stage)
+          configStage.showAndWait()
+          if (configStage.isCommitted()) {
+            config = configStage.getResult()
+          }
+        } else {
+          config = ExportConfig.new()
+        }
+        if (config != null) {
+          config.setPath(fileStage.getResult().getAbsolutePath())
+          config.setType(type)
+          currentWordListController().exportDictionary(config)
+          Task<?> saver = dictionary.getSaver()
+          if (saver != null) {
+            saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+              if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+                Desktop desktop = Desktop.getDesktop()
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
+                  try {
+                    desktop.open(File.new(config.getPath()))
+                  } catch (Exception exception) {
+                  }
                 }
               }
             }

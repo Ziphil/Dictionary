@@ -1,6 +1,8 @@
 package ziphil.dictionary.exporter
 
 import groovy.transform.CompileStatic
+import ziphil.controller.Controller
+import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryExporterFactory
 import ziphil.dictionary.DictionarySaver
@@ -21,6 +23,10 @@ public class SlimeDictionaryExporterFactory extends DictionaryExporterFactory {
       }
     }
     return saver
+  }
+
+  public Controller createConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type) {
+    return null
   }
 
   public Boolean isAvailable(Dictionary dictionary, ExportType type) {

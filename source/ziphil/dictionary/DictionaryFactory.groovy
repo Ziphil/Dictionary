@@ -2,7 +2,9 @@ package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
+import ziphil.controller.Controller
 import ziphil.custom.ExtensionFilter
+import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
 
@@ -61,6 +63,17 @@ public abstract class DictionaryFactory {
       }
     }
     dictionary.save(exporter)
+  }
+
+  public Controller createExportConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type) {
+    Controller controller = null
+    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+      if (factory.isAvailable(dictionary, type)) {
+        controller = factory.createConfigController(stage, dictionary, type)
+        break
+      }
+    }
+    return controller
   }
 
   protected abstract DictionaryLoader createLoader(File file)
