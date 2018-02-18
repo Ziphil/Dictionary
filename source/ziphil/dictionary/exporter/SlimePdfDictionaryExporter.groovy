@@ -15,15 +15,12 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDictionary> {
+public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDictionary, SlimePdfExportConfig> {
 
   private static final String XSLT_PATH = "resource/xsl/slime_pdf.xsl"
 
-  private SlimePdfExportConfig $config
-
   public SlimePdfDictionaryExporter(SlimePdfExportConfig config) {
-    super()
-    $config = config
+    super(config)
   }
 
   protected void writeTemporary(XMLStreamWriter writer) {

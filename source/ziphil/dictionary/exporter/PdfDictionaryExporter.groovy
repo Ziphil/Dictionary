@@ -24,9 +24,15 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class PdfDictionaryExporter<D extends Dictionary> extends DictionarySaver<D> {
+public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfExportConfig> extends DictionarySaver<D> {
 
   private static final String CONFIG_PATH = "resource/xsl/config.xml"
+
+  protected C $config
+
+  public PdfDictionaryExporter(C config) {
+    $config = config
+  }
 
   protected BooleanClass save() {
     saveTemporary()

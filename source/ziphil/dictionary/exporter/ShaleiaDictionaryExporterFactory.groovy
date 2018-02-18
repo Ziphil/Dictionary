@@ -18,7 +18,7 @@ public class ShaleiaDictionaryExporterFactory extends DictionaryExporterFactory 
   public DictionarySaver create(Dictionary dictionary, ExportConfig config) {
     DictionarySaver saver = null
     if (dictionary instanceof ShaleiaDictionary) {
-      if (config.getType() == ExportType.PDF) {
+      if (config.getType() == ExportType.PDF && config instanceof PdfExportConfig) {
         saver = ShaleiaPdfDictionaryExporter.new(config)
       }
     }

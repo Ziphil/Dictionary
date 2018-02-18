@@ -3,7 +3,6 @@ package ziphil.dictionary.exporter
 import groovy.transform.CompileStatic
 import javax.xml.stream.XMLStreamWriter
 import javax.xml.transform.Transformer
-import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaDescriptionReader
 import ziphil.dictionary.shaleia.ShaleiaWord
@@ -12,15 +11,12 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaPdfDictionaryExporter extends PdfDictionaryExporter<ShaleiaDictionary> {
+public class ShaleiaPdfDictionaryExporter extends PdfDictionaryExporter<ShaleiaDictionary, PdfExportConfig> {
 
   private static final String XSLT_PATH = "resource/xsl/shaleia_pdf.xsl"
 
-  private ExportConfig $config
-
-  public ShaleiaPdfDictionaryExporter(ExportConfig config) {
-    super()
-    $config = config
+  public ShaleiaPdfDictionaryExporter(PdfExportConfig config) {
+    super(config)
   }
 
   protected void writeTemporary(XMLStreamWriter writer) {

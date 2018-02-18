@@ -1,12 +1,11 @@
 package ziphil.dictionary.exporter
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.ExportConfig
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimePdfExportConfig extends ExportConfig {
+public class SlimePdfExportConfig extends PdfExportConfig {
 
   private String $captionFontFamily = "sans-serif"
   private Int $captionFontSize = 20
