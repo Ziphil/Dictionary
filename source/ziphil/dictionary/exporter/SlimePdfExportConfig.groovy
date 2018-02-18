@@ -9,10 +9,10 @@ import ziphilib.transform.Ziphilify
 public class SlimePdfExportConfig extends ExportConfig {
 
   private String $captionFontFamily = "sans-serif"
-  private String $headFontFamily = "sans-serif"
-  private String $mainFontFamily = "serif"
   private Int $captionFontSize = 20
+  private String $headFontFamily = "sans-serif"
   private Int $headFontSize = 10
+  private String $mainFontFamily = "serif"
   private Int $mainFontSize = 8
   private String $variationMarker = null
   private String $relationMarker = null

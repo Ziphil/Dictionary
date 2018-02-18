@@ -2,14 +2,14 @@
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
   <xsl:param name="caption-font-family" select="'SourceHanSans-Regular'"/>
-  <xsl:param name="shaleia-font-family" select="'SourceHanSans-Regular'"/>
-  <xsl:param name="font-family" select="'SourceHanSerif-Regular'"/>
-  <xsl:param name="head-font-size" select="'10pt'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
+  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="head-font-size" select="'10pt'"/>
+  <xsl:param name="shaleia-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="main-font-family" select="'SourceHanSerif-Regular'"/>
+  <xsl:param name="main-font-size" select="'8pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
-  <xsl:param name="font-size" select="'8pt'"/>
   <xsl:param name="color" select="'#333333'"/>
   <xsl:param name="title-color" select="'#333333'"/>
   <xsl:param name="light-color" select="'#DDDDDD'"/>
@@ -42,7 +42,7 @@
         <fo:static-content flow-name="xsl-region-before">
           <fo:block-container height="5mm" display-align="after">
             <fo:block font-family="{$head-font-family}"
-                      font-size="{$font-size}"
+                      font-size="{$main-font-size}"
                       text-align-last="justify"
                       border-bottom="{$border-width} #000000 solid">
               <fo:inline padding="0mm 1mm 0mm 1mm">
@@ -61,8 +61,8 @@
         </fo:static-content>
         <fo:static-content flow-name="xsl-region-after">
           <fo:block-container height="5mm" display-align="before">
-            <fo:block font-family="{$font-family}"
-                      font-size="{$font-size}"
+            <fo:block font-family="{$main-font-family}"
+                      font-size="{$main-font-size}"
                       text-align="center">
               <fo:inline>
                 <xsl:text>— </xsl:text>
@@ -164,7 +164,7 @@
                  line-height="{$line-height}">
         <xsl:value-of select="name"/>
       </fo:inline>
-      <fo:inline font-family="{$font-family}"
+      <fo:inline font-family="{$main-font-family}"
                  font-size="{$title-font-size}"
                  line-height="{$line-height}">
         <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
@@ -185,8 +185,8 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="equivalents/equivalent">
-        <fo:block font-family="{$font-family}"
-                  font-size="{$font-size}"
+        <fo:block font-family="{$main-font-family}"
+                  font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
                      font-size="{$title-font-size}"
@@ -216,8 +216,8 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="contents/content">
-        <fo:block font-family="{$font-family}"
-                  font-size="{$font-size}"
+        <fo:block font-family="{$main-font-family}"
+                  font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:block margin-left="-{$inner-margin}"
                     margin-bottom="0.2mm"
@@ -249,8 +249,8 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="synonyms/synonym">
-        <fo:block font-family="{$font-family}"
-                  font-size="{$font-size}"
+        <fo:block font-family="{$main-font-family}"
+                  font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:inline space-end="0.2mm"
                      font-size="{$title-font-size}"

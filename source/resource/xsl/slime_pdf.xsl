@@ -3,12 +3,12 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:param name="caption-font-family" select="'SourceHanSans-Regular'"/>
-  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
-  <xsl:param name="main-font-family" select="'SourceHanSerif-Regular'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
+  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
-  <xsl:param name="title-font-size" select="'6pt'"/>
+  <xsl:param name="main-font-family" select="'SourceHanSerif-Regular'"/>
   <xsl:param name="main-font-size" select="'8pt'"/>
+  <xsl:param name="title-font-size" select="'6pt'"/>
   <xsl:param name="color" select="'#333333'"/>
   <xsl:param name="title-color" select="'#333333'"/>
   <xsl:param name="light-color" select="'#DDDDDD'"/>
