@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import javax.xml.stream.XMLStreamWriter
 import javax.xml.transform.Transformer
 import ziphil.dictionary.AlphabetOrderType
-import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.slime.SlimeEquivalent
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeInformation
@@ -20,9 +19,9 @@ public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDicti
 
   private static final String XSLT_PATH = "resource/xsl/slime_pdf.xsl"
 
-  private ExportConfig $config
+  private SlimePdfExportConfig $config
 
-  public SlimePdfDictionaryExporter(ExportConfig config) {
+  public SlimePdfDictionaryExporter(SlimePdfExportConfig config) {
     super()
     $config = config
   }
@@ -182,9 +181,17 @@ public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDicti
 
   protected void setupTransformer(Transformer transformer) {
     Setting setting = Setting.getInstance()
-    transformer.setParameter("punctuation", ", ")
-    transformer.setParameter("variation-marker", setting.getVariationMarker())
-    transformer.setParameter("relation-marker", setting.getRelationMarker())
+    transformer.setParameter("caption-font-family", $config.getCaptionFontFamily())
+    transformer.setParameter("head-font-family", $config.getHeadFontFamily())
+    transformer.setParameter("main-font-family", $config.getMainFontFamily())
+    transformer.setParameter("caption-font-size", "${$config.getCaptionFontSize()}pt")
+    transformer.setParameter("head-font-size", "${$config.getHeadFontSize()}pt")
+    transformer.setParameter("title-font-size", "${$config.getMainFontSize() * 0.75}pt")
+    transformer.setParameter("main-font-size", "${$config.getMainFontSize()}pt")
+    transformer.setParameter("punctuation", $dictionary.firstPunctuation())
+    transformer.setParameter("variation-marker", $config.getVariationMarker() ?: setting.getVariationMarker())
+    transformer.setParameter("relation-marker", $config.getRelationMarker() ?: setting.getRelationMarker())
+    transformer.setParameter("modifies", $config.getModifies())
   }
 
   protected String getXsltPath() {

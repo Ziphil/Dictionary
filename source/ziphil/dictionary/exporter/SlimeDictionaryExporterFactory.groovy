@@ -18,7 +18,7 @@ public class SlimeDictionaryExporterFactory extends DictionaryExporterFactory {
   public DictionarySaver create(Dictionary dictionary, ExportConfig config) {
     DictionarySaver saver = null
     if (dictionary instanceof SlimeDictionary) {
-      if (config.getType() == ExportType.PDF) {
+      if (config.getType() == ExportType.PDF && config instanceof SlimePdfExportConfig) {
         saver = SlimePdfDictionaryExporter.new(config)
       }
     }
