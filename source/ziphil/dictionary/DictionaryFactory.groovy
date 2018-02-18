@@ -65,6 +65,19 @@ public abstract class DictionaryFactory {
     dictionary.save(exporter)
   }
 
+  public Controller createConvertConfigController(UtilityStage<?> stage, Dictionary sourceDictionary) {
+    Controller controller = null
+    if (sourceDictionary.getDictionaryFactory() != this) {
+      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+        if (factory.isAvailable(this, sourceDictionary)) {
+          controller = null
+          break
+        }
+      }
+    }
+    return controller
+  }
+
   public Controller createExportConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type) {
     Controller controller = null
     for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
