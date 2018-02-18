@@ -61,7 +61,7 @@
         </fo:static-content>
         <fo:static-content flow-name="xsl-region-after">
           <fo:block-container height="5mm" display-align="before">
-            <fo:block font-family="{$mai-font-family}"
+            <fo:block font-family="{$main-font-family}"
                       font-size="{$main-font-size}"
                       text-align="center">
               <fo:inline>
@@ -171,7 +171,7 @@
                  line-height="{$line-height}">
         <xsl:value-of select="name"/>
       </fo:inline>
-      <fo:inline font-family="{$mai-font-family}"
+      <fo:inline font-family="{$main-font-family}"
                  font-size="{$title-font-size}"
                  line-height="{$line-height}">
         <xsl:for-each select="tags/tag">
@@ -197,7 +197,7 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="equivalents/equivalent">
-        <fo:block font-family="{$mai-font-family}"
+        <fo:block font-family="{$main-font-family}"
                   font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <xsl:if test="title != ''">
@@ -237,7 +237,7 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="informations/information">
-        <fo:block font-family="{$mai-font-family}"
+        <fo:block font-family="{$main-font-family}"
                   font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:block margin-left="-{$inner-margin}"
@@ -270,7 +270,7 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="variations/variation">
-        <fo:block font-family="{$mai-font-family}"
+        <fo:block font-family="{$main-font-family}"
                   font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:inline space-end="0.2mm"
@@ -315,7 +315,7 @@
               margin-left="{$inner-margin}"
               margin-right="{$inner-margin}">
       <xsl:for-each select="relations/relation">
-        <fo:block font-family="{$mai-font-family}"
+        <fo:block font-family="{$main-font-family}"
                   font-size="{$main-font-size}"
                   line-height="{$line-height}">
           <fo:inline space-end="0.2mm"
