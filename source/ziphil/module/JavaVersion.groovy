@@ -23,25 +23,50 @@ public class JavaVersion implements Comparable<JavaVersion> {
     Int major = -1
     Int minor = 0
     Int update = 0
-    Matcher majorMatcher = splitString[1] =~ /^(\d+)/
-    if (majorMatcher.find()) {
-      major = IntegerClass.parseInt(majorMatcher.group(1))
-    }
-    Matcher minorMatcher = splitString[2] =~ /^(\d+)/
-    if (majorMatcher.find()) {
-      minor = IntegerClass.parseInt(minorMatcher.group(1))
-    }
-    if (splitString[3] != null) {
-      Matcher updateMatcher = splitString[3] =~ /^(\d+)/
-      if (updateMatcher.find()) {
-        update = IntegerClass.parseInt(updateMatcher.group(1))
+    if (splitString[0] == "1") {
+      if (splitString[1] != null) {
+        Matcher majorMatcher = splitString[1] =~ /^(\d+)/
+        if (majorMatcher.find()) {
+          major = IntegerClass.parseInt(majorMatcher.group(1))
+        }
+      }
+      if (splitString[2] != null) {
+        Matcher minorMatcher = splitString[2] =~ /^(\d+)/
+        if (minorMatcher.find()) {
+          minor = IntegerClass.parseInt(minorMatcher.group(1))
+        }
+      }
+      if (splitString[3] != null) {
+        Matcher updateMatcher = splitString[3] =~ /^(\d+)/
+        if (updateMatcher.find()) {
+          update = IntegerClass.parseInt(updateMatcher.group(1))
+        }
+      }
+    } else {
+      if (splitString[0] != null) {
+        Matcher majorMatcher = splitString[0] =~ /^(\d+)/
+        if (majorMatcher.find()) {
+          major = IntegerClass.parseInt(majorMatcher.group(1))
+        }
+      }
+      if (splitString[1] != null) {
+        Matcher minorMatcher = splitString[1] =~ /^(\d+)/
+        if (minorMatcher.find()) {
+          minor = IntegerClass.parseInt(minorMatcher.group(1))
+        }
+      }
+      if (splitString[2] != null) {
+        Matcher updateMatcher = splitString[2] =~ /^(\d+)/
+        if (updateMatcher.find()) {
+          update = IntegerClass.parseInt(updateMatcher.group(1))
+        }
       }
     }
     return JavaVersion.new(major, minor, update)
   }
 
   public static JavaVersion current() {
-    String string = Runtime.getPackage().getImplementationVersion()
+    String string = System.getProperty("java.version")
     return parseString(string)
   }
 
@@ -68,10 +93,14 @@ public class JavaVersion implements Comparable<JavaVersion> {
   }
 
   public String toString() {
-    if ($update > 0) {
-      return "1.${$major}.${$minor}_${$update}"
+    if ($major >= 9) {
+      return "${$major}.${$minor}.${$update}"
     } else {
-      return "1.${$major}.${$minor}"
+      if ($update > 0) {
+        return "1.${$major}.${$minor}_${$update} (${$major}u${$update})"
+      } else {
+        return "1.${$major}.${$minor}"
+      }
     }
   }
 

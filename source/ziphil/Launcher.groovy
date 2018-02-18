@@ -2,6 +2,7 @@ package ziphil
 
 import groovy.transform.CompileStatic
 import ziphil.main.MainApplication
+import ziphil.module.JavaVersion
 import ziphil.module.Version
 import ziphilib.transform.Ziphilify
 
@@ -17,7 +18,7 @@ public class Launcher {
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
-    println("Java version: ${Runtime.getPackage().getImplementationVersion()}")
+    println("Java version: ${JavaVersion.current()}")
     println("Groovy version: ${GroovySystem.getVersion()}")
     MainApplication.launch(MainApplication, args)
   }
