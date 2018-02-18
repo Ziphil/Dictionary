@@ -142,20 +142,12 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    Dictionary dictionary = currentDictionary()
-    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare(null, directory, true)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      File file = nextStage.getResult()
-      Dictionary nextDictionary = DictionaryFactory.loadProper(file)
-      if (nextDictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
-        addDictionaryTab(nextDictionary)
+    File file = chooseDictionary(currentDictionary(), null)
+    if (file != null) {
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
+      if (dictionary != null) {
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
+        addDictionaryTab(dictionary)
       } else {
         showErrorDialog("failOpenDictionary")
       }
@@ -164,12 +156,11 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void reopenDictionary() {
-    Dictionary dictionary = currentDictionary()
-    File file = File.new(dictionary.getPath())
-    Dictionary nextDictionary = DictionaryFactory.loadProper(file)
-    if (nextDictionary != null) {
+    File file = File.new(currentDictionary().getPath())
+    Dictionary dictionary = DictionaryFactory.loadProper(file)
+    if (dictionary != null) {
       MainWordListController controller = currentWordListController()
-      controller.open(nextDictionary)
+      controller.open(dictionary)
     } else {
       showErrorDialog("failOpenDictionary")
     }
@@ -201,14 +192,8 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void createDictionary(DictionaryFactory factory) {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare(factory, null, true)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      File file = nextStage.getResult()
+    File file = chooseDictionary(currentDictionary(), factory)
+    if (file != null) {
       Dictionary dictionary = DictionaryFactory.loadProperEmpty(factory, file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
@@ -228,24 +213,14 @@ public class MainController extends PrimitiveController<Stage> {
   private void saveAndRenameDictionary() {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
-      controller.prepare(dictionary.getDictionaryFactory(), File.new(dictionary.getPath()).getParentFile(), true)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        File file = nextStage.getResult()
-        if (file != null) {
-          Tab tab = $tabPane.getSelectionModel().getSelectedItem()
-          dictionary.setName(file.getName())
-          dictionary.setPath(file.getAbsolutePath())
-          tab.setText(dictionary.getName())
-          currentWordListController().saveDictionary()
-          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
-        } else {
-          showErrorDialog("failSaveDictionary")
-        }
+      File file = chooseDictionary(dictionary, dictionary.getDictionaryFactory())
+      if (file != null) {
+        Tab tab = $tabPane.getSelectionModel().getSelectedItem()
+        dictionary.setName(file.getName())
+        dictionary.setPath(file.getAbsolutePath())
+        tab.setText(dictionary.getName())
+        currentWordListController().saveDictionary()
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       }
     }
   }
@@ -253,14 +228,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void convertDictionary(DictionaryFactory factory) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
-      controller.prepare(factory, File.new(dictionary.getPath()).getParentFile(), true)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        File file = nextStage.getResult()
+      File file = chooseDictionary(dictionary, factory)
+      if (file != null) {
         Dictionary nextDictionary = DictionaryFactory.convertProper(factory, dictionary, file)
         if (nextDictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
@@ -276,47 +245,78 @@ public class MainController extends PrimitiveController<Stage> {
   private void exportDictionary(ExportType type) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> fileStage = UtilityStage.new(StageStyle.UTILITY)
-      FileChooserController fileController = FileChooserController.new(fileStage)
-      List<ExtensionFilter> extensionFilters = ArrayList.new()
-      ExtensionFilter extensionFilter = type.createExtensionFilter()
-      fileStage.initModality(Modality.APPLICATION_MODAL)
-      fileStage.initOwner($stage)
-      extensionFilters.add(extensionFilter)
-      fileController.prepare(extensionFilters, extensionFilter, true)
-      fileStage.showAndWait()
-      if (fileStage.isCommitted() && fileStage.getResult() != null) {
-        UtilityStage<ExportConfig> configStage = UtilityStage.new(StageStyle.UTILITY)
-        Controller configController = dictionary.getDictionaryFactory().createExportConfigController(configStage, dictionary, type)
+      File file = chooseExportDestination(type.createExtensionFilter())
+      if (file != null) {
+        UtilityStage<ExportConfig> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Controller controller = dictionary.getDictionaryFactory().createExportConfigController(nextStage, dictionary, type)
         ExportConfig config = null
-        if (configController != null) {
-          configStage.initModality(Modality.APPLICATION_MODAL)
-          configStage.initOwner($stage)
-          configStage.showAndWait()
-          if (configStage.isCommitted()) {
-            config = configStage.getResult()
+        if (controller != null) {
+          nextStage.initModality(Modality.APPLICATION_MODAL)
+          nextStage.initOwner($stage)
+          nextStage.showAndWait()
+          if (nextStage.isCommitted()) {
+            config = nextStage.getResult()
           }
         } else {
           config = ExportConfig.new()
         }
         if (config != null) {
-          config.setPath(fileStage.getResult().getAbsolutePath())
+          config.setPath(file.getAbsolutePath())
           config.setType(type)
           currentWordListController().exportDictionary(config)
           Task<?> saver = dictionary.getSaver()
           if (saver != null) {
             saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-              if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
-                Desktop desktop = Desktop.getDesktop()
-                if (desktop.isSupported(Desktop.Action.OPEN)) {
-                  try {
-                    desktop.open(File.new(config.getPath()))
-                  } catch (Exception exception) {
-                  }
-                }
-              }
+              openExternalFile(File.new(config.getPath()))
             }
           }
+        }
+      }
+    }
+  }
+
+  // ファイル選択ウィンドウを開き、参照する辞書ファイルを選択します。
+  // デフォルトでは、ホームディレクトリが表示された状態でウィンドウが開き、全てのファイルが表示されます。
+  // ただし、dictionary に辞書データを渡すことで、デフォルトで開いておくディレクトリをその辞書データが置かれている場所に変更できます。
+  // また、factory に辞書形式を渡すことで、デフォルトでその辞書形式の拡張子のみを表示するようにできます。
+  private File chooseDictionary(Dictionary dictionary, DictionaryFactory factory) {
+    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare(factory, directory, true)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
+      return nextStage.getResult()
+    } else {
+      return null
+    }
+  }
+
+  private File chooseExportDestination(ExtensionFilter extensionFilter) {
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileChooserController controller = FileChooserController.new(nextStage)
+    List<ExtensionFilter> extensionFilters = ArrayList.new()
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    extensionFilters.add(extensionFilter)
+    controller.prepare(extensionFilters, extensionFilter, true)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
+      return nextStage.getResult()
+    } else {
+      return null
+    }
+  }
+
+  private void openExternalFile(File file) {
+    if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+      Desktop desktop = Desktop.getDesktop()
+      if (desktop.isSupported(Desktop.Action.OPEN)) {
+        try {
+          desktop.open(file)
+        } catch (Exception exception) {
         }
       }
     }
