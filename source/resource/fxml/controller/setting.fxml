@@ -59,8 +59,8 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$contentFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
+              <prefWidth><Double rpx="300"/></prefWidth>
+              <minWidth><Double rpx="300"/></minWidth>
             </ComboBox>
             <Spinner fx:id="$contentFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
@@ -77,8 +77,8 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$editorFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
+              <prefWidth><Double rpx="300"/></prefWidth>
+              <minWidth><Double rpx="300"/></minWidth>
             </ComboBox>
             <Spinner fx:id="$editorFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
@@ -203,8 +203,8 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$systemFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
+              <prefWidth><Double rpx="300"/></prefWidth>
+              <minWidth><Double rpx="300"/></minWidth>
             </ComboBox>
             <HelpIndicator text="%help.setting.systemFont"/>
           </HBox>

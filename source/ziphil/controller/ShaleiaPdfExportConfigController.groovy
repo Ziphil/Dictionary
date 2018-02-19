@@ -21,7 +21,7 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/shaleia_pdf_export_config.fxml"
   private static final String TITLE = "エクスポート設定"
-  private static final Double DEFAULT_WIDTH = Measurement.rpx(580)
+  private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private ComboBox<String> $firstCaptionFontFamilyControl

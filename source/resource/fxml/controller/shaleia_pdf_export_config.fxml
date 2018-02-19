@@ -55,12 +55,12 @@
             <VBox>
               <spacing><Double rpx="5"/></spacing>
               <ComboBox fx:id="$firstCaptionFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
               <ComboBox fx:id="$secondCaptionFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
             </VBox>
             <Spinner fx:id="$captionFontSizeControl" editable="true">
@@ -79,12 +79,12 @@
             <VBox>
               <spacing><Double rpx="5"/></spacing>
               <ComboBox fx:id="$firstHeadFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
               <ComboBox fx:id="$secondHeadFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
             </VBox>
             <Spinner fx:id="$headFontSizeControl" editable="true">
@@ -103,12 +103,12 @@
             <VBox>
               <spacing><Double rpx="5"/></spacing>
               <ComboBox fx:id="$firstShaleiaFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
               <ComboBox fx:id="$secondShaleiaFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
             </VBox>
             <Spinner fx:id="$shaleiaFontSizeControl" editable="true" disable="true">
@@ -127,12 +127,12 @@
             <VBox>
               <spacing><Double rpx="5"/></spacing>
               <ComboBox fx:id="$firstMainFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
               <ComboBox fx:id="$secondMainFontFamilyControl" editable="true">
-                <prefWidth><Double rpx="350"/></prefWidth>
-                <minWidth><Double rpx="350"/></minWidth>
+                <prefWidth><Double rpx="300"/></prefWidth>
+                <minWidth><Double rpx="300"/></minWidth>
               </ComboBox>
             </VBox>
             <Spinner fx:id="$mainFontSizeControl" editable="true">
