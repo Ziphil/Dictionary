@@ -11,11 +11,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, PdfExportConfig> {
+public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPdfExportConfig> {
 
   private static final String XSLT_PATH = "resource/xsl/shaleia_pdf.xsl"
 
-  public ShaleiaPdfExporter(PdfExportConfig config) {
+  public ShaleiaPdfExporter(ShaleiaPdfExportConfig config) {
     super(config)
   }
 
@@ -146,8 +146,16 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, PdfExport
 
   protected void setupTransformer(Transformer transformer) {
     Setting setting = Setting.getInstance()
-    transformer.setParameter("punctuation", ", ")
-    transformer.setParameter("relation-marker", setting.getRelationMarker())
+    transformer.setParameter("caption-font-family", "${$config.getFirstCaptionFontFamily()}, ${$config.getSecondCaptionFontFamily()}")
+    transformer.setParameter("caption-font-size", "${$config.getCaptionFontSize()}pt")
+    transformer.setParameter("head-font-family", "${$config.getFirstHeadFontFamily()}, ${$config.getSecondHeadFontFamily()}")
+    transformer.setParameter("head-font-size", "${$config.getHeadFontSize()}pt")
+    transformer.setParameter("shaleia-font-family", "${$config.getFirstShaleiaFontFamily()}, ${$config.getSecondShaleiaFontFamily()}")
+    transformer.setParameter("main-font-family", "${$config.getFirstMainFontFamily()}, ${$config.getSecondMainFontFamily()}")
+    transformer.setParameter("main-font-size", "${$config.getMainFontSize()}pt")
+    transformer.setParameter("title-font-size", "${$config.getMainFontSize() * 0.75}pt")
+    transformer.setParameter("relation-marker", $config.getRelationMarker() ?: setting.getRelationMarker())
+    transformer.setParameter("modifies", $config.getModifies())
   }
 
   protected String getXsltPath() {
