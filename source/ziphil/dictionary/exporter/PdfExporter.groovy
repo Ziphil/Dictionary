@@ -17,20 +17,20 @@ import org.apache.fop.apps.FopFactory
 import org.apache.fop.apps.Fop
 import org.apache.fop.apps.MimeConstants
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.Saver
 import ziphil.module.Setting
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfExportConfig> extends DictionarySaver<D> {
+public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfig> extends Saver<D> {
 
   private static final String CONFIG_PATH = "resource/xsl/config.xml"
 
   protected C $config
 
-  public PdfDictionaryExporter(C config) {
+  public PdfExporter(C config) {
     $config = config
   }
 
@@ -150,7 +150,7 @@ public abstract class PdfDictionaryExporter<D extends Dictionary, C extends PdfE
 }
 
 
-@InnerClass(PdfDictionaryExporter)
+@InnerClass(PdfExporter)
 @CompileStatic @Ziphilify
 private static class PrettyPrintHandler implements InvocationHandler {
 

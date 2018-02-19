@@ -3,9 +3,9 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.Loader
+import ziphil.dictionary.Saver
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
@@ -18,7 +18,7 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
   private static final String EXTENSION = "xdc"
   private static final String ICON_PATH = "resource/icon/xdc_dictionary.png"
 
-  protected Dictionary create(File file, DictionaryLoader loader) {
+  protected Dictionary create(File file, Loader loader) {
     if (loader != null) {
       Dictionary dictionary = ShaleiaDictionary.new(file.getName(), file.getPath(), loader)
       return dictionary
@@ -28,13 +28,13 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
     }
   }
 
-  protected DictionaryLoader createLoader(File file) {
-    ShaleiaDictionaryLoader loader = ShaleiaDictionaryLoader.new(file.getPath())
+  protected Loader createLoader(File file) {
+    ShaleiaLoader loader = ShaleiaLoader.new(file.getPath())
     return loader
   }
 
-  protected DictionarySaver createSaver() {
-    ShaleiaDictionarySaver saver = ShaleiaDictionarySaver.new()
+  protected Saver createSaver() {
+    ShaleiaSaver saver = ShaleiaSaver.new()
     return saver
   }
 

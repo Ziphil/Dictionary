@@ -3,14 +3,14 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.Saver
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionarySaver extends DictionarySaver<ShaleiaDictionary> {
+public class ShaleiaSaver extends Saver<ShaleiaDictionary> {
 
-  public ShaleiaDictionarySaver() {
+  public ShaleiaSaver() {
     super()
   }
 

@@ -33,7 +33,7 @@ public interface Dictionary<W extends Word> {
   // この単語を saver に渡されたセーバーによってファイルに保存します。
   // saver に保存先のパスが指定されていない場合は、この辞典データが保持しているパスに保存します。
   // なお、実際にデータをファイルに保存する際は、このメソッドを直接呼び出すのではなく DictionaryFactory 経由で行うことが推奨されています。
-  public void save(DictionarySaver saver)
+  public void save(Saver saver)
 
   public Int hitWordSize()
 

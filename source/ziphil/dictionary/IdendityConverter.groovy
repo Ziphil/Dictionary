@@ -5,11 +5,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class IdentityDictionaryConverter<D extends Dictionary, W extends Word> extends DictionaryLoader<D, W> {
+public class IdentityConverter<D extends Dictionary, W extends Word> extends Loader<D, W> {
 
   private D $sourceDictionary
 
-  public IdentityDictionaryConverter(D sourceDictionary) {
+  public IdentityConverter(D sourceDictionary) {
     super()
     $sourceDictionary = sourceDictionary
   }

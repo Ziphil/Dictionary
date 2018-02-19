@@ -3,16 +3,16 @@ package ziphil.dictionary.shaleia
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionaryLoader extends DictionaryLoader<ShaleiaDictionary, ShaleiaWord> {
+public class ShaleiaLoader extends Loader<ShaleiaDictionary, ShaleiaWord> {
 
   private String $path
 
-  public ShaleiaDictionaryLoader(String path) {
+  public ShaleiaLoader(String path) {
     super()
     $path = path
   }

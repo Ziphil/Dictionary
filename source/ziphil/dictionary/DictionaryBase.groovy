@@ -47,7 +47,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     prepare()
   }
 
-  public DictionaryBase(String name, String path, DictionaryLoader loader) {
+  public DictionaryBase(String name, String path, Loader loader) {
     this(name, path)
     load(loader)
   }
@@ -112,7 +112,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract Dictionary copy()
 
-  private void load(DictionaryLoader loader) {
+  private void load(Loader loader) {
     if (loader != null) {
       loader.setDictionary(this)
       loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
@@ -127,7 +127,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  public void save(DictionarySaver saver) {
+  public void save(Saver saver) {
     if (saver != null) {
       saver.setDictionary(this)
       if (saver.getPath() == null) {

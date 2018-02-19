@@ -3,14 +3,14 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import javafx.collections.ObservableList
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.Saver
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionarySaver extends DictionarySaver<PersonalDictionary> {
+public class PersonalSaver extends Saver<PersonalDictionary> {
 
-  public PersonalDictionarySaver() {
+  public PersonalSaver() {
     super()
   }
 

@@ -1,17 +1,17 @@
 package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphil.module.BocuDecodableInputStream
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class BinaryDictionaryLoader extends DictionaryLoader<BinaryDictionary, PersonalWord> {
+public class BinaryLoader extends Loader<BinaryDictionary, PersonalWord> {
 
   private String $path
 
-  public BinaryDictionaryLoader(String path) {
+  public BinaryLoader(String path) {
     super()
     $path = path
   }

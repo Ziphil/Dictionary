@@ -8,17 +8,17 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import ziphil.dictionary.AlphabetOrderType
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionaryLoader extends DictionaryLoader<SlimeDictionary, SlimeWord> {
+public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private String $path
   private ObjectMapper $mapper
 
-  public SlimeDictionaryLoader(String path) {
+  public SlimeLoader(String path) {
     super()
     $path = path
   }

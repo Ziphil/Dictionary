@@ -3,7 +3,7 @@ package ziphil.dictionary.converter
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
 import ziphil.dictionary.AlphabetOrderType
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphil.dictionary.Word
 import ziphil.dictionary.shaleia.ShaleiaDescriptionReader
 import ziphil.dictionary.shaleia.ShaleiaDictionary
@@ -17,11 +17,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeShaleiaDictionaryConverter extends DictionaryLoader<SlimeDictionary, SlimeWord> {
+public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
 
   private ShaleiaDictionary $sourceDictionary
 
-  public SlimeShaleiaDictionaryConverter(ShaleiaDictionary sourceDictionary) {
+  public SlimeShaleiaConverter(ShaleiaDictionary sourceDictionary) {
     super()
     $sourceDictionary = sourceDictionary
   }

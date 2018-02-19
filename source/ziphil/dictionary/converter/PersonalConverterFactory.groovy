@@ -1,10 +1,10 @@
 package ziphil.dictionary.converter
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.ConverterFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryConverterFactory
 import ziphil.dictionary.DictionaryFactory
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
@@ -12,15 +12,15 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionaryConverterFactory extends DictionaryConverterFactory {
+public class PersonalConverterFactory extends ConverterFactory {
 
-  public DictionaryLoader create(DictionaryFactory factory, Dictionary sourceDictionary) {
-    DictionaryLoader converter = null
+  public Loader create(DictionaryFactory factory, Dictionary sourceDictionary) {
+    Loader converter = null
     if (factory.getDictionaryClass() == PersonalDictionary) {
       if (sourceDictionary instanceof ShaleiaDictionary) {
-        converter = PersonalShaleiaDictionaryConverter.new(sourceDictionary)
+        converter = PersonalShaleiaConverter.new(sourceDictionary)
       } else if (sourceDictionary instanceof SlimeDictionary) {
-        converter = PersonalSlimeDictionaryConverter.new(sourceDictionary)
+        converter = PersonalSlimeConverter.new(sourceDictionary)
       }
     }
     return converter

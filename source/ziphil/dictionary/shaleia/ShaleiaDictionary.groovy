@@ -9,13 +9,13 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
+import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchType
 import ziphil.module.HairiaDate
 import ziphil.module.HairiaNumberField
@@ -43,7 +43,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     super(name, path)
   }
 
-  public ShaleiaDictionary(String name, String path, DictionaryLoader loader) {
+  public ShaleiaDictionary(String name, String path, Loader loader) {
     super(name, path, loader)
   }
 

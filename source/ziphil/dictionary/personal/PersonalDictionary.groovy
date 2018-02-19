@@ -6,14 +6,14 @@ import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
+import ziphil.dictionary.Saver
 import ziphil.dictionary.Suggestion
 import ziphilib.transform.Ziphilify
 
@@ -28,7 +28,7 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     super(name, path)
   }
 
-  public PersonalDictionary(String name, String path, DictionaryLoader loader) {
+  public PersonalDictionary(String name, String path, Loader loader) {
     super(name, path, loader)
   }
 

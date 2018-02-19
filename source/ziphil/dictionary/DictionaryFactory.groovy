@@ -13,10 +13,10 @@ public abstract class DictionaryFactory {
 
   public static final List<DictionaryFactory> FACTORIES = loadFactories()
 
-  protected abstract Dictionary create(File file, DictionaryLoader converter)
+  protected abstract Dictionary create(File file, Loader converter)
 
   public Dictionary load(File file) {
-    DictionaryLoader loader = createLoader(file)
+    Loader loader = createLoader(file)
     return create(file, loader)
   }
 
@@ -25,37 +25,37 @@ public abstract class DictionaryFactory {
   }
 
   public Dictionary convert(File file, Dictionary sourceDictionary) {
-    DictionaryLoader converter = null
+    Loader converter = null
     if (sourceDictionary.getDictionaryFactory() != this) {
-      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+      for (ConverterFactory factory : ConverterFactory.FACTORIES) {
         if (factory.isAvailable(this, sourceDictionary)) {
           converter = factory.create(this, sourceDictionary)
           break
         }
       }
     } else {
-      converter = IdentityDictionaryConverter.new(sourceDictionary)
+      converter = IdentityConverter.new(sourceDictionary)
     }
     if (converter == null) {
-      converter = EmptyDictionaryConverter.new(sourceDictionary)
+      converter = EmptyConverter.new(sourceDictionary)
     }
     return create(file, converter)
   }
 
   public void save(Dictionary dictionary) {
-    DictionarySaver saver = createSaver()
+    Saver saver = createSaver()
     dictionary.save(saver)
   }
 
   public void saveBackup(Dictionary dictionary) {
-    DictionarySaver saver = createSaver()
+    Saver saver = createSaver()
     saver.setPath(dictionary.getPath().replaceAll(/(?=\.\w+$)/, "_backup"))
     dictionary.save(saver)
   }
 
   public void export(Dictionary dictionary, ExportConfig config) {
-    DictionarySaver exporter = null
-    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+    Saver exporter = null
+    for (ExporterFactory factory : ExporterFactory.FACTORIES) {
       if (factory.isAvailable(dictionary, config.getType())) {
         exporter = factory.create(dictionary, config)
         exporter.setPath(config.getPath())
@@ -68,7 +68,7 @@ public abstract class DictionaryFactory {
   public Controller createConvertConfigController(UtilityStage<?> stage, Dictionary sourceDictionary) {
     Controller controller = null
     if (sourceDictionary.getDictionaryFactory() != this) {
-      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+      for (ConverterFactory factory : ConverterFactory.FACTORIES) {
         if (factory.isAvailable(this, sourceDictionary)) {
           controller = null
           break
@@ -80,7 +80,7 @@ public abstract class DictionaryFactory {
 
   public Controller createExportConfigController(UtilityStage<ExportConfig> stage, Dictionary dictionary, ExportType type) {
     Controller controller = null
-    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+    for (ExporterFactory factory : ExporterFactory.FACTORIES) {
       if (factory.isAvailable(dictionary, type)) {
         controller = factory.createConfigController(stage, dictionary, type)
         break
@@ -89,9 +89,9 @@ public abstract class DictionaryFactory {
     return controller
   }
 
-  protected abstract DictionaryLoader createLoader(File file)
+  protected abstract Loader createLoader(File file)
 
-  protected abstract DictionarySaver createSaver()
+  protected abstract Saver createSaver()
 
   public abstract Image createIcon()
 
@@ -102,7 +102,7 @@ public abstract class DictionaryFactory {
 
   public Boolean isConvertableFrom(Dictionary sourceDictionary) {
     if (sourceDictionary.getDictionaryFactory() != this) {
-      for (DictionaryConverterFactory factory : DictionaryConverterFactory.FACTORIES) {
+      for (ConverterFactory factory : ConverterFactory.FACTORIES) {
         if (factory.isAvailable(this, sourceDictionary)) {
           return true
         }
@@ -114,7 +114,7 @@ public abstract class DictionaryFactory {
   }
 
   public Boolean isExportableTo(Dictionary dictionary, ExportType type) {
-    for (DictionaryExporterFactory factory : DictionaryExporterFactory.FACTORIES) {
+    for (ExporterFactory factory : ExporterFactory.FACTORIES) {
       if (factory.isAvailable(dictionary, type)) {
         return true
       }

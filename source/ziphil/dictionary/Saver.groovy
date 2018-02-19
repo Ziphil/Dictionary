@@ -6,12 +6,12 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionarySaver<D extends Dictionary> extends Task<BooleanClass> {
+public abstract class Saver<D extends Dictionary> extends Task<BooleanClass> {
 
   protected D $dictionary
   protected String $path
 
-  public DictionarySaver() {
+  public Saver() {
     updateProgress(0, 1)
   }
 

@@ -2,8 +2,8 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.Loader
+import ziphil.dictionary.Saver
 import ziphilib.transform.Ziphilify
 
 
@@ -14,7 +14,7 @@ public class BinaryDictionary extends PersonalDictionary {
     super(name, path)
   }
 
-  public BinaryDictionary(String name, String path, DictionaryLoader loader) {
+  public BinaryDictionary(String name, String path, Loader loader) {
     super(name, path, loader)
   }
 

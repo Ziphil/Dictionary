@@ -5,9 +5,9 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class EmptyDictionaryConverter<D extends Dictionary, W extends Word> extends DictionaryLoader<D, W> {
+public class EmptyConverter<D extends Dictionary, W extends Word> extends Loader<D, W> {
 
-  public EmptyDictionaryConverter(Dictionary sourceDictionary) {
+  public EmptyConverter(Dictionary sourceDictionary) {
     super()
   }
 

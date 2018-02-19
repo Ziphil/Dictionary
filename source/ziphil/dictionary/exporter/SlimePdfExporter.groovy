@@ -15,11 +15,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDictionary, SlimePdfExportConfig> {
+public class SlimePdfExporter extends PdfExporter<SlimeDictionary, SlimePdfExportConfig> {
 
   private static final String XSLT_PATH = "resource/xsl/slime_pdf.xsl"
 
-  public SlimePdfDictionaryExporter(SlimePdfExportConfig config) {
+  public SlimePdfExporter(SlimePdfExportConfig config) {
     super(config)
   }
 

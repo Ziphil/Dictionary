@@ -5,8 +5,8 @@ import ziphil.controller.Controller
 import ziphil.controller.SlimePdfExportConfigController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryExporterFactory
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.ExporterFactory
+import ziphil.dictionary.Saver
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.ExportType
 import ziphil.dictionary.slime.SlimeDictionary
@@ -14,13 +14,13 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionaryExporterFactory extends DictionaryExporterFactory {
+public class SlimeExporterFactory extends ExporterFactory {
 
-  public DictionarySaver create(Dictionary dictionary, ExportConfig config) {
-    DictionarySaver saver = null
+  public Saver create(Dictionary dictionary, ExportConfig config) {
+    Saver saver = null
     if (dictionary instanceof SlimeDictionary) {
       if (config.getType() == ExportType.PDF && config instanceof SlimePdfExportConfig) {
-        saver = SlimePdfDictionaryExporter.new(config)
+        saver = SlimePdfExporter.new(config)
       }
     }
     return saver

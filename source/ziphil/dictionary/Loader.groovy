@@ -6,12 +6,12 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryLoader<D extends Dictionary, W extends Word> extends Task<BooleanClass> {
+public abstract class Loader<D extends Dictionary, W extends Word> extends Task<BooleanClass> {
 
   protected D $dictionary
   protected List<W> $words = ArrayList.new()
 
-  public DictionaryLoader() {
+  public Loader() {
     updateProgress(0, 1)
   }
 

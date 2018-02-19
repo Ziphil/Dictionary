@@ -5,17 +5,17 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
-import ziphil.dictionary.DictionarySaver
+import ziphil.dictionary.Saver
 import ziphil.module.akrantiain.Akrantiain
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionarySaver extends DictionarySaver<SlimeDictionary> {
+public class SlimeSaver extends Saver<SlimeDictionary> {
 
   private ObjectMapper $mapper
 
-  public SlimeDictionarySaver() {
+  public SlimeSaver() {
     super()
   }
 

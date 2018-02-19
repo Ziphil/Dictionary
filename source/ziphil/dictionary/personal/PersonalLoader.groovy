@@ -5,16 +5,16 @@ import com.orangesignal.csv.CsvReader
 import com.orangesignal.csv.io.CsvColumnNameMapReader
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
-import ziphil.dictionary.DictionaryLoader
+import ziphil.dictionary.Loader
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionaryLoader extends DictionaryLoader<PersonalDictionary, PersonalWord> {
+public class PersonalLoader extends Loader<PersonalDictionary, PersonalWord> {
 
   private String $path
 
-  public PersonalDictionaryLoader(String path) {
+  public PersonalLoader(String path) {
     super()
     $path = path
   }

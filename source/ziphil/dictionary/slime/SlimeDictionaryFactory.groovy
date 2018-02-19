@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.Loader
+import ziphil.dictionary.Saver
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphilib.transform.Ziphilify
@@ -22,7 +22,7 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
-  protected Dictionary create(File file, DictionaryLoader loader) {
+  protected Dictionary create(File file, Loader loader) {
     if (loader != null) {
       Dictionary dictionary = SlimeDictionary.new(file.getName(), file.getPath(), loader)
       return dictionary
@@ -32,14 +32,14 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
     }
   }
 
-  protected DictionaryLoader createLoader(File file) {
-    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(file.getPath())
+  protected Loader createLoader(File file) {
+    SlimeLoader loader = SlimeLoader.new(file.getPath())
     loader.setMapper($$mapper)
     return loader
   }
 
-  protected DictionarySaver createSaver() {
-    SlimeDictionarySaver saver = SlimeDictionarySaver.new()
+  protected Saver createSaver() {
+    SlimeSaver saver = SlimeSaver.new()
     saver.setMapper($$mapper)
     return saver
   }

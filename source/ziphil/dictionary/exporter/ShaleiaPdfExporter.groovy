@@ -11,11 +11,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaPdfDictionaryExporter extends PdfDictionaryExporter<ShaleiaDictionary, PdfExportConfig> {
+public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, PdfExportConfig> {
 
   private static final String XSLT_PATH = "resource/xsl/shaleia_pdf.xsl"
 
-  public ShaleiaPdfDictionaryExporter(PdfExportConfig config) {
+  public ShaleiaPdfExporter(PdfExportConfig config) {
     super(config)
   }
 
