@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.Loader
+import ziphil.dictionary.Saver
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
@@ -14,23 +16,25 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
 
   private static final String NAME = "PDIC-DIC形式"
   private static final String EXTENSION = "dic"
-  private static final Boolean CREATABLE = false
   private static final String ICON_PATH = "resource/icon/dic_dictionary.png"
 
-  public Dictionary loadDictionary(File file) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath())
-    return dictionary
+  protected Dictionary create(File file, Loader loader) {
+    if (loader != null) {
+      BinaryDictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      BinaryDictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), null)
-    dictionary.setPath(file.getPath())
-    return dictionary
+  protected Loader createLoader(File file) {
+    BinaryLoader loader = BinaryLoader.new(file.getPath())
+    return loader
   }
 
-  public Dictionary convertDictionary(Dictionary oldDictionary, File file) {
-    Dictionary dictionary = BinaryDictionary.new(file.getName(), file.getPath(), oldDictionary)
-    return dictionary
+  protected Saver createSaver() {
+    return null
   }
 
   public Image createIcon() {
@@ -38,12 +42,8 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
     return icon
   }
 
-  public Boolean isConvertableFrom(Dictionary dictionary) {
-    return false
-  }
-
   public Boolean isCreatable() {
-    return CREATABLE
+    return false
   }
 
   public String getName() {
@@ -52,6 +52,10 @@ public class BinaryDictionaryFactory extends DictionaryFactory {
 
   public String getExtension() {
     return EXTENSION
+  }
+
+  public Class<? extends Dictionary> getDictionaryClass() {
+    return BinaryDictionary
   }
 
 }

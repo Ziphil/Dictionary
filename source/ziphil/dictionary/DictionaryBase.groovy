@@ -32,34 +32,24 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected ObservableList<S> $suggestions = FXCollections.observableArrayList()
   protected FilteredList<S> $filteredSuggestions
   protected SortedList<S> $sortedSuggestions
-  private ObservableList<Element> $wholeWords = FXCollections.observableArrayList()
+  private ObservableList<Element> $elements = FXCollections.observableArrayList()
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
   private DictionaryFactory $dictionaryFactory
   protected Boolean $changed = false
-  protected Boolean $firstEmpty = false
 
   public DictionaryBase(String name, String path) {
     $name = name
     $path = path
-    $changed = (path == null) ? true : false
-    $firstEmpty = path == null
     setupSortedWords()
     setupWholeWords()
     prepare()
-    load()
   }
 
-  public DictionaryBase(String name, String path, Dictionary oldDictionary) {
-    $name = name
-    $path = path
-    $changed = true
-    $firstEmpty = true
-    setupSortedWords()
-    setupWholeWords()
-    prepare()
-    convert(oldDictionary)
+  public DictionaryBase(String name, String path, Loader loader) {
+    this(name, path)
+    load(loader)
   }
 
   protected abstract void prepare()
@@ -118,26 +108,15 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public abstract void updateMinimum()
 
-  protected void updateMinimumOnBackground() {
-    Task<Void> task = SimpleTask.new() {
-      updateMinimum()
-    }
-    Thread thread = Thread.new(task)
-    thread.setDaemon(true)
-    thread.start()
-  }
-
   public abstract Object createPlainWord(W word)
 
   public abstract Dictionary copy()
 
-  private void load() {
-    DictionaryLoader loader = createLoader()
+  private void load(Loader loader) {
     if (loader != null) {
+      loader.setDictionary(this)
       loader.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        if (!$firstEmpty) {
-          $changed = false
-        }
+        $changed = false
       }
       $loader = loader
       Thread thread = Thread.new(loader)
@@ -148,44 +127,21 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     }
   }
 
-  private void convert(Dictionary oldDictionary) {
-    DictionaryConverter converter = createConverter(oldDictionary)
-    if (converter != null) {
-      converter.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-        if (!$firstEmpty) {
+  public void save(Saver saver) {
+    if (saver != null) {
+      saver.setDictionary(this)
+      if (saver.getPath() == null) {
+        saver.setPath($path)
+        saver.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
           $changed = false
         }
       }
-      $loader = converter
-      Thread thread = Thread.new(converter)
-      thread.setDaemon(true)
+      $saver = saver
+      Thread thread = Thread.new(saver)
+      thread.setDaemon(false)
       thread.start()
     } else {
-      $loader = null
-    }
-  }
-
-  public void save() {
-    DictionarySaver saver = createSaver()
-    if (saver != null) {
-      $saver = saver
-      saver.run()
-      if (saver.getPath() != null) {
-        $changed = false
-      }
-    } else {
       $saver = null
-    }
-  }
-
-  public void saveBackup() {
-    DictionarySaver saver = createSaver()
-    if (saver != null) {
-      if (saver.getPath() != null) {
-        String newPath = saver.getPath().replaceAll(/(?=\.\w+$)/, "_backup")
-        saver.setPath(newPath)
-        saver.run()
-      }
     }
   }
 
@@ -199,9 +155,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   private void setupWholeWords() {
     ListChangeListener<?> listener = (ListChangeListener){ Change<?> change ->
-      $wholeWords.clear()
-      $wholeWords.addAll($sortedSuggestions)
-      $wholeWords.addAll($shufflableWords)
+      $elements.clear()
+      $elements.addAll($sortedSuggestions)
+      $elements.addAll($shufflableWords)
     }
     $filteredWords.addListener(listener)
     $filteredSuggestions.addListener(listener)
@@ -217,12 +173,6 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   }
 
   protected abstract ConjugationResolver createConjugationResolver()
-
-  protected abstract DictionaryLoader createLoader()
-
-  protected abstract DictionaryConverter createConverter(Dictionary oldDictionary)
-
-  protected abstract DictionarySaver createSaver()
 
   public IndividualSetting createIndividualSetting() {
     return null
@@ -252,8 +202,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return null
   }
 
-  public ObservableList<Element> getWholeWords() {
-    return $wholeWords
+  public ObservableList<Element> getElements() {
+    return $elements
   }
 
   public ObservableList<W> getWords() {
@@ -262,6 +212,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   public ObservableList<W> getRawWords() {
     return $words
+  }
+
+  public List<W> getRawSortedWords() {
+    return $words.toSorted($sortedWords.getComparator())
   }
 
   public Consumer<SearchParameter> getOnLinkClicked() {

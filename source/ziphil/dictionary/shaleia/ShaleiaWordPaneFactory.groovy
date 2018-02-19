@@ -33,7 +33,8 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_TOTAL_PART_CLASS = "shaleia-total-part"
   private static final String SHALEIA_PART_CLASS = "shaleia-part"
   private static final String SHALEIA_CREATION_DATE_CLASS = "shaleia-creation-date"
-  private static final String SHALEIA_TITLE_CLASS = "shaleia-title"
+  private static final String SHALEIA_CONTENT_TITLE_CLASS = "shaleia-content-title"
+  private static final String SHALEIA_MARKER_CLASS = "shaleia-marker"
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
@@ -60,7 +61,9 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
+    TextFlow synonymPane = TextFlow.new()
     Boolean hasContent = false
+    Boolean hasSynonym = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
@@ -88,17 +91,23 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
           hasContent = true
         }
         if (reader.findSynonym()) {
+          String synonymType = reader.lookupSynonymType()
           String synonym = reader.lookupSynonym()
-          addSynonymNode(contentPane, synonym)
-          hasContent = true
+          addSynonymNode(synonymPane, synonymType, synonym)
+          hasSynonym = true
         }
       }
       modifyBreak(mainPane)
       modifyBreak(contentPane)
+      modifyBreak(synonymPane)
       pane.getChildren().add(mainPane)
       if (hasContent) {
         addSeparator(pane)
         pane.getChildren().add(contentPane)
+      }
+      if (hasSynonym) {
+        addSeparator(pane)
+        pane.getChildren().add(synonymPane)
       }
     } finally {
       reader.close()
@@ -107,7 +116,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
-    if (pronunciation != "") {
+    if (!pronunciation.isEmpty()) {
       Text nameText = Text.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
@@ -133,13 +142,15 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
 
   private void addEquivalentNode(TextFlow pane, String part, String equivalent) {
     Label partText = Label.new(part)
+    Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> equivalentTexts = createRichTexts(" " + equivalent)
+    List<Text> equivalentTexts = createRichTexts(equivalent)
     partText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
+    spaceText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     for (Text equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
-    pane.getChildren().add(partText)
+    pane.getChildren().addAll(partText, spaceText)
     pane.getChildren().addAll(equivalentTexts)
     pane.getChildren().add(breakText)
   }
@@ -147,39 +158,55 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private void addContentNode(TextFlow pane, String title, String content) {
     Boolean modifiesPunctuation = Setting.getInstance().getModifiesPunctuation()
     String modifiedContent = (modifiesPunctuation) ? Strings.modifyPunctuation(content) : content
-    Text titleText = Text.new("【${title}】")
-    Text dammyText = Text.new(" \n")
+    Label titleText = Label.new(title)
+    Text innerBreakText = Text.new("\n")
     Text breakText = Text.new("\n")
     List<Text> contentTexts = createRichTexts(modifiedContent)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
-    dammyText.getStyleClass().add(CONTENT_CLASS)
+    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
+    innerBreakText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
     for (Text contentText : contentTexts) {
       contentText.getStyleClass().add(CONTENT_CLASS)
     }
-    pane.getChildren().addAll(titleText, dammyText)
+    pane.getChildren().addAll(titleText, innerBreakText)
     pane.getChildren().addAll(contentTexts)
     pane.getChildren().add(breakText)
   }
 
-  private void addSynonymNode(TextFlow pane, String synonym) {
+  private void addSynonymNode(TextFlow pane, String synonymType, String synonym) {
     String marker = Setting.getInstance().getRelationMarker()
-    TextFlow textFlow = TextFlow.new()
-    Text titleText = Text.new(marker)
+    Text markerText = Text.new(marker)
+    Text markerSpaceText = Text.new(" ")
+    Label synonymTypeText = Label.new(synonymType)
+    Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> synonymTexts = createRichTexts(" " + synonym, true)
-    titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TITLE_CLASS)
+    List<Text> synonymTexts = createRichTexts(synonym + " ", true)
+    markerText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_MARKER_CLASS)
+    markerText.getStyleClass().addAll(CONTENT_CLASS)
+    synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
+    spaceText.getStyleClass().add(CONTENT_CLASS)
     for (Text synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
-    pane.getChildren().add(titleText)
+    if (!synonymType.isEmpty()) {
+      pane.getChildren().addAll(markerText, markerSpaceText, synonymTypeText, spaceText)
+    } else {
+      pane.getChildren().addAll(markerText, spaceText)
+    }
     pane.getChildren().addAll(synonymTexts)
     pane.getChildren().add(breakText)
   }
 
   private void addSeparator(Pane pane) {
-    Separator separator = Separator.new()
-    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
-    pane.getChildren().addAll(separator)
+    Boolean showsSeparator = Setting.getInstance().getShowsSeparator()
+    if (showsSeparator) {
+      Separator separator = Separator.new()
+      separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+      pane.getChildren().add(separator)
+    } else {
+      VBox box = VBox.new()
+      box.getStyleClass().addAll(CONTENT_CLASS, MARGIN_CLASS)
+      pane.getChildren().add(box)
+    }
   }
 
   private List<Text> createRichTexts(String string, Boolean decoratesLink) {
@@ -334,8 +361,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
       }
     }
-    Text text = Text.new(currentString.toString())
-    texts.add(text)
+    if (currentString.length() > 0) {
+      Text text = Text.new(currentString.toString())
+      texts.add(text)
+    }
     return texts
   }
 
@@ -355,17 +384,18 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     return handler
   }
 
+}
 
-  @InnerClass @Ziphilify
-  private static enum TextMode {
 
-    NORMAL,
-    NORMAL_ITALIC,
-    NAME,
-    NAME_ITALIC,
-    LINK,
-    LINK_ITALIC
+@InnerClass(ShaleiaWordPaneFactory)
+@CompileStatic @Ziphilify
+private static enum TextMode {
 
-  }
+  NORMAL,
+  NORMAL_ITALIC,
+  NAME,
+  NAME_ITALIC,
+  LINK,
+  LINK_ITALIC
 
 }

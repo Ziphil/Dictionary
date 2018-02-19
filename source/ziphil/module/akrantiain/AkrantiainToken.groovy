@@ -75,7 +75,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Int to = -1
     Int matchedLength = 0
     Int pointer = from
-    if ($text != "") {
+    if (!$text.isEmpty()) {
       String text = (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer < group.getElements().size()) {
         AkrantiainElement element = group.getElements()[pointer]
@@ -114,7 +114,7 @@ public class AkrantiainToken implements AkrantiainMatchable {
     Int from = -1
     Int matchedLength = 0
     Int pointer = to - 1
-    if ($text != "") {
+    if (!$text.isEmpty()) {
       String text = (module.containsEnvironment(AkrantiainEnvironment.USE_NFD)) ? Normalizer.normalize($text, Normalizer.Form.NFD) : $text
       while (pointer >= 0) {
         AkrantiainElement element = group.getElements()[pointer]

@@ -49,6 +49,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $lineSpacingControl
   @FXML private TextField $variationMarkerControl
   @FXML private TextField $relationMarkerControl
+  @FXML private SwitchButton $showsSeparatorControl
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainWindowOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
@@ -100,6 +101,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int lineSpacing = setting.getLineSpacing()
     String variationMarker = setting.getVariationMarker()
     String relationMarker = setting.getRelationMarker()
+    Boolean showsSeparator = setting.getShowsSeparator()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainWindowOnTop = setting.getKeepsMainWindowOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
@@ -146,6 +148,7 @@ public class SettingController extends Controller<BooleanClass> {
     $lineSpacingControl.getValueFactory().setValue(lineSpacing)
     $variationMarkerControl.setText(variationMarker)
     $relationMarkerControl.setText(relationMarker)
+    $showsSeparatorControl.setSelected(showsSeparator)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainWindowOnTopControl.setSelected(keepsMainWindowOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
@@ -194,6 +197,7 @@ public class SettingController extends Controller<BooleanClass> {
     Int lineSpacing = $lineSpacingControl.getValue()
     String variationMarker = $variationMarkerControl.getText()
     String relationMarker = $relationMarkerControl.getText()
+    Boolean showsSeparator = $showsSeparatorControl.isSelected()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainWindowOnTop = $keepsMainWindowOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
@@ -225,6 +229,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setLineSpacing(lineSpacing)
     setting.setVariationMarker(variationMarker)
     setting.setRelationMarker(relationMarker)
+    setting.setShowsSeparator(showsSeparator)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainWindowOnTop(keepsMainWindowOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
@@ -249,8 +254,8 @@ public class SettingController extends Controller<BooleanClass> {
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
-      setting.getRegisteredDictionaryPaths()[i] = (path != "") ? path : null
-      setting.getRegisteredDictionaryNames()[i] = (name != "") ? name : null
+      setting.getRegisteredDictionaryPaths()[i] = (!path.isEmpty()) ? path : null
+      setting.getRegisteredDictionaryNames()[i] = (!name.isEmpty()) ? name : null
     }
   }
 
@@ -303,6 +308,7 @@ public class SettingController extends Controller<BooleanClass> {
       dictionaryPathControl.getStyleClass().add("left-pill")
       dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
       dictionaryNameControl.setMinWidth(Measurement.rpx(130))
+      browseButton.setMinWidth(Button.USE_PREF_SIZE)
       browseButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))

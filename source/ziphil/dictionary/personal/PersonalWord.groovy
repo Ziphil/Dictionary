@@ -29,7 +29,7 @@ public class PersonalWord extends WordBase {
 
   public String createPronunciation() {
     String modifiedPronunciation = $pronunciation
-    if (modifiedPronunciation != "") {
+    if (!modifiedPronunciation.isEmpty()) {
       if (!modifiedPronunciation.startsWith("/") && !modifiedPronunciation.startsWith("[")) {
         modifiedPronunciation = "/" + modifiedPronunciation
       }

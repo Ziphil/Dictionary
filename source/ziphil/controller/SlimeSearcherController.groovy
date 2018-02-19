@@ -90,22 +90,22 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
-    if ($idControl.getText() != "") {
+    if (!$idControl.getText().isEmpty()) {
       parameter.setHasId(true)
       parameter.setId(IntegerClass.parseInt($idControl.getText()))
     }
-    if ($nameControl.getText() != "") {
+    if (!$nameControl.getText().isEmpty()) {
       parameter.setHasName(true)
       parameter.setName($nameControl.getText())
       parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    if ($equivalentNameControl.getText() != "" || $equivalentTitleControl.getValue() != null) {
+    if (!$equivalentNameControl.getText().isEmpty() || $equivalentTitleControl.getValue() != null) {
       parameter.setHasEquivalent(true)
       parameter.setEquivalentName($equivalentNameControl.getText())
       parameter.setEquivalentTitle($equivalentTitleControl.getValue())
       parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     } 
-    if ($informationTextControl.getText() != "" || $informationTitleControl.getValue() != null) {
+    if (!$informationTextControl.getText().isEmpty() || $informationTitleControl.getValue() != null) {
       parameter.setHasInformation(true)
       parameter.setInformationText($informationTextControl.getText())
       parameter.setInformationTitle($informationTitleControl.getValue())

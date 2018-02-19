@@ -176,7 +176,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void editDefaultWord() {
-    SlimeWord defaultWord = $defaultWord ?: SlimeDictionary.createWord(null)
+    SlimeWord defaultWord = $defaultWord ?: $dictionary.createWord(null)
     UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
     nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -218,6 +218,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
       registeredParameterStringControl.getStyleClass().add("left-pill")
       registeredParameterNameControl.setPrefWidth(Measurement.rpx(120))
       registeredParameterNameControl.setMinWidth(Measurement.rpx(120))
+      editButton.setMinWidth(Button.USE_PREF_SIZE)
       editButton.getStyleClass().add("right-pill")
       deregisterButton.setPrefWidth(Measurement.rpx(70))
       deregisterButton.setMinWidth(Measurement.rpx(70))

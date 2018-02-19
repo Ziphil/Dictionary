@@ -24,6 +24,7 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.ProgressBar
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
@@ -52,6 +53,7 @@ import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
 import ziphil.dictionary.Element
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
@@ -85,7 +87,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML private ComboBox<SearchMode> $searchModeControl
   @FXML private ToggleButton $searchTypeControl
   @FXML private HBox $footerBox
-  @FXML private Label $dictionaryNameLabel
+  @FXML private ProgressBar $progressBar
   @FXML private Label $hitWordSizeLabel
   @FXML private Label $totalWordSizeLabel
   @FXML private Label $elapsedTimeLabel
@@ -144,7 +146,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void searchDetail() {
     UtilityStage<SearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    Controller controller = $dictionary.getControllerSupplier().getSearcherController(nextStage)
+    Controller controller = $dictionary.getControllerFactory().createSearcherController(nextStage)
     nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -270,7 +272,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, word, $temporarySetting)
+        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -329,7 +331,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Controller controller = $dictionary.getEditorControllerSupplier().getCreatorController(nextStage, newWord, $temporarySetting)      
+      Controller controller = $dictionary.getEditorControllerFactory().createCreatorController(nextStage, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -358,7 +360,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
-        Controller controller = $dictionary.getEditorControllerSupplier().getEditorController(nextStage, newWord, $temporarySetting)
+        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -489,7 +491,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
     $progressIndicator.progressProperty().bind(loader.progressProperty())
     loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $wordView.setItems($dictionary.getWholeWords())
+      $wordView.setItems($dictionary.getElements())
       $searchControl.requestFocus()
       searchNormal(true)
     }
@@ -509,6 +511,46 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void failUpdateDictionary(Throwable throwable) {
     outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     showErrorDialog("failUpdateDictionary")
+  }
+
+  public Boolean saveDictionary() {
+    $dictionary.getDictionaryFactory().save($dictionary)
+    if ($dictionary.getSaver() != null) {
+      updateSaver()
+      return true
+    } else {
+      showErrorDialog("saveUnsupported")
+      return false
+    }
+  }
+
+  public Boolean exportDictionary(ExportConfig config) {
+    $dictionary.getDictionaryFactory().export($dictionary, config)
+    if ($dictionary.getSaver() != null) {
+      updateSaver()
+      return true
+    } else {
+      showErrorDialog("saveUnsupported")
+      return false
+    }
+  }
+
+  private void updateSaver() {
+    Task<?> saver = $dictionary.getSaver()
+    $progressBar.setVisible(true)
+    $progressBar.progressProperty().bind(saver.progressProperty())
+    saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+      $progressBar.setVisible(false)
+    }
+    saver.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+      $progressBar.setVisible(false)
+      failSaveDictionary(event.getSource().getException())
+    }
+  }
+
+  private void failSaveDictionary(Throwable throwable) {
+    outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failSaveDictionary")
   }
 
   public void focusWordList() {
@@ -554,21 +596,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
         dialog.setAllowsNegate(true)
         dialog.showAndWait()
         if (dialog.isCommitted()) {
-          $dictionary.save()
-          if ($dictionary.getSaver() != null) {
-            return true
-          } else {
-            showErrorDialog("saveUnsupported")
-            return false
-          }
+          return saveDictionary()
         } else if (dialog.isNegated()) {
           return true
         } else {
           return false
         }
       } else {
-        $dictionary.save()
-        return true
+        return saveDictionary()
       }
     } else {
       return true

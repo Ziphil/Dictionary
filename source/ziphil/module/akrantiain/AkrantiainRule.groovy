@@ -212,28 +212,29 @@ public class AkrantiainRule {
 
   public void setPhonemes(List<AkrantiainToken> phonemes) {
     $phonemes = phonemes
-  } 
+  }
+
+}
 
 
-  @InnerClass @Ziphilify
-  private static class ApplicationResult {
+@InnerClass(AkrantiainRule)
+@CompileStatic @Ziphilify
+private static class ApplicationResult {
 
-    private List<AkrantiainElement> $addedElements
-    private Int $to = -1
+  private List<AkrantiainElement> $addedElements
+  private Int $to = -1
 
-    public ApplicationResult(List<AkrantiainElement> addedElements, Int to) {
-      $addedElements = addedElements
-      $to = to
-    }
+  public ApplicationResult(List<AkrantiainElement> addedElements, Int to) {
+    $addedElements = addedElements
+    $to = to
+  }
 
-    public List<AkrantiainElement> getAddedElements() {
-      return $addedElements
-    }
+  public List<AkrantiainElement> getAddedElements() {
+    return $addedElements
+  }
 
-    public Int getTo() {
-      return $to
-    }
-
+  public Int getTo() {
+    return $to
   }
 
 }

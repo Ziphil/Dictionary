@@ -3,37 +3,33 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerSupplier
+import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryConverter
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerSupplier
+import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyConjugationResolver
-import ziphil.dictionary.EmptyDictionaryConverter
-import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
+import ziphil.dictionary.Saver
 import ziphil.dictionary.Suggestion
-import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
 
-  private ControllerSupplier $controllerSupplier = PersonalControllerSupplier.new(this)
-  private EditorControllerSupplier $editorControllerSupplier = PersonalEditorControllerSupplier.new(this)
+  private ControllerFactory $controllerFactory = PersonalControllerFactory.new(this)
+  private EditorControllerFactory $editorControllerFactory = PersonalEditorControllerFactory.new(this)
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
   }
 
-  public PersonalDictionary(String name, String path, Dictionary oldDictionary) {
-    super(name, path, oldDictionary)
+  public PersonalDictionary(String name, String path, Loader loader) {
+    super(name, path, loader)
   }
 
   protected void prepare() {
@@ -150,38 +146,12 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return conjugationResolver
   }
 
-  protected DictionaryLoader createLoader() {
-    PersonalDictionaryLoader loader = PersonalDictionaryLoader.new(this, $path)
-    return loader
+  public ControllerFactory getControllerFactory() {
+    return $controllerFactory
   }
 
-  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof ShaleiaDictionary) {
-      PersonalShaleiaDictionaryConverter converter = PersonalShaleiaDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof PersonalDictionary) {
-      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (PersonalDictionary)oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof SlimeDictionary) {
-      PersonalSlimeDictionaryConverter converter = PersonalSlimeDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else {
-      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
-      return converter
-    }
-  } 
-
-  protected DictionarySaver createSaver() {
-    PersonalDictionarySaver saver = PersonalDictionarySaver.new(this, $path)
-    return saver
-  }
-
-  public ControllerSupplier getControllerSupplier() {
-    return $controllerSupplier
-  }
-
-  public EditorControllerSupplier getEditorControllerSupplier() {
-    return $editorControllerSupplier
+  public EditorControllerFactory getEditorControllerFactory() {
+    return $editorControllerFactory
   }
 
 }

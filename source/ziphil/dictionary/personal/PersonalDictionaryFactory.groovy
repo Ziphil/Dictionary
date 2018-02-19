@@ -4,6 +4,8 @@ import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.Loader
+import ziphil.dictionary.Saver
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphilib.transform.Ziphilify
@@ -14,23 +16,26 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
 
   private static final String NAME = "PDIC-CSV形式"
   private static final String EXTENSION = "csv"
-  private static final Boolean CREATABLE = true
   private static final String ICON_PATH = "resource/icon/csv_dictionary.png"
 
-  public Dictionary loadDictionary(File file) {
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath())
-    return dictionary
+  protected Dictionary create(File file, Loader loader) {
+    if (loader != null) {
+      PersonalDictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath(), loader)
+      return dictionary
+    } else {
+      PersonalDictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath())
+      return dictionary
+    }
   }
 
-  public Dictionary loadEmptyDictionary(File file) {
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), null)
-    dictionary.setPath(file.getPath())
-    return dictionary
+  protected Loader createLoader(File file) {
+    PersonalLoader loader = PersonalLoader.new(file.getPath())
+    return loader
   }
 
-  public Dictionary convertDictionary(Dictionary oldDictionary, File file) {
-    Dictionary dictionary = PersonalDictionary.new(file.getName(), file.getPath(), oldDictionary)
-    return dictionary
+  protected Saver createSaver() {
+    PersonalSaver saver = PersonalSaver.new()
+    return saver
   }
 
   public Image createIcon() {
@@ -38,20 +43,8 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
     return icon
   }
 
-  public Boolean isConvertableFrom(Dictionary dictionary) {
-    if (dictionary instanceof ShaleiaDictionary) {
-      return true
-    } else if (dictionary instanceof PersonalDictionary) {
-      return true
-    } else if (dictionary instanceof SlimeDictionary) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   public Boolean isCreatable() {
-    return CREATABLE
+    return true
   }
 
   public String getName() {
@@ -60,6 +53,10 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
 
   public String getExtension() {
     return EXTENSION
+  }
+
+  public Class<? extends Dictionary> getDictionaryClass() {
+    return PersonalDictionary
   }
 
 }

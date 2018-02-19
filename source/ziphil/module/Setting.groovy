@@ -47,6 +47,7 @@ public class Setting {
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
+  private Boolean $showsSeparator = true
   private Boolean $keepsMainWindowOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $preservesMainWindowSize = false
@@ -95,6 +96,11 @@ public class Setting {
           writer.write($contentFontSize.toString())
           writer.write(";\n")
         }
+        writer.write("}\n\n")
+      }
+      if ($contentFontFamily == null && System.getProperty("os.name").toLowerCase().contains("windows 10")) {
+        writer.write(".dictionary-list .shaleia-italic {\n")
+        writer.write("  -fx-font-family: \"Segoe UI\";\n")
         writer.write("}\n\n")
       }
       if ($editorFontFamily != null || $editorFontSize > 0) {
@@ -338,6 +344,14 @@ public class Setting {
 
   public void setModifiesPunctuation(Boolean modifiesPunctuation) {
     $modifiesPunctuation = modifiesPunctuation
+  }
+
+  public Boolean getShowsSeparator() {
+    return $showsSeparator
+  }
+
+  public void setShowsSeparator(Boolean showsSeparator) {
+    $showsSeparator = showsSeparator
   }
 
   public Boolean getKeepsMainWindowOnTop() {

@@ -39,26 +39,27 @@ public class ShaleiaUploaderController extends Controller<ShaleiaUploaderControl
     $stage.commit(result)
   }
 
+}
 
-  @InnerClass @Ziphilify
-  public static class Result {
 
-    private String $urlText
-    private String $password
+@InnerClass(ShaleiaUploaderController)
+@CompileStatic @Ziphilify
+public static class Result {
 
-    public Result(String urlText, String password) {
-      $urlText = urlText
-      $password = password
-    }
+  private String $urlText
+  private String $password
 
-    public String getUrlText() {
-      return $urlText
-    }
+  public Result(String urlText, String password) {
+    $urlText = urlText
+    $password = password
+  }
 
-    public String getPassword() {
-      return $password
-    }
+  public String getUrlText() {
+    return $urlText
+  }
 
+  public String getPassword() {
+    return $password
   }
 
 }

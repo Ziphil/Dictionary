@@ -37,11 +37,11 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
     addNameNode(mainPane, $word.getName(), $word.createPronunciation())
-    if ($word.getTranslation() != "") {
+    if (!$word.getTranslation().isEmpty()) {
       addContentNode(contentPane, $word.getTranslation())
       hasContent = true
     }
-    if ($word.getUsage() != "") {
+    if (!$word.getUsage().isEmpty()) {
       addContentNode(contentPane, $word.getUsage())
       hasContent = true
     }
@@ -56,7 +56,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
-    if (pronunciation != "") {
+    if (!pronunciation.isEmpty()) {
       Label nameText = Label.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text breakText = Text.new("\n")
@@ -81,9 +81,16 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
   }
 
   private void addSeparator(Pane pane) {
-    Separator separator = Separator.new()
-    separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
-    pane.getChildren().addAll(separator)
+    Boolean showsSeparator = Setting.getInstance().getShowsSeparator()
+    if (showsSeparator) {
+      Separator separator = Separator.new()
+      separator.getStyleClass().addAll(CONTENT_CLASS, SEPARATOR_CLASS)
+      pane.getChildren().add(separator)
+    } else {
+      VBox box = VBox.new()
+      box.getStyleClass().addAll(CONTENT_CLASS, MARGIN_CLASS)
+      pane.getChildren().add(box)
+    }
   }
 
 }

@@ -1,29 +1,23 @@
 package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerSupplier
+import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.DictionaryConverter
-import ziphil.dictionary.DictionaryLoader
-import ziphil.dictionary.DictionarySaver
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerSupplier
-import ziphil.dictionary.EmptyDictionaryConverter
-import ziphil.dictionary.IdentityDictionaryConverter
+import ziphil.dictionary.EditorControllerFactory
+import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
+import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
+import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchType
-import ziphil.dictionary.personal.PersonalDictionary
-import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -33,8 +27,6 @@ import ziphilib.transform.Ziphilify
 
 @CompileStatic @Ziphilify
 public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord> {
-
-  private static ObjectMapper $$mapper = createObjectMapper()
 
   private Int $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()
@@ -53,15 +45,15 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $akrantiainSource = null
   private List<SlimeRelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
-  private ControllerSupplier $controllerSupplier = SlimeControllerSupplier.new(this)
-  private EditorControllerSupplier $editorControllerSupplier = SlimeEditorControllerSupplier.new(this)
+  private ControllerFactory $controllerFactory = SlimeControllerFactory.new(this)
+  private EditorControllerFactory $editorControllerFactory = SlimeEditorControllerFactory.new(this)
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
   }
 
-  public SlimeDictionary(String name, String path, Dictionary oldDictionary) {
-    super(name, path, oldDictionary)
+  public SlimeDictionary(String name, String path, Loader loader) {
+    super(name, path, loader)
   }
 
   protected void prepare() {
@@ -515,51 +507,17 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
     return conjugationResolver
   }
 
-  protected DictionaryLoader createLoader() {
-    SlimeDictionaryLoader loader = SlimeDictionaryLoader.new(this, $path)
-    loader.setMapper($$mapper)
-    return loader
-  }
-
-  protected DictionaryConverter createConverter(Dictionary oldDictionary) {
-    if (oldDictionary instanceof ShaleiaDictionary) {
-      SlimeShaleiaDictionaryConverter converter = SlimeShaleiaDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof PersonalDictionary) {
-      SlimePersonalDictionaryConverter converter = SlimePersonalDictionaryConverter.new(this, oldDictionary)
-      return converter
-    } else if (oldDictionary instanceof SlimeDictionary) {
-      IdentityDictionaryConverter converter = IdentityDictionaryConverter.new(this, (SlimeDictionary)oldDictionary)
-      return converter
-    } else {
-      EmptyDictionaryConverter converter = EmptyDictionaryConverter.new(this, oldDictionary)
-      return converter
-    }
-  } 
-
-  protected DictionarySaver createSaver() {
-    SlimeDictionarySaver saver = SlimeDictionarySaver.new(this, $path)
-    saver.setMapper($$mapper)
-    return saver
-  }
-
   public IndividualSetting createIndividualSetting() {
     SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
     return individualSetting
   }
 
-  private static ObjectMapper createObjectMapper() {
-    ObjectMapper mapper = ObjectMapper.new()
-    mapper.enable(SerializationFeature.INDENT_OUTPUT)
-    return mapper
+  public ControllerFactory getControllerFactory() {
+    return $controllerFactory
   }
 
-  public ControllerSupplier getControllerSupplier() {
-    return $controllerSupplier
-  }
-
-  public EditorControllerSupplier getEditorControllerSupplier() {
-    return $editorControllerSupplier
+  public EditorControllerFactory getEditorControllerFactory() {
+    return $editorControllerFactory
   }
 
   public Int getValidMinId() {

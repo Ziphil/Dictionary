@@ -179,7 +179,7 @@ public class FileChooserSkin extends CustomSkinBase<FileChooser, VBox> {
   }
 
   private void setupSplitPane() {
-    $splitPane.setDividerPositions(0.3)
+    $splitPane.setDividerPositions(0.3D)
   }
 
   private void bindDirectoryControlProperty() {

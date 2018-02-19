@@ -30,9 +30,10 @@ public interface Dictionary<W extends Word> {
   // 同じ辞書オブジェクトに対して複数の単語リストを表示させたいときに、表示条件や表示順が同期されるのを防ぐ目的で使用できます。
   public Dictionary copy()
 
-  public void save()
-
-  public void saveBackup()
+  // この単語を saver に渡されたセーバーによってファイルに保存します。
+  // saver に保存先のパスが指定されていない場合は、この辞典データが保持しているパスに保存します。
+  // なお、実際にデータをファイルに保存する際は、このメソッドを直接呼び出すのではなく DictionaryFactory 経由で行うことが推奨されています。
+  public void save(Saver saver)
 
   public Int hitWordSize()
 
@@ -48,24 +49,32 @@ public interface Dictionary<W extends Word> {
 
   public void setPath(String path)
 
+  // アルファベット順を格納した文字列を返します。
+  // この辞書データがアルファベット順の情報をもっていない場合は、null を返します。
   public String getAlphabetOrder()
 
+  // 埋め込み akrantiain のオブジェクトを返します。
+  // この辞書データが埋め込み akrantiain に対応していない場合は、null を返します。
   public Akrantiain getAkrantiain()
 
-  public ObservableList<Element> getWholeWords()
+  public ObservableList<Element> getElements()
 
   public ObservableList<W> getWords()
 
   public ObservableList<W> getRawWords()
 
+  public List<W> getRawSortedWords()
+
   public Consumer<SearchParameter> getOnLinkClicked()
 
   public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 
 
-  public ControllerSupplier getControllerSupplier()
+  public ControllerFactory getControllerFactory()
 
   public Task<?> getLoader()
 
+  // 辞書データをファイルに保存するための Task オブジェクトを返します。
+  // ここで返される Task オブジェクトは、save メソッドが呼び出されたときに作成されます。
   public Task<?> getSaver()
 
   public DictionaryFactory getDictionaryFactory()

@@ -109,7 +109,9 @@
             <spacing><Double rpx="5"/></spacing>
             <HBox HBox.hgrow="always">
               <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
-              <Button text="…" onAction="#editSnoj" styleClass="right-pill"/>
+              <Button text="…" onAction="#editSnoj" styleClass="right-pill">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </HBox>
             <Button text="削除" onAction="#removeSnoj">
               <prefWidth><Double rpx="70"/></prefWidth>

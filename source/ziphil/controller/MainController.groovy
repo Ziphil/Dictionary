@@ -6,6 +6,8 @@ import java.awt.GraphicsEnvironment
 import java.lang.Thread.UncaughtExceptionHandler
 import javafx.application.Platform
 import javafx.beans.value.ObservableValue
+import javafx.concurrent.Task
+import javafx.concurrent.WorkerStateEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.scene.control.Menu
@@ -30,10 +32,13 @@ import javax.script.ScriptException
 import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.Dialog
+import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.ExportConfig
+import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -52,13 +57,14 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String TITLE = "ZpDIC fetith"
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
-  private static final List<Plugin> PLUGINS = lookupPlugins()
+  private static final List<Plugin> PLUGINS = loadPlugins()
 
   @FXML private MenuBar $menuBar
   @FXML private Menu $createDictionaryMenu
   @FXML private Menu $openRegisteredDictionaryMenu
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
+  @FXML private Menu $exportDictionaryMenu
   @FXML private Menu $searchRegisteredParameterMenu
   @FXML private Menu $pluginMenu
   @FXML private TabPane $tabPane
@@ -136,20 +142,12 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void openDictionary() {
-    Dictionary dictionary = currentDictionary()
-    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare(null, directory, true)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      File file = nextStage.getResult()
-      Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
-      if (nextDictionary != null) {
-        Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
-        addDictionaryTab(nextDictionary)
+    File file = chooseDictionary(currentDictionary(), null)
+    if (file != null) {
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
+      if (dictionary != null) {
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
+        addDictionaryTab(dictionary)
       } else {
         showErrorDialog("failOpenDictionary")
       }
@@ -158,12 +156,11 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void reopenDictionary() {
-    Dictionary dictionary = currentDictionary()
-    File file = File.new(dictionary.getPath())
-    Dictionary nextDictionary = DictionaryFactory.loadProperDictionary(file)
-    if (nextDictionary != null) {
+    File file = File.new(currentDictionary().getPath())
+    Dictionary dictionary = DictionaryFactory.loadProper(file)
+    if (dictionary != null) {
       MainWordListController controller = currentWordListController()
-      controller.open(nextDictionary)
+      controller.open(dictionary)
     } else {
       showErrorDialog("failOpenDictionary")
     }
@@ -173,7 +170,7 @@ public class MainController extends PrimitiveController<Stage> {
     String filePath = Setting.getInstance().getDefaultDictionaryPath()
     if (filePath != null) {
       File file = File.new(filePath)
-      Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
       if (dictionary != null) {
         addDictionaryTab(dictionary)
       } else {
@@ -185,7 +182,7 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void openRegisteredDictionary(File file) {
-    Dictionary dictionary = DictionaryFactory.loadProperDictionary(file)
+    Dictionary dictionary = DictionaryFactory.loadProper(file)
     if (dictionary != null) {
       Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       addDictionaryTab(dictionary)
@@ -195,15 +192,9 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private void createDictionary(DictionaryFactory factory) {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare(factory, null, true)
-    nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
-      File file = nextStage.getResult()
-      Dictionary dictionary = DictionaryFactory.loadProperEmptyDictionary(factory, file)
+    File file = chooseDictionary(currentDictionary(), factory)
+    if (file != null) {
+      Dictionary dictionary = DictionaryFactory.loadProperEmpty(factory, file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
         addDictionaryTab(dictionary)
@@ -215,37 +206,21 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void saveDictionary() {
-    Dictionary dictionary = currentDictionary()
-    if (dictionary != null) {
-      dictionary.save()
-      if (dictionary.getSaver() == null) {
-        showErrorDialog("saveUnsupported")
-      }
-    }
+    currentWordListController().saveDictionary()
   }
 
   @FXML
   private void saveAndRenameDictionary() {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
-      controller.prepare(dictionary.getDictionaryFactory(), File.new(dictionary.getPath()).getParentFile(), true)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        File file = nextStage.getResult()
-        if (file != null) {
-          Tab tab = $tabPane.getSelectionModel().getSelectedItem()
-          dictionary.setName(file.getName())
-          dictionary.setPath(file.getAbsolutePath())
-          tab.setText(dictionary.getName())
-          dictionary.save()
-          Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
-        } else {
-          showErrorDialog("failSaveDictionary")
-        }
+      File file = chooseDictionary(dictionary, dictionary.getDictionaryFactory())
+      if (file != null) {
+        Tab tab = $tabPane.getSelectionModel().getSelectedItem()
+        dictionary.setName(file.getName())
+        dictionary.setPath(file.getAbsolutePath())
+        tab.setText(dictionary.getName())
+        currentWordListController().saveDictionary()
+        Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
       }
     }
   }
@@ -253,20 +228,95 @@ public class MainController extends PrimitiveController<Stage> {
   private void convertDictionary(DictionaryFactory factory) {
     Dictionary dictionary = currentDictionary()
     if (dictionary != null) {
-      UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
-      controller.prepare(factory, File.new(dictionary.getPath()).getParentFile(), true)
-      nextStage.showAndWait()
-      if (nextStage.isCommitted()) {
-        File file = nextStage.getResult()
-        Dictionary nextDictionary = DictionaryFactory.convertProperDictionary(factory, dictionary, file)
+      File file = chooseDictionary(dictionary, factory)
+      if (file != null) {
+        Dictionary nextDictionary = DictionaryFactory.convertProper(factory, dictionary, file)
         if (nextDictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
           addDictionaryTab(nextDictionary)
         } else {
           showErrorDialog("failConvertDictionary")
+        }
+      }
+    }
+  }
+
+  @FXML
+  private void exportDictionary(ExportType type) {
+    Dictionary dictionary = currentDictionary()
+    if (dictionary != null) {
+      File file = chooseExportDestination(type.createExtensionFilter())
+      if (file != null) {
+        UtilityStage<ExportConfig> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        Controller controller = dictionary.getDictionaryFactory().createExportConfigController(nextStage, dictionary, type)
+        ExportConfig config = null
+        if (controller != null) {
+          nextStage.initModality(Modality.APPLICATION_MODAL)
+          nextStage.initOwner($stage)
+          nextStage.showAndWait()
+          if (nextStage.isCommitted()) {
+            config = nextStage.getResult()
+          }
+        } else {
+          config = ExportConfig.new()
+        }
+        if (config != null) {
+          config.setPath(file.getAbsolutePath())
+          config.setType(type)
+          currentWordListController().exportDictionary(config)
+          Task<?> saver = dictionary.getSaver()
+          if (saver != null) {
+            saver.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+              openExternalFile(File.new(config.getPath()))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // ファイル選択ウィンドウを開き、参照する辞書ファイルを選択します。
+  // デフォルトでは、ホームディレクトリが表示された状態でウィンドウが開き、全てのファイルが表示されます。
+  // ただし、dictionary に辞書データを渡すことで、デフォルトで開いておくディレクトリをその辞書データが置かれている場所に変更できます。
+  // また、factory に辞書形式を渡すことで、デフォルトでその辞書形式の拡張子のみを表示するようにできます。
+  private File chooseDictionary(Dictionary dictionary, DictionaryFactory factory) {
+    File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    controller.prepare(factory, directory, true)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
+      return nextStage.getResult()
+    } else {
+      return null
+    }
+  }
+
+  private File chooseExportDestination(ExtensionFilter extensionFilter) {
+    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    FileChooserController controller = FileChooserController.new(nextStage)
+    List<ExtensionFilter> extensionFilters = ArrayList.new()
+    nextStage.initModality(Modality.APPLICATION_MODAL)
+    nextStage.initOwner($stage)
+    extensionFilters.add(extensionFilter)
+    controller.prepare(extensionFilters, extensionFilter, true)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
+      return nextStage.getResult()
+    } else {
+      return null
+    }
+  }
+
+  private void openExternalFile(File file) {
+    if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+      Desktop desktop = Desktop.getDesktop()
+      if (desktop.isSupported(Desktop.Action.OPEN)) {
+        try {
+          desktop.open(file)
+        } catch (Exception exception) {
         }
       }
     }
@@ -303,6 +353,12 @@ public class MainController extends PrimitiveController<Stage> {
             }
           }
         }
+        if (!Setting.getInstance().isDebugging()) {
+          if (styleClass.contains("debugging")) {
+            item.setDisable(true)
+            item.setVisible(false)
+          }
+        }
       }
     }
     $menuBar.layout()
@@ -321,7 +377,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerSupplier().isSearcherControllerSupported()) {
+    if (dictionary != null && dictionary.getControllerFactory().isSearcherSupported()) {
       if (styleClass.contains("can-search-detail")) {
         matched = true
       }
@@ -335,7 +391,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerSupplier().isIndividualSettingControllerSupported()) {
+    if (dictionary != null && dictionary.getControllerFactory().isIndividualSettingSupported()) {
       if (styleClass.contains("has-individual-setting")) {
         matched = true
       }
@@ -354,6 +410,7 @@ public class MainController extends PrimitiveController<Stage> {
           SearchParameter parameter = parameters[i]
           String parameterName = parameterNames[i]
           MenuItem item = MenuItem.new()
+          item.setMnemonicParsing(false)
           if (parameter != null) {
             item.setText(parameterNames[i] ?: "")
             item.setOnAction() {
@@ -379,15 +436,41 @@ public class MainController extends PrimitiveController<Stage> {
       DictionaryFactory cachedFactory = factory
       MenuItem item = MenuItem.new(factory.getName())
       item.setGraphic(ImageView.new(factory.createIcon()))
-      item.setOnAction() {
-        convertDictionary(cachedFactory)
-      }
-      if (!factory.isConvertableFrom(dictionary)) {
+      if (dictionary != null) {
+        item.setOnAction() {
+          convertDictionary(cachedFactory)
+        }
+        if (!factory.isConvertableFrom(dictionary)) {
+          item.setDisable(true)
+        }
+      } else {
         item.setDisable(true)
       }
       $convertDictionaryMenu.getItems().add(item)
     }
   }
+
+  private void updateExportDictionaryMenu() {
+    $exportDictionaryMenu.getItems().clear()
+    Dictionary dictionary = currentDictionary()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+    for (ExportType type : ExportType.values()) {
+      ExportType cachedType = type
+      MenuItem item = MenuItem.new(type.getName())
+      item.setGraphic(ImageView.new(icon))
+      if (dictionary != null) {
+        item.setOnAction() {
+          exportDictionary(cachedType)
+        }
+        if (!dictionary.getDictionaryFactory().isExportableTo(dictionary, type)) {
+          item.setDisable(true)
+        }
+      } else {
+        item.setDisable(true)
+      }
+      $exportDictionaryMenu.getItems().add(item)
+    }
+  }  
 
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
@@ -415,6 +498,7 @@ public class MainController extends PrimitiveController<Stage> {
     updateMenuItems()
     updateSearchRegisteredParameterMenu()
     updateConvertDictionaryMenu()
+    updateExportDictionaryMenu()
     updatePluginMenu()
   }
 
@@ -430,7 +514,7 @@ public class MainController extends PrimitiveController<Stage> {
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
-      Controller controller = dictionary.getControllerSupplier().getIndividualSettingController(nextStage, individualSetting)
+      Controller controller = dictionary.getControllerFactory().createIndividualSettingController(nextStage, individualSetting)
       nextStage.initModality(Modality.APPLICATION_MODAL)
       nextStage.initOwner($stage)
       nextStage.showAndWait()
@@ -512,7 +596,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void printDictionary() {
     Dictionary dictionary = currentDictionary()
-    if (!dictionary.getWholeWords().isEmpty()) {
+    if (!dictionary.getElements().isEmpty()) {
       UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
       PrintController controller = PrintController.new(nextStage)
       nextStage.initModality(Modality.APPLICATION_MODAL)
@@ -727,7 +811,7 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
-      dictionary.saveBackup()
+      dictionary.getDictionaryFactory().saveBackup(dictionary)
     }
     if (individualSetting != null) {
       individualSetting.save()
@@ -779,6 +863,7 @@ public class MainController extends PrimitiveController<Stage> {
       String dictionaryPath = dictionaryPaths[i]
       String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
+      item.setMnemonicParsing(false)
       if (dictionaryPath != null) {
         File file = File.new(dictionaryPath)
         item.setText(dictionaryName ?: file.getName())
@@ -871,7 +956,7 @@ public class MainController extends PrimitiveController<Stage> {
     Boolean debugging = Setting.getInstance().isDebugging()
   }
 
-  private static List<Plugin> lookupPlugins() {
+  private static List<Plugin> loadPlugins() {
     List<Plugin> plugins = ArrayList.new()
     ServiceLoader<Plugin> loader = ServiceLoader.load(Plugin, Thread.currentThread().getContextClassLoader())
     for (Plugin plugin : loader) {

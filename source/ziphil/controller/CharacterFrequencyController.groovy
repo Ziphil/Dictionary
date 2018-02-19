@@ -84,14 +84,14 @@ public class CharacterFrequencyController extends Controller<Void> {
     UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
     FileChooserController controller = FileChooserController.new(nextStage)
     List<ExtensionFilter> extensionFilters = ArrayList.new()
-    ExtensionFilter csvExtensionFilter = ExtensionFilter.new("CSV", "csv")
-    ExtensionFilter tsvExtensionFilter = ExtensionFilter.new("TSV", "tsv")
+    ExtensionFilter csvExtensionFilter = ExtensionFilter.new("CSVファイル", "csv")
+    ExtensionFilter tsvExtensionFilter = ExtensionFilter.new("TSVファイル", "tsv")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
     extensionFilters.addAll(csvExtensionFilter, tsvExtensionFilter)
     controller.prepare(extensionFilters, csvExtensionFilter, true)
     nextStage.showAndWait()
-    if (nextStage.isCommitted()) {
+    if (nextStage.isCommitted() && nextStage.getResult() != null) {
       File file = nextStage.getResult()
       $analyzer.save(file.getAbsolutePath())
     }

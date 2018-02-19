@@ -73,7 +73,7 @@ public class FileChooser extends Control {
             }
           }
         }
-        if (inputtedFileName != "") {
+        if (!inputtedFileName.isEmpty()) {
           return File.new(filePath)
         } else {
           return null

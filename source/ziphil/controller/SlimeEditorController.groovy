@@ -23,6 +23,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
+import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.StageStyle
@@ -493,7 +494,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     for (Int i = 0 ; i < $equivalentTitleControls.size() ; i ++) {
       String title = $equivalentTitleControls[i].getValue()
       List<String> equivalentNames = $equivalentNameControls[i].getText().split(punctuationPattern).toList()
-      if (!equivalentNames.isEmpty()) {
+      if (!$normal || !equivalentNames.isEmpty()) {
         equivalents.add(SlimeEquivalent.new(title, equivalentNames))
       }
     }
@@ -504,7 +505,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     List<String> tags = ArrayList.new()
     for (Int i = 0 ; i < $tagControls.size() ; i ++) {
       String tag = $tagControls[i].getValue()
-      if (tag != "") {
+      if (!$normal || !tag.isEmpty()) {
         tags.add(tag)
       }
     }
@@ -516,7 +517,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     for (Int i = 0 ; i < $informationTitleControls.size() ; i ++) {
       String title = $informationTitleControls[i].getValue()
       String text = $informationTextControls[i].getText()
-      if (text != "") {
+      if (!$normal || !text.isEmpty()) {
         informations.add(SlimeInformation.new(title, text))
       }
     }
@@ -530,7 +531,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       String title = $variationTitleControls[i].getValue()
       List<String> variationNames = $variationNameControls[i].getText().split(punctuationPattern).toList()
       for (String variationName : variationNames) {
-        if (variationName != "") {
+        if (!$normal || !variationName.isEmpty()) {
           variations.add(SlimeVariation.new(title, variationName))
         }
       }
@@ -613,14 +614,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     tagControl.setValue(tag)
     tagControl.setPrefWidth(Measurement.rpx(120))
     tagControl.setMinWidth(Measurement.rpx(120))
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapTagControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapTagControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeTagControl(box)
     }
@@ -645,14 +649,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapEquivalentControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapEquivalentControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeEquivalentControl(box)
     }
@@ -686,14 +693,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     textControl.setText(text)
     textControl.setPrefHeight(Measurement.rpx(120))
     textControl.setMinHeight(Measurement.rpx(120))
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapInformationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapInformationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeInformationControl(box)
     }
@@ -721,14 +731,17 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     titleControl.setPrefWidth(Measurement.rpx(120))
     titleControl.setMinWidth(Measurement.rpx(120))
     nameControl.setText(name)
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapVariationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapVariationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeVariationControl(box)
     }
@@ -762,18 +775,22 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     nameControl.setPrefWidth(Measurement.rpx(150))
     nameControl.setMinWidth(Measurement.rpx(150))
     nameControl.getStyleClass().add("left-pill")
+    chooseButton.setMinWidth(Button.USE_PREF_SIZE)
     chooseButton.getStyleClass().add("right-pill")
     chooseButton.setOnAction() {
       chooseRelation(box)
     }
+    swapUpButton.setMinWidth(Button.USE_PREF_SIZE)
     swapUpButton.getStyleClass().add("left-pill")
     swapUpButton.setOnAction() {
       swapRelationControl(box, -1)
     }
+    swapDownButton.setMinWidth(Button.USE_PREF_SIZE)
     swapDownButton.getStyleClass().add("right-pill")
     swapDownButton.setOnAction() {
       swapRelationControl(box, 1)
     }
+    removeButton.setMinWidth(Button.USE_PREF_SIZE)
     removeButton.setOnAction() {
       removeRelationControl(box)
     }
@@ -850,31 +867,32 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
+}
 
-  @InnerClass @Ziphilify
-  private static class RelationRequest implements SlimeRelationRequest {
 
-    private SlimeWord $word
-    private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
-    private Node $box
+@InnerClass(SlimeEditorController)
+@CompileStatic @Ziphilify
+private static class RelationRequest implements SlimeRelationRequest {
 
-    public RelationRequest(SlimeWord word, Node box) {
-      $word = word
-      $box = box
-    }
+  private SlimeWord $word
+  private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
+  private Node $box
 
-    public SlimeWord getWord() {
-      return $word
-    }
+  public RelationRequest(SlimeWord word, Node box) {
+    $word = word
+    $box = box
+  }
 
-    public SlimeRelation getRelation() {
-      return $relation
-    }
+  public SlimeWord getWord() {
+    return $word
+  }
 
-    public Node getBox() {
-      return $box
-    }
+  public SlimeRelation getRelation() {
+    return $relation
+  }
 
+  public Node getBox() {
+    return $box
   }
 
 }

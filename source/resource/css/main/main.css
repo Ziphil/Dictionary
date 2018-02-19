@@ -9,6 +9,10 @@
   -fx-fill: white;
 }
 
+.dictionary-list .content-pane {
+  -fx-padding: 0px 0px 1px 0px;
+}
+
 .dictionary-list .head-name {
   -fx-font-size: 1.2em;
   -fx-font-weight: bold;
@@ -16,14 +20,16 @@
 
 .dictionary-list .separator .line {
   -fx-border-color: derive(-fx-control-inner-background, -30%) transparent transparent transparent;
-  -fx-border-insets: 1px 0px 0px 0px;
+  -fx-border-insets: 2px 0px 0px 0px;
   -fx-border-style: dotted;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .separator .line {
   -fx-border-color: derive(-fx-selection-bar, 50%) transparent transparent transparent;
-  -fx-border-insets: 1px 0px 0px 0px;
-  -fx-border-style: dotted;
+}
+
+.dictionary-list .margin {
+  -fx-padding: 2px 0px 0px 0px;
 }
 
 .dictionary-list .shaleia-total-part,
@@ -35,8 +41,7 @@
   -fx-border-color: derive(-fx-control-inner-background, -30%);
   -fx-border-style: solid;
   -fx-border-radius: 3px;
-  -fx-padding: 0px 2px 0px 2px;
-  -fx-margin: 0px 5px 0px 0px;
+  -fx-padding: -1px 2px -1px 2px;
 }
 
 .dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
@@ -47,19 +52,46 @@
   -fx-border-color: derive(-fx-selection-bar, 50%);
 }
 
+.dictionary-list .shaleia-content-title,
+.dictionary-list .slime-information-title,
+.dictionary-list .slime-plain-information-title {
+  -fx-font-size: 0.85em;
+  -fx-border-color: transparent transparent derive(-fx-control-inner-background, -30%) transparent;
+  -fx-border-insets: 0px 0px 0px 0px;
+  -fx-border-style: solid;
+  -fx-padding: 0px 10px -2px 0px;
+}
+
+.dictionary-list .slime-plain-information-title {
+  -fx-padding: 0px 0px -2px 0px;
+}
+
+.dictionary-list:focused .list-cell:filled:selected .shaleia-content-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-information-title,
+.dictionary-list:focused .list-cell:filled:selected .slime-plain-information-title {
+  -fx-border-color: transparent transparent derive(-fx-selection-bar, 50%) transparent;
+}
+
 .dictionary-list .shaleia-pronunciation,
-.dictionary-list .shaleia-title,
-.dictionary-list .shaleia-possibility,
 .dictionary-list .personal-pronunciation,
-.dictionary-list .slime-pronunciation,
-.dictionary-list .slime-title,
-.dictionary-list .slime-id,
-.dictionary-list .slime-possibility {
+.dictionary-list .slime-pronunciation {
   -fx-font-size: 0.9em;
+}
+
+.dictionary-list .shaleia-possibility,
+.dictionary-list .shaleia-marker,
+.dictionary-list .slime-id,
+.dictionary-list .slime-marker,
+.dictionary-list .slime-possibility {
+  -fx-font-size: 0.85em;
 }
 
 .dictionary-list .shaleia-creation-date {
   -fx-font-size: 0.8em;
+}
+
+.dictionary-list .small {
+  -fx-font-size: 0.85em;
 }
 
 .dictionary-list .shaleia-link,
@@ -119,6 +151,10 @@
 
 .frequency .table-column {
   -fx-alignment: baseline-center;
+}
+
+.save-progress-bar .bar {
+  -fx-padding: 0.5em;
 }
 
 .large {

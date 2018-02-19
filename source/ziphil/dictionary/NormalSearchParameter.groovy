@@ -65,7 +65,7 @@ public class NormalSearchParameter implements SearchParameter<Word> {
     if ($strict) {
       String name = word.getName()
       String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
-      if ($convertedSearch != "") {
+      if (!$convertedSearch.isEmpty()) {
         if (searchesPrefix) {
           return convertedName.startsWith($convertedSearch)
         } else {
@@ -90,7 +90,7 @@ public class NormalSearchParameter implements SearchParameter<Word> {
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
     if ($strict) {
-      if ($search != "") {
+      if (!$search.isEmpty()) {
         return word.getEquivalents().any() { String equivalent ->
           if (searchesPrefix) {
             return equivalent.startsWith($search)

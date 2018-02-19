@@ -46,7 +46,9 @@
       <Label text="エラーログ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <TextField fx:id="$snojPathControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
-        <Button text="…" onAction="#openSnoj" styleClass="right-pill"/>
+        <Button text="…" onAction="#openSnoj" styleClass="right-pill">
+          <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+        </Button>
       </HBox>
       <CheckBox fx:id="$usesDictionaryAkrantiainControl" text="開いている辞書のsnojデータを用いる" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
       <TextField fx:id="$inputControl" GridPane.columnIndex="1" GridPane.rowIndex="2"/>

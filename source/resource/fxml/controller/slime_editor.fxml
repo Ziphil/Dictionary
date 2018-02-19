@@ -87,7 +87,9 @@
               <VBox fx:id="$equivalentBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="＋" onAction="#insertEquivalentControl"/>
+              <Button text="＋" onAction="#insertEquivalentControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
           <TitledPane text="タグ">
@@ -104,7 +106,9 @@
               <VBox fx:id="$tagBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="＋" onAction="#insertTagControl"/>
+              <Button text="＋" onAction="#insertTagControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
           <TitledPane text="内容" contentDisplay="right">
@@ -121,7 +125,9 @@
               <VBox fx:id="$informationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="＋" onAction="#insertInformationControl"/>
+              <Button text="＋" onAction="#insertInformationControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
           <TitledPane text="変化形" contentDisplay="right">
@@ -141,7 +147,9 @@
               <VBox fx:id="$variationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="＋" onAction="#insertVariationControl"/>
+              <Button text="＋" onAction="#insertVariationControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
           <TitledPane fx:id="$relationPane" text="関連語" contentDisplay="right">
@@ -161,7 +169,9 @@
               <VBox fx:id="$relationBox">
                 <spacing><Double rpx="5"/></spacing>
               </VBox>
-              <Button text="＋" onAction="#insertRelationControl"/>
+              <Button text="＋" onAction="#insertRelationControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
             </VBox>
           </TitledPane>
         </VBox>
