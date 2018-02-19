@@ -103,7 +103,11 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
     ProcessBuilder builder = ProcessBuilder.new(command)
     Process process = builder.start()
     process.waitFor()
-    return process.exitValue() == 0
+    if (process.exitValue() != 0) {
+      throw IllegalStateException.new("External command finished with nonzero exit value")
+    } else {
+      return true
+    }
   }
 
   private void saveTemporary() {
