@@ -58,7 +58,7 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     ShaleiaDescriptionReader reader = ShaleiaDescriptionReader.new(word.getDescription())
     List<List<String>> equivalents = ArrayList.new()
     List<List<String>> contents = ArrayList.new()
-    List<String> synonyms = ArrayList.new()
+    List<List<String>> synonyms = ArrayList.new()
     try {
       while (reader.readLine() != null) {
         if (reader.findCreationDate()) {
@@ -76,8 +76,9 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
           contents.add([title, content])
         }
         if (reader.findSynonym()) {
+          String synonymType = reader.lookupSynonymType()
           String synonym = reader.lookupSynonym()
-          synonyms.add(synonym)
+          synonyms.add([synonymType, synonym])
         }
       }
     } finally {
@@ -134,11 +135,16 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     writer.writeEndElement()
   }
 
-  private void writeSynonyms(XMLStreamWriter writer, List<String> synonyms) {
+  private void writeSynonyms(XMLStreamWriter writer, List<List<String>> synonyms) {
     writer.writeStartElement("synonyms")
-    for (String synonym : synonyms) {
+    for (List<String> synonym : synonyms) {
       writer.writeStartElement("synonym")
-      writer.writeCharacters(synonym)
+      writer.writeStartElement("synonym-type")
+      writer.writeCharacters(synonym[0])
+      writer.writeEndElement()
+      writer.writeStartElement("synonym")
+      writer.writeCharacters(synonym[1])
+      writer.writeEndElement()
       writer.writeEndElement()
     }
     writer.writeEndElement()

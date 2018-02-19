@@ -257,12 +257,21 @@
                      color="{$color}">
             <xsl:value-of select="$relation-marker"/>
           </fo:inline>
+          <fo:inline padding="0.2mm 0.5mm 0.2mm 0.5mm"
+                     font-size="{$title-font-size}"
+                     color="{$title-color}"
+                     border="{$border-width} {$color} solid"
+                     background-color="{$light-color}">
+            <xsl:call-template name="text">
+              <xsl:with-param name="text" select="synonym-type"/>
+            </xsl:call-template>
+          </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
             <xsl:call-template name="text">
-              <xsl:with-param name="text" select="."/>
+              <xsl:with-param name="text" select="synonym"/>
             </xsl:call-template>
           </fo:inline>
         </fo:block>
