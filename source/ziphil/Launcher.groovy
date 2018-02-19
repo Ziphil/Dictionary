@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 28, 0, 2220)
+  public static final Version VERSION = Version.new(1, 28, 1, 2220)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -57,6 +57,7 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.28. 1 | 環境設定をした後にエラーになる場合がある不具合を修正。
 //  1.28. 0 | 辞典データを PDF 形式にエクスポートする機能を追加。
 //          | 単語リストで訳語と内容を区切る線の表示の有無を設定できるよう変更。
 //          | Java 9 での動作に対応。

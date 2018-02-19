@@ -29,8 +29,8 @@ public class Setting {
   private static ObjectMapper $$mapper = createObjectMapper()
   private static Setting $$instance = createInstance()
 
-  private List<String> $registeredDictionaryPaths = ArrayList.new()
-  private List<String> $registeredDictionaryNames = ArrayList.new()
+  private List<String> $registeredDictionaryPaths = ArrayList.new(10)
+  private List<String> $registeredDictionaryNames = ArrayList.new(10)
   private String $defaultDictionaryPath
   private String $contentFontFamily
   private Int $contentFontSize
@@ -43,7 +43,7 @@ public class Setting {
   private Int $mainWindowHeight = 720
   private String $variationMarker = "→"
   private String $relationMarker = "cf:"
-  private String $scriptName = "groovy"
+  private String $scriptName = "javascript"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
