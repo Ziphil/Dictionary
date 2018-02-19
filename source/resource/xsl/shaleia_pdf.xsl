@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-  <xsl:output method="xml" indent="yes"/>
+<xsl:stylesheet version="3.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:fo="http://www.w3.org/1999/XSL/Format"
+                xmlns:zp="http://ziphil.com/XSL">
+  <xsl:output method="xml" indent="no"/>
 
   <xsl:param name="caption-font-family" select="'Arial, IPAゴシック'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
@@ -171,9 +174,7 @@
                    color="{$title-color}"
                    background-color="{$light-color}"
                    alignment-baseline="central">
-          <xsl:call-template name="text">
-            <xsl:with-param name="text" select="total-part"/>
-          </xsl:call-template>
+          <xsl:sequence select="zp:textify(total-part)"/>
         </fo:inline>
       </fo:inline>
     </fo:block>
@@ -193,17 +194,13 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="part"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(part)"/>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="equivalent"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(equivalent)"/>
           </fo:inline>
         </fo:block>
       </xsl:for-each>
@@ -228,15 +225,11 @@
                        font-size="{$title-font-size}"
                        color="{$color}"
                        border-bottom="{$border-width} {$color} solid">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="title"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(title)"/>
             </fo:inline>
           </fo:block>
           <fo:block text-align="justify">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="content"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(content)"/>
           </fo:block>
         </fo:block>
       </xsl:for-each>
@@ -262,17 +255,13 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="synonym-type"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(synonym-type)"/>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>
           </fo:inline>
           <fo:inline>
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="synonym"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(synonym)"/>
           </fo:inline>
         </fo:block>
       </xsl:for-each>
@@ -288,45 +277,32 @@
     </fo:block>
   </xsl:template>
 
-  <xsl:template name="text">
+  <xsl:function name="zp:textify">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="\{{(.*?)\}}|\[(.*?)\]|/(.*?)/">
       <xsl:matching-substring>
         <xsl:choose>
           <xsl:when test="matches(., '\{.*?\}')">
             <fo:inline font-family="{$shaleia-font-family}">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="regex-group(1)"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(regex-group(1))"/>
             </fo:inline>
           </xsl:when>
           <xsl:when test="matches(., '\[.*?\]')">
             <fo:inline font-family="{$shaleia-font-family}">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="regex-group(2)"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(regex-group(2))"/>
             </fo:inline>
           </xsl:when>
           <xsl:when test="matches(., '/.*?/')">
             <fo:inline font-style="italic">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="regex-group(3)"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(regex-group(3))"/>
             </fo:inline>
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="."/>
-            </xsl:call-template>
-          </xsl:otherwise>
         </xsl:choose>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
         <xsl:choose>
           <xsl:when test="$modifies">
-            <xsl:call-template name="separation">
-              <xsl:with-param name="text" select="replace(., '&amp;#x002F;', '/')"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:separate(replace(., '&amp;#x002F;', '/'))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="replace(., '&amp;#x002F;', '/')"/>
@@ -334,9 +310,9 @@
         </xsl:choose>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
-  </xsl:template>
+  </xsl:function>
 
-  <xsl:template name="separation">
+  <xsl:function name="zp:separate">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="[&#x0020;-&#x25CA;]+">
       <xsl:matching-substring>
@@ -345,14 +321,12 @@
         </fo:inline>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
-        <xsl:call-template name="modification">
-          <xsl:with-param name="text" select="."/>
-        </xsl:call-template>
+        <xsl:sequence select="zp:modify(.)"/>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
-  </xsl:template>
+  </xsl:function>
 
-  <xsl:template name="modification">
+  <xsl:function name="zp:modify">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="、|。|「|」">
       <xsl:matching-substring>
@@ -378,6 +352,6 @@
         <xsl:value-of select="."/>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
-  </xsl:template>
+  </xsl:function>
 
 </xsl:stylesheet>

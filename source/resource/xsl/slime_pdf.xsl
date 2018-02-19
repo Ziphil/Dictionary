@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-  <xsl:output method="xml" indent="yes"/>
+<xsl:stylesheet version="3.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:fo="http://www.w3.org/1999/XSL/Format"
+                xmlns:zp="http://ziphil.com/XSL">
+  <xsl:output method="xml" indent="no"/>
 
   <xsl:param name="caption-font-family" select="'Yu Gothic'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
@@ -179,9 +182,7 @@
                      color="{$title-color}"
                      background-color="{$light-color}"
                      alignment-baseline="central">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="."/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(.)"/>
           </fo:inline>
           <xsl:if test="position() != last()">
             <xsl:text> </xsl:text>
@@ -206,9 +207,7 @@
                        color="{$title-color}"
                        border="{$border-width} {$color} solid"
                        background-color="{$light-color}">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="title"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(title)"/>
             </fo:inline>
           </xsl:if>
           <fo:inline>
@@ -216,13 +215,9 @@
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="."/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(.)"/>
               <xsl:if test="position() != last()">
-                <xsl:call-template name="text">
-                  <xsl:with-param name="text" select="$punctuation"/>
-                </xsl:call-template>
+                <xsl:sequence select="zp:textify($punctuation)"/>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -249,15 +244,11 @@
                        font-size="{$title-font-size}"
                        color="{$color}"
                        border-bottom="{$border-width} {$color} solid">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="title"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(title)"/>
             </fo:inline>
           </fo:block>
           <fo:block text-align="justify">
-            <xsl:call-template name="text">
-              <xsl:with-param name="text" select="text"/>
-            </xsl:call-template>
+            <xsl:sequence select="zp:textify(text)"/>
           </fo:block>
         </fo:block>
       </xsl:for-each>
@@ -284,9 +275,7 @@
                        color="{$title-color}"
                        border="{$border-width} {$color} solid"
                        background-color="{$light-color}">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="title"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(title)"/>
             </fo:inline>
           </xsl:if>
           <fo:inline>
@@ -294,13 +283,9 @@
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="names/name">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="."/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(.)"/>
               <xsl:if test="position() != last()">
-                <xsl:call-template name="text">
-                  <xsl:with-param name="text" select="$punctuation"/>
-                </xsl:call-template>
+                <xsl:sequence select="zp:textify($punctuation)"/>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -329,9 +314,7 @@
                        color="{$title-color}"
                        border="{$border-width} {$color} solid"
                        background-color="{$light-color}">
-              <xsl:call-template name="text">
-                <xsl:with-param name="text" select="title"/>
-              </xsl:call-template>
+              <xsl:sequence select="zp:textify(title)"/>
             </fo:inline>
           </xsl:if>
           <fo:inline>
@@ -340,14 +323,10 @@
           <fo:inline>
             <xsl:for-each select="entries/entry">
               <fo:basic-link internal-destination="word-{id}">
-                <xsl:call-template name="text">
-                  <xsl:with-param name="text" select="name"/>
-                </xsl:call-template>
+                <xsl:sequence select="zp:textify(name)"/>
               </fo:basic-link>
               <xsl:if test="position() != last()">
-                <xsl:call-template name="text">
-                  <xsl:with-param name="text" select="$punctuation"/>
-                </xsl:call-template>
+                <xsl:sequence select="zp:textify($punctuation)"/>
               </xsl:if>
             </xsl:for-each>
           </fo:inline>
@@ -365,21 +344,19 @@
     </fo:block>
   </xsl:template>
 
-  <xsl:template name="text">
+  <xsl:function name="zp:textify">
     <xsl:param name="text"/>
     <xsl:choose>
       <xsl:when test="$modifies">
-        <xsl:call-template name="separation">
-          <xsl:with-param name="text" select="$text"/>
-        </xsl:call-template>
+        <xsl:sequence select="zp:separate($text)"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$text"/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
+  </xsl:function>
 
-  <xsl:template name="separation">
+  <xsl:function name="zp:separate">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="[&#x0020;-&#x25CA;]+">
       <xsl:matching-substring>
@@ -388,14 +365,12 @@
         </fo:inline>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
-        <xsl:call-template name="modification">
-          <xsl:with-param name="text" select="."/>
-        </xsl:call-template>
+        <xsl:sequence select="zp:modify(.)"/>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
-  </xsl:template>
+  </xsl:function>
 
-  <xsl:template name="modification">
+  <xsl:function name="zp:modify">
     <xsl:param name="text"/>
     <xsl:analyze-string select="$text" regex="、|。|「|」">
       <xsl:matching-substring>
@@ -421,6 +396,6 @@
         <xsl:value-of select="."/>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
-  </xsl:template>
+  </xsl:function>
 
 </xsl:stylesheet>
