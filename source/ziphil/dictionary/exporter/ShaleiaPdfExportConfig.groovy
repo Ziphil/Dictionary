@@ -7,16 +7,16 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaPdfExportConfig extends PdfExportConfig {
 
-  private String $firstCaptionFontFamily = "sans-serif"
-  private String $secondCaptionFontFamily = "sans-serif"
+  private String $firstCaptionFontFamily = "Arial"
+  private String $secondCaptionFontFamily = "IPAゴシック"
   private Int $captionFontSize = 20
-  private String $firstHeadFontFamily = "sans-serif"
-  private String $secondHeadFontFamily = "sans-serif"
+  private String $firstHeadFontFamily = "Arial"
+  private String $secondHeadFontFamily = "IPAゴシック"
   private Int $headFontSize = 10
-  private String $firstShaleiaFontFamily = "serif"
-  private String $secondShaleiaFontFamily = "serif"
-  private String $firstMainFontFamily = "serif"
-  private String $secondMainFontFamily = "serif"
+  private String $firstShaleiaFontFamily = "Arial"
+  private String $secondShaleiaFontFamily = "IPAゴシック"
+  private String $firstMainFontFamily = "Times New Roman"
+  private String $secondMainFontFamily = "IPA明朝"
   private Int $mainFontSize = 8
   private String $relationMarker = null
   private Boolean $modifies = true

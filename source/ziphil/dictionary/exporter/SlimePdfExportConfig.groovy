@@ -7,13 +7,13 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimePdfExportConfig extends PdfExportConfig {
 
-  private String $firstCaptionFontFamily = "sans-serif"
+  private String $firstCaptionFontFamily = "Yu Gothic"
   private String $secondCaptionFontFamily = "sans-serif"
   private Int $captionFontSize = 20
-  private String $firstHeadFontFamily = "sans-serif"
+  private String $firstHeadFontFamily = "Yu Gothic"
   private String $secondHeadFontFamily = "sans-serif"
   private Int $headFontSize = 10
-  private String $firstMainFontFamily = "serif"
+  private String $firstMainFontFamily = "Yu Mincho"
   private String $secondMainFontFamily = "serif"
   private Int $mainFontSize = 8
   private String $variationMarker = null

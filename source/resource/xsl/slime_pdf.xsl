@@ -2,11 +2,11 @@
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:param name="caption-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="caption-font-family" select="'Yu Gothic'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
-  <xsl:param name="head-font-family" select="'SourceHanSans-Regular'"/>
+  <xsl:param name="head-font-family" select="'Yu Gothic'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
-  <xsl:param name="main-font-family" select="'SourceHanSerif-Regular'"/>
+  <xsl:param name="main-font-family" select="'Yu Mincho'"/>
   <xsl:param name="main-font-size" select="'8pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
   <xsl:param name="color" select="'#333333'"/>
@@ -84,7 +84,7 @@
       <xsl:if test="count(words/caption) > 0">
         <fo:bookmark internal-destination="caption-{words/caption[1]}"
                      starting-state="hide"> 
-          <fo:bookmark-title font-weight="bold">目次</fo:bookmark-title>
+          <fo:bookmark-title>目次</fo:bookmark-title>
           <xsl:for-each select="words/caption">
             <fo:bookmark internal-destination="caption-{.}">
               <fo:bookmark-title>
