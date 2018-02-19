@@ -7,23 +7,34 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimePdfExportConfig extends PdfExportConfig {
 
-  private String $captionFontFamily = "sans-serif"
+  private String $firstCaptionFontFamily = "sans-serif"
+  private String $secondCaptionFontFamily = "sans-serif"
   private Int $captionFontSize = 20
-  private String $headFontFamily = "sans-serif"
+  private String $firstHeadFontFamily = "sans-serif"
+  private String $secondHeadFontFamily = "sans-serif"
   private Int $headFontSize = 10
-  private String $mainFontFamily = "serif"
+  private String $firstMainFontFamily = "serif"
+  private String $secondMainFontFamily = "serif"
   private Int $mainFontSize = 8
   private String $variationMarker = null
   private String $relationMarker = null
   private Boolean $modifies = true
   private String $externalCommand = null
 
-  public String getCaptionFontFamily() {
-    return $captionFontFamily
+  public String getFirstCaptionFontFamily() {
+    return $firstCaptionFontFamily
   }
 
-  public void setCaptionFontFamily(String captionFontFamily) {
-    $captionFontFamily = captionFontFamily
+  public void setFirstCaptionFontFamily(String firstCaptionFontFamily) {
+    $firstCaptionFontFamily = firstCaptionFontFamily
+  }
+
+  public String getSecondCaptionFontFamily() {
+    return $secondCaptionFontFamily
+  }
+
+  public void setSecondCaptionFontFamily(String secondCaptionFontFamily) {
+    $secondCaptionFontFamily = secondCaptionFontFamily
   }
 
   public Int getCaptionFontSize() {
@@ -34,12 +45,20 @@ public class SlimePdfExportConfig extends PdfExportConfig {
     $captionFontSize = captionFontSize
   }
 
-  public String getHeadFontFamily() {
-    return $headFontFamily
+  public String getFirstHeadFontFamily() {
+    return $firstHeadFontFamily
   }
 
-  public void setHeadFontFamily(String headFontFamily) {
-    $headFontFamily = headFontFamily
+  public void setFirstHeadFontFamily(String firstHeadFontFamily) {
+    $firstHeadFontFamily = firstHeadFontFamily
+  }
+
+  public String getSecondHeadFontFamily() {
+    return $secondHeadFontFamily
+  }
+
+  public void setSecondHeadFontFamily(String secondHeadFontFamily) {
+    $secondHeadFontFamily = secondHeadFontFamily
   }
 
   public Int getHeadFontSize() {
@@ -50,12 +69,20 @@ public class SlimePdfExportConfig extends PdfExportConfig {
     $headFontSize = headFontSize
   }
 
-  public String getMainFontFamily() {
-    return $mainFontFamily
+  public String getFirstMainFontFamily() {
+    return $firstMainFontFamily
   }
 
-  public void setMainFontFamily(String mainFontFamily) {
-    $mainFontFamily = mainFontFamily
+  public void setFirstMainFontFamily(String firstMainFontFamily) {
+    $firstMainFontFamily = firstMainFontFamily
+  }
+
+  public String getSecondMainFontFamily() {
+    return $secondMainFontFamily
+  }
+
+  public void setSecondMainFontFamily(String secondMainFontFamily) {
+    $secondMainFontFamily = secondMainFontFamily
   }
 
   public Int getMainFontSize() {

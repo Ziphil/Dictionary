@@ -50,12 +50,19 @@
           <Label text="メインフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <Label text="変化形マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <Label text="関連語マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="centerLeft">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$captionFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
-            </ComboBox>
+            <VBox>
+              <spacing><Double rpx="5"/></spacing>
+              <ComboBox fx:id="$firstCaptionFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+              <ComboBox fx:id="$secondCaptionFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+            </VBox>
             <Spinner fx:id="$captionFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
@@ -66,12 +73,19 @@
             <spacing><Double rpx="10"/></spacing>
             <CheckBox fx:id="$usesDefaultCaptionFontFamilyControl" text="デフォルトフォントを用いる" selected="true"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" alignment="centerLeft">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$headFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
-            </ComboBox>
+            <VBox>
+              <spacing><Double rpx="5"/></spacing>
+              <ComboBox fx:id="$firstHeadFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+              <ComboBox fx:id="$secondHeadFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+            </VBox>
             <Spinner fx:id="$headFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
@@ -82,12 +96,19 @@
             <spacing><Double rpx="10"/></spacing>
             <CheckBox fx:id="$usesDefaultHeadFontFamilyControl" text="デフォルトフォントを用いる" selected="true"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4" alignment="centerLeft">
             <spacing><Double rpx="5"/></spacing>
-            <ComboBox fx:id="$mainFontFamilyControl" editable="true">
-              <prefWidth><Double rpx="350"/></prefWidth>
-              <minWidth><Double rpx="350"/></minWidth>
-            </ComboBox>
+            <VBox>
+              <spacing><Double rpx="5"/></spacing>
+              <ComboBox fx:id="$firstMainFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+              <ComboBox fx:id="$secondMainFontFamilyControl" editable="true">
+                <prefWidth><Double rpx="350"/></prefWidth>
+                <minWidth><Double rpx="350"/></minWidth>
+              </ComboBox>
+            </VBox>
             <Spinner fx:id="$mainFontSizeControl" editable="true">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>

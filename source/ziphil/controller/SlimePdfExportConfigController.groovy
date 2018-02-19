@@ -20,17 +20,20 @@ import ziphilib.transform.Ziphilify
 public class SlimePdfExportConfigController extends Controller<SlimePdfExportConfig> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/slime_pdf_export_config.fxml"
-  private static final String TITLE = "スクリプト検索"
+  private static final String TITLE = "エクスポート設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(580)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private ComboBox<String> $captionFontFamilyControl
+  @FXML private ComboBox<String> $firstCaptionFontFamilyControl
+  @FXML private ComboBox<String> $secondCaptionFontFamilyControl
   @FXML private Spinner<IntegerClass> $captionFontSizeControl
   @FXML private CheckBox $usesDefaultCaptionFontFamilyControl
-  @FXML private ComboBox<String> $headFontFamilyControl
+  @FXML private ComboBox<String> $firstHeadFontFamilyControl
+  @FXML private ComboBox<String> $secondHeadFontFamilyControl
   @FXML private Spinner<IntegerClass> $headFontSizeControl
   @FXML private CheckBox $usesDefaultHeadFontFamilyControl
-  @FXML private ComboBox<String> $mainFontFamilyControl
+  @FXML private ComboBox<String> $firstMainFontFamilyControl
+  @FXML private ComboBox<String> $secondMainFontFamilyControl
   @FXML private Spinner<IntegerClass> $mainFontSizeControl
   @FXML private CheckBox $usesDefaultMainFontFamilyControl
   @FXML private TextField $variationMarkerControl
@@ -57,13 +60,16 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
 
   @FXML
   protected void commit() {
-    String captionFontFamily = $captionFontFamilyControl.getValue()
+    String firstCaptionFontFamily = $firstCaptionFontFamilyControl.getValue()
+    String secondCaptionFontFamily = $secondCaptionFontFamilyControl.getValue()
     Int captionFontSize = $captionFontSizeControl.getValue()
     Boolean usesDefaultCaptionFontFamily = $usesDefaultCaptionFontFamilyControl.isSelected()
-    String headFontFamily = $headFontFamilyControl.getValue()
+    String firstHeadFontFamily = $firstHeadFontFamilyControl.getValue()
+    String secondHeadFontFamily = $secondHeadFontFamilyControl.getValue()
     Int headFontSize = $headFontSizeControl.getValue()
     Boolean usesDefaultHeadFontFamily = $usesDefaultHeadFontFamilyControl.isSelected()
-    String mainFontFamily = $mainFontFamilyControl.getValue()
+    String firstMainFontFamily = $firstMainFontFamilyControl.getValue()
+    String secondMainFontFamily = $secondMainFontFamilyControl.getValue()
     Int mainFontSize = $mainFontSizeControl.getValue()
     Boolean usesDefaultMainFontFamily = $usesDefaultMainFontFamilyControl.isSelected()
     String variationMarker = $variationMarkerControl.getText()
@@ -75,15 +81,18 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
     Boolean usesEmbeddedProcessor = $usesEmbeddedProcessorControl.isSelected()
     SlimePdfExportConfig config = SlimePdfExportConfig.new()
     if (!usesDefaultCaptionFontFamily) {
-      config.setCaptionFontFamily(captionFontFamily)
+      config.setFirstCaptionFontFamily(firstCaptionFontFamily)
+      config.setSecondCaptionFontFamily(secondCaptionFontFamily)
     }
     config.setCaptionFontSize(captionFontSize)
     if (!usesDefaultHeadFontFamily) {
-      config.setHeadFontFamily(headFontFamily)
+      config.setFirstHeadFontFamily(firstHeadFontFamily)
+      config.setSecondHeadFontFamily(secondHeadFontFamily)
     }
     config.setHeadFontSize(headFontSize)
     if (!usesDefaultMainFontFamily) {
-      config.setMainFontFamily(mainFontFamily)
+      config.setFirstMainFontFamily(firstMainFontFamily)
+      config.setSecondMainFontFamily(secondMainFontFamily)
     }
     config.setMainFontSize(mainFontSize)
     if (!usesDefaultVariationMarker) {
@@ -101,9 +110,12 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
 
   private void setupFontFamilyControls() {
     List<String> fontFamilies = Font.getFamilies()
-    $captionFontFamilyControl.getItems().addAll(fontFamilies)
-    $headFontFamilyControl.getItems().addAll(fontFamilies)
-    $mainFontFamilyControl.getItems().addAll(fontFamilies)
+    $firstCaptionFontFamilyControl.getItems().addAll(fontFamilies)
+    $secondCaptionFontFamilyControl.getItems().addAll(fontFamilies)
+    $firstHeadFontFamilyControl.getItems().addAll(fontFamilies)
+    $secondHeadFontFamilyControl.getItems().addAll(fontFamilies)
+    $firstMainFontFamilyControl.getItems().addAll(fontFamilies)
+    $secondMainFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
   private void setupIntegerControls() {
@@ -113,9 +125,12 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
   }
 
   private void bindFontControlProperties() {
-    $captionFontFamilyControl.disableProperty().bind($usesDefaultCaptionFontFamilyControl.selectedProperty())
-    $headFontFamilyControl.disableProperty().bind($usesDefaultHeadFontFamilyControl.selectedProperty())
-    $mainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
+    $firstCaptionFontFamilyControl.disableProperty().bind($usesDefaultCaptionFontFamilyControl.selectedProperty())
+    $secondCaptionFontFamilyControl.disableProperty().bind($usesDefaultCaptionFontFamilyControl.selectedProperty())
+    $firstHeadFontFamilyControl.disableProperty().bind($usesDefaultHeadFontFamilyControl.selectedProperty())
+    $secondHeadFontFamilyControl.disableProperty().bind($usesDefaultHeadFontFamilyControl.selectedProperty())
+    $firstMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
+    $secondMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
   }
 
   private void bindMarkerControlProperties() {

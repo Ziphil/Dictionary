@@ -178,11 +178,11 @@ public class SlimePdfDictionaryExporter extends PdfDictionaryExporter<SlimeDicti
 
   protected void setupTransformer(Transformer transformer) {
     Setting setting = Setting.getInstance()
-    transformer.setParameter("caption-font-family", $config.getCaptionFontFamily())
-    transformer.setParameter("head-font-family", $config.getHeadFontFamily())
-    transformer.setParameter("main-font-family", $config.getMainFontFamily())
+    transformer.setParameter("caption-font-family", "${$config.getFirstCaptionFontFamily()}, ${$config.getSecondCaptionFontFamily()}")
     transformer.setParameter("caption-font-size", "${$config.getCaptionFontSize()}pt")
+    transformer.setParameter("head-font-family", "${$config.getFirstHeadFontFamily()}, ${$config.getSecondHeadFontFamily()}")
     transformer.setParameter("head-font-size", "${$config.getHeadFontSize()}pt")
+    transformer.setParameter("main-font-family", "${$config.getFirstMainFontFamily()}, ${$config.getSecondMainFontFamily()}")
     transformer.setParameter("main-font-size", "${$config.getMainFontSize()}pt")
     transformer.setParameter("title-font-size", "${$config.getMainFontSize() * 0.75}pt")
     transformer.setParameter("punctuation", $dictionary.firstPunctuation())
