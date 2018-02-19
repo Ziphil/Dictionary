@@ -37,26 +37,22 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
   protected BooleanClass save() {
     saveTemporary()
     updateProgress(1, 2)
-    BooleanClass result = transform()
+    transform()
     deleteTemporary()
     updateProgress(2, 2)
-    return result
+    return true
   }
 
-  private BooleanClass transform() {
+  private void transform() {
     if ($config.getExternalCommand() != null) {
-      BooleanClass transformResult = transformFormat()
-      if (transformResult) {
-        BooleanClass executeResult = executeExternalCommand()
-        return executeResult
-      }
+      transformFormat()
+      executeExternalCommand()
     } else {
-      BooleanClass result = transformPdf()
-      return result
+      transformPdf()
     }
   }
 
-  private BooleanClass transformPdf() {
+  private void transformPdf() {
     File file = File.new($path)
     File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
     BufferedOutputStream stream = file.newOutputStream()
@@ -72,10 +68,9 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
       stream.close()
       temporaryStream.close()
     }
-    return true
   }
 
-  private BooleanClass transformFormat() {
+  private void transformFormat() {
     File file = File.new($path.replaceAll(/\.\w+$/, "_fo.fo"))
     File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
     BufferedOutputStream stream = file.newOutputStream()
@@ -89,10 +84,9 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
       stream.close()
       temporaryStream.close()
     }
-    return true
   }
 
-  private BooleanClass executeExternalCommand() {
+  private void executeExternalCommand() {
     String[] command = $config.getExternalCommand().split(/\s+/)
     for (Int i = 0 ; i < command.length ; i ++) {
       String commandFragment = command[i]
@@ -105,8 +99,6 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
     process.waitFor()
     if (process.exitValue() != 0) {
       throw IllegalStateException.new("External command finished with nonzero exit value")
-    } else {
-      return true
     }
   }
 
