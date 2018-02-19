@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 27, 1, 2161)
+  public static final Version VERSION = Version.new(1, 28, 0, 2220)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATPR = createLineSeparator()
@@ -57,6 +57,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.28. 0 | 辞典データを PDF 形式にエクスポートする機能を追加。
+//          | 単語リストで訳語と内容を区切る線の表示の有無を設定できるよう変更。
+//          | Java 9 での動作に対応。
 //  1.27. 1 | OneToMany 形式の単語データの表示が特定の場合に崩れる不具合を修正。
 //  1.27. 0 | 表示している辞書を再読み込みする機能を追加。
 //          | OneToMany 形式で変化形を単語リストに表示するかどうかを設定する機能を追加。
