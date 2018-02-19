@@ -68,6 +68,7 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="20" amountToStepBy="1"/></valueFactory>
             </Spinner>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.captionFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="10"/></spacing>
@@ -91,6 +92,7 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="10" amountToStepBy="1"/></valueFactory>
             </Spinner>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.headFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="10"/></spacing>
@@ -109,6 +111,12 @@
                 <minWidth><Double rpx="350"/></minWidth>
               </ComboBox>
             </VBox>
+            <Spinner fx:id="$shaleiaFontSizeControl" editable="true" disable="true">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="8" amountToStepBy="1"/></valueFactory>
+            </Spinner>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.shaleiaFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="10"/></spacing>
@@ -132,6 +140,7 @@
               <minWidth><Double rpx="70"/></minWidth>
               <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="8" amountToStepBy="1"/></valueFactory>
             </Spinner>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.mainFont"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
             <spacing><Double rpx="10"/></spacing>
@@ -174,10 +183,12 @@
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.modifies"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$externalCommandControl" text="command -fo %F -pdf %P" HBox.hgrow="always"/>
+            <HelpIndicator text="%help.shaleiaPdfExportConfig.externalCommand"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="10"/></spacing>

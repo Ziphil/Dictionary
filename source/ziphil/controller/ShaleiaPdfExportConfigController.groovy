@@ -34,6 +34,7 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
   @FXML private CheckBox $usesDefaultHeadFontFamilyControl
   @FXML private ComboBox<String> $firstShaleiaFontFamilyControl
   @FXML private ComboBox<String> $secondShaleiaFontFamilyControl
+  @FXML private Spinner<IntegerClass> $shaleiaFontSizeControl
   @FXML private CheckBox $usesDefaultShaleiaFontFamilyControl
   @FXML private ComboBox<String> $firstMainFontFamilyControl
   @FXML private ComboBox<String> $secondMainFontFamilyControl
@@ -138,6 +139,7 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
     $secondShaleiaFontFamilyControl.disableProperty().bind($usesDefaultShaleiaFontFamilyControl.selectedProperty())
     $firstMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
     $secondMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
+    $shaleiaFontSizeControl.getValueFactory().valueProperty().bind($mainFontSizeControl.valueProperty())
   }
 
   private void bindMarkerControlProperty() {
