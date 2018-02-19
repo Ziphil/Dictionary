@@ -110,6 +110,7 @@ private static enum HelpSection {
   SCRIPT_SEARCH("スクリプト検索", "script_search", null),
   SENTENCE_SEARCH("文一括検索", "sentence_search", null),
   WORD_GENERATION("単語の自動生成", "word_generation", null),
+  EXPORT("別形式へのエクスポート", "export", null),
   SETTING("環境設定", "setting", null),
   INDIVIDUAL_SETTING("辞書の個別設定", null, null),
   SLIME_INDIVIDUAL_SETTING("OneToMany形式", "slime_individual_setting", INDIVIDUAL_SETTING),
