@@ -210,7 +210,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresAccent = $ignoresAccentControl.isSelected()
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
-    String scriptName = $scriptControl.getValue().getNames()[0]
+    String scriptName = ($scriptControl.getValue() != null) ? $scriptControl.getValue().getNames()[0] : ""
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean showsVariation = $showsVariationControl.isSelected()
@@ -254,8 +254,8 @@ public class SettingController extends Controller<BooleanClass> {
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
-      setting.getRegisteredDictionaryPaths()[i] = (!path.isEmpty()) ? path : null
-      setting.getRegisteredDictionaryNames()[i] = (!name.isEmpty()) ? name : null
+      setting.getRegisteredDictionaryPaths()[i] = (path != null && !path.isEmpty()) ? path : null
+      setting.getRegisteredDictionaryNames()[i] = (name != null && !name.isEmpty()) ? name : null
     }
   }
 
