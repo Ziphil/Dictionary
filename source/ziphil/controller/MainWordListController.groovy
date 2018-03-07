@@ -481,23 +481,28 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void cancelLoadDictionary() {
     Task<?> loader = $dictionary.getLoader()
-    if (loader.isRunning()) {
+    if (loader != null &&loader.isRunning()) {
       loader.cancel()
     }
   }
 
   private void updateLoader() {
     Task<?> loader = $dictionary.getLoader()
-    $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
-    $progressIndicator.progressProperty().bind(loader.progressProperty())
-    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
-      $wordView.setItems($dictionary.getElements())
-      $searchControl.requestFocus()
-      searchNormal(true)
-    }
-    loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-      $tab.requestClose()
-      failUpdateDictionary(event.getSource().getException())
+    if (loader != null) {
+      $loadingBox.visibleProperty().bind(Bindings.notEqual(Worker.State.SUCCEEDED, loader.stateProperty()))
+      $progressIndicator.progressProperty().bind(loader.progressProperty())
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $wordView.setItems($dictionary.getElements())
+        $searchControl.requestFocus()
+        searchNormal(true)
+      }
+      loader.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        $tab.requestClose()
+        failUpdateDictionary(event.getSource().getException())
+      }
+    } else {
+      $loadingBox.setVisible(false)
+      $progressIndicator.setProgress(1D)
     }
   }
 
