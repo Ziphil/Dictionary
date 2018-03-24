@@ -503,6 +503,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
     } else {
       $loadingBox.setVisible(false)
       $progressIndicator.setProgress(1D)
+      $wordView.setItems($dictionary.getElements())
+      $searchControl.requestFocus()
+      searchNormal(true)
     }
   }
 
