@@ -159,54 +159,30 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   }
 
   private void checkConjugation(ShaleiaWord word) {
-    Boolean reallyStrict = $parameter.isReallyStrict()
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
-    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
     if (!$conjugationCandidates.isEmpty()) {
+      Boolean reallyStrict = $parameter.isReallyStrict()
+      Setting setting = Setting.getInstance()
+      Boolean ignoresAccent = !reallyStrict && setting.getIgnoresAccent()
+      Boolean ignoresCase = !reallyStrict && setting.getIgnoresCase()
       String name = word.getName()
       String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
       for (ConjugationCandidate conjugationCandidate : $conjugationCandidates) {
-        ConjugationType type = conjugationCandidate.getType()
-        if (type == ConjugationType.VERB) {
-          if (convertedName == conjugationCandidate.getName() && word.getDescription() =~ /^\+.*〈.*動.*〉/) {
-            ShaleiaPossibility possibility = ShaleiaPossibility.new([word], conjugationCandidate.getExplanation())
-            $suggestions[0].getPossibilities().add(possibility)
-            $suggestions[0].setDisplayed(true)
-            $suggestions[0].update()
-          }
-        } else if (type == ConjugationType.NOUN) {
-          if (convertedName == conjugationCandidate.getName() && word.getDescription() =~ /^\+.*〈.*名.*〉/) {
-            ShaleiaPossibility possibility = ShaleiaPossibility.new([word], conjugationCandidate.getExplanation())
-            $suggestions[0].getPossibilities().add(possibility)
-            $suggestions[0].setDisplayed(true)
-            $suggestions[0].update()
-          }
-        } else if (type == ConjugationType.ADVERB) {
-          if (convertedName == conjugationCandidate.getName() && word.getDescription() =~ /^\+.*〈.*副.*〉/) {
-            ShaleiaPossibility possibility = ShaleiaPossibility.new([word], conjugationCandidate.getExplanation())
-            $suggestions[0].getPossibilities().add(possibility)
-            $suggestions[0].setDisplayed(true)
-            $suggestions[0].update()
-          }
-        } else if (type == ConjugationType.PARTICLE) {
-          if (convertedName == conjugationCandidate.getName() && word.getDescription() =~ /^\+.*〈.*助.*〉/) {
-            ShaleiaPossibility possibility = ShaleiaPossibility.new([word], conjugationCandidate.getExplanation())
-            $suggestions[0].getPossibilities().add(possibility)
-            $suggestions[0].setDisplayed(true)
-            $suggestions[0].update()
-          }
+        if (convertedName == conjugationCandidate.getName() && word.getDescription() =~ conjugationCandidate.getType().getPattern()) {
+          ShaleiaPossibility possibility = ShaleiaPossibility.new([word], conjugationCandidate.getExplanation())
+          $suggestions[0].getPossibilities().add(possibility)
+          $suggestions[0].setDisplayed(true)
+          $suggestions[0].update()
         }
       }
     }
   }
 
   private void checkAbbreviation(ShaleiaWord word) {
-    Boolean reallyStrict = $parameter.isReallyStrict()
-    Setting setting = Setting.getInstance()
-    Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
-    Boolean ignoresCase = (reallyStrict) ? false : setting.getIgnoresCase()
     if (!$abbreviationCandidates.isEmpty()) {
+      Boolean reallyStrict = $parameter.isReallyStrict()
+      Setting setting = Setting.getInstance()
+      Boolean ignoresAccent = !reallyStrict && setting.getIgnoresAccent()
+      Boolean ignoresCase = !reallyStrict && setting.getIgnoresCase()
       String name = word.getName()
       String convertedName = Strings.convert(name, ignoresAccent, ignoresCase)
       for (AbbreviationCandidate abbreviationCandidate : $abbreviationCandidates) {
@@ -303,10 +279,19 @@ private static class AbbreviationCandidate {
 @CompileStatic @Ziphilify
 private static enum ConjugationType {
 
-  VERB,
-  NOUN,
-  ADVERB,
-  PARTICLE,
-  CHANGE
+  VERB(/^\+.*〈.*動.*〉/),
+  NOUN(/^\+.*〈.*名.*〉/),
+  ADVERB(/^\+.*〈.*副.*〉/),
+  PARTICLE(/^\+.*〈.*助.*〉/)
+
+  private String $pattern
+
+  private ConjugationType(String pattern) {
+    $pattern = pattern
+  }
+
+  public String getPattern() {
+    return $pattern
+  }
 
 }
