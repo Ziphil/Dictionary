@@ -131,8 +131,10 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
   private void precheckChange() {
     if ($changes.containsKey($convertedSearch)) {
       for (String newName : $changes[$convertedSearch]) {
-        ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.CHANGE, "変更前", newName)
-        $candidates.add(candidate)
+        ShaleiaPossibility possibility = ShaleiaPossibility.new(newName, "変更前")
+        $suggestions[1].getPossibilities().add(possibility)
+        $suggestions[1].setDisplayed(true)
+        $suggestions[1].update()
       }
     }
   }
@@ -174,13 +176,6 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
             $suggestions[0].getPossibilities().add(possibility)
             $suggestions[0].setDisplayed(true)
             $suggestions[0].update()
-          }
-        } else if (type == ConjugationType.CHANGE) {
-          if (name == candidate.getName()) {
-            ShaleiaPossibility possibility = ShaleiaPossibility.new([word], candidate.getExplanation())
-            $suggestions[1].getPossibilities().add(possibility)
-            $suggestions[1].setDisplayed(true)
-            $suggestions[1].update()
           }
         }
       }
