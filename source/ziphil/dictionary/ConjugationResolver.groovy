@@ -17,4 +17,6 @@ public abstract class ConjugationResolver<W extends Word, S extends Suggestion> 
 
   public abstract void check(W word)
 
+  public abstract void postcheck()
+
 }

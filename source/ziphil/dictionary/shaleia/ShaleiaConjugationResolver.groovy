@@ -49,6 +49,9 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     checkConjugation(word)
   }
 
+  public void postcheck() {
+  }
+
   private void precheckConjugation() {
     if ($version == "5.5") {
       for (Map.Entry<String, String> tenseEntry : TENSE_SUFFIXES) {

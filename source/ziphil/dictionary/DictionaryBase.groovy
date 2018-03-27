@@ -65,11 +65,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
       }
     }
     parameter.preprocess(this)
-    updateWordPredicate() { Word word ->
+    $filteredWords.setPredicate() { Word word ->
       try {
-        if (conjugationResolver != null) {
-          conjugationResolver.check(word)
-        }
+        conjugationResolver?.check(word)
         if (suppressedException == null) {
           return parameter.matches(word)
         } else {
@@ -80,17 +78,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
         return false
       }
     }
-    if (suppressedException != null) {
-      throw suppressedException
-    }
-  }
-
-  private void updateWordPredicate(Predicate<? super W> predicate) {
-    $filteredWords.setPredicate(predicate)
+    conjugationResolver?.postcheck()
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
       return suggestion.isDisplayed()
     }
     $shufflableWords.unshuffle()
+    if (suppressedException != null) {
+      throw suppressedException
+    }
   }
 
   private void resetSuggestions() {

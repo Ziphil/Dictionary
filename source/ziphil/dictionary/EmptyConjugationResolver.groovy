@@ -17,4 +17,7 @@ public class EmptyConjugationResolver<W extends Word, S extends Suggestion> exte
   public void check(W word) {
   }
 
+  public void postcheck() {
+  }
+
 }

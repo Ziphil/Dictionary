@@ -43,4 +43,7 @@ public class SlimeConjugationResolver extends ConjugationResolver<SlimeWord, Sli
     }
   }
 
+  public void postcheck() {
+  }
+
 }
