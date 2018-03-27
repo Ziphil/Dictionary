@@ -14,7 +14,7 @@ public class Launcher {
   public static final Version VERSION = Version.new(1, 28, 3, 2253)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
-  public static final String LINE_SEPARATPR = createLineSeparator()
+  public static final String LINE_SEPARATOR = createLineSeparator()
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
