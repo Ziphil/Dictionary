@@ -13,7 +13,7 @@ public class SelectionSearchParameter implements SearchParameter<Word> {
     $candidates = candidates
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
   }
 
   public Boolean matches(Word word) {

@@ -30,7 +30,7 @@ public class ScriptSearchParameter implements SearchParameter<Word> {
     $script = script
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
     $scriptName = Setting.getInstance().getScriptName()
     $scriptEngine = ScriptEngineManager.new().getEngineByName($scriptName)
     $dictionary = dictionary

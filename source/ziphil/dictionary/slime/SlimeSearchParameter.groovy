@@ -40,7 +40,7 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   public SlimeSearchParameter() {
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
   }
 
   public Boolean matches(SlimeWord word) {

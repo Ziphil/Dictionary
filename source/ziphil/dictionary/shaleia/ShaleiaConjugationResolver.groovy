@@ -33,7 +33,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     $version = version
   }
 
-  public void prepare(NormalSearchParameter parameter) {
+  public void precheck(NormalSearchParameter parameter) {
     Boolean reallyStrict = parameter.isReallyStrict()
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = (reallyStrict) ? false : setting.getIgnoresAccent()
@@ -41,15 +41,15 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     $search = parameter.getSearch()
     $convertedSearch = Strings.convert(parameter.getSearch(), ignoresAccent, ignoresCase)
     $parameter = parameter
-    prepareCheckConjugation()
-    checkChange()
+    precheckConjugation()
+    precheckChange()
   }
 
   public void check(ShaleiaWord word) {
     checkConjugation(word)
   }
 
-  private void prepareCheckConjugation() {
+  private void precheckConjugation() {
     if ($version == "5.5") {
       for (Map.Entry<String, String> tenseEntry : TENSE_SUFFIXES) {
         for (Map.Entry<String, String> aspectEntry : ASPECT_SUFFIXES) {
@@ -128,7 +128,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
     }
   }
 
-  private void checkChange() {
+  private void precheckChange() {
     if ($changes.containsKey($convertedSearch)) {
       for (String newName : $changes[$convertedSearch]) {
         ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.CHANGE, "変更前", newName)

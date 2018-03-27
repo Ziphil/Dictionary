@@ -61,10 +61,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     if (parameter instanceof NormalSearchParameter) {
       if (parameter.getSearchMode() == SearchMode.NAME) {
         conjugationResolver = createConjugationResolver()
-        conjugationResolver.prepare(parameter)
+        conjugationResolver.precheck(parameter)
       }
     }
-    parameter.prepare(this)
+    parameter.preprocess(this)
     updateWordPredicate() { Word word ->
       try {
         if (conjugationResolver != null) {

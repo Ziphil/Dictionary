@@ -28,7 +28,7 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
   public ShaleiaSearchParameter() {
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
   }
 
   public Boolean matches(ShaleiaWord word) {

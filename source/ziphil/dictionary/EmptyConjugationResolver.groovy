@@ -11,7 +11,7 @@ public class EmptyConjugationResolver<W extends Word, S extends Suggestion> exte
     super(suggestions)
   }
 
-  public void prepare(NormalSearchParameter parameter) {
+  public void precheck(NormalSearchParameter parameter) {
   }
 
   public void check(W word) {
