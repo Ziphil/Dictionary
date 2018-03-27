@@ -17,7 +17,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
                                                               ("継続相自動詞"): "t", ("継続相他動詞"): "d", ("終了相自動詞"): "p", ("終了相他動詞"): "b", ("無相自動詞"): "s", ("無相他動詞"): "z"]
   private static final Map<String, String> VERB_CLASS_PREFIXES = [("形容詞"): "a", ("副詞"): "o"]
   private static final Map<String, String> ADVERB_CLASS_PREFIXES = [("副詞"): "e"]
-  private static final Map<String, String> PREPOSITION_PREFIXES = [("非動詞修飾"): "i"]
+  private static final Map<String, String> PARTICLE_PREFIXES = [("非動詞修飾"): "i"]
   private static final Map<String, String> NEGATION_PREFIXES = [("否定"): "du"]
 
   private Map<String, List<String>> $changes
@@ -107,12 +107,12 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
           $candidates.add(candidate)
         }
       }
-      for (Map.Entry<String, String> prepositionEntry : PREPOSITION_PREFIXES) {
+      for (Map.Entry<String, String> prepositionEntry : PARTICLE_PREFIXES) {
         String prefix = prepositionEntry.getValue()
         if ($convertedSearch.startsWith(prefix)) {
           String explanation = prepositionEntry.getKey()
           String name = $convertedSearch.replaceAll(/^${prefix}/, "")
-          ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.PREPOSITION, explanation, name)
+          ConjugationCandidate candidate = ConjugationCandidate.new(ConjugationType.PARTICLE, explanation, name)
           $candidates.add(candidate)
         }
       }
@@ -168,7 +168,7 @@ public class ShaleiaConjugationResolver extends ConjugationResolver<ShaleiaWord,
             $suggestions[0].setDisplayed(true)
             $suggestions[0].update()
           }
-        } else if (type == ConjugationType.PREPOSITION) {
+        } else if (type == ConjugationType.PARTICLE) {
           if (convertedName == candidate.getName() && word.getDescription() =~ /^\+.*〈.*助.*〉/) {
             ShaleiaPossibility possibility = ShaleiaPossibility.new([word], candidate.getExplanation())
             $suggestions[0].getPossibilities().add(possibility)
@@ -226,7 +226,7 @@ private static enum ConjugationType {
   VERB,
   NOUN,
   ADVERB,
-  PREPOSITION,
+  PARTICLE,
   CHANGE
 
 }
