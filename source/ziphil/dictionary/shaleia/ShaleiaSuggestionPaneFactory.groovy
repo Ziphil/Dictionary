@@ -34,24 +34,33 @@ public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggest
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     pane.setLineSpacing(lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
-      addPossibilityNode(pane, possibility.createParameter(), possibility.getName(), possibility.getExplanation())
+      addPossibilityNode(pane, possibility.createParameter(), possibility.getWords(), possibility.getExplanation())
     }
     modifyBreak(pane)
     return pane
   }
 
-  private void addPossibilityNode(TextFlow pane, SearchParameter parameter, String name, String explanation) {
+  private void addPossibilityNode(TextFlow pane, SearchParameter parameter, List<ShaleiaWord> words, String explanation) {
     Text prefixText = Text.new("もしかして:")
     Text spaceText = Text.new(" ")
-    Text nameText = Text.new(name)
-    Text explanationText = Text.new(" の${explanation}?")
-    Text breakText = Text.new("\n")
-    nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(parameter))
     prefixText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_POSSIBILITY_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
-    nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
+    pane.getChildren().addAll(prefixText, spaceText)
+    for (ShaleiaWord word : words) {
+      Text nameText = Text.new(word.getName())
+      Text punctuationText = Text.new(", ")
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(parameter))
+      nameText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_LINK_CLASS)
+      punctuationText.getStyleClass().add(CONTENT_CLASS)
+      pane.getChildren().add(nameText)
+      if (!word.is(words.last())) {
+        pane.getChildren().add(punctuationText)
+      }
+    }
+    Text explanationText = Text.new(" の${explanation}?")
+    Text breakText = Text.new("\n")
     explanationText.getStyleClass().add(CONTENT_CLASS)
-    pane.getChildren().addAll(prefixText, spaceText, nameText, explanationText, breakText)
+    pane.getChildren().addAll(explanationText, breakText)
   }
 
   private EventHandler<MouseEvent> createLinkEventHandler(SearchParameter parameter) {

@@ -1,34 +1,34 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.Possibility
 import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchMode
+import ziphil.dictionary.SelectionSearchParameter
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class ShaleiaPossibility implements Possibility {
 
-  private String $name
+  private List<ShaleiaWord> $words
   private String $explanation
 
-  public ShaleiaPossibility(String name, String explanation) {
-    $name = name
+  public ShaleiaPossibility(List<ShaleiaWord> words, String explanation) {
+    $words = words
     $explanation = explanation
   }
 
   public SearchParameter createParameter() {
-    return NormalSearchParameter.new($name, SearchMode.NAME, true, true)
+    return SelectionSearchParameter.new($words)
   }
 
-  public String getName() {
-    return $name
+  public List<ShaleiaWord> getWords() {
+    return $words
   }
 
-  public void setName(String name) {
-    $name = name
+  public void setWords(List<ShaleiaWord> words) {
+    $words = words
   }
 
   public String getExplanation() {
