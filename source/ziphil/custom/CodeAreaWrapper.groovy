@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.css.PseudoClass
+import javafx.event.EventHandler
 import javafx.geometry.Bounds
 import javafx.geometry.Point2D
 import javafx.scene.control.Control
@@ -26,9 +27,6 @@ public class CodeAreaWrapper extends Control {
   private static final PseudoClass CONTENT_FOCUSED_PSEUDO_CLASS = PseudoClass.getPseudoClass("content-focused")
 
   private ObjectProperty<CodeArea> $codeArea = SimpleObjectProperty.new(CodeArea.new())
-  private Int $codeAreaStart = 0
-  private Int $codeAreaLength = 0
-  private List<Shape> $codeAreaAttributes = ArrayList.new()
 
   public CodeAreaWrapper() {
     setup()
@@ -46,38 +44,9 @@ public class CodeAreaWrapper extends Control {
   private void setupCodeArea() {
     CodeArea codeArea = $codeArea.get()
     codeArea.setInputMethodRequests(EditorInputMethodRequests.new(codeArea))
+    codeArea.setOnInputMethodTextChanged(EditorInputMethodEventHandler.new(codeArea))
     codeArea.focusedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
       pseudoClassStateChanged(CONTENT_FOCUSED_PSEUDO_CLASS, newValue)
-    }
-    codeArea.setOnInputMethodTextChanged() { InputMethodEvent event ->
-      if (codeArea.isEditable() && !codeArea.isDisabled()) {
-        if ($codeAreaLength != 0) {
-          $codeAreaAttributes.clear()
-          codeArea.selectRange($codeAreaStart, $codeAreaStart + $codeAreaLength)
-        }
-        if (event.getCommitted().length() != 0) {
-          String committed = event.getCommitted()
-          codeArea.replaceText(codeArea.getSelection().getStart(), codeArea.getSelection().getEnd(), committed)
-        }
-        $codeAreaStart = codeArea.getSelection().getStart()
-        StringBuilder composed = StringBuilder.new()
-        for (InputMethodTextRun run : event.getComposed()) {
-          composed.append(run.getText())
-        }
-        codeArea.replaceText(codeArea.getSelection().getStart(), codeArea.getSelection().getEnd(), composed.toString())
-        $codeAreaLength = composed.length()
-        if ($codeAreaLength != 0) {
-          Int position = $codeAreaStart
-          for (InputMethodTextRun run : event.getComposed()) {
-            Int endPosition = position + run.getText().length()
-            position = endPosition
-          }
-          Int caretPosition = event.getCaretPosition()
-          if (caretPosition >= 0 && caretPosition < $codeAreaLength) {
-            codeArea.selectRange($codeAreaStart + caretPosition, $codeAreaStart + caretPosition)
-          }
-        }
-      }
     }
   }
 
@@ -126,6 +95,53 @@ private static class EditorInputMethodRequests implements InputMethodRequests {
   public String getSelectedText() {
     IndexRange selection = $codeArea.getSelection()
     return $codeArea.getText(selection.getStart(), selection.getEnd())
+  }
+
+}
+
+
+@InnerClass(CodeAreaWrapper)
+@CompileStatic @Ziphilify
+private static class EditorInputMethodEventHandler implements EventHandler<InputMethodEvent> {
+
+  private CodeArea $codeArea
+  private Int $start = 0
+  private Int $length = 0
+  private List<Shape> $attributes = ArrayList.new()
+
+  public EditorInputMethodEventHandler(CodeArea codeArea) {
+    $codeArea = codeArea
+  }
+
+  public void handle(InputMethodEvent event) {
+    if ($codeArea.isEditable() && !$codeArea.isDisabled()) {
+      if ($length != 0) {
+        $attributes.clear()
+        $codeArea.selectRange($start, $start + $length)
+      }
+      if (event.getCommitted().length() != 0) {
+        String committed = event.getCommitted()
+        $codeArea.replaceText($codeArea.getSelection().getStart(), $codeArea.getSelection().getEnd(), committed)
+      }
+      $start = $codeArea.getSelection().getStart()
+      StringBuilder composed = StringBuilder.new()
+      for (InputMethodTextRun run : event.getComposed()) {
+        composed.append(run.getText())
+      }
+      $codeArea.replaceText($codeArea.getSelection().getStart(), $codeArea.getSelection().getEnd(), composed.toString())
+      $length = composed.length()
+      if ($length != 0) {
+        Int position = $start
+        for (InputMethodTextRun run : event.getComposed()) {
+          Int endPosition = position + run.getText().length()
+          position = endPosition
+        }
+        Int caretPosition = event.getCaretPosition()
+        if (caretPosition >= 0 && caretPosition < $length) {
+          $codeArea.selectRange($start + caretPosition, $start + caretPosition)
+        }
+      }
+    }
   }
 
 }
