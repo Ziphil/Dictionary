@@ -133,7 +133,7 @@
 
 .editor .styled-text-area .shaleia-symbol,
 .editor .styled-text-area .shaleia-reference-mark {
-  -fx-fill: derive(-fx-text-inner-color, 80%);
+  -fx-fill: derive(-fx-text-inner-color, 60%);
 }
 
 .footer .label {

@@ -132,9 +132,7 @@
   -fx-padding: 0.25em 0.416667em 0.25em 0.416667em;
   -fx-background-color: linear-gradient(from 0px 0px to 0px 4px, derive(-fx-control-inner-background, -8%), -fx-control-inner-background);
   -fx-background-radius: 2px;
-  -fx-highlight-fill: derive(-fx-control-inner-background, -20%);
-  -fx-highlight-text-fill: -fx-text-inner-color;
-  -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+  -fx-highlight-fill: derive(derive(-fx-control-inner-background, -20%), 80%);
   -fx-cursor: text;
 }
 
@@ -142,19 +140,11 @@
   -fx-background-color: -fx-control-inner-background, -fx-faint-focus-color, linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
   -fx-background-insets: 0px, 0px, 2px;
   -fx-background-radius: 2px, 1px, 0px;
-  -fx-highlight-fill: -fx-accent;
-  -fx-highlight-text-fill: white;
-  -fx-prompt-text-fill: transparent;
+  -fx-highlight-fill: derive(-fx-accent, 80%);
 }
 
 .styled-text-area .text {
   -fx-fill: -fx-text-inner-color;
-}
-
-.styled-text-area:focused SelectionPath * {
-  -fx-fill: white;
-  -fx-text-fill: white;
-  -fx-highlight-text-fill: white;
 }
 
 .root {
