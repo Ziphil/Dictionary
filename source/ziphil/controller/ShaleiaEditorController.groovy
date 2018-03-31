@@ -8,6 +8,8 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import org.fxmisc.richtext.CodeArea
+import ziphil.custom.CodeAreaWrapper
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
@@ -25,7 +27,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $nameControl
-  @FXML private TextArea $descriptionControl
+  @FXML private CodeAreaWrapper $descriptionControl
   private ShaleiaWord $word
 
   public ShaleiaEditorController(UtilityStage<? super WordEditResult> stage) {
@@ -37,7 +39,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   public void prepare(ShaleiaWord word, Boolean empty) {
     $word = word
     $nameControl.setText(word.getUniqueName())
-    $descriptionControl.setText(word.getDescription())
+    $descriptionControl.getCodeArea().replaceText(0, 0, word.getDescription())
     if (empty) {
       $nameControl.requestFocus()
     } else {
@@ -52,7 +54,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   @FXML
   protected void commit() {
     $word.setUniqueName($nameControl.getText())
-    $word.setDescription($descriptionControl.getText())
+    $word.setDescription($descriptionControl.getCodeArea().textProperty().getValue())
     $word.update()
     WordEditResult result = WordEditResult.new($word)
     $stage.commit(result)

@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.CodeAreaWrapper?>
 <?import ziphil.module.Setting?>
 
 
@@ -52,7 +53,7 @@
         <minWidth><Double rpx="150"/></minWidth>
         <maxWidth><Double rpx="150"/></maxWidth>
       </TextField>
-      <TextArea fx:id="$descriptionControl" styleClass="editor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <CodeAreaWrapper fx:id="$descriptionControl" styleClass="editor" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
   </center>
   <bottom>

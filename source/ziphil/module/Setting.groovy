@@ -104,7 +104,8 @@ public class Setting {
         writer.write("}\n\n")
       }
       if ($editorFontFamily != null || $editorFontSize > 0) {
-        writer.write(".editor {\n")
+        writer.write(".editor,\n")
+        writer.write(".editor .styled-text-area .text {\n")
         if ($editorFontFamily != null) {
           writer.write("  -fx-font-family: \"")
           writer.write(Strings.escapeUnicode($editorFontFamily))
