@@ -111,6 +111,31 @@
   -fx-font-size: 1em;
 }
 
+.editor .styled-text-area .shaleia-creation-date-marker,
+.editor .styled-text-area .shaleia-content-marker,
+.editor .styled-text-area .shaleia-note-marker,
+.editor .styled-text-area .shaleia-synonym-marker {
+  -fx-fill: hsb(30, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-equivalent-marker {
+  -fx-fill: hsb(0, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-creation-date {
+  -fx-fill: hsb(220, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-total-part,
+.editor .styled-text-area .shaleia-part {
+  -fx-fill: hsb(120, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-symbol,
+.editor .styled-text-area .shaleia-reference-mark {
+  -fx-fill: derive(-fx-text-inner-color, 80%);
+}
+
 .footer .label {
   -fx-font-size: 0.9em;
   -fx-alignment: center-right;
