@@ -127,11 +127,11 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
 @CompileStatic @Ziphilify
 private static enum HighlightType {
 
-  CREATION_DATE(/(?m)^(\+)\s*(\d+)(\s*〈.+〉|)/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part"),
+  CREATION_DATE(/(?m)^(\+)\s*(\d+)(\s*〈.*〉|)/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part"),
   CONTENT(/(?m)^([A-Z]>)/, "shaleia-content-marker"),
   NOTE(/(?m)^([A-Z]~)/, "shaleia-note-marker"),
-  EQUIVALENT(/(?m)^(\=:?)(\s*〈.+〉|)/, "shaleia-equivalent-marker", "shaleia-part"),
-  SYNONYM(/(?m)^(\-)(\s*〈.+〉|)/, "shaleia-synonym-marker", "shaleia-part"),
+  EQUIVALENT(/(?m)^(\=:?)(\s*〈.*〉|)/, "shaleia-equivalent-marker", "shaleia-part"),
+  SYNONYM(/(?m)^(\-)(\s*〈.*〉|)/, "shaleia-synonym-marker", "shaleia-part"),
   SYMBOL(/(\{|\}|\[|\]|\/)(\*|)/, "shaleia-symbol", "shaleia-reference-mark")
 
   private String[] $names
