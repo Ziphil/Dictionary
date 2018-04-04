@@ -116,11 +116,11 @@
 .editor .styled-text-area .shaleia-content-marker,
 .editor .styled-text-area .shaleia-note-marker,
 .editor .styled-text-area .shaleia-synonym-marker {
-  -fx-fill: hsb(0, 90%, 60%);
+  -fx-fill: hsb(180, 90%, 60%);
 }
 
 .editor .styled-text-area .shaleia-creation-date {
-  -fx-fill: hsb(220, 90%, 60%);
+  -fx-fill: hsb(240, 90%, 60%);
 }
 
 .editor .styled-text-area .shaleia-total-part,
@@ -134,19 +134,19 @@
 }
 
 .editor .styled-text-area .akrantiain-marker {
-  -fx-fill: hsb(0, 90%, 60%);
+  -fx-fill: hsb(180, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-string {
-  -fx-fill: hsb(120, 90%, 60%);
-}
-
-.editor .styled-text-area .akrantiain-environment {
   -fx-fill: hsb(300, 90%, 60%);
 }
 
+.editor .styled-text-area .akrantiain-environment {
+  -fx-fill: hsb(210, 90%, 60%);
+}
+
 .editor .styled-text-area .akrantiain-identifier {
-  -fx-fill: hsb(30, 90%, 60%);
+  -fx-fill: hsb(120, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-special-symbol {
