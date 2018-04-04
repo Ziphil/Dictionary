@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import java.util.regex.Matcher
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
@@ -10,9 +11,11 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import org.fxmisc.richtext.CodeArea
+import org.fxmisc.richtext.model.RichTextChange
 import ziphil.custom.CodeAreaWrapper
 import ziphil.custom.Measurement
 import ziphil.custom.RichTextChangeConsumer
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaWord
@@ -70,12 +73,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
 
   private void setupDescriptionControl() {
     CodeArea codeArea = $descriptionControl.getCodeArea()
-    RichTextChangeConsumer consumer = RichTextChangeConsumer.new(codeArea)
-    consumer.addSyntax(/(?m)^(\+)\s*(\d+)(\s*〈.*〉|)/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part")
-    consumer.addSyntax(/(?m)^([A-Z]>)/, "shaleia-content-marker")
-    consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉|)/, "shaleia-equivalent-marker", "shaleia-part")
-    consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉|)/, "shaleia-synonym-marker", "shaleia-part")
-    consumer.addSyntax(/(\{|\}|\[|\]|\/)(\*|)/, "shaleia-symbol", "shaleia-reference-mark")
+    Consumer<RichTextChange> consumer = RichTextLanguage.SHALEIA_DICTIONARY.createConsumer(codeArea)
     codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
   }
 
