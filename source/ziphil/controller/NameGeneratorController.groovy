@@ -18,6 +18,7 @@ import javafx.stage.StageStyle
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.StringListEditor
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionary
@@ -132,7 +133,7 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($zatlinSource)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)     
-    controller.prepare(filter, previousResult)
+    controller.prepare(filter, RichTextLanguage.ZATLIN, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       FileStringChooserController.Result result = nextStage.getResult()

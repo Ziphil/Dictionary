@@ -1,13 +1,18 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
 import javafx.fxml.FXML
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextArea
 import javafx.scene.layout.VBox
+import org.fxmisc.richtext.CodeArea
+import org.fxmisc.richtext.model.RichTextChange
+import ziphil.custom.CodeAreaWrapper
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.FileChooser
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
@@ -26,7 +31,7 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   @FXML private VBox $fileBox
   @FXML private VBox $stringBox
   @FXML private FileChooser $fileChooser
-  @FXML private TextArea $stringControl
+  @FXML private CodeAreaWrapper $stringControl
 
   public FileStringChooserController(UtilityStage<? super FileStringChooserController.Result> stage) {
     super(stage)
@@ -39,7 +44,12 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
     setupChooser()
   }
 
-  public void prepare(ExtensionFilter filter, Result previousResult) {
+  public void prepare(ExtensionFilter filter, RichTextLanguage language, Result previousResult) {
+    if (language != null) {
+      CodeArea codeArea = $stringControl.getCodeArea()
+      Consumer<RichTextChange> consumer = language.createConsumer(codeArea)
+      codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
+    }
     if (previousResult != null) {
       File file = previousResult.getFile()
       String string = previousResult.getString()
@@ -47,7 +57,7 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
         $fileChooser.setCurrentDirectory(file.getParentFile())
       }
       if (string != null) {
-        $stringControl.setText(string)
+        $stringControl.getCodeArea().replaceText(0, 0, string)
       }
       if (previousResult.isFileSelected()) {
         $fileSelectedControl.setSelected(true)
@@ -64,7 +74,7 @@ public class FileStringChooserController extends Controller<FileStringChooserCon
   @FXML
   protected void commit() {
     File file = $fileChooser.getSelectedFile()
-    String string = $stringControl.getText()
+    String string = $stringControl.getCodeArea().textProperty().getValue()
     Boolean fileSelected = $fileSelectedControl.isSelected()
     if (fileSelected) {
       Result result = Result.ofFile(file)

@@ -20,8 +20,9 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.ListSelectionView
-import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
+import ziphil.custom.PermutableListView
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.WordEditResult
@@ -144,7 +145,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)     
-    controller.prepare(filter, previousResult)
+    controller.prepare(filter, RichTextLanguage.AKRANTIAIN, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       FileStringChooserController.Result result = nextStage.getResult()

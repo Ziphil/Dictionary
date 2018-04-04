@@ -10,6 +10,7 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.module.zatlin.Zatlin
 import ziphil.module.zatlin.ZatlinException
@@ -59,7 +60,7 @@ public class ZatlinExecutorController extends Controller<Void> {
     ExtensionFilter filter = ExtensionFilter.new("生成規則ファイル", "ztl")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(filter, $result)
+    controller.prepare(filter, RichTextLanguage.ZATLIN, $result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       $result = nextStage.getResult()

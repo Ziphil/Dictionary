@@ -14,6 +14,7 @@ import javafx.stage.StageStyle
 import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.module.akrantiain.Akrantiain
 import ziphil.module.akrantiain.AkrantiainException
@@ -80,7 +81,7 @@ public class AkrantiainExecutorController extends Controller<Void> {
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
     nextStage.initModality(Modality.APPLICATION_MODAL)
     nextStage.initOwner($stage)
-    controller.prepare(filter, $result)
+    controller.prepare(filter, RichTextLanguage.AKRANTIAIN, $result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       $result = nextStage.getResult()

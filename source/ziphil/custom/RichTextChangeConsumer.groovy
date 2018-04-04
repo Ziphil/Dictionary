@@ -41,16 +41,28 @@ public class RichTextChangeConsumer implements Consumer<RichTextChange> {
       }
       if (matchedType != null) {
         Matcher matcher = matchedType.getMatcher()
-        builder.add([], matcher.start() - index)
+        List<IntegerClass> matchedGroups = ArrayList.new()
         for (int i = 1 ; i <= matcher.groupCount() ; i ++) {
-          if (i == 1) {
-            builder.add([], matcher.start(i) - matcher.start())
-          } else {
-            builder.add([], matcher.start(i) - matcher.end(i - 1))
+          if (matcher.group(i) != null) {
+            matchedGroups.add(i)
           }
-          builder.add([matchedType.getNames()[i - 1]], matcher.end(i) - matcher.start(i))
         }
-        builder.add([], matcher.end() - matcher.end(matcher.groupCount()))
+        builder.add([], matcher.start() - index)
+        for (int i = 0 ; i < matchedGroups.size() ; i ++) {
+          Int group = matchedGroups[i]
+          if (i == 0) {
+            builder.add([], matcher.start(group) - matcher.start())
+          } else {
+            Int previousGroup = matchedGroups[i - 1]
+            builder.add([], matcher.start(group) - matcher.end(previousGroup))
+          }
+          builder.add([matchedType.getNames()[group - 1]], matcher.end(group) - matcher.start(group))
+        }
+        if (!matchedGroups.isEmpty()) {
+          builder.add([], matcher.end() - matcher.end(matchedGroups.last()))
+        } else {
+          builder.add([], matcher.end() - matcher.start())
+        }
         index = matcher.end()
       } else {
         builder.add([], text.length() - index)
