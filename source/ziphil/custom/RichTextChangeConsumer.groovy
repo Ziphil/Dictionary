@@ -22,7 +22,7 @@ public class RichTextChangeConsumer implements Consumer<RichTextChange> {
 
   public void accept(RichTextChange change) {
     StyleSpansBuilder<Collection<String>> builder = StyleSpansBuilder.new()
-    String text = ((org.fxmisc.richtext.TextEditingArea)$codeArea).getText()
+    String text = $codeArea.textProperty().getValue()
     for (SyntaxType type : $types) {
       type.updateMatcher(text)
     }
