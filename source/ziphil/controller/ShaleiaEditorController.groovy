@@ -10,10 +10,9 @@ import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import org.fxmisc.richtext.CodeArea
-import org.fxmisc.richtext.model.RichTextChange
-import org.fxmisc.richtext.model.StyleSpansBuilder
 import ziphil.custom.CodeAreaWrapper
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextChangeConsumer
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaWord
@@ -71,45 +70,13 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
 
   private void setupDescriptionControl() {
     CodeArea codeArea = $descriptionControl.getCodeArea()
-    codeArea.richChanges().filter{!it.getInserted().equals(it.getRemoved())}.subscribe() { RichTextChange change ->
-      StyleSpansBuilder<Collection<String>> builder = StyleSpansBuilder.new()
-      String text = codeArea.textProperty().getValue()
-      for (HighlightType type : HighlightType.values()) {
-        type.updateMatcher(text)
-      }
-      Int index = 0
-      while (true) {
-        HighlightType matchedType = null
-        Int startIndex = text.length()
-        for (HighlightType type : HighlightType.values()) {
-          Matcher matcher = type.getMatcher()
-          if (matcher.find(index)) {
-            if (matcher.start() < startIndex) {
-              startIndex = matcher.start()
-              matchedType = type
-            }
-          }
-        }
-        if (matchedType != null) {
-          Matcher matcher = matchedType.getMatcher()
-          builder.add([], matcher.start() - index)
-          for (int i = 1 ; i <= matcher.groupCount() ; i ++) {
-            if (i == 1) {
-              builder.add([], matcher.start(i) - matcher.start())
-            } else {
-              builder.add([], matcher.start(i) - matcher.end(i - 1))
-            }
-            builder.add([matchedType.getNames()[i - 1]], matcher.end(i) - matcher.start(i))
-          }
-          builder.add([], matcher.end() - matcher.end(matcher.groupCount()))
-          index = matcher.end()
-        } else {
-          builder.add([], text.length() - index)
-          break
-        }
-      }
-      codeArea.setStyleSpans(0, builder.create())
-    }
+    RichTextChangeConsumer consumer = RichTextChangeConsumer.new(codeArea)
+    consumer.addSyntax(/(?m)^(\+)\s*(\d+)(\s*〈.*〉|)/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part")
+    consumer.addSyntax(/(?m)^([A-Z]>)/, "shaleia-content-marker")
+    consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉|)/, "shaleia-equivalent-marker", "shaleia-part")
+    consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉|)/, "shaleia-synonym-marker", "shaleia-part")
+    consumer.addSyntax(/(\{|\}|\[|\]|\/)(\*|)/, "shaleia-symbol", "shaleia-reference-mark")
+    codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
   }
 
   private void setupShortcuts() {
@@ -118,41 +85,6 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
         commit()
       }
     }
-  }
-
-}
-
-
-@InnerClass(ShaleiaEditorController)
-@CompileStatic @Ziphilify
-private static enum HighlightType {
-
-  CREATION_DATE(/(?m)^(\+)\s*(\d+)(\s*〈.*〉|)/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part"),
-  CONTENT(/(?m)^([A-Z]>)/, "shaleia-content-marker"),
-  NOTE(/(?m)^([A-Z]~)/, "shaleia-note-marker"),
-  EQUIVALENT(/(?m)^(\=:?)(\s*〈.*〉|)/, "shaleia-equivalent-marker", "shaleia-part"),
-  SYNONYM(/(?m)^(\-)(\s*〈.*〉|)/, "shaleia-synonym-marker", "shaleia-part"),
-  SYMBOL(/(\{|\}|\[|\]|\/)(\*|)/, "shaleia-symbol", "shaleia-reference-mark")
-
-  private String[] $names
-  private String $regex
-  private Matcher $matcher
-
-  private HighlightType(String regex, String... names) {
-    $names = names
-    $regex = regex
-  }
-
-  public void updateMatcher(String text) {
-    $matcher = text =~ $regex
-  }
-
-  public String[] getNames() {
-    return $names
-  }
-
-  public Matcher getMatcher() {
-    return $matcher
   }
 
 }
