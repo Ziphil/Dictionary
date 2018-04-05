@@ -75,6 +75,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     CodeArea codeArea = $descriptionControl.getCodeArea()
     Consumer<RichTextChange> consumer = RichTextLanguage.SHALEIA_DICTIONARY.createConsumer(codeArea)
     codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
+    codeArea.setWrapText(true)
   }
 
   private void setupShortcuts() {

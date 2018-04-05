@@ -20,7 +20,6 @@ public class CodeAreaWrapperSkin extends SkinBase<CodeAreaWrapper> {
 
   private void setupNode() {
     CodeArea codeArea = $control.getCodeArea()
-    codeArea.setWrapText(true)
     VirtualizedScrollPane pane = VirtualizedScrollPane.new(codeArea)
     getChildren().add(pane)
   }
