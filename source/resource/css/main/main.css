@@ -133,11 +133,13 @@
   -fx-fill: derive(-fx-text-inner-color, 60%);
 }
 
-.editor .styled-text-area .akrantiain-marker {
+.editor .styled-text-area .akrantiain-marker,
+.editor .styled-text-area .zatlin-marker {
   -fx-fill: hsb(180, 90%, 60%);
 }
 
-.editor .styled-text-area .akrantiain-string {
+.editor .styled-text-area .akrantiain-string,
+.editor .styled-text-area .zatlin-string {
   -fx-fill: hsb(300, 90%, 60%);
 }
 
@@ -145,16 +147,24 @@
   -fx-fill: hsb(210, 90%, 60%);
 }
 
-.editor .styled-text-area .akrantiain-identifier {
+.editor .styled-text-area .akrantiain-identifier,
+.editor .styled-text-area .zatlin-identifier {
   -fx-fill: hsb(120, 90%, 60%);
 }
 
-.editor .styled-text-area .akrantiain-special-symbol {
+.editor .styled-text-area .zatlin-numeric {
+  -fx-fill: hsb(240, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-special-symbol,
+.editor .styled-text-area .zatlin-special-symbol {
   -fx-fill: hsb(60, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-comment,
-.editor .styled-text-area .akrantiain-semicolon {
+.editor .styled-text-area .akrantiain-semicolon,
+.editor .styled-text-area .zatlin-comment,
+.editor .styled-text-area .zatlin-semicolon {
   -fx-fill: derive(-fx-text-inner-color, 60%);
 }
 

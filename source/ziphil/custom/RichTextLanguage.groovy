@@ -30,6 +30,14 @@ public enum RichTextLanguage {
       consumer.addSyntax(/(\^|\$)/, "akrantiain-special-symbol")
       consumer.addSyntax(/(%%|%)/, "akrantiain-marker")
       consumer.addSyntax(/(;)/, "akrantiain-semicolon")
+    } else if (this == ZATLIN) {
+      consumer.addSyntax(/(?m)(#.*$)/, "zatlin-comment")
+      consumer.addSyntax(/(\".*?(?<!\\)\")/, "zatlin-string")
+      consumer.addSyntax(/([A-Za-z_][A-Za-z0-9_]*)/, "zatlin-identifier")
+      consumer.addSyntax(/([0-9]+)/, "zatlin-numeric")
+      consumer.addSyntax(/(\^)/, "zatlin-special-symbol")
+      consumer.addSyntax(/(%)/, "zatlin-marker")
+      consumer.addSyntax(/(;)/, "zatlin-semicolon")
     }
     return consumer
   }
