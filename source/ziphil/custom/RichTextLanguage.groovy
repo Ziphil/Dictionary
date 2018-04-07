@@ -17,14 +17,14 @@ public enum RichTextLanguage {
   public Consumer<RichTextChange> createConsumer(CodeArea codeArea) {
     RichTextChangeConsumer consumer = RichTextChangeConsumer.new(codeArea)
     if (this == SHALEIA_DICTIONARY) {
-      consumer.addSyntax(/(?m)^(\+)\s*(\d+)(\s*〈.*〉)?/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part")
+      consumer.addSyntax(/(?m)^(\+)(\s*\d+)?(\s*〈.*〉)?/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part")
       consumer.addSyntax(/(?m)^([A-Z]>)/, "shaleia-content-marker")
       consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉)?/, "shaleia-equivalent-marker", "shaleia-part")
       consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉)?/, "shaleia-synonym-marker", "shaleia-part")
       consumer.addSyntax(/(\{|\}|\[|\]|\/)(\*)?/, "shaleia-symbol", "shaleia-reference-mark")
     } else if (this == AKRANTIAIN) {
       consumer.addSyntax(/(?m)(#.*$)/, "akrantiain-comment")
-      consumer.addSyntax(/(\".*?(?<!\\)\"|\/.*?(?<!\\)\/)/, "akrantiain-string")
+      consumer.addSyntax(/(?m)(\".*?(?:(?<!\\)\"|$)|\/.*?(?:(?<!\\)\/|$))/, "akrantiain-string")
       consumer.addSyntax(/(\@[A-Za-z0-9_]+)/, "akrantiain-environment")
       consumer.addSyntax(/([A-Za-z0-9_]+)/, "akrantiain-identifier")
       consumer.addSyntax(/(\^|\$)/, "akrantiain-special-symbol")
@@ -32,9 +32,9 @@ public enum RichTextLanguage {
       consumer.addSyntax(/(;)/, "akrantiain-semicolon")
     } else if (this == ZATLIN) {
       consumer.addSyntax(/(?m)(#.*$)/, "zatlin-comment")
-      consumer.addSyntax(/(\".*?(?<!\\)\")/, "zatlin-string")
+      consumer.addSyntax(/(?m)(\".*?(?:(?<!\\)\"|$))/, "zatlin-string")
       consumer.addSyntax(/([A-Za-z_][A-Za-z0-9_]*)/, "zatlin-identifier")
-      consumer.addSyntax(/([0-9]+)/, "zatlin-numeric")
+      consumer.addSyntax(/([0-9]+|[0-9]*\.[0-9]*)/, "zatlin-numeric")
       consumer.addSyntax(/(\^)/, "zatlin-special-symbol")
       consumer.addSyntax(/(%)/, "zatlin-marker")
       consumer.addSyntax(/(;)/, "zatlin-semicolon")
