@@ -5,8 +5,6 @@ import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.Measurement
 import ziphil.custom.StringListEditor
 import ziphil.custom.UtilityStage
@@ -37,10 +35,8 @@ public class CharacterFrequencyAnalyzerController extends Controller<Void> {
     analyzer.setExcludedCharacters($excludedCharactersControl.getText())
     analyzer.setMultigraphs($multigraphsControl.getStrings())
     analyzer.addInput($inputControl.getText())
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(analyzer)
     nextStage.showAndWait()
   }

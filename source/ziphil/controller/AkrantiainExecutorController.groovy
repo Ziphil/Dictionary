@@ -10,8 +10,6 @@ import javafx.scene.Scene
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.RichTextLanguage
@@ -76,11 +74,9 @@ public class AkrantiainExecutorController extends Controller<Void> {
 
   @FXML
   private void openSnoj() {
-    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<FileStringChooserController.Result> nextStage = createStage()
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(filter, RichTextLanguage.AKRANTIAIN, $result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {

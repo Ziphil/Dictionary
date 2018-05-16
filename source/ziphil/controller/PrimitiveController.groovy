@@ -3,12 +3,16 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import java.util.ResourceBundle
 import javafx.fxml.FXMLLoader
+import javafx.stage.Modality
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import javafx.stage.Window
+import javafx.stage.WindowEvent
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
+import ziphil.custom.UtilityStage
 import ziphilib.transform.Ziphilify
 
 
@@ -17,6 +21,8 @@ public class PrimitiveController<S extends Stage> {
 
   public static final ResourceBundle FXML_RESOURCES = ResourceBundle.getBundle("resource.text.fxml")
   public static final ResourceBundle DIALOG_RESOURCES = ResourceBundle.getBundle("resource.text.dialog")
+  private static final Double CENTER_X_FRACTION = 1D / 2
+  private static final Double CENTER_Y_FRACTION = 1D / 3
 
   protected S $stage
   protected Scene $scene
@@ -25,8 +31,33 @@ public class PrimitiveController<S extends Stage> {
     $stage = stage
   }
 
+  protected <UT> UtilityStage<UT> createStage(Modality modality, Window owner) {
+    UtilityStage<UT> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    if (modality != null) {
+      nextStage.initModality(modality)
+    }
+    if (owner != null) {
+      nextStage.initOwner(owner)
+    }
+    nextStage.addEventFilter(WindowEvent.WINDOW_SHOWN) { WindowEvent event ->
+      Double centerX = $stage.getX() + ($stage.getWidth() - nextStage.getWidth()) * CENTER_X_FRACTION
+      Double centerY = $stage.getY() + ($stage.getHeight() - nextStage.getHeight()) * CENTER_Y_FRACTION
+      nextStage.setX(centerX)
+      nextStage.setY(centerY)
+    }
+    return nextStage
+  }
+
+  protected <UT> UtilityStage<UT> createStage(Modality modality) {
+    return createStage(modality, $stage)
+  }
+
+  protected <UT> UtilityStage<UT> createStage() {
+    return createStage(Modality.WINDOW_MODAL, $stage)
+  }
+
   protected void showErrorDialog(String key) {
-    Dialog dialog = Dialog.new(StageStyle.UTILITY) 
+    Dialog dialog = Dialog.new() 
     dialog.initOwner($stage)
     dialog.setTitle(DIALOG_RESOURCES.getString("title." + key))
     dialog.setContentText(DIALOG_RESOURCES.getString("contentText." + key))

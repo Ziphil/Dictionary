@@ -13,8 +13,6 @@ import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
-import javafx.stage.Modality
-import javafx.stage.StageStyle
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
@@ -127,12 +125,10 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
 
   @FXML
   private void editZatlin() {
-    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<FileStringChooserController.Result> nextStage = createStage()
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("生成規則ファイル", "ztl")
-    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($zatlinSource)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)     
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($zatlinSource)   
     controller.prepare(filter, RichTextLanguage.ZATLIN, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -157,10 +153,8 @@ public class NameGeneratorController extends Controller<NameGeneratorController.
     EquivalentCollectionType collectionType = selectedCollectionType()
     if (collectionType != null) {
       EquivalentCollection collection = EquivalentCollection.load(collectionType)
-      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<Void> nextStage = createStage()
       EquivalentCollectionController controller = EquivalentCollectionController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
       controller.prepare(collection)
       nextStage.showAndWait()
     }

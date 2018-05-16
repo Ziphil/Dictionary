@@ -27,6 +27,10 @@ public class Dialog extends Stage {
     makeManager()
   }
 
+  public Dialog() {
+    this(StageStyle.UTILITY)
+  }
+
   private void makeManager() {
     DialogManager manager = DialogManager.new(this)
   }

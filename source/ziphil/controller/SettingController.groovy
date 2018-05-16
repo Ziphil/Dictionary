@@ -14,8 +14,6 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.text.Font
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javax.script.ScriptEngineFactory
 import javax.script.ScriptEngineManager
 import ziphil.custom.ClickType
@@ -260,10 +258,8 @@ public class SettingController extends Controller<BooleanClass> {
   }
 
   private void browseDictionary(Int index) {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<File> nextStage = createStage()
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     String currentPath = $registeredDictionaryPathControls[index].getText()
     if (currentPath != null) {
       controller.prepare(null, File.new(currentPath).getParentFile(), false)

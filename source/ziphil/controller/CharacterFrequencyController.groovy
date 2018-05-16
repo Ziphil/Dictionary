@@ -6,8 +6,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.geometry.Side
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javafx.scene.Node
 import javafx.scene.chart.PieChart
 import javafx.scene.control.TableColumn
@@ -81,13 +79,11 @@ public class CharacterFrequencyController extends Controller<Void> {
 
   @FXML
   private void saveCsv() {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<File> nextStage = createStage()
     FileChooserController controller = FileChooserController.new(nextStage)
     List<ExtensionFilter> extensionFilters = ArrayList.new()
     ExtensionFilter csvExtensionFilter = ExtensionFilter.new("CSVファイル", "csv")
     ExtensionFilter tsvExtensionFilter = ExtensionFilter.new("TSVファイル", "tsv")
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     extensionFilters.addAll(csvExtensionFilter, tsvExtensionFilter)
     controller.prepare(extensionFilters, csvExtensionFilter, true)
     nextStage.showAndWait()
