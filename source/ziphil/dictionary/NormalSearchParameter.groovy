@@ -122,6 +122,15 @@ public class NormalSearchParameter implements SearchParameter<Word> {
     }
   }
 
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    string.append($searchMode)
+    string.append("[")
+    string.append($search)
+    string.append("]")
+    return string.toString()
+  }
+
   public String getSearch() {
     return $search
   }

@@ -63,6 +63,10 @@ public class ScriptSearchParameter implements SearchParameter<Word> {
     }
   }
 
+  public String toString() {
+    return "スクリプト"
+  }
+
   private static AccessControlContext createAccessControlContext() {
     CodeSource codeSource = CodeSource.new(null, (Certificate[])null)
     Permissions permissions = Permissions.new()
