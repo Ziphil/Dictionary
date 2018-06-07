@@ -42,6 +42,7 @@ import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
 import ziphil.plugin.Plugin
+import ziphil.plugin.PluginManager
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -55,7 +56,6 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String TITLE = "ZpDIC fetith"
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
-  private static final List<Plugin> PLUGINS = loadPlugins()
 
   @FXML private MenuBar $menuBar
   @FXML private Menu $createDictionaryMenu
@@ -467,7 +467,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    for (Plugin plugin : PLUGINS) {
+    for (Plugin plugin : PluginManager.PLUGINS) {
       Plugin cachedPlugin = plugin
       if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new()
@@ -932,15 +932,6 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupDebug() {
     Boolean debugging = Setting.getInstance().isDebugging()
-  }
-
-  private static List<Plugin> loadPlugins() {
-    List<Plugin> plugins = ArrayList.new()
-    ServiceLoader<Plugin> loader = ServiceLoader.load(Plugin, Thread.currentThread().getContextClassLoader())
-    for (Plugin plugin : loader) {
-      plugins.add(plugin)
-    }
-    return plugins
   }
 
   private void loadOriginalResource() {
