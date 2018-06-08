@@ -95,7 +95,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
   private TemporarySetting $temporarySetting = null
-  private SearchHistory $history = SearchHistory.new()
+  private SearchHistory $history = null
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
@@ -103,7 +103,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     super(stage)
     $tab = tab
     loadOriginalResource()
-    setupSearchHistory()
+    setupHistory()
   }
 
   @FXML
@@ -684,9 +684,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
-  private void setupSearchHistory() {
+  private void setupHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
-    $history.setSeparativeInterval(separativeInterval)
+    $history = SearchHistory.new(separativeInterval)
   }
 
   private void loadOriginalResource() {

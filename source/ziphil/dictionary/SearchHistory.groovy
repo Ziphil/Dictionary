@@ -18,9 +18,6 @@ public class SearchHistory {
     $separativeInterval = separativeInterval
   }
 
-  public SearchHistory() {
-  }
-
   public void add(SearchParameter parameter, Boolean checksTime) {
     for (Int i = 0 ; i < $pointer ; i ++) {
       $parameters.removeAt(0)
@@ -87,14 +84,6 @@ public class SearchHistory {
 
   public Int getPointer() {
     return $pointer
-  }
-
-  public Int getSeparativeInterval() {
-    return $separativeInterval
-  }
-
-  public void setSeparativeInterval(Int separativeInterval) {
-    $separativeInterval = separativeInterval
   }
 
 }
