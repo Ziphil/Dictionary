@@ -671,6 +671,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void searchHistory() {
+    currentWordListController().searchHistory()
+  }
+
+  @FXML
   private void shuffleWords() {
     currentWordListController().shuffleWords()
   }

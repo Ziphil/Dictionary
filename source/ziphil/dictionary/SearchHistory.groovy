@@ -81,6 +81,14 @@ public class SearchHistory {
     return $pointer - 1 >= 0
   }
 
+  public List<SearchParameter> getParameters() {
+    return $parameters
+  }
+
+  public Int getPointer() {
+    return $pointer
+  }
+
   public Int getSeparativeInterval() {
     return $separativeInterval
   }

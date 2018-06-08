@@ -94,6 +94,7 @@
             <ImageView><Image url="@../../icon/next.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <MenuItem styleClass="option,nonnull" text="検索履歴から検索" onAction="#searchHistory" accelerator="Shortcut+Shift+H"/>
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,can-search-detail" text="高度な検索" onAction="#searchDetail" accelerator="Shortcut+U">
           <graphic>

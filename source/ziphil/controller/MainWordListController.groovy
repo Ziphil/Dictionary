@@ -206,6 +206,17 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  public void searchHistory() {
+    UtilityStage<SearchParameter> nextStage = createStage(null)
+    HistorySearcherController controller = HistorySearcherController.new(nextStage)
+    controller.prepare($searchHistory)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SearchParameter parameter = nextStage.getResult()
+      measureAndSearch(parameter)
+    }
+  }
+
   public void searchSentence() {
     UtilityStage<Void> nextStage = createStage(null, null)
     SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
