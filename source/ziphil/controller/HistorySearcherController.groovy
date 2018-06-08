@@ -25,9 +25,9 @@ public class HistorySearcherController extends Controller<SearchParameter> {
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT, false)
   }
 
-  public void prepare(SearchHistory searchHistory) {
-    $parameterView.getItems().addAll(searchHistory.getParameters())
-    $parameterView.getSelectionModel().select(searchHistory.getPointer())
+  public void prepare(SearchHistory history) {
+    $parameterView.getItems().addAll(history.getParameters())
+    $parameterView.getSelectionModel().select(history.getPointer())
   }
 
   @FXML

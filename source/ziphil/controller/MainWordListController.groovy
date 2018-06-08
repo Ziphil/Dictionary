@@ -95,7 +95,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
   private TemporarySetting $temporarySetting = null
-  private SearchHistory $searchHistory = SearchHistory.new()
+  private SearchHistory $history = SearchHistory.new()
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
@@ -131,9 +131,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
       measureAndSearch(parameter)
       $previousSearch = search
       if (forcesSearch) {
-        $searchHistory.add(parameter, false)
+        $history.add(parameter, false)
       } else {
-        $searchHistory.add(parameter, true)
+        $history.add(parameter, true)
       }
     }
   }
@@ -149,7 +149,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     if (nextStage.isCommitted()) {
       SearchParameter parameter = nextStage.getResult()
       measureAndSearch(parameter)
-      $searchHistory.add(parameter)
+      $history.add(parameter)
     }
   }
 
@@ -171,7 +171,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchPrevious() {
-    SearchParameter parameter = $searchHistory.previous()
+    SearchParameter parameter = $history.previous()
     if (parameter != null) {
       if (parameter instanceof NormalSearchParameter) {
         String search = parameter.getSearch()
@@ -189,7 +189,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchNext() {
-    SearchParameter parameter = $searchHistory.next()
+    SearchParameter parameter = $history.next()
     if (parameter != null) {
       if (parameter instanceof NormalSearchParameter) {
         String search = parameter.getSearch()
@@ -209,7 +209,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void searchHistory() {
     UtilityStage<SearchParameter> nextStage = createStage(null)
     HistorySearcherController controller = HistorySearcherController.new(nextStage)
-    controller.prepare($searchHistory)
+    controller.prepare($history)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SearchParameter parameter = nextStage.getResult()
@@ -416,7 +416,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         SearchParameter parameter = SelectionSearchParameter.new(newWords)
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
-        $searchHistory.add(parameter)
+        $history.add(parameter)
         $temporarySetting.setGeneratorConfig(controller.createConfig())
       }
     }
@@ -517,7 +517,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void updateOnLinkClicked() {
     $dictionary.setOnLinkClicked() { SearchParameter parameter ->
       measureAndSearch(parameter)
-      $searchHistory.add(parameter)
+      $history.add(parameter)
     }
   }
 
@@ -686,7 +686,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void setupSearchHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
-    $searchHistory.setSeparativeInterval(separativeInterval)
+    $history.setSeparativeInterval(separativeInterval)
   }
 
   private void loadOriginalResource() {
