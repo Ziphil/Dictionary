@@ -39,6 +39,7 @@ public class Setting {
   private String $systemFontFamily
   private Int $lineSpacing = 0
   private Int $separativeInterval = 700
+  private Int $maxHistorySize = 20
   private Int $mainWindowWidth = 720
   private Int $mainWindowHeight = 720
   private String $variationMarker = "→"
@@ -281,6 +282,14 @@ public class Setting {
 
   public void setSeparativeInterval(Int separativeInterval) {
     $separativeInterval = separativeInterval
+  }
+
+  public Int getMaxHistorySize() {
+    return $maxHistorySize
+  }
+
+  public void setMaxHistorySize(Int maxHistorySize) {
+    $maxHistorySize = maxHistorySize
   }
 
   public Int getMainWindowWidth() {

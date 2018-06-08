@@ -373,7 +373,8 @@
           <Label text="オートセーブ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示用データ保持:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <Label text="検索履歴保存間隔:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="単語リンク条件:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="検索履歴保存数:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="単語リンク条件:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$savesAutomaticallyControl">
@@ -403,6 +404,14 @@
             <HelpIndicator text="%help.setting.separativeInterval"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <spacing><Double rpx="5"/></spacing>
+            <Spinner fx:id="$maxHistorySizeControl" editable="true">
+              <prefWidth><Double rpx="70"/></prefWidth>
+              <minWidth><Double rpx="70"/></minWidth>
+              <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="2" max="100" initialValue="0" amountToStepBy="1"/></valueFactory>
+            </Spinner>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$linkClickTypeControl">
               <prefWidth><Double rpx="150"/></prefWidth>
