@@ -1,4 +1,4 @@
-package ziphil.plugin
+package ziphil.plugin.builtin
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
@@ -11,11 +11,12 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeRelation
 import ziphil.dictionary.slime.SlimeWord
+import ziphil.plugin.SimplePlugin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeRenumberIdsPlugin implements Plugin {
+public class SlimeRenumberIdsPlugin implements SimplePlugin {
 
   private static final String NAME = "IDの振り直し"
 

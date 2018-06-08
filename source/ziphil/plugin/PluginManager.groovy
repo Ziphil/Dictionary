@@ -7,12 +7,12 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PluginManager {
 
-  public static final List<Plugin> PLUGINS = loadPlugins()
+  public static final List<SimplePlugin> SIMPLE_PLUGINS = loadSimplePlugins()
 
-  private static List<Plugin> loadPlugins() {
-    List<Plugin> plugins = ArrayList.new()
-    ServiceLoader<Plugin> loader = ServiceLoader.load(Plugin, Thread.currentThread().getContextClassLoader())
-    for (Plugin plugin : loader) {
+  private static List<SimplePlugin> loadSimplePlugins() {
+    List<SimplePlugin> plugins = ArrayList.new()
+    ServiceLoader<SimplePlugin> loader = ServiceLoader.load(SimplePlugin, Thread.currentThread().getContextClassLoader())
+    for (SimplePlugin plugin : loader) {
       plugins.add(plugin)
     }
     return plugins

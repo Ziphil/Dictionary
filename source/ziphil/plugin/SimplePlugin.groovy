@@ -8,7 +8,7 @@ import ziphilib.transform.ConvertPrimitives
 
 
 @CompileStatic @ConvertPrimitives
-public interface Plugin {
+public interface SimplePlugin {
 
   // プラグインを実行します。
   // 基本的に isSupported メソッドが true を返す辞書データのみが引数に渡されますが、そうでない辞書データが渡されることもあり得ます。

@@ -1,4 +1,4 @@
-package ziphil.plugin
+package ziphil.plugin.builtin
 
 import groovy.transform.CompileStatic
 import javafx.stage.StageStyle
@@ -12,11 +12,12 @@ import ziphil.custom.UtilityStage
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.module.Setting
+import ziphil.plugin.SimplePlugin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaUploadPlugin implements Plugin {
+public class ShaleiaUploadPlugin implements SimplePlugin {
 
   private static final String NAME = "辞典アップロード"
   private static final String DEFAULT_URL_TEXT = "http://ziphil.com/conlang/database/2.cgi"

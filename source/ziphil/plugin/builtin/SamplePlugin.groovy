@@ -1,14 +1,15 @@
-package ziphil.plugin
+package ziphil.plugin.builtin
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import ziphil.dictionary.Dictionary
+import ziphil.plugin.SimplePlugin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SamplePlugin implements Plugin {
+public class SamplePlugin implements SimplePlugin {
 
   private static final String NAME = "サンプル"
 

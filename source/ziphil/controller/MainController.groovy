@@ -41,7 +41,7 @@ import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
-import ziphil.plugin.Plugin
+import ziphil.plugin.SimplePlugin
 import ziphil.plugin.PluginManager
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
@@ -467,8 +467,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    for (Plugin plugin : PluginManager.PLUGINS) {
-      Plugin cachedPlugin = plugin
+    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
+      SimplePlugin cachedPlugin = plugin
       if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new()
         String name = plugin.getName()
