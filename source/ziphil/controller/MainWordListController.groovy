@@ -686,7 +686,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void setupHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
-    $history = SearchHistory.new(separativeInterval)
+    Int maxSize = Setting.getInstance().getMaxHistorySize()
+    $history = SearchHistory.new(separativeInterval, maxSize)
   }
 
   private void loadOriginalResource() {
