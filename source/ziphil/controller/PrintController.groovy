@@ -12,8 +12,6 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.Spinner
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory
 import javafx.scene.control.TextFormatter
-import javafx.stage.Modality
-import javafx.stage.StageStyle
 import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.SimpleTask
@@ -62,7 +60,7 @@ public class PrintController extends Controller<Void> {
     Boolean cancelled = false
     JavaVersion version = JavaVersion.current()
     if (version < JavaVersion.parseString("1.8.0_112")) {
-      Dialog dialog = Dialog.new(StageStyle.UTILITY)
+      Dialog dialog = Dialog.new()
       dialog.initOwner($stage)
       dialog.setTitle(DIALOG_RESOURCES.getString("title.slowPrint"))
       dialog.setContentText(DIALOG_RESOURCES.getString("contentText.slowPrint"))
@@ -116,10 +114,8 @@ public class PrintController extends Controller<Void> {
 
   @FXML
   private void showPreview() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     PrintPreviewController controller = PrintPreviewController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare($printerJob, createPageBuilder())
     nextStage.showAndWait()
   }

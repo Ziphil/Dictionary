@@ -1,4 +1,4 @@
-package ziphil.plugin
+package ziphil.plugin.builtin
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
@@ -14,11 +14,12 @@ import ziphil.dictionary.Dictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
+import ziphil.plugin.SimplePlugin
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordCountPlugin implements Plugin {
+public class ShaleiaWordCountPlugin implements SimplePlugin {
 
   private static final String NAME = "単語数グラフ"
 

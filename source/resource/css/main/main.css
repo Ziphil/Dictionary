@@ -111,6 +111,63 @@
   -fx-font-size: 1em;
 }
 
+.editor .styled-text-area .shaleia-creation-date-marker,
+.editor .styled-text-area .shaleia-equivalent-marker,
+.editor .styled-text-area .shaleia-content-marker,
+.editor .styled-text-area .shaleia-note-marker,
+.editor .styled-text-area .shaleia-synonym-marker {
+  -fx-fill: hsb(180, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-creation-date {
+  -fx-fill: hsb(240, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-total-part,
+.editor .styled-text-area .shaleia-part {
+  -fx-fill: hsb(120, 90%, 60%);
+}
+
+.editor .styled-text-area .shaleia-symbol,
+.editor .styled-text-area .shaleia-reference-mark {
+  -fx-fill: derive(-fx-text-inner-color, 60%);
+}
+
+.editor .styled-text-area .akrantiain-marker,
+.editor .styled-text-area .zatlin-marker {
+  -fx-fill: hsb(180, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-string,
+.editor .styled-text-area .zatlin-string {
+  -fx-fill: hsb(300, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-environment {
+  -fx-fill: hsb(210, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-identifier,
+.editor .styled-text-area .zatlin-identifier {
+  -fx-fill: hsb(120, 90%, 60%);
+}
+
+.editor .styled-text-area .zatlin-numeric {
+  -fx-fill: hsb(240, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-special-symbol,
+.editor .styled-text-area .zatlin-special-symbol {
+  -fx-fill: hsb(60, 90%, 60%);
+}
+
+.editor .styled-text-area .akrantiain-comment,
+.editor .styled-text-area .akrantiain-semicolon,
+.editor .styled-text-area .zatlin-comment,
+.editor .styled-text-area .zatlin-semicolon {
+  -fx-fill: derive(-fx-text-inner-color, 60%);
+}
+
 .footer .label {
   -fx-font-size: 0.9em;
   -fx-alignment: center-right;

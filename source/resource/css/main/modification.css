@@ -114,6 +114,39 @@
   -fx-stroke: -fx-outer-border;
 }
 
+.code-area-wrapper {
+  -fx-padding: 1px;
+  -fx-cursor: default;
+  -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border), derive(-fx-base,-1%);
+  -fx-background-insets: 0px, 1px;
+  -fx-background-radius: 3px, 2px;
+}
+
+.code-area-wrapper:content-focused {
+  -fx-background-color: -fx-focus-color, -fx-control-inner-background, -fx-faint-focus-color, linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+  -fx-background-insets: -0.2px, 1px, -1.4px, 3px;
+  -fx-background-radius: 3px, 2px, 4px, 0px;
+}
+
+.styled-text-area {
+  -fx-padding: 0.25em 0.416667em 0.25em 0.416667em;
+  -fx-background-color: linear-gradient(from 0px 0px to 0px 4px, derive(-fx-control-inner-background, -8%), -fx-control-inner-background);
+  -fx-background-radius: 2px;
+  -fx-highlight-fill: derive(derive(-fx-control-inner-background, -20%), 80%);
+  -fx-cursor: text;
+}
+
+.styled-text-area:focused {
+  -fx-background-color: -fx-control-inner-background, -fx-faint-focus-color, linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+  -fx-background-insets: 0px, 0px, 2px;
+  -fx-background-radius: 2px, 1px, 0px;
+  -fx-highlight-fill: derive(-fx-accent, 80%);
+}
+
+.styled-text-area .text {
+  -fx-fill: -fx-text-inner-color;
+}
+
 .root {
   CHART_COLOR_1: hsb(0, 60%, 80%);
   CHART_COLOR_2: hsb(30, 60%, 80%);

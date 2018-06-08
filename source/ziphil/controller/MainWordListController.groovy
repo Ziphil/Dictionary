@@ -38,8 +38,6 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javax.script.ScriptException
 import ziphil.Launcher
 import ziphil.custom.ClosableTab
@@ -97,7 +95,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
   private TemporarySetting $temporarySetting = null
-  private SearchHistory $searchHistory = SearchHistory.new()
+  private SearchHistory $history = null
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
@@ -105,7 +103,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     super(stage)
     $tab = tab
     loadOriginalResource()
-    setupSearchHistory()
+    setupHistory()
   }
 
   @FXML
@@ -133,9 +131,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
       measureAndSearch(parameter)
       $previousSearch = search
       if (forcesSearch) {
-        $searchHistory.add(parameter, false)
+        $history.add(parameter, false)
       } else {
-        $searchHistory.add(parameter, true)
+        $history.add(parameter, true)
       }
     }
   }
@@ -145,21 +143,19 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchDetail() {
-    UtilityStage<SearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<SearchParameter> nextStage = createStage(null)
     Controller controller = $dictionary.getControllerFactory().createSearcherController(nextStage)
-    nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SearchParameter parameter = nextStage.getResult()
       measureAndSearch(parameter)
-      $searchHistory.add(parameter)
+      $history.add(parameter)
     }
   }
 
   public void searchScript() {
-    UtilityStage<ScriptSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<ScriptSearchParameter> nextStage = createStage(null)
     ScriptController controller = ScriptController.new(nextStage)
-    nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       try {
@@ -175,7 +171,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchPrevious() {
-    SearchParameter parameter = $searchHistory.previous()
+    SearchParameter parameter = $history.previous()
     if (parameter != null) {
       if (parameter instanceof NormalSearchParameter) {
         String search = parameter.getSearch()
@@ -193,7 +189,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void searchNext() {
-    SearchParameter parameter = $searchHistory.next()
+    SearchParameter parameter = $history.next()
     if (parameter != null) {
       if (parameter instanceof NormalSearchParameter) {
         String search = parameter.getSearch()
@@ -210,8 +206,19 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  public void searchHistory() {
+    UtilityStage<SearchParameter> nextStage = createStage(null)
+    HistorySearcherController controller = HistorySearcherController.new(nextStage)
+    controller.prepare($history)
+    nextStage.showAndWait()
+    if (nextStage.isCommitted()) {
+      SearchParameter parameter = nextStage.getResult()
+      measureAndSearch(parameter)
+    }
+  }
+
   public void searchSentence() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage(null, null)
     SentenceSearcherController controller = SentenceSearcherController.new(nextStage)
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     if (keepsEditorOnTop) {
@@ -271,7 +278,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
-        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<WordEditResult> nextStage = createStage(null, null)
         Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -330,7 +337,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     if ($dictionary instanceof EditableDictionary) {
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
-      UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<WordEditResult> nextStage = createStage(null, null)
       Controller controller = $dictionary.getEditorControllerFactory().createCreatorController(nextStage, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
@@ -359,7 +366,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
-        UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<WordEditResult> nextStage = createStage(null, null)
         Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
@@ -393,10 +400,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addGeneratedWords() {
     if ($dictionary instanceof EditableDictionary) {
-      UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<NameGeneratorController.Result> nextStage = createStage()
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
       controller.prepare(true, $temporarySetting.getGeneratorConfig())
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
@@ -411,7 +416,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         SearchParameter parameter = SelectionSearchParameter.new(newWords)
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
-        $searchHistory.add(parameter)
+        $history.add(parameter)
         $temporarySetting.setGeneratorConfig(controller.createConfig())
       }
     }
@@ -512,7 +517,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void updateOnLinkClicked() {
     $dictionary.setOnLinkClicked() { SearchParameter parameter ->
       measureAndSearch(parameter)
-      $searchHistory.add(parameter)
+      $history.add(parameter)
     }
   }
 
@@ -595,7 +600,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
     if ($dictionary.isChanged()) {
       if (!savesAutomatically) {
-        Dialog dialog = Dialog.new(StageStyle.UTILITY)
+        Dialog dialog = Dialog.new()
         dialog.initOwner($stage)
         dialog.setTitle(DIALOG_RESOURCES.getString("title.checkDictionaryChange"))
         dialog.setContentText(MessageFormat.format(DIALOG_RESOURCES.getString("contentText.checkDictionaryChange"), $dictionary.getName()))
@@ -679,9 +684,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
-  private void setupSearchHistory() {
+  private void setupHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
-    $searchHistory.setSeparativeInterval(separativeInterval)
+    Int maxSize = Setting.getInstance().getMaxHistorySize()
+    $history = SearchHistory.new(separativeInterval, maxSize)
   }
 
   private void loadOriginalResource() {

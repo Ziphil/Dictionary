@@ -7,18 +7,15 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SearchHistory {
 
-  private static final Int MAX_SIZE = 20
-
   private List<SearchParameter> $parameters = ArrayList.new()
   private Int $pointer = 0
   private Long $interval = -1
   private Int $separativeInterval = 0
+  private Int $maxSize = 20
 
-  public SearchHistory(Int separativeInterval) {
+  public SearchHistory(Int separativeInterval, Int maxSize) {
     $separativeInterval = separativeInterval
-  }
-
-  public SearchHistory() {
+    $maxSize = maxSize
   }
 
   public void add(SearchParameter parameter, Boolean checksTime) {
@@ -38,7 +35,7 @@ public class SearchHistory {
       $parameters.add(0, parameter)
       $interval = -1
     }
-    if ($parameters.size() > MAX_SIZE) {
+    if ($parameters.size() > $maxSize) {
       $parameters.removeAt($parameters.size() - 1)
     }
   }
@@ -81,12 +78,12 @@ public class SearchHistory {
     return $pointer - 1 >= 0
   }
 
-  public Int getSeparativeInterval() {
-    return $separativeInterval
+  public List<SearchParameter> getParameters() {
+    return $parameters
   }
 
-  public void setSeparativeInterval(Int separativeInterval) {
-    $separativeInterval = separativeInterval
+  public Int getPointer() {
+    return $pointer
   }
 
 }

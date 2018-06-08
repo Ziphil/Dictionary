@@ -18,7 +18,7 @@ public class SlimeConjugationResolver extends ConjugationResolver<SlimeWord, Sli
     super(suggestions)
   }
 
-  public void prepare(NormalSearchParameter parameter) {
+  public void precheck(NormalSearchParameter parameter) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = setting.getIgnoresAccent()
     Boolean ignoresCase = setting.getIgnoresCase()
@@ -41,6 +41,9 @@ public class SlimeConjugationResolver extends ConjugationResolver<SlimeWord, Sli
         $suggestions[0].update()
       }
     }
+  }
+
+  public void postcheck() {
   }
 
 }

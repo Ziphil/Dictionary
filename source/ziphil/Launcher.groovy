@@ -11,10 +11,10 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 28, 3, 2253)
+  public static final Version VERSION = Version.new(1, 29, 0, 2329)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
-  public static final String LINE_SEPARATPR = createLineSeparator()
+  public static final String LINE_SEPARATOR = createLineSeparator()
   public static final String BASE_PATH = createBasePath()
 
   public static void main(String... args) {
@@ -57,6 +57,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.29. 0 | 検索履歴の一覧から検索を行う機能を追加。
+//          | 一部のテキスト入力欄をシンタックスハイライトするよう変更。
 //  1.28. 3 | 辞書の新規作成後に単語リストに何も表示されなくなる不具合を修正。
 //  1.28. 2 | 辞書の新規作成をしようとするとエラーになる不具合を修正。
 //  1.28. 1 | 環境設定をした後にエラーになる場合がある不具合を修正。

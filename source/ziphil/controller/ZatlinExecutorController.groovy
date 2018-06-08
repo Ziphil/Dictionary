@@ -6,10 +6,9 @@ import javafx.fxml.FXML
 import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.module.zatlin.Zatlin
 import ziphil.module.zatlin.ZatlinException
@@ -54,12 +53,10 @@ public class ZatlinExecutorController extends Controller<Void> {
 
   @FXML
   private void openZatlin() {
-    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<FileStringChooserController.Result> nextStage = createStage()
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("生成規則ファイル", "ztl")
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
-    controller.prepare(filter, $result)
+    controller.prepare(filter, RichTextLanguage.ZATLIN, $result)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       $result = nextStage.getResult()

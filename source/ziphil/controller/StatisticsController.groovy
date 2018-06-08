@@ -3,8 +3,6 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.Label
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryAnalyzer
 import ziphil.dictionary.Word
@@ -46,10 +44,8 @@ public class StatisticsController extends Controller<Void> {
 
   @FXML
   private void showCharacterFrequency() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     CharacterFrequencyController controller = CharacterFrequencyController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare($analyzer.getCharacterFrequencyAnalyzer())
     nextStage.showAndWait()
   }

@@ -4,8 +4,6 @@ import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.Measurement
 import ziphil.custom.SentenceSearchResultCell
 import ziphil.custom.UtilityStage

@@ -13,8 +13,10 @@ public abstract class ConjugationResolver<W extends Word, S extends Suggestion> 
     $suggestions = suggestions
   }
 
-  public abstract void prepare(NormalSearchParameter parameter)
+  public abstract void precheck(NormalSearchParameter parameter)
 
   public abstract void check(W word)
+
+  public abstract void postcheck()
 
 }

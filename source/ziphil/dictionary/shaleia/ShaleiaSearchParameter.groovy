@@ -28,7 +28,7 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
   public ShaleiaSearchParameter() {
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
   }
 
   public Boolean matches(ShaleiaWord word) {
@@ -58,6 +58,29 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
       }
     }
     return predicate
+  }
+
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    if ($hasName) {
+      string.append("単語[")
+      string.append($name)
+      string.append("], ")
+    }
+    if ($hasEquivalent) {
+      string.append("訳語[")
+      string.append($equivalent)
+      string.append("], ")
+    }
+    if ($hasDescription) {
+      string.append("内容[")
+      string.append($description)
+      string.append("], ")
+    }
+    if (string.length() >= 2) {
+      string.setLength(string.length() - 2)
+    }
+    return string.toString()
   }
 
   public String getName() {

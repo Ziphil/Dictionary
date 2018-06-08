@@ -14,8 +14,6 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.text.Font
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javax.script.ScriptEngineFactory
 import javax.script.ScriptEngineManager
 import ziphil.custom.ClickType
@@ -71,6 +69,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $savesAutomaticallyControl
   @FXML private SwitchButton $persistsPanesControl
   @FXML private Spinner<IntegerClass> $separativeIntervalControl
+  @FXML private Spinner<IntegerClass> $maxHistorySizeControl
   @FXML private ComboBox<ClickType> $linkClickTypeControl
   @FXML private GridPane $registeredDictionaryPane
   @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
@@ -122,6 +121,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean savesAutomatically = setting.getSavesAutomatically()
     Boolean persistsPanes = setting.getPersistsPanes()
     Int separativeInterval = setting.getSeparativeInterval()
+    Int maxHistorySize = setting.getMaxHistorySize()
     ClickType linkClickType = setting.getLinkClickType()
     List<String> registeredDictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> registeredDictionaryNames = setting.getRegisteredDictionaryNames()
@@ -177,6 +177,7 @@ public class SettingController extends Controller<BooleanClass> {
     $savesAutomaticallyControl.setSelected(savesAutomatically)
     $persistsPanesControl.setSelected(persistsPanes)
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
+    $maxHistorySizeControl.getValueFactory().setValue(maxHistorySize)
     $linkClickTypeControl.getSelectionModel().select(linkClickType)
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
@@ -219,6 +220,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean savesAutomatically = $savesAutomaticallyControl.isSelected()
     Boolean persistsPanes = $persistsPanesControl.isSelected()
     Int separativeInterval = $separativeIntervalControl.getValue()
+    Int maxHistorySize = $maxHistorySizeControl.getValue()
     ClickType linkClickType = $linkClickTypeControl.getValue()
     List<String> registeredDictionaryPaths = $registeredDictionaryPathControls.collect{it.getText()}
     List<String> registeredDictionaryNames = $registeredDictionaryNameControls.collect{it.getText()}
@@ -250,6 +252,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setSavesAutomatically(savesAutomatically)
     setting.setPersistsPanes(persistsPanes)
     setting.setSeparativeInterval(separativeInterval)
+    setting.setMaxHistorySize(maxHistorySize)
     setting.setLinkClickType(linkClickType)
     for (Int i = 0 ; i < 10 ; i ++) {
       String path = registeredDictionaryPaths[i]
@@ -260,10 +263,8 @@ public class SettingController extends Controller<BooleanClass> {
   }
 
   private void browseDictionary(Int index) {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<File> nextStage = createStage()
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     String currentPath = $registeredDictionaryPathControls[index].getText()
     if (currentPath != null) {
       controller.prepare(null, File.new(currentPath).getParentFile(), false)
@@ -340,6 +341,8 @@ public class SettingController extends Controller<BooleanClass> {
     $contentFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $editorFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
     $lineSpacingControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $separativeIntervalControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $maxHistorySizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
   private void bindFontControlProperties() {

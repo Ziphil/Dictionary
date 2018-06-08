@@ -4,10 +4,9 @@ import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphilib.transform.Ziphilify
@@ -54,13 +53,11 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
 
   @FXML
   private void editSnoj() {
-    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<FileStringChooserController.Result> nextStage = createStage()
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
     FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)     
-    controller.prepare(filter, previousResult)
+    controller.prepare(filter, RichTextLanguage.AKRANTIAIN, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       FileStringChooserController.Result result = nextStage.getResult()

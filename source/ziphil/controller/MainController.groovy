@@ -25,8 +25,6 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.TransferMode
 import javafx.stage.Stage
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import javafx.stage.WindowEvent
 import javax.script.ScriptException
 import ziphil.Launcher
@@ -43,7 +41,8 @@ import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
 import ziphil.module.Version
-import ziphil.plugin.Plugin
+import ziphil.plugin.SimplePlugin
+import ziphil.plugin.PluginManager
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -57,7 +56,6 @@ public class MainController extends PrimitiveController<Stage> {
   private static final String TITLE = "ZpDIC fetith"
   private static final Double MIN_WIDTH = Measurement.rpx(360)
   private static final Double MIN_HEIGHT = Measurement.rpx(240)
-  private static final List<Plugin> PLUGINS = loadPlugins()
 
   @FXML private MenuBar $menuBar
   @FXML private Menu $createDictionaryMenu
@@ -247,12 +245,10 @@ public class MainController extends PrimitiveController<Stage> {
     if (dictionary != null) {
       File file = chooseExportDestination(type.createExtensionFilter())
       if (file != null) {
-        UtilityStage<ExportConfig> nextStage = UtilityStage.new(StageStyle.UTILITY)
+        UtilityStage<ExportConfig> nextStage = createStage()
         Controller controller = dictionary.getDictionaryFactory().createExportConfigController(nextStage, dictionary, type)
         ExportConfig config = null
         if (controller != null) {
-          nextStage.initModality(Modality.APPLICATION_MODAL)
-          nextStage.initOwner($stage)
           nextStage.showAndWait()
           if (nextStage.isCommitted()) {
             config = nextStage.getResult()
@@ -281,10 +277,8 @@ public class MainController extends PrimitiveController<Stage> {
   // また、factory に辞書形式を渡すことで、デフォルトでその辞書形式の拡張子のみを表示するようにできます。
   private File chooseDictionary(Dictionary dictionary, DictionaryFactory factory) {
     File directory = (dictionary != null) ? File.new(dictionary.getPath()).getParentFile() : null
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<File> nextStage = createStage()
     DictionaryChooserController controller = DictionaryChooserController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(factory, directory, true)
     nextStage.showAndWait()
     if (nextStage.isCommitted() && nextStage.getResult() != null) {
@@ -295,11 +289,9 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   private File chooseExportDestination(ExtensionFilter extensionFilter) {
-    UtilityStage<File> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<File> nextStage = createStage()
     FileChooserController controller = FileChooserController.new(nextStage)
     List<ExtensionFilter> extensionFilters = ArrayList.new()
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     extensionFilters.add(extensionFilter)
     controller.prepare(extensionFilters, extensionFilter, true)
     nextStage.showAndWait()
@@ -475,8 +467,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void updatePluginMenu() {
     $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    for (Plugin plugin : PLUGINS) {
-      Plugin cachedPlugin = plugin
+    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
+      SimplePlugin cachedPlugin = plugin
       if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new()
         String name = plugin.getName()
@@ -513,10 +505,8 @@ public class MainController extends PrimitiveController<Stage> {
     Dictionary dictionary = currentDictionary()
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
-      UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<BooleanClass> nextStage = createStage()
       Controller controller = dictionary.getControllerFactory().createIndividualSettingController(nextStage, individualSetting)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         updateSearchRegisteredParameterMenu()
@@ -526,10 +516,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void editSetting() {
-    UtilityStage<BooleanClass> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<BooleanClass> nextStage = createStage()
     SettingController controller = SettingController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       setupOpenRegisteredDictionaryMenu()
@@ -541,7 +529,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void executeHahCompression() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     Dictionary dictionary = currentDictionary()
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage(null, null)
     HahCompressionExecutorController controller = HahCompressionExecutorController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
@@ -556,7 +544,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void executeAkrantiain() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
     Dictionary dictionary = currentDictionary()
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage(null, null)
     AkrantiainExecutorController controller = AkrantiainExecutorController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
@@ -570,7 +558,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void executeZatlin() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage(null, null)
     ZatlinExecutorController controller = ZatlinExecutorController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
@@ -583,7 +571,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void executeCharacterAnalysis() {
     Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage(null, null)
     CharacterFrequencyAnalyzerController controller = CharacterFrequencyAnalyzerController.new(nextStage)
     if (keepsEditorOnTop) {
       nextStage.initOwner($stage)
@@ -597,10 +585,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void printDictionary() {
     Dictionary dictionary = currentDictionary()
     if (!dictionary.getElements().isEmpty()) {
-      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<Void> nextStage = createStage()
       PrintController controller = PrintController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
       controller.prepare(dictionary)
       nextStage.showAndWait()
     } else {
@@ -611,20 +597,16 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void showStatistics() {
     Dictionary dictionary = currentDictionary()
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     StatisticsController controller = StatisticsController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(dictionary)
     nextStage.showAndWait()
   }
 
   @FXML
   private void showHelp() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     HelpController controller = HelpController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
 
@@ -645,10 +627,8 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void showApplicationInformation() {
-    UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<Void> nextStage = createStage()
     ApplicationInformationController controller = ApplicationInformationController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     nextStage.showAndWait()
   }
 
@@ -688,6 +668,11 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void searchSentence() {
     currentWordListController().searchSentence()
+  }
+
+  @FXML
+  private void searchHistory() {
+    currentWordListController().searchHistory()
   }
 
   @FXML
@@ -758,10 +743,8 @@ public class MainController extends PrimitiveController<Stage> {
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
     if (false && previousVersion < Launcher.VERSION) {
-      UtilityStage<Void> nextStage = UtilityStage.new(StageStyle.UTILITY)
+      UtilityStage<Void> nextStage = createStage()
       UpdateInformationController controller = UpdateInformationController.new(nextStage)
-      nextStage.initModality(Modality.APPLICATION_MODAL)
-      nextStage.initOwner($stage)
       nextStage.showAndWait()
     }
   }
@@ -954,15 +937,6 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void setupDebug() {
     Boolean debugging = Setting.getInstance().isDebugging()
-  }
-
-  private static List<Plugin> loadPlugins() {
-    List<Plugin> plugins = ArrayList.new()
-    ServiceLoader<Plugin> loader = ServiceLoader.load(Plugin, Thread.currentThread().getContextClassLoader())
-    for (Plugin plugin : loader) {
-      plugins.add(plugin)
-    }
-    return plugins
   }
 
   private void loadOriginalResource() {

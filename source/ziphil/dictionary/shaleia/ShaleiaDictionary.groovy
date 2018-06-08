@@ -220,8 +220,13 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   protected ConjugationResolver createConjugationResolver() {
-    ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes, $version)
-    return conjugationResolver
+    if ($version == "5.5") {
+      ShaleiaConjugationResolver conjugationResolver = ShaleiaAlphaConjugationResolver.new($suggestions, $changes)
+      return conjugationResolver
+    } else {
+      ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes)
+      return conjugationResolver
+    }
   }
 
   public ControllerFactory getControllerFactory() {

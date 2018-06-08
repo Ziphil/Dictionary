@@ -25,8 +25,6 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import javafx.stage.Modality
-import javafx.stage.StageStyle
 import ziphil.custom.Dialog
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
@@ -132,7 +130,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
         if (asksDuplicateName && $normal) {
           SlimeWord otherWord = $dictionary.findName(name, $word)
           if (otherWord != null) {
-            Dialog dialog = Dialog.new(StageStyle.UTILITY)
+            Dialog dialog = Dialog.new()
             dialog.initOwner($stage)
             dialog.setTitle(DIALOG_RESOURCES.getString("title.duplicateName"))
             dialog.setContentText(DIALOG_RESOURCES.getString("contentText.duplicateName"))
@@ -464,11 +462,9 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 
   @FXML
   private void generateName() {
-    UtilityStage<NameGeneratorController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<NameGeneratorController.Result> nextStage = createStage()
     NameGeneratorController controller = NameGeneratorController.new(nextStage)
     NameGeneratorController.Config config = ($temporarySetting != null) ? $temporarySetting.getGeneratorConfig() : null
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(false, config)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
@@ -570,11 +566,9 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   }
 
   private void chooseRelation(Node box) {
-    UtilityStage<SlimeWord> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<SlimeWord> nextStage = createStage()
     SlimeWordChooserController controller = SlimeWordChooserController.new(nextStage)
     Boolean asksMutualRelation = Setting.getInstance().getAsksMutualRelation()
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare($dictionary.copy())
     nextStage.showAndWait()
     if (nextStage.isCommitted() && nextStage.getResult() != null) {
@@ -584,7 +578,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
         $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
         $relationNameControls[index].setText(word.getName())
         if (asksMutualRelation) {
-          Dialog dialog = Dialog.new(StageStyle.UTILITY)
+          Dialog dialog = Dialog.new()
           dialog.initOwner($stage)
           dialog.setTitle(DIALOG_RESOURCES.getString("title.mutualRelation"))
           dialog.setContentText(DIALOG_RESOURCES.getString("contentText.mutualRelation"))

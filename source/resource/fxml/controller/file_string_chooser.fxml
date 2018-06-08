@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import ziphil.custom.CodeAreaWrapper?>
 <?import ziphil.custom.FileChooser?>
 <?import ziphil.module.Setting?>
 
@@ -43,7 +44,7 @@
       </HBox>
       <StackPane>
         <VBox fx:id="$stringBox">
-          <TextArea fx:id="$stringControl" styleClass="editor" wrapText="false" VBox.vgrow="always"/>
+          <CodeAreaWrapper fx:id="$stringControl" styleClass="editor" VBox.vgrow="always"/>
         </VBox>
         <VBox fx:id="$fileBox">
           <FileChooser fx:id="$fileChooser" VBox.vgrow="always"/>

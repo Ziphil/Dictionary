@@ -16,12 +16,11 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
-import javafx.stage.StageStyle
-import javafx.stage.Modality
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.ListSelectionView
-import ziphil.custom.PermutableListView
 import ziphil.custom.Measurement
+import ziphil.custom.PermutableListView
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.WordEditResult
@@ -138,13 +137,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void editSnoj() {
-    UtilityStage<FileStringChooserController.Result> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<FileStringChooserController.Result> nextStage = createStage()
     FileStringChooserController controller = FileStringChooserController.new(nextStage)
     ExtensionFilter filter = ExtensionFilter.new("snojファイル", "snoj")
-    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)     
-    controller.prepare(filter, previousResult)
+    FileStringChooserController.Result previousResult = FileStringChooserController.Result.ofString($akrantiainSource)  
+    controller.prepare(filter, RichTextLanguage.AKRANTIAIN, previousResult)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       FileStringChooserController.Result result = nextStage.getResult()
@@ -177,18 +174,15 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   private void editDefaultWord() {
     SlimeWord defaultWord = $defaultWord ?: $dictionary.createWord(null)
-    UtilityStage<WordEditResult> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<WordEditResult> nextStage = createStage()
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
-    nextStage.initModality(Modality.APPLICATION_MODAL)
-    nextStage.initOwner($stage)
     controller.prepare(defaultWord, $dictionary, null, false, false)
     nextStage.showAndWait()
   }
 
   private void editSearchParameter(Int index) {
-    UtilityStage<SlimeSearchParameter> nextStage = UtilityStage.new(StageStyle.UTILITY)
+    UtilityStage<SlimeSearchParameter> nextStage = createStage(null)
     SlimeSearcherController controller = SlimeSearcherController.new(nextStage)
-    nextStage.initOwner($stage)
     controller.prepare($dictionary, $registeredParameters[index])
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {

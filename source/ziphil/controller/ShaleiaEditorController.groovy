@@ -1,6 +1,8 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.function.Consumer
+import java.util.regex.Matcher
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -8,11 +10,17 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyEvent
+import org.fxmisc.richtext.CodeArea
+import org.fxmisc.richtext.model.RichTextChange
+import ziphil.custom.CodeAreaWrapper
 import ziphil.custom.Measurement
+import ziphil.custom.RichTextChangeConsumer
+import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -25,7 +33,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(320)
 
   @FXML private TextField $nameControl
-  @FXML private TextArea $descriptionControl
+  @FXML private CodeAreaWrapper $descriptionControl
   private ShaleiaWord $word
 
   public ShaleiaEditorController(UtilityStage<? super WordEditResult> stage) {
@@ -34,10 +42,15 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     setupShortcuts()
   }
 
+  @FXML
+  private void initialize() {
+    setupDescriptionControl()
+  }
+
   public void prepare(ShaleiaWord word, Boolean empty) {
     $word = word
     $nameControl.setText(word.getUniqueName())
-    $descriptionControl.setText(word.getDescription())
+    $descriptionControl.getCodeArea().replaceText(0, 0, word.getDescription())
     if (empty) {
       $nameControl.requestFocus()
     } else {
@@ -52,10 +65,17 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   @FXML
   protected void commit() {
     $word.setUniqueName($nameControl.getText())
-    $word.setDescription($descriptionControl.getText())
+    $word.setDescription($descriptionControl.getCodeArea().textProperty().getValue())
     $word.update()
     WordEditResult result = WordEditResult.new($word)
     $stage.commit(result)
+  }
+
+  private void setupDescriptionControl() {
+    CodeArea codeArea = $descriptionControl.getCodeArea()
+    Consumer<RichTextChange> consumer = RichTextLanguage.SHALEIA_DICTIONARY.createConsumer(codeArea)
+    codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
+    codeArea.setWrapText(true)
   }
 
   private void setupShortcuts() {

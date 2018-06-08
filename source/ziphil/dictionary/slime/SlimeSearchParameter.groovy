@@ -40,7 +40,7 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   public SlimeSearchParameter() {
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
   }
 
   public Boolean matches(SlimeWord word) {
@@ -115,15 +115,19 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
     }
     if ($hasEquivalent) {
       string.append("訳語[")
-      string.append($equivalentTitle ?: "")
-      string.append(":")
+      if ($equivalentTitle != null) {
+        string.append($equivalentTitle)
+        string.append(": ")
+      }
       string.append($equivalentName ?: "")
       string.append("], ")
     }
     if ($hasInformation) {
       string.append("内容[")
-      string.append($informationTitle ?: "")
-      string.append(":")
+      if ($informationTitle != null) {
+        string.append($informationTitle)
+        string.append(": ")
+      }
       string.append($informationText ?: "")
       string.append("], ")
     }

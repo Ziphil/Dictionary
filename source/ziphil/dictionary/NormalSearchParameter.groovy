@@ -33,7 +33,7 @@ public class NormalSearchParameter implements SearchParameter<Word> {
   public NormalSearchParameter() {
   }
 
-  public void prepare(Dictionary dictionary) {
+  public void preprocess(Dictionary dictionary) {
     Setting setting = Setting.getInstance()
     Boolean ignoresAccent = ($reallyStrict) ? false : setting.getIgnoresAccent()
     Boolean ignoresCase = ($reallyStrict) ? false : setting.getIgnoresCase()
@@ -120,6 +120,15 @@ public class NormalSearchParameter implements SearchParameter<Word> {
     } else {
       return false
     }
+  }
+
+  public String toString() {
+    StringBuilder string = StringBuilder.new()
+    string.append($searchMode)
+    string.append("[")
+    string.append($search)
+    string.append("]")
+    return string.toString()
   }
 
   public String getSearch() {
