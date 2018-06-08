@@ -21,6 +21,7 @@ public class ShaleiaUploadPlugin implements SimplePlugin {
 
   private static final String NAME = "辞典アップロード"
   private static final String DEFAULT_URL_TEXT = "http://ziphil.com/conlang/database/2.cgi"
+  private static final String BOUNDARY_CHARACTERS = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   private static final String BOUNDARY = createBoundary()
 
   public void call(Dictionary dictionary) {
@@ -92,12 +93,11 @@ public class ShaleiaUploadPlugin implements SimplePlugin {
   }
 
   private static String createBoundary() {
-    String characters = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     Random random = Random.new()
     StringBuilder boundary = StringBuilder.new()
     for (Int i = 0 ; i < 30 ; i ++) {
-      Int index = random.nextInt(characters.length())
-      boundary.append(characters.charAt(index))
+      Int index = random.nextInt(BOUNDARY_CHARACTERS.length())
+      boundary.append(BOUNDARY_CHARACTERS.charAt(index))
     }
     return boundary.toString()
   }
