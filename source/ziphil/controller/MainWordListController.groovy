@@ -470,7 +470,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public Class<?> calculateWordClass() {
+  private Class<?> calculateWordClass() {
     Class<?> wordClass = null
     for (Type type : $dictionary.getClass().getGenericInterfaces()) {
       if (type instanceof ParameterizedType) {
