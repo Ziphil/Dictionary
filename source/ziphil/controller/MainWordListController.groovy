@@ -39,6 +39,9 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javax.script.ScriptException
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.lib.RepositoryBuilder
 import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.CustomBuilderFactory
@@ -482,6 +485,28 @@ public class MainWordListController extends PrimitiveController<Stage> {
       }
     }
     return wordClass
+  }
+
+  public void gitAddCommit() {
+    File file = File.new($dictionary.getPath())
+    RepositoryBuilder builder = RepositoryBuilder.new()
+    builder.findGitDir(file.getParentFile())
+    builder.setWorkTree(file.getParentFile())
+    builder.setup()
+    try {
+      Repository repository = builder.build()
+      Git git = Git.new(repository)
+      File gitRoot = builder.getGitDir().getParentFile()
+      try {
+        String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
+        git.add().addFilepattern(relativePath).call()
+        git.commit().setMessage("Update").call()
+      } catch (Exception exception) {
+        exception.printStackTrace()
+      }
+    } catch (IOException exception) {
+      exception.printStackTrace()
+    }
   }
 
   private void cancelLoadDictionary() {
