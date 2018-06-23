@@ -44,7 +44,7 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
   }
 
   public Boolean isCreatable() {
-    return true
+    return false
   }
 
   public String getName() {
