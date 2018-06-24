@@ -496,15 +496,21 @@ public class MainWordListController extends PrimitiveController<Stage> {
     builder.setup()
     try {
       Repository repository = builder.build()
-      Git git = Git.new(repository)
-      File gitRoot = builder.getGitDir().getParentFile()
-      try {
+      UtilityStage<String> nextStage = createStage()
+      GitMessageController controller = GitMessageController.new(nextStage)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        Git git = Git.new(repository)
+        File gitRoot = builder.getGitDir().getParentFile()
         String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
-        git.add().addFilepattern(relativePath).call()
-        git.commit().setMessage("Update").call()
-      } catch (Exception exception) {
-        outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
-        showErrorDialog("failGit")
+        String message = nextStage.getResult()
+        try {
+          git.add().addFilepattern(relativePath).call()
+          git.commit().setMessage(message).call()
+        } catch (Exception exception) {
+          outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+          showErrorDialog("failGit")
+        }
       }
       repository.close()
     } catch (IOException exception) {
