@@ -153,11 +153,12 @@
         <MenuItem styleClass="option,nonnull" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
       <Menu text="Git">
-        <MenuItem styleClass="option,nonnull" text="add &amp; commit" onAction="#gitAddCommit">
+        <MenuItem styleClass="option,nonnull" text="init">
           <graphic>
             <ImageView><Image url="@../../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
+        <MenuItem styleClass="option,nonnull" text="add &amp; commit" onAction="#gitAddCommit"/>
       </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
