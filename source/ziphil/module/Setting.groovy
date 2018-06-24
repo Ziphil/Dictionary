@@ -44,6 +44,7 @@ public class Setting {
   private Int $mainWindowHeight = 720
   private String $variationMarker = "→"
   private String $relationMarker = "cf:"
+  private String $defaultGitMessage = "Update"
   private String $scriptName = "javascript"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
@@ -322,6 +323,14 @@ public class Setting {
 
   public void setRelationMarker(String relationMarker) {
     $relationMarker = relationMarker
+  }
+
+  public String getDefaultGitMessage() {
+    return $defaultGitMessage
+  }
+
+  public void setDefaultGitMessage(String defaultGitMessage) {
+    $defaultGitMessage = defaultGitMessage
   }
 
   public String getScriptName() {

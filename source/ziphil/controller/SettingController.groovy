@@ -61,6 +61,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private SwitchButton $ignoresCaseControl
   @FXML private SwitchButton $searchesPrefixControl
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
+  @FXML private TextField $defaultGitMessageControl
   @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
   @FXML private SwitchButton $showsSlimeIdControl
   @FXML private SwitchButton $showsVariationControl
@@ -113,6 +114,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresCase = setting.getIgnoresCase()
     Boolean searchesPrefix = setting.getSearchesPrefix()
     String scriptName = setting.getScriptName()
+    String defaultGitMessage = setting.getDefaultGitMessage()
     Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
     Boolean showsSlimeId = setting.getShowsSlimeId()
     Boolean showsVariation = setting.getShowsVariation()
@@ -169,6 +171,7 @@ public class SettingController extends Controller<BooleanClass> {
         $scriptControl.getSelectionModel().select(scriptEngineFactory)
       }
     }
+    $defaultGitMessageControl.setText(defaultGitMessage)
     $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
     $showsSlimeIdControl.setSelected(showsSlimeId)
     $showsVariationControl.setSelected(showsVariation)
@@ -212,6 +215,7 @@ public class SettingController extends Controller<BooleanClass> {
     Boolean ignoresCase = $ignoresCaseControl.isSelected()
     Boolean searchesPrefix = $searchesPrefixControl.isSelected()
     String scriptName = ($scriptControl.getValue() != null) ? $scriptControl.getValue().getNames()[0] : ""
+    String defaultGitMessage = $defaultGitMessageControl.getText()
     Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
     Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
     Boolean showsVariation = $showsVariationControl.isSelected()
@@ -244,6 +248,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setIgnoresCase(ignoresCase)
     setting.setSearchesPrefix(searchesPrefix)
     setting.setScriptName(scriptName)
+    setting.setDefaultGitMessage(defaultGitMessage)
     setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
     setting.setShowsSlimeId(showsSlimeId)
     setting.setShowsVariation(showsVariation)

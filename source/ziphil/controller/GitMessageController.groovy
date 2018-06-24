@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.TextField
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.module.Setting
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
@@ -25,9 +26,19 @@ public class GitMessageController extends Controller<String> {
   }
 
   @FXML
+  private void initialize() {
+    setupMessageControl()
+  }
+
+  @FXML
   protected void commit() {
     String message = $messageControl.getText()
     $stage.commit(message)
+  }
+
+  private void setupMessageControl() {
+    String defaultMessage = Setting.getInstance().getDefaultGitMessage()
+    $messageControl.setText(defaultMessage)
   }
 
 }

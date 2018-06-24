@@ -299,6 +299,30 @@
           </HBox>
         </GridPane>
       </Tab>
+      <Tab text="Git" closable="false">
+        <GridPane>
+          <vgap><Double rpx="5"/></vgap>
+          <hgap><Double rpx="5"/></hgap>
+          <padding>
+            <Insets>
+              <top><Double rpx="10"/></top>
+              <right><Double rpx="10"/></right>
+              <bottom><Double rpx="10"/></bottom>
+              <left><Double rpx="10"/></left>
+            </Insets>
+          </padding>
+          <columnConstraints>
+            <ColumnConstraints hgrow="never"/>
+            <ColumnConstraints hgrow="always"/>
+          </columnConstraints>
+          <Label text="デフォルトメッセージ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$defaultGitMessageControl" HBox.hgrow="always"/>
+            <HelpIndicator text=""/>
+          </HBox>
+        </GridPane>
+      </Tab>
       <Tab text="OTM形式" closable="false">
         <GridPane>
           <vgap><Double rpx="5"/></vgap>
