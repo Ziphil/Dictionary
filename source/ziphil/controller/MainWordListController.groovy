@@ -490,6 +490,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void gitAddCommit() {
     File file = File.new($dictionary.getPath())
     RepositoryBuilder builder = RepositoryBuilder.new()
+    builder.setMustExist(true)
     builder.findGitDir(file.getParentFile())
     builder.setWorkTree(file.getParentFile())
     builder.setup()
@@ -502,10 +503,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
         git.add().addFilepattern(relativePath).call()
         git.commit().setMessage("Update").call()
       } catch (Exception exception) {
-        exception.printStackTrace()
+        showErrorDialog("failGit")
       }
     } catch (IOException exception) {
-      exception.printStackTrace()
+      showErrorDialog("missingRepository")
     }
   }
 
