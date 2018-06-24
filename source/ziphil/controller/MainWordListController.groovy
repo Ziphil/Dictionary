@@ -506,6 +506,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
         showErrorDialog("failGit")
       }
+      repository.close()
     } catch (IOException exception) {
       showErrorDialog("missingRepository")
     }
