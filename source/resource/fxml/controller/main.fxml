@@ -158,7 +158,6 @@
             <ImageView><Image url="@../../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,nonnull" text="add &amp; commit (カスタム)"/>
       </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
