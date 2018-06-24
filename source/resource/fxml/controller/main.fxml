@@ -158,7 +158,7 @@
             <ImageView><Image url="@../../icon/empty.png"/></ImageView>
           </graphic>
         </MenuItem>
-        <MenuItem styleClass="option,nonnull" text="add &amp; commit" onAction="#gitAddCommit"/>
+        <MenuItem styleClass="option,nonnull" text="add &amp; commit" onAction="#gitAddCommit" accelerator="Shortcut+Alt+G"/>
       </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
