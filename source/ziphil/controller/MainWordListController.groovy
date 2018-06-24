@@ -493,7 +493,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
     RepositoryBuilder builder = RepositoryBuilder.new()
     builder.setMustExist(true)
     builder.findGitDir(file.getParentFile())
-    builder.setWorkTree(file.getParentFile())
     builder.setup()
     try {
       Repository repository = builder.build()
