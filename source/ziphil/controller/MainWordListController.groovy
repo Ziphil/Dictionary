@@ -81,6 +81,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/main_word_list.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
+  private static final String GIT_EXCEPTION_OUTPUT_PATH = "data/log/git_exception.txt"
 
   @FXML private ContextMenu $editMenu
   @FXML private RefreshableListView<Element> $wordView
@@ -503,6 +504,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         git.add().addFilepattern(relativePath).call()
         git.commit().setMessage("Update").call()
       } catch (Exception exception) {
+        outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
         showErrorDialog("failGit")
       }
     } catch (IOException exception) {
