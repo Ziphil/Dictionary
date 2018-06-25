@@ -750,6 +750,11 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().gitAddCommit()
   }
 
+  @FXML
+  private void gitPush() {
+    currentWordListController().gitPush()
+  }
+
   private void checkVersion() {
     Version previousVersion = Setting.getInstance().getVersion()
     if (false && previousVersion < Launcher.VERSION) {

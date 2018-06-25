@@ -43,6 +43,7 @@ import org.eclipse.jgit.api.AddCommand
 import org.eclipse.jgit.api.CommitCommand
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.InitCommand
+import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import ziphil.Launcher
@@ -534,6 +535,26 @@ public class MainWordListController extends PrimitiveController<Stage> {
         try {
           addCommand.call()
           commitCommand.call()
+        } catch (Exception exception) {
+          outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+          showErrorDialog("failGit")
+        }
+      }
+      git.close()
+    }
+  }
+
+  public void gitPush() {
+    Git git = createGit()
+    if (git != null) {
+      UtilityStage<PushCommand> nextStage = createStage()
+      GitPushConfigController controller = GitPushConfigController.new(nextStage)
+      controller.prepare(git)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        PushCommand command = nextStage.getResult()
+        try {
+          command.call()
         } catch (Exception exception) {
           outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
           showErrorDialog("failGit")
