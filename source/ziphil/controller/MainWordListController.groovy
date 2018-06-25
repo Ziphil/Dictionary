@@ -491,6 +491,22 @@ public class MainWordListController extends PrimitiveController<Stage> {
     return wordClass
   }
 
+  private Git createGit() {
+    File file = File.new($dictionary.getPath())
+    RepositoryBuilder builder = RepositoryBuilder.new()
+    builder.setMustExist(true)
+    builder.findGitDir(file.getParentFile())
+    builder.setup()
+    try {
+      Repository repository = builder.build()
+      Git git = Git.new(repository)
+      return git
+    } catch (IOException exception) {
+      showErrorDialog("missingRepository")
+      return null
+    }
+  }
+
   public void gitInit() {
     File file = File.new($dictionary.getPath())
     InitCommand command = Git.init().setDirectory(file.getParentFile())
@@ -503,20 +519,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public void gitAddCommit() {
-    File file = File.new($dictionary.getPath())
-    RepositoryBuilder builder = RepositoryBuilder.new()
-    builder.setMustExist(true)
-    builder.findGitDir(file.getParentFile())
-    builder.setup()
-    try {
-      Repository repository = builder.build()
-      Git git = Git.new(repository)
+    Git git = createGit()
+    if (git != null) {
       UtilityStage<CommitCommand> nextStage = createStage()
       GitCommitConfigController controller = GitCommitConfigController.new(nextStage)
       controller.prepare(git)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        File gitRoot = builder.getGitDir().getParentFile()
+        File file = File.new($dictionary.getPath())
+        File gitRoot = git.getRepository().getWorkTree()
         String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
         AddCommand addCommand = git.add().addFilepattern(relativePath)
         CommitCommand commitCommand = nextStage.getResult()
@@ -527,11 +538,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
           outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
           showErrorDialog("failGit")
         }
-        git.close()
       }
-      repository.close()
-    } catch (IOException exception) {
-      showErrorDialog("missingRepository")
+      git.close()
     }
   }
 
