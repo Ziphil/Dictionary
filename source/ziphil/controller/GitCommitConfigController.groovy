@@ -16,7 +16,7 @@ import ziphilib.transform.Ziphilify
 public class GitCommitConfigController extends Controller<CommitCommand> {
 
   private static final String RESOURCE_PATH = "resource/fxml/controller/git_commit_config.fxml"
-  private static final String TITLE = "コミットメッセージ編集"
+  private static final String TITLE = "コマンド引数編集"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(480)
   private static final Double DEFAULT_HEIGHT = -1
 
