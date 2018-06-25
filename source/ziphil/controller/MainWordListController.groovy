@@ -521,7 +521,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void cancelLoadDictionary() {
     Task<?> loader = $dictionary.getLoader()
-    if (loader != null &&loader.isRunning()) {
+    if (loader != null && loader.isRunning()) {
       loader.cancel()
     }
   }
