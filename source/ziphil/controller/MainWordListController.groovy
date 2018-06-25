@@ -39,6 +39,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javax.script.ScriptException
+import org.eclipse.jgit.api.AddCommand
+import org.eclipse.jgit.api.CommitCommand
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
@@ -496,17 +498,19 @@ public class MainWordListController extends PrimitiveController<Stage> {
     builder.setup()
     try {
       Repository repository = builder.build()
-      UtilityStage<String> nextStage = createStage()
-      GitMessageController controller = GitMessageController.new(nextStage)
+      Git git = Git.new(repository)
+      UtilityStage<CommitCommand> nextStage = createStage()
+      GitCommitConfigController controller = GitCommitConfigController.new(nextStage)
+      controller.prepare(git)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
-        Git git = Git.new(repository)
         File gitRoot = builder.getGitDir().getParentFile()
         String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
-        String message = nextStage.getResult()
+        AddCommand addCommand = git.add().addFilepattern(relativePath)
+        CommitCommand commitCommand = nextStage.getResult()
         try {
-          git.add().addFilepattern(relativePath).call()
-          git.commit().setMessage(message).call()
+          addCommand.call()
+          commitCommand.call()
         } catch (Exception exception) {
           outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
           showErrorDialog("failGit")
