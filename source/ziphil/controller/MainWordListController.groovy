@@ -562,9 +562,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public Boolean saveDictionary() {
+    Boolean gitsCommit = Setting.getInstance().getGitsCommitOnSave()
     $dictionary.getDictionaryFactory().save($dictionary)
     if ($dictionary.getSaver() != null) {
       updateSaver()
+      if (gitsCommit) {
+        $dictionary.getSaver().addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+          gitAddCommit()
+        }
+      }
       return true
     } else {
       showErrorDialog("saveUnsupported")
