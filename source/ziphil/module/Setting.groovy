@@ -57,6 +57,7 @@ public class Setting {
   private Boolean $ignoresAccent = false
   private Boolean $ignoresCase = false
   private Boolean $searchesPrefix = true
+  private Boolean $gitsCommitOnSave = false
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private Boolean $showsVariation = true
@@ -427,6 +428,14 @@ public class Setting {
 
   public void setSearchesPrefix(Boolean searchesPrefix) {
     $searchesPrefix = searchesPrefix
+  }
+
+  public Boolean getGitsCommitOnSave() {
+    return $gitsCommitOnSave
+  }
+
+  public void setGitsCommitOnSave(Boolean gitsCommitOnSave) {
+    $gitsCommitOnSave = gitsCommitOnSave
   }
 
   public Boolean getIgnoresDuplicateSlimeId() {
