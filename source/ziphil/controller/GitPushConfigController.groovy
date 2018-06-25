@@ -7,7 +7,9 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.transport.RefSpec
+import org.eclipse.jgit.transport.RemoteConfig
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -45,6 +47,18 @@ public class GitPushConfigController extends Controller<PushCommand> {
 
   public void prepare(Git git) {
     $git = git
+    try {
+      List<RemoteConfig> remoteConfigs = git.remoteList().call()
+      String firstRemoteName = remoteConfigs[0].getName()
+      $remoteControl.setText(firstRemoteName)
+    } catch (Exception exception) {
+    }
+    try {
+      List<Ref> refs = git.branchList().setContains("HEAD").call()
+      String currentBranchName = refs[0].getName()
+      $refSpecControl.setText(currentBranchName)
+    } catch (Exception exception) {
+    }
   }
 
   @FXML
