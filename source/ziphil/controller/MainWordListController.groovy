@@ -42,6 +42,7 @@ import javax.script.ScriptException
 import org.eclipse.jgit.api.AddCommand
 import org.eclipse.jgit.api.CommitCommand
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.InitCommand
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import ziphil.Launcher
@@ -488,6 +489,17 @@ public class MainWordListController extends PrimitiveController<Stage> {
       }
     }
     return wordClass
+  }
+
+  public void gitInit() {
+    File file = File.new($dictionary.getPath())
+    InitCommand command = Git.init().setDirectory(file.getParentFile())
+    try {
+      command.call()
+    } catch (Exception exception) {
+      outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+      showErrorDialog("failGit")
+    }
   }
 
   public void gitAddCommit() {

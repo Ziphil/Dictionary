@@ -741,6 +741,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void gitInit() {
+    currentWordListController().gitInit()
+  }
+
+  @FXML
   private void gitAddCommit() {
     currentWordListController().gitAddCommit()
   }
