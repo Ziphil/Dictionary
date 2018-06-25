@@ -50,6 +50,7 @@ public class GitPushConfigController extends Controller<PushCommand> {
   @FXML
   protected void commit() {
     PushCommand command = $git.push()
+    command.setTimeout(5)
     if (!$omitsRemoteControl.isSelected()) {
       command.setRemote($remoteControl.getText())
     }
