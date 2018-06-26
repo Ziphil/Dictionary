@@ -558,6 +558,28 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  private void runAndUpdateGitter(Task<?> gitter) {
+    if (gitter != null) {
+      Thread thread = Thread.new(gitter)
+      thread.setDaemon(false)
+      thread.start()
+      $progressBar.setVisible(true)
+      $progressBar.progressProperty().bind(gitter.progressProperty())
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $progressBar.setVisible(false)
+      }
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        $progressBar.setVisible(false)
+        failGit(event.getSource().getException())
+      }
+    }
+  } 
+
+  private void failGit(Throwable throwable) {
+    outputStackTrace(throwable, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failGit")
+  }
+
   private void cancelLoadDictionary() {
     Task<?> loader = $dictionary.getLoader()
     if (loader != null && loader.isRunning()) {
@@ -588,18 +610,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  private void runAndUpdateGitter(Task<?> gitter) {
-    if (gitter != null) {
-      Thread thread = Thread.new(gitter)
-      thread.setDaemon(false)
-      thread.start()
-      $progressIndicator.progressProperty().bind(gitter.progressProperty())
-      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
-        failGit(event.getSource().getException())
-      }
-    }
-  } 
-
   private void updateOnLinkClicked() {
     $dictionary.setOnLinkClicked() { SearchParameter parameter ->
       measureAndSearch(parameter)
@@ -610,11 +620,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void failUpdateDictionary(Throwable throwable) {
     outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     showErrorDialog("failUpdateDictionary")
-  }
-
-  private void failGit(Throwable throwable) {
-    outputStackTrace(throwable, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
-    showErrorDialog("failGit")
   }
 
   public Boolean saveDictionary() {
