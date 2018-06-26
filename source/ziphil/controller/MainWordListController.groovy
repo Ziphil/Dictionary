@@ -52,6 +52,7 @@ import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
+import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
@@ -511,12 +512,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void gitInit() {
     File file = File.new($dictionary.getPath())
     InitCommand command = Git.init().setDirectory(file.getParentFile())
-    try {
+    Task<Void> gitter = SimpleTask.new() {
       command.call()
-    } catch (Exception exception) {
-      outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
-      showErrorDialog("failGit")
     }
+    runAndUpdateGitter(gitter)
   }
 
   public void gitAddCommit() {
@@ -532,13 +531,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
         String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
         AddCommand addCommand = git.add().addFilepattern(relativePath)
         CommitCommand commitCommand = nextStage.getResult()
-        try {
+        Task<Void> gitter = SimpleTask.new() {
           addCommand.call()
           commitCommand.call()
-        } catch (Exception exception) {
-          outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
-          showErrorDialog("failGit")
         }
+        runAndUpdateGitter(gitter)
       }
       git.close()
     }
@@ -553,12 +550,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         PushCommand command = nextStage.getResult()
-        try {
+        Task<Void> gitter = SimpleTask.new() {
           command.call()
-        } catch (Exception exception) {
-          outputStackTrace(exception, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
-          showErrorDialog("failGit")
         }
+        runAndUpdateGitter(gitter)
       }
       git.close()
     }
@@ -594,6 +589,18 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  private void runAndUpdateGitter(Task<?> gitter) {
+    if (gitter != null) {
+      Thread thread = Thread.new(gitter)
+      thread.setDaemon(false)
+      thread.start()
+      $progressIndicator.progressProperty().bind(gitter.progressProperty())
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        failGit(event.getSource().getException())
+      }
+    }
+  } 
+
   private void updateOnLinkClicked() {
     $dictionary.setOnLinkClicked() { SearchParameter parameter ->
       measureAndSearch(parameter)
@@ -604,6 +611,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void failUpdateDictionary(Throwable throwable) {
     outputStackTrace(throwable, Launcher.BASE_PATH + EXCEPTION_OUTPUT_PATH)
     showErrorDialog("failUpdateDictionary")
+  }
+
+  private void failGit(Throwable throwable) {
+    outputStackTrace(throwable, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failGit")
   }
 
   public Boolean saveDictionary() {
