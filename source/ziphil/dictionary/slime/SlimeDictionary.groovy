@@ -6,11 +6,9 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
@@ -26,7 +24,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> implements EditableDictionary<SlimeWord, SlimeWord> {
+public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, SlimeDictionaryFactory> implements EditableDictionary<SlimeWord, SlimeWord, SlimeDictionaryFactory> {
 
   private Int $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()
@@ -45,8 +43,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   private String $akrantiainSource = null
   private List<SlimeRelationRequest> $relationRequests = ArrayList.new()
   private Map<String, TreeNode> $externalData = HashMap.new()
-  private ControllerFactory $controllerFactory = SlimeControllerFactory.new(this)
-  private EditorControllerFactory $editorControllerFactory = SlimeEditorControllerFactory.new(this)
 
   public SlimeDictionary(String name, String path) {
     super(name, path)
@@ -510,14 +506,6 @@ public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion> 
   public IndividualSetting createIndividualSetting() {
     SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
     return individualSetting
-  }
-
-  public ControllerFactory getControllerFactory() {
-    return $controllerFactory
-  }
-
-  public EditorControllerFactory getEditorControllerFactory() {
-    return $editorControllerFactory
   }
 
   public Int getValidMinId() {

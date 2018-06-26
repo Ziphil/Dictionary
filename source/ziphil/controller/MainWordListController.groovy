@@ -58,6 +58,7 @@ import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Element
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
@@ -153,7 +154,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void searchDetail() {
     UtilityStage<SearchParameter> nextStage = createStage(null)
-    Controller controller = $dictionary.getControllerFactory().createSearcherController(nextStage)
+    Controller controller = $dictionary.getDictionaryFactory().createSearcherController(nextStage, $dictionary)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SearchParameter parameter = nextStage.getResult()
@@ -284,11 +285,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, word, $temporarySetting)
+        Controller controller = castedDictionary.getDictionaryFactory().createEditorController(nextStage, $dictionary, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -344,10 +346,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = createStage(null, null)
-      Controller controller = $dictionary.getEditorControllerFactory().createCreatorController(nextStage, newWord, $temporarySetting)      
+      Controller controller = castedDictionary.getDictionaryFactory().createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -372,11 +375,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, newWord, $temporarySetting)
+        Controller controller = castedDictionary.getDictionaryFactory().createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }

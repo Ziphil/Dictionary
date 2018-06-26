@@ -9,7 +9,7 @@ import ziphilib.transform.ConvertPrimitives
 
 
 @CompileStatic @ConvertPrimitives
-public interface Dictionary<W extends Word> {
+public interface Dictionary<W extends Word, F extends DictionaryFactory> {
 
   public void search(SearchParameter parameter)
 
@@ -69,17 +69,15 @@ public interface Dictionary<W extends Word> {
 
   public void setOnLinkClicked(Consumer<SearchParameter> onLinkClicked) 
 
-  public ControllerFactory getControllerFactory()
-
   public Task<?> getLoader()
 
   // 辞書データをファイルに保存するための Task オブジェクトを返します。
   // ここで返される Task オブジェクトは、save メソッドが呼び出されたときに作成されます。
   public Task<?> getSaver()
 
-  public DictionaryFactory getDictionaryFactory()
+  public F getDictionaryFactory()
 
-  public void setDictionaryFactory(DictionaryFactory dictionaryFactory)
+  public void setDictionaryFactory(F dictionaryFactory)
 
   public Boolean isChanged()
 

@@ -369,7 +369,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerFactory().isSearcherSupported()) {
+    if (dictionary != null && dictionary.getDictionaryFactory().isSearcherSupported(dictionary)) {
       if (styleClass.contains("can-search-detail")) {
         matched = true
       }
@@ -383,7 +383,7 @@ public class MainController extends PrimitiveController<Stage> {
         matched = true
       }
     }
-    if (dictionary != null && dictionary.getControllerFactory().isIndividualSettingSupported()) {
+    if (dictionary != null && dictionary.getDictionaryFactory().isIndividualSettingSupported(dictionary)) {
       if (styleClass.contains("has-individual-setting")) {
         matched = true
       }
@@ -506,7 +506,7 @@ public class MainController extends PrimitiveController<Stage> {
     IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = createStage()
-      Controller controller = dictionary.getControllerFactory().createIndividualSettingController(nextStage, individualSetting)
+      Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary, individualSetting)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         updateSearchRegisteredParameterMenu()

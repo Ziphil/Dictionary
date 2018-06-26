@@ -4,17 +4,27 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
+import ziphil.controller.Controller
+import ziphil.controller.SlimeIndividualSettingController
+import ziphil.controller.SlimeEditorController
+import ziphil.controller.SlimeSearcherController
+import ziphil.custom.UtilityStage
+import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
+import ziphil.dictionary.SearchParameter
+import ziphil.dictionary.Word
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
+import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionaryFactory extends DictionaryFactory {
+public class SlimeDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "OneToMany-JSON形式"
   private static final String EXTENSION = "json"
@@ -44,6 +54,30 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
     return saver
   }
 
+  public Controller createSearcherController(UtilityStage<SearchParameter> stage, Dictionary dictionary) {
+    SlimeSearcherController controller = SlimeSearcherController.new(stage)
+    controller.prepare((SlimeDictionary)dictionary)
+    return controller
+  }
+
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+    SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
+    controller.prepare((SlimeDictionary)dictionary, (SlimeIndividualSetting)individualSetting)
+    return controller
+  }
+
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    SlimeEditorController controller = SlimeEditorController.new(stage)
+    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary, temporarySetting)
+    return controller
+  }
+
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    SlimeEditorController controller = SlimeEditorController.new(stage)
+    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary, temporarySetting, true)
+    return controller
+  }
+
   public Image createIcon() {
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream(ICON_PATH))
     return icon
@@ -56,6 +90,14 @@ public class SlimeDictionaryFactory extends DictionaryFactory {
   }
 
   public Boolean isCreatable() {
+    return true
+  }
+
+  public Boolean isSearcherSupported(Dictionary dictionary) {
+    return true
+  }
+
+  public Boolean isIndividualSettingSupported(Dictionary dictionary) {
     return true
   }
 

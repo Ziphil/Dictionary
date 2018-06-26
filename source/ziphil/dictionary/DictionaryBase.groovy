@@ -21,7 +21,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
+public abstract class DictionaryBase<W extends Word, S extends Suggestion, F extends EditableDictionaryFactory> implements Dictionary<W, F> {
 
   protected String $name = ""
   protected String $path = null
@@ -36,7 +36,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
-  private DictionaryFactory $dictionaryFactory
+  private F $dictionaryFactory
   protected Boolean $changed = false
 
   public DictionaryBase(String name, String path) {
@@ -229,11 +229,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $saver
   }
 
-  public DictionaryFactory getDictionaryFactory() {
+  public F getDictionaryFactory() {
     return $dictionaryFactory
   }
 
-  public void setDictionaryFactory(DictionaryFactory dictionaryFactory) {
+  public void setDictionaryFactory(F dictionaryFactory) {
     $dictionaryFactory = dictionaryFactory
   }
 

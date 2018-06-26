@@ -6,11 +6,9 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
@@ -27,7 +25,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord> {
+public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion, ShaleiaDictionaryFactory> implements EditableDictionary<ShaleiaWord, ShaleiaWord, ShaleiaDictionaryFactory> {
 
   private String $alphabetOrder = ""
   private String $changeDescription = ""
@@ -36,8 +34,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $akrantiainSource = null
   private String $version = ""
   private Int $systemWordSize = 0
-  private ControllerFactory $controllerFactory = ShaleiaControllerFactory.new(this)
-  private EditorControllerFactory $editorControllerFactory = ShaleiaEditorControllerFactory.new(this)
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
@@ -227,14 +223,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes)
       return conjugationResolver
     }
-  }
-
-  public ControllerFactory getControllerFactory() {
-    return $controllerFactory
-  }
-
-  public EditorControllerFactory getEditorControllerFactory() {
-    return $editorControllerFactory
   }
 
   public String getAlphabetOrder() {

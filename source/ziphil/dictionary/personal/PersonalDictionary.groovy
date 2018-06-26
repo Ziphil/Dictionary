@@ -3,11 +3,9 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryBase
 import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerFactory
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.Loader
@@ -19,10 +17,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
-
-  private ControllerFactory $controllerFactory = PersonalControllerFactory.new(this)
-  private EditorControllerFactory $editorControllerFactory = PersonalEditorControllerFactory.new(this)
+public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion, PersonalDictionaryFactory> implements EditableDictionary<PersonalWord, PersonalWord, PersonalDictionaryFactory> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -144,14 +139,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   protected ConjugationResolver createConjugationResolver() {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
-  }
-
-  public ControllerFactory getControllerFactory() {
-    return $controllerFactory
-  }
-
-  public EditorControllerFactory getEditorControllerFactory() {
-    return $editorControllerFactory
   }
 
 }

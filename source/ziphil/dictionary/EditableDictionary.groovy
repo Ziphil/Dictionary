@@ -6,7 +6,7 @@ import javafx.concurrent.Task
 
 
 @CompileStatic 
-public interface EditableDictionary<W extends Word, V extends Word> {
+public interface EditableDictionary<W extends Word, V extends Word, F extends EditableDictionaryFactory> extends Dictionary<W, F> {
 
   // oldWord と同値な単語データが newWord に変更されたことをこの辞書に通知します。
   // さらに、変更された内容に従って、内部データの更新を行います。
@@ -42,7 +42,5 @@ public interface EditableDictionary<W extends Word, V extends Word> {
   public V inheritWord(W oldWord)
 
   public V determineWord(String name, PseudoWord psuedoWord)
-
-  public EditorControllerFactory getEditorControllerFactory()
 
 }
