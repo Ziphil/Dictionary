@@ -7,8 +7,7 @@ import javafx.collections.ObservableList
 import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditableDictionaryBase
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
@@ -24,7 +23,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeDictionary extends DictionaryBase<SlimeWord, SlimeSuggestion, SlimeDictionaryFactory> implements EditableDictionary<SlimeWord, SlimeWord, SlimeDictionaryFactory> {
+public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSuggestion, SlimeDictionaryFactory> {
 
   private Int $validMinId = 1
   private List<String> $registeredTags = ArrayList.new()

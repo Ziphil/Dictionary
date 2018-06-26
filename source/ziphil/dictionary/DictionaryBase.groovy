@@ -99,9 +99,13 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     $shufflableWords.shuffle()
   }
 
-  public abstract void updateFirst()
+  public void updateFirst() {
+    $changed = true
+  }
 
-  public abstract void updateMinimum()
+  public void updateMinimum() {
+    $changed = true
+  }
 
   public abstract Object createPlainWord(W word)
 
