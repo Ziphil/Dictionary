@@ -40,6 +40,7 @@ import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javax.script.ScriptException
 import org.eclipse.jgit.api.AddCommand
+import org.eclipse.jgit.api.CheckoutCommand
 import org.eclipse.jgit.api.CommitCommand
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.InitCommand
@@ -540,6 +541,21 @@ public class MainWordListController extends PrimitiveController<Stage> {
         }
         runAndUpdateGitter(gitter)
       }
+      git.close()
+    }
+  }
+
+  public void gitCheckout() {
+    Git git = createGit()
+    if (git != null) {
+      File file = File.new($dictionary.getPath())
+      File gitRoot = git.getRepository().getWorkTree()
+      String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
+      CheckoutCommand command = git.checkout().addPath(relativePath)
+      Task<Void> gitter = SimpleTask.new() {
+        command.call()
+      }
+      runAndUpdateGitter(gitter)
       git.close()
     }
   }

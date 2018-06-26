@@ -159,6 +159,7 @@
           </graphic>
         </MenuItem>
         <MenuItem styleClass="option,nonnull" text="add &amp; commit" onAction="#gitAddCommit" accelerator="Shortcut+Alt+C"/>
+        <MenuItem styleClass="option,nonnull" text="checkout" onAction="#gitCheckout"/>
         <MenuItem styleClass="option,nonnull" text="push" onAction="#gitPush" accelerator="Shortcut+Alt+P"/>
       </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>

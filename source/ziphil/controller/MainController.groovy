@@ -751,6 +751,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void gitCheckout() {
+    currentWordListController().gitCheckout()
+  }
+
+  @FXML
   private void gitPush() {
     currentWordListController().gitPush()
   }
