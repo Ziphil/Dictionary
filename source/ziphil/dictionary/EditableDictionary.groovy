@@ -12,11 +12,11 @@ public interface EditableDictionary<W extends Word, V extends Word, F extends Ed
   // さらに、変更された内容に従って、内部データの更新を行います。
   // このメソッドによって、辞書内に含まれる oldWord が newWord に書き換わるわけではありません。
   // 単語データの内容を変更したい場合は、変更前のその単語データのコピーを oldWord に渡し、変更前と同一の変更後の単語データを newWord に渡してください。
-  // 単語データのコピーには copyWord() を用いてください。
+  // 単語データのコピーには copyWord メソッドを用いてください。
   public void modifyWord(W oldWord, V newWord)
 
   // word に渡された単語データをこの辞書に追加し、内部データの更新を行います。
-  // 内部データの更新が毎回行われてパフォーマンスが低下するのを防ぐため、複数の単語データを追加したい場合は、addWords() を利用してください。
+  // 内部データの更新が毎回行われてパフォーマンスが低下するのを防ぐため、複数の単語データを追加したい場合は、addWords メソッドを利用してください。
   public void addWord(V word)
 
   // words に渡されたリストに含まれる全ての単語データをこの辞書に追加し、最後に内部データの更新を行います。
@@ -24,7 +24,7 @@ public interface EditableDictionary<W extends Word, V extends Word, F extends Ed
 
   // word に渡された単語データをこの辞書から削除し、内部データの更新を行います。
   // この辞書が word と同一の単語データを含んでいない場合は、何も処理を行いません。
-  // 内部データの更新が毎回行われてパフォーマンスが低下するのを防ぐため、複数の単語データを削除したい場合は、removeWords() を利用してください。
+  // 内部データの更新が毎回行われてパフォーマンスが低下するのを防ぐため、複数の単語データを削除したい場合は、removeWords メソッドを利用してください。
   public void removeWord(V word)
 
   // words に渡されたリストに含まれる全ての単語データをこの辞書から削除し、最後に内部データの更新を行います。
