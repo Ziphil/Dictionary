@@ -9,13 +9,9 @@ import ziphilib.transform.ConvertPrimitives
 @CompileStatic @ConvertPrimitives
 public interface ControllerFactory {
 
-  public Controller createExporterController(UtilityStage<ExportConfig> stage)
-
   public Controller createSearcherController(UtilityStage<SearchParameter> stage)
 
   public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, IndividualSetting individualSetting)
-
-  public Boolean isExporterSupported(ExportType type)
  
   public Boolean isSearcherSupported()
 
