@@ -498,12 +498,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
     RepositoryBuilder builder = RepositoryBuilder.new()
     builder.setMustExist(true)
     builder.findGitDir(file.getParentFile())
-    builder.setup()
     try {
       Repository repository = builder.build()
       Git git = Git.new(repository)
       return git
-    } catch (IOException exception) {
+    } catch (Exception exception) {
       showErrorDialog("missingRepository")
       return null
     }
