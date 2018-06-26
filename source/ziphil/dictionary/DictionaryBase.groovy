@@ -21,7 +21,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryBase<W extends Word, S extends Suggestion, F extends EditableDictionaryFactory> implements Dictionary<W, F> {
+public abstract class DictionaryBase<W extends Word, S extends Suggestion, F extends DictionaryFactory> implements Dictionary<W, F> {
 
   protected String $name = ""
   protected String $path = null
