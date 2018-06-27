@@ -319,7 +319,7 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$defaultGitMessageControl" HBox.hgrow="always"/>
-            <HelpIndicator text=""/>
+            <HelpIndicator text="%help.setting.defaultGitMessage"/>
           </HBox>
           <HBox visible="false" managed="false">
             <spacing><Double rpx="5"/></spacing>
