@@ -316,13 +316,12 @@
             <ColumnConstraints hgrow="always"/>
           </columnConstraints>
           <Label text="デフォルトメッセージ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Label text="保存時コミット:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$defaultGitMessageControl" HBox.hgrow="always"/>
             <HelpIndicator text=""/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <HBox visible="false" managed="false">
             <spacing><Double rpx="5"/></spacing>
             <SwitchButton fx:id="$gitsCommitOnSaveControl">
               <prefWidth><Double rpx="70"/></prefWidth>
