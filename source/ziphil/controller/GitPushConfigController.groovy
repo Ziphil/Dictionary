@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import java.util.regex.Matcher
 import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.PasswordField
@@ -56,7 +57,12 @@ public class GitPushConfigController extends Controller<PushCommand> {
     try {
       List<Ref> refs = git.branchList().setContains("HEAD").call()
       String currentBranchName = refs[0].getName()
-      $refSpecControl.setText(currentBranchName)
+      Matcher matcher = currentBranchName =~ /\/(\w+?)$/
+      if (matcher.find()) {
+        $refSpecControl.setText(matcher.group(1))
+      } else {
+        $refSpecControl.setText(currentBranchName)
+      }
     } catch (Exception exception) {
     }
   }
