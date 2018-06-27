@@ -186,7 +186,7 @@
           <CheckBox fx:id="$preservesMainWindowSizeControl" text="前回終了時のサイズにする" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         </GridPane>
       </Tab>
-      <Tab text="GUI" closable="false">
+      <Tab text="システム" closable="false">
         <GridPane>
           <vgap><Double rpx="5"/></vgap>
           <hgap><Double rpx="5"/></hgap>
