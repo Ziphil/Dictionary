@@ -149,7 +149,7 @@
       </HBox>
       <HBox GridPane.columnIndex="1" GridPane.rowIndex="11">
         <spacing><Double rpx="5"/></spacing>
-        <SwitchButton fx:id="$modifiesControl" selected="true">
+        <SwitchButton fx:id="$modifiesControl">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
         </SwitchButton>
