@@ -20,7 +20,6 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
   private Int $mainFontSize = 8
   private String $relationMarker = null
   private Boolean $modifies = true
-  private String $externalCommand = null
 
   public String getFirstCaptionFontFamily() {
     return $firstCaptionFontFamily
@@ -124,14 +123,6 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
 
   public void setModifies(Boolean modifies) {
     $modifies = modifies
-  }
-
-  public String getExternalCommand() {
-    return $externalCommand
-  }
-
-  public void setExternalCommand(String externalCommand) {
-    $externalCommand = externalCommand
   }
 
 }

@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class PdfExportConfig extends ExportConfig {
 
-  protected String $externalCommand = null
+  protected String $externalCommand = ""
 
   public String getExternalCommand() {
     return $externalCommand

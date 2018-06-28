@@ -24,6 +24,7 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
   private static final Double DEFAULT_WIDTH = -1
   private static final Double DEFAULT_HEIGHT = -1
 
+  @FXML private TextField $externalCommandControl
   @FXML private ComboBox<String> $firstCaptionFontFamilyControl
   @FXML private ComboBox<String> $secondCaptionFontFamilyControl
   @FXML private Spinner<IntegerClass> $captionFontSizeControl
@@ -41,8 +42,6 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
   @FXML private TextField $relationMarkerControl
   @FXML private CheckBox $usesDefaultRelationMarkerControl
   @FXML private SwitchButton $modifiesControl
-  @FXML private TextField $externalCommandControl
-  @FXML private CheckBox $usesEmbeddedProcessorControl
 
   public SlimePdfExportConfigController(UtilityStage<? super SlimePdfExportConfig> stage) {
     super(stage)
@@ -55,11 +54,11 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
     setupIntegerControls()
     bindFontControlProperties()
     bindMarkerControlProperties()
-    bindExternalCommandControlProperty()
   }
 
   @FXML
   protected void commit() {
+    String externalCommand = $externalCommandControl.getText()
     String firstCaptionFontFamily = $firstCaptionFontFamilyControl.getValue()
     String secondCaptionFontFamily = $secondCaptionFontFamilyControl.getValue()
     Int captionFontSize = $captionFontSizeControl.getValue()
@@ -77,9 +76,8 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
     String relationMarker = $relationMarkerControl.getText()
     Boolean usesDefaultRelationMarker = $usesDefaultRelationMarkerControl.isSelected()
     Boolean modifies = $modifiesControl.isSelected()
-    String externalCommand = $externalCommandControl.getText()
-    Boolean usesEmbeddedProcessor = $usesEmbeddedProcessorControl.isSelected()
     SlimePdfExportConfig config = SlimePdfExportConfig.new()
+    config.setExternalCommand(externalCommand)
     if (!usesDefaultCaptionFontFamily) {
       config.setFirstCaptionFontFamily(firstCaptionFontFamily)
       config.setSecondCaptionFontFamily(secondCaptionFontFamily)
@@ -102,9 +100,6 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
       config.setRelationMarker(relationMarker)
     }
     config.setModifies(modifies)
-    if (!usesEmbeddedProcessor) {
-      config.setExternalCommand(externalCommand)
-    }
     $stage.commit(config)
   }
 
@@ -136,10 +131,6 @@ public class SlimePdfExportConfigController extends Controller<SlimePdfExportCon
   private void bindMarkerControlProperties() {
     $variationMarkerControl.disableProperty().bind($usesDefaultVariationMarkerControl.selectedProperty())
     $relationMarkerControl.disableProperty().bind($usesDefaultRelationMarkerControl.selectedProperty())
-  }
-
-  private void bindExternalCommandControlProperty() {
-    $externalCommandControl.disableProperty().bind($usesEmbeddedProcessorControl.selectedProperty())
   }
 
 }
