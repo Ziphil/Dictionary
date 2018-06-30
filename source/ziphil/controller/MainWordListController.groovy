@@ -517,11 +517,16 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void gitInit() {
     File file = File.new($dictionary.getPath())
-    InitCommand command = Git.init().setDirectory(file.getParentFile())
-    Task<Void> gitter = SimpleTask.new() {
-      command.call()
+    File gitFile = File.new(file.getParentFile().toString() + ".git")
+    if (gitFile.exists()) {
+      InitCommand command = Git.init().setDirectory(file.getParentFile())
+      Task<Void> gitter = SimpleTask.new() {
+        command.call()
+      }
+      runAndUpdateGitter(gitter)
+    } else {
+      showErrorDialog("repositoryAlreadyExists")
     }
-    runAndUpdateGitter(gitter)
   }
 
   public void gitAddCommit() {
