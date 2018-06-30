@@ -175,7 +175,7 @@ private static class HelpItem extends TreeItem<HelpSection> {
 
   private HelpItem(HelpSection section) {
     super(section)
-    setExpanded(true)
+    setup()
   }
 
   public static TreeItem<HelpSection> createRoot() {
@@ -209,6 +209,15 @@ private static class HelpItem extends TreeItem<HelpSection> {
       super.getChildren().setAll(children)
     }
     return super.getChildren()
+  }
+
+  private void setup() {
+    setExpanded(true)
+    expandedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+      if (!newValue) {
+        setExpanded(true)
+      }
+    }
   }
 
 }
