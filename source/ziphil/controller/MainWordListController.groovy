@@ -286,12 +286,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
-      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = castedDictionary.getDictionaryFactory().createEditorController(nextStage, $dictionary, word, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -347,11 +347,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
-      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = createStage(null, null)
-      Controller controller = castedDictionary.getDictionaryFactory().createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
+      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -376,12 +376,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
-      EditableDictionary<?, ?, EditableDictionaryFactory> castedDictionary = (EditableDictionary)$dictionary
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = castedDictionary.getDictionaryFactory().createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
