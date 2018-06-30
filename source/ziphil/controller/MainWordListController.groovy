@@ -102,6 +102,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
+  private MainController $mainController
   private ClosableTab $tab
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
@@ -110,8 +111,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
-  public MainWordListController(Stage stage, ClosableTab tab) {
+  public MainWordListController(Stage stage, MainController mainController, ClosableTab tab) {
     super(stage)
+    $mainController = mainController
     $tab = tab
     loadOriginalResource()
     setupHistory()
@@ -554,6 +556,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
       CheckoutCommand command = git.checkout().addPath(relativePath)
       Task<Void> gitter = SimpleTask.new() {
         command.call()
+      }
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $mainController.reopenDictionary()
       }
       runAndUpdateGitter(gitter)
       git.close()

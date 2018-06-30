@@ -94,7 +94,7 @@ public class MainController extends PrimitiveController<Stage> {
 
   private void addDictionaryTab(Dictionary dictionary) {
     ClosableTab tab = ClosableTab.new()
-    MainWordListController controller = MainWordListController.new($stage, tab)
+    MainWordListController controller = MainWordListController.new($stage, this, tab)
     tab.setText(dictionary.getName())
     tab.setOnCloseRequest() { Event event ->
       Int index = $tabPane.getTabs().indexOf(tab)
