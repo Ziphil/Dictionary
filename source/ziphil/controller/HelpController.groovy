@@ -102,38 +102,43 @@ public class HelpController extends Controller<Void> {
 @CompileStatic @Ziphilify
 private static enum HelpSection {
 
-  BASIC("基本操作", null, null),
+  BASIC("基本操作", null),
   BASIC_EDIT("編集", "basic_edit", BASIC),
   BASIC_SEARCH("検索", "basic_search", BASIC),
-  EDIT("編集方法詳細", null, null),
+  EDIT("編集方法詳細", null),
   SLIME_EDIT("OneToMany形式", "slime_edit", EDIT),
-  SCRIPT_SEARCH("スクリプト検索", "script_search", null),
-  SENTENCE_SEARCH("文一括検索", "sentence_search", null),
-  WORD_GENERATION("単語の自動生成", "word_generation", null),
-  EXPORT("別形式へのエクスポート", "export", null),
-  SETTING("環境設定", "setting", null),
-  INDIVIDUAL_SETTING("辞書の個別設定", null, null),
+  SCRIPT_SEARCH("スクリプト検索", "script_search"),
+  SENTENCE_SEARCH("文一括検索", "sentence_search"),
+  WORD_GENERATION("単語の自動生成", "word_generation"),
+  EXPORT("別形式へのエクスポート", "export"),
+  SETTING("環境設定", "setting"),
+  INDIVIDUAL_SETTING("辞書の個別設定", null),
   SLIME_INDIVIDUAL_SETTING("OneToMany形式", "slime_individual_setting", INDIVIDUAL_SETTING),
-  SPECIFICATION("単語API", null, null),
+  SPECIFICATION("単語API", null),
   SLIME_SPECIFICATION("OneToMany形式", "slime_specification", SPECIFICATION),
   PERSONAL_SPECIFICATION("PDIC形式", "personal_specification", SPECIFICATION),
-  GIT("Git", "git", null),
-  PLUGIN("プラグイン", "plugin", null),
-  TOOL("ツール", null, null),
+  GIT("Git", "git"),
+  PLUGIN("プラグイン", "plugin"),
+  TOOL("ツール", null),
   HAH_COMPRESSION("hah圧縮", "hah_compression", TOOL),
   AKRANTIAIN("akrantiain", "akrantiain", TOOL),
   ZATLIN("Zatlin", "zatlin", TOOL),
   EASY_NAME_GENERATION("簡易単語生成", "easy_name_generation", TOOL),
-  SHORTCUT("ショートカットキー", "shortcut", null),
-  OTHER("その他", "other", null),
-  LICENSE("ライセンス", "license", null),
-  DICTIONARY_TYPE("各形式について", "dictionary_type", null)
+  SHORTCUT("ショートカットキー", "shortcut"),
+  OTHER("その他", "other"),
+  LICENSE("ライセンス", "license"),
+  DICTIONARY_TYPE("各形式について", "dictionary_type")
 
   private static final String RESOURCE_DIRECTORY = "resource/help/"
 
   private String $name = null
   private String $path = null
   private HelpSection $parent = null
+
+  private HelpSection(String name, String path) {
+    $name = name
+    $path = path
+  }
 
   private HelpSection(String name, String path, HelpSection parent) {
     $name = name
