@@ -117,6 +117,7 @@ private static enum HelpSection {
   SPECIFICATION("単語API", null, null),
   SLIME_SPECIFICATION("OneToMany形式", "slime_specification", SPECIFICATION),
   PERSONAL_SPECIFICATION("PDIC形式", "personal_specification", SPECIFICATION),
+  GIT("Git", "git", null),
   PLUGIN("プラグイン", "plugin", null),
   TOOL("ツール", null, null),
   HAH_COMPRESSION("hah圧縮", "hah_compression", TOOL),
