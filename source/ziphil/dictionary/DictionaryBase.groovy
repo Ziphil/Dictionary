@@ -148,7 +148,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     $filteredWords = FilteredList.new($words)
     $sortedWords = SortedList.new($filteredWords, createWordComparator())
     $shufflableWords = ShufflableList.new($sortedWords)
-    $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
+    $filteredSuggestions = FilteredList.new($suggestions){false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
   }
 
