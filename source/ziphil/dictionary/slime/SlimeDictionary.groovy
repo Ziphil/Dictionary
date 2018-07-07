@@ -52,7 +52,6 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   }
 
   protected void prepare() {
-    setupWords()
     setupSuggestions()
   }
 
@@ -476,8 +475,14 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     return punctuation
   }
 
-  private void setupWords() {
-    $sortedWords.setComparator() { SlimeWord firstWord, SlimeWord secondWord ->
+  private void setupSuggestions() {
+    SlimeSuggestion suggestion = SlimeSuggestion.new()
+    suggestion.setDictionary(this)
+    $suggestions.add(suggestion)
+  }
+
+  protected Comparator<? super SlimeWord> createWordComparator() {
+    Comparator<SlimeWord> comparator = { SlimeWord firstWord, SlimeWord secondWord ->
       Int firstId = firstWord.getId()
       Int secondId = secondWord.getId()
       String firstString = firstWord.getComparisonString()
@@ -489,12 +494,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
         return result
       }
     }
-  }
-
-  private void setupSuggestions() {
-    SlimeSuggestion suggestion = SlimeSuggestion.new()
-    suggestion.setDictionary(this)
-    $suggestions.add(suggestion)
+    return comparator
   }
 
   protected ConjugationResolver createConjugationResolver() {

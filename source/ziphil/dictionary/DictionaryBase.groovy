@@ -146,7 +146,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
 
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords)
+    $sortedWords = SortedList.new($filteredWords, createWordComparator())
     $shufflableWords = ShufflableList.new($sortedWords)
     $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
@@ -170,6 +170,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
   public Int totalWordSize() {
     return $words.size()
   }
+
+  protected abstract Comparator<? super W> createWordComparator()
 
   protected abstract ConjugationResolver createConjugationResolver()
 

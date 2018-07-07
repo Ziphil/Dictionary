@@ -27,7 +27,6 @@ public class PersonalDictionary extends EditableDictionaryBase<PersonalWord, Sug
   }
 
   protected void prepare() {
-    setupWords()
   }
 
   public PersonalWord createWord(String defaultName) {
@@ -88,10 +87,11 @@ public class PersonalDictionary extends EditableDictionaryBase<PersonalWord, Sug
     return dictionary
   }
 
-  private void setupWords() {
-    $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
+  protected Comparator<? super PersonalWord> createWordComparator() {
+    Comparator<PersonalWord> comparator = { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+    return comparator
   }
 
   protected ConjugationResolver createConjugationResolver() {

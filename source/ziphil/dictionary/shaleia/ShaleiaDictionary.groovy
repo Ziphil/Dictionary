@@ -43,7 +43,6 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
   }
 
   protected void prepare() {
-    setupWords()
     setupSuggestions()
   }
 
@@ -160,14 +159,6 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
     return dictionary
   }
 
-  private void setupWords() {
-    $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
-      String firstString = firstWord.getComparisonString()
-      String secondString = secondWord.getComparisonString()
-      return firstString <=> secondString
-    }
-  }
-
   private void setupSuggestions() {
     ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
     ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
@@ -178,6 +169,15 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
 
   public Int totalWordSize() {
     return $words.size() - $systemWordSize
+  }
+
+  protected Comparator<? super ShaleiaWord> createWordComparator() {
+    Comparator<ShaleiaWord> comparator = { ShaleiaWord firstWord, ShaleiaWord secondWord ->
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      return firstString <=> secondString
+    }
+    return comparator
   }
 
   protected ConjugationResolver createConjugationResolver() {
