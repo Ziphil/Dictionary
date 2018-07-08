@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import java.awt.Desktop
+import java.awt.GraphicsEnvironment
 import javafx.fxml.FXML
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
@@ -80,8 +81,15 @@ public class HelpController extends Controller<Void> {
             EventListener eventListener = { Event innerEvent ->
               HTMLAnchorElement target = (HTMLAnchorElement)innerEvent.getCurrentTarget()
               URI uri = URI.new(target.getHref())
-              Desktop desktop = Desktop.getDesktop()
-              desktop.browse(uri)
+              if (Desktop.isDesktopSupported() && !GraphicsEnvironment.isHeadless()) {
+                Desktop desktop = Desktop.getDesktop()
+                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                  try {
+                    desktop.browse(uri)
+                  } catch (Exception exception) {
+                  }
+                }
+              }
               innerEvent.preventDefault()
             }
             ((EventTarget)node).addEventListener("click", eventListener, false)
