@@ -2,17 +2,25 @@ package ziphil.dictionary.personal
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
+import ziphil.controller.Controller
+import ziphil.controller.PersonalEditorController
+import ziphil.custom.UtilityStage
+import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
+import ziphil.dictionary.SearchParameter
+import ziphil.dictionary.Word
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionaryFactory extends DictionaryFactory {
+public class PersonalDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "PDIC-CSV形式"
   private static final String EXTENSION = "csv"
@@ -38,6 +46,26 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
     return saver
   }
 
+  public Controller createSearcherController(UtilityStage<SearchParameter> stage, Dictionary dictionary) {
+    return null
+  }
+
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+    return null
+  }
+
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    PersonalEditorController controller = PersonalEditorController.new(stage)
+    controller.prepare((PersonalWord)word)
+    return controller
+  }
+
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    PersonalEditorController controller = PersonalEditorController.new(stage)
+    controller.prepare((PersonalWord)word, true)
+    return controller
+  }
+
   public Image createIcon() {
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream(ICON_PATH))
     return icon
@@ -45,6 +73,14 @@ public class PersonalDictionaryFactory extends DictionaryFactory {
 
   public Boolean isCreatable() {
     return true
+  }
+
+  public Boolean isSearcherSupported(Dictionary dictionary) {
+    return false
+  }
+
+  public Boolean isIndividualSettingSupported(Dictionary dictionary) {
+    return false
   }
 
   public String getName() {

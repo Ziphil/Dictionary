@@ -65,6 +65,14 @@ public abstract class DictionaryFactory {
     dictionary.save(exporter)
   }
 
+  protected abstract Loader createLoader(File file)
+
+  protected abstract Saver createSaver()
+
+  public abstract Controller createSearcherController(UtilityStage<SearchParameter> stage, Dictionary dictionary)
+
+  public abstract Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting)
+
   public Controller createConvertConfigController(UtilityStage<?> stage, Dictionary sourceDictionary) {
     Controller controller = null
     if (sourceDictionary.getDictionaryFactory() != this) {
@@ -89,16 +97,18 @@ public abstract class DictionaryFactory {
     return controller
   }
 
-  protected abstract Loader createLoader(File file)
-
-  protected abstract Saver createSaver()
-
   public abstract Image createIcon()
 
   public ExtensionFilter createExtensionFilter() {
     ExtensionFilter extensionFilter = ExtensionFilter.new(getName(), getExtension())
     return extensionFilter
   }
+
+  public abstract Boolean isCreatable()
+
+  public abstract Boolean isSearcherSupported(Dictionary dictionary)
+
+  public abstract Boolean isIndividualSettingSupported(Dictionary dictionary)
 
   public Boolean isConvertableFrom(Dictionary sourceDictionary) {
     if (sourceDictionary.getDictionaryFactory() != this) {
@@ -120,8 +130,6 @@ public abstract class DictionaryFactory {
       }
     }
   }
-
-  public abstract Boolean isCreatable()
 
   public abstract String getName()
 

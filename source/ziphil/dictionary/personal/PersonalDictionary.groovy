@@ -3,11 +3,8 @@ package ziphil.dictionary.personal
 import groovy.transform.CompileStatic
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerFactory
+import ziphil.dictionary.EditableDictionaryBase
 import ziphil.dictionary.EmptyConjugationResolver
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.Loader
@@ -19,10 +16,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion> implements EditableDictionary<PersonalWord, PersonalWord> {
-
-  private ControllerFactory $controllerFactory = PersonalControllerFactory.new(this)
-  private EditorControllerFactory $editorControllerFactory = PersonalEditorControllerFactory.new(this)
+public class PersonalDictionary extends EditableDictionaryBase<PersonalWord, Suggestion, PersonalDictionaryFactory> {
 
   public PersonalDictionary(String name, String path) {
     super(name, path)
@@ -33,48 +27,6 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
   }
 
   protected void prepare() {
-    setupWords()
-  }
-
-  public void modifyWord(PersonalWord oldWord, PersonalWord newWord) {
-    $changed = true
-  }
-
-  public void addWord(PersonalWord word) {
-    $words.add(word)
-    $changed = true
-  }
-
-  public void addWords(List<? extends PersonalWord> words) {
-    $words.addAll(words)
-    $changed = true
-  }
-
-  public void removeWord(PersonalWord word) {
-    $words.remove(word)
-    $changed = true
-  }
-
-  public void removeWords(List<? extends PersonalWord> words) {
-    $words.removeAll(words)
-    $changed = true
-  }
-
-  public void mergeWord(PersonalWord mergedWord, PersonalWord removedWord) {
-    $words.remove(removedWord)
-    $changed = true
-  }
-
-  private void update() {
-    $changed = true
-  }
-
-  public void updateFirst() {
-    $changed = true
-  }
-
-  public void updateMinimum() {
-    $changed = true
   }
 
   public PersonalWord createWord(String defaultName) {
@@ -135,23 +87,16 @@ public class PersonalDictionary extends DictionaryBase<PersonalWord, Suggestion>
     return dictionary
   }
 
-  private void setupWords() {
-    $sortedWords.setComparator() { PersonalWord firstWord, PersonalWord secondWord ->
+  protected Comparator<? super PersonalWord> createWordComparator() {
+    Comparator<PersonalWord> comparator = { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }
+    return comparator
   }
 
   protected ConjugationResolver createConjugationResolver() {
     EmptyConjugationResolver conjugationResolver = EmptyConjugationResolver.new($suggestions)
     return conjugationResolver
-  }
-
-  public ControllerFactory getControllerFactory() {
-    return $controllerFactory
-  }
-
-  public EditorControllerFactory getEditorControllerFactory() {
-    return $editorControllerFactory
   }
 
 }

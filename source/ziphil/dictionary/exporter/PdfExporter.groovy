@@ -13,9 +13,6 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.sax.SAXResult
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
-import org.apache.fop.apps.FopFactory
-import org.apache.fop.apps.Fop
-import org.apache.fop.apps.MimeConstants
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Saver
 import ziphil.module.Setting
@@ -37,37 +34,11 @@ public abstract class PdfExporter<D extends Dictionary, C extends PdfExportConfi
   protected BooleanClass save() {
     saveTemporary()
     updateProgress(1, 2)
-    transform()
+    transformFormat()
+    executeExternalCommand()
     deleteTemporary()
     updateProgress(2, 2)
     return true
-  }
-
-  private void transform() {
-    if ($config.getExternalCommand() != null) {
-      transformFormat()
-      executeExternalCommand()
-    } else {
-      transformPdf()
-    }
-  }
-
-  private void transformPdf() {
-    File file = File.new($path)
-    File temporaryFile = File.new($path.replaceAll(/\.\w+$/, "_temp.xml"))
-    BufferedOutputStream stream = file.newOutputStream()
-    BufferedInputStream temporaryStream = temporaryFile.newInputStream()
-    try {
-      FopFactory fopFactory = FopFactory.newInstance(File.new(".").toURI(), getClass().getClassLoader().getResourceAsStream(CONFIG_PATH))
-      Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, stream)
-      Result result = SAXResult.new(fop.getDefaultHandler())
-      Source source = StreamSource.new(temporaryStream)
-      Transformer transformer = createTransformer()
-      transformer.transform(source, result)
-    } finally {
-      stream.close()
-      temporaryStream.close()
-    }
   }
 
   private void transformFormat() {

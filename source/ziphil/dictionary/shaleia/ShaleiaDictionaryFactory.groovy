@@ -2,17 +2,27 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import javafx.scene.image.Image
+import ziphil.controller.Controller
+import ziphil.controller.ShaleiaIndividualSettingController
+import ziphil.controller.ShaleiaEditorController
+import ziphil.controller.ShaleiaSearcherController
+import ziphil.custom.UtilityStage
+import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryFactory
+import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
+import ziphil.dictionary.SearchParameter
+import ziphil.dictionary.Word
+import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.slime.SlimeDictionary
+import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionaryFactory extends DictionaryFactory {
+public class ShaleiaDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "シャレイア語辞典形式"
   private static final String EXTENSION = "xdc"
@@ -38,12 +48,43 @@ public class ShaleiaDictionaryFactory extends DictionaryFactory {
     return saver
   }
 
+  public Controller createSearcherController(UtilityStage<SearchParameter> stage, Dictionary dictionary) {
+    ShaleiaSearcherController controller = ShaleiaSearcherController.new(stage)
+    return controller
+  }
+
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+    ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(stage)
+    controller.prepare((ShaleiaDictionary)dictionary)
+    return controller
+  }
+
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+    controller.prepare((ShaleiaWord)word)
+    return controller
+  }
+
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+    ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
+    controller.prepare((ShaleiaWord)word, true)
+    return controller
+  }
+
   public Image createIcon() {
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream(ICON_PATH))
     return icon
   }
 
   public Boolean isCreatable() {
+    return false
+  }
+
+  public Boolean isSearcherSupported(Dictionary dictionary) {
+    return true
+  }
+
+  public Boolean isIndividualSettingSupported(Dictionary dictionary) {
     return true
   }
 

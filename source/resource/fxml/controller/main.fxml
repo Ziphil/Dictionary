@@ -152,6 +152,16 @@
         <SeparatorMenuItem/>
         <MenuItem styleClass="option,nonnull" text="統計" onAction="#showStatistics" accelerator="Shortcut+Shift+K"/>
       </Menu>
+      <Menu text="Git">
+        <MenuItem styleClass="option,nonnull" text="Git init" onAction="#gitInit">
+          <graphic>
+            <ImageView><Image url="@../../icon/empty.png"/></ImageView>
+          </graphic>
+        </MenuItem>
+        <MenuItem styleClass="option,nonnull" text="Git add/commit" onAction="#gitAddCommit" accelerator="Shortcut+Alt+C"/>
+        <MenuItem styleClass="option,nonnull" text="Git checkout" onAction="#gitCheckout"/>
+        <MenuItem styleClass="option,nonnull" text="Git push" onAction="#gitPush" accelerator="Shortcut+Alt+P"/>
+      </Menu>
       <Menu fx:id="$pluginMenu" text="プラグイン"/>
       <Menu text="ツール">
         <MenuItem text="hah圧縮" onAction="#executeHahCompression" accelerator="Shortcut+Alt+H">

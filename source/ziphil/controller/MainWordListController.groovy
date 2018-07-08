@@ -39,17 +39,27 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javax.script.ScriptException
+import org.eclipse.jgit.api.AddCommand
+import org.eclipse.jgit.api.CheckoutCommand
+import org.eclipse.jgit.api.CommitCommand
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.InitCommand
+import org.eclipse.jgit.api.PushCommand
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.lib.RepositoryBuilder
 import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
+import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Element
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.IndividualSetting
@@ -78,6 +88,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/main_word_list.fxml"
   private static final String EXCEPTION_OUTPUT_PATH = "data/log/exception.txt"
   private static final String SCRIPT_EXCEPTION_OUTPUT_PATH = "data/log/script_exception.txt"
+  private static final String GIT_EXCEPTION_OUTPUT_PATH = "data/log/git_exception.txt"
 
   @FXML private ContextMenu $editMenu
   @FXML private RefreshableListView<Element> $wordView
@@ -91,6 +102,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @FXML private Label $elapsedTimeLabel
   @FXML private VBox $loadingBox
   @FXML private ProgressIndicator $progressIndicator
+  private MainController $mainController
   private ClosableTab $tab
   private Dictionary $dictionary
   private IndividualSetting $individualSetting = null
@@ -99,8 +111,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
 
-  public MainWordListController(Stage stage, ClosableTab tab) {
+  public MainWordListController(Stage stage, MainController mainController, ClosableTab tab) {
     super(stage)
+    $mainController = mainController
     $tab = tab
     loadOriginalResource()
     setupHistory()
@@ -144,7 +157,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void searchDetail() {
     UtilityStage<SearchParameter> nextStage = createStage(null)
-    Controller controller = $dictionary.getControllerFactory().createSearcherController(nextStage)
+    Controller controller = $dictionary.getDictionaryFactory().createSearcherController(nextStage, $dictionary)
     nextStage.showAndWait()
     if (nextStage.isCommitted()) {
       SearchParameter parameter = nextStage.getResult()
@@ -275,11 +288,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void modifyWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, word, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -335,10 +349,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addWord(String defaultName) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = createStage(null, null)
-      Controller controller = $dictionary.getEditorControllerFactory().createCreatorController(nextStage, newWord, $temporarySetting)      
+      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -363,11 +378,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void addInheritedWord(Element word) {
     if ($dictionary instanceof EditableDictionary) {
+      EditableDictionaryFactory dictionaryFactory = $dictionary.getDictionaryFactory()
       if (word != null && word instanceof Word) {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = $dictionary.getEditorControllerFactory().createEditorController(nextStage, newWord, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -470,7 +486,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  public Class<?> calculateWordClass() {
+  private Class<?> calculateWordClass() {
     Class<?> wordClass = null
     for (Type type : $dictionary.getClass().getGenericInterfaces()) {
       if (type instanceof ParameterizedType) {
@@ -484,9 +500,119 @@ public class MainWordListController extends PrimitiveController<Stage> {
     return wordClass
   }
 
+  private Git createGit() {
+    File file = File.new($dictionary.getPath())
+    RepositoryBuilder builder = RepositoryBuilder.new()
+    builder.setMustExist(true)
+    builder.findGitDir(file.getParentFile())
+    try {
+      Repository repository = builder.build()
+      Git git = Git.new(repository)
+      return git
+    } catch (Exception exception) {
+      showErrorDialog("missingRepository")
+      return null
+    }
+  }
+
+  public void gitInit() {
+    File file = File.new($dictionary.getPath())
+    File gitFile = File.new(file.getParentFile().toString() + ".git")
+    if (gitFile.exists()) {
+      InitCommand command = Git.init().setDirectory(file.getParentFile())
+      Task<Void> gitter = SimpleTask.new() {
+        command.call()
+      }
+      runAndUpdateGitter(gitter)
+    } else {
+      showErrorDialog("repositoryAlreadyExists")
+    }
+  }
+
+  public void gitAddCommit() {
+    Git git = createGit()
+    if (git != null) {
+      UtilityStage<CommitCommand> nextStage = createStage()
+      GitCommitConfigController controller = GitCommitConfigController.new(nextStage)
+      controller.prepare(git)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        File file = File.new($dictionary.getPath())
+        File gitRoot = git.getRepository().getWorkTree()
+        String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
+        AddCommand addCommand = git.add().addFilepattern(relativePath)
+        CommitCommand commitCommand = nextStage.getResult()
+        Task<Void> gitter = SimpleTask.new() {
+          addCommand.call()
+          commitCommand.call()
+        }
+        runAndUpdateGitter(gitter)
+      }
+      git.close()
+    }
+  }
+
+  public void gitCheckout() {
+    Git git = createGit()
+    if (git != null) {
+      File file = File.new($dictionary.getPath())
+      File gitRoot = git.getRepository().getWorkTree()
+      String relativePath = gitRoot.toURI().relativize(file.toURI()).toString()
+      CheckoutCommand command = git.checkout().addPath(relativePath)
+      Task<Void> gitter = SimpleTask.new() {
+        command.call()
+      }
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $mainController.reopenDictionary()
+      }
+      runAndUpdateGitter(gitter)
+      git.close()
+    }
+  }
+
+  public void gitPush() {
+    Git git = createGit()
+    if (git != null) {
+      UtilityStage<PushCommand> nextStage = createStage()
+      GitPushConfigController controller = GitPushConfigController.new(nextStage)
+      controller.prepare(git)
+      nextStage.showAndWait()
+      if (nextStage.isCommitted()) {
+        PushCommand command = nextStage.getResult()
+        Task<Void> gitter = SimpleTask.new() {
+          command.call()
+        }
+        runAndUpdateGitter(gitter)
+      }
+      git.close()
+    }
+  }
+
+  private void runAndUpdateGitter(Task<?> gitter) {
+    if (gitter != null) {
+      Thread thread = Thread.new(gitter)
+      thread.setDaemon(false)
+      thread.start()
+      $progressBar.setVisible(true)
+      $progressBar.progressProperty().bind(gitter.progressProperty())
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+        $progressBar.setVisible(false)
+      }
+      gitter.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED) { WorkerStateEvent event ->
+        $progressBar.setVisible(false)
+        failGit(event.getSource().getException())
+      }
+    }
+  } 
+
+  private void failGit(Throwable throwable) {
+    outputStackTrace(throwable, Launcher.BASE_PATH + GIT_EXCEPTION_OUTPUT_PATH)
+    showErrorDialog("failGit")
+  }
+
   private void cancelLoadDictionary() {
     Task<?> loader = $dictionary.getLoader()
-    if (loader != null &&loader.isRunning()) {
+    if (loader != null && loader.isRunning()) {
       loader.cancel()
     }
   }
@@ -527,9 +653,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   public Boolean saveDictionary() {
+    Boolean gitsCommit = Setting.getInstance().getGitsCommitOnSave()
     $dictionary.getDictionaryFactory().save($dictionary)
     if ($dictionary.getSaver() != null) {
       updateSaver()
+      if (gitsCommit) {
+        $dictionary.getSaver().addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED) { WorkerStateEvent event ->
+          gitAddCommit()
+        }
+      }
       return true
     } else {
       showErrorDialog("saveUnsupported")

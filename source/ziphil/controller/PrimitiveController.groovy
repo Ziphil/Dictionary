@@ -31,8 +31,8 @@ public class PrimitiveController<S extends Stage> {
     $stage = stage
   }
 
-  protected <UT> UtilityStage<UT> createStage(Modality modality, Window owner) {
-    UtilityStage<UT> nextStage = UtilityStage.new(StageStyle.UTILITY)
+  protected <U> UtilityStage<U> createStage(Modality modality, Window owner) {
+    UtilityStage<U> nextStage = UtilityStage.new(StageStyle.UTILITY)
     if (modality != null) {
       nextStage.initModality(modality)
     }
@@ -48,11 +48,11 @@ public class PrimitiveController<S extends Stage> {
     return nextStage
   }
 
-  protected <UT> UtilityStage<UT> createStage(Modality modality) {
+  protected <U> UtilityStage<U> createStage(Modality modality) {
     return createStage(modality, $stage)
   }
 
-  protected <UT> UtilityStage<UT> createStage() {
+  protected <U> UtilityStage<U> createStage() {
     return createStage(Modality.WINDOW_MODAL, $stage)
   }
 

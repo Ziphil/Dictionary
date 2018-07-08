@@ -21,7 +21,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class DictionaryBase<W extends Word, S extends Suggestion> implements Dictionary<W> {
+public abstract class DictionaryBase<W extends Word, S extends Suggestion, F extends DictionaryFactory> implements Dictionary<W, F> {
 
   protected String $name = ""
   protected String $path = null
@@ -36,7 +36,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
-  private DictionaryFactory $dictionaryFactory
+  private F $dictionaryFactory
   protected Boolean $changed = false
 
   public DictionaryBase(String name, String path) {
@@ -99,9 +99,13 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     $shufflableWords.shuffle()
   }
 
-  public abstract void updateFirst()
+  public void updateFirst() {
+    $changed = true
+  }
 
-  public abstract void updateMinimum()
+  public void updateMinimum() {
+    $changed = true
+  }
 
   public abstract Object createPlainWord(W word)
 
@@ -142,9 +146,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
 
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords)
+    $sortedWords = SortedList.new($filteredWords, createWordComparator())
     $shufflableWords = ShufflableList.new($sortedWords)
-    $filteredSuggestions = FilteredList.new($suggestions){suggestion -> false}
+    $filteredSuggestions = FilteredList.new($suggestions){false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
   }
 
@@ -166,6 +170,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
   public Int totalWordSize() {
     return $words.size()
   }
+
+  protected abstract Comparator<? super W> createWordComparator()
 
   protected abstract ConjugationResolver createConjugationResolver()
 
@@ -229,11 +235,11 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion> imple
     return $saver
   }
 
-  public DictionaryFactory getDictionaryFactory() {
+  public F getDictionaryFactory() {
     return $dictionaryFactory
   }
 
-  public void setDictionaryFactory(DictionaryFactory dictionaryFactory) {
+  public void setDictionaryFactory(F dictionaryFactory) {
     $dictionaryFactory = dictionaryFactory
   }
 

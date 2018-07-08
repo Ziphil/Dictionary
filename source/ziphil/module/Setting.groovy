@@ -44,6 +44,7 @@ public class Setting {
   private Int $mainWindowHeight = 720
   private String $variationMarker = "→"
   private String $relationMarker = "cf:"
+  private String $defaultGitMessage = "Update"
   private String $scriptName = "javascript"
   private FontRenderingType $fontRenderingType = FontRenderingType.DEFAULT_LCD
   private ClickType $linkClickType = ClickType.PRIMARY
@@ -56,6 +57,7 @@ public class Setting {
   private Boolean $ignoresAccent = false
   private Boolean $ignoresCase = false
   private Boolean $searchesPrefix = true
+  private Boolean $gitsCommitOnSave = false
   private Boolean $ignoresDuplicateSlimeId = true
   private Boolean $showsSlimeId = false
   private Boolean $showsVariation = true
@@ -324,6 +326,14 @@ public class Setting {
     $relationMarker = relationMarker
   }
 
+  public String getDefaultGitMessage() {
+    return $defaultGitMessage
+  }
+
+  public void setDefaultGitMessage(String defaultGitMessage) {
+    $defaultGitMessage = defaultGitMessage
+  }
+
   public String getScriptName() {
     return $scriptName
   }
@@ -418,6 +428,14 @@ public class Setting {
 
   public void setSearchesPrefix(Boolean searchesPrefix) {
     $searchesPrefix = searchesPrefix
+  }
+
+  public Boolean getGitsCommitOnSave() {
+    return $gitsCommitOnSave
+  }
+
+  public void setGitsCommitOnSave(Boolean gitsCommitOnSave) {
+    $gitsCommitOnSave = gitsCommitOnSave
   }
 
   public Boolean getIgnoresDuplicateSlimeId() {

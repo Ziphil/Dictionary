@@ -19,7 +19,6 @@ public class SlimePdfExportConfig extends PdfExportConfig {
   private String $variationMarker = null
   private String $relationMarker = null
   private Boolean $modifies = true
-  private String $externalCommand = null
 
   public String getFirstCaptionFontFamily() {
     return $firstCaptionFontFamily
@@ -115,14 +114,6 @@ public class SlimePdfExportConfig extends PdfExportConfig {
 
   public void setModifies(Boolean modifies) {
     $modifies = modifies
-  }
-
-  public String getExternalCommand() {
-    return $externalCommand
-  }
-
-  public void setExternalCommand(String externalCommand) {
-    $externalCommand = externalCommand
   }
 
 }

@@ -6,11 +6,8 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javafx.concurrent.Task
 import ziphil.dictionary.ConjugationResolver
-import ziphil.dictionary.ControllerFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.DictionaryBase
-import ziphil.dictionary.EditableDictionary
-import ziphil.dictionary.EditorControllerFactory
+import ziphil.dictionary.EditableDictionaryBase
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.Loader
 import ziphil.dictionary.NormalSearchParameter
@@ -27,7 +24,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSuggestion> implements EditableDictionary<ShaleiaWord, ShaleiaWord> {
+public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, ShaleiaSuggestion, ShaleiaDictionaryFactory> {
 
   private String $alphabetOrder = ""
   private String $changeDescription = ""
@@ -36,8 +33,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   private String $akrantiainSource = null
   private String $version = ""
   private Int $systemWordSize = 0
-  private ControllerFactory $controllerFactory = ShaleiaControllerFactory.new(this)
-  private EditorControllerFactory $editorControllerFactory = ShaleiaEditorControllerFactory.new(this)
 
   public ShaleiaDictionary(String name, String path) {
     super(name, path)
@@ -48,42 +43,7 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
   }
 
   protected void prepare() {
-    setupWords()
     setupSuggestions()
-  }
-
-  public void modifyWord(ShaleiaWord oldWord, ShaleiaWord newWord) {
-    $changed = true
-  }
-
-  public void addWord(ShaleiaWord word) {
-    $words.add(word)
-    $changed = true
-  }
-
-  public void addWords(List<? extends ShaleiaWord> words) {
-    $words.addAll(words)
-    $changed = true
-  }
-
-  public void removeWord(ShaleiaWord word) {
-    $words.remove(word)
-    $changed = true
-  }
-
-  public void removeWords(List<? extends ShaleiaWord> words) {
-    $words.removeAll(words)
-    $changed = true
-  }
-
-  public void mergeWord(ShaleiaWord mergedWord, ShaleiaWord removedWord) {
-    $words.remove(removedWord)
-    $changed = true
-  }
-
-  private void update() {
-    calculateSystemWordSize()
-    $changed = true
   }
 
   public void updateFirst() {
@@ -199,14 +159,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return dictionary
   }
 
-  private void setupWords() {
-    $sortedWords.setComparator() { ShaleiaWord firstWord, ShaleiaWord secondWord ->
-      String firstString = firstWord.getComparisonString()
-      String secondString = secondWord.getComparisonString()
-      return firstString <=> secondString
-    }
-  }
-
   private void setupSuggestions() {
     ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
     ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
@@ -219,6 +171,15 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
     return $words.size() - $systemWordSize
   }
 
+  protected Comparator<? super ShaleiaWord> createWordComparator() {
+    Comparator<ShaleiaWord> comparator = { ShaleiaWord firstWord, ShaleiaWord secondWord ->
+      String firstString = firstWord.getComparisonString()
+      String secondString = secondWord.getComparisonString()
+      return firstString <=> secondString
+    }
+    return comparator
+  }
+
   protected ConjugationResolver createConjugationResolver() {
     if ($version == "5.5") {
       ShaleiaConjugationResolver conjugationResolver = ShaleiaAlphaConjugationResolver.new($suggestions, $changes)
@@ -227,14 +188,6 @@ public class ShaleiaDictionary extends DictionaryBase<ShaleiaWord, ShaleiaSugges
       ShaleiaConjugationResolver conjugationResolver = ShaleiaConjugationResolver.new($suggestions, $changes)
       return conjugationResolver
     }
-  }
-
-  public ControllerFactory getControllerFactory() {
-    return $controllerFactory
-  }
-
-  public EditorControllerFactory getEditorControllerFactory() {
-    return $editorControllerFactory
   }
 
   public String getAlphabetOrder() {
