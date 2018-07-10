@@ -11,6 +11,14 @@ public class Strings {
   private static final String ASCII_CHARACTERS = "AaEeIiOoUuAaEeIiOoUuYyAaEeIiOoUuYyAaOoNnAaEeIiOoUuYyAaCcOoUu"
   private static final String UNICODE_CHARACTERS = "ÀàÈèÌìÒòÙùÁáÉéÍíÓóÚúÝýÂâÊêÎîÔôÛûŶŷÃãÕõÑñÄäËëÏïÖöÜüŸÿÅåÇçŐőŰű"
 
+  public static String repeat(String string, Int count) {
+    String result = ""
+    while (count -- > 0) {
+      result += string
+    }
+    return result
+  }
+
   public static String modifyPunctuation(String string) {
     String result = string
     result = result.replaceAll(/(、|。)/, "\$1 ")
