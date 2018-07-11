@@ -125,7 +125,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void initialize() {
-    setupWordView()
     setupWordViewShortcut()
     setupSearchControl()
     setupSearchTypeControl()
@@ -136,6 +135,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $dictionary = dictionary
     $individualSetting = dictionary.createIndividualSetting()
     $temporarySetting = TemporarySetting.new()
+    setupWordView()
     updateLoader()
     updateOnLinkClicked()
   }
@@ -782,7 +782,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @VoidClosure
   private void setupWordView() {
     $wordView.setCellFactory() { ListView<Element> view ->
-      WordCell cell = WordCell.new()
+      WordCell cell = WordCell.new($individualSetting)
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())

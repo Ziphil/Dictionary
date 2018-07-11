@@ -4,14 +4,18 @@ import groovy.transform.CompileStatic
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.Element
+import ziphil.dictionary.IndividualSetting
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
 public class WordCell extends ListCell<Element> {
 
-  public WordCell() {
+  private IndividualSetting $individualSetting
+
+  public WordCell(IndividualSetting individualSetting) {
     super()
+    $individualSetting = individualSetting
   }
 
   protected void updateItem(Element word, Boolean empty) {
