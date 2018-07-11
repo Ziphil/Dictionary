@@ -457,6 +457,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         identifiers.add(identifier)
       }
       $dictionary.change()
+      $wordView.refresh()
     }
   }
 
