@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.Measurement
+import ziphil.dictionary.BadgeType
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchMode
@@ -100,6 +101,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       modifyBreak(mainPane)
       modifyBreak(contentPane)
       modifyBreak(synonymPane)
+      pane.getChildren().add(BadgeType.createImageNode())
       pane.getChildren().add(mainPane)
       if (hasContent) {
         addSeparator(pane)
