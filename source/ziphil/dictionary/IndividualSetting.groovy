@@ -21,8 +21,8 @@ public abstract class IndividualSetting {
   protected Map<BadgeType, Set<String>> $badgedIdentifiers = EnumMap.new(BadgeType)
 
   public void save() {
-    String compressedPath = IndividualSetting.createCompressedPath($path)
-    FileOutputStream stream = FileOutputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+    String savePath = IndividualSetting.createSavePath($path)
+    FileOutputStream stream = FileOutputStream.new(savePath)
     $version = Launcher.VERSION
     try {
       $$mapper.writeValue(stream, this)
@@ -32,10 +32,10 @@ public abstract class IndividualSetting {
   }
 
   protected static <S extends IndividualSetting> S create(Dictionary dictionary, Class<S> clazz) {
-    String compressedPath = IndividualSetting.createCompressedPath(dictionary.getPath())
-    File file = File.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+    String savePath = IndividualSetting.createSavePath(dictionary.getPath())
+    File file = File.new(savePath)
     if (file.exists()) {
-      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+      FileInputStream stream = FileInputStream.new(savePath)
       IndividualSetting instance
       try {
         instance = $$mapper.readValue(stream, clazz)
@@ -53,14 +53,14 @@ public abstract class IndividualSetting {
     }
   }
 
-  private static String createCompressedPath(String path) {
+  private static String createSavePath(String path) {
     String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
     String compressedPath = path
     compressedPath = compressedPath.replaceAll(/\.json$/, ".zpdt")
     compressedPath = compressedPath.replaceAll(/\$/, "\\\$d")
     compressedPath = compressedPath.replaceAll(/:/, "\\\$c")
     compressedPath = compressedPath.replaceAll(separator, "\\\$\\\$")
-    return compressedPath
+    return Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath
   }
 
   private static ObjectMapper createObjectMapper() {
