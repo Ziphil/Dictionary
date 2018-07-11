@@ -57,6 +57,8 @@ public abstract class WordBase implements Word {
     $content = content
   }
 
+  public abstract String getIdentifier()
+
   public PaneFactory getPaneFactory() {
     if ($paneFactory == null) {
       $paneFactory = createPaneFactory()
