@@ -9,9 +9,6 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SimpleIndividualSetting extends IndividualSetting {
 
-  private SimpleIndividualSetting() {
-  }
-
   public static SimpleIndividualSetting create(Dictionary dictionary) {
     return IndividualSetting.create(dictionary, SimpleIndividualSetting)
   }

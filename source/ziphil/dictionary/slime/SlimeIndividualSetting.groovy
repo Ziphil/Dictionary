@@ -15,9 +15,6 @@ public class SlimeIndividualSetting extends IndividualSetting {
   private List<SlimeSearchParameter> $registeredParameters = ArrayList.new()
   private List<String> $registeredParameterNames = ArrayList.new()
 
-  private SlimeIndividualSetting() {
-  }
-
   private void ensureCompatibility() {
     if ($version < Version.new(1, 13, 0)) {
       for (SlimeSearchParameter parameter : $registeredParameters) {
