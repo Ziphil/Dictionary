@@ -17,6 +17,7 @@ public abstract class IndividualSetting {
 
   protected String $path = ""
   protected Version $version = Version.new(-1, 0, 0)
+  protected Map<BadgeType, Set<String>> $badgedIdentifiers = EnumMap.new(BadgeType)
 
   public void save() {
     String compressedPath = IndividualSetting.createCompressedPath($path)
@@ -59,6 +60,14 @@ public abstract class IndividualSetting {
 
   public void setVersion(Version version) {
     $version = version
+  }
+
+  public Map<BadgeType, Set<String>> getBadgedIdentifiers() {
+    return $badgedIdentifiers
+  }
+
+  public void setBadgedIdentifiers(Map<BadgeType, Set<String>> badgedIdentifiers) {
+    $badgedIdentifiers = badgedIdentifiers
   }
 
   public abstract List<SearchParameter> getRegisteredParameters()
