@@ -105,8 +105,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private MainController $mainController
   private ClosableTab $tab
   private Dictionary $dictionary
-  private IndividualSetting $individualSetting = null
-  private TemporarySetting $temporarySetting = null
+  private IndividualSetting $individualSetting
+  private TemporarySetting $temporarySetting
   private SearchHistory $history = null
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())

@@ -176,7 +176,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
   protected abstract ConjugationResolver createConjugationResolver()
 
   public IndividualSetting createIndividualSetting() {
-    return null
+    SimpleIndividualSetting individualSetting = SimpleIndividualSetting.create(this)
+    return individualSetting
   }
 
   public String getName() {
