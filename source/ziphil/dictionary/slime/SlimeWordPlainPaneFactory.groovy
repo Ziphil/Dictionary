@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary> {
+public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary, Pane> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_EQUIVALENT_CLASS = "slime-equivalent"

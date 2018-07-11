@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
@@ -21,7 +22,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary> {
+public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary, ElementPane> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_PRONUNCIATION_CLASS = "slime-pronunciation"
@@ -42,7 +43,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Setting setting = Setting.getInstance()
     Int lineSpacing = setting.getLineSpacing()
     Boolean showsVariation = setting.getShowsVariation()
@@ -93,7 +94,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       addSeparator(pane)
       pane.getChildren().add(relationPane)
     }
-    return pane
+    return ElementPane.new(pane)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {

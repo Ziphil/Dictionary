@@ -64,7 +64,7 @@ public class PageBuilder {
     Int endIndex = $separationIndices[columnNumber]
     for (Int i = startIndex ; i < endIndex ; i ++) {
       Element word = $words[i]
-      Pane pane = word.getPaneFactory().create(true)
+      Pane pane = word.getPaneFactory().create(true).getPane()
       column.getChildren().add(pane)
     }
     return column
@@ -81,7 +81,7 @@ public class PageBuilder {
         Boolean last = true
         for (Int j = currentIndex ; j < $endIndex ; j ++) {
           Element word = $words[j]
-          Pane pane = word.getPaneFactory().create(true)
+          Pane pane = word.getPaneFactory().create(true).getPane()
           Parent root = scene.getRoot()
           column.getChildren().add(pane)
           root.applyCss()

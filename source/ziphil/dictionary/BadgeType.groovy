@@ -3,8 +3,6 @@ package ziphil.dictionary
 import groovy.transform.CompileStatic
 import javafx.scene.Node
 import javafx.scene.image.Image
-import javafx.scene.image.ImageView
-import javafx.scene.layout.HBox
 import ziphil.custom.Measurement
 import ziphilib.transform.Ziphilify
 
@@ -31,17 +29,6 @@ public enum BadgeType {
 
   public Image createImage() {
     return Image.new(getClass().getClassLoader().getResourceAsStream(IMAGE_DIRECTORY + $path + ".png"))
-  }
-
-  public static Node createImageNode() {
-    HBox box = HBox.new(Measurement.rpx(3))
-    box.getStyleClass().add("badge-container")
-    for (BadgeType type : BadgeType.values()) {
-      ImageView view = ImageView.new(type.createImage())
-      view.getStyleClass().add(type.getStyleClass())
-      box.getChildren().add(view)
-    }
-    return box
   }
 
   public String getName() {

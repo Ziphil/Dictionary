@@ -1,6 +1,7 @@
 package ziphil.custom
 
 import groovy.transform.CompileStatic
+import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.BadgeType
@@ -26,7 +27,9 @@ public class WordCell extends ListCell<Element> {
       setText(null)
       setGraphic(null)
     } else {
-      Pane graphic = word.getPaneFactory().create(false)
+      ElementPane pane = word.getPaneFactory().create(false)
+      Pane graphic = pane.getPane()
+      Map<BadgeType, Node> badgeNodes = pane.getBadgeNodes()
       graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       if (word instanceof Word) {
         Int styleClassSize = getStyleClass().size()
@@ -35,7 +38,12 @@ public class WordCell extends ListCell<Element> {
         }
         for (Map.Entry<BadgeType, Set<String>> entry : $individualSetting.getBadgedIdentifiers()) {
           BadgeType type = entry.getKey()
-          if (entry.getValue().contains(word.getIdentifier())) {
+          Boolean contains = entry.getValue().contains(word.getIdentifier())
+          if (badgeNodes != null) {
+            badgeNodes[type].setVisible(contains)
+            badgeNodes[type].setManaged(contains)
+          }
+          if (contains) {
             getStyleClass().add(type.getStyleClass())
           }
         }

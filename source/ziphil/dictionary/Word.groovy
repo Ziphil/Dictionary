@@ -21,6 +21,6 @@ public interface Word extends Element {
 
   public String getIdentifier()
 
-  public PaneFactory getPlainPaneFactory()
+  public PaneFactory<Pane> getPlainPaneFactory()
 
 }

@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
 import ziphil.dictionary.BadgeType
 import ziphil.dictionary.NormalSearchParameter
@@ -26,7 +27,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary, ElementPane> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_PRONUNCIATION_CLASS = "shaleia-pronunciation"
@@ -57,9 +58,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     VBox pane = VBox.new()
+    Map<BadgeType, Node> badgeNodes = EnumMap.new(BadgeType)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     TextFlow synonymPane = TextFlow.new()
@@ -101,7 +103,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       modifyBreak(mainPane)
       modifyBreak(contentPane)
       modifyBreak(synonymPane)
-      pane.getChildren().add(BadgeType.createImageNode())
+      addBadgeNodes(pane, badgeNodes)
       pane.getChildren().add(mainPane)
       if (hasContent) {
         addSeparator(pane)
@@ -114,7 +116,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     } finally {
       reader.close()
     }
-    return pane
+    return ElementPane.new(pane, badgeNodes)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {

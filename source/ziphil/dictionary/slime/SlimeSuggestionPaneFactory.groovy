@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -15,7 +16,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeSuggestionPaneFactory extends PaneFactoryBase<SlimeSuggestion, SlimeDictionary> {
+public class SlimeSuggestionPaneFactory extends PaneFactoryBase<SlimeSuggestion, SlimeDictionary, ElementPane> {
 
   public static final String SLIME_LINK_CLASS = "slime-link"
   public static final String SLIME_POSSIBILITY_CLASS = "slime-possibility"
@@ -28,7 +29,7 @@ public class SlimeSuggestionPaneFactory extends PaneFactoryBase<SlimeSuggestion,
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
@@ -37,7 +38,7 @@ public class SlimeSuggestionPaneFactory extends PaneFactoryBase<SlimeSuggestion,
       addPossibilityNode(pane, possibility.createParameter(), possibility.getWord().getName(), possibility.getTitle())
     }
     modifyBreak(pane)
-    return pane
+    return ElementPane.new(pane)
   }
 
   private void addPossibilityNode(TextFlow pane, SearchParameter parameter, String name, String title) {
