@@ -64,7 +64,7 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary, P
     HBox box = HBox.new(Measurement.rpx(2))
     Text text = Text.new(" ")
     for (BadgeType type : BadgeType.values()) {
-      ImageView view = ImageView.new(type.createImage())       
+      ImageView view = ImageView.new(type.getImage())       
       view.getStyleClass().add(type.getStyleClass())
       box.getChildren().add(view)
       badgeNodes[type] = view

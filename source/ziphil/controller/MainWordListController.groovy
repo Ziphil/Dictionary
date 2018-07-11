@@ -852,7 +852,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       BadgeType cachedType = type
       MenuItem item = MenuItem.new()
       item.setText(type.getName())
-      item.setGraphic(ImageView.new(type.createImage()))
+      item.setGraphic(ImageView.new(type.getImage()))
       item.setOnAction() {
         badgeWords(cachedType)
       }

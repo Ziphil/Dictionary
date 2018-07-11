@@ -23,16 +23,12 @@ public enum BadgeType {
 
   private String $name
   private String $styleClass
-  private String $path
+  private Image $image
 
   private BadgeType(String name, String styleClass, String path) {
     $name = name
     $styleClass = styleClass
-    $path = path
-  }
-
-  public Image createImage() {
-    return Image.new(getClass().getClassLoader().getResourceAsStream(IMAGE_DIRECTORY + $path + ".png"))
+    $image = Image.new(getClass().getClassLoader().getResourceAsStream(IMAGE_DIRECTORY + path + ".png"))
   }
 
   public String getName() {
@@ -41,6 +37,10 @@ public enum BadgeType {
 
   public String getStyleClass() {
     return $styleClass
+  }
+
+  public Image getImage() {
+    return $image
   }
 
 }
