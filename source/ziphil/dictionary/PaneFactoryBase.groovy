@@ -1,6 +1,8 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.beans.value.ObservableValue
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
@@ -59,15 +61,30 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary, P
   }
 
   protected void addBadgeNodes(Pane pane, Map<BadgeType, Node> badgeNodes) {
-    HBox box = HBox.new(Measurement.rpx(3))
+    HBox box = HBox.new(Measurement.rpx(2))
+    Text text = Text.new(" ")
     for (BadgeType type : BadgeType.values()) {
-      ImageView view = ImageView.new(type.createImage())
+      ImageView view = ImageView.new(type.createImage())       
       view.getStyleClass().add(type.getStyleClass())
       box.getChildren().add(view)
       badgeNodes[type] = view
     }
+    box.setAlignment(Pos.BASELINE_CENTER)
     box.getStyleClass().add(BADGE_CONTAINER_CLASS)
-    pane.getChildren().add(box)
+    pane.getChildren().addAll(box, text)
+    for (Map.Entry<BadgeType, Node> entry : badgeNodes) {
+      entry.getValue().managedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+        Boolean anyManaged = false
+        for (Map.Entry<BadgeType, Node> otherEntry : badgeNodes) {
+          if (otherEntry.getValue().isManaged()) {
+            anyManaged = true
+            break
+          }
+        }
+        text.setVisible(anyManaged)
+        text.setManaged(anyManaged)
+      }
+    }
   }
 
   protected void modifyBreak(TextFlow pane) {

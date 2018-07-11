@@ -75,6 +75,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       while (reader.readLine() != null) {
         if (mainPane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
+          addBadgeNodes(mainPane, badgeNodes)
           addNameNode(mainPane, name, $word.createPronunciation())
         }
         if (reader.findCreationDate()) {
@@ -103,7 +104,6 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       modifyBreak(mainPane)
       modifyBreak(contentPane)
       modifyBreak(synonymPane)
-      addBadgeNodes(pane, badgeNodes)
       pane.getChildren().add(mainPane)
       if (hasContent) {
         addSeparator(pane)
