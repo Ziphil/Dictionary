@@ -13,7 +13,11 @@ public enum BadgeType {
   CIRCLE("マーク1", "circle-badge", "circle"),
   SQUARE("マーク2", "square-badge", "square"),
   UP_TRIANGLE("マーク3", "up-triangle-badge", "up_triangle"),
-  DOWN_TRIANGLE("マーク4", "down-triangle-badge", "down_triangle")
+  DIAMOND("マーク4", "diamond-badge", "diamond"),
+  DOWN_TRIANGLE("マーク5", "down-triangle-badge", "down_triangle"),
+  CROSS("マーク6", "cross-badge", "cross"),
+  DROP("マーク7", "drop-badge", "drop"),
+  HEART("マーク8", "heart-badge", "heart")
 
   private static final String IMAGE_DIRECTORY = "resource/image/badge/"
 
