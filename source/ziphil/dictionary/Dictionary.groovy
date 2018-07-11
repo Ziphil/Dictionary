@@ -23,6 +23,10 @@ public interface Dictionary<W extends Word, F extends DictionaryFactory> {
   // 単語データリスト以外の個別設定などが変更されたときに呼び出されることが想定されています。
   public void updateMinimum()
 
+  // この辞書データに関して何らかの更新が行われたことを通知します。
+  // 辞書データそのものは変更されておらず、個別設定のみが変更されたときに呼び出されることが想定されています。
+  public void change()
+
   public Object createPlainWord(W word)
 
   // 同じ単語データをもつ辞書オブジェクトを作成します。

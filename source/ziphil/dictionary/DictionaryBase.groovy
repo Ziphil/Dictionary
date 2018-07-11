@@ -107,6 +107,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     $changed = true
   }
 
+  public void change() {
+    $changed = true
+  }
+
   public abstract Object createPlainWord(W word)
 
   public abstract Dictionary copy()

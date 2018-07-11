@@ -451,6 +451,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         $individualSetting.getBadgedIdentifiers()[type] = identifiers
       }
       identifiers.add(word.getIdentifier())
+      $dictionary.change()
     }
   }
 
