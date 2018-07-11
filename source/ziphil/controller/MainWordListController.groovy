@@ -53,11 +53,11 @@ import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
+import ziphil.custom.ElementCell
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
-import ziphil.custom.WordCell
 import ziphil.dictionary.BadgeType
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
@@ -782,7 +782,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @VoidClosure
   private void setupWordView() {
     $wordView.setCellFactory() { ListView<Element> view ->
-      WordCell cell = WordCell.new($individualSetting)
+      ElementCell cell = ElementCell.new($individualSetting)
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())

@@ -12,11 +12,11 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class WordCell extends ListCell<Element> {
+public class ElementCell extends ListCell<Element> {
 
   private IndividualSetting $individualSetting
 
-  public WordCell(IndividualSetting individualSetting) {
+  public ElementCell(IndividualSetting individualSetting) {
     super()
     $individualSetting = individualSetting
   }
