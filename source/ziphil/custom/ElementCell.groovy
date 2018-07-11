@@ -36,9 +36,9 @@ public class ElementCell extends ListCell<Element> {
         for (int i = 0 ; i < styleClassSize - 3 ; i ++) {
           getStyleClass().removeLast()
         }
-        for (Map.Entry<BadgeType, Set<String>> entry : $individualSetting.getBadgedIdentifiers()) {
-          BadgeType type = entry.getKey()
-          Boolean contains = entry.getValue().contains(word.getIdentifier())
+        Map<BadgeType, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
+        for (BadgeType type : BadgeType.values()) {
+          Boolean contains = (badgedIdentifiers[type] != null) ? badgedIdentifiers[type].contains(word.getIdentifier()) : false
           if (badgeNodes != null) {
             badgeNodes[type].setVisible(contains)
             badgeNodes[type].setManaged(contains)
