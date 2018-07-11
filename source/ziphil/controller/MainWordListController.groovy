@@ -443,6 +443,24 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
+  private void badgeWord(Element word, BadgeType type) {
+    if (word != null && word instanceof Word) {
+      Set<String> identifiers = $individualSetting.getBadgedIdentifiers()[type]
+      if (identifiers == null) {
+        identifiers = HashSet.new()
+        $individualSetting.getBadgedIdentifiers()[type] = identifiers
+      }
+      identifiers.add(word.getIdentifier())
+    }
+  }
+
+  private void badgeWords(BadgeType type) {
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      badgeWord(word, type)
+    }
+  }
+
   private void cutOrCopyWords(Boolean copy) {
     if ($dictionary instanceof EditableDictionary) {
       List<Element> candidates = $wordView.getSelectionModel().getSelectedItems()
@@ -826,6 +844,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
       BadgeType cachedType = type
       MenuItem item = MenuItem.new()
       item.setText(type.getName())
+      item.setOnAction() {
+        badgeWords(cachedType)
+      }
       $badgeWordMenu.getItems().add(item)
     }
   }
