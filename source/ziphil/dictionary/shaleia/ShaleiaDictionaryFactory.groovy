@@ -26,7 +26,7 @@ public class ShaleiaDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "シャレイア語辞典形式"
   private static final String EXTENSION = "xdc"
-  private static final String ICON_PATH = "resource/icon/xdc_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/xdc_dictionary.png"
 
   protected Dictionary create(File file, Loader loader) {
     if (loader != null) {

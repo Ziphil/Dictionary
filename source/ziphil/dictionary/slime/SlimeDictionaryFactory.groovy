@@ -28,7 +28,7 @@ public class SlimeDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "OneToMany-JSON形式"
   private static final String EXTENSION = "json"
-  private static final String ICON_PATH = "resource/icon/otm_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/otm_dictionary.png"
 
   private static ObjectMapper $$mapper = createObjectMapper()
 

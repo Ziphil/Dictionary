@@ -24,7 +24,7 @@ public class PersonalDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "PDIC-CSV形式"
   private static final String EXTENSION = "csv"
-  private static final String ICON_PATH = "resource/icon/csv_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/csv_dictionary.png"
 
   protected Dictionary create(File file, Loader loader) {
     if (loader != null) {

@@ -12,8 +12,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class DirectoryCell extends TreeCell<File> {
 
-  private static final Image DIRECTORY_ICON = createIcon("resource/icon/directory.png")
-  private static final Image DRIVE_ICON = createIcon("resource/icon/drive.png")
+  private static final Image DIRECTORY_ICON = createIcon("resource/image/menu/directory.png")
+  private static final Image DRIVE_ICON = createIcon("resource/image/menu/drive.png")
 
   public DirectoryCell() {
     super()

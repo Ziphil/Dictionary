@@ -32,7 +32,7 @@
         </Insets>
       </padding>
       <VBox alignment="center"> 
-        <ImageView><Image url="@../../icon/logo.png"/></ImageView>
+        <ImageView><Image url="@../../image/other/logo.png"/></ImageView>
         <Label fx:id="$versionLabel" styleClass="application-version"/>
       </VBox>
       <HBox>
