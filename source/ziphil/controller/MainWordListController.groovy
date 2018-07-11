@@ -31,6 +31,7 @@ import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.control.SelectionMode
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -851,6 +852,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       BadgeType cachedType = type
       MenuItem item = MenuItem.new()
       item.setText(type.getName())
+      item.setGraphic(ImageView.new(type.createImage()))
       item.setOnAction() {
         badgeWords(cachedType)
       }
