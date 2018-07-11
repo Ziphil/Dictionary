@@ -10,14 +10,14 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public enum BadgeType {
 
-  CIRCLE("マーク1", "circle-badge", "circle"),
-  SQUARE("マーク2", "square-badge", "square"),
-  UP_TRIANGLE("マーク3", "up-triangle-badge", "up_triangle"),
-  DIAMOND("マーク4", "diamond-badge", "diamond"),
-  DOWN_TRIANGLE("マーク5", "down-triangle-badge", "down_triangle"),
-  CROSS("マーク6", "cross-badge", "cross"),
-  DROP("マーク7", "drop-badge", "drop"),
-  HEART("マーク8", "heart-badge", "heart")
+  CIRCLE("マーカー1", "circle-badge", "circle"),
+  SQUARE("マーカー2", "square-badge", "square"),
+  UP_TRIANGLE("マーカー3", "up-triangle-badge", "up_triangle"),
+  DIAMOND("マーカー4", "diamond-badge", "diamond"),
+  DOWN_TRIANGLE("マーカー5", "down-triangle-badge", "down_triangle"),
+  CROSS("マーカー6", "cross-badge", "cross"),
+  DROP("マーカー7", "drop-badge", "drop"),
+  HEART("マーカー8", "heart-badge", "heart")
 
   private static final String IMAGE_DIRECTORY = "resource/image/badge/"
 
