@@ -446,11 +446,16 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private void badgeWord(Element word, BadgeType type) {
     if (word != null && word instanceof Word) {
       Set<String> identifiers = $individualSetting.getBadgedIdentifiers()[type]
+      String identifier = word.getIdentifier()
       if (identifiers == null) {
         identifiers = HashSet.new()
         $individualSetting.getBadgedIdentifiers()[type] = identifiers
       }
-      identifiers.add(word.getIdentifier())
+      if (identifiers.contains(identifier)) {
+        identifiers.remove(identifier)
+      } else {
+        identifiers.add(identifier)
+      }
       $dictionary.change()
     }
   }
