@@ -1,7 +1,6 @@
 package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.core.JsonParseException
 import groovy.transform.CompileStatic
 import ziphil.Launcher
 import ziphil.dictionary.IndividualSetting
@@ -44,26 +43,9 @@ public class SlimeIndividualSetting extends IndividualSetting {
   }
 
   public static SlimeIndividualSetting create(SlimeDictionary dictionary) {
-    String compressedPath = IndividualSetting.createCompressedPath(dictionary.getPath())
-    File file = File.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
-    if (file.exists()) {
-      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
-      SlimeIndividualSetting instance
-      try {
-        instance = $$mapper.readValue(stream, SlimeIndividualSetting)
-      } catch (JsonParseException exception) {
-        instance = SlimeIndividualSetting.new()
-        instance.setPath(dictionary.getPath())
-      } finally {
-        stream.close()
-      }
-      instance.ensureCompatibility()
-      return instance
-    } else {
-      SlimeIndividualSetting instance = SlimeIndividualSetting.new()
-      instance.setPath(dictionary.getPath())
-      return instance
-    }
+    SlimeIndividualSetting instance = IndividualSetting.create(dictionary, SlimeIndividualSetting)
+    instance.ensureCompatibility()
+    return instance
   }
 
   public List<SlimeSearchParameter> getRegisteredParameters() {

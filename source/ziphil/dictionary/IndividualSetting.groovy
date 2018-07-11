@@ -1,5 +1,6 @@
 package ziphil.dictionary
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
@@ -11,9 +12,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public abstract class IndividualSetting {
 
-  protected static final String SETTING_DIRECTORY = "data/setting/individual/"
+  private static final String SETTING_DIRECTORY = "data/setting/individual/"
 
-  protected static ObjectMapper $$mapper = createObjectMapper()
+  private static ObjectMapper $$mapper = createObjectMapper()
 
   protected String $path = ""
   protected Version $version = Version.new(-1, 0, 0)
@@ -30,7 +31,29 @@ public abstract class IndividualSetting {
     }
   }
 
-  protected static String createCompressedPath(String path) {
+  protected static <S extends IndividualSetting> S create(Dictionary dictionary, Class<S> clazz) {
+    String compressedPath = IndividualSetting.createCompressedPath(dictionary.getPath())
+    File file = File.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+    if (file.exists()) {
+      FileInputStream stream = FileInputStream.new(Launcher.BASE_PATH + SETTING_DIRECTORY + compressedPath)
+      IndividualSetting instance
+      try {
+        instance = $$mapper.readValue(stream, clazz)
+      } catch (JsonParseException exception) {
+        instance = clazz.getConstructor().newInstance()
+        instance.setPath(dictionary.getPath())
+      } finally {
+        stream.close()
+      }
+      return instance
+    } else {
+      IndividualSetting instance = clazz.getConstructor().newInstance()
+      instance.setPath(dictionary.getPath())
+      return instance
+    }
+  }
+
+  private static String createCompressedPath(String path) {
     String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
     String compressedPath = path
     compressedPath = compressedPath.replaceAll(/\.json$/, ".zpdt")
