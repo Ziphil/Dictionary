@@ -56,7 +56,7 @@ public abstract class IndividualSetting {
   private static String createSavePath(String path) {
     String separator = Launcher.FILE_SEPARATOR.replaceAll("\\\\", "\\\\\\\\")
     String compressedPath = path
-    compressedPath = compressedPath.replaceAll(/\.json$/, ".zpdt")
+    compressedPath = compressedPath.replaceAll(/\.\w+$/, ".zpdt")
     compressedPath = compressedPath.replaceAll(/\$/, "\\\$d")
     compressedPath = compressedPath.replaceAll(/:/, "\\\$c")
     compressedPath = compressedPath.replaceAll(separator, "\\\$\\\$")
