@@ -24,6 +24,8 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.Menu
+import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressBar
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
@@ -56,6 +58,7 @@ import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.custom.WordCell
+import ziphil.dictionary.BadgeType
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
@@ -91,6 +94,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String GIT_EXCEPTION_OUTPUT_PATH = "data/log/git_exception.txt"
 
   @FXML private ContextMenu $editMenu
+  @FXML private Menu $badgeWordMenu
   @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
@@ -125,6 +129,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     setupWordViewShortcut()
     setupSearchControl()
     setupSearchTypeControl()
+    setupEditMenu()
   }
 
   public void open(Dictionary dictionary) {
@@ -814,6 +819,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
     BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
     $searchTypeControl.textProperty().bind(textBinding)
     $searchTypeControl.disableProperty().bind(disableBinding)
+  }
+
+  private void setupEditMenu() {
+    for (BadgeType type : BadgeType.values()) {
+      BadgeType cachedType = type
+      MenuItem item = MenuItem.new()
+      item.setText(type.getName())
+      $badgeWordMenu.getItems().add(item)
+    }
   }
 
   private void setupHistory() {

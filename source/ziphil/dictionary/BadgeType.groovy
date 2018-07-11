@@ -40,4 +40,8 @@ public enum BadgeType {
     return box
   }
 
+  public String getName() {
+    return $name
+  }
+
 }
