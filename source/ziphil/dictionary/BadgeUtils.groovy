@@ -22,4 +22,15 @@ public class BadgeUtils {
     }
   }
 
+  public static void removeFromAllTypes(Map<BadgeType, Set<String>> identifiers, String identifier) {
+    if (identifier != null) {
+      for (BadgeType type : BadgeType.values()) {
+        Set<String> relevantIdentifiers = identifiers[type]
+        if (relevantIdentifiers != null) {
+          relevantIdentifiers.remove(identifier)
+        }
+      }
+    }
+  }
+
 }

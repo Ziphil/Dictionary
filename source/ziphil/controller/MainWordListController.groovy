@@ -369,6 +369,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
         WordEditResult result = nextStage.getResult()
+        Map<BadgeType, Set<String>> identifiers = $individualSetting.getBadgedIdentifiers()
+        String identifier = newWord.getIdentifier()
+        BadgeUtils.removeFromAllTypes(identifiers, identifier)
         $dictionary.addWord(newWord)
         if (result.getRemovedWord() != null) {
           $dictionary.mergeWord(newWord, result.getRemovedWord())
