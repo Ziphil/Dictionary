@@ -8,6 +8,7 @@ import ziphil.dictionary.BadgeType
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Word
+import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
 
 
@@ -36,6 +37,7 @@ public class ElementCell extends ListCell<Element> {
       Map<BadgeType, Node> badgeNodes = pane.getBadgeNodes()
       graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       if (word instanceof Word) {
+        Boolean colorsBadgedWord = Setting.getInstance().getColorsBadgedWord()
         Map<BadgeType, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
         for (BadgeType type : BadgeType.values()) {
           Boolean contains = (badgedIdentifiers[type] != null) ? badgedIdentifiers[type].contains(word.getIdentifier()) : false
@@ -43,7 +45,7 @@ public class ElementCell extends ListCell<Element> {
             badgeNodes[type].setVisible(contains)
             badgeNodes[type].setManaged(contains)
           }
-          if (contains) {
+          if (colorsBadgedWord && contains) {
             getStyleClass().add(type.getStyleClass())
           }
         }
