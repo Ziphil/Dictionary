@@ -50,6 +50,7 @@ public class Setting {
   private ClickType $linkClickType = ClickType.PRIMARY
   private Boolean $modifiesPunctuation = false
   private Boolean $showsSeparator = true
+  private Boolean $colorsBadgedWord = true
   private Boolean $keepsMainWindowOnTop = false
   private Boolean $keepsEditorOnTop = true
   private Boolean $preservesMainWindowSize = false
@@ -372,6 +373,14 @@ public class Setting {
 
   public void setShowsSeparator(Boolean showsSeparator) {
     $showsSeparator = showsSeparator
+  }
+
+  public Boolean getColorsBadgedWord() {
+    return $colorsBadgedWord
+  }
+
+  public void setColorsBadgedWord(Boolean colorsBadgedWord) {
+    $colorsBadgedWord = colorsBadgedWord
   }
 
   public Boolean getKeepsMainWindowOnTop() {

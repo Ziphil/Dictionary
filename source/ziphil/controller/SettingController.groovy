@@ -48,6 +48,7 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private TextField $variationMarkerControl
   @FXML private TextField $relationMarkerControl
   @FXML private SwitchButton $showsSeparatorControl
+  @FXML private SwitchButton $colorsBadgedWordControl
   @FXML private SwitchButton $modifiesPunctuationControl
   @FXML private SwitchButton $keepsMainWindowOnTopControl
   @FXML private SwitchButton $keepsEditorOnTopControl
@@ -103,6 +104,7 @@ public class SettingController extends Controller<BooleanClass> {
     String variationMarker = setting.getVariationMarker()
     String relationMarker = setting.getRelationMarker()
     Boolean showsSeparator = setting.getShowsSeparator()
+    Boolean colorsBadgedWord = setting.getColorsBadgedWord()
     Boolean modifiesPunctuation = setting.getModifiesPunctuation()
     Boolean keepsMainWindowOnTop = setting.getKeepsMainWindowOnTop()
     Boolean keepsEditorOnTop = setting.getKeepsEditorOnTop()
@@ -153,6 +155,7 @@ public class SettingController extends Controller<BooleanClass> {
     $variationMarkerControl.setText(variationMarker)
     $relationMarkerControl.setText(relationMarker)
     $showsSeparatorControl.setSelected(showsSeparator)
+    $colorsBadgedWordControl.setSelected(colorsBadgedWord)
     $modifiesPunctuationControl.setSelected(modifiesPunctuation)
     $keepsMainWindowOnTopControl.setSelected(keepsMainWindowOnTop)
     $keepsEditorOnTopControl.setSelected(keepsEditorOnTop)
@@ -205,6 +208,7 @@ public class SettingController extends Controller<BooleanClass> {
     String variationMarker = $variationMarkerControl.getText()
     String relationMarker = $relationMarkerControl.getText()
     Boolean showsSeparator = $showsSeparatorControl.isSelected()
+    Boolean colorsBadgedWord = $colorsBadgedWordControl.isSelected()
     Boolean modifiesPunctuation = $modifiesPunctuationControl.isSelected()
     Boolean keepsMainWindowOnTop = $keepsMainWindowOnTopControl.isSelected()
     Boolean keepsEditorOnTop = $keepsEditorOnTopControl.isSelected()
@@ -240,6 +244,7 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setVariationMarker(variationMarker)
     setting.setRelationMarker(relationMarker)
     setting.setShowsSeparator(showsSeparator)
+    setting.setColorsBadgedWord(colorsBadgedWord)
     setting.setModifiesPunctuation(modifiesPunctuation)
     setting.setKeepsMainWindowOnTop(keepsMainWindowOnTop)
     setting.setKeepsEditorOnTop(keepsEditorOnTop)
