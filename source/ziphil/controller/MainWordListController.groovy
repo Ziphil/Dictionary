@@ -60,6 +60,7 @@ import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.BadgeType
+import ziphil.dictionary.BadgeUtils
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
@@ -446,17 +447,9 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void badgeWord(Element word, BadgeType type) {
     if (word != null && word instanceof Word) {
-      Set<String> identifiers = $individualSetting.getBadgedIdentifiers()[type]
+      Map<BadgeType, Set<String>> identifiers = $individualSetting.getBadgedIdentifiers()
       String identifier = word.getIdentifier()
-      if (identifiers == null) {
-        identifiers = HashSet.new()
-        $individualSetting.getBadgedIdentifiers()[type] = identifiers
-      }
-      if (identifiers.contains(identifier)) {
-        identifiers.remove(identifier)
-      } else {
-        identifiers.add(identifier)
-      }
+      BadgeUtils.toggle(identifiers, type, identifier)
       $dictionary.change()
       $wordView.refresh()
     }
