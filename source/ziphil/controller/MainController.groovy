@@ -509,6 +509,7 @@ public class MainController extends PrimitiveController<Stage> {
       Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary, individualSetting)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
+        dictionary.updateMinimum()
         updateSearchRegisteredParameterMenu()
       }
     }

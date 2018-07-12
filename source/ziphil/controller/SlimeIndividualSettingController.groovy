@@ -131,7 +131,6 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $dictionary.setInformationTitleOrder(informationTitleOrder)
     $individualSetting.setRegisteredParameters(registeredParameters)
     $individualSetting.setRegisteredParameterNames(registeredParameterNames)
-    $dictionary.updateMinimum()
     $stage.commit(true)
   }
 
