@@ -55,7 +55,6 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private String $akrantiainSource
   private SlimeWord $defaultWord
   private SlimeDictionary $dictionary
-  private SlimeIndividualSetting $individualSetting
 
   public SlimeIndividualSettingController(UtilityStage<? super BooleanClass> stage) {
     super(stage)
@@ -70,9 +69,9 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     setupInformationTitleOrderView()
   }
 
-  public void prepare(SlimeDictionary dictionary, SlimeIndividualSetting individualSetting) {
+  public void prepare(SlimeDictionary dictionary) {
     $dictionary = dictionary
-    $individualSetting = individualSetting
+    SlimeIndividualSetting individualSetting = (SlimeIndividualSetting)dictionary.getIndividualSetting()
     ObservableList<String> plainInformationTitles = FXCollections.observableArrayList(dictionary.getPlainInformationTitles())
     ObservableList<String> normalInformationTitles = FXCollections.observableArrayList(dictionary.getRegisteredInformationTitles() - dictionary.getPlainInformationTitles())
     List<String> rawInformationTitleOrder = dictionary.getInformationTitleOrder()
@@ -105,6 +104,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   protected void commit() {
+    SlimeIndividualSetting individualSetting = (SlimeIndividualSetting)$dictionary.getIndividualSetting()
     String alphabetOrder = $alphabetOrderControl.getText() ?: ""
     AlphabetOrderType alphabetOrderType = AlphabetOrderType.CUSTOM
     if ($usesUnicodeAlphabetOrderControl.isSelected()) {
@@ -129,8 +129,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $dictionary.setDefaultWord(defaultWord)
     $dictionary.setPlainInformationTitles(plainInformationTitles)
     $dictionary.setInformationTitleOrder(informationTitleOrder)
-    $individualSetting.setRegisteredParameters(registeredParameters)
-    $individualSetting.setRegisteredParameterNames(registeredParameterNames)
+    individualSetting.setRegisteredParameters(registeredParameters)
+    individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $stage.commit(true)
   }
 
@@ -175,7 +175,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     SlimeWord defaultWord = $defaultWord ?: $dictionary.createWord(null)
     UtilityStage<WordEditResult> nextStage = createStage()
     SlimeEditorController controller = SlimeEditorController.new(nextStage)
-    controller.prepare(defaultWord, $dictionary, null, false, false)
+    controller.prepare(defaultWord, $dictionary, false, false)
     nextStage.showAndWait()
   }
 

@@ -77,12 +77,12 @@ import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
+import ziphil.dictionary.TemporarySetting
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.WordSelection
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
-import ziphil.module.TemporarySetting
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -111,8 +111,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private MainController $mainController
   private ClosableTab $tab
   private Dictionary $dictionary
-  private IndividualSetting $individualSetting
-  private TemporarySetting $temporarySetting
   private SearchHistory $history = null
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
@@ -135,8 +133,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void open(Dictionary dictionary) {
     $dictionary = dictionary
-    $individualSetting = dictionary.createIndividualSetting()
-    $temporarySetting = TemporarySetting.new()
     setupWordView()
     updateLoader()
     updateOnLinkClicked()
@@ -300,7 +296,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -360,7 +356,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = createStage(null, null)
-      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
+      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -369,7 +365,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
         WordEditResult result = nextStage.getResult()
-        Map<BadgeType, Set<String>> identifiers = $individualSetting.getBadgedIdentifiers()
+        Map<BadgeType, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
         String identifier = newWord.getIdentifier()
         BadgeUtils.removeFromAllTypes(identifiers, identifier)
         $dictionary.addWord(newWord)
@@ -393,7 +389,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -426,9 +422,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addGeneratedWords() {
     if ($dictionary instanceof EditableDictionary) {
+      TemporarySetting temporarySetting = $dictionary.getTemporarySetting()
       UtilityStage<NameGeneratorController.Result> nextStage = createStage()
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
-      controller.prepare(true, $temporarySetting.getGeneratorConfig())
+      controller.prepare(true, temporarySetting.getGeneratorConfig())
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         NameGeneratorController.Result result = nextStage.getResult()
@@ -443,14 +440,14 @@ public class MainWordListController extends PrimitiveController<Stage> {
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
         $history.add(parameter)
-        $temporarySetting.setGeneratorConfig(controller.createConfig())
+        temporarySetting.setGeneratorConfig(controller.createConfig())
       }
     }
   }
 
   private void badgeWord(Element word, BadgeType type) {
     if (word != null && word instanceof Word) {
-      Map<BadgeType, Set<String>> identifiers = $individualSetting.getBadgedIdentifiers()
+      Map<BadgeType, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
       String identifier = word.getIdentifier()
       BadgeUtils.toggle(identifiers, type, identifier)
       $dictionary.change()
@@ -754,9 +751,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private Boolean checkDictionaryChange() {
     Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-    if ($individualSetting != null) {
-      $individualSetting.save()
-    }
     if ($dictionary.isChanged()) {
       if (!savesAutomatically) {
         Dialog dialog = Dialog.new()
@@ -785,7 +779,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @VoidClosure
   private void setupWordView() {
     $wordView.setCellFactory() { ListView<Element> view ->
-      ElementCell cell = ElementCell.new($individualSetting)
+      ElementCell cell = ElementCell.new($dictionary.getIndividualSetting())
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
@@ -871,10 +865,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public Dictionary getDictionary() {
     return $dictionary
-  }
-
-  public IndividualSetting getIndividualSetting() {
-    return $individualSetting
   }
 
 }

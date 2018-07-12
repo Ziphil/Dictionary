@@ -132,7 +132,7 @@ public class MainController extends PrimitiveController<Stage> {
   private IndividualSetting currentIndividualSetting() {
     MainWordListController controller = currentWordListController()
     if (controller != null) {
-      return controller.getIndividualSetting()
+      return controller.getDictionary().getIndividualSetting()
     } else {
       return null
     }
@@ -503,10 +503,9 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void editIndividualSetting() {
     Dictionary dictionary = currentDictionary()
-    IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = createStage()
-      Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary, individualSetting)
+      Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         dictionary.updateMinimum()

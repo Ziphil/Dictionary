@@ -43,8 +43,6 @@ public interface Dictionary<W extends Word, F extends DictionaryFactory> {
 
   public Int totalWordSize()
 
-  public IndividualSetting createIndividualSetting()
-
   public String getName() 
 
   public void setName(String name)
@@ -78,6 +76,10 @@ public interface Dictionary<W extends Word, F extends DictionaryFactory> {
   // 辞書データをファイルに保存するための Task オブジェクトを返します。
   // ここで返される Task オブジェクトは、save メソッドが呼び出されたときに作成されます。
   public Task<?> getSaver()
+
+  public IndividualSetting getIndividualSetting()
+
+  public TemporarySetting getTemporarySetting()
 
   public F getDictionaryFactory()
 
