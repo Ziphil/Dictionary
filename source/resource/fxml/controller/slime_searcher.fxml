@@ -46,6 +46,7 @@
       <Label text="訳語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+      <Label text="マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
       <TextField fx:id="$idControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <prefWidth><Double rpx="70"/></prefWidth>
         <maxWidth><Double rpx="70"/></maxWidth>
@@ -111,6 +112,10 @@
         </ComboBox>
       </HBox>
       <ComboBox fx:id="$tagControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <prefWidth><Double rpx="120"/></prefWidth>
+        <minWidth><Double rpx="120"/></minWidth>
+      </ComboBox>
+      <ComboBox fx:id="$badgeTypeControl" GridPane.columnIndex="1" GridPane.rowIndex="5">
         <prefWidth><Double rpx="120"/></prefWidth>
         <minWidth><Double rpx="120"/></minWidth>
       </ComboBox>

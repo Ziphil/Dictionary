@@ -31,6 +31,10 @@ public enum BadgeType {
     $image = Image.new(getClass().getClassLoader().getResourceAsStream(IMAGE_DIRECTORY + path + ".png"))
   }
 
+  public String toString() {
+    return $name
+  }
+
   public String getName() {
     return $name
   }

@@ -8,6 +8,7 @@ import javafx.scene.control.TextFormatter
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.BadgeType
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -32,6 +33,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML private ComboBox<String> $informationTitleControl
   @FXML private ComboBox<SearchType> $informationSearchTypeControl
   @FXML private ComboBox<String> $tagControl
+  @FXML private ComboBox<BadgeType> $badgeTypeControl
   private SlimeDictionary $dictionary
   private SlimeSearchParameter $searchParameter
 
@@ -43,6 +45,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   private void initialize() {
     setupIdControl()
+    setupBadgeTypeControl()
   }
 
   public void prepare(SlimeDictionary dictionary, SlimeSearchParameter searchParameter) {
@@ -120,6 +123,12 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private void setupIdControl() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  }
+
+  private void setupBadgeTypeControl() {
+    for (BadgeType type : BadgeType.values()) {
+      $badgeTypeControl.getItems().add(type)
+    }
   }
 
 }
