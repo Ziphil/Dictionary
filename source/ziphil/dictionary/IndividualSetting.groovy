@@ -1,6 +1,5 @@
 package ziphil.dictionary
 
-import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.CompileStatic
@@ -39,7 +38,7 @@ public abstract class IndividualSetting {
       IndividualSetting instance
       try {
         instance = $$mapper.readValue(stream, clazz)
-      } catch (JsonParseException exception) {
+      } catch (Exception exception) {
         instance = clazz.getConstructor().newInstance()
         instance.setPath(dictionary.getPath())
       } finally {
