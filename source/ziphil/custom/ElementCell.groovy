@@ -23,6 +23,10 @@ public class ElementCell extends ListCell<Element> {
 
   protected void updateItem(Element word, Boolean empty) {
     super.updateItem(word, empty)
+    Int styleClassSize = getStyleClass().size()
+    for (int i = 0 ; i < styleClassSize - 3 ; i ++) {
+      getStyleClass().removeLast()
+    }
     if (empty || word == null) {
       setText(null)
       setGraphic(null)
@@ -32,10 +36,6 @@ public class ElementCell extends ListCell<Element> {
       Map<BadgeType, Node> badgeNodes = pane.getBadgeNodes()
       graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       if (word instanceof Word) {
-        Int styleClassSize = getStyleClass().size()
-        for (int i = 0 ; i < styleClassSize - 3 ; i ++) {
-          getStyleClass().removeLast()
-        }
         Map<BadgeType, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
         for (BadgeType type : BadgeType.values()) {
           Boolean contains = (badgedIdentifiers[type] != null) ? badgedIdentifiers[type].contains(word.getIdentifier()) : false
