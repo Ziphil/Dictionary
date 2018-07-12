@@ -1,6 +1,7 @@
 package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 import ziphil.dictionary.BadgeType
 import ziphil.dictionary.BadgeUtils
@@ -10,6 +11,7 @@ import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 @CompileStatic @Ziphilify
 public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> {
 
