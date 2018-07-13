@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
@@ -36,6 +37,12 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML private ComboBox<SearchType> $informationSearchTypeControl
   @FXML private ComboBox<String> $tagControl
   @FXML private ComboBox<Badge> $badgeControl
+  @FXML private CheckBox $hasIdControl
+  @FXML private CheckBox $hasNameControl
+  @FXML private CheckBox $hasEquivalentControl
+  @FXML private CheckBox $hasInformationControl
+  @FXML private CheckBox $hasTagControl
+  @FXML private CheckBox $hasBadgeControl
   private SlimeDictionary $dictionary
   private SlimeSearchParameter $searchParameter
 
@@ -48,11 +55,13 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private void initialize() {
     setupIdControl()
     setupBadgeControl()
+    setupHasFieldControls()
   }
 
   public void prepare(SlimeDictionary dictionary, SlimeSearchParameter searchParameter) {
     $dictionary = dictionary
     $searchParameter = searchParameter
+    $nameControl.requestFocus()
     applyDictionary()
     applySearchParameter()
   }
@@ -98,32 +107,32 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
-    if (!$idControl.getText().isEmpty()) {
+    if ($hasIdControl.isSelected()) {
       parameter.setHasId(true)
       parameter.setId(IntegerClass.parseInt($idControl.getText()))
     }
-    if (!$nameControl.getText().isEmpty()) {
+    if ($hasNameControl.isSelected()) {
       parameter.setHasName(true)
       parameter.setName($nameControl.getText())
       parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    if (!$equivalentNameControl.getText().isEmpty() || $equivalentTitleControl.getValue() != null) {
+    if ($hasEquivalentControl.isSelected()) {
       parameter.setHasEquivalent(true)
-      parameter.setEquivalentName($equivalentNameControl.getText())
+      parameter.setEquivalentName($equivalentNameControl.getText() ?: "")
       parameter.setEquivalentTitle($equivalentTitleControl.getValue())
       parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     } 
-    if (!$informationTextControl.getText().isEmpty() || $informationTitleControl.getValue() != null) {
+    if ($hasInformationControl.isSelected()) {
       parameter.setHasInformation(true)
-      parameter.setInformationText($informationTextControl.getText())
+      parameter.setInformationText($informationTextControl.getText() ?: "")
       parameter.setInformationTitle($informationTitleControl.getValue())
       parameter.setInformationSearchType($informationSearchTypeControl.getValue())
     }
-    if ($tagControl.getValue() != null) {
+    if ($hasTagControl.isSelected()) {
       parameter.setHasTag(true)
       parameter.setTag($tagControl.getValue())
     }
-    if ($badgeControl.getValue() != null) {
+    if ($hasBadgeControl.isSelected()) {
       parameter.setHasBadge(true)
       parameter.setBadge($badgeControl.getValue())
     }
@@ -143,6 +152,20 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     for (Badge badge : Badge.values()) {
       $badgeControl.getItems().add(badge)
     }
+  }
+
+  private void setupHasFieldControls() {
+    $idControl.disableProperty().bind($hasIdControl.selectedProperty().not())
+    $nameControl.disableProperty().bind($hasNameControl.selectedProperty().not())
+    $nameSearchTypeControl.disableProperty().bind($hasNameControl.selectedProperty().not())
+    $equivalentNameControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $equivalentTitleControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $equivalentSearchTypeControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $informationTextControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $informationTitleControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $informationSearchTypeControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $tagControl.disableProperty().bind($hasTagControl.selectedProperty().not())
+    $badgeControl.disableProperty().bind($hasBadgeControl.selectedProperty().not())
   }
 
 }

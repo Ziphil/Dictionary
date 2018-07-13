@@ -6,6 +6,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -47,12 +48,17 @@
       <Label text="内容:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
       <Label text="タグ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
       <Label text="マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-      <TextField fx:id="$idControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <prefWidth><Double rpx="70"/></prefWidth>
-        <maxWidth><Double rpx="70"/></maxWidth>
-      </TextField>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasIdControl" styleClass="no-text"/>
+        <TextField fx:id="$idControl">
+          <prefWidth><Double rpx="70"/></prefWidth>
+          <maxWidth><Double rpx="70"/></maxWidth>
+        </TextField>
+      </HBox>
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasNameControl" styleClass="no-text" selected="true"/>
         <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <ComboBox fx:id="$nameSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
@@ -70,8 +76,9 @@
           <value><SearchType fx:value="EXACT"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasEquivalentControl" styleClass="no-text"/>
         <ComboBox fx:id="$equivalentTitleControl" editable="true">
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
@@ -92,8 +99,9 @@
           <value><SearchType fx:value="EXACT"/></value>
         </ComboBox>
       </HBox>
-      <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="3">
         <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasInformationControl" styleClass="no-text"/>
         <ComboBox fx:id="$informationTitleControl" editable="true">
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
@@ -111,14 +119,22 @@
           <value><SearchType fx:value="PART"/></value>
         </ComboBox>
       </HBox>
-      <ComboBox fx:id="$tagControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <prefWidth><Double rpx="120"/></prefWidth>
-        <minWidth><Double rpx="120"/></minWidth>
-      </ComboBox>
-      <ComboBox fx:id="$badgeControl" GridPane.columnIndex="1" GridPane.rowIndex="5">
-        <prefWidth><Double rpx="100"/></prefWidth>
-        <minWidth><Double rpx="100"/></minWidth>
-      </ComboBox>
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasTagControl" styleClass="no-text"/>
+        <ComboBox fx:id="$tagControl" editable="true">
+          <prefWidth><Double rpx="120"/></prefWidth>
+          <minWidth><Double rpx="120"/></minWidth>
+        </ComboBox>
+      </HBox>
+      <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <spacing><Double rpx="5"/></spacing>
+        <CheckBox fx:id="$hasBadgeControl" styleClass="no-text"/>
+        <ComboBox fx:id="$badgeControl">
+          <prefWidth><Double rpx="100"/></prefWidth>
+          <minWidth><Double rpx="100"/></minWidth>
+        </ComboBox>
+      </HBox>
     </GridPane>
   </center>
   <bottom>

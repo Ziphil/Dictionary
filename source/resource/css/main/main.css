@@ -314,6 +314,10 @@
   -fx-background-color: -fx-background;
 }
 
+.check-box.no-text {
+  -fx-label-padding: 0px;
+}
+
 .right-legend-chart .chart-content {
   -fx-padding: 0px 10px 0px 0px;
 }
