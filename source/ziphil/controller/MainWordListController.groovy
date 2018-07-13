@@ -59,7 +59,7 @@ import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphil.dictionary.BadgeUtils
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
@@ -365,7 +365,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
         WordEditResult result = nextStage.getResult()
-        Map<BadgeType, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
+        Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
         String identifier = newWord.getIdentifier()
         BadgeUtils.removeFromAllTypes(identifiers, identifier)
         $dictionary.addWord(newWord)
@@ -445,20 +445,20 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  private void badgeWord(Element word, BadgeType type) {
+  private void badgeWord(Element word, Badge badge) {
     if (word != null && word instanceof Word) {
-      Map<BadgeType, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
+      Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
       String identifier = word.getIdentifier()
-      BadgeUtils.toggle(identifiers, type, identifier)
+      BadgeUtils.toggle(identifiers, badge, identifier)
       $dictionary.change()
       $wordView.refresh()
     }
   }
 
-  private void badgeWords(BadgeType type) {
+  private void badgeWords(Badge badge) {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
-      badgeWord(word, type)
+      badgeWord(word, badge)
     }
   }
 
@@ -838,13 +838,13 @@ public class MainWordListController extends PrimitiveController<Stage> {
   }
 
   private void setupEditMenu() {
-    for (BadgeType type : BadgeType.values()) {
-      BadgeType cachedType = type
+    for (Badge badge : Badge.values()) {
+      Badge cachedBadge = badge
       MenuItem item = MenuItem.new()
-      item.setText(type.getName())
-      item.setGraphic(ImageView.new(type.getImage()))
+      item.setText(badge.getName())
+      item.setGraphic(ImageView.new(badge.getImage()))
       item.setOnAction() {
-        badgeWords(cachedType)
+        badgeWords(cachedBadge)
       }
       $badgeWordMenu.getItems().add(item)
     }

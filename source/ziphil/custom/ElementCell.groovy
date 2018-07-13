@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Word
@@ -34,19 +34,19 @@ public class ElementCell extends ListCell<Element> {
     } else {
       ElementPane pane = word.getPaneFactory().create(false)
       Pane graphic = pane.getPane()
-      Map<BadgeType, Node> badgeNodes = pane.getBadgeNodes()
+      Map<Badge, Node> badgeNodes = pane.getBadgeNodes()
       graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       if (word instanceof Word) {
         Boolean colorsBadgedWord = Setting.getInstance().getColorsBadgedWord()
-        Map<BadgeType, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
-        for (BadgeType type : BadgeType.values()) {
-          Boolean contains = (badgedIdentifiers[type] != null) ? badgedIdentifiers[type].contains(word.getIdentifier()) : false
+        Map<Badge, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
+        for (Badge badge : Badge.values()) {
+          Boolean contains = (badgedIdentifiers[badge] != null) ? badgedIdentifiers[badge].contains(word.getIdentifier()) : false
           if (badgeNodes != null) {
-            badgeNodes[type].setVisible(contains)
-            badgeNodes[type].setManaged(contains)
+            badgeNodes[badge].setVisible(contains)
+            badgeNodes[badge].setManaged(contains)
           }
           if (colorsBadgedWord && contains) {
-            getStyleClass().add(type.getStyleClass())
+            getStyleClass().add(badge.getStyleClass())
           }
         }
       }

@@ -3,7 +3,7 @@ package ziphil.custom
 import groovy.transform.CompileStatic
 import javafx.scene.Node
 import javafx.scene.layout.Pane
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphilib.transform.Ziphilify
 
 
@@ -11,9 +11,9 @@ import ziphilib.transform.Ziphilify
 public class ElementPane {
 
   private Pane $pane
-  private Map<BadgeType, Node> $badgeNodes = null
+  private Map<Badge, Node> $badgeNodes = null
 
-  public ElementPane(Pane pane, Map<BadgeType, Node> badgeNodes) {
+  public ElementPane(Pane pane, Map<Badge, Node> badgeNodes) {
     $pane = pane
     $badgeNodes = badgeNodes
   }
@@ -26,7 +26,7 @@ public class ElementPane {
     return $pane
   }
 
-  public Map<BadgeType, Node> getBadgeNodes() {
+  public Map<Badge, Node> getBadgeNodes() {
     return $badgeNodes
   }
 

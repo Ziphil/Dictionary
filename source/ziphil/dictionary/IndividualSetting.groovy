@@ -17,7 +17,7 @@ public abstract class IndividualSetting {
 
   protected String $path = ""
   protected Version $version = Version.new(-1, 0, 0)
-  protected Map<BadgeType, Set<String>> $badgedIdentifiers = EnumMap.new(BadgeType)
+  protected Map<Badge, Set<String>> $badgedIdentifiers = EnumMap.new(Badge)
 
   public void save() {
     String savePath = IndividualSetting.createSavePath($path)
@@ -84,11 +84,11 @@ public abstract class IndividualSetting {
     $version = version
   }
 
-  public Map<BadgeType, Set<String>> getBadgedIdentifiers() {
+  public Map<Badge, Set<String>> getBadgedIdentifiers() {
     return $badgedIdentifiers
   }
 
-  public void setBadgedIdentifiers(Map<BadgeType, Set<String>> badgedIdentifiers) {
+  public void setBadgedIdentifiers(Map<Badge, Set<String>> badgedIdentifiers) {
     $badgedIdentifiers = badgedIdentifiers
   }
 

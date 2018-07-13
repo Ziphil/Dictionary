@@ -14,7 +14,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchMode
@@ -61,7 +61,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     VBox pane = VBox.new()
-    Map<BadgeType, Node> badgeNodes = EnumMap.new(BadgeType)
+    Map<Badge, Node> badgeNodes = EnumMap.new(Badge)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     TextFlow synonymPane = TextFlow.new()

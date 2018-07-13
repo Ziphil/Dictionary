@@ -7,9 +7,9 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class BadgeUtils {
 
-  public static Boolean contains(Map<BadgeType, Set<String>> identifiers, BadgeType type, String identifier) {
+  public static Boolean contains(Map<Badge, Set<String>> identifiers, Badge badge, String identifier) {
     if (identifier != null) {
-      Set<String> relevantIdentifiers = identifiers[type]
+      Set<String> relevantIdentifiers = identifiers[badge]
       if (relevantIdentifiers != null) {
         return relevantIdentifiers.contains(identifier)
       } else {
@@ -20,12 +20,12 @@ public class BadgeUtils {
     }
   }
 
-  public static void toggle(Map<BadgeType, Set<String>> identifiers, BadgeType type, String identifier) {
+  public static void toggle(Map<Badge, Set<String>> identifiers, Badge badge, String identifier) {
     if (identifier != null) {
-      Set<String> relevantIdentifiers = identifiers[type]
+      Set<String> relevantIdentifiers = identifiers[badge]
       if (relevantIdentifiers == null) {
         relevantIdentifiers = HashSet.new()
-        identifiers[type] = relevantIdentifiers
+        identifiers[badge] = relevantIdentifiers
       }
       if (relevantIdentifiers.contains(identifier)) {
         relevantIdentifiers.remove(identifier)
@@ -35,10 +35,10 @@ public class BadgeUtils {
     }
   }
 
-  public static void removeFromAllTypes(Map<BadgeType, Set<String>> identifiers, String identifier) {
+  public static void removeFromAllTypes(Map<Badge, Set<String>> identifiers, String identifier) {
     if (identifier != null) {
-      for (BadgeType type : BadgeType.values()) {
-        Set<String> relevantIdentifiers = identifiers[type]
+      for (Badge badge : Badge.values()) {
+        Set<String> relevantIdentifiers = identifiers[badge]
         if (relevantIdentifiers != null) {
           relevantIdentifiers.remove(identifier)
         }

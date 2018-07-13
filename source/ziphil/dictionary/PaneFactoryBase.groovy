@@ -11,7 +11,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.ClickType
 import ziphil.custom.Measurement
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphilib.transform.Ziphilify
 
 
@@ -60,22 +60,22 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary, P
     $changed = true
   }
 
-  protected void addBadgeNodes(Pane pane, Map<BadgeType, Node> badgeNodes) {
+  protected void addBadgeNodes(Pane pane, Map<Badge, Node> badgeNodes) {
     HBox box = HBox.new(Measurement.rpx(2))
     Text text = Text.new(" ")
-    for (BadgeType type : BadgeType.values()) {
-      ImageView view = ImageView.new(type.getImage())       
-      view.getStyleClass().add(type.getStyleClass())
+    for (Badge badge : Badge.values()) {
+      ImageView view = ImageView.new(badge.getImage())       
+      view.getStyleClass().add(badge.getStyleClass())
       box.getChildren().add(view)
-      badgeNodes[type] = view
+      badgeNodes[badge] = view
     }
     box.setAlignment(Pos.BASELINE_CENTER)
     box.getStyleClass().add(BADGE_CONTAINER_CLASS)
     pane.getChildren().addAll(box, text)
-    for (Map.Entry<BadgeType, Node> entry : badgeNodes) {
+    for (Map.Entry<Badge, Node> entry : badgeNodes) {
       entry.getValue().managedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
         Boolean anyManaged = false
-        for (Map.Entry<BadgeType, Node> otherEntry : badgeNodes) {
+        for (Map.Entry<Badge, Node> otherEntry : badgeNodes) {
           if (otherEntry.getValue().isManaged()) {
             anyManaged = true
             break

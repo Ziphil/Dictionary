@@ -13,7 +13,7 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
-import ziphil.dictionary.BadgeType
+import ziphil.dictionary.Badge
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -49,7 +49,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     Int lineSpacing = setting.getLineSpacing()
     Boolean showsVariation = setting.getShowsVariation()
     VBox pane = VBox.new()
-    Map<BadgeType, Node> badgeNodes = EnumMap.new(BadgeType)
+    Map<Badge, Node> badgeNodes = EnumMap.new(Badge)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     TextFlow relationPane = TextFlow.new()

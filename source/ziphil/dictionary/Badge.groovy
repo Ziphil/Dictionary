@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public enum BadgeType {
+public enum Badge {
 
   CIRCLE("マーカー1", "circle-badge", "circle"),
   SQUARE("マーカー2", "square-badge", "square"),
@@ -25,7 +25,7 @@ public enum BadgeType {
   private String $styleClass
   private Image $image
 
-  private BadgeType(String name, String styleClass, String path) {
+  private Badge(String name, String styleClass, String path) {
     $name = name
     $styleClass = styleClass
     $image = Image.new(getClass().getClassLoader().getResourceAsStream(IMAGE_DIRECTORY + path + ".png"))
