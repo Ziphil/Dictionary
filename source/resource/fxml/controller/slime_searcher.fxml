@@ -59,7 +59,7 @@
       <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <spacing><Double rpx="5"/></spacing>
         <CheckBox fx:id="$hasNameControl" styleClass="no-text" selected="true"/>
-        <TextField fx:id="$nameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$nameControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$nameSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -83,7 +83,7 @@
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$equivalentNameControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$equivalentNameControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$equivalentSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
@@ -106,7 +106,7 @@
           <prefWidth><Double rpx="120"/></prefWidth>
           <minWidth><Double rpx="120"/></minWidth>
         </ComboBox>
-        <TextField fx:id="$informationTextControl" HBox.hgrow="always" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="$informationTextControl" HBox.hgrow="always"/>
         <ComboBox fx:id="$informationSearchTypeControl">
           <prefWidth><Double rpx="100"/></prefWidth>
           <minWidth><Double rpx="100"/></minWidth>
