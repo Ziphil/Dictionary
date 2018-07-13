@@ -60,7 +60,7 @@ import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.Badge
-import ziphil.dictionary.BadgeUtils
+import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
@@ -365,9 +365,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
         WordEditResult result = nextStage.getResult()
-        Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
-        String identifier = newWord.getIdentifier()
-        BadgeUtils.removeFromAllTypes(identifiers, identifier)
+        BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+        preference.removeAllBadges(newWord)
         $dictionary.addWord(newWord)
         if (result.getRemovedWord() != null) {
           $dictionary.mergeWord(newWord, result.getRemovedWord())
@@ -447,9 +446,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private void badgeWord(Element word, Badge badge) {
     if (word != null && word instanceof Word) {
-      Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
-      String identifier = word.getIdentifier()
-      BadgeUtils.toggle(identifiers, badge, identifier)
+      BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+      preference.toggle(word, badge)
       $dictionary.change()
       $wordView.refresh()
     }

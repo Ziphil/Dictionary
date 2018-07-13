@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Badge
-import ziphil.dictionary.BadgeUtils
+import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
@@ -107,9 +107,8 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
       }
     }
     if ($hasBadge) {
-      Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
-      String identifier = word.getIdentifier()
-      if (!BadgeUtils.contains(identifiers, $badge, identifier)) {
+      BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+      if (!preference.contains(word, $badge)) {
         predicate = false
       }
     }

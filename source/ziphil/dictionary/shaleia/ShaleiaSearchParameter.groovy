@@ -2,7 +2,7 @@ package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
 import ziphil.dictionary.Badge
-import ziphil.dictionary.BadgeUtils
+import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
@@ -64,9 +64,8 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
       }
     }
     if ($hasBadge) {
-      Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
-      String identifier = word.getIdentifier()
-      if (!BadgeUtils.contains(identifiers, $badge, identifier)) {
+      BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+      if (!preference.contains(word, $badge)) {
         predicate = false
       }
     }
