@@ -87,6 +87,9 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
       if ($searchParameter.hasTag()) {
         $tagControl.setValue($searchParameter.getTag())
       }
+      if ($searchParameter.hasBadge()) {
+        $badgeControl.setValue($searchParameter.getBadge())
+      }
     }
   }
 
@@ -117,6 +120,10 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     if ($tagControl.getValue() != null) {
       parameter.setHasTag(true)
       parameter.setTag($tagControl.getValue())
+    }
+    if ($badgeControl.getValue() != null) {
+      parameter.setHasBadge(true)
+      parameter.setBadge($badgeControl.getValue())
     }
     $stage.commit(parameter)
   }
