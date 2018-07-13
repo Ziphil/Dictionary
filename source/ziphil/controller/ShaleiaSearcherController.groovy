@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
@@ -42,6 +43,7 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
 
   @FXML
   private void initialize() {
+    setupNameControl()
     setupBadgeControl()
     setupHasFieldControls()
   }
@@ -69,6 +71,12 @@ public class ShaleiaSearcherController extends Controller<ShaleiaSearchParameter
       parameter.setBadge($badgeControl.getValue())
     }
     $stage.commit(parameter)
+  }
+
+  private void setupNameControl() {
+    Platform.runLater() {
+      $nameControl.requestFocus()
+    }
   }
 
   private void setupBadgeControl() {

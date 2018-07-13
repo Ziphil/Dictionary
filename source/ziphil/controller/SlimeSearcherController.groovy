@@ -1,6 +1,7 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
@@ -54,6 +55,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   private void initialize() {
     setupIdControl()
+    setupNameControl()
     setupBadgeControl()
     setupHasFieldControls()
   }
@@ -61,7 +63,6 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   public void prepare(SlimeDictionary dictionary, SlimeSearchParameter searchParameter) {
     $dictionary = dictionary
     $searchParameter = searchParameter
-    $nameControl.requestFocus()
     applyDictionary()
     applySearchParameter()
   }
@@ -141,6 +142,12 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private void setupIdControl() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  }
+
+  private void setupNameControl() {
+    Platform.runLater() {
+      $nameControl.requestFocus()
+    }
   }
 
   private void setupBadgeControl() {
