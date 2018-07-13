@@ -64,6 +64,7 @@ import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditableDictionaryBase
 import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Element
 import ziphil.dictionary.ExportConfig
@@ -510,13 +511,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private Class<?> calculateWordClass() {
     Class<?> wordClass = null
-    for (Type type : $dictionary.getClass().getGenericInterfaces()) {
-      if (type instanceof ParameterizedType) {
-        Type rawType = ((ParameterizedType)type).getRawType()
-        Type typeArgument = ((ParameterizedType)type).getActualTypeArguments()[0]
-        if (rawType == EditableDictionary) {
-          wordClass = (Class)typeArgument
-        }
+    Type type = $dictionary.getClass().getGenericSuperclass()
+    if (type instanceof ParameterizedType) {
+      Type rawType = type.getRawType()
+      Type typeArgument = type.getActualTypeArguments()[0]
+      if (rawType == EditableDictionaryBase) {
+        wordClass = (Class)typeArgument
       }
     }
     return wordClass
