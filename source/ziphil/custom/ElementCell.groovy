@@ -5,6 +5,7 @@ import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Pane
 import ziphil.dictionary.Badge
+import ziphil.dictionary.BadgeUtils
 import ziphil.dictionary.Element
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Word
@@ -35,12 +36,12 @@ public class ElementCell extends ListCell<Element> {
       ElementPane pane = word.getPaneFactory().create(false)
       Pane graphic = pane.getPane()
       Map<Badge, Node> badgeNodes = pane.getBadgeNodes()
-      graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       if (word instanceof Word) {
         Boolean colorsBadgedWord = Setting.getInstance().getColorsBadgedWord()
-        Map<Badge, Set<String>> badgedIdentifiers = $individualSetting.getBadgedIdentifiers()
+        Map<Badge, Set<String>> identifiers = $individualSetting.getBadgedIdentifiers()
+        String identifier = word.getIdentifier()
         for (Badge badge : Badge.values()) {
-          Boolean contains = (badgedIdentifiers[badge] != null) ? badgedIdentifiers[badge].contains(word.getIdentifier()) : false
+          Boolean contains = BadgeUtils.contains(identifiers, badge, identifier)
           if (badgeNodes != null) {
             badgeNodes[badge].setVisible(contains)
             badgeNodes[badge].setManaged(contains)
@@ -50,6 +51,7 @@ public class ElementCell extends ListCell<Element> {
           }
         }
       }
+      graphic.prefWidthProperty().bind(getListView().widthProperty().subtract(Measurement.rpx(29)))
       setText(null)
       setGraphic(graphic)
     }
