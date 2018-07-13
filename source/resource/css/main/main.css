@@ -151,11 +151,11 @@
   -fx-background: derive(hsb(30, 4%, 100%), -3%);
 }
 
-.dictionary-list .list-cell.drop-badge {
+.dictionary-list .list-cell.pentagon-badge {
   -fx-background: hsb(180, 6%, 100%);
 }
 
-.dictionary-list .list-cell.drop-badge:odd {
+.dictionary-list .list-cell.pentagon-badge:odd {
   -fx-background: derive(hsb(180, 8%, 100%), -3%);
 }
 

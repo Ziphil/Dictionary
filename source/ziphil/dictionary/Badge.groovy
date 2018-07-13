@@ -16,7 +16,7 @@ public enum Badge {
   DIAMOND("マーカー4", "diamond-badge", "diamond"),
   DOWN_TRIANGLE("マーカー5", "down-triangle-badge", "down_triangle"),
   CROSS("マーカー6", "cross-badge", "cross"),
-  DROP("マーカー7", "drop-badge", "drop"),
+  PENTAGON("マーカー7", "pentagon-badge", "pentagon"),
   HEART("マーカー8", "heart-badge", "heart")
 
   private static final String IMAGE_DIRECTORY = "resource/image/badge/"
