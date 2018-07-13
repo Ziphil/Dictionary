@@ -116,8 +116,8 @@
         <minWidth><Double rpx="120"/></minWidth>
       </ComboBox>
       <ComboBox fx:id="$badgeControl" GridPane.columnIndex="1" GridPane.rowIndex="5">
-        <prefWidth><Double rpx="120"/></prefWidth>
-        <minWidth><Double rpx="120"/></minWidth>
+        <prefWidth><Double rpx="100"/></prefWidth>
+        <minWidth><Double rpx="100"/></minWidth>
       </ComboBox>
     </GridPane>
   </center>

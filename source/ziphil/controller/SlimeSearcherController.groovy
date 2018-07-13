@@ -3,8 +3,10 @@ package ziphil.controller
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
+import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
+import ziphil.custom.BadgeCell
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -133,6 +135,11 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   }
 
   private void setupBadgeControl() {
+    $badgeControl.setButtonCell(BadgeCell.new())
+    $badgeControl.setCellFactory() { ListView<Badge> view ->
+      BadgeCell cell = BadgeCell.new()
+      return cell
+    }
     for (Badge badge : Badge.values()) {
       $badgeControl.getItems().add(badge)
     }
