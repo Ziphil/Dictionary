@@ -61,8 +61,11 @@ public class HelpController extends Controller<Void> {
   private void setupSectionView() {
     $sectionView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        HelpSection section = $sectionView.getSelectionModel().getSelectedItem().getValue()
-        changeHelp(section)
+        TreeItem<HelpSection> item = $sectionView.getSelectionModel().getSelectedItem()
+        if (item != null) {
+          HelpSection section = item.getValue()
+          changeHelp(section)
+        }
       }
     }
     $sectionView.setRoot(HelpItem.createRoot())
