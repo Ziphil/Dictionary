@@ -152,6 +152,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     for (Badge badge : Badge.values()) {
       $badgeControl.getItems().add(badge)
     }
+    $badgeControl.getSelectionModel().select(0)
   }
 
   private void setupHasFieldControls() {

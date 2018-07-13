@@ -1,6 +1,8 @@
 package ziphil.dictionary.shaleia
 
 import groovy.transform.CompileStatic
+import ziphil.dictionary.Badge
+import ziphil.dictionary.BadgeUtils
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
@@ -16,9 +18,12 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
   private SearchType $equivalentSearchType
   private String $description
   private SearchType $descriptionSearchType
+  private Badge $badge
   private Boolean $hasName = false
   private Boolean $hasEquivalent = false
   private Boolean $hasDescription = false
+  private Boolean $hasBadge = false
+  private Dictionary $dictionary
 
   public ShaleiaSearchParameter(String name) {
     $name = name
@@ -29,6 +34,7 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
   }
 
   public void preprocess(Dictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public Boolean matches(ShaleiaWord word) {
@@ -57,6 +63,13 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
         predicate = false
       }
     }
+    if ($hasBadge) {
+      Map<Badge, Set<String>> identifiers = $dictionary.getIndividualSetting().getBadgedIdentifiers()
+      String identifier = word.getIdentifier()
+      if (!BadgeUtils.contains(identifiers, $badge, identifier)) {
+        predicate = false
+      }
+    }
     return predicate
   }
 
@@ -75,6 +88,11 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
     if ($hasDescription) {
       string.append("内容[")
       string.append($description)
+      string.append("], ")
+    }
+    if ($hasBadge) {
+      string.append("マーカー[")
+      string.append($badge)
       string.append("], ")
     }
     if (string.length() >= 2) {
@@ -131,6 +149,14 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
     $descriptionSearchType = descriptionSearchType
   }
 
+  public Badge getBadge() {
+    return $badge
+  }
+
+  public void setBadge(Badge badge) {
+    $badge = badge
+  }
+
   public Boolean hasName() {
     return $hasName
   }
@@ -153,6 +179,14 @@ public class ShaleiaSearchParameter implements DetailedSearchParameter<ShaleiaWo
 
   public void setHasDescription(Boolean hasDescription) {
     $hasDescription = hasDescription
+  }
+
+  public Boolean hasBadge() {
+    return $hasBadge
+  }
+
+  public void setHasBadge(Boolean hasBadge) {
+    $hasBadge = hasBadge
   }
 
 }
