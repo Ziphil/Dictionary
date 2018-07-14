@@ -97,7 +97,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String GIT_EXCEPTION_OUTPUT_PATH = "data/log/git_exception.txt"
 
   @FXML private ContextMenu $editMenu
-  @FXML private Menu $badgeWordMenu
+  @FXML private Menu $badgeWordsMenu
   @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
@@ -844,7 +844,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       item.setOnAction() {
         badgeWords(cachedBadge)
       }
-      $badgeWordMenu.getItems().add(item)
+      $badgeWordsMenu.getItems().add(item)
     }
   }
 

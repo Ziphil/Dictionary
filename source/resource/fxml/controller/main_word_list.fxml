@@ -105,7 +105,7 @@
         <MenuItem onAction="#modifyWords" text="編集"/>
         <MenuItem onAction="#removeWords" text="削除"/> 
         <SeparatorMenuItem/>
-        <Menu fx:id="$badgeWordMenu" text="マーカー"/>       
+        <Menu fx:id="$badgeWordsMenu" text="マーカー"/>       
         <SeparatorMenuItem/>
         <MenuItem onAction="#cutWords" text="切取り"/>
         <MenuItem onAction="#copyWords" text="コピー"/>
