@@ -101,11 +101,11 @@
     <ContextMenu fx:id="$editMenu">
       <items>
         <MenuItem onAction="#addWord" text="新規作成"/>
-        <MenuItem onAction="#addInheritedWords" text="選択単語から新規作成"/>
+        <MenuItem onAction="#addInheritedWords" text="コピーして新規作成"/>
         <MenuItem onAction="#modifyWords" text="編集"/>
         <MenuItem onAction="#removeWords" text="削除"/> 
         <SeparatorMenuItem/>
-        <Menu fx:id="$badgeWordsMenu" text="マーカー"/>       
+        <Menu fx:id="$badgeWordsMenu" text="マーカーを変更"/>       
         <SeparatorMenuItem/>
         <MenuItem onAction="#cutWords" text="切取り"/>
         <MenuItem onAction="#copyWords" text="コピー"/>
