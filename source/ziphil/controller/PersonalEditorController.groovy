@@ -7,10 +7,6 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import javafx.scene.control.Spinner
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination
-import javafx.scene.input.KeyEvent
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
@@ -40,7 +36,6 @@ public class PersonalEditorController extends Controller<WordEditResult> {
   public PersonalEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    setupShortcuts()
   }
 
   @FXML
@@ -80,14 +75,6 @@ public class PersonalEditorController extends Controller<WordEditResult> {
     $word.update()
     WordEditResult result = WordEditResult.new($word)
     $stage.commit(result)
-  }
-
-  private void setupShortcuts() {
-    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
-      if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
-        commit()
-      }
-    }
   }
 
   private void setupLevelControl() {

@@ -842,8 +842,6 @@ public class SlimeEditorController extends Controller<WordEditResult> {
         insertVariationControl()
       } else if (KeyCodeCombination.new(KeyCode.R, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN).match(event)) {
         insertRelationControl()
-      } else if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
-        commit()
       }
     }
   }
