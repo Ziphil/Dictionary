@@ -454,7 +454,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
   }
 
-  private void badgeWords(Badge badge) {
+  public void badgeWords(Badge badge) {
     List<Element> words = $wordView.getSelectionModel().getSelectedItems()
     for (Element word : words) {
       badgeWord(word, badge)

@@ -134,6 +134,9 @@
         </MenuItem>
         <MenuItem styleClass="option,nonnull" text="単語の自動生成" onAction="#addGeneratedWords" accelerator="Shortcut+Shift+G"/>
         <SeparatorMenuItem/>
+        <Menu fx:id="$badgeWordsMenu" styleClass="option,dammy,nonnull" text="単語のマーカーを変更"/>
+        <MenuItem styleClass="option,dammy,null" text="単語のマーカーを変更"/>
+        <SeparatorMenuItem/>
         <MenuItem styleClass="option,nonnull" text="単語の切取り" onAction="#cutWords" accelerator="Shortcut+X">
           <graphic>
             <ImageView><Image url="@../../image/menu/cut.png"/></ImageView>

@@ -33,6 +33,7 @@ import ziphil.custom.Dialog
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.Badge
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.ExportConfig
@@ -64,6 +65,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $exportDictionaryMenu
   @FXML private Menu $searchRegisteredParameterMenu
+  @FXML private Menu $badgeWordsMenu
   @FXML private Menu $pluginMenu
   @FXML private TabPane $tabPane
   private List<MainWordListController> $wordListControllers = ArrayList.new()
@@ -84,6 +86,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupBadgeWordsMenu()
     setupDebug()
   }
 
@@ -725,6 +728,10 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().addGeneratedWords()
   }
 
+  private void badgeWords(Badge badge) {
+    currentWordListController().badgeWords(badge)
+  }
+
   @FXML
   private void cutWords() {
     currentWordListController().cutWords()
@@ -903,6 +910,19 @@ public class MainController extends PrimitiveController<Stage> {
       Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupBadgeWordsMenu() {
+    for (Badge badge : Badge.values()) {
+      Badge cachedBadge = badge
+      MenuItem item = MenuItem.new()
+      item.setText(badge.getName())
+      item.setGraphic(ImageView.new(badge.getImage()))
+      item.setOnAction() {
+        badgeWords(cachedBadge)
+      }
+      $badgeWordsMenu.getItems().add(item)
     }
   }
 
