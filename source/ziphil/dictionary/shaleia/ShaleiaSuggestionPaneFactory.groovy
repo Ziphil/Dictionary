@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -15,7 +16,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggestion, ShaleiaDictionary> {
+public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggestion, ShaleiaDictionary, ElementPane> {
 
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_POSSIBILITY_CLASS = "shaleia-possibility"
@@ -28,7 +29,7 @@ public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggest
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
@@ -41,7 +42,7 @@ public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggest
       }
     }
     modifyBreak(pane)
-    return pane
+    return ElementPane.new(pane)
   }
 
   private void addPossibilityNode(TextFlow pane, SearchParameter parameter, List<String> names, String explanation) {

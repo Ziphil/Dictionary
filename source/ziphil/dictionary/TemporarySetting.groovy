@@ -1,4 +1,4 @@
-package ziphil.module
+package ziphil.dictionary
 
 import groovy.transform.CompileStatic
 import ziphil.controller.NameGeneratorController

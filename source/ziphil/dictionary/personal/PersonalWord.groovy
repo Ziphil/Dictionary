@@ -112,4 +112,8 @@ public class PersonalWord extends WordBase {
     $modification = modification
   }
 
+  public String getIdentifier() {
+    return null
+  }
+
 }

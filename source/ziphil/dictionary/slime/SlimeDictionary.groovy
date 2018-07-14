@@ -502,7 +502,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     return conjugationResolver
   }
 
-  public IndividualSetting createIndividualSetting() {
+  protected IndividualSetting createIndividualSetting() {
     SlimeIndividualSetting individualSetting = SlimeIndividualSetting.create(this)
     return individualSetting
   }

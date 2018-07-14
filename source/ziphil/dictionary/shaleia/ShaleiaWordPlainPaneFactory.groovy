@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordPlainPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordPlainPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary, Pane> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"

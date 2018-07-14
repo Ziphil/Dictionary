@@ -132,6 +132,10 @@ public class ShaleiaWord extends WordBase {
     $description = description
   }
 
+  public String getIdentifier() {
+    return $uniqueName
+  }
+
   public String getComparisonString() {
     return $comparisonString
   }

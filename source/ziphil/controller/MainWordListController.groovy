@@ -24,11 +24,14 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.Menu
+import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressBar
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.control.SelectionMode
+import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
@@ -51,14 +54,17 @@ import ziphil.Launcher
 import ziphil.custom.ClosableTab
 import ziphil.custom.CustomBuilderFactory
 import ziphil.custom.Dialog
+import ziphil.custom.ElementCell
 import ziphil.custom.Measurement
 import ziphil.custom.RefreshableListView
 import ziphil.custom.SimpleTask
 import ziphil.custom.UtilityStage
-import ziphil.custom.WordCell
+import ziphil.dictionary.Badge
+import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionary
+import ziphil.dictionary.EditableDictionaryBase
 import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Element
 import ziphil.dictionary.ExportConfig
@@ -72,12 +78,12 @@ import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.SelectionSearchParameter
 import ziphil.dictionary.Suggestion
+import ziphil.dictionary.TemporarySetting
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.WordSelection
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
-import ziphil.module.TemporarySetting
 import ziphilib.transform.VoidClosure
 import ziphilib.transform.Ziphilify
 
@@ -91,6 +97,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private static final String GIT_EXCEPTION_OUTPUT_PATH = "data/log/git_exception.txt"
 
   @FXML private ContextMenu $editMenu
+  @FXML private Menu $badgeWordsMenu
   @FXML private RefreshableListView<Element> $wordView
   @FXML private TextField $searchControl
   @FXML private ComboBox<SearchMode> $searchModeControl
@@ -105,8 +112,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
   private MainController $mainController
   private ClosableTab $tab
   private Dictionary $dictionary
-  private IndividualSetting $individualSetting = null
-  private TemporarySetting $temporarySetting = null
   private SearchHistory $history = null
   private String $previousSearch = ""
   private List<Stage> $openStages = Collections.synchronizedList(ArrayList.new())
@@ -121,16 +126,15 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   @FXML
   public void initialize() {
-    setupWordView()
     setupWordViewShortcut()
     setupSearchControl()
     setupSearchTypeControl()
+    setupEditMenu()
   }
 
   public void open(Dictionary dictionary) {
     $dictionary = dictionary
-    $individualSetting = dictionary.createIndividualSetting()
-    $temporarySetting = TemporarySetting.new()
+    setupWordView()
     updateLoader()
     updateOnLinkClicked()
   }
@@ -293,7 +297,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word oldWord = $dictionary.copyWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, word)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -353,7 +357,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
       Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
       Word newWord = $dictionary.createWord(defaultName)
       UtilityStage<WordEditResult> nextStage = createStage(null, null)
-      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord, $temporarySetting)      
+      Controller controller = dictionaryFactory.createCreatorController(nextStage, $dictionary, newWord)      
       if (keepsEditorOnTop) {
         nextStage.initOwner($stage)
       }
@@ -362,6 +366,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
       $openStages.remove(nextStage)
       if (nextStage.isCommitted()) {
         WordEditResult result = nextStage.getResult()
+        BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+        preference.removeAllBadges(newWord)
         $dictionary.addWord(newWord)
         if (result.getRemovedWord() != null) {
           $dictionary.mergeWord(newWord, result.getRemovedWord())
@@ -383,7 +389,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
         Boolean keepsEditorOnTop = Setting.getInstance().getKeepsEditorOnTop()
         Word newWord = $dictionary.inheritWord(word)
         UtilityStage<WordEditResult> nextStage = createStage(null, null)
-        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord, $temporarySetting)
+        Controller controller = dictionaryFactory.createEditorController(nextStage, $dictionary, newWord)
         if (keepsEditorOnTop) {
           nextStage.initOwner($stage)
         }
@@ -416,9 +422,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public void addGeneratedWords() {
     if ($dictionary instanceof EditableDictionary) {
+      TemporarySetting temporarySetting = $dictionary.getTemporarySetting()
       UtilityStage<NameGeneratorController.Result> nextStage = createStage()
       NameGeneratorController controller = NameGeneratorController.new(nextStage)
-      controller.prepare(true, $temporarySetting.getGeneratorConfig())
+      controller.prepare(true, temporarySetting.getGeneratorConfig())
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
         NameGeneratorController.Result result = nextStage.getResult()
@@ -433,8 +440,24 @@ public class MainWordListController extends PrimitiveController<Stage> {
         $dictionary.addWords(newWords)
         measureAndSearch(parameter)
         $history.add(parameter)
-        $temporarySetting.setGeneratorConfig(controller.createConfig())
+        temporarySetting.setGeneratorConfig(controller.createConfig())
       }
+    }
+  }
+
+  private void badgeWord(Element word, Badge badge) {
+    if (word != null && word instanceof Word) {
+      BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+      preference.toggle(word, badge)
+      $dictionary.change()
+      $wordView.refresh()
+    }
+  }
+
+  public void badgeWords(Badge badge) {
+    List<Element> words = $wordView.getSelectionModel().getSelectedItems()
+    for (Element word : words) {
+      badgeWord(word, badge)
     }
   }
 
@@ -488,13 +511,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private Class<?> calculateWordClass() {
     Class<?> wordClass = null
-    for (Type type : $dictionary.getClass().getGenericInterfaces()) {
-      if (type instanceof ParameterizedType) {
-        Type rawType = ((ParameterizedType)type).getRawType()
-        Type typeArgument = ((ParameterizedType)type).getActualTypeArguments()[0]
-        if (rawType == EditableDictionary) {
-          wordClass = (Class)typeArgument
-        }
+    Type type = $dictionary.getClass().getGenericSuperclass()
+    if (type instanceof ParameterizedType) {
+      Type rawType = type.getRawType()
+      Type typeArgument = type.getActualTypeArguments()[0]
+      if (rawType == EditableDictionaryBase) {
+        wordClass = (Class)typeArgument
       }
     }
     return wordClass
@@ -727,9 +749,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   private Boolean checkDictionaryChange() {
     Boolean savesAutomatically = Setting.getInstance().getSavesAutomatically()
-    if ($individualSetting != null) {
-      $individualSetting.save()
-    }
     if ($dictionary.isChanged()) {
       if (!savesAutomatically) {
         Dialog dialog = Dialog.new()
@@ -758,7 +777,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   @VoidClosure
   private void setupWordView() {
     $wordView.setCellFactory() { ListView<Element> view ->
-      WordCell cell = WordCell.new()
+      ElementCell cell = ElementCell.new($dictionary.getIndividualSetting())
       cell.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
         if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
           modifyWord(cell.getItem())
@@ -778,6 +797,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWords()
+      } else if (event.getText() ==~ /^\d$/) {
+        Int index = Integer.parseInt(event.getText()) - 1
+        Badge[] badges = Badge.values()
+        if (index >= 0 && index < badges.size()) {
+          badgeWords(badges[index])
+        }
       }
     }
   }
@@ -816,6 +841,19 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $searchTypeControl.disableProperty().bind(disableBinding)
   }
 
+  private void setupEditMenu() {
+    for (Badge badge : Badge.values()) {
+      Badge cachedBadge = badge
+      MenuItem item = MenuItem.new()
+      item.setText(badge.getName())
+      item.setGraphic(ImageView.new(badge.getImage()))
+      item.setOnAction() {
+        badgeWords(cachedBadge)
+      }
+      $badgeWordsMenu.getItems().add(item)
+    }
+  }
+
   private void setupHistory() {
     Int separativeInterval = Setting.getInstance().getSeparativeInterval()
     Int maxSize = Setting.getInstance().getMaxHistorySize()
@@ -831,10 +869,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
 
   public Dictionary getDictionary() {
     return $dictionary
-  }
-
-  public IndividualSetting getIndividualSetting() {
-    return $individualSetting
   }
 
 }

@@ -61,8 +61,11 @@ public class HelpController extends Controller<Void> {
   private void setupSectionView() {
     $sectionView.addEventHandler(MouseEvent.MOUSE_CLICKED) { MouseEvent event ->
       if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        HelpSection section = $sectionView.getSelectionModel().getSelectedItem().getValue()
-        changeHelp(section)
+        TreeItem<HelpSection> item = $sectionView.getSelectionModel().getSelectedItem()
+        if (item != null) {
+          HelpSection section = item.getValue()
+          changeHelp(section)
+        }
       }
     }
     $sectionView.setRoot(HelpItem.createRoot())
@@ -115,6 +118,7 @@ private static enum HelpSection {
   BASIC_SEARCH("検索", "basic_search", BASIC),
   EDIT("編集方法詳細", null),
   SLIME_EDIT("OneToMany形式", "slime_edit", EDIT),
+  BADGE("マーカー", "badge"),
   SCRIPT_SEARCH("スクリプト検索", "script_search"),
   SENTENCE_SEARCH("文一括検索", "sentence_search"),
   WORD_GENERATION("単語の自動生成", "word_generation"),

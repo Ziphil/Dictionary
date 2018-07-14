@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamSource
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.Saver
 import ziphil.module.Setting
+import ziphil.module.Strings
 import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
@@ -137,31 +138,23 @@ private static class PrettyPrintHandler implements InvocationHandler {
       }
       $childFlags[$depth] = false
       $target.writeCharacters("\n")
-      $target.writeCharacters(repeat($depth, "  "))
+      $target.writeCharacters(Strings.repeat("  ", $depth))
       $depth ++
     } else if (name == "writeEndElement") {
       $depth --
       if ($childFlags[$depth]) {
         $target.writeCharacters("\n")
-        $target.writeCharacters(repeat($depth, "  "))
+        $target.writeCharacters(Strings.repeat("  ", $depth))
       }
     } else if (name == "writeEmptyElement") {
       if ($depth > 0) {
         $childFlags[$depth - 1] = true
       }
       $target.writeCharacters("\n")
-      $target.writeCharacters(repeat($depth, "  "))
+      $target.writeCharacters(Strings.repeat("  ", $depth))
     }
     method.invoke($target, args)
     return null
-  }
-
-  private String repeat(Int depth, String string) {
-    String result = ""
-    while (depth -- > 0) {
-      result += string
-    }
-    return result
   }
 
 }

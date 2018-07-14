@@ -6,10 +6,6 @@ import java.util.regex.Matcher
 import javafx.fxml.FXML
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination
-import javafx.scene.input.KeyEvent
 import org.fxmisc.richtext.CodeArea
 import org.fxmisc.richtext.model.RichTextChange
 import ziphil.custom.CodeAreaWrapper
@@ -39,7 +35,6 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   public ShaleiaEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
     loadResource(RESOURCE_PATH, TITLE, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    setupShortcuts()
   }
 
   @FXML
@@ -76,14 +71,6 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     Consumer<RichTextChange> consumer = RichTextLanguage.SHALEIA_DICTIONARY.createConsumer(codeArea)
     codeArea.richChanges().filter{it.getInserted() != it.getRemoved()}.subscribe(consumer)
     codeArea.setWrapText(true)
-  }
-
-  private void setupShortcuts() {
-    $scene.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
-      if (KeyCodeCombination.new(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN).match(event)) {
-        commit()
-      }
-    }
   }
 
 }

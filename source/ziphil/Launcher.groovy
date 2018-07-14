@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 30, 0, 2359)
+  public static final Version VERSION = Version.new(1, 31, 0, 2365)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATOR = createLineSeparator()
@@ -57,6 +57,8 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.31. 0 | 単語データにマーカーを付ける機能を追加。
+//          | 単語データのペーストができない不具合を修正。
 //  1.30. 0 | メニューから Git コマンドを実行する機能を追加。
 //          | PDF 形式へのエクスポート用に付属していた XSL-FO 処理系を削除。
 //  1.29. 0 | 検索履歴の一覧から検索を行う機能を追加。

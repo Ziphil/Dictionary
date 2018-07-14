@@ -1,13 +1,18 @@
 package ziphil.controller
 
 import groovy.transform.CompileStatic
+import javafx.application.Platform
 import javafx.fxml.FXML
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
+import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
+import ziphil.custom.BadgeCell
 import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.Badge
 import ziphil.dictionary.SearchType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -32,6 +37,13 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML private ComboBox<String> $informationTitleControl
   @FXML private ComboBox<SearchType> $informationSearchTypeControl
   @FXML private ComboBox<String> $tagControl
+  @FXML private ComboBox<Badge> $badgeControl
+  @FXML private CheckBox $hasIdControl
+  @FXML private CheckBox $hasNameControl
+  @FXML private CheckBox $hasEquivalentControl
+  @FXML private CheckBox $hasInformationControl
+  @FXML private CheckBox $hasTagControl
+  @FXML private CheckBox $hasBadgeControl
   private SlimeDictionary $dictionary
   private SlimeSearchParameter $searchParameter
 
@@ -43,6 +55,9 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   private void initialize() {
     setupIdControl()
+    setupNameControl()
+    setupBadgeControl()
+    setupHasFieldControls()
   }
 
   public void prepare(SlimeDictionary dictionary, SlimeSearchParameter searchParameter) {
@@ -84,42 +99,81 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
       if ($searchParameter.hasTag()) {
         $tagControl.setValue($searchParameter.getTag())
       }
+      if ($searchParameter.hasBadge()) {
+        $badgeControl.setValue($searchParameter.getBadge())
+      }
     }
   }
 
   @FXML
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
-    if (!$idControl.getText().isEmpty()) {
+    if ($hasIdControl.isSelected()) {
       parameter.setHasId(true)
       parameter.setId(IntegerClass.parseInt($idControl.getText()))
     }
-    if (!$nameControl.getText().isEmpty()) {
+    if ($hasNameControl.isSelected()) {
       parameter.setHasName(true)
       parameter.setName($nameControl.getText())
       parameter.setNameSearchType($nameSearchTypeControl.getValue())
     }
-    if (!$equivalentNameControl.getText().isEmpty() || $equivalentTitleControl.getValue() != null) {
+    if ($hasEquivalentControl.isSelected()) {
       parameter.setHasEquivalent(true)
-      parameter.setEquivalentName($equivalentNameControl.getText())
+      parameter.setEquivalentName($equivalentNameControl.getText() ?: "")
       parameter.setEquivalentTitle($equivalentTitleControl.getValue())
       parameter.setEquivalentSearchType($equivalentSearchTypeControl.getValue())
     } 
-    if (!$informationTextControl.getText().isEmpty() || $informationTitleControl.getValue() != null) {
+    if ($hasInformationControl.isSelected()) {
       parameter.setHasInformation(true)
-      parameter.setInformationText($informationTextControl.getText())
+      parameter.setInformationText($informationTextControl.getText() ?: "")
       parameter.setInformationTitle($informationTitleControl.getValue())
       parameter.setInformationSearchType($informationSearchTypeControl.getValue())
     }
-    if ($tagControl.getValue() != null) {
+    if ($hasTagControl.isSelected()) {
       parameter.setHasTag(true)
       parameter.setTag($tagControl.getValue())
+    }
+    if ($hasBadgeControl.isSelected()) {
+      parameter.setHasBadge(true)
+      parameter.setBadge($badgeControl.getValue())
     }
     $stage.commit(parameter)
   }
 
   private void setupIdControl() {
     $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  }
+
+  private void setupNameControl() {
+    Platform.runLater() {
+      $nameControl.requestFocus()
+    }
+  }
+
+  private void setupBadgeControl() {
+    $badgeControl.setButtonCell(BadgeCell.new())
+    $badgeControl.setCellFactory() { ListView<Badge> view ->
+      BadgeCell cell = BadgeCell.new()
+      return cell
+    }
+    for (Badge badge : Badge.values()) {
+      $badgeControl.getItems().add(badge)
+    }
+    $badgeControl.getSelectionModel().select(0)
+  }
+
+  private void setupHasFieldControls() {
+    $idControl.disableProperty().bind($hasIdControl.selectedProperty().not())
+    $nameControl.disableProperty().bind($hasNameControl.selectedProperty().not())
+    $nameSearchTypeControl.disableProperty().bind($hasNameControl.selectedProperty().not())
+    $equivalentNameControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $equivalentTitleControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $equivalentSearchTypeControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())
+    $informationTextControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $informationTitleControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $informationSearchTypeControl.disableProperty().bind($hasInformationControl.selectedProperty().not())
+    $tagControl.disableProperty().bind($hasTagControl.selectedProperty().not())
+    $badgeControl.disableProperty().bind($hasBadgeControl.selectedProperty().not())
   }
 
 }

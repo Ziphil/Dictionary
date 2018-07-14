@@ -9,7 +9,6 @@ import ziphil.controller.ShaleiaSearcherController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchParameter
@@ -17,7 +16,6 @@ import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
@@ -26,7 +24,7 @@ public class ShaleiaDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "シャレイア語辞典形式"
   private static final String EXTENSION = "xdc"
-  private static final String ICON_PATH = "resource/icon/xdc_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/xdc_dictionary.png"
 
   protected Dictionary create(File file, Loader loader) {
     if (loader != null) {
@@ -53,19 +51,19 @@ public class ShaleiaDictionaryFactory extends EditableDictionaryFactory {
     return controller
   }
 
-  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary) {
     ShaleiaIndividualSettingController controller = ShaleiaIndividualSettingController.new(stage)
     controller.prepare((ShaleiaDictionary)dictionary)
     return controller
   }
 
-  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
     controller.prepare((ShaleiaWord)word)
     return controller
   }
 
-  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
     controller.prepare((ShaleiaWord)word, true)
     return controller

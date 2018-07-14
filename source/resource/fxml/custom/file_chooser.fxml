@@ -27,13 +27,13 @@
     <Button onAction="#moveToParent">
       <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
       <graphic>
-        <ImageView><Image url="@../../icon/parent_directory.png"/></ImageView>
+        <ImageView><Image url="@../../image/menu/parent_directory.png"/></ImageView>
       </graphic>
     </Button>
     <Button onAction="#moveToHome">
       <maxHeight><Double fx:constant="MAX_VALUE"/></maxHeight>
       <graphic>
-        <ImageView><Image url="@../../icon/home_directory.png"/></ImageView>
+        <ImageView><Image url="@../../image/menu/home_directory.png"/></ImageView>
       </graphic>
     </Button>
   </HBox>

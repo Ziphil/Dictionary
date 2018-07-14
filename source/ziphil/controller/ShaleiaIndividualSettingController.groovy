@@ -47,7 +47,6 @@ public class ShaleiaIndividualSettingController extends Controller<BooleanClass>
     $dictionary.setVersion($versionControl.getText())
     $dictionary.setAkrantiainSource($akrantiainSource)
     $dictionary.setChangeDescription($changeDescriptionControl.getText())
-    $dictionary.updateMinimum()
     $stage.commit(true)
   }
 

@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -14,7 +15,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, PersonalDictionary> {
+public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, PersonalDictionary, ElementPane> {
 
   private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
   private static final String PERSONAL_PRONUNCIATION_CLASS = "persoanl-pronunciation"
@@ -27,7 +28,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     VBox pane = VBox.new()
     TextFlow mainPane = TextFlow.new()
@@ -52,7 +53,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
       addSeparator(pane)
       pane.getChildren().add(contentPane)
     }
-    return pane
+    return ElementPane.new(pane)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {

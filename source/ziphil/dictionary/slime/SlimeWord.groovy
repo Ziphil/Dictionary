@@ -241,6 +241,10 @@ public class SlimeWord extends WordBase {
     $relations = relations
   }
 
+  public String getIdentifier() {
+    return IntegerClass.toString($id)
+  }
+
   public String getComparisonString() {
     return $comparisonString
   }

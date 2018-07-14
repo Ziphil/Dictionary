@@ -11,7 +11,6 @@ import ziphil.controller.SlimeSearcherController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchParameter
@@ -19,7 +18,6 @@ import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.shaleia.ShaleiaDictionary
-import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
@@ -28,7 +26,7 @@ public class SlimeDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "OneToMany-JSON形式"
   private static final String EXTENSION = "json"
-  private static final String ICON_PATH = "resource/icon/otm_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/otm_dictionary.png"
 
   private static ObjectMapper $$mapper = createObjectMapper()
 
@@ -60,21 +58,21 @@ public class SlimeDictionaryFactory extends EditableDictionaryFactory {
     return controller
   }
 
-  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary) {
     SlimeIndividualSettingController controller = SlimeIndividualSettingController.new(stage)
-    controller.prepare((SlimeDictionary)dictionary, (SlimeIndividualSetting)individualSetting)
+    controller.prepare((SlimeDictionary)dictionary)
     return controller
   }
 
-  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     SlimeEditorController controller = SlimeEditorController.new(stage)
-    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary, temporarySetting)
+    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary)
     return controller
   }
 
-  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     SlimeEditorController controller = SlimeEditorController.new(stage)
-    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary, temporarySetting, true)
+    controller.prepare((SlimeWord)word, (SlimeDictionary)dictionary, true)
     return controller
   }
 

@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class PersonalWordPlainPaneFactory extends PaneFactoryBase<PersonalWord, PersonalDictionary> {
+public class PersonalWordPlainPaneFactory extends PaneFactoryBase<PersonalWord, PersonalDictionary, Pane> {
 
   private static final String PERSONAL_HEAD_NAME_CLASS = "personal-head-name"
 

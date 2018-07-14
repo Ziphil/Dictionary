@@ -45,12 +45,14 @@ public abstract class DictionaryFactory {
   public void save(Dictionary dictionary) {
     Saver saver = createSaver()
     dictionary.save(saver)
+    dictionary.getIndividualSetting().save()
   }
 
   public void saveBackup(Dictionary dictionary) {
     Saver saver = createSaver()
     saver.setPath(dictionary.getPath().replaceAll(/(?=\.\w+$)/, "_backup"))
     dictionary.save(saver)
+    dictionary.getIndividualSetting().save()
   }
 
   public void export(Dictionary dictionary, ExportConfig config) {
@@ -71,7 +73,7 @@ public abstract class DictionaryFactory {
 
   public abstract Controller createSearcherController(UtilityStage<SearchParameter> stage, Dictionary dictionary)
 
-  public abstract Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting)
+  public abstract Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary)
 
   public Controller createConvertConfigController(UtilityStage<?> stage, Dictionary sourceDictionary) {
     Controller controller = null

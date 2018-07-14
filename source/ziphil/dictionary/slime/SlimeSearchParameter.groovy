@@ -1,13 +1,17 @@
 package ziphil.dictionary.slime
 
 import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.CompileStatic
+import ziphil.dictionary.Badge
+import ziphil.dictionary.BadgePreference
 import ziphil.dictionary.DetailedSearchParameter
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.SearchType
 import ziphilib.transform.Ziphilify
 
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 @CompileStatic @Ziphilify
 public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> {
 
@@ -21,11 +25,14 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   private String $informationTitle
   private SearchType $informationSearchType
   private String $tag
+  private Badge $badge
   private Boolean $hasId = false
   private Boolean $hasName = false
   private Boolean $hasEquivalent = false
   private Boolean $hasInformation = false
   private Boolean $hasTag = false
+  private Boolean $hasBadge = false
+  private Dictionary $dictionary
 
   public SlimeSearchParameter(Int id) {
     $id = id
@@ -41,6 +48,7 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   }
 
   public void preprocess(Dictionary dictionary) {
+    $dictionary = dictionary
   }
 
   public Boolean matches(SlimeWord word) {
@@ -98,6 +106,12 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
         predicate = false
       }
     }
+    if ($hasBadge) {
+      BadgePreference preference = $dictionary.getIndividualSetting().getBadgePreference()
+      if (!preference.contains(word, $badge)) {
+        predicate = false
+      }
+    }
     return predicate
   }
 
@@ -134,6 +148,11 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
     if ($hasTag) {
       string.append("タグ[")
       string.append($tag)
+      string.append("], ")
+    }
+    if ($hasBadge) {
+      string.append("マーカー[")
+      string.append($badge)
       string.append("], ")
     }
     if (string.length() >= 2) {
@@ -222,6 +241,14 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
     $tag = tag
   }
 
+  public Badge getBadge() {
+    return $badge
+  }
+
+  public void setBadge(Badge badge) {
+    $badge = badge
+  }
+
   @JsonGetter("hasId")
   public Boolean hasId() {
     return $hasId
@@ -265,6 +292,15 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
 
   public void setHasTag(Boolean hasTag) {
     $hasTag = hasTag
+  }
+
+  @JsonGetter("hasBadge")
+  public Boolean hasBadge() {
+    return $hasBadge
+  }
+
+  public void setHasBadge(Boolean hasBadge) {
+    $hasBadge = hasBadge
   }
 
 }

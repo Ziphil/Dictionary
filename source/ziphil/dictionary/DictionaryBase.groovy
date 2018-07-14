@@ -36,6 +36,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
   protected Consumer<SearchParameter> $onLinkClicked
   private Task<?> $loader
   private Task<?> $saver
+  protected IndividualSetting $individualSetting
+  protected TemporarySetting $temporarySetting
   private F $dictionaryFactory
   protected Boolean $changed = false
 
@@ -107,6 +109,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     $changed = true
   }
 
+  public void change() {
+    $changed = true
+  }
+
   public abstract Object createPlainWord(W word)
 
   public abstract Dictionary copy()
@@ -175,8 +181,14 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
 
   protected abstract ConjugationResolver createConjugationResolver()
 
-  public IndividualSetting createIndividualSetting() {
-    return null
+  protected IndividualSetting createIndividualSetting() {
+    SimpleIndividualSetting individualSetting = SimpleIndividualSetting.create(this)
+    return individualSetting
+  }
+
+  protected TemporarySetting createTemporarySetting() {
+    TemporarySetting temporarySetting = TemporarySetting.new()
+    return temporarySetting
   }
 
   public String getName() {
@@ -233,6 +245,20 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
 
   public Task<?> getSaver() {
     return $saver
+  }
+
+  public IndividualSetting getIndividualSetting() {
+    if ($individualSetting == null) {
+      $individualSetting = createIndividualSetting()
+    }
+    return $individualSetting
+  }
+
+  public TemporarySetting getTemporarySetting() {
+    if ($temporarySetting == null) {
+      $temporarySetting = createTemporarySetting()
+    }
+    return $temporarySetting
   }
 
   public F getDictionaryFactory() {

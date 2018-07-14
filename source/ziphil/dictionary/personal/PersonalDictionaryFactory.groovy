@@ -7,7 +7,6 @@ import ziphil.controller.PersonalEditorController
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.EditableDictionaryFactory
 import ziphil.dictionary.Dictionary
-import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchParameter
@@ -15,7 +14,6 @@ import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.slime.SlimeDictionary
-import ziphil.module.TemporarySetting
 import ziphilib.transform.Ziphilify
 
 
@@ -24,7 +22,7 @@ public class PersonalDictionaryFactory extends EditableDictionaryFactory {
 
   private static final String NAME = "PDIC-CSV形式"
   private static final String EXTENSION = "csv"
-  private static final String ICON_PATH = "resource/icon/csv_dictionary.png"
+  private static final String ICON_PATH = "resource/image/menu/csv_dictionary.png"
 
   protected Dictionary create(File file, Loader loader) {
     if (loader != null) {
@@ -50,17 +48,17 @@ public class PersonalDictionaryFactory extends EditableDictionaryFactory {
     return null
   }
 
-  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary, IndividualSetting individualSetting) {
+  public Controller createIndividualSettingController(UtilityStage<BooleanClass> stage, Dictionary dictionary) {
     return null
   }
 
-  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     PersonalEditorController controller = PersonalEditorController.new(stage)
     controller.prepare((PersonalWord)word)
     return controller
   }
 
-  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word, TemporarySetting temporarySetting) {
+  public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     PersonalEditorController controller = PersonalEditorController.new(stage)
     controller.prepare((PersonalWord)word, true)
     return controller

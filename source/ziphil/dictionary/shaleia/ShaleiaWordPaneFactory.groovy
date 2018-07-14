@@ -12,7 +12,9 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
+import ziphil.dictionary.Badge
 import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchMode
@@ -25,7 +27,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary> {
+public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, ShaleiaDictionary, ElementPane> {
 
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_PRONUNCIATION_CLASS = "shaleia-pronunciation"
@@ -56,9 +58,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     VBox pane = VBox.new()
+    Map<Badge, Node> badgeNodes = EnumMap.new(Badge)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     TextFlow synonymPane = TextFlow.new()
@@ -72,6 +75,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
       while (reader.readLine() != null) {
         if (mainPane.getChildren().isEmpty()) {
           String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
+          addBadgeNodes(mainPane, badgeNodes)
           addNameNode(mainPane, name, $word.createPronunciation())
         }
         if (reader.findCreationDate()) {
@@ -112,7 +116,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     } finally {
       reader.close()
     }
-    return pane
+    return ElementPane.new(pane, badgeNodes)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {

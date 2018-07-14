@@ -11,7 +11,9 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import ziphil.custom.ElementPane
 import ziphil.custom.Measurement
+import ziphil.dictionary.Badge
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.dictionary.SearchParameter
 import ziphil.module.Setting
@@ -21,7 +23,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary> {
+public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictionary, ElementPane> {
 
   private static final String SLIME_HEAD_NAME_CLASS = "slime-head-name"
   private static final String SLIME_PRONUNCIATION_CLASS = "slime-pronunciation"
@@ -42,11 +44,12 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     super(word, dictionary)
   }
 
-  protected Pane doCreate() {
+  protected ElementPane doCreate() {
     Setting setting = Setting.getInstance()
     Int lineSpacing = setting.getLineSpacing()
     Boolean showsVariation = setting.getShowsVariation()
     VBox pane = VBox.new()
+    Map<Badge, Node> badgeNodes = EnumMap.new(Badge)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     TextFlow relationPane = TextFlow.new()
@@ -55,6 +58,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
+    addBadgeNodes(mainPane, badgeNodes)
     addNameNode(mainPane, $word.getName(), $word.createPronunciation())
     addTagNode(mainPane, $word.getTags())
     for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
@@ -93,7 +97,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       addSeparator(pane)
       pane.getChildren().add(relationPane)
     }
-    return pane
+    return ElementPane.new(pane, badgeNodes)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {

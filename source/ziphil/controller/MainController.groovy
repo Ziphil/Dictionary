@@ -33,6 +33,7 @@ import ziphil.custom.Dialog
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
+import ziphil.dictionary.Badge
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.ExportConfig
@@ -64,6 +65,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $exportDictionaryMenu
   @FXML private Menu $searchRegisteredParameterMenu
+  @FXML private Menu $badgeWordsMenu
   @FXML private Menu $pluginMenu
   @FXML private TabPane $tabPane
   private List<MainWordListController> $wordListControllers = ArrayList.new()
@@ -84,6 +86,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupBadgeWordsMenu()
     setupDebug()
   }
 
@@ -132,7 +135,7 @@ public class MainController extends PrimitiveController<Stage> {
   private IndividualSetting currentIndividualSetting() {
     MainWordListController controller = currentWordListController()
     if (controller != null) {
-      return controller.getIndividualSetting()
+      return controller.getDictionary().getIndividualSetting()
     } else {
       return null
     }
@@ -412,7 +415,7 @@ public class MainController extends PrimitiveController<Stage> {
             item.setText("未登録")
             item.setDisable(true)
           }
-          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+          Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
           item.setGraphic(ImageView.new(icon))
           item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN))
           $searchRegisteredParameterMenu.getItems().add(item)
@@ -445,7 +448,7 @@ public class MainController extends PrimitiveController<Stage> {
   private void updateExportDictionaryMenu() {
     $exportDictionaryMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
     for (ExportType type : ExportType.values()) {
       ExportType cachedType = type
       MenuItem item = MenuItem.new(type.getName())
@@ -472,7 +475,7 @@ public class MainController extends PrimitiveController<Stage> {
       if (plugin.isSupported(dictionary)) {
         MenuItem item = MenuItem.new()
         String name = plugin.getName()
-        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/empty.png"))
+        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
         KeyCode keyCode = plugin.getKeyCode()
         KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
         item.setText(name)
@@ -503,12 +506,12 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML
   private void editIndividualSetting() {
     Dictionary dictionary = currentDictionary()
-    IndividualSetting individualSetting = currentIndividualSetting()
     if (dictionary != null) {
       UtilityStage<BooleanClass> nextStage = createStage()
-      Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary, individualSetting)
+      Controller controller = dictionary.getDictionaryFactory().createIndividualSettingController(nextStage, dictionary)
       nextStage.showAndWait()
       if (nextStage.isCommitted()) {
+        dictionary.updateMinimum()
         updateSearchRegisteredParameterMenu()
       }
     }
@@ -725,6 +728,10 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().addGeneratedWords()
   }
 
+  private void badgeWords(Badge badge) {
+    currentWordListController().badgeWords(badge)
+  }
+
   @FXML
   private void cutWords() {
     currentWordListController().cutWords()
@@ -877,7 +884,7 @@ public class MainController extends PrimitiveController<Stage> {
         item.setText("未登録")
         item.setDisable(true)
       }
-      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN))
       $openRegisteredDictionaryMenu.getItems().add(item)
@@ -900,9 +907,22 @@ public class MainController extends PrimitiveController<Stage> {
         item.setText("登録済み")
         item.setDisable(true)
       }
-      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/icon/dictionary_${(i + 1) % 10}.png"))
+      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
       item.setGraphic(ImageView.new(icon))
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupBadgeWordsMenu() {
+    for (Badge badge : Badge.values()) {
+      Badge cachedBadge = badge
+      MenuItem item = MenuItem.new()
+      item.setText(badge.getName())
+      item.setGraphic(ImageView.new(badge.getImage()))
+      item.setOnAction() {
+        badgeWords(cachedBadge)
+      }
+      $badgeWordsMenu.getItems().add(item)
     }
   }
 

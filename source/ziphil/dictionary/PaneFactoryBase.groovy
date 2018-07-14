@@ -1,20 +1,28 @@
 package ziphil.dictionary
 
 import groovy.transform.CompileStatic
+import javafx.beans.value.ObservableValue
+import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.image.ImageView
+import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.ClickType
+import ziphil.custom.Measurement
+import ziphil.dictionary.Badge
 import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public abstract class PaneFactoryBase<E extends Element, D extends Dictionary> implements PaneFactory {
+public abstract class PaneFactoryBase<E extends Element, D extends Dictionary, P> implements PaneFactory<P> {
+
+  private static final String BADGE_CONTAINER_CLASS = "badge-container"
 
   protected E $word
   protected D $dictionary
-  private Pane $pane = null 
+  private P $pane = null 
   protected ClickType $linkClickType = null
   private Boolean $changed = true
   private Boolean $persisted = false
@@ -29,11 +37,11 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary> i
     this(word, dictionary, false)
   }
 
-  protected abstract Pane doCreate()
+  protected abstract P doCreate()
 
-  public Pane create(Boolean forcesCreate) {
+  public P create(Boolean forcesCreate) {
     if ($pane == null || $changed || forcesCreate) {
-      Pane pane = doCreate()
+      P pane = doCreate()
       if ($persisted && !forcesCreate) {
         $pane = pane
         $changed = false
@@ -50,6 +58,33 @@ public abstract class PaneFactoryBase<E extends Element, D extends Dictionary> i
 
   public void change() {
     $changed = true
+  }
+
+  protected void addBadgeNodes(Pane pane, Map<Badge, Node> badgeNodes) {
+    HBox box = HBox.new(Measurement.rpx(2))
+    Text text = Text.new(" ")
+    for (Badge badge : Badge.values()) {
+      ImageView view = ImageView.new(badge.getImage())       
+      view.getStyleClass().add(badge.getStyleClass())
+      box.getChildren().add(view)
+      badgeNodes[badge] = view
+    }
+    box.setAlignment(Pos.BASELINE_CENTER)
+    box.getStyleClass().add(BADGE_CONTAINER_CLASS)
+    pane.getChildren().addAll(box, text)
+    for (Map.Entry<Badge, Node> entry : badgeNodes) {
+      entry.getValue().managedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+        Boolean anyManaged = false
+        for (Map.Entry<Badge, Node> otherEntry : badgeNodes) {
+          if (otherEntry.getValue().isManaged()) {
+            anyManaged = true
+            break
+          }
+        }
+        text.setVisible(anyManaged)
+        text.setManaged(anyManaged)
+      }
+    }
   }
 
   protected void modifyBreak(TextFlow pane) {

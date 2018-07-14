@@ -10,8 +10,8 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class FileCell extends ListCell<File> {
 
-  private static final Image DIRECTORY_ICON = createIcon("resource/icon/directory.png")
-  private static final Image FILE_ICON = createIcon("resource/icon/file.png")
+  private static final Image DIRECTORY_ICON = createIcon("resource/image/menu/directory.png")
+  private static final Image FILE_ICON = createIcon("resource/image/menu/file.png")
 
   public FileCell() {
     super()
