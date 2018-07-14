@@ -797,6 +797,12 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $wordView.addEventHandler(KeyEvent.KEY_PRESSED) { KeyEvent event ->
       if (event.getCode() == KeyCode.ENTER) {
         modifyWords()
+      } else if (event.getText() ==~ /^\d$/) {
+        Int index = Integer.parseInt(event.getText()) - 1
+        Badge[] badges = Badge.values()
+        if (index >= 0 && index < badges.size()) {
+          badgeWords(badges[index])
+        }
       }
     }
   }
