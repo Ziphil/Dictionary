@@ -869,7 +869,7 @@ public class MainController extends PrimitiveController<Stage> {
     Setting setting = Setting.getInstance()
     List<String> dictionaryPaths = setting.getRegisteredDictionaryPaths()
     List<String> dictionaryNames = setting.getRegisteredDictionaryNames()
-    for (Int i = 0 ; i < 10 ; i ++) {
+    for (Int i = 0 ; i < Math.max(dictionaryPaths.size(), 10) ; i ++) {
       String dictionaryPath = dictionaryPaths[i]
       String dictionaryName = dictionaryNames[i]
       MenuItem item = MenuItem.new()
@@ -884,9 +884,11 @@ public class MainController extends PrimitiveController<Stage> {
         item.setText("未登録")
         item.setDisable(true)
       }
-      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
-      item.setGraphic(ImageView.new(icon))
-      item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN))
+      if (i < 10) {
+        Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
+        item.setGraphic(ImageView.new(icon))
+        item.setAccelerator(KeyCodeCombination.new(KeyCode.valueOf("DIGIT${(i + 1) % 10}"), KeyCombination.SHORTCUT_DOWN))
+      }
       $openRegisteredDictionaryMenu.getItems().add(item)
     }
   }
@@ -894,12 +896,12 @@ public class MainController extends PrimitiveController<Stage> {
   private void setupRegisterCurrentDictionaryMenu() {
     $registerCurrentDictionaryMenu.getItems().clear()
     List<String> dictionaryPaths = Setting.getInstance().getRegisteredDictionaryPaths()
-    for (Int i = 0 ; i < 10 ; i ++) {
+    for (Int i = 0 ; i < Math.max(dictionaryPaths.size(), 9) + 1 ; i ++) {
       Int j = i
       String dictionaryPath = dictionaryPaths[i]
       MenuItem item = MenuItem.new()
       if (dictionaryPath == null) {
-        item.setText("辞書${(i + 1) % 10}に登録")
+        item.setText("辞書${i + 1}に登録")
         item.setOnAction() {
           registerCurrentDictionary(j)
         }
@@ -907,8 +909,10 @@ public class MainController extends PrimitiveController<Stage> {
         item.setText("登録済み")
         item.setDisable(true)
       }
-      Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
-      item.setGraphic(ImageView.new(icon))
+      if (i < 10) {
+        Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/dictionary_${(i + 1) % 10}.png"))
+        item.setGraphic(ImageView.new(icon))
+      }
       $registerCurrentDictionaryMenu.getItems().add(item)
     }
   }

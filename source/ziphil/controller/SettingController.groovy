@@ -314,7 +314,7 @@ public class SettingController extends Controller<BooleanClass> {
   private void setupRegisteredDictionaryPane() {
     for (Int i = 0 ; i < 10 ; i ++) {
       Int j = i
-      Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
+      Label numberLabel = Label.new("登録辞書${i + 1}:")
       HBox box = HBox.new(Measurement.rpx(5))
       HBox innerBox = HBox.new()
       TextField dictionaryPathControl = TextField.new()
