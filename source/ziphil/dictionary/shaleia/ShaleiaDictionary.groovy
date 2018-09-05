@@ -159,6 +159,10 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
     return dictionary
   }
 
+  public Boolean containsUniqueName(String uniqueName, ShaleiaWord excludedWord) {
+    return $words.any{it != excludedWord && it.getUniqueName() == uniqueName}
+  }
+
   private void setupSuggestions() {
     ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
     ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
