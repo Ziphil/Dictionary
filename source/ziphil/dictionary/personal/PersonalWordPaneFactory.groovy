@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import ziphil.custom.ElementPane
+import ziphil.dictionary.Badge
 import ziphil.dictionary.PaneFactoryBase
 import ziphil.module.Setting
 import ziphil.module.Strings
@@ -31,12 +32,14 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
   protected ElementPane doCreate() {
     Int lineSpacing = Setting.getInstance().getLineSpacing()
     VBox pane = VBox.new()
+    Map<Badge, Node> badgeNodes = EnumMap.new(Badge)
     TextFlow mainPane = TextFlow.new()
     TextFlow contentPane = TextFlow.new()
     Boolean hasContent = false
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     mainPane.setLineSpacing(lineSpacing)
     contentPane.setLineSpacing(lineSpacing)
+    addBadgeNodes(mainPane, badgeNodes)
     addNameNode(mainPane, $word.getName(), $word.createPronunciation())
     if (!$word.getTranslation().isEmpty()) {
       addContentNode(contentPane, $word.getTranslation())
@@ -53,7 +56,7 @@ public class PersonalWordPaneFactory extends PaneFactoryBase<PersonalWord, Perso
       addSeparator(pane)
       pane.getChildren().add(contentPane)
     }
-    return ElementPane.new(pane)
+    return ElementPane.new(pane, badgeNodes)
   }
 
   private void addNameNode(TextFlow pane, String name, String pronunciation) {
