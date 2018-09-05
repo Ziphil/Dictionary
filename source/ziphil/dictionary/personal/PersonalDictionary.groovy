@@ -87,6 +87,10 @@ public class PersonalDictionary extends EditableDictionaryBase<PersonalWord, Sug
     return dictionary
   }
 
+  public Boolean containsName(String name, PersonalWord excludedWord) {
+    return $words.any{it != excludedWord && it.getName() == name}
+  }
+
   protected Comparator<? super PersonalWord> createWordComparator() {
     Comparator<PersonalWord> comparator = { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
