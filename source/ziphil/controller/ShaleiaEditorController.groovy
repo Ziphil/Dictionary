@@ -64,7 +64,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   protected void commit() {
     String uniqueName = $nameControl.getText()
     if (!$dictionary.containsUniqueName(uniqueName, $word)) {
-      $word.setUniqueName($nameControl.getText())
+      $word.setUniqueName(uniqueName)
       $word.setDescription($descriptionControl.getCodeArea().textProperty().getValue())
       $word.update()
       WordEditResult result = WordEditResult.new($word)

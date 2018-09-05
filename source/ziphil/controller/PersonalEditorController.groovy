@@ -70,7 +70,7 @@ public class PersonalEditorController extends Controller<WordEditResult> {
   protected void commit() {
     String name = $nameControl.getText()
     if (!$dictionary.containsName(name, $word)) {
-      $word.setName($nameControl.getText())
+      $word.setName(name)
       $word.setPronunciation($pronunciationControl.getText())
       $word.setTranslation($translationControl.getText())
       $word.setUsage($usageControl.getText())
