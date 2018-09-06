@@ -103,78 +103,51 @@
   -fx-font-style: italic;
 }
 
-.dictionary-list .list-cell.circle-badge {
-  -fx-background: hsb(0, 2%, 100%);
+.dictionary-list .list-cell {
+  -fx-badge-color: -fx-background;
+  -fx-background-color: -fx-background, -fx-badge-color, -fx-background;
+  -fx-background-insets: 0px, 1px, 6px;
 }
 
-.dictionary-list .list-cell.circle-badge:odd {
-  -fx-background: derive(hsb(0, 4%, 100%), -3%);
+.dictionary-list .list-cell.circle-badge {
+  -fx-badge-color: hsba(0, 60%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.square-badge {
-  -fx-background: hsb(230, 6%, 100%);
-}
-
-.dictionary-list .list-cell.square-badge:odd {
-  -fx-background: derive(hsb(230, 8%, 100%), -3%);
+  -fx-badge-color: hsba(230, 70%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.up-triangle-badge {
-  -fx-background: hsb(120, 4%, 100%);
-}
-
-.dictionary-list .list-cell.up-triangle-badge:odd {
-  -fx-background: derive(hsb(120, 6%, 100%), -3%);
+  -fx-badge-color: hsba(120, 65%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.diamond-badge {
-  -fx-background: hsb(60, 4%, 100%);
-}
-
-.dictionary-list .list-cell.diamond-badge:odd {
-  -fx-background: derive(hsb(60, 6%, 100%), -3%);
+  -fx-badge-color: hsba(60, 65%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.down-triangle-badge {
-  -fx-background: hsb(270, 4%, 100%);
-}
-
-.dictionary-list .list-cell.down-triangle-badge:odd {
-  -fx-background: derive(hsb(270, 6%, 100%), -3%);
+  -fx-badge-color: hsba(270, 65%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.cross-badge {
-  -fx-background: hsb(30, 2%, 100%);
-}
-
-.dictionary-list .list-cell.cross-badge:odd {
-  -fx-background: derive(hsb(30, 4%, 100%), -3%);
+  -fx-badge-color: hsba(30, 60%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.pentagon-badge {
-  -fx-background: hsb(180, 6%, 100%);
-}
-
-.dictionary-list .list-cell.pentagon-badge:odd {
-  -fx-background: derive(hsb(180, 8%, 100%), -3%);
+  -fx-badge-color: hsba(180, 70%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell.heart-badge {
-  -fx-background: hsb(320, 2%, 100%);
-}
-
-.dictionary-list .list-cell.heart-badge:odd {
-  -fx-background: derive(hsb(320, 4%, 100%), -3%);
-}
-
-.dictionary-list:focused >.virtual-flow >.clipped-container >.sheet >.list-cell:filled:selected {
-  -fx-background: -fx-selection-bar !important;
-  -fx-table-cell-border-color: derive(-fx-selection-bar, 20%) !important;
+  -fx-badge-color: hsba(320, 60%, 80%, 0.15);
 }
 
 .dictionary-list .list-cell:filled:selected {
-  -fx-background: -fx-selection-bar-non-focused !important;
-  -fx-table-cell-border-color: derive(-fx-selection-bar-non-focused, 20%) !important;
+  -fx-badge-color: -fx-background !important;
+}
+
+.dictionary-list:focused >.virtual-flow >.clipped-container >.sheet >.list-cell:focused {
+  -fx-background-color: -fx-background, -fx-cell-focus-inner-border, -fx-background, -fx-badge-color, -fx-background !important;
+  -fx-background-insets: 0px, 1px, 2px, 2px, 6px !important;
 }
 
 .setting-pane Text {
