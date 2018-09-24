@@ -349,15 +349,17 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
         currentMode = TextMode.NORMAL
       } else {
-        if (character == START_ESCAPE_CHARACTER || currentEscapeString.length() > 0) {
-          currentEscapeString.append(character)
-          if (character == END_ESCAPE_CHARACTER && currentEscapeString.length() > 0) {
-            Matcher matcher = currentEscapeString.toString() =~ /^&#x([0-9A-Fa-f]+);$/
-            if (matcher.matches()) {
-              String convertedEscapeString = CharacterClass.toChars(IntegerClass.parseInt(matcher.group(1), 16))[0]
+        if (character == START_ESCAPE_CHARACTER) {
+          StringBuilder escapeString = StringBuilder.new()
+          for (; i < string.length() ; i ++) {
+            Char escapeCharacter = string.charAt(i)
+            if (escapeCharacter == END_ESCAPE_CHARACTER) {
+              String convertedEscapeString = CharacterClass.toChars(IntegerClass.parseInt(escapeString.toString(), 16))[0]
               currentString.append(convertedEscapeString)
               currentName.append(convertedEscapeString)
-              currentEscapeString.setLength(0)
+              break
+            } else if (escapeCharacter ==~ /[0-9A-Fa-f]/) {
+              escapeString.append(escapeCharacter)
             }
           }
         } else {
