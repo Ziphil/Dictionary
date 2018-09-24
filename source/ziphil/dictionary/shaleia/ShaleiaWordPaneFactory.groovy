@@ -5,6 +5,7 @@ import java.util.regex.Matcher
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Separator
 import javafx.scene.input.MouseEvent
@@ -40,6 +41,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
+  private static final String SHALEIA_HAIRIA_CLASS = "shaleia-hairia"
   private static final Char START_NAME_CHARACTER = '['
   private static final Char END_NAME_CHARACTER = ']'
   private static final Char START_LINK_CHARACTER = '{'
@@ -48,6 +50,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final Char END_ITALIC_CHARACTER = '/'
   private static final Char START_ESCAPE_CHARACTER = '&'
   private static final Char END_ESCAPE_CHARACTER = ';'
+  private static final Char START_HAIRIA_CHARACTER = 'H'
   private static final String PUNCTUATIONS = " .,?!-"
 
   public ShaleiaWordPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
@@ -148,10 +151,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Label partText = Label.new(part)
     Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> equivalentTexts = createRichTexts(equivalent)
+    List<Node> equivalentTexts = createRichTexts(equivalent)
     partText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
-    for (Text equivalentText : equivalentTexts) {
+    for (Node equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
     pane.getChildren().addAll(partText, spaceText)
@@ -165,10 +168,10 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Label titleText = Label.new(title)
     Text innerBreakText = Text.new("\n")
     Text breakText = Text.new("\n")
-    List<Text> contentTexts = createRichTexts(modifiedContent)
+    List<Node> contentTexts = createRichTexts(modifiedContent)
     titleText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CONTENT_TITLE_CLASS)
     innerBreakText.getStyleClass().addAll(CONTENT_CLASS, SMALL_CLASS)
-    for (Text contentText : contentTexts) {
+    for (Node contentText : contentTexts) {
       contentText.getStyleClass().add(CONTENT_CLASS)
     }
     pane.getChildren().addAll(titleText, innerBreakText)
@@ -183,12 +186,12 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     Label synonymTypeText = Label.new(synonymType)
     Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
-    List<Text> synonymTexts = createRichTexts(synonym + " ", true)
+    List<Node> synonymTexts = createRichTexts(synonym + " ", true)
     markerText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_MARKER_CLASS)
     markerText.getStyleClass().addAll(CONTENT_CLASS)
     synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
-    for (Text synonymText : synonymTexts) {
+    for (Node synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
     }
     if (!synonymType.isEmpty()) {
@@ -213,9 +216,9 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     }
   }
 
-  private List<Text> createRichTexts(String string, Boolean decoratesLink) {
-    List<Text> texts = ArrayList.new()
-    List<Text> unnamedTexts = ArrayList.new()
+  private List<Node> createRichTexts(String string, Boolean decoratesLink) {
+    List<Node> texts = ArrayList.new()
+    List<Node> unnamedTexts = ArrayList.new()
     StringBuilder currentString = StringBuilder.new()
     StringBuilder currentEscapeString = StringBuilder.new()
     StringBuilder currentName = StringBuilder.new()
@@ -243,7 +246,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
         if (currentName.length() > 0) {
           String name = currentName.toString()
-          for (Text unnamedText : unnamedTexts) {
+          for (Node unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
@@ -263,7 +266,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
         }
         if (currentName.length() > 0) {
           String name = currentName.toString()
-          for (Text unnamedText : unnamedTexts) {
+          for (Node unnamedText : unnamedTexts) {
             unnamedText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(name))
           }
           currentName.setLength(0)
@@ -362,6 +365,13 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
               escapeString.append(escapeCharacter)
             }
           }
+        } else if (character == START_HAIRIA_CHARACTER && string.charAt(i + 1) ==~ /[0-9]/) {
+          Text text = Text.new(currentString.toString())
+          Label hairiaText = Label.new(String.valueOf(START_HAIRIA_CHARACTER))
+          hairiaText.getStyleClass().addAll(SHALEIA_HAIRIA_CLASS)
+          texts.addAll(text, hairiaText)
+          currentString.setLength(0)
+          currentName.setLength(0)
         } else {
           currentString.append(character)
           currentName.append(character)
@@ -375,7 +385,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     return texts
   }
 
-  private List<Text> createRichTexts(String string) {
+  private List<Node> createRichTexts(String string) {
     return createRichTexts(string, false)
   }
 

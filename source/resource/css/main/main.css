@@ -103,6 +103,11 @@
   -fx-font-style: italic;
 }
 
+.dictionary-list .shaleia-hairia {
+  -fx-font-size: 0.8em;
+  -fx-translate-y: -0.3em;
+}
+
 .dictionary-list .list-cell {
   -fx-badge-color: -fx-background;
   -fx-background-color: -fx-background, -fx-badge-color, -fx-background;
