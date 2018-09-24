@@ -22,6 +22,7 @@ public enum RichTextLanguage {
       consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉)?/, "shaleia-equivalent-marker", "shaleia-part")
       consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉)?/, "shaleia-synonym-marker", "shaleia-part")
       consumer.addSyntax(/(\{|\}|\[|\]|\/)(\*)?/, "shaleia-symbol", "shaleia-reference-mark")
+      consumer.addSyntax(/(&#x[0-9A-Fa-f]+;)/, "shaleia-escape")
     } else if (this == AKRANTIAIN) {
       consumer.addSyntax(/(?m)(#.*$)/, "akrantiain-comment")
       consumer.addSyntax(/(?m)(\".*?(?:(?<!\\)\"|$)|\/.*?(?:(?<!\\)\/|$))/, "akrantiain-string")

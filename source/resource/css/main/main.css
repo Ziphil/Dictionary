@@ -180,6 +180,10 @@
   -fx-fill: derive(-fx-text-inner-color, 60%);
 }
 
+.editor .styled-text-area .shaleia-escape {
+  -fx-fill: hsb(30, 90%, 60%);
+}
+
 .editor .styled-text-area .akrantiain-marker,
 .editor .styled-text-area .zatlin-marker {
   -fx-fill: hsb(180, 90%, 60%);
