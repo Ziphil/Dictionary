@@ -40,14 +40,14 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
-  private static final Char START_NAME_CHARACTER = "["
-  private static final Char END_NAME_CHARACTER = "]"
-  private static final Char START_LINK_CHARACTER = "{"
-  private static final Char END_LINK_CHARACTER = "}"
-  private static final Char START_ITALIC_CHARACTER = "/"
-  private static final Char END_ITALIC_CHARACTER = "/"
-  private static final Char START_ESCAPE_CHARACTER = "&"
-  private static final Char END_ESCAPE_CHARACTER = ";"
+  private static final Char START_NAME_CHARACTER = '['
+  private static final Char END_NAME_CHARACTER = ']'
+  private static final Char START_LINK_CHARACTER = '{'
+  private static final Char END_LINK_CHARACTER = '}'
+  private static final Char START_ITALIC_CHARACTER = '/'
+  private static final Char END_ITALIC_CHARACTER = '/'
+  private static final Char START_ESCAPE_CHARACTER = '&'
+  private static final Char END_ESCAPE_CHARACTER = ';'
   private static final String PUNCTUATIONS = " .,?!-"
 
   public ShaleiaWordPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
