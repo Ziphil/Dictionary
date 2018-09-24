@@ -181,7 +181,7 @@
 }
 
 .editor .styled-text-area .shaleia-escape {
-  -fx-fill: hsb(30, 90%, 60%);
+  -fx-fill: hsb(60, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-marker,
@@ -195,7 +195,7 @@
 }
 
 .editor .styled-text-area .akrantiain-environment {
-  -fx-fill: hsb(210, 90%, 60%);
+  -fx-fill: hsb(60, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-identifier,
@@ -209,7 +209,7 @@
 
 .editor .styled-text-area .akrantiain-special-symbol,
 .editor .styled-text-area .zatlin-special-symbol {
-  -fx-fill: hsb(60, 90%, 60%);
+  -fx-fill: hsb(30, 90%, 60%);
 }
 
 .editor .styled-text-area .akrantiain-comment,
