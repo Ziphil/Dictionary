@@ -40,14 +40,14 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_NAME_CLASS = "shaleia-name"
   private static final String SHALEIA_LINK_CLASS = "shaleia-link"
   private static final String SHALEIA_ITALIC_CLASS = "shaleia-italic"
-  private static final String START_NAME_CHARACTER = "["
-  private static final String END_NAME_CHARACTER = "]"
-  private static final String START_LINK_CHARACTER = "{"
-  private static final String END_LINK_CHARACTER = "}"
-  private static final String START_ITALIC_CHARACTER = "/"
-  private static final String END_ITALIC_CHARACTER = "/"
-  private static final String START_ESCAPE_CHARACTER = "&"
-  private static final String END_ESCAPE_CHARACTER = ";"
+  private static final Char START_NAME_CHARACTER = "["
+  private static final Char END_NAME_CHARACTER = "]"
+  private static final Char START_LINK_CHARACTER = "{"
+  private static final Char END_LINK_CHARACTER = "}"
+  private static final Char START_ITALIC_CHARACTER = "/"
+  private static final Char END_ITALIC_CHARACTER = "/"
+  private static final Char START_ESCAPE_CHARACTER = "&"
+  private static final Char END_ESCAPE_CHARACTER = ";"
   private static final String PUNCTUATIONS = " .,?!-"
 
   public ShaleiaWordPaneFactory(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean persisted) {
@@ -220,7 +220,8 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     StringBuilder currentEscapeString = StringBuilder.new()
     StringBuilder currentName = StringBuilder.new()
     TextMode currentMode = TextMode.NORMAL
-    for (String character : string) {
+    for (int i = 0 ; i < string.length() ; i ++) {
+      Char character = string.charAt(i);
       if (currentMode == TextMode.NORMAL && character == START_LINK_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
@@ -249,7 +250,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
           unnamedTexts.clear()
         }
         currentMode = TextMode.NORMAL
-      } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && PUNCTUATIONS.indexOf(character) >= 0) {
+      } else if ((currentMode == TextMode.LINK || currentMode == TextMode.LINK_ITALIC) && PUNCTUATIONS.indexOf((Int)character) >= 0) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
@@ -268,7 +269,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
           currentName.setLength(0)
           unnamedTexts.clear()
         }
-        Text characterText = Text.new(character)
+        Text characterText = Text.new(String.valueOf(character))
         characterText.getStyleClass().add(SHALEIA_NAME_CLASS)
         texts.add(characterText)    
       } else if (currentMode == TextMode.LINK && character == START_ITALIC_CHARACTER) {
@@ -303,7 +304,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
           currentName.setLength(0)
         }      
         currentMode = TextMode.NAME
-      } else if ((currentMode == TextMode.NAME || currentName == TextMode.NAME_ITALIC) && character == END_NAME_CHARACTER) {
+      } else if ((currentMode == TextMode.NAME || currentMode == TextMode.NAME_ITALIC) && character == END_NAME_CHARACTER) {
         if (currentString.length() > 0) {
           Text text = Text.new(currentString.toString())
           text.getStyleClass().add(SHALEIA_NAME_CLASS)
