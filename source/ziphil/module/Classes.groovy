@@ -36,7 +36,7 @@ public class Classes {
           found = true
           break
         }
-        variableIndex ++;
+        variableIndex ++
       }
       if (found) {
         Type type = (interfaceIndex >= 0) ? subclass.getGenericInterfaces()[interfaceIndex] : subclass.getGenericSuperclass()
