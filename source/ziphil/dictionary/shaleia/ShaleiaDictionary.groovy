@@ -175,7 +175,7 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
     return $words.size() - $systemWordSize
   }
 
-  protected Comparator<? super ShaleiaWord> createWordComparator() {
+  protected Comparator<? super ShaleiaWord> createCustomWordComparator() {
     Comparator<ShaleiaWord> comparator = { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()
       String secondString = secondWord.getComparisonString()

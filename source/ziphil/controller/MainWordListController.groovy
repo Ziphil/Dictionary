@@ -82,6 +82,7 @@ import ziphil.dictionary.TemporarySetting
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.WordSelection
+import ziphil.dictionary.WordOrderType
 import ziphil.module.Classes
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
@@ -246,6 +247,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
+  }
+
+  public void changeWordOrder(WordOrderType type) {
+    $dictionary.changeWordOrder(type)
   }
 
   public void shuffleWords() {

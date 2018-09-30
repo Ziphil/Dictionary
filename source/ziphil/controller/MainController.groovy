@@ -40,6 +40,7 @@ import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
 import ziphil.dictionary.SearchParameter
+import ziphil.dictionary.WordOrderType
 import ziphil.module.Setting
 import ziphil.module.Version
 import ziphil.plugin.SimplePlugin
@@ -64,6 +65,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $exportDictionaryMenu
+  @FXML private Menu $changeWordOrderMenu
   @FXML private Menu $searchRegisteredParameterMenu
   @FXML private Menu $badgeWordsMenu
   @FXML private Menu $pluginMenu
@@ -86,6 +88,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupChangeWordOrderMenu()
     setupBadgeWordsMenu()
     setupDebug()
   }
@@ -678,6 +681,10 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().searchHistory()
   }
 
+  private void changeWordOrder(WordOrderType type) {
+    currentWordListController().changeWordOrder(type)
+  }
+
   @FXML
   private void shuffleWords() {
     currentWordListController().shuffleWords()
@@ -914,6 +921,21 @@ public class MainController extends PrimitiveController<Stage> {
         item.setGraphic(ImageView.new(icon))
       }
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupChangeWordOrderMenu() {
+    $changeWordOrderMenu.getItems().clear()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
+    for (WordOrderType type : WordOrderType.values()) {
+      WordOrderType cachedType = type
+      MenuItem item = MenuItem.new()
+      item.setText(type.toString())
+      item.setGraphic(ImageView.new(icon))
+      item.setOnAction() {
+        changeWordOrder(cachedType)
+      }
+      $changeWordOrderMenu.getItems().add(item)
     }
   }
 

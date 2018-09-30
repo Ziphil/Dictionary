@@ -97,6 +97,10 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     }
   }
 
+  public void changeWordOrder(WordOrderType type) {
+    $sortedWords.setComparator(createWordComparator(type))
+  }
+
   public void shuffleWords() {
     $shufflableWords.shuffle()
   }
@@ -152,7 +156,7 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
 
   private void setupSortedWords() {
     $filteredWords = FilteredList.new($words)
-    $sortedWords = SortedList.new($filteredWords, createWordComparator())
+    $sortedWords = SortedList.new($filteredWords, createWordComparator(WordOrderType.CUSTOM))
     $shufflableWords = ShufflableList.new($sortedWords)
     $filteredSuggestions = FilteredList.new($suggestions){false}
     $sortedSuggestions = SortedList.new($filteredSuggestions)
@@ -177,7 +181,23 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     return $words.size()
   }
 
-  protected abstract Comparator<? super W> createWordComparator()
+  private Comparator<? super W> createWordComparator(WordOrderType type) {
+    if (type == WordOrderType.CUSTOM) {
+      return createCustomWordComparator()
+    } else if (type == WordOrderType.IDENTIFIER) {
+      Comparator<Word> comparator = { Word firstWord, Word secondWord ->
+        return firstWord.getIdentifier() <=> secondWord.getIdentifier()
+      }
+      return comparator
+    } else if (type == WordOrderType.UNICODE) {
+      Comparator<Word> comparator = { Word firstWord, Word secondWord ->
+        return firstWord.getName() <=> secondWord.getName()
+      }
+      return comparator
+    }
+  }
+
+  protected abstract Comparator<? super W> createCustomWordComparator()
 
   protected abstract ConjugationResolver createConjugationResolver()
 

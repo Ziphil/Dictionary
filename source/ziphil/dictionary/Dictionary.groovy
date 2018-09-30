@@ -13,6 +13,8 @@ public interface Dictionary<W extends Word, F extends DictionaryFactory> {
 
   public void search(SearchParameter parameter)
 
+  public void changeWordOrder(WordOrderType type)
+
   public void shuffleWords()
 
   // 内部データを更新します。

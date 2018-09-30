@@ -91,7 +91,7 @@ public class PersonalDictionary extends EditableDictionaryBase<PersonalWord, Sug
     return $words.any{it != excludedWord && it.getName() == name}
   }
 
-  protected Comparator<? super PersonalWord> createWordComparator() {
+  protected Comparator<? super PersonalWord> createCustomWordComparator() {
     Comparator<PersonalWord> comparator = { PersonalWord firstWord, PersonalWord secondWord ->
       return firstWord.getName() <=> secondWord.getName()
     }

@@ -481,7 +481,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     $suggestions.add(suggestion)
   }
 
-  protected Comparator<? super SlimeWord> createWordComparator() {
+  protected Comparator<? super SlimeWord> createCustomWordComparator() {
     Comparator<SlimeWord> comparator = { SlimeWord firstWord, SlimeWord secondWord ->
       Int firstId = firstWord.getId()
       Int secondId = secondWord.getId()
