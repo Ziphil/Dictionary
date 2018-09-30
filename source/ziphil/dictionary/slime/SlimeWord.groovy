@@ -1,9 +1,9 @@
 package ziphil.dictionary.slime
 
 import groovy.transform.CompileStatic
-import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.PaneFactory
 import ziphil.dictionary.WordBase
+import ziphil.dictionary.WordOrderType
 import ziphil.custom.ClickType
 import ziphil.module.Setting
 import ziphil.module.akrantiain.Akrantiain
@@ -62,8 +62,8 @@ public class SlimeWord extends WordBase {
 
   public void updateComparisonString() {
     String alphabetOrder = $dictionary.getAlphabetOrder()
-    AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
-    if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
+    WordOrderType wordOrderType = $dictionary.getWordOrderType()
+    if (wordOrderType == WordOrderType.CUSTOM) {
       if (alphabetOrder != null) {
         StringBuilder comparisonString = StringBuilder.new()
         for (Int i = 0 ; i < $name.length() ; i ++) {
@@ -76,7 +76,7 @@ public class SlimeWord extends WordBase {
       } else {
         $comparisonString = ""
       }
-    } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
+    } else if (wordOrderType == WordOrderType.UNICODE) {
       $comparisonString = $name
     } else {
       $comparisonString = ""

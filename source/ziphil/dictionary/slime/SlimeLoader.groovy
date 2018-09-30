@@ -7,8 +7,8 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
-import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.Loader
+import ziphil.dictionary.WordOrderType
 import ziphilib.transform.Ziphilify
 
 
@@ -50,8 +50,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             parser.nextToken()
             if (specialFieldName == "alphabetOrder") {
               parseAlphabetOrder(parser)
-            } else if (specialFieldName == "alphabetOrderType") {
-              parseAlphabetOrderType(parser)
+            } else if (specialFieldName == "wordOrderType" || specialFieldName == "alphabetOrderType") {
+              parseWordOrderType(parser)
             } else if (specialFieldName == "punctuations") {
               parsePunctuations(parser)
             } else if (specialFieldName == "pronunciationTitle") {
@@ -209,12 +209,12 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     $dictionary.setAlphabetOrder(alphabetOrder) 
   }
 
-  private void parseAlphabetOrderType(JsonParser parser) {
-    String alphabetOrderType = parser.getValueAsString()
-    if (alphabetOrderType == "ID") {
-      $dictionary.setAlphabetOrderType(AlphabetOrderType.IDENTIFIER)
+  private void parseWordOrderType(JsonParser parser) {
+    String wordOrderType = parser.getValueAsString()
+    if (wordOrderType == "ID") {
+      $dictionary.setWordOrderType(WordOrderType.IDENTIFIER)
     } else {
-      $dictionary.setAlphabetOrderType(AlphabetOrderType.valueOf(alphabetOrderType))
+      $dictionary.setWordOrderType(WordOrderType.valueOf(wordOrderType))
     }
   }
 

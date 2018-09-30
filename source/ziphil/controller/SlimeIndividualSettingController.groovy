@@ -22,8 +22,8 @@ import ziphil.custom.Measurement
 import ziphil.custom.PermutableListView
 import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
-import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.WordEditResult
+import ziphil.dictionary.WordOrderType
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeIndividualSetting
 import ziphil.dictionary.slime.SlimeSearchParameter
@@ -40,8 +40,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private static final Double DEFAULT_HEIGHT = -1
 
   @FXML private TextField $alphabetOrderControl
-  @FXML private CheckBox $usesUnicodeAlphabetOrderControl
-  @FXML private CheckBox $usesIdAlphabetOrderControl
+  @FXML private CheckBox $usesUnicodeWordOrderControl
+  @FXML private CheckBox $usesIdWordOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ComboBox<String> $pronunciationTitleControl
@@ -65,7 +65,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private void initialize() {
     setupSearchParameterPane()
     setupAlphabetOrderControl()
-    setupUsesAlphabetOrderControls()
+    setupUsesWordOrderControls()
     setupInformationTitleOrderView()
   }
 
@@ -81,8 +81,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
-    $usesUnicodeAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.UNICODE)
-    $usesIdAlphabetOrderControl.setSelected(dictionary.getAlphabetOrderType() == AlphabetOrderType.ID)
+    $usesUnicodeWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.UNICODE)
+    $usesIdWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
@@ -106,11 +106,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   protected void commit() {
     SlimeIndividualSetting individualSetting = (SlimeIndividualSetting)$dictionary.getIndividualSetting()
     String alphabetOrder = $alphabetOrderControl.getText() ?: ""
-    AlphabetOrderType alphabetOrderType = AlphabetOrderType.CUSTOM
-    if ($usesUnicodeAlphabetOrderControl.isSelected()) {
-      alphabetOrderType = AlphabetOrderType.UNICODE
-    } else if ($usesIdAlphabetOrderControl.isSelected()) {
-      alphabetOrderType = AlphabetOrderType.ID
+    WordOrderType wordOrderType = WordOrderType.CUSTOM
+    if ($usesUnicodeWordOrderControl.isSelected()) {
+      wordOrderType = WordOrderType.UNICODE
+    } else if ($usesIdWordOrderControl.isSelected()) {
+      wordOrderType = WordOrderType.IDENTIFIER
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String akrantiainSource = $akrantiainSource
@@ -122,7 +122,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
     $dictionary.setAlphabetOrder(alphabetOrder)
-    $dictionary.setAlphabetOrderType(alphabetOrderType)
+    $dictionary.setWordOrderType(wordOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPronunciationTitle(pronunciationTitle)
@@ -234,21 +234,21 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   private void setupAlphabetOrderControl() {
     Callable<BooleanClass> function = (Callable){
-      return $usesUnicodeAlphabetOrderControl.isSelected() || $usesIdAlphabetOrderControl.isSelected()
+      return $usesUnicodeWordOrderControl.isSelected() || $usesIdWordOrderControl.isSelected()
     }
-    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeAlphabetOrderControl.selectedProperty(), $usesIdAlphabetOrderControl.selectedProperty()) 
+    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeWordOrderControl.selectedProperty(), $usesIdWordOrderControl.selectedProperty()) 
     $alphabetOrderControl.disableProperty().bind(binding)
   }
 
-  private void setupUsesAlphabetOrderControls() {
-    $usesUnicodeAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+  private void setupUsesWordOrderControls() {
+    $usesUnicodeWordOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
       if (newValue == true) {
-        $usesIdAlphabetOrderControl.setSelected(false)
+        $usesIdWordOrderControl.setSelected(false)
       }
     }
-    $usesIdAlphabetOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+    $usesIdWordOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
       if (newValue == true) {
-        $usesUnicodeAlphabetOrderControl.setSelected(false)
+        $usesUnicodeWordOrderControl.setSelected(false)
       }
     }
   }

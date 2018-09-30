@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.TreeNode
 import groovy.transform.CompileStatic
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.ConjugationResolver
 import ziphil.dictionary.Dictionary
 import ziphil.dictionary.EditableDictionaryBase
@@ -15,6 +14,7 @@ import ziphil.dictionary.NormalSearchParameter
 import ziphil.dictionary.PseudoWord
 import ziphil.dictionary.Saver
 import ziphil.dictionary.SearchType
+import ziphil.dictionary.WordOrderType
 import ziphil.module.Setting
 import ziphil.module.Strings
 import ziphil.module.akrantiain.Akrantiain
@@ -32,7 +32,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   private List<String> $registeredVariationTitles = ArrayList.new()
   private List<String> $registeredRelationTitles = ArrayList.new()
   private String $alphabetOrder = ""
-  private AlphabetOrderType $alphabetOrderType = AlphabetOrderType.UNICODE
+  private WordOrderType $wordOrderType = WordOrderType.UNICODE
   private List<String> $punctuations = Arrays.asList(",", "、")
   private String $pronunciationTitle = null
   private List<String> $plainInformationTitles = ArrayList.new()
@@ -539,12 +539,12 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     $alphabetOrder = alphabetOrder
   }
 
-  public AlphabetOrderType getAlphabetOrderType() {
-    return $alphabetOrderType
+  public WordOrderType getWordOrderType() {
+    return $wordOrderType
   }
 
-  public void setAlphabetOrderType(AlphabetOrderType alphabetOrderType) {
-    $alphabetOrderType = alphabetOrderType
+  public void setWordOrderType(WordOrderType wordOrderType) {
+    $wordOrderType = wordOrderType
   }
 
   public List<String> getPunctuations() {

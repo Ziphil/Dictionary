@@ -5,7 +5,7 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public enum AlphabetOrderType {
+public enum WordOrderType {
 
   CUSTOM,
   IDENTIFIER,
