@@ -8,7 +8,7 @@ import ziphilib.transform.Ziphilify
 public enum AlphabetOrderType {
 
   CUSTOM,
-  UNICODE,
-  ID
+  IDENTIFIER,
+  UNICODE
 
 }

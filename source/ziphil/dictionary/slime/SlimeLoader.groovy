@@ -211,7 +211,11 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private void parseAlphabetOrderType(JsonParser parser) {
     String alphabetOrderType = parser.getValueAsString()
-    $dictionary.setAlphabetOrderType(AlphabetOrderType.valueOf(alphabetOrderType)) 
+    if (alphabetOrderType == "ID") {
+      $dictionary.setAlphabetOrderType(AlphabetOrderType.IDENTIFIER)
+    } else {
+      $dictionary.setAlphabetOrderType(AlphabetOrderType.valueOf(alphabetOrderType))
+    }
   }
 
   private void parsePunctuations(JsonParser parser) {
