@@ -59,13 +59,13 @@ public class ShaleiaDictionaryFactory extends EditableDictionaryFactory {
 
   public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-    controller.prepare((ShaleiaWord)word)
+    controller.prepare((ShaleiaWord)word, (ShaleiaDictionary)dictionary)
     return controller
   }
 
   public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     ShaleiaEditorController controller = ShaleiaEditorController.new(stage)
-    controller.prepare((ShaleiaWord)word, true)
+    controller.prepare((ShaleiaWord)word, (ShaleiaDictionary)dictionary, true)
     return controller
   }
 

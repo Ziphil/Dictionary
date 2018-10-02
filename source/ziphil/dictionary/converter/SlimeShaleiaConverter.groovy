@@ -2,9 +2,9 @@ package ziphil.dictionary.converter
 
 import groovy.transform.CompileStatic
 import java.util.regex.Matcher
-import ziphil.dictionary.AlphabetOrderType
 import ziphil.dictionary.Loader
 import ziphil.dictionary.Word
+import ziphil.dictionary.WordOrderType
 import ziphil.dictionary.shaleia.ShaleiaDescriptionReader
 import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
@@ -87,7 +87,7 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
       updateProgress(i + size + 1, size * 2)
     }
     $dictionary.setAlphabetOrder($sourceDictionary.getAlphabetOrder())
-    $dictionary.setAlphabetOrderType(AlphabetOrderType.CUSTOM) 
+    $dictionary.setWordOrderType(WordOrderType.CUSTOM) 
     $dictionary.setAkrantiainSource($sourceDictionary.getAkrantiainSource())
     return true
   }

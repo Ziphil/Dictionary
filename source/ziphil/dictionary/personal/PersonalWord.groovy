@@ -113,7 +113,7 @@ public class PersonalWord extends WordBase {
   }
 
   public String getIdentifier() {
-    return null
+    return $name
   }
 
 }

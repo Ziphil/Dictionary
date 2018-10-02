@@ -3,7 +3,7 @@ package ziphil.dictionary.exporter
 import groovy.transform.CompileStatic
 import javax.xml.stream.XMLStreamWriter
 import javax.xml.transform.Transformer
-import ziphil.dictionary.AlphabetOrderType
+import ziphil.dictionary.WordOrderType
 import ziphil.dictionary.slime.SlimeEquivalent
 import ziphil.dictionary.slime.SlimeDictionary
 import ziphil.dictionary.slime.SlimeInformation
@@ -40,15 +40,15 @@ public class SlimePdfExporter extends PdfExporter<SlimeDictionary, SlimePdfExpor
   }
 
   private String calculateInitialLetter(String name) {
-    AlphabetOrderType alphabetOrderType = $dictionary.getAlphabetOrderType()
-    if (alphabetOrderType == AlphabetOrderType.CUSTOM) {
+    WordOrderType wordOrderType = $dictionary.getWordOrderType()
+    if (wordOrderType == WordOrderType.CUSTOM) {
       for (String character : name) {
         if ($dictionary.getAlphabetOrder().indexOf(character) >= 0) {
           return character
         }
       }
       return ""
-    } else if (alphabetOrderType == AlphabetOrderType.UNICODE) {
+    } else if (wordOrderType == WordOrderType.UNICODE) {
       if (!name.isEmpty()) {
         return name[0]
       } else {

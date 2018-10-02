@@ -2,6 +2,7 @@ package ziphil.controller
 
 import groovy.transform.CompileStatic
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.CheckBox
@@ -34,7 +35,7 @@ public class SettingController extends Controller<BooleanClass> {
   private static final String RESOURCE_PATH = "resource/fxml/controller/setting.fxml"
   private static final String TITLE = "環境設定"
   private static final Double DEFAULT_WIDTH = Measurement.rpx(580)
-  private static final Double DEFAULT_HEIGHT = -1
+  private static final Double DEFAULT_HEIGHT = Measurement.rpx(400)
 
   @FXML private ComboBox<String> $contentFontFamilyControl
   @FXML private Spinner<IntegerClass> $contentFontSizeControl
@@ -75,8 +76,8 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private Spinner<IntegerClass> $maxHistorySizeControl
   @FXML private ComboBox<ClickType> $linkClickTypeControl
   @FXML private GridPane $registeredDictionaryPane
-  @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new(10)
-  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new(10)
+  @FXML private List<TextField> $registeredDictionaryPathControls = ArrayList.new()
+  @FXML private List<TextField> $registeredDictionaryNameControls = ArrayList.new()
 
   public SettingController(UtilityStage<? super BooleanClass> nextStage) {
     super(nextStage)
@@ -188,7 +189,7 @@ public class SettingController extends Controller<BooleanClass> {
     $separativeIntervalControl.getValueFactory().setValue(separativeInterval)
     $maxHistorySizeControl.getValueFactory().setValue(maxHistorySize)
     $linkClickTypeControl.getSelectionModel().select(linkClickType)
-    for (Int i = 0 ; i < 10 ; i ++) {
+    for (Int i = 0 ; i < $registeredDictionaryPathControls.size() ; i ++) {
       $registeredDictionaryPathControls[i].setText(registeredDictionaryPaths[i])
       $registeredDictionaryNameControls[i].setText(registeredDictionaryNames[i])
     }
@@ -269,7 +270,9 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setSeparativeInterval(separativeInterval)
     setting.setMaxHistorySize(maxHistorySize)
     setting.setLinkClickType(linkClickType)
-    for (Int i = 0 ; i < 10 ; i ++) {
+    setting.getRegisteredDictionaryPaths().clear()
+    setting.getRegisteredDictionaryNames().clear()
+    for (Int i = 0 ; i < registeredDictionaryPaths.size() ; i ++) {
       String path = registeredDictionaryPaths[i]
       String name = registeredDictionaryNames[i]
       setting.getRegisteredDictionaryPaths()[i] = (path != null && !path.isEmpty()) ? path : null
@@ -294,6 +297,16 @@ public class SettingController extends Controller<BooleanClass> {
   private void deregisterDictionary(Int index) {
     $registeredDictionaryPathControls[index].setText("")
     $registeredDictionaryNameControls[index].setText("")
+    if (index >= 10 && index == $registeredDictionaryPathControls.size() - 1) {
+      List<Node> children = ArrayList.new($registeredDictionaryPane.getChildren())
+      for (Node node : children) {
+        if ($registeredDictionaryPane.getRowIndex(node) == index) {
+          $registeredDictionaryPane.getChildren().remove(node)
+        }
+      }
+      $registeredDictionaryPathControls.removeAt(index)
+      $registeredDictionaryNameControls.removeAt(index)
+    }
   }
 
   @FXML
@@ -312,37 +325,42 @@ public class SettingController extends Controller<BooleanClass> {
   }
 
   private void setupRegisteredDictionaryPane() {
-    for (Int i = 0 ; i < 10 ; i ++) {
-      Int j = i
-      Label numberLabel = Label.new("登録辞書${(i + 1) % 10}:")
-      HBox box = HBox.new(Measurement.rpx(5))
-      HBox innerBox = HBox.new()
-      TextField dictionaryPathControl = TextField.new()
-      TextField dictionaryNameControl = TextField.new()
-      Button browseButton = Button.new("…")
-      Button deregisterButton = Button.new("解除")
-      dictionaryPathControl.getStyleClass().add("left-pill")
-      dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
-      dictionaryNameControl.setMinWidth(Measurement.rpx(130))
-      browseButton.setMinWidth(Button.USE_PREF_SIZE)
-      browseButton.getStyleClass().add("right-pill")
-      deregisterButton.setPrefWidth(Measurement.rpx(70))
-      deregisterButton.setMinWidth(Measurement.rpx(70))
-      browseButton.setOnAction() {
-        browseDictionary(j)
-      }
-      deregisterButton.setOnAction() {
-        deregisterDictionary(j)
-      }
-      innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
-      innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
-      box.getChildren().addAll(dictionaryNameControl, innerBox, deregisterButton)
-      box.setHgrow(innerBox, Priority.ALWAYS)
-      $registeredDictionaryPathControls[i] = dictionaryPathControl
-      $registeredDictionaryNameControls[i] = dictionaryNameControl
-      $registeredDictionaryPane.add(numberLabel, 0, i)
-      $registeredDictionaryPane.add(box, 1, i)
+    Int registeredDictionarySize = Setting.getInstance().getRegisteredDictionaryPaths().size()
+    for (Int i = 0 ; i < Math.max(registeredDictionarySize, 10) ; i ++) {
+      insertRegisteredDictionaryControl()
     }
+  }
+
+  @FXML
+  private void insertRegisteredDictionaryControl() {
+    Int index = $registeredDictionaryPathControls.size()
+    Label numberLabel = Label.new("登録辞書${index + 1}:")
+    HBox box = HBox.new(Measurement.rpx(5))
+    HBox innerBox = HBox.new()
+    TextField dictionaryPathControl = TextField.new()
+    TextField dictionaryNameControl = TextField.new()
+    Button browseButton = Button.new("…")
+    Button deregisterButton = Button.new("－")
+    dictionaryPathControl.getStyleClass().add("left-pill")
+    dictionaryNameControl.setPrefWidth(Measurement.rpx(130))
+    dictionaryNameControl.setMinWidth(Measurement.rpx(130))
+    browseButton.setMinWidth(Button.USE_PREF_SIZE)
+    browseButton.getStyleClass().add("right-pill")
+    browseButton.setOnAction() {
+      browseDictionary(index)
+    }
+    deregisterButton.setOnAction() {
+      deregisterDictionary(index)
+    }
+    innerBox.getChildren().addAll(dictionaryPathControl, browseButton)
+    innerBox.setHgrow(dictionaryPathControl, Priority.ALWAYS)
+    box.getChildren().addAll(dictionaryNameControl, innerBox, deregisterButton)
+    box.setHgrow(innerBox, Priority.ALWAYS)
+    $registeredDictionaryPathControls.add(dictionaryPathControl)
+    $registeredDictionaryNameControls.add(dictionaryNameControl)
+    $registeredDictionaryPane.add(numberLabel, 0, index)
+    $registeredDictionaryPane.add(box, 1, index)
+    $registeredDictionaryNameControls.last().requestFocus()
   }
 
   private void setupFontFamilyControls() {

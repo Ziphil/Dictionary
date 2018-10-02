@@ -97,8 +97,8 @@
             <HelpIndicator text="%help.slimeIndividualSetting.alphabetOrder"/>
           </HBox>
           <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <CheckBox fx:id="$usesUnicodeAlphabetOrderControl" text="Unicode順を用いる"/>
-            <CheckBox fx:id="$usesIdAlphabetOrderControl" text="ID順を用いる"/>
+            <CheckBox fx:id="$usesUnicodeWordOrderControl" text="Unicode順を用いる"/>
+            <CheckBox fx:id="$usesIdWordOrderControl" text="ID順を用いる"/>
           </VBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>

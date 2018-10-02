@@ -11,6 +11,7 @@ import ziphil.custom.IntegerUnaryOperator
 import ziphil.custom.Measurement
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
+import ziphil.dictionary.personal.PersonalDictionary
 import ziphil.dictionary.personal.PersonalWord
 import ziphil.module.Setting
 import ziphilib.transform.Ziphilify
@@ -32,6 +33,7 @@ public class PersonalEditorController extends Controller<WordEditResult> {
   @FXML private CheckBox $memoryControl
   @FXML private CheckBox $modificationControl
   private PersonalWord $word
+  private PersonalDictionary $dictionary
 
   public PersonalEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
@@ -43,8 +45,9 @@ public class PersonalEditorController extends Controller<WordEditResult> {
     setupLevelControl()
   }
 
-  public void prepare(PersonalWord word, Boolean empty) {
+  public void prepare(PersonalWord word, PersonalDictionary dictionary, Boolean empty) {
     $word = word
+    $dictionary = dictionary
     $nameControl.setText(word.getName())
     $pronunciationControl.setText(word.getPronunciation())
     $translationControl.setText(word.getTranslation())
@@ -59,22 +62,27 @@ public class PersonalEditorController extends Controller<WordEditResult> {
     }
   }
 
-  public void prepare(PersonalWord word) {
-    prepare(word, false)
+  public void prepare(PersonalWord word, PersonalDictionary dictionary) {
+    prepare(word, dictionary, false)
   }
 
   @FXML
   protected void commit() {
-    $word.setName($nameControl.getText())
-    $word.setPronunciation($pronunciationControl.getText())
-    $word.setTranslation($translationControl.getText())
-    $word.setUsage($usageControl.getText())
-    $word.setLevel($levelControl.getValue())
-    $word.setMemory(($memoryControl.isSelected()) ? 1 : 0)
-    $word.setModification(($modificationControl.isSelected()) ? 1 : 0)
-    $word.update()
-    WordEditResult result = WordEditResult.new($word)
-    $stage.commit(result)
+    String name = $nameControl.getText()
+    if (!$dictionary.containsName(name, $word)) {
+      $word.setName(name)
+      $word.setPronunciation($pronunciationControl.getText())
+      $word.setTranslation($translationControl.getText())
+      $word.setUsage($usageControl.getText())
+      $word.setLevel($levelControl.getValue())
+      $word.setMemory(($memoryControl.isSelected()) ? 1 : 0)
+      $word.setModification(($modificationControl.isSelected()) ? 1 : 0)
+      $word.update()
+      WordEditResult result = WordEditResult.new($word)
+      $stage.commit(result)
+    } else {
+      showErrorDialog("duplicateName")
+    }
   }
 
   private void setupLevelControl() {

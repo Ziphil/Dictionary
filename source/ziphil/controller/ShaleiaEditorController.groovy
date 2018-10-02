@@ -14,6 +14,7 @@ import ziphil.custom.RichTextChangeConsumer
 import ziphil.custom.RichTextLanguage
 import ziphil.custom.UtilityStage
 import ziphil.dictionary.WordEditResult
+import ziphil.dictionary.shaleia.ShaleiaDictionary
 import ziphil.dictionary.shaleia.ShaleiaWord
 import ziphil.module.Setting
 import ziphilib.transform.InnerClass
@@ -31,6 +32,7 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
   @FXML private TextField $nameControl
   @FXML private CodeAreaWrapper $descriptionControl
   private ShaleiaWord $word
+  private ShaleiaDictionary $dictionary
 
   public ShaleiaEditorController(UtilityStage<? super WordEditResult> stage) {
     super(stage)
@@ -42,8 +44,9 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     setupDescriptionControl()
   }
 
-  public void prepare(ShaleiaWord word, Boolean empty) {
+  public void prepare(ShaleiaWord word, ShaleiaDictionary dictionary, Boolean empty) {
     $word = word
+    $dictionary = dictionary
     $nameControl.setText(word.getUniqueName())
     $descriptionControl.getCodeArea().replaceText(0, 0, word.getDescription())
     if (empty) {
@@ -53,17 +56,22 @@ public class ShaleiaEditorController extends Controller<WordEditResult> {
     }
   }
 
-  public void prepare(ShaleiaWord word) {
-    prepare(word, false)
+  public void prepare(ShaleiaWord word, ShaleiaDictionary dictionary) {
+    prepare(word, dictionary, false)
   }
 
   @FXML
   protected void commit() {
-    $word.setUniqueName($nameControl.getText())
-    $word.setDescription($descriptionControl.getCodeArea().textProperty().getValue())
-    $word.update()
-    WordEditResult result = WordEditResult.new($word)
-    $stage.commit(result)
+    String uniqueName = $nameControl.getText()
+    if (!$dictionary.containsUniqueName(uniqueName, $word)) {
+      $word.setUniqueName(uniqueName)
+      $word.setDescription($descriptionControl.getCodeArea().textProperty().getValue())
+      $word.update()
+      WordEditResult result = WordEditResult.new($word)
+      $stage.commit(result)
+    } else {
+      showErrorDialog("duplicateName")
+    }
   }
 
   private void setupDescriptionControl() {

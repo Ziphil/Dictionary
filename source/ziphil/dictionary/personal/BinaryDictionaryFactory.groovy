@@ -53,13 +53,13 @@ public class BinaryDictionaryFactory extends EditableDictionaryFactory {
 
   public Controller createEditorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     PersonalEditorController controller = PersonalEditorController.new(stage)
-    controller.prepare((PersonalWord)word)
+    controller.prepare((PersonalWord)word, (PersonalDictionary)dictionary)
     return controller
   }
 
   public Controller createCreatorController(UtilityStage<WordEditResult> stage, Dictionary dictionary, Word word) {
     PersonalEditorController controller = PersonalEditorController.new(stage)
-    controller.prepare((PersonalWord)word, true)
+    controller.prepare((PersonalWord)word, (PersonalDictionary)dictionary, true)
     return controller
   }
 

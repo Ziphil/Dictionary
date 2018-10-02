@@ -130,10 +130,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
           if (otherWord != null) {
             Dialog dialog = Dialog.new()
             dialog.initOwner($stage)
-            dialog.setTitle(DIALOG_RESOURCES.getString("title.duplicateName"))
-            dialog.setContentText(DIALOG_RESOURCES.getString("contentText.duplicateName"))
-            dialog.setCommitText(DIALOG_RESOURCES.getString("commitText.duplicateName"))
-            dialog.setNegateText(DIALOG_RESOURCES.getString("negateText.duplicateName"))
+            dialog.setTitle(DIALOG_RESOURCES.getString("title.confirmName"))
+            dialog.setContentText(DIALOG_RESOURCES.getString("contentText.confirmName"))
+            dialog.setCommitText(DIALOG_RESOURCES.getString("commitText.confirmName"))
+            dialog.setNegateText(DIALOG_RESOURCES.getString("negateText.confirmName"))
             dialog.setAllowsNegate(true)
             dialog.showAndWait()
             if (dialog.isNegated()) {

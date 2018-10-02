@@ -9,6 +9,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.Tab?>
@@ -286,26 +287,36 @@
         </GridPane>
       </Tab>
       <Tab text="登録辞書" closable="false">
-        <GridPane fx:id="$registeredDictionaryPane">
-          <vgap><Double rpx="5"/></vgap>
-          <hgap><Double rpx="5"/></hgap>
+        <VBox>
           <padding>
             <Insets>
               <top><Double rpx="10"/></top>
-              <right><Double rpx="10"/></right>
               <bottom><Double rpx="10"/></bottom>
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
-          <columnConstraints>
-            <ColumnConstraints hgrow="never"/>
-            <ColumnConstraints hgrow="always"/>
-            <ColumnConstraints hgrow="never"/>
-          </columnConstraints>
-          <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="10">
-            <HelpIndicator text="%help.setting.registeredDictionary"/>
-          </HBox>
-        </GridPane>
+          <ScrollPane fitToWidth="true">
+            <VBox alignment="centerRight">
+              <padding>
+                <Insets>
+                  <right><Double rpx="10"/></right>
+                </Insets>
+              </padding>
+              <spacing><Double rpx="5"/></spacing>
+              <GridPane fx:id="$registeredDictionaryPane">
+                <vgap><Double rpx="5"/></vgap>
+                <hgap><Double rpx="5"/></hgap>
+                <columnConstraints>
+                  <ColumnConstraints hgrow="never"/>
+                  <ColumnConstraints hgrow="always"/>
+                </columnConstraints>
+              </GridPane>
+              <Button text="＋" onAction="#insertRegisteredDictionaryControl">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
+            </VBox>
+          </ScrollPane>
+        </VBox>
       </Tab>
       <Tab text="Git" closable="false">
         <GridPane>

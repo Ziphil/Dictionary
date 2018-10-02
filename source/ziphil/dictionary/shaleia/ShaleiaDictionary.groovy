@@ -159,6 +159,10 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
     return dictionary
   }
 
+  public Boolean containsUniqueName(String uniqueName, ShaleiaWord excludedWord) {
+    return $words.any{it != excludedWord && it.getUniqueName() == uniqueName}
+  }
+
   private void setupSuggestions() {
     ShaleiaSuggestion conjugationSuggestion = ShaleiaSuggestion.new()
     ShaleiaSuggestion changeSuggestion = ShaleiaSuggestion.new()
@@ -171,7 +175,7 @@ public class ShaleiaDictionary extends EditableDictionaryBase<ShaleiaWord, Shale
     return $words.size() - $systemWordSize
   }
 
-  protected Comparator<? super ShaleiaWord> createWordComparator() {
+  protected Comparator<? super ShaleiaWord> createCustomWordComparator() {
     Comparator<ShaleiaWord> comparator = { ShaleiaWord firstWord, ShaleiaWord secondWord ->
       String firstString = firstWord.getComparisonString()
       String secondString = secondWord.getComparisonString()

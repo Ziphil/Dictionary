@@ -82,6 +82,8 @@ import ziphil.dictionary.TemporarySetting
 import ziphil.dictionary.Word
 import ziphil.dictionary.WordEditResult
 import ziphil.dictionary.WordSelection
+import ziphil.dictionary.WordOrderType
+import ziphil.module.Classes
 import ziphil.module.NoSuchScriptEngineException
 import ziphil.module.Setting
 import ziphilib.transform.VoidClosure
@@ -245,6 +247,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $openStages.add(nextStage)
     nextStage.showAndWait()
     $openStages.remove(nextStage)
+  }
+
+  public void changeWordOrder(WordOrderType type) {
+    $dictionary.changeWordOrder(type)
   }
 
   public void shuffleWords() {
@@ -493,7 +499,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
   public void pasteWords() {
     if ($dictionary instanceof EditableDictionary) {
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
-      Class<?> wordClass = calculateWordClass()
+      Class<?> wordClass = Classes.determineGenericType($dictionary.getClass(), EditableDictionary, "V")
       try {
         List<Word> candidates = (List<Word>)clipboard.getData(WordSelection.WORD_FLAVOR)
         List<Word> words = ArrayList.new()
@@ -507,19 +513,6 @@ public class MainWordListController extends PrimitiveController<Stage> {
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }
-  }
-
-  private Class<?> calculateWordClass() {
-    Class<?> wordClass = null
-    Type type = $dictionary.getClass().getGenericSuperclass()
-    if (type instanceof ParameterizedType) {
-      Type rawType = type.getRawType()
-      Type typeArgument = type.getActualTypeArguments()[0]
-      if (rawType == EditableDictionaryBase) {
-        wordClass = (Class)typeArgument
-      }
-    }
-    return wordClass
   }
 
   private Git createGit() {
