@@ -31,7 +31,6 @@
       <padding>
         <Insets>
           <top><Double rpx="10"/></top>
-          <right><Double rpx="10"/></right>
           <bottom><Double rpx="10"/></bottom>
           <left><Double rpx="10"/></left>
         </Insets>
