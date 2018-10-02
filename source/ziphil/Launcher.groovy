@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 31, 0, 2365)
+  public static final Version VERSION = Version.new(1, 32, 0, 2445)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATOR = createLineSeparator()
@@ -57,6 +57,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.32. 0 | メニューから検索結果の表示順を変更する機能を追加。
+//          | よく使う辞書を 11 個以上登録できるよう変更。
+//          | PDIC 形式でもマーカーが使えるよう変更。
 //  1.31. 0 | 単語データにマーカーを付ける機能を追加。
 //          | 単語データのペーストができない不具合を修正。
 //  1.30. 0 | メニューから Git コマンドを実行する機能を追加。
