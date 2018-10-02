@@ -54,6 +54,12 @@
   -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
+.scroll-pane {
+  -fx-background-color: -fx-background !important;
+  -fx-background-insets: 0px !important;
+  -fx-padding: 0px !important;
+}
+
 .titled-pane {
   -fx-animated: false;
 }
