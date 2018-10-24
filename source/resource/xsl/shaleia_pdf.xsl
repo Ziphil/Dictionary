@@ -5,12 +5,13 @@
                 xmlns:zp="http://ziphil.com/XSL">
   <xsl:output method="xml" indent="no"/>
 
-  <xsl:param name="caption-font-family" select="'Arial, IPAゴシック'"/>
+  <xsl:param name="caption-font-family" select="'FreeSans, 源ノ角ゴシック'"/>
   <xsl:param name="caption-font-size" select="'20pt'"/>
-  <xsl:param name="head-font-family" select="'Arial, IPAゴシック'"/>
+  <xsl:param name="head-font-family" select="'FreeSans, 源ノ角ゴシック'"/>
   <xsl:param name="head-font-size" select="'10pt'"/>
-  <xsl:param name="shaleia-font-family" select="'Arial, IPAゴシック'"/>
-  <xsl:param name="main-font-family" select="'Times New Roman, IPA明朝'"/>
+  <xsl:param name="shaleia-font-family" select="'FreeSans, 源ノ角ゴシック'"/>
+  <xsl:param name="shaleia-font-size" select="'9.5pt'"/>
+  <xsl:param name="main-font-family" select="'Linux Libertine, 源ノ明朝'"/>
   <xsl:param name="main-font-size" select="'8pt'"/>
   <xsl:param name="title-font-size" select="'6pt'"/>
   <xsl:param name="color" select="'#333333'"/>
@@ -283,12 +284,14 @@
       <xsl:matching-substring>
         <xsl:choose>
           <xsl:when test="matches(., '\{.*?\}')">
-            <fo:inline font-family="{$shaleia-font-family}">
+            <fo:inline font-family="{$shaleia-font-family}"
+                       font-size="{$shaleia-font-size}">
               <xsl:sequence select="zp:textify(regex-group(1))"/>
             </fo:inline>
           </xsl:when>
           <xsl:when test="matches(., '\[.*?\]')">
-            <fo:inline font-family="{$shaleia-font-family}">
+            <fo:inline font-family="{$shaleia-font-family}"
+                       font-size="{$shaleia-font-size}">
               <xsl:sequence select="zp:textify(regex-group(2))"/>
             </fo:inline>
           </xsl:when>

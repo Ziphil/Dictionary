@@ -27,19 +27,19 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
   @FXML private TextField $externalCommandControl
   @FXML private ComboBox<String> $firstCaptionFontFamilyControl
   @FXML private ComboBox<String> $secondCaptionFontFamilyControl
-  @FXML private Spinner<IntegerClass> $captionFontSizeControl
+  @FXML private Spinner<DoubleClass> $captionFontSizeControl
   @FXML private CheckBox $usesDefaultCaptionFontFamilyControl
   @FXML private ComboBox<String> $firstHeadFontFamilyControl
   @FXML private ComboBox<String> $secondHeadFontFamilyControl
-  @FXML private Spinner<IntegerClass> $headFontSizeControl
+  @FXML private Spinner<DoubleClass> $headFontSizeControl
   @FXML private CheckBox $usesDefaultHeadFontFamilyControl
   @FXML private ComboBox<String> $firstShaleiaFontFamilyControl
   @FXML private ComboBox<String> $secondShaleiaFontFamilyControl
-  @FXML private Spinner<IntegerClass> $shaleiaFontSizeControl
+  @FXML private Spinner<DoubleClass> $shaleiaFontSizeControl
   @FXML private CheckBox $usesDefaultShaleiaFontFamilyControl
   @FXML private ComboBox<String> $firstMainFontFamilyControl
   @FXML private ComboBox<String> $secondMainFontFamilyControl
-  @FXML private Spinner<IntegerClass> $mainFontSizeControl
+  @FXML private Spinner<DoubleClass> $mainFontSizeControl
   @FXML private CheckBox $usesDefaultMainFontFamilyControl
   @FXML private TextField $relationMarkerControl
   @FXML private CheckBox $usesDefaultRelationMarkerControl
@@ -53,7 +53,6 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
   @FXML
   private void initialize() {
     setupFontFamilyControls()
-    setupIntegerControls()
     bindFontControlProperties()
     bindMarkerControlProperty()
   }
@@ -63,18 +62,19 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
     String externalCommand = $externalCommandControl.getText()
     String firstCaptionFontFamily = $firstCaptionFontFamilyControl.getValue()
     String secondCaptionFontFamily = $secondCaptionFontFamilyControl.getValue()
-    Int captionFontSize = $captionFontSizeControl.getValue()
+    Double captionFontSize = $captionFontSizeControl.getValue()
     Boolean usesDefaultCaptionFontFamily = $usesDefaultCaptionFontFamilyControl.isSelected()
     String firstHeadFontFamily = $firstHeadFontFamilyControl.getValue()
     String secondHeadFontFamily = $secondHeadFontFamilyControl.getValue()
-    Int headFontSize = $headFontSizeControl.getValue()
+    Double headFontSize = $headFontSizeControl.getValue()
     Boolean usesDefaultHeadFontFamily = $usesDefaultHeadFontFamilyControl.isSelected()
     String firstShaleiaFontFamily = $firstShaleiaFontFamilyControl.getValue()
     String secondShaleiaFontFamily = $secondShaleiaFontFamilyControl.getValue()
+    Double shaleiaFontSize = $shaleiaFontSizeControl.getValue()
     Boolean usesDefaultShaleiaFontFamily = $usesDefaultShaleiaFontFamilyControl.isSelected()
     String firstMainFontFamily = $firstMainFontFamilyControl.getValue()
     String secondMainFontFamily = $secondMainFontFamilyControl.getValue()
-    Int mainFontSize = $mainFontSizeControl.getValue()
+    Double mainFontSize = $mainFontSizeControl.getValue()
     Boolean usesDefaultMainFontFamily = $usesDefaultMainFontFamilyControl.isSelected()
     String relationMarker = $relationMarkerControl.getText()
     Boolean usesDefaultRelationMarker = $usesDefaultRelationMarkerControl.isSelected()
@@ -95,6 +95,7 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
       config.setFirstShaleiaFontFamily(firstShaleiaFontFamily)
       config.setSecondShaleiaFontFamily(secondShaleiaFontFamily)
     }
+    config.setShaleiaFontSize(shaleiaFontSize)
     if (!usesDefaultMainFontFamily) {
       config.setFirstMainFontFamily(firstMainFontFamily)
       config.setSecondMainFontFamily(secondMainFontFamily)
@@ -119,12 +120,6 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
     $secondMainFontFamilyControl.getItems().addAll(fontFamilies)
   }
 
-  private void setupIntegerControls() {
-    $captionFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
-    $headFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
-    $mainFontSizeControl.getEditor().setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
-  }
-
   private void bindFontControlProperties() {
     $firstCaptionFontFamilyControl.disableProperty().bind($usesDefaultCaptionFontFamilyControl.selectedProperty())
     $secondCaptionFontFamilyControl.disableProperty().bind($usesDefaultCaptionFontFamilyControl.selectedProperty())
@@ -134,7 +129,6 @@ public class ShaleiaPdfExportConfigController extends Controller<ShaleiaPdfExpor
     $secondShaleiaFontFamilyControl.disableProperty().bind($usesDefaultShaleiaFontFamilyControl.selectedProperty())
     $firstMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
     $secondMainFontFamilyControl.disableProperty().bind($usesDefaultMainFontFamilyControl.selectedProperty())
-    $shaleiaFontSizeControl.getValueFactory().valueProperty().bind($mainFontSizeControl.valueProperty())
   }
 
   private void bindMarkerControlProperty() {

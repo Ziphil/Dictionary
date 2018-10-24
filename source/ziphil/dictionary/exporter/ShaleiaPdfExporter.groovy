@@ -157,6 +157,7 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     transformer.setParameter("head-font-family", "${$config.getFirstHeadFontFamily()}, ${$config.getSecondHeadFontFamily()}")
     transformer.setParameter("head-font-size", "${$config.getHeadFontSize()}pt")
     transformer.setParameter("shaleia-font-family", "${$config.getFirstShaleiaFontFamily()}, ${$config.getSecondShaleiaFontFamily()}")
+    transformer.setParameter("shaleia-font-size", "${$config.getShaleiaFontSize()}pt")
     transformer.setParameter("main-font-family", "${$config.getFirstMainFontFamily()}, ${$config.getSecondMainFontFamily()}")
     transformer.setParameter("main-font-size", "${$config.getMainFontSize()}pt")
     transformer.setParameter("title-font-size", "${$config.getMainFontSize() * 0.75}pt")

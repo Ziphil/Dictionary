@@ -7,17 +7,18 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaPdfExportConfig extends PdfExportConfig {
 
-  private String $firstCaptionFontFamily = "Arial"
-  private String $secondCaptionFontFamily = "IPAゴシック"
-  private Int $captionFontSize = 20
-  private String $firstHeadFontFamily = "Arial"
-  private String $secondHeadFontFamily = "IPAゴシック"
-  private Int $headFontSize = 10
-  private String $firstShaleiaFontFamily = "Arial"
-  private String $secondShaleiaFontFamily = "IPAゴシック"
-  private String $firstMainFontFamily = "Times New Roman"
-  private String $secondMainFontFamily = "IPA明朝"
-  private Int $mainFontSize = 8
+  private String $firstCaptionFontFamily = "FreeSans"
+  private String $secondCaptionFontFamily = "源ノ角ゴシック"
+  private Double $captionFontSize = 20
+  private String $firstHeadFontFamily = "FreeSans"
+  private String $secondHeadFontFamily = "源ノ角ゴシック"
+  private Double $headFontSize = 10
+  private String $firstShaleiaFontFamily = "FreeSans"
+  private String $secondShaleiaFontFamily = "源ノ角ゴシック"
+  private Double $shaleiaFontSize = 7.6
+  private String $firstMainFontFamily = "Linux Libertine"
+  private String $secondMainFontFamily = "源ノ明朝"
+  private Double $mainFontSize = 8
   private String $relationMarker = null
   private Boolean $modifies = true
 
@@ -37,11 +38,11 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
     $secondCaptionFontFamily = secondCaptionFontFamily
   }
 
-  public Int getCaptionFontSize() {
+  public Double getCaptionFontSize() {
     return $captionFontSize
   }
 
-  public void setCaptionFontSize(Int captionFontSize) {
+  public void setCaptionFontSize(Double captionFontSize) {
     $captionFontSize = captionFontSize
   }
 
@@ -61,11 +62,11 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
     $secondHeadFontFamily = secondHeadFontFamily
   }
 
-  public Int getHeadFontSize() {
+  public Double getHeadFontSize() {
     return $headFontSize
   }
 
-  public void setHeadFontSize(Int headFontSize) {
+  public void setHeadFontSize(Double headFontSize) {
     $headFontSize = headFontSize
   }
 
@@ -85,6 +86,14 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
     $secondShaleiaFontFamily = secondShaleiaFontFamily
   }
 
+  public Double getShaleiaFontSize() {
+    return $shaleiaFontSize
+  }
+
+  public void setShaleiaFontSize(Double shaleiaFontSize) {
+    $shaleiaFontSize = shaleiaFontSize
+  }
+
   public String getFirstMainFontFamily() {
     return $firstMainFontFamily
   }
@@ -101,11 +110,11 @@ public class ShaleiaPdfExportConfig extends PdfExportConfig {
     $secondMainFontFamily = secondMainFontFamily
   }
 
-  public Int getMainFontSize() {
+  public Double getMainFontSize() {
     return $mainFontSize
   }
 
-  public void setMainFontSize(Int mainFontSize) {
+  public void setMainFontSize(Double mainFontSize) {
     $mainFontSize = mainFontSize
   }
 
