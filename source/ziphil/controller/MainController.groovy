@@ -89,6 +89,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
     setupChangeWordOrderMenu()
+    setupPluginMenu()
     setupBadgeWordsMenu()
     setupDebug()
   }
@@ -471,23 +472,19 @@ public class MainController extends PrimitiveController<Stage> {
   }  
 
   private void updatePluginMenu() {
-    $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
-      SimplePlugin cachedPlugin = plugin
+    for (int i = 0 ; i < $pluginMenu.getItems().size() ; i ++) {
+      MenuItem item = $pluginMenu.getItems()[i]
+      SimplePlugin plugin = PluginManager.SIMPLE_PLUGINS[i]
       if (plugin.isSupported(dictionary)) {
-        MenuItem item = MenuItem.new()
-        String name = plugin.getName()
-        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
-        KeyCode keyCode = plugin.getKeyCode()
-        KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
-        item.setText(name)
-        item.setGraphic(ImageView.new(icon))
-        item.setAccelerator(accelerator)
+        item.setDisable(false)
         item.setOnAction() {
-          cachedPlugin.call(dictionary)
+          plugin.call(dictionary)
         }
-        $pluginMenu.getItems().add(item)
+      } else {
+        item.setDisable(true)
+        item.setOnAction() {
+        }
       }
     }
   }
@@ -936,6 +933,22 @@ public class MainController extends PrimitiveController<Stage> {
         changeWordOrder(cachedType)
       }
       $changeWordOrderMenu.getItems().add(item)
+    }
+  }
+
+  private setupPluginMenu() {
+    $pluginMenu.getItems().clear()
+    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
+      MenuItem item = MenuItem.new()
+      String name = plugin.getName()
+      Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
+      KeyCode keyCode = plugin.getKeyCode()
+      KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
+      item.setText(name)
+      item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(accelerator)
+      item.setDisable(true)
+      $pluginMenu.getItems().add(item)
     }
   }
 
