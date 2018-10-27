@@ -45,12 +45,13 @@
         <spacing><Double rpx="5"/></spacing>
         <TextField fx:id="$searchControl" onKeyReleased="#searchNormal" HBox.hgrow="always"/>
         <ComboBox fx:id="$searchModeControl" onAction="#focusSearchControl">
-          <prefWidth><Double rpx="70"/></prefWidth>
-          <minWidth><Double rpx="70"/></minWidth>
+          <prefWidth><Double rpx="90"/></prefWidth>
+          <minWidth><Double rpx="90"/></minWidth>
           <items>
             <FXCollections fx:factory="observableArrayList">
               <SearchMode fx:value="NAME"/>
               <SearchMode fx:value="EQUIVALENT"/>
+              <SearchMode fx:value="NAME_EQUIVALENT"/>
               <SearchMode fx:value="CONTENT"/>
             </FXCollections>
           </items>

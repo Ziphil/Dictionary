@@ -278,6 +278,11 @@ public class MainWordListController extends PrimitiveController<Stage> {
     focusSearchControl()
   }
 
+  public void changeSearchModeToNameEquivalent() {
+    $searchModeControl.setValue(SearchMode.NAME_EQUIVALENT)
+    focusSearchControl()
+  }
+
   public void changeSearchModeToContent() {
     $searchModeControl.setValue(SearchMode.CONTENT)
     focusSearchControl()

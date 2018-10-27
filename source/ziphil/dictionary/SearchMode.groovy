@@ -9,6 +9,7 @@ public enum SearchMode {
 
   NAME("単語"),
   EQUIVALENT("訳語"),
+  NAME_EQUIVALENT("単語訳語"),
   CONTENT("全文")
 
   private String $string = ""

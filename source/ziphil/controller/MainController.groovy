@@ -698,6 +698,11 @@ public class MainController extends PrimitiveController<Stage> {
   }
 
   @FXML
+  private void changeSearchModeToNameEquivalent() {
+    currentWordListController().changeSearchModeToNameEquivalent()
+  }
+
+  @FXML
   private void changeSearchModeToContent() {
     currentWordListController().changeSearchModeToContent()
   }

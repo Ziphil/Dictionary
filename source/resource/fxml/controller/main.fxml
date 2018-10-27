@@ -74,6 +74,7 @@
             </graphic>
           </MenuItem>
           <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
+          <MenuItem text="単語訳語" onAction="#changeSearchModeToNameEquivalent" accelerator="Shortcut+Shift+W"/>
           <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
         </Menu>
         <MenuItem styleClass="option,dammy,null" text="検索範囲の変更"/>
