@@ -921,6 +921,7 @@ public class MainController extends PrimitiveController<Stage> {
       MenuItem item = MenuItem.new()
       item.setText(cachedMode.toString())
       item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(mode.getAccelerator())
       item.setOnAction() {
         changeSearchMode(cachedMode)
       }
