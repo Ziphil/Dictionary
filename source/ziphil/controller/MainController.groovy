@@ -39,6 +39,7 @@ import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.WordOrderType
 import ziphil.module.Setting
@@ -65,6 +66,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $exportDictionaryMenu
+  @FXML private Menu $changeSearchModeMenu
   @FXML private Menu $changeWordOrderMenu
   @FXML private Menu $searchRegisteredParameterMenu
   @FXML private Menu $badgeWordsMenu
@@ -88,6 +90,7 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupChangeSearchModeMenu()
     setupChangeWordOrderMenu()
     setupPluginMenu()
     setupBadgeWordsMenu()
@@ -687,24 +690,8 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().shuffleWords()
   }
 
-  @FXML
-  private void changeSearchModeToWord() {
-    currentWordListController().changeSearchModeToWord()
-  }
-
-  @FXML
-  private void changeSearchModeToEquivalent() {
-    currentWordListController().changeSearchModeToEquivalent()
-  }
-
-  @FXML
-  private void changeSearchModeToNameEquivalent() {
-    currentWordListController().changeSearchModeToNameEquivalent()
-  }
-
-  @FXML
-  private void changeSearchModeToContent() {
-    currentWordListController().changeSearchModeToContent()
+  private void changeSearchMode(SearchMode mode) {
+    currentWordListController().changeSearchMode(mode)
   }
 
   @FXML
@@ -923,6 +910,21 @@ public class MainController extends PrimitiveController<Stage> {
         item.setGraphic(ImageView.new(icon))
       }
       $registerCurrentDictionaryMenu.getItems().add(item)
+    }
+  }
+
+  private void setupChangeSearchModeMenu() {
+    $changeSearchModeMenu.getItems().clear()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
+    for (SearchMode mode : SearchMode.values()) {
+      SearchMode cachedMode = mode
+      MenuItem item = MenuItem.new()
+      item.setText(cachedMode.toString())
+      item.setGraphic(ImageView.new(icon))
+      item.setOnAction() {
+        changeSearchMode(cachedMode)
+      }
+      $changeSearchModeMenu.getItems().add(item)
     }
   }
 

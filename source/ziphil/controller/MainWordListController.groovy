@@ -268,23 +268,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $wordView.scrollTo(0)
   }
 
-  public void changeSearchModeToWord() {
-    $searchModeControl.setValue(SearchMode.NAME)
-    focusSearchControl()
-  }
-
-  public void changeSearchModeToEquivalent() {
-    $searchModeControl.setValue(SearchMode.EQUIVALENT)
-    focusSearchControl()
-  }
-
-  public void changeSearchModeToNameEquivalent() {
-    $searchModeControl.setValue(SearchMode.NAME_EQUIVALENT)
-    focusSearchControl()
-  }
-
-  public void changeSearchModeToContent() {
-    $searchModeControl.setValue(SearchMode.CONTENT)
+  public void changeSearchMode(SearchMode mode) {
+    $searchModeControl.setValue(mode)
     focusSearchControl()
   }
 
