@@ -808,15 +808,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
     Callable<BooleanClass> disableFunction = (Callable){
       SearchMode searchMode = $searchModeControl.getValue()
-      if (searchMode == SearchMode.NAME) {
-        return false
-      } else if (searchMode == SearchMode.EQUIVALENT) {
-        return false
-      } else if (searchMode == SearchMode.CONTENT) {
-        return true
-      } else {
-        return true
-      }
+      return !searchMode.isStrictable()
     }
     StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
     BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    
