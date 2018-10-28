@@ -80,9 +80,9 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
-      List<IntegerClass> ids = relationGroup.collect{it.getId()}
+      List<IntegerClass> numbers = relationGroup.collect{it.getNumber()}
       List<String> names = relationGroup.collect{it.getName()}
-      addRelationNode(relationPane, title, ids, names)
+      addRelationNode(relationPane, title, numbers, names)
       hasRelation = true
     }
     modifyBreak(mainPane)
@@ -198,7 +198,7 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     pane.getChildren().add(breakText)
   }
 
-  private void addRelationNode(TextFlow pane, String title, List<IntegerClass> ids, List<String> names) {
+  private void addRelationNode(TextFlow pane, String title, List<IntegerClass> numbers, List<String> names) {
     String marker = Setting.getInstance().getRelationMarker()
     Text markerText = Text.new(marker)
     Text markerSpaceText = Text.new(" ")
@@ -221,10 +221,10 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       }
     }
     for (Int i = 0 ; i < names.size() ; i ++) {
-      Int id = ids[i]
+      Int number = numbers[i]
       String name = names[i]
       Text nameText = Text.new(name ?: " ")
-      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(id))
+      nameText.addEventHandler(MouseEvent.MOUSE_CLICKED, createLinkEventHandler(number))
       nameText.getStyleClass().addAll(CONTENT_CLASS, SLIME_LINK_CLASS)
       pane.getChildren().add(nameText)
       if (i < names.size() - 1) {
@@ -249,11 +249,11 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     }
   }
 
-  private EventHandler<MouseEvent> createLinkEventHandler(Int id) {
+  private EventHandler<MouseEvent> createLinkEventHandler(Int number) {
     EventHandler<MouseEvent> handler = { MouseEvent event ->
       if ($dictionary.getOnLinkClicked() != null) {
         if ($linkClickType != null && $linkClickType.matches(event)) {
-          SearchParameter parameter = SlimeSearchParameter.new(id)
+          SearchParameter parameter = SlimeSearchParameter.new(number)
           $dictionary.getOnLinkClicked().accept(parameter)
         }
       }

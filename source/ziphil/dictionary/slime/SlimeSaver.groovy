@@ -87,7 +87,7 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
 
   private void writeEntry(JsonGenerator generator, SlimeWord word) {
     generator.writeStartObject()
-    generator.writeNumberField("id", word.getId())
+    generator.writeNumberField("id", word.getNumber())
     generator.writeStringField("form", word.getName())
     generator.writeEndObject()
   }
@@ -145,7 +145,7 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       generator.writeStringField("title", relation.getTitle())
       generator.writeFieldName("entry")
       generator.writeStartObject()
-      generator.writeNumberField("id", relation.getId())
+      generator.writeNumberField("id", relation.getNumber())
       generator.writeStringField("form", relation.getName())
       generator.writeEndObject()
       generator.writeEndObject()

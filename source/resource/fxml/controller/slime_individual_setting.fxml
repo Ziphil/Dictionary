@@ -98,7 +98,7 @@
           </HBox>
           <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <CheckBox fx:id="$usesUnicodeWordOrderControl" text="Unicode順を用いる"/>
-            <CheckBox fx:id="$usesIdWordOrderControl" text="ID順を用いる"/>
+            <CheckBox fx:id="$usesNumberWordOrderControl" text="ID順を用いる"/>
           </VBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>

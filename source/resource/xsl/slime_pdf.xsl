@@ -166,7 +166,7 @@
               keep-with-next.within-page="always">
       <xsl:attribute name="id">
         <xsl:text>word-</xsl:text>
-        <xsl:value-of select="id"/>
+        <xsl:value-of select="number"/>
       </xsl:attribute>
       <fo:inline padding="0mm 2.5mm 0mm 1.5mm"
                  font-family="{$head-font-family}"
@@ -322,7 +322,7 @@
           </fo:inline>
           <fo:inline>
             <xsl:for-each select="entries/entry">
-              <fo:basic-link internal-destination="word-{id}">
+              <fo:basic-link internal-destination="word-{number}">
                 <xsl:sequence select="zp:textify(name)"/>
               </fo:basic-link>
               <xsl:if test="position() != last()">

@@ -65,8 +65,8 @@ public class SettingController extends Controller<BooleanClass> {
   @FXML private ComboBox<ScriptEngineFactory> $scriptControl
   @FXML private TextField $defaultGitMessageControl
   @FXML private SwitchButton $gitsCommitOnSaveControl
-  @FXML private SwitchButton $ignoresDuplicateSlimeIdControl
-  @FXML private SwitchButton $showsSlimeIdControl
+  @FXML private SwitchButton $ignoresDuplicateNumberControl
+  @FXML private SwitchButton $showsNumberControl
   @FXML private SwitchButton $showsVariationControl
   @FXML private SwitchButton $asksMutualRelationControl
   @FXML private SwitchButton $asksDuplicateNameControl
@@ -120,8 +120,8 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = setting.getScriptName()
     String defaultGitMessage = setting.getDefaultGitMessage()
     Boolean gitsCommitOnSave = setting.getGitsCommitOnSave()
-    Boolean ignoresDuplicateSlimeId = setting.getIgnoresDuplicateSlimeId()
-    Boolean showsSlimeId = setting.getShowsSlimeId()
+    Boolean ignoresDuplicateNumber = setting.getIgnoresDuplicateNumber()
+    Boolean showsNumber = setting.getShowsNumber()
     Boolean showsVariation = setting.getShowsVariation()
     Boolean asksMutualRelation = setting.getAsksMutualRelation()
     Boolean asksDuplicateName = setting.getAsksDuplicateName()
@@ -179,8 +179,8 @@ public class SettingController extends Controller<BooleanClass> {
     }
     $defaultGitMessageControl.setText(defaultGitMessage)
     $gitsCommitOnSaveControl.setSelected(gitsCommitOnSave)
-    $ignoresDuplicateSlimeIdControl.setSelected(ignoresDuplicateSlimeId)
-    $showsSlimeIdControl.setSelected(showsSlimeId)
+    $ignoresDuplicateNumberControl.setSelected(ignoresDuplicateNumber)
+    $showsNumberControl.setSelected(showsNumber)
     $showsVariationControl.setSelected(showsVariation)
     $asksMutualRelationControl.setSelected(asksMutualRelation)
     $asksDuplicateNameControl.setSelected(asksDuplicateName)
@@ -225,8 +225,8 @@ public class SettingController extends Controller<BooleanClass> {
     String scriptName = ($scriptControl.getValue() != null) ? $scriptControl.getValue().getNames()[0] : ""
     String defaultGitMessage = $defaultGitMessageControl.getText()
     Boolean gitsCommitOnSave = $gitsCommitOnSaveControl.isSelected()
-    Boolean ignoresDuplicateSlimeId = $ignoresDuplicateSlimeIdControl.isSelected()
-    Boolean showsSlimeId = $showsSlimeIdControl.isSelected()
+    Boolean ignoresDuplicateNumber = $ignoresDuplicateNumberControl.isSelected()
+    Boolean showsNumber = $showsNumberControl.isSelected()
     Boolean showsVariation = $showsVariationControl.isSelected()
     Boolean asksMutualRelation = $asksMutualRelationControl.isSelected()
     Boolean asksDuplicateName = $asksDuplicateNameControl.isSelected()
@@ -260,8 +260,8 @@ public class SettingController extends Controller<BooleanClass> {
     setting.setScriptName(scriptName)
     setting.setDefaultGitMessage(defaultGitMessage)
     setting.setGitsCommitOnSave(gitsCommitOnSave)
-    setting.setIgnoresDuplicateSlimeId(ignoresDuplicateSlimeId)
-    setting.setShowsSlimeId(showsSlimeId)
+    setting.setIgnoresDuplicateNumber(ignoresDuplicateNumber)
+    setting.setShowsNumber(showsNumber)
     setting.setShowsVariation(showsVariation)
     setting.setAsksMutualRelation(asksMutualRelation)
     setting.setAsksDuplicateName(asksDuplicateName)

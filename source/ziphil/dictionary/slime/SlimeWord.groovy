@@ -15,7 +15,7 @@ import ziphilib.transform.Ziphilify
 public class SlimeWord extends WordBase {
 
   private SlimeDictionary $dictionary
-  private Int $id = -1
+  private Int $number = -1
   private List<SlimeEquivalent> $rawEquivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
@@ -189,12 +189,12 @@ public class SlimeWord extends WordBase {
     $dictionary = dictionary
   }
 
-  public Int getId() {
-    return $id
+  public Int getNumber() {
+    return $number
   }
 
-  public void setId(Int id) {
-    $id = id
+  public void setNumber(Int number) {
+    $number = number
   }
 
   public void setName(String name) {
@@ -242,7 +242,7 @@ public class SlimeWord extends WordBase {
   }
 
   public String getIdentifier() {
-    return IntegerClass.toString($id)
+    return IntegerClass.toString($number)
   }
 
   public String getComparisonString() {

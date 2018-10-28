@@ -27,7 +27,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(560)
   private static final Double DEFAULT_HEIGHT = -1
 
-  @FXML private TextField $idControl
+  @FXML private TextField $numberControl
   @FXML private TextField $nameControl
   @FXML private ComboBox<SearchType> $nameSearchTypeControl
   @FXML private TextField $equivalentNameControl
@@ -38,7 +38,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML private ComboBox<SearchType> $informationSearchTypeControl
   @FXML private ComboBox<String> $tagControl
   @FXML private ComboBox<Badge> $badgeControl
-  @FXML private CheckBox $hasIdControl
+  @FXML private CheckBox $hasNumberControl
   @FXML private CheckBox $hasNameControl
   @FXML private CheckBox $hasEquivalentControl
   @FXML private CheckBox $hasInformationControl
@@ -54,7 +54,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   @FXML
   private void initialize() {
-    setupIdControl()
+    setupNumberControl()
     setupNameControl()
     setupBadgeControl()
     setupHasFieldControls()
@@ -79,8 +79,8 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
 
   private void applySearchParameter() {
     if ($searchParameter != null) {
-      if ($searchParameter.hasId()) {
-        $idControl.setText($searchParameter.getId().toString())
+      if ($searchParameter.hasNumber()) {
+        $numberControl.setText($searchParameter.getNumber().toString())
       }
       if ($searchParameter.hasName()) {
         $nameControl.setText($searchParameter.getName())
@@ -108,9 +108,9 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   @FXML
   protected void commit() {
     SlimeSearchParameter parameter = SlimeSearchParameter.new()
-    if ($hasIdControl.isSelected()) {
-      parameter.setHasId(true)
-      parameter.setId(IntegerClass.parseInt($idControl.getText()))
+    if ($hasNumberControl.isSelected()) {
+      parameter.setHasNumber(true)
+      parameter.setNumber(IntegerClass.parseInt($numberControl.getText()))
     }
     if ($hasNameControl.isSelected()) {
       parameter.setHasName(true)
@@ -140,8 +140,8 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
     $stage.commit(parameter)
   }
 
-  private void setupIdControl() {
-    $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+  private void setupNumberControl() {
+    $numberControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
   private void setupNameControl() {
@@ -163,7 +163,7 @@ public class SlimeSearcherController extends Controller<SlimeSearchParameter> {
   }
 
   private void setupHasFieldControls() {
-    $idControl.disableProperty().bind($hasIdControl.selectedProperty().not())
+    $numberControl.disableProperty().bind($hasNumberControl.selectedProperty().not())
     $nameControl.disableProperty().bind($hasNameControl.selectedProperty().not())
     $nameSearchTypeControl.disableProperty().bind($hasNameControl.selectedProperty().not())
     $equivalentNameControl.disableProperty().bind($hasEquivalentControl.selectedProperty().not())

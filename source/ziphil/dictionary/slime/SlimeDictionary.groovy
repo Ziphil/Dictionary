@@ -25,7 +25,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSuggestion, SlimeDictionaryFactory> {
 
-  private Int $validMinId = 1
+  private Int $validMinNumber = 1
   private List<String> $registeredTags = ArrayList.new()
   private List<String> $registeredEquivalentTitles = ArrayList.new()
   private List<String> $registeredInformationTitles = ArrayList.new()
@@ -57,15 +57,15 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   // これから追加もしくは変更される単語データである word の ID を、追加もしくは変更の後に矛盾が生じないように修正します。
   // また、この修正に応じて変更が必要となる内部データの修正も同時に行います。
-  private void correctId(SlimeWord word) {
-    if (containsId(word.getId(), word)) {
+  private void correctNumber(SlimeWord word) {
+    if (containsNumber(word.getNumber(), word)) {
       for (SlimeRelationRequest request : $relationRequests) {
         SlimeRelation requestRelation = request.getRelation()
-        if (requestRelation.getId() == word.getId()) {
-          requestRelation.setId($validMinId)
+        if (requestRelation.getNumber() == word.getNumber()) {
+          requestRelation.setNumber($validMinNumber)
         }
       }
-      word.setId($validMinId)
+      word.setNumber($validMinNumber)
     }
   }
 
@@ -74,11 +74,11 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   private void correctRelations(SlimeWord word) {
     Map<IntegerClass, String> otherWordNames = HashMap.new()
     for (SlimeWord otherWord : $words) {
-      otherWordNames[otherWord.getId()] = otherWord.getName()
+      otherWordNames[otherWord.getNumber()] = otherWord.getName()
     }
     List<SlimeRelation> removedRelations = ArrayList.new()
     for (SlimeRelation relation : word.getRelations()) {
-      if (otherWordNames[relation.getId()] != relation.getName()) {
+      if (otherWordNames[relation.getNumber()] != relation.getName()) {
         removedRelations.add(relation)
       }
     }
@@ -87,11 +87,11 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   // oldWord を newWord に修正したことによって生じ得る関連語参照の矛盾を修正します。
   private void correctOtherRelations(SlimeWord oldWord, SlimeWord newWord) {
-    if (oldWord.getId() != newWord.getId() || oldWord.getName() != newWord.getName()) {
+    if (oldWord.getNumber() != newWord.getNumber() || oldWord.getName() != newWord.getName()) {
       for (SlimeWord otherWord : $words) {
         for (SlimeRelation relation : otherWord.getRelations()) {
-          if (relation.getId() == oldWord.getId()) {
-            relation.setId(newWord.getId())
+          if (relation.getNumber() == oldWord.getNumber()) {
+            relation.setNumber(newWord.getNumber())
             relation.setName(newWord.getName())
             otherWord.change()
           }
@@ -102,7 +102,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
     synchronized (this) {
-      correctId(newWord)
+      correctNumber(newWord)
       correctOtherRelations(oldWord, newWord)
       correctRelations(newWord)
       complyRelationRequests()
@@ -111,7 +111,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   }
 
   private void addWordWithoutUpdate(SlimeWord word) {
-    correctId(word)
+    correctNumber(word)
     correctRelations(word)
     $words.add(word)
   }
@@ -128,7 +128,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     synchronized (this) {
       for (SlimeWord word : words) {
         addWordWithoutUpdate(word)
-        incrementValidMinId(word)
+        incrementValidMinNumber(word)
       }
       complyRelationRequests()
       update()
@@ -137,7 +137,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   private void removeWordWithoutUpdate(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
-      Boolean changed = otherWord.getRelations().removeAll{it.getId() == word.getId()}
+      Boolean changed = otherWord.getRelations().removeAll{it.getNumber() == word.getNumber()}
       if (changed) {
         otherWord.change()
       }
@@ -183,7 +183,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   }
 
   private void update() {
-    updateValidMinId()
+    updateValidMinNumber()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -192,7 +192,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public void updateFirst() {
     validate()
-    updateValidMinId()
+    updateValidMinNumber()
     updateRegisteredTitles()
     updatePlainInformationTitles()
     updateInformationTitleOrder()
@@ -207,17 +207,17 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   }
 
   public void validate() {
-    validateIds()
+    validateNumbers()
     validateRelations()
   }
 
-  private void validateIds() {
-    Set<IntegerClass> ids = HashSet.new()
+  private void validateNumbers() {
+    Set<IntegerClass> numbers = HashSet.new()
     for (SlimeWord word : $words) {
-      if (!ids.contains(word.getId())) {
-        ids.add(word.getId()) 
+      if (!numbers.contains(word.getNumber())) {
+        numbers.add(word.getNumber()) 
       } else {
-        throw SlimeValidationException.new("ID ${word.getId()} is duplicate")
+        throw SlimeValidationException.new("ID ${word.getNumber()} is duplicate")
       }
     }
   }
@@ -226,16 +226,16 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     Map<IntegerClass, String> wordNames = HashMap.new()
     Map<IntegerClass, String> relationNames = HashMap.new()
     for (SlimeWord word : $words) {
-      Int wordId = word.getId()
-      wordNames[wordId] = word.getName()
+      Int wordNumber = word.getNumber()
+      wordNames[wordNumber] = word.getName()
       for (SlimeRelation relation : word.getRelations()) {
-        Int relationId = relation.getId()
-        String previousRelationName = relationNames[relationId]
+        Int relationNumber = relation.getNumber()
+        String previousRelationName = relationNames[relationNumber]
         if (previousRelationName == null) {
-          relationNames[relation.getId()] = relation.getName()
+          relationNames[relation.getNumber()] = relation.getName()
         } else {
           if (relation.getName() != previousRelationName) {
-            throw SlimeValidationException.new("Form of relation [${relation.getId()}: ${relation.getName()}] in [${word.getId()}: ${word.getName()}] is inconsistent")
+            throw SlimeValidationException.new("Form of relation [${relation.getNumber()}: ${relation.getName()}] in [${word.getNumber()}: ${word.getName()}] is inconsistent")
           }
         }
       }
@@ -250,20 +250,20 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     }
   }
 
-  private void incrementValidMinId(SlimeWord word) {
-    if (word.getId() >= $validMinId) {
-      $validMinId = word.getId() + 1
+  private void incrementValidMinNumber(SlimeWord word) {
+    if (word.getNumber() >= $validMinNumber) {
+      $validMinNumber = word.getNumber() + 1
     }
   }
 
-  private void updateValidMinId() {
-    Int validMinId = 0
+  private void updateValidMinNumber() {
+    Int validMinNumber = 0
     for (SlimeWord word : $words) {
-      if (word.getId() >= validMinId) {
-        validMinId = word.getId()
+      if (word.getNumber() >= validMinNumber) {
+        validMinNumber = word.getNumber()
       }
     }
-    $validMinId = validMinId + 1
+    $validMinNumber = validMinNumber + 1
   }
 
   private void updateRegisteredTitles() {
@@ -353,7 +353,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public SlimeWord createWord(String defaultName) {
     SlimeWord word = prepareCopyWord($defaultWord, false)
-    word.setId($validMinId)
+    word.setNumber($validMinNumber)
     word.setName(defaultName ?: "")
     word.getRelations().clear()
     word.setDictionary(this)
@@ -363,7 +363,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   private SlimeWord prepareCopyWord(SlimeWord oldWord, Boolean updates) {
     SlimeWord newWord = SlimeWord.new()
-    newWord.setId(oldWord.getId())
+    newWord.setNumber(oldWord.getNumber())
     newWord.setName(oldWord.getName())
     newWord.setRawEquivalents(oldWord.getRawEquivalents())
     newWord.setTags(oldWord.getTags())
@@ -383,7 +383,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public SlimeWord inheritWord(SlimeWord oldWord) {
     SlimeWord newWord = prepareCopyWord(oldWord, false)
-    newWord.setId($validMinId)
+    newWord.setNumber($validMinNumber)
     newWord.update()
     return newWord
   }
@@ -392,7 +392,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     SlimeWord word = SlimeWord.new()
     List<String> pseudoEquivalents = pseudoWord.getEquivalents()
     String pseudoContent = pseudoWord.getContent()
-    word.setId($validMinId)
+    word.setNumber($validMinNumber)
     word.setName(name)
     word.getRawEquivalents().add(SlimeEquivalent.new("", pseudoEquivalents))
     if (pseudoContent != null) {
@@ -405,7 +405,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public Object createPlainWord(SlimeWord oldWord) {
     SlimePlainWord newWord = SlimePlainWord.new()
-    Int newId = oldWord.getId()
+    Int newNumber = oldWord.getNumber()
     String newName = oldWord.getName()
     List<SlimeEquivalent> newEquivalents = ArrayList.new()
     for (SlimeEquivalent equivalent : oldWord.getRawEquivalents()) {
@@ -433,11 +433,11 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     for (SlimeRelation relation : oldWord.getRelations()) {
       SlimeRelation newRelation = SlimeRelation.new()
       newRelation.setTitle(relation.getTitle())
-      newRelation.setId(relation.getId())
+      newRelation.setNumber(relation.getNumber())
       newRelation.setName(relation.getName())
       newRelations.add(newRelation)
     }
-    newWord.setId(newId)
+    newWord.setNumber(newNumber)
     newWord.setName(newName)
     newWord.setEquivalents(newEquivalents)
     newWord.setTags(newTags)
@@ -454,8 +454,8 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     return dictionary
   }
 
-  public Boolean containsId(Int id, SlimeWord excludedWord) {
-    return $words.any{it != excludedWord && it.getId() == id}
+  public Boolean containsNumber(Int number, SlimeWord excludedWord) {
+    return $words.any{it != excludedWord && it.getNumber() == number}
   }
 
   public SlimeWord findName(String name, SlimeWord excludedWord) {
@@ -483,13 +483,13 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   protected Comparator<? super SlimeWord> createCustomWordComparator() {
     Comparator<SlimeWord> comparator = { SlimeWord firstWord, SlimeWord secondWord ->
-      Int firstId = firstWord.getId()
-      Int secondId = secondWord.getId()
+      Int firstNumber = firstWord.getNumber()
+      Int secondNumber = secondWord.getNumber()
       String firstString = firstWord.getComparisonString()
       String secondString = secondWord.getComparisonString()
       Int result = firstString <=> secondString
       if (result == 0) {
-        return firstId <=> secondId
+        return firstNumber <=> secondNumber
       } else {
         return result
       }
@@ -507,8 +507,8 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     return individualSetting
   }
 
-  public Int getValidMinId() {
-    return $validMinId
+  public Int getValidMinNumber() {
+    return $validMinNumber
   }
 
   public List<String> getRegisteredTags() {

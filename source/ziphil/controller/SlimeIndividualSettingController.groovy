@@ -41,7 +41,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML private TextField $alphabetOrderControl
   @FXML private CheckBox $usesUnicodeWordOrderControl
-  @FXML private CheckBox $usesIdWordOrderControl
+  @FXML private CheckBox $usesNumberWordOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ComboBox<String> $pronunciationTitleControl
@@ -82,7 +82,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $usesUnicodeWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.UNICODE)
-    $usesIdWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
+    $usesNumberWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
@@ -109,7 +109,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     WordOrderType wordOrderType = WordOrderType.CUSTOM
     if ($usesUnicodeWordOrderControl.isSelected()) {
       wordOrderType = WordOrderType.UNICODE
-    } else if ($usesIdWordOrderControl.isSelected()) {
+    } else if ($usesNumberWordOrderControl.isSelected()) {
       wordOrderType = WordOrderType.IDENTIFIER
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
@@ -234,19 +234,19 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   private void setupAlphabetOrderControl() {
     Callable<BooleanClass> function = (Callable){
-      return $usesUnicodeWordOrderControl.isSelected() || $usesIdWordOrderControl.isSelected()
+      return $usesUnicodeWordOrderControl.isSelected() || $usesNumberWordOrderControl.isSelected()
     }
-    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeWordOrderControl.selectedProperty(), $usesIdWordOrderControl.selectedProperty()) 
+    BooleanBinding binding = Bindings.createBooleanBinding(function, $usesUnicodeWordOrderControl.selectedProperty(), $usesNumberWordOrderControl.selectedProperty()) 
     $alphabetOrderControl.disableProperty().bind(binding)
   }
 
   private void setupUsesWordOrderControls() {
     $usesUnicodeWordOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
       if (newValue == true) {
-        $usesIdWordOrderControl.setSelected(false)
+        $usesNumberWordOrderControl.setSelected(false)
       }
     }
-    $usesIdWordOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
+    $usesNumberWordOrderControl.selectedProperty().addListener() { ObservableValue<? extends BooleanClass> observableValue, BooleanClass oldValue, BooleanClass newValue ->
       if (newValue == true) {
         $usesUnicodeWordOrderControl.setSelected(false)
       }

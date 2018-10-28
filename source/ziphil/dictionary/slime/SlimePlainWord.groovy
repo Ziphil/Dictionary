@@ -7,7 +7,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimePlainWord {
 
-  private Int $id = -1
+  private Int $number = -1
   private String $name = ""
   private List<SlimeEquivalent> $equivalents = ArrayList.new()
   private List<String> $tags = ArrayList.new()
@@ -15,12 +15,12 @@ public class SlimePlainWord {
   private List<SlimeVariation> $variations = ArrayList.new()
   private List<SlimeRelation> $relations = ArrayList.new()
 
-  public Int getId() {
-    return $id
+  public Int getNumber() {
+    return $number
   }
 
-  public void setId(Int id) {
-    $id = id
+  public void setNumber(Int number) {
+    $number = number
   }
 
   public String getName() {

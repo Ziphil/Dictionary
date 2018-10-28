@@ -104,8 +104,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       String entryFieldName = parser.getCurrentName()
       parser.nextToken()
       if (entryFieldName == "id") {
-        Int id = parser.getValueAsInt()
-        word.setId(id)
+        Int number = parser.getValueAsInt()
+        word.setNumber(number)
       } else if (entryFieldName == "form") {
         String name = parser.getValueAsString()
         word.setName(name)
@@ -191,8 +191,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             String relationEntryFieldName = parser.getCurrentName()
             parser.nextToken()
             if (relationEntryFieldName == "id") {
-              Int id = parser.getValueAsInt()
-              relation.setId(id)
+              Int number = parser.getValueAsInt()
+              relation.setNumber(number)
             } else if (relationEntryFieldName == "form") {
               String name = parser.getValueAsString()
               relation.setName(name)

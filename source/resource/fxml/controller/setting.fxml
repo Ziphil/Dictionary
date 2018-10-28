@@ -350,7 +350,7 @@
           </HBox>
         </GridPane>
       </Tab>
-      <Tab text="OTM形式" closable="false">
+      <Tab text="辞典形式" closable="false">
         <GridPane>
           <vgap><Double rpx="5"/></vgap>
           <hgap><Double rpx="5"/></hgap>
@@ -369,19 +369,19 @@
           <Label text="重複単語チェック:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
-            <SwitchButton fx:id="$ignoresDuplicateSlimeIdControl">
+            <SwitchButton fx:id="$ignoresDuplicateNumberControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="%help.setting.ignoresDuplicateSlimeId"/>
+            <HelpIndicator text="%help.setting.ignoresDuplicateNumber"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <spacing><Double rpx="5"/></spacing>
-            <SwitchButton fx:id="$showsSlimeIdControl">
+            <SwitchButton fx:id="$showsNumberControl">
               <prefWidth><Double rpx="70"/></prefWidth>
               <minWidth><Double rpx="70"/></minWidth>
             </SwitchButton>
-            <HelpIndicator text="%help.setting.showsSlimeId"/>
+            <HelpIndicator text="%help.setting.showsNumber"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>

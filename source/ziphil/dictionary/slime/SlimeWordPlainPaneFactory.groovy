@@ -27,13 +27,13 @@ public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeD
   protected Pane doCreate() {
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
-    addNameNode(pane, $word.getName(), $word.getId())
+    addNameNode(pane, $word.getName(), $word.getNumber())
     addEquivalentNode(pane, $word.getEquivalents().join(", "))
     modifyBreak(pane)
     return pane
   }
 
-  private void addNameNode(TextFlow pane, String name, Int id) {
+  private void addNameNode(TextFlow pane, String name, Int number) {
     Text nameText = Text.new(name + " ")
     Text breakText = Text.new("\n")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)

@@ -30,7 +30,7 @@ public class SlimePersonalConverter extends Loader<SlimeDictionary, SlimeWord> {
       }
       PersonalWord sourceWord = sourceWords[i]
       SlimeWord word = SlimeWord.new()
-      word.setId(i + 1)
+      word.setNumber(i + 1)
       word.setName(sourceWord.getName())
       String sourcePronunciation = sourceWord.getPronunciation()
       if (!sourcePronunciation.isEmpty()) {
