@@ -12,7 +12,7 @@ public enum SearchMode {
 
   NAME("単語", KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN)),
   EQUIVALENT("訳語", KeyCodeCombination.new(KeyCode.E, KeyCombination.SHORTCUT_DOWN)),
-  NAME_EQUIVALENT("単語訳語", KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN)),
+  BOTH("両方", KeyCodeCombination.new(KeyCode.W, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN)),
   CONTENT("全文", KeyCodeCombination.new(KeyCode.Q, KeyCombination.SHORTCUT_DOWN))
 
   private String $string = ""
