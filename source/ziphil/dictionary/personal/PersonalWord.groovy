@@ -19,8 +19,14 @@ public class PersonalWord extends WordBase {
   private Int $modification = 0
 
   public void update() {
+    updateEquivalents()
     updateContent()
     changePaneFactory()
+  }
+
+  private void updateEquivalents() {
+    $equivalents.clear()
+    $equivalents.add($translation)
   }
 
   private void updateContent() {
