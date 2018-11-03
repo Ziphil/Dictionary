@@ -34,8 +34,10 @@ public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeD
   }
 
   private void addNameNode(TextFlow pane, String name, Int number) {
+    String fontFamily = $dictionary.getNameFontFamily()
     Text nameText = Text.new(name + " ")
     Text breakText = Text.new("\n")
+    nameText.setStyle("-fx-font-family: ${fontFamily}")
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     pane.getChildren().addAll(nameText, breakText)
   }
