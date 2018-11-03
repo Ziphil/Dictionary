@@ -37,6 +37,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   private String $pronunciationTitle = null
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
+  private String $nameFontFamily = null
   private SlimeWord $defaultWord = SlimeWord.new()
   private Akrantiain $akrantiain = null
   private String $akrantiainSource = null
@@ -577,6 +578,14 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public void setInformationTitleOrder(List<String> informationTitleOrder) {
     $informationTitleOrder = informationTitleOrder
+  }
+
+  public String getNameFontFamily() {
+    return $nameFontFamily
+  }
+
+  public void setNameFontFamily(String nameFontFamily) {
+    $nameFontFamily = nameFontFamily
   }
 
   public SlimeWord getDefaultWord() {

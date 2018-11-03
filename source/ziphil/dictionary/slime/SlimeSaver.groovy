@@ -49,6 +49,8 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       writePlainInformationTitles(generator)
       generator.writeFieldName("informationTitleOrder")
       writeInformationTitleOrder(generator)
+      generator.writeFieldName("nameFontFamily")
+      writeNameFontFamily(generator)
       generator.writeFieldName("defaultWord")
       writeDefaultWord(generator)
       generator.writeEndObject()
@@ -188,6 +190,14 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
         generator.writeString(title)
       }
       generator.writeEndArray()
+    } else {
+      generator.writeNull()
+    }
+  }
+
+  private void writeNameFontFamily(JsonGenerator generator) {
+    if ($dictionary.getNameFontFamily() != null) {
+      generator.writeString($dictionary.getNameFontFamily())
     } else {
       generator.writeNull()
     }

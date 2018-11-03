@@ -16,6 +16,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
+import javafx.scene.text.Font
 import ziphil.custom.ExtensionFilter
 import ziphil.custom.ListSelectionView
 import ziphil.custom.Measurement
@@ -39,15 +40,17 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(520)
   private static final Double DEFAULT_HEIGHT = -1
 
+  @FXML private ListSelectionView<String> $plainInformationTitleView
+  @FXML private PermutableListView<String> $informationTitleOrderView
+  @FXML private CheckBox $usesIndividualTitleOrderControl
+  @FXML private ComboBox<String> $nameFontFamilyControl
+  @FXML private CheckBox $usesDefaultNameFontFamilyControl
   @FXML private TextField $alphabetOrderControl
   @FXML private CheckBox $usesUnicodeWordOrderControl
   @FXML private CheckBox $usesNumberWordOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ComboBox<String> $pronunciationTitleControl
-  @FXML private ListSelectionView<String> $plainInformationTitleView
-  @FXML private PermutableListView<String> $informationTitleOrderView
-  @FXML private CheckBox $usesIndividualTitleOrderControl
   @FXML private GridPane $registeredParameterPane
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
@@ -63,10 +66,12 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   @FXML
   private void initialize() {
+    setupNameFontFamilyControl()
     setupSearchParameterPane()
     setupAlphabetOrderControl()
     setupUsesWordOrderControls()
     setupInformationTitleOrderView()
+    bindNameFontControlProperty()
   }
 
   public void prepare(SlimeDictionary dictionary) {
@@ -80,6 +85,16 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     List<SlimeSearchParameter> registeredParameters = ArrayList.new(individualSetting.getRegisteredParameters())
     List<String> registeredParameterStrings = registeredParameters.collect{(it != null) ? it.toString() : ""}
     List<String> registeredParameterNames = ArrayList.new(individualSetting.getRegisteredParameterNames())
+    $plainInformationTitleView.setSources(normalInformationTitles)
+    $plainInformationTitleView.setTargets(plainInformationTitles)
+    $informationTitleOrderView.setItems(informationTitleOrder)
+    if (dictionary.getInformationTitleOrder() == null) {
+      $usesIndividualTitleOrderControl.setSelected(true)
+    }
+    $nameFontFamilyControl.getSelectionModel().select(dictionary.getNameFontFamily())
+    if (dictionary.getNameFontFamily() == null) {
+      $usesDefaultNameFontFamilyControl.setSelected(true)
+    }
     $alphabetOrderControl.setText(dictionary.getAlphabetOrder())
     $usesUnicodeWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.UNICODE)
     $usesNumberWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
@@ -87,12 +102,6 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
     $pronunciationTitleControl.getItems().addAll(dictionary.getRegisteredInformationTitles())
-    $plainInformationTitleView.setSources(normalInformationTitles)
-    $plainInformationTitleView.setTargets(plainInformationTitles)
-    $informationTitleOrderView.setItems(informationTitleOrder)
-    if (dictionary.getInformationTitleOrder() == null) {
-      $usesIndividualTitleOrderControl.setSelected(true)
-    }
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
@@ -105,6 +114,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML
   protected void commit() {
     SlimeIndividualSetting individualSetting = (SlimeIndividualSetting)$dictionary.getIndividualSetting()
+    List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
+    Boolean usesIndividualOrder = $usesIndividualTitleOrderControl.isSelected()
+    List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
+    Boolean usesDefaultNameFontFamily = $usesDefaultNameFontFamilyControl.isSelected()
+    String nameFontFamily = (usesDefaultNameFontFamily) ? null : $nameFontFamilyControl.getValue()
     String alphabetOrder = $alphabetOrderControl.getText() ?: ""
     WordOrderType wordOrderType = WordOrderType.CUSTOM
     if ($usesUnicodeWordOrderControl.isSelected()) {
@@ -116,19 +130,17 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     String akrantiainSource = $akrantiainSource
     String pronunciationTitle = $pronunciationTitleControl.getValue()
     SlimeWord defaultWord = $defaultWord
-    List<String> plainInformationTitles = ArrayList.new($plainInformationTitleView.getTargets())
-    Boolean usesIndividualOrder = $usesIndividualTitleOrderControl.isSelected()
-    List<String> informationTitleOrder = (usesIndividualOrder) ? null : ArrayList.new($informationTitleOrderView.getItems())
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
+    $dictionary.setPlainInformationTitles(plainInformationTitles)
+    $dictionary.setInformationTitleOrder(informationTitleOrder)
+    $dictionary.setNameFontFamily(nameFontFamily)
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setWordOrderType(wordOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPronunciationTitle(pronunciationTitle)
     $dictionary.setDefaultWord(defaultWord)
-    $dictionary.setPlainInformationTitles(plainInformationTitles)
-    $dictionary.setInformationTitleOrder(informationTitleOrder)
     individualSetting.setRegisteredParameters(registeredParameters)
     individualSetting.setRegisteredParameterNames(registeredParameterNames)
     $stage.commit(true)
@@ -197,6 +209,11 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $registeredParameterNameControls[index].setText("")
   }
 
+  private void setupNameFontFamilyControl() {
+    List<String> fontFamilies = Font.getFamilies()
+    $nameFontFamilyControl.getItems().addAll(fontFamilies)
+  }
+
   private void setupSearchParameterPane() {
     for (Int i = 0 ; i < 10 ; i ++) {
       Int j = i
@@ -255,6 +272,10 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
 
   private void setupInformationTitleOrderView() {
     $informationTitleOrderView.disableProperty().bind($usesIndividualTitleOrderControl.selectedProperty())
+  }
+
+  private void bindNameFontControlProperty() {
+    $nameFontFamilyControl.disableProperty().bind($usesDefaultNameFontFamilyControl.selectedProperty())
   }
 
 }

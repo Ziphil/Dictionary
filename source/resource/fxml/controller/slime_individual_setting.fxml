@@ -51,6 +51,7 @@
           </columnConstraints>
           <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="見出しフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ListSelectionView fx:id="$plainInformationTitleView" sourceName="項目" HBox.hgrow="always">
@@ -68,6 +69,11 @@
             <HelpIndicator text="%help.slimeIndividualSetting.informationTitleOrder"/>
           </HBox>
           <CheckBox fx:id="$usesIndividualTitleOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <ComboBox fx:id="$nameFontFamilyControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <prefWidth><Double rpx="300"/></prefWidth>
+            <minWidth><Double rpx="300"/></minWidth>
+          </ComboBox>
+          <CheckBox fx:id="$usesDefaultNameFontFamilyControl" text="デフォルトフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">

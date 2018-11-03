@@ -60,6 +60,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
               parseInformationTitleOrder(parser)
+            } else if (specialFieldName == "nameFontFamily") {
+              parseNameFontFamily(parser)
             } else if (specialFieldName == "defaultWord") {
               parseDefaultWord(parser)
             }
@@ -246,6 +248,13 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
         String title = parser.getValueAsString()
         $dictionary.getInformationTitleOrder().add(title)
       }
+    }
+  }
+
+  private void parseNameFontFamily(JsonParser parser) {
+    if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
+      String nameFontFamily = parser.getValueAsString()
+      $dictionary.setNameFontFamily(nameFontFamily)
     }
   }
 
