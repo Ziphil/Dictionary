@@ -49,6 +49,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML private CheckBox $usesUnicodeWordOrderControl
   @FXML private CheckBox $usesNumberWordOrderControl
   @FXML private TextField $punctuationsControl
+  @FXML private TextField $ignoredEquivalentRegexControl
   @FXML private TextField $akrantiainSourceControl
   @FXML private ComboBox<String> $pronunciationTitleControl
   @FXML private GridPane $registeredParameterPane
@@ -99,6 +100,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $usesUnicodeWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.UNICODE)
     $usesNumberWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
+    $ignoredEquivalentRegexControl.setText(dictionary.getIgnoredEquivalentRegex())
     $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
     $pronunciationTitleControl.getItems().addAll(dictionary.getRegisteredInformationTitles())
@@ -127,6 +129,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
       wordOrderType = WordOrderType.IDENTIFIER
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
+    String ignoredEquivalentRegex = $ignoredEquivalentRegexControl.getText()
     String akrantiainSource = $akrantiainSource
     String pronunciationTitle = $pronunciationTitleControl.getValue()
     SlimeWord defaultWord = $defaultWord
@@ -138,6 +141,7 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $dictionary.setAlphabetOrder(alphabetOrder)
     $dictionary.setWordOrderType(wordOrderType)
     $dictionary.setPunctuations(punctuations)
+    $dictionary.setIgnoredEquivalentRegex(ignoredEquivalentRegex)
     $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPronunciationTitle(pronunciationTitle)
     $dictionary.setDefaultWord(defaultWord)

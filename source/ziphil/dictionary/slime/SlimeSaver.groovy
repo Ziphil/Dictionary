@@ -43,6 +43,8 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       writeWordOrderType(generator)
       generator.writeFieldName("punctuations")
       writePunctuations(generator)
+      generator.writeFieldName("ignoredTranslationRegex")
+      writeIgnoredEquivalentRegex(generator)
       generator.writeFieldName("pronunciationTitle")
       writePronunciationTitle(generator)
       generator.writeFieldName("plainInformationTitles")
@@ -169,6 +171,10 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       generator.writeString(punctuation)
     }
     generator.writeEndArray()
+  }
+
+  private void writeIgnoredEquivalentRegex(JsonGenerator generator) {
+    generator.writeString($dictionary.getIgnoredEquivalentRegex())
   }
 
   private void writePronunciationTitle(JsonGenerator generator) {

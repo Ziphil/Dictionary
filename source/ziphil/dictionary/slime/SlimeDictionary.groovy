@@ -34,6 +34,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   private String $alphabetOrder = ""
   private WordOrderType $wordOrderType = WordOrderType.UNICODE
   private List<String> $punctuations = Arrays.asList(",", "、")
+  private String $ignoredEquivalentRegex = ""
   private String $pronunciationTitle = null
   private List<String> $plainInformationTitles = ArrayList.new()
   private List<String> $informationTitleOrder = null
@@ -554,6 +555,14 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public void setPunctuations(List<String> punctuations) {
     $punctuations = punctuations
+  }
+
+  public String getIgnoredEquivalentRegex() {
+    return $ignoredEquivalentRegex
+  }
+
+  public void setIgnoredEquivalentRegex(String ignoredEquivalentRegex) {
+    $ignoredEquivalentRegex = ignoredEquivalentRegex
   }
 
   public String getPronunciationTitle() {

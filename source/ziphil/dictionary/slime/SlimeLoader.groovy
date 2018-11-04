@@ -54,6 +54,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
               parseWordOrderType(parser)
             } else if (specialFieldName == "punctuations") {
               parsePunctuations(parser)
+            } else if (specialFieldName == "ignoredTranslationRegex") {
+              parseIgnoredEquivalentRegex(parser)
             } else if (specialFieldName == "pronunciationTitle") {
               parsePronunciationTitle(parser)
             } else if (specialFieldName == "plainInformationTitles") {
@@ -226,6 +228,11 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       String punctuation = parser.getValueAsString()
       $dictionary.getPunctuations().add(punctuation)
     }
+  }
+
+  private void parseIgnoredEquivalentRegex(JsonParser parser) {
+    String ignoredEquivalentRegex = parser.getValueAsString()
+    $dictionary.setIgnoredEquivalentRegex(ignoredEquivalentRegex)
   }
 
   private void parsePronunciationTitle(JsonParser parser) {

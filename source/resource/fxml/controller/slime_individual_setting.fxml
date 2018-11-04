@@ -94,9 +94,10 @@
           </columnConstraints>
           <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-          <Label text="発音記号項目名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="訳語の無視パターン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+          <Label text="発音記号項目名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$alphabetOrderControl" HBox.hgrow="always"/>
@@ -113,6 +114,11 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
+            <TextField fx:id="$ignoredEquivalentRegexControl" HBox.hgrow="always"/>
+            <HelpIndicator text=""/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <spacing><Double rpx="5"/></spacing>
             <HBox HBox.hgrow="always">
               <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
               <Button text="…" onAction="#editSnoj" styleClass="right-pill">
@@ -125,7 +131,7 @@
             </Button>
             <HelpIndicator text="%help.slimeIndividualSetting.akrantiainSource"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
             <spacing><Double rpx="5"/></spacing>
             <ComboBox fx:id="$pronunciationTitleControl" editable="true">
               <prefWidth><Double rpx="120"/></prefWidth>
@@ -137,7 +143,7 @@
             </Button>
             <HelpIndicator text="%help.slimeIndividualSetting.pronunciationTitle"/>
           </HBox>
-          <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
             <spacing><Double rpx="5"/></spacing>
             <Button text="編集" onAction="#editDefaultWord">
               <prefWidth><Double rpx="70"/></prefWidth>
