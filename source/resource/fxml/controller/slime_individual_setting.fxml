@@ -123,10 +123,7 @@
               <prefWidth><Double rpx="120"/></prefWidth>
               <minWidth><Double rpx="120"/></minWidth>
             </ComboBox>
-            <Button text="解除" onAction="#removePronunciationTitle">
-              <prefWidth><Double rpx="70"/></prefWidth>
-              <minWidth><Double rpx="70"/></minWidth>
-            </Button>
+            <Button text="－" onAction="#removePronunciationTitle"/>
             <HelpIndicator text="%help.slimeIndividualSetting.pronunciationTitle"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -137,10 +134,7 @@
                 <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
               </Button>
             </HBox>
-            <Button text="削除" onAction="#removeSnoj">
-              <prefWidth><Double rpx="70"/></prefWidth>
-              <minWidth><Double rpx="70"/></minWidth>
-            </Button>
+            <Button text="－" onAction="#removeSnoj"/>
             <HelpIndicator text="%help.slimeIndividualSetting.akrantiainSource"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">

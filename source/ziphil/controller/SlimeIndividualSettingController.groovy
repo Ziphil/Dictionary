@@ -227,15 +227,14 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
       TextField registeredParameterStringControl = TextField.new()
       TextField registeredParameterNameControl = TextField.new()
       Button editButton = Button.new("…")
-      Button deregisterButton = Button.new("解除")
+      Button deregisterButton = Button.new("－")
       registeredParameterStringControl.setEditable(false)
       registeredParameterStringControl.getStyleClass().add("left-pill")
       registeredParameterNameControl.setPrefWidth(Measurement.rpx(120))
       registeredParameterNameControl.setMinWidth(Measurement.rpx(120))
       editButton.setMinWidth(Button.USE_PREF_SIZE)
       editButton.getStyleClass().add("right-pill")
-      deregisterButton.setPrefWidth(Measurement.rpx(70))
-      deregisterButton.setMinWidth(Measurement.rpx(70))
+      deregisterButton.setMinWidth(Button.USE_PREF_SIZE)
       editButton.setOnAction() {
         editSearchParameter(j)
       }
