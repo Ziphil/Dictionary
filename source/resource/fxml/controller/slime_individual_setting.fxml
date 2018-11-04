@@ -115,7 +115,7 @@
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$ignoredEquivalentRegexControl" HBox.hgrow="always"/>
-            <HelpIndicator text=""/>
+            <HelpIndicator text="%help.slimeIndividualSetting.ignoredEquivalentRegex"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
