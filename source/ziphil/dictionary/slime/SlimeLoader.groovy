@@ -60,7 +60,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
               parseInformationTitleOrder(parser)
-            } else if (specialFieldName == "nameFontFamily") {
+            } else if (specialFieldName == "formFontFamily") {
               parseNameFontFamily(parser)
             } else if (specialFieldName == "defaultWord") {
               parseDefaultWord(parser)

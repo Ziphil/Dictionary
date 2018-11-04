@@ -49,7 +49,7 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       writePlainInformationTitles(generator)
       generator.writeFieldName("informationTitleOrder")
       writeInformationTitleOrder(generator)
-      generator.writeFieldName("nameFontFamily")
+      generator.writeFieldName("formFontFamily")
       writeNameFontFamily(generator)
       generator.writeFieldName("defaultWord")
       writeDefaultWord(generator)
