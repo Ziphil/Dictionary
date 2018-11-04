@@ -106,14 +106,18 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
       Text nameText = Text.new(name + " ")
       Text pronunciationText = Text.new(pronunciation)
       Text spaceText = Text.new("  ")
-      nameText.setStyle("-fx-font-family: ${fontFamily}")
+      if (fontFamily != null) {
+        nameText.setStyle("-fx-font-family: \"${Strings.escapeUnicode(fontFamily)}\";")
+      }
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
       pronunciationText.getStyleClass().addAll(CONTENT_CLASS, SLIME_PRONUNCIATION_CLASS)
       spaceText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
       pane.getChildren().addAll(nameText, pronunciationText, spaceText)
     } else {
       Text nameText = Text.new(name + "  ")
-      nameText.setStyle("-fx-font-family: ${fontFamily}")
+      if (fontFamily != null) {
+        nameText.setStyle("-fx-font-family: \"${Strings.escapeUnicode(fontFamily)}\";")
+      }
       nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
       pane.getChildren().add(nameText)
     }

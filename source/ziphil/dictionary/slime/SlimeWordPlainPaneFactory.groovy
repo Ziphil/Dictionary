@@ -37,7 +37,9 @@ public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeD
     String fontFamily = $dictionary.getNameFontFamily()
     Text nameText = Text.new(name + " ")
     Text breakText = Text.new("\n")
-    nameText.setStyle("-fx-font-family: ${fontFamily}")
+    if (fontFamily != null) {
+      nameText.setStyle("-fx-font-family: \"${Strings.escapeUnicode(fontFamily)}\";")
+    }
     nameText.getStyleClass().addAll(CONTENT_CLASS, HEAD_NAME_CLASS, SLIME_HEAD_NAME_CLASS)
     pane.getChildren().addAll(nameText, breakText)
   }
