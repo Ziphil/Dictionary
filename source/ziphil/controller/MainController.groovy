@@ -164,13 +164,16 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void reopenDictionary() {
-    File file = File.new(currentDictionary().getPath())
-    Dictionary dictionary = DictionaryFactory.loadProper(file)
-    if (dictionary != null) {
-      MainWordListController controller = currentWordListController()
-      controller.open(dictionary)
-    } else {
-      showErrorDialog("failOpenDictionary")
+    MainWordListController controller = currentWordListController()
+    Boolean allowsReopen = controller.requestClose()
+    if (allowsReopen) {
+      File file = File.new(currentDictionary().getPath())
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
+      if (dictionary != null) {
+        controller.open(dictionary)
+      } else {
+        showErrorDialog("failOpenDictionary")
+      }
     }
   }
 
