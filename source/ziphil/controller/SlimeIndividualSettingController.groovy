@@ -50,8 +50,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
   @FXML private CheckBox $usesNumberWordOrderControl
   @FXML private TextField $punctuationsControl
   @FXML private TextField $ignoredEquivalentRegexControl
-  @FXML private TextField $akrantiainSourceControl
   @FXML private ComboBox<String> $pronunciationTitleControl
+  @FXML private TextField $akrantiainSourceControl
   @FXML private GridPane $registeredParameterPane
   @FXML private List<TextField> $registeredParameterStringControls = ArrayList.new(10)
   @FXML private List<TextField> $registeredParameterNameControls = ArrayList.new(10)
@@ -101,9 +101,9 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $usesNumberWordOrderControl.setSelected(dictionary.getWordOrderType() == WordOrderType.IDENTIFIER)
     $punctuationsControl.setText(dictionary.getPunctuations().join(""))
     $ignoredEquivalentRegexControl.setText(dictionary.getIgnoredEquivalentRegex())
-    $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     $pronunciationTitleControl.setValue(dictionary.getPronunciationTitle())
     $pronunciationTitleControl.getItems().addAll(dictionary.getRegisteredInformationTitles())
+    $akrantiainSourceControl.setText(dictionary.getAkrantiainSource())
     for (Int i = 0 ; i < 10 ; i ++) {
       $registeredParameterStringControls[i].setText(registeredParameterStrings[i])
       $registeredParameterNameControls[i].setText(registeredParameterNames[i])
@@ -130,8 +130,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     }
     List<String> punctuations = $punctuationsControl.getText().split("").toList()
     String ignoredEquivalentRegex = $ignoredEquivalentRegexControl.getText()
-    String akrantiainSource = $akrantiainSource
     String pronunciationTitle = $pronunciationTitleControl.getValue()
+    String akrantiainSource = $akrantiainSource
     SlimeWord defaultWord = $defaultWord
     List<SlimeSearchParameter> registeredParameters = $registeredParameters
     List<String> registeredParameterNames = $registeredParameterNameControls.collect{it.getText()}
@@ -142,8 +142,8 @@ public class SlimeIndividualSettingController extends Controller<BooleanClass> {
     $dictionary.setWordOrderType(wordOrderType)
     $dictionary.setPunctuations(punctuations)
     $dictionary.setIgnoredEquivalentRegex(ignoredEquivalentRegex)
-    $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setPronunciationTitle(pronunciationTitle)
+    $dictionary.setAkrantiainSource(akrantiainSource)
     $dictionary.setDefaultWord(defaultWord)
     individualSetting.setRegisteredParameters(registeredParameters)
     individualSetting.setRegisteredParameterNames(registeredParameterNames)
