@@ -39,6 +39,7 @@ import ziphil.dictionary.DictionaryFactory
 import ziphil.dictionary.ExportConfig
 import ziphil.dictionary.ExportType
 import ziphil.dictionary.IndividualSetting
+import ziphil.dictionary.SearchMode
 import ziphil.dictionary.SearchParameter
 import ziphil.dictionary.WordOrderType
 import ziphil.module.Setting
@@ -65,6 +66,7 @@ public class MainController extends PrimitiveController<Stage> {
   @FXML private Menu $registerCurrentDictionaryMenu
   @FXML private Menu $convertDictionaryMenu
   @FXML private Menu $exportDictionaryMenu
+  @FXML private Menu $changeSearchModeMenu
   @FXML private Menu $changeWordOrderMenu
   @FXML private Menu $searchRegisteredParameterMenu
   @FXML private Menu $badgeWordsMenu
@@ -88,7 +90,9 @@ public class MainController extends PrimitiveController<Stage> {
     setupCreateDictionaryMenu()
     setupOpenRegisteredDictionaryMenu()
     setupRegisterCurrentDictionaryMenu()
+    setupChangeSearchModeMenu()
     setupChangeWordOrderMenu()
+    setupPluginMenu()
     setupBadgeWordsMenu()
     setupDebug()
   }
@@ -160,13 +164,16 @@ public class MainController extends PrimitiveController<Stage> {
 
   @FXML
   private void reopenDictionary() {
-    File file = File.new(currentDictionary().getPath())
-    Dictionary dictionary = DictionaryFactory.loadProper(file)
-    if (dictionary != null) {
-      MainWordListController controller = currentWordListController()
-      controller.open(dictionary)
-    } else {
-      showErrorDialog("failOpenDictionary")
+    MainWordListController controller = currentWordListController()
+    Boolean allowsReopen = controller.requestClose()
+    if (allowsReopen) {
+      File file = File.new(currentDictionary().getPath())
+      Dictionary dictionary = DictionaryFactory.loadProper(file)
+      if (dictionary != null) {
+        controller.open(dictionary)
+      } else {
+        showErrorDialog("failOpenDictionary")
+      }
     }
   }
 
@@ -471,23 +478,19 @@ public class MainController extends PrimitiveController<Stage> {
   }  
 
   private void updatePluginMenu() {
-    $pluginMenu.getItems().clear()
     Dictionary dictionary = currentDictionary()
-    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
-      SimplePlugin cachedPlugin = plugin
+    for (int i = 0 ; i < $pluginMenu.getItems().size() ; i ++) {
+      MenuItem item = $pluginMenu.getItems()[i]
+      SimplePlugin plugin = PluginManager.SIMPLE_PLUGINS[i]
       if (plugin.isSupported(dictionary)) {
-        MenuItem item = MenuItem.new()
-        String name = plugin.getName()
-        Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
-        KeyCode keyCode = plugin.getKeyCode()
-        KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
-        item.setText(name)
-        item.setGraphic(ImageView.new(icon))
-        item.setAccelerator(accelerator)
+        item.setDisable(false)
         item.setOnAction() {
-          cachedPlugin.call(dictionary)
+          plugin.call(dictionary)
         }
-        $pluginMenu.getItems().add(item)
+      } else {
+        item.setDisable(true)
+        item.setOnAction() {
+        }
       }
     }
   }
@@ -690,19 +693,8 @@ public class MainController extends PrimitiveController<Stage> {
     currentWordListController().shuffleWords()
   }
 
-  @FXML
-  private void changeSearchModeToWord() {
-    currentWordListController().changeSearchModeToWord()
-  }
-
-  @FXML
-  private void changeSearchModeToEquivalent() {
-    currentWordListController().changeSearchModeToEquivalent()
-  }
-
-  @FXML
-  private void changeSearchModeToContent() {
-    currentWordListController().changeSearchModeToContent()
+  private void changeSearchMode(SearchMode mode) {
+    currentWordListController().changeSearchMode(mode)
   }
 
   @FXML
@@ -924,6 +916,22 @@ public class MainController extends PrimitiveController<Stage> {
     }
   }
 
+  private void setupChangeSearchModeMenu() {
+    $changeSearchModeMenu.getItems().clear()
+    Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
+    for (SearchMode mode : SearchMode.values()) {
+      SearchMode cachedMode = mode
+      MenuItem item = MenuItem.new()
+      item.setText(cachedMode.toString())
+      item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(mode.getAccelerator())
+      item.setOnAction() {
+        changeSearchMode(cachedMode)
+      }
+      $changeSearchModeMenu.getItems().add(item)
+    }
+  }
+
   private void setupChangeWordOrderMenu() {
     $changeWordOrderMenu.getItems().clear()
     Image icon = Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
@@ -936,6 +944,22 @@ public class MainController extends PrimitiveController<Stage> {
         changeWordOrder(cachedType)
       }
       $changeWordOrderMenu.getItems().add(item)
+    }
+  }
+
+  private setupPluginMenu() {
+    $pluginMenu.getItems().clear()
+    for (SimplePlugin plugin : PluginManager.SIMPLE_PLUGINS) {
+      MenuItem item = MenuItem.new()
+      String name = plugin.getName()
+      Image icon = plugin.getIcon() ?: Image.new(getClass().getClassLoader().getResourceAsStream("resource/image/menu/empty.png"))
+      KeyCode keyCode = plugin.getKeyCode()
+      KeyCombination accelerator = (keyCode != null) ? KeyCodeCombination.new(keyCode, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN) : null
+      item.setText(name)
+      item.setGraphic(ImageView.new(icon))
+      item.setAccelerator(accelerator)
+      item.setDisable(true)
+      $pluginMenu.getItems().add(item)
     }
   }
 

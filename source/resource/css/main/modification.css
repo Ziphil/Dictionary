@@ -54,12 +54,6 @@
   -fx-background-insets: -1.4px, -0.3px, 1px;
 }
 
-.scroll-pane {
-  -fx-background-color: -fx-background !important;
-  -fx-background-insets: 0px !important;
-  -fx-padding: 0px !important;
-}
-
 .titled-pane {
   -fx-animated: false;
 }
@@ -67,6 +61,12 @@
 .tab-pane {
   -fx-open-tab-animation: none;
   -fx-close-tab-animation: none;
+}
+
+.tab-pane .scroll-pane {
+  -fx-background-color: -fx-background !important;
+  -fx-background-insets: 0px !important;
+  -fx-padding: 0px !important;
 }
 
 .tab-pane:bottom >.tab-header-area >.tab-header-background {

@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 32, 0, 2445)
+  public static final Version VERSION = Version.new(1, 33, 0, 2478)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATOR = createLineSeparator()
@@ -57,6 +57,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.33. 0 | OneToMany 形式において訳語欄で無視するパターンを設定する機能を追加。
+//          | OneToMany 形式で見出し語フォントを変更する機能を追加。
+//          | 検索範囲として見出し語と訳語の両方を指定できるよう変更。
 //  1.32. 0 | メニューから検索結果の表示順を変更する機能を追加。
 //          | よく使う辞書を 11 個以上登録できるよう変更。
 //          | PDIC 形式でもマーカーが使えるよう変更。

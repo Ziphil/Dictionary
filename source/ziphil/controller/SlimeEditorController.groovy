@@ -52,7 +52,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   private static final Double DEFAULT_WIDTH = Measurement.rpx(640)
   private static final Double DEFAULT_HEIGHT = Measurement.rpx(640)
 
-  @FXML private TextField $idControl
+  @FXML private TextField $numberControl
   @FXML private TextField $nameControl
   @FXML private ScrollPane $scrollPane
   @FXML private GridPane $gridPane
@@ -62,7 +62,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   @FXML private VBox $variationBox
   @FXML private VBox $relationBox
   @FXML private TitledPane $relationPane
-  @FXML private Label $idLabel
+  @FXML private Label $numberLabel
   private List<ComboBox<String>> $tagControls = ArrayList.new()
   private List<ComboBox<String>> $equivalentTitleControls = ArrayList.new()
   private List<TextField> $equivalentNameControls = ArrayList.new()
@@ -86,7 +86,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 
   @FXML
   private void initialize() {
-    setupIdControl()
+    setupNumberControl()
   }
 
   // コントローラーの準備を行います。
@@ -117,12 +117,12 @@ public class SlimeEditorController extends Controller<WordEditResult> {
   @FXML
   protected void commit() {
     Setting setting = Setting.getInstance()
-    Boolean ignoresDuplicateId = setting.getIgnoresDuplicateSlimeId()
+    Boolean ignoresDuplicateNumber = setting.getIgnoresDuplicateNumber()
     Boolean asksDuplicateName = setting.getAsksDuplicateName()
     try {
-      Int id = createId()
+      Int number = createNumber()
       String name = createName()
-      if (ignoresDuplicateId || !$normal || !$dictionary.containsId(id, $word)) {
+      if (ignoresDuplicateNumber || !$normal || !$dictionary.containsNumber(number, $word)) {
         Boolean committed = true
         SlimeWord removedWord = null
         if (asksDuplicateName && $normal) {
@@ -144,7 +144,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
           }
         }
         if (committed) {
-          $word.setId(id)
+          $word.setNumber(number)
           $word.setName(name)
           $word.setRawEquivalents(createEquivalents())
           $word.setTags(createTags())
@@ -155,23 +155,23 @@ public class SlimeEditorController extends Controller<WordEditResult> {
             $word.merge(removedWord)
           }
           $word.update()
-          requestRelations(id, name)
+          requestRelations(number, name)
           WordEditResult result = WordEditResult.new($word, removedWord)
           $stage.commit(result)
         }
       } else {
-        showErrorDialog("duplicateId")
+        showErrorDialog("duplicateNumber")
       }
     } catch (NumberFormatException exception) {
-      showErrorDialog("invalidId")
+      showErrorDialog("invalidNumber")
     }
   }
 
   private void prepareBasicControls() {
-    $idControl.setText($word.getId().toString())
+    $numberControl.setText($word.getNumber().toString())
     $nameControl.setText($word.getName())
     if (!$normal) {
-      $idControl.setDisable(true)
+      $numberControl.setDisable(true)
       $nameControl.setDisable(true)
     }
   }
@@ -475,8 +475,8 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     }
   }
 
-  private Int createId() {
-    return IntegerClass.parseInt($idControl.getText())
+  private Int createNumber() {
+    return IntegerClass.parseInt($numberControl.getText())
   }
 
   private String createName() {
@@ -543,7 +543,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       SlimeRelation relation = $relations[i]
       Node box = $relationBox.getChildren()[i]
       if (relation != null) {
-        relations.add(SlimeRelation.new(title, relation.getId(), relation.getName()))
+        relations.add(SlimeRelation.new(title, relation.getNumber(), relation.getName()))
       }
       for (RelationRequest request : $relationRequests) {
         if (request.getBox() == box) {
@@ -554,10 +554,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     return relations
   }
 
-  private void requestRelations(Int id, String name) {
+  private void requestRelations(Int number, String name) {
     for (RelationRequest request : $relationRequests) {
       if (request.getRelation().getTitle() != null) {
-        request.getRelation().setId(id)
+        request.getRelation().setNumber(number)
         request.getRelation().setName(name)
         $dictionary.requestRelation(request)
       }
@@ -574,7 +574,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       SlimeWord word = nextStage.getResult()
       Int index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
-        $relations[index] = SlimeRelation.new(null, word.getId(), word.getName())
+        $relations[index] = SlimeRelation.new(null, word.getNumber(), word.getName())
         $relationNameControls[index].setText(word.getName())
         if (asksMutualRelation) {
           Dialog dialog = Dialog.new()
@@ -846,16 +846,16 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     }
   }
 
-  private void setupIdControl() {
-    Boolean showsId = Setting.getInstance().getShowsSlimeId()
-    if (!showsId) {
-      $gridPane.getChildren().remove($idControl)
-      $gridPane.getChildren().remove($idLabel)
+  private void setupNumberControl() {
+    Boolean showsNumber = Setting.getInstance().getShowsNumber()
+    if (!showsNumber) {
+      $gridPane.getChildren().remove($numberControl)
+      $gridPane.getChildren().remove($numberLabel)
       for (Node node : $gridPane.getChildren()) {
         $gridPane.setRowIndex(node, $gridPane.getRowIndex(node) - 1)
       }
     }
-    $idControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
+    $numberControl.setTextFormatter(TextFormatter.new(IntegerUnaryOperator.new()))
   }
 
 }

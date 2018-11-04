@@ -51,6 +51,7 @@
             <FXCollections fx:factory="observableArrayList">
               <SearchMode fx:value="NAME"/>
               <SearchMode fx:value="EQUIVALENT"/>
+              <SearchMode fx:value="BOTH"/>
               <SearchMode fx:value="CONTENT"/>
             </FXCollections>
           </items>

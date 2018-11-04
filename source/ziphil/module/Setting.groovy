@@ -57,8 +57,8 @@ public class Setting {
   private Boolean $ignoresCase = false
   private Boolean $searchesPrefix = true
   private Boolean $gitsCommitOnSave = false
-  private Boolean $ignoresDuplicateSlimeId = true
-  private Boolean $showsSlimeId = false
+  private Boolean $ignoresDuplicateNumber = true
+  private Boolean $showsNumber = false
   private Boolean $showsVariation = true
   private Boolean $asksMutualRelation = true
   private Boolean $asksDuplicateName = true
@@ -445,20 +445,20 @@ public class Setting {
     $gitsCommitOnSave = gitsCommitOnSave
   }
 
-  public Boolean getIgnoresDuplicateSlimeId() {
-    return $ignoresDuplicateSlimeId
+  public Boolean getIgnoresDuplicateNumber() {
+    return $ignoresDuplicateNumber
   }
 
-  public void setIgnoresDuplicateSlimeId(Boolean ignoresDuplicateSlimeId) {
-    $ignoresDuplicateSlimeId = ignoresDuplicateSlimeId
+  public void setIgnoresDuplicateNumber(Boolean ignoresDuplicateNumber) {
+    $ignoresDuplicateNumber = ignoresDuplicateNumber
   }
 
-  public Boolean getShowsSlimeId() {
-    return $showsSlimeId
+  public Boolean getShowsNumber() {
+    return $showsNumber
   }
 
-  public void setShowsSlimeId(Boolean showsSlimeId) {
-    $showsSlimeId = showsSlimeId
+  public void setShowsNumber(Boolean showsNumber) {
+    $showsNumber = showsNumber
   }
 
   public Boolean getShowsVariation() {

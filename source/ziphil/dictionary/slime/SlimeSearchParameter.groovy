@@ -15,7 +15,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> {
 
-  private Int $id
+  private Int $number
   private String $name
   private SearchType $nameSearchType
   private String $equivalentName
@@ -26,7 +26,7 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   private SearchType $informationSearchType
   private String $tag
   private Badge $badge
-  private Boolean $hasId = false
+  private Boolean $hasNumber = false
   private Boolean $hasName = false
   private Boolean $hasEquivalent = false
   private Boolean $hasInformation = false
@@ -34,9 +34,9 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
   private Boolean $hasBadge = false
   private Dictionary $dictionary
 
-  public SlimeSearchParameter(Int id) {
-    $id = id
-    $hasId = true
+  public SlimeSearchParameter(Int number) {
+    $number = number
+    $hasNumber = true
   }
 
   public SlimeSearchParameter(String name) {
@@ -53,13 +53,13 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
 
   public Boolean matches(SlimeWord word) {
     Boolean predicate = true
-    Int id = word.getId()
+    Int number = word.getNumber()
     String name = word.getName()
     List<SlimeEquivalent> equivalents = word.getRawEquivalents()
     List<SlimeInformation> informations = word.getInformations()
     List<String> tags = word.getTags()
-    if ($hasId) {
-      if (id != $id) {
+    if ($hasNumber) {
+      if (number != $number) {
         predicate = false
       }
     }
@@ -117,9 +117,9 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
 
   public String toString() {
     StringBuilder string = StringBuilder.new()
-    if ($hasId) {
+    if ($hasNumber) {
       string.append("ID[")
-      string.append($id)
+      string.append($number)
       string.append("], ")
     }
     if ($hasName) {
@@ -161,12 +161,12 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
     return string.toString()
   }
 
-  public Int getId() {
-    return $id
+  public Int getNumber() {
+    return $number
   }
 
-  public void setId(Int id) {
-    $id = id
+  public void setNumber(Int number) {
+    $number = number
   }
 
   public String getName() {
@@ -249,13 +249,13 @@ public class SlimeSearchParameter implements DetailedSearchParameter<SlimeWord> 
     $badge = badge
   }
 
-  @JsonGetter("hasId")
-  public Boolean hasId() {
-    return $hasId
+  @JsonGetter("hasNumber")
+  public Boolean hasNumber() {
+    return $hasNumber
   }
 
-  public void setHasId(Boolean hasId) {
-    $hasId = hasId
+  public void setHasNumber(Boolean hasNumber) {
+    $hasNumber = hasNumber
   }
 
   @JsonGetter("hasName")

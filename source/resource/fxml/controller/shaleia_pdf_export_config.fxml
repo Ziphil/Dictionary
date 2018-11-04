@@ -10,7 +10,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -69,7 +69,7 @@
         <Spinner fx:id="$captionFontSizeControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
-          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="20" amountToStepBy="1"/></valueFactory>
+          <valueFactory><SpinnerValueFactory.DoubleSpinnerValueFactory min="5" max="40" initialValue="20" amountToStepBy="1"/></valueFactory>
         </Spinner>
         <HelpIndicator text="%help.shaleiaPdfExportConfig.captionFont"/>
       </HBox>
@@ -93,7 +93,7 @@
         <Spinner fx:id="$headFontSizeControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
-          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="10" amountToStepBy="1"/></valueFactory>
+          <valueFactory><SpinnerValueFactory.DoubleSpinnerValueFactory min="5" max="40" initialValue="10" amountToStepBy="1"/></valueFactory>
         </Spinner>
         <HelpIndicator text="%help.shaleiaPdfExportConfig.headFont"/>
       </HBox>
@@ -114,10 +114,10 @@
             <minWidth><Double rpx="300"/></minWidth>
           </ComboBox>
         </VBox>
-        <Spinner fx:id="$shaleiaFontSizeControl" editable="true" disable="true">
+        <Spinner fx:id="$shaleiaFontSizeControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
-          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="8" amountToStepBy="1"/></valueFactory>
+          <valueFactory><SpinnerValueFactory.DoubleSpinnerValueFactory min="5" max="40" initialValue="7.6" amountToStepBy="1"/></valueFactory>
         </Spinner>
         <HelpIndicator text="%help.shaleiaPdfExportConfig.shaleiaFont"/>
       </HBox>
@@ -141,7 +141,7 @@
         <Spinner fx:id="$mainFontSizeControl" editable="true">
           <prefWidth><Double rpx="70"/></prefWidth>
           <minWidth><Double rpx="70"/></minWidth>
-          <valueFactory><SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="40" initialValue="8" amountToStepBy="1"/></valueFactory>
+          <valueFactory><SpinnerValueFactory.DoubleSpinnerValueFactory min="5" max="40" initialValue="8" amountToStepBy="1"/></valueFactory>
         </Spinner>
         <HelpIndicator text="%help.shaleiaPdfExportConfig.mainFont"/>
       </HBox>

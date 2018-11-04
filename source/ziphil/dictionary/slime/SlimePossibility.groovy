@@ -18,7 +18,7 @@ public class SlimePossibility implements Possibility {
   }
 
   public SearchParameter createParameter() {
-    return SlimeSearchParameter.new($word.getId())
+    return SlimeSearchParameter.new($word.getNumber())
   }
 
   public SlimeWord getWord() {

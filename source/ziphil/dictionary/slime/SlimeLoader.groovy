@@ -54,12 +54,16 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
               parseWordOrderType(parser)
             } else if (specialFieldName == "punctuations") {
               parsePunctuations(parser)
+            } else if (specialFieldName == "ignoredTranslationRegex") {
+              parseIgnoredEquivalentRegex(parser)
             } else if (specialFieldName == "pronunciationTitle") {
               parsePronunciationTitle(parser)
             } else if (specialFieldName == "plainInformationTitles") {
               parsePlainInformationTitles(parser)
             } else if (specialFieldName == "informationTitleOrder") {
               parseInformationTitleOrder(parser)
+            } else if (specialFieldName == "formFontFamily") {
+              parseNameFontFamily(parser)
             } else if (specialFieldName == "defaultWord") {
               parseDefaultWord(parser)
             }
@@ -104,8 +108,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       String entryFieldName = parser.getCurrentName()
       parser.nextToken()
       if (entryFieldName == "id") {
-        Int id = parser.getValueAsInt()
-        word.setId(id)
+        Int number = parser.getValueAsInt()
+        word.setNumber(number)
       } else if (entryFieldName == "form") {
         String name = parser.getValueAsString()
         word.setName(name)
@@ -191,8 +195,8 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             String relationEntryFieldName = parser.getCurrentName()
             parser.nextToken()
             if (relationEntryFieldName == "id") {
-              Int id = parser.getValueAsInt()
-              relation.setId(id)
+              Int number = parser.getValueAsInt()
+              relation.setNumber(number)
             } else if (relationEntryFieldName == "form") {
               String name = parser.getValueAsString()
               relation.setName(name)
@@ -226,6 +230,11 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     }
   }
 
+  private void parseIgnoredEquivalentRegex(JsonParser parser) {
+    String ignoredEquivalentRegex = parser.getValueAsString()
+    $dictionary.setIgnoredEquivalentRegex(ignoredEquivalentRegex)
+  }
+
   private void parsePronunciationTitle(JsonParser parser) {
     String pronunciationTitle = parser.getValueAsString()
     $dictionary.setPronunciationTitle(pronunciationTitle) 
@@ -246,6 +255,13 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
         String title = parser.getValueAsString()
         $dictionary.getInformationTitleOrder().add(title)
       }
+    }
+  }
+
+  private void parseNameFontFamily(JsonParser parser) {
+    if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {
+      String nameFontFamily = parser.getValueAsString()
+      $dictionary.setNameFontFamily(nameFontFamily)
     }
   }
 

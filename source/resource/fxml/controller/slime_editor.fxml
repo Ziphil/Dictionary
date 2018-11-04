@@ -50,9 +50,9 @@
               <ColumnConstraints hgrow="never"/>
               <ColumnConstraints hgrow="always"/>
             </columnConstraints>
-            <Label fx:id="$idLabel" text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="$numberLabel" text="ID:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <Label text="単語:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="$idControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <TextField fx:id="$numberControl" GridPane.columnIndex="1" GridPane.rowIndex="0">
               <prefWidth><Double rpx="70"/></prefWidth>
               <maxWidth><Double rpx="70"/></maxWidth>
             </TextField>

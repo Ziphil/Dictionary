@@ -50,6 +50,8 @@ public class NormalSearchParameter implements SearchParameter<Word> {
       return matchesByName(word)
     } else if ($searchMode == SearchMode.EQUIVALENT) {
       return matchesByEquivalent(word)
+    } else if ($searchMode == SearchMode.BOTH) {
+      return matchesByName(word) || matchesByEquivalent(word)
     } else if ($searchMode == SearchMode.CONTENT) {
       return matchesByContent(word)
     } else {

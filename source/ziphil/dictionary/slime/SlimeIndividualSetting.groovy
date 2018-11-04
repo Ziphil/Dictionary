@@ -19,8 +19,8 @@ public class SlimeIndividualSetting extends IndividualSetting {
     if ($version < Version.new(1, 13, 0)) {
       for (SlimeSearchParameter parameter : $registeredParameters) {
         if (parameter != null) {
-          if (parameter.getId() > 0) {
-            parameter.setHasId(true)
+          if (parameter.getNumber() > 0) {
+            parameter.setHasNumber(true)
           }
           if (parameter.getName() != null) {
             parameter.setHasName(true)

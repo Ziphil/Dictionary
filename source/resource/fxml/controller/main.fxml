@@ -67,15 +67,7 @@
         </MenuItem>
       </Menu>
       <Menu text="検索">
-        <Menu styleClass="option,dammy,nonnull" text="検索範囲の変更">
-          <MenuItem text="単語" onAction="#changeSearchModeToWord" accelerator="Shortcut+W">
-            <graphic>
-              <ImageView><Image url="@../../image/menu/empty.png"/></ImageView>
-            </graphic>
-          </MenuItem>
-          <MenuItem text="訳語" onAction="#changeSearchModeToEquivalent" accelerator="Shortcut+E"/>
-          <MenuItem text="全文" onAction="#changeSearchModeToContent" accelerator="Shortcut+Q"/>
-        </Menu>
+        <Menu fx:id="$changeSearchModeMenu" styleClass="option,dammy,nonnull" text="検索範囲の変更"/>
         <MenuItem styleClass="option,dammy,null" text="検索範囲の変更"/>
         <MenuItem styleClass="option,nonnull" text="検索方式の変更" onAction="#toggleSearchType" accelerator="Shortcut+T"/>
         <Menu fx:id="$changeWordOrderMenu" styleClass="option,dammy,nonnull" text="検索結果表示順の変更"/>

@@ -268,18 +268,8 @@ public class MainWordListController extends PrimitiveController<Stage> {
     $wordView.scrollTo(0)
   }
 
-  public void changeSearchModeToWord() {
-    $searchModeControl.setValue(SearchMode.NAME)
-    focusSearchControl()
-  }
-
-  public void changeSearchModeToEquivalent() {
-    $searchModeControl.setValue(SearchMode.EQUIVALENT)
-    focusSearchControl()
-  }
-
-  public void changeSearchModeToContent() {
-    $searchModeControl.setValue(SearchMode.CONTENT)
+  public void changeSearchMode(SearchMode mode) {
+    $searchModeControl.setValue(mode)
     focusSearchControl()
   }
 
@@ -818,15 +808,7 @@ public class MainWordListController extends PrimitiveController<Stage> {
     }
     Callable<BooleanClass> disableFunction = (Callable){
       SearchMode searchMode = $searchModeControl.getValue()
-      if (searchMode == SearchMode.NAME) {
-        return false
-      } else if (searchMode == SearchMode.EQUIVALENT) {
-        return false
-      } else if (searchMode == SearchMode.CONTENT) {
-        return true
-      } else {
-        return true
-      }
+      return !searchMode.isStrictable()
     }
     StringBinding textBinding = Bindings.createStringBinding(textFunction, $searchTypeControl.selectedProperty())
     BooleanBinding disableBinding = Bindings.createBooleanBinding(disableFunction, $searchModeControl.valueProperty())    

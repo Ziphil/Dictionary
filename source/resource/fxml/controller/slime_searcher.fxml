@@ -50,8 +50,8 @@
       <Label text="マーカー:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
       <HBox alignment="centerLeft" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <spacing><Double rpx="5"/></spacing>
-        <CheckBox fx:id="$hasIdControl" styleClass="no-text"/>
-        <TextField fx:id="$idControl">
+        <CheckBox fx:id="$hasNumberControl" styleClass="no-text"/>
+        <TextField fx:id="$numberControl">
           <prefWidth><Double rpx="70"/></prefWidth>
           <maxWidth><Double rpx="70"/></maxWidth>
         </TextField>

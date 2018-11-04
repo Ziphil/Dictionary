@@ -80,8 +80,8 @@ public class SlimePdfExporter extends PdfExporter<SlimeDictionary, SlimePdfExpor
     writer.writeStartElement("name")
     writer.writeCharacters(word.getName())
     writer.writeEndElement()
-    writer.writeStartElement("id")
-    writer.writeCharacters(word.getId().toString())
+    writer.writeStartElement("number")
+    writer.writeCharacters(word.getNumber().toString())
     writer.writeEndElement()
   }
 
@@ -162,8 +162,8 @@ public class SlimePdfExporter extends PdfExporter<SlimeDictionary, SlimePdfExpor
       writer.writeStartElement("entries")
       for (SlimeRelation relation : relationGroup) {
         writer.writeStartElement("entry")
-        writer.writeStartElement("id")
-        writer.writeCharacters(relation.getId().toString())
+        writer.writeStartElement("number")
+        writer.writeCharacters(relation.getNumber().toString())
         writer.writeEndElement()
         writer.writeStartElement("name")
         writer.writeCharacters(relation.getName())

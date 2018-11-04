@@ -51,6 +51,7 @@
           </columnConstraints>
           <Label text="簡易表示項目:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="表示順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+          <Label text="見出しフォント:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <ListSelectionView fx:id="$plainInformationTitleView" sourceName="項目" HBox.hgrow="always">
@@ -68,6 +69,11 @@
             <HelpIndicator text="%help.slimeIndividualSetting.informationTitleOrder"/>
           </HBox>
           <CheckBox fx:id="$usesIndividualTitleOrderControl" text="各データの順番で表示する" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+          <ComboBox fx:id="$nameFontFamilyControl" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <prefWidth><Double rpx="300"/></prefWidth>
+            <minWidth><Double rpx="300"/></minWidth>
+          </ComboBox>
+          <CheckBox fx:id="$usesDefaultNameFontFamilyControl" text="デフォルトフォントを用いる" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </GridPane>
       </Tab>
       <Tab text="その他" closable="false">
@@ -88,9 +94,10 @@
           </columnConstraints>
           <Label text="アルファベット順:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
           <Label text="区切り記号:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+          <Label text="訳語の無視パターン:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
           <Label text="発音記号項目名:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="snojデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+          <Label text="デフォルトデータ:" minWidth="-Infinity" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
             <spacing><Double rpx="5"/></spacing>
             <TextField fx:id="$alphabetOrderControl" HBox.hgrow="always"/>
@@ -98,7 +105,7 @@
           </HBox>
           <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
             <CheckBox fx:id="$usesUnicodeWordOrderControl" text="Unicode順を用いる"/>
-            <CheckBox fx:id="$usesIdWordOrderControl" text="ID順を用いる"/>
+            <CheckBox fx:id="$usesNumberWordOrderControl" text="ID順を用いる"/>
           </VBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
             <spacing><Double rpx="5"/></spacing>
@@ -107,17 +114,8 @@
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <spacing><Double rpx="5"/></spacing>
-            <HBox HBox.hgrow="always">
-              <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
-              <Button text="…" onAction="#editSnoj" styleClass="right-pill">
-                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
-              </Button>
-            </HBox>
-            <Button text="削除" onAction="#removeSnoj">
-              <prefWidth><Double rpx="70"/></prefWidth>
-              <minWidth><Double rpx="70"/></minWidth>
-            </Button>
-            <HelpIndicator text="%help.slimeIndividualSetting.akrantiainSource"/>
+            <TextField fx:id="$ignoredEquivalentRegexControl" HBox.hgrow="always"/>
+            <HelpIndicator text="%help.slimeIndividualSetting.ignoredEquivalentRegex"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
             <spacing><Double rpx="5"/></spacing>
@@ -125,13 +123,21 @@
               <prefWidth><Double rpx="120"/></prefWidth>
               <minWidth><Double rpx="120"/></minWidth>
             </ComboBox>
-            <Button text="解除" onAction="#removePronunciationTitle">
-              <prefWidth><Double rpx="70"/></prefWidth>
-              <minWidth><Double rpx="70"/></minWidth>
-            </Button>
+            <Button text="－" onAction="#removePronunciationTitle"/>
             <HelpIndicator text="%help.slimeIndividualSetting.pronunciationTitle"/>
           </HBox>
           <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <spacing><Double rpx="5"/></spacing>
+            <HBox HBox.hgrow="always">
+              <TextField fx:id="$akrantiainSourceControl" styleClass="left-pill" editable="false" HBox.hgrow="always"/>
+              <Button text="…" onAction="#editSnoj" styleClass="right-pill">
+                <minWidth><Button fx:constant="USE_PREF_SIZE"/></minWidth>
+              </Button>
+            </HBox>
+            <Button text="－" onAction="#removeSnoj"/>
+            <HelpIndicator text="%help.slimeIndividualSetting.akrantiainSource"/>
+          </HBox>
+          <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
             <spacing><Double rpx="5"/></spacing>
             <Button text="編集" onAction="#editDefaultWord">
               <prefWidth><Double rpx="70"/></prefWidth>
