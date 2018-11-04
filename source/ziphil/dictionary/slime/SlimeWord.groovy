@@ -38,8 +38,16 @@ public class SlimeWord extends WordBase {
 
   private void updateEquivalents() {
     $equivalents.clear()
+    String ignoredRegex = $dictionary.getIgnoredEquivalentRegex()
     for (SlimeEquivalent equivalent : $rawEquivalents) {
-      $equivalents.addAll(equivalent.getNames())
+      List<String> names = equivalent.getNames()
+      for (String name : names) {
+        if (ignoredRegex != null && ignoredRegex != "") {
+          $equivalents.add(name.replaceAll(ignoredRegex, ""))
+        } else {
+          $equivalents.add(name)
+        }
+      }
     }
   }
 
