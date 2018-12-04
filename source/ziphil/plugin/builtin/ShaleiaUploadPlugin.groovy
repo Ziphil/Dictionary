@@ -79,6 +79,7 @@ public class ShaleiaUploadPlugin implements SimplePlugin {
       try {
         BufferedReader reader = BufferedReader.new(InputStreamReader.new(inputStream))
         for (String line ; (line = reader.readLine()) != null ;) {
+          println(line)
         }
       } finally {
         inputStream.close()
