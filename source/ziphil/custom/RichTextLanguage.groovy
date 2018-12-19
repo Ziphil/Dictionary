@@ -17,10 +17,10 @@ public enum RichTextLanguage {
   public Consumer<RichTextChange> createConsumer(CodeArea codeArea) {
     RichTextChangeConsumer consumer = RichTextChangeConsumer.new(codeArea)
     if (this == SHALEIA_DICTIONARY) {
-      consumer.addSyntax(/(?m)^(\+)(\s*\d+)?(\s*〈.*〉)?/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-total-part")
+      consumer.addSyntax(/(?m)^(\+)(\s*\d+)?(\s*〈.*〉)?/, "shaleia-creation-date-marker", "shaleia-creation-date", "shaleia-sort")
       consumer.addSyntax(/(?m)^([A-Z](?:>|~))(?:\s*(\d+)(:))?/, "shaleia-content-marker", "shaleia-creation-date", "shaleia-symbol")
-      consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉)?/, "shaleia-equivalent-marker", "shaleia-part")
-      consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉)?/, "shaleia-synonym-marker", "shaleia-part")
+      consumer.addSyntax(/(?m)^(\=:?)(\s*〈.*〉)?/, "shaleia-equivalent-marker", "shaleia-category")
+      consumer.addSyntax(/(?m)^(\-)(\s*〈.*〉)?/, "shaleia-synonym-marker", "shaleia-category")
       consumer.addSyntax(/(\{|\}|\[|\]|\/)(\*)?/, "shaleia-symbol", "shaleia-reference-mark")
       consumer.addSyntax(/(&#x[0-9A-Fa-f]+;)/, "shaleia-escape")
     } else if (this == AKRANTIAIN) {

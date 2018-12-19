@@ -40,13 +40,13 @@ public class PersonalShaleiaConverter extends Loader<PersonalDictionary, Persona
           while (sourceReader.readLine() != null) {
             if (sourceReader.findCreationDate()) {
               String sourceCreationDate = sourceReader.lookupCreationDate()
-              String sourceTotalPart = sourceReader.lookupTotalPart()
-              appendCreationDate(translation, sourceTotalPart, sourceCreationDate)
+              String sourceSort = sourceReader.lookupSort()
+              appendCreationDate(translation, sourceSort, sourceCreationDate)
             }
             if (sourceReader.findEquivalent()) {
-              String sourcePart = sourceReader.lookupPart()
+              String sourceCategory = sourceReader.lookupCategory()
               String sourceEquivalent = sourceReader.lookupEquivalent()
-              appendEquivalent(translation, sourcePart, sourceEquivalent)
+              appendEquivalent(translation, sourceCategory, sourceEquivalent)
             }
             if (sourceReader.findContent()) {
               String sourceTitle = sourceReader.title()
@@ -73,17 +73,17 @@ public class PersonalShaleiaConverter extends Loader<PersonalDictionary, Persona
     return true
   }
 
-  private void appendCreationDate(StringBuilder translation, String sourceTotalPart, String sourceCreationDate) {
+  private void appendCreationDate(StringBuilder translation, String sourceSort, String sourceCreationDate) {
     translation.append("《")
-    translation.append(sourceTotalPart)
+    translation.append(sourceSort)
     translation.append("》 ")
     translation.append(sourceCreationDate)
     translation.append("\n")
   }
 
-  private void appendEquivalent(StringBuilder translation, String sourcePart, String sourceEquivalent) {
+  private void appendEquivalent(StringBuilder translation, String sourceCategory, String sourceEquivalent) {
     translation.append("〈")
-    translation.append(sourcePart)
+    translation.append(sourceCategory)
     translation.append("〉 ")
     translation.append(sourceEquivalent.replaceAll(/(\{|\}|\/)/, ""))
     translation.append("\n")

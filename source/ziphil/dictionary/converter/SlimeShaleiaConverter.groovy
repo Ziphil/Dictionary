@@ -44,13 +44,13 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
         try {
           while (sourceReader.readLine() != null) {
             if (sourceReader.findCreationDate()) {
-              String sourceTotalPart = sourceReader.lookupTotalPart()
-              addTotalPart(word, sourceTotalPart)
+              String sourceSort = sourceReader.lookupSort()
+              addSort(word, sourceSort)
             }
             if (sourceReader.findEquivalent()) {
-              String sourcePart = sourceReader.lookupPart()
+              String sourceCategory = sourceReader.lookupCategory()
               String sourceEquivalent = sourceReader.lookupEquivalent()
-              addEquivalent(word, sourcePart, sourceEquivalent)
+              addEquivalent(word, sourceCategory, sourceEquivalent)
             }
             if (sourceReader.findContent()) {
               String sourceTitle = sourceReader.title()
@@ -92,18 +92,18 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
     return true
   }
 
-  private void addTotalPart(SlimeWord word, String sourceTotalPart) {
-    word.getTags().add(sourceTotalPart)
+  private void addSort(SlimeWord word, String sourceSort) {
+    word.getTags().add(sourceSort)
   }
 
-  private void addEquivalent(SlimeWord word, String sourcePart, String sourceEquivalent) {
+  private void addEquivalent(SlimeWord word, String sourceCategory, String sourceEquivalent) {
     String nextSourceEquivalent = sourceEquivalent
     nextSourceEquivalent = nextSourceEquivalent.replaceAll(/(\{|\}|\[|\]|\/)/, "")
     nextSourceEquivalent = nextSourceEquivalent.replaceAll(/&#x([0-9A-Fa-f]+);/) { String all, String codePoint ->
       return CharacterClass.toChars(IntegerClass.parseInt(codePoint, 16))[0]
     }
     SlimeEquivalent equivalent = SlimeEquivalent.new()
-    equivalent.setTitle(sourcePart)
+    equivalent.setTitle(sourceCategory)
     equivalent.setNames(nextSourceEquivalent.split(/\s*,\s*/).toList())
     word.getRawEquivalents().add(equivalent)
   }

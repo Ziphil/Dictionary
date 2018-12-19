@@ -69,7 +69,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     }
   }
 
-  public String lookupTotalPart() {
+  public String lookupSort() {
     return lookup(DescriptionType.CREATION_DATE, 2)
   }
 
@@ -77,7 +77,7 @@ public class ShaleiaDescriptionReader implements Closeable, AutoCloseable {
     return lookup(DescriptionType.CREATION_DATE, 1)
   }
 
-  public String lookupPart() {
+  public String lookupCategory() {
     return lookup(DescriptionType.EQUIVALENT, 1)
   }
 

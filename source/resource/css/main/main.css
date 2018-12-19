@@ -32,8 +32,8 @@
   -fx-padding: 2px 0px 0px 0px;
 }
 
-.dictionary-list .shaleia-total-part,
-.dictionary-list .shaleia-part,
+.dictionary-list .shaleia-sort,
+.dictionary-list .shaleia-category,
 .dictionary-list .slime-tag,
 .dictionary-list .slime-equivalent-title,
 .dictionary-list .slime-relation-title {
@@ -44,8 +44,8 @@
   -fx-padding: -1px 2px -1px 2px;
 }
 
-.dictionary-list:focused .list-cell:filled:selected .shaleia-total-part,
-.dictionary-list:focused .list-cell:filled:selected .shaleia-part,
+.dictionary-list:focused .list-cell:filled:selected .shaleia-sort,
+.dictionary-list:focused .list-cell:filled:selected .shaleia-category,
 .dictionary-list:focused .list-cell:filled:selected .slime-tag,
 .dictionary-list:focused .list-cell:filled:selected .slime-equivalent-title,
 .dictionary-list:focused .list-cell:filled:selected .slime-relation-title {
@@ -175,8 +175,8 @@
   -fx-fill: hsb(240, 90%, 60%);
 }
 
-.editor .styled-text-area .shaleia-total-part,
-.editor .styled-text-area .shaleia-part {
+.editor .styled-text-area .shaleia-sort,
+.editor .styled-text-area .shaleia-category {
   -fx-fill: hsb(120, 90%, 60%);
 }
 
