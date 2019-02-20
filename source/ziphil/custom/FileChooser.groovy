@@ -32,7 +32,7 @@ public class FileChooser extends Control {
 
   private ObjectProperty<File> $currentDirectory = SimpleObjectProperty.new(null)
   private ObjectProperty<ExtensionFilter> $currentFileType = SimpleObjectProperty.new(null)
-  private StringProperty $inputtedFileName = SimpleStringProperty.new("")
+  private StringProperty $inputtedFileName = SimpleStringProperty.new("untitled")
   private ReadOnlyObjectWrapper<File> $selectedFile = ReadOnlyObjectWrapper.new()
   private ListProperty<ExtensionFilter> $extensionFilters = SimpleListProperty.new(FXCollections.observableArrayList())
   private BooleanProperty $showsHidden = SimpleBooleanProperty.new(false)
