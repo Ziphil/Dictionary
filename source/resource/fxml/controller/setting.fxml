@@ -295,7 +295,7 @@
               <left><Double rpx="10"/></left>
             </Insets>
           </padding>
-          <ScrollPane fitToWidth="true">
+          <ScrollPane styleClass="no-border" fitToWidth="true">
             <VBox alignment="centerRight">
               <padding>
                 <Insets>
