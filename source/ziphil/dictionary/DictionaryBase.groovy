@@ -81,7 +81,9 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
         return false
       }
     }
-    conjugationResolver?.postcheck()
+    if (conjugationResolver != null) {
+      conjugationResolver.postcheck()
+    }
     $filteredSuggestions.setPredicate() { Suggestion suggestion ->
       return suggestion.isDisplayed()
     }
