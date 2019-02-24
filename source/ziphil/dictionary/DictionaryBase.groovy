@@ -61,7 +61,8 @@ public abstract class DictionaryBase<W extends Word, S extends Suggestion, F ext
     Exception suppressedException = null
     resetSuggestions()
     if (parameter instanceof NormalSearchParameter) {
-      if (parameter.getSearchMode() == SearchMode.NAME) {
+      SearchMode mode = parameter.getSearchMode()
+      if (mode == SearchMode.NAME || mode == SearchMode.BOTH) {
         conjugationResolver = createConjugationResolver()
         conjugationResolver.precheck(parameter)
       }
