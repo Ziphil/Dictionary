@@ -82,7 +82,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       stream.close()
     }
     for (Int i = 0 ; i < $words.size() ; i ++) {
-      realizeRelations($words[i], correspondingWords)
+      resolveRelations($words[i], correspondingWords)
       updateProgressByWord(i + 1, $words.size())
     }
     return true
@@ -284,7 +284,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     }
   }
 
-  private void realizeRelations(SlimeWord word, Map<IntegerClass, SlimeWord> correspondingWords) {
+  private void resolveRelations(SlimeWord word, Map<IntegerClass, SlimeWord> correspondingWords) {
     List<SlimeRelation> relations = word.getRelations()
     for (Int i = 0 ; i < relations.size() ; i ++) {
       SlimeTemporaryRelation relation = (SlimeTemporaryRelation)relations[i]
