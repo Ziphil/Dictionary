@@ -81,8 +81,9 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       parser.close()
       stream.close()
     }
-    for (SlimeWord word : $words) {
-      realizeRelations(word, correspondingWords)
+    for (Int i = 0 ; i < $words.size() ; i ++) {
+      realizeRelations($words[i], correspondingWords)
+      updateProgressByWord(i + 1, $words.size())
     }
     return true
   }
@@ -302,9 +303,19 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private void updateProgressByParser(JsonParser parser, Long size) {
     if (parser != null) {
-      updateProgress(parser.getCurrentLocation().getByteOffset(), size)
+      Double progress = parser.getCurrentLocation().getByteOffset() / size
+      updateProgress(progress * 0.75D, 1)
     } else {
       updateProgress(0, 1)
+    }
+  }
+
+  private void updateProgressByWord(Int index, Long size) {
+    if (index > 0) {
+      Double progress = index / size
+      updateProgress(progress * 0.25D + 0.75D, 1)
+    } else {
+      updateProgress(0.75D, 1)
     }
   }
 
