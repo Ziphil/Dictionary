@@ -17,7 +17,6 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private String $path
   private ObjectMapper $mapper
-  private Map<IntegerClass, SlimeWord> $correspondingWords = HashMap.new()
 
   public SlimeLoader(String path) {
     super()
@@ -29,6 +28,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     FileInputStream stream = FileInputStream.new($path)
     JsonFactory factory = $mapper.getFactory()
     JsonParser parser = factory.createParser(stream)
+    Map<IntegerClass, SlimeWord> correspondingWords = HashMap.new()
     Long size = file.length()
     try {
       parser.nextToken()
@@ -43,7 +43,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             SlimeWord word = SlimeWord.new()
             parseWord(parser, word)
             $words.add(word)
-            $correspondingWords[word.getNumber()] = word
+            correspondingWords.put(word.getNumber(), word)
             updateProgressByParser(parser, size)
           }
         } else if (topFieldName == "zpdic") {
@@ -82,7 +82,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       stream.close()
     }
     for (SlimeWord word : $words) {
-      realizeRelations(word)
+      realizeRelations(word, correspondingWords)
     }
     return true
   }
@@ -283,12 +283,12 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     }
   }
 
-  private void realizeRelations(SlimeWord word) {
+  private void realizeRelations(SlimeWord word, Map<IntegerClass, SlimeWord> correspondingWords) {
     List<SlimeRelation> relations = word.getRelations()
     for (Int i = 0 ; i < relations.size() ; i ++) {
       SlimeTemporaryRelation relation = (SlimeTemporaryRelation)relations[i]
-      if ($correspondingWords.containsKey(relation.getNumber())) {
-        SlimeWord relationWord = $correspondingWords[relation.getNumber()]
+      if (correspondingWords.containsKey(relation.getNumber())) {
+        SlimeWord relationWord = correspondingWords[relation.getNumber()]
         if (relationWord.getName() == relation.getName()) {
           SlimeRelation genuineRelation = SlimeRelation.new()
           genuineRelation.setTitle(relation.getTitle())
