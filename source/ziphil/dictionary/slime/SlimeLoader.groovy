@@ -17,6 +17,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private String $path
   private ObjectMapper $mapper
+  private Map<IntegerClass, SlimeWord> $correspondingWords = HashMap.new()
 
   public SlimeLoader(String path) {
     super()
@@ -42,6 +43,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             SlimeWord word = SlimeWord.new()
             parseWord(parser, word)
             $words.add(word)
+            $correspondingWords[word.getNumber()] = word
             updateProgressByParser(parser, size)
           }
         } else if (topFieldName == "zpdic") {
@@ -78,6 +80,9 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     } finally {
       parser.close()
       stream.close()
+    }
+    for (SlimeWord word : $words) {
+      realizeRelations(word)
     }
     return true
   }
@@ -183,7 +188,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private void parseRelations(JsonParser parser, SlimeWord word) {
     while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeRelation relation = SlimeRelation.new()
+      SlimeTemporaryRelation relation = SlimeTemporaryRelation.new()
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String relationFieldName = parser.getCurrentName()
         parser.nextToken()
@@ -276,6 +281,23 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
       String akrantiainSource = parser.getValueAsString()
       $dictionary.setAkrantiainSource(akrantiainSource)
     }
+  }
+
+  private void realizeRelations(SlimeWord word) {
+    List<SlimeRelation> relations = word.getRelations()
+    for (Int i = 0 ; i < relations.size() ; i ++) {
+      SlimeTemporaryRelation relation = (SlimeTemporaryRelation)relations[i]
+      if ($correspondingWords.containsKey(relation.getNumber())) {
+        SlimeWord relationWord = $correspondingWords[relation.getNumber()]
+        if (relationWord.getName() == relation.getName()) {
+          SlimeRelation genuineRelation = SlimeRelation.new()
+          genuineRelation.setTitle(relation.getTitle())
+          genuineRelation.setWord(relationWord)
+          relations[i] = genuineRelation
+        }
+      }
+    }
+    relations.removeAll{it instanceof SlimeTemporaryRelation}
   }
 
   private void updateProgressByParser(JsonParser parser, Long size) {

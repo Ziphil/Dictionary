@@ -28,18 +28,18 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
 
   protected BooleanClass load() {
     List<ShaleiaWord> sourceWords = $sourceDictionary.getRawWords()
-    Map<String, IntegerClass> sourceNumbers = HashMap.new()
+    Map<String, SlimeWord> correspondingWords = HashMap.new()
     Int size = sourceWords.size()
     for (Int i = 0 ; i < size ; i ++) {
       if (isCancelled()) {
         return false
       }
       ShaleiaWord sourceWord = sourceWords[i]
-      if (!sourceWord.getName().startsWith("\$")) {
+      if (!sourceWord.getUniqueName().startsWith("\$")) {
         SlimeWord word = SlimeWord.new()
         word.setNumber(i + 1)
         word.setName(sourceWord.getName())
-        sourceNumbers.put(sourceWord.getName(), i + 1)
+        correspondingWords.put(sourceWord.getName(), word)
         ShaleiaDescriptionReader sourceReader = ShaleiaDescriptionReader.new(sourceWord.getDescription())
         try {
           while (sourceReader.readLine() != null) {
@@ -78,7 +78,7 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
           if (sourceReader.findSynonym()) {
             String sourceSynonymType = sourceReader.lookupSynonymType()
             String sourceSynonym = sourceReader.lookupSynonym()
-            addSynonym(word, sourceSynonymType, sourceSynonym, sourceNumbers)
+            addSynonym(word, sourceSynonymType, sourceSynonym, correspondingWords)
           }
         }
       } finally {
@@ -120,16 +120,14 @@ public class SlimeShaleiaConverter extends Loader<SlimeDictionary, SlimeWord> {
     word.getInformations().add(information)
   }
 
-  private void addSynonym(SlimeWord word, String sourceSynonymType, String sourceSynonym, Map<String, IntegerClass> sourceNumbers) {
+  private void addSynonym(SlimeWord word, String sourceSynonymType, String sourceSynonym, Map<String, SlimeWord> correspondingWords) {
     String nextSourceSynonym = sourceSynonym
     nextSourceSynonym = nextSourceSynonym.replaceAll(/(\{|\}|\*)/, "")
     for (String sourceSynonymName : nextSourceSynonym.split(/\s*(,|;)\s*/)) {
-      IntegerClass sourceNumber = sourceNumbers[sourceSynonymName]
-      if (sourceNumber != null) {
+      if (correspondingWords.containsKey(sourceSynonymName)) {
         SlimeRelation relation = SlimeRelation.new()
-        relation.setNumber(sourceNumber)
-        relation.setName(sourceSynonymName)
         relation.setTitle(sourceSynonymType)
+        relation.setWord(correspondingWords[sourceSynonymName])
         word.getRelations().add(relation)
       }
     }

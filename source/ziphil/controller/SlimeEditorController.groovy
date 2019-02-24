@@ -155,7 +155,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
             $word.merge(removedWord)
           }
           $word.update()
-          requestRelations(number, name)
+          requestRelations($word)
           WordEditResult result = WordEditResult.new($word, removedWord)
           $stage.commit(result)
         }
@@ -209,7 +209,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 
   private void prepareRelationControls() {
     for (SlimeRelation relation : $word.getRelations()) {
-      addRelationControl(relation.getTitle(), relation.getName(), relation, $dictionary.getRegisteredRelationTitles())
+      addRelationControl(relation.getTitle(), relation.getWord().getName(), relation, $dictionary.getRegisteredRelationTitles())
     }
     if (!$normal) {
       VBox parent = (VBox)$relationPane.getParent()
@@ -543,7 +543,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       SlimeRelation relation = $relations[i]
       Node box = $relationBox.getChildren()[i]
       if (relation != null) {
-        relations.add(SlimeRelation.new(title, relation.getNumber(), relation.getName()))
+        relations.add(SlimeRelation.new(title, relation.getWord()))
       }
       for (RelationRequest request : $relationRequests) {
         if (request.getBox() == box) {
@@ -554,11 +554,10 @@ public class SlimeEditorController extends Controller<WordEditResult> {
     return relations
   }
 
-  private void requestRelations(Int number, String name) {
+  private void requestRelations(SlimeWord word) {
     for (RelationRequest request : $relationRequests) {
       if (request.getRelation().getTitle() != null) {
-        request.getRelation().setNumber(number)
-        request.getRelation().setName(name)
+        request.getRelation().setWord(word)
         $dictionary.requestRelation(request)
       }
     }
@@ -574,7 +573,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
       SlimeWord word = nextStage.getResult()
       Int index = $relationBox.getChildren().indexOf(box)
       if (index >= 0) {
-        $relations[index] = SlimeRelation.new(null, word.getNumber(), word.getName())
+        $relations[index] = SlimeRelation.new(null, word)
         $relationNameControls[index].setText(word.getName())
         if (asksMutualRelation) {
           Dialog dialog = Dialog.new()
@@ -866,7 +865,7 @@ public class SlimeEditorController extends Controller<WordEditResult> {
 private static class RelationRequest implements SlimeRelationRequest {
 
   private SlimeWord $word
-  private SlimeRelation $relation = SlimeRelation.new(null, -1, "")
+  private SlimeRelation $relation = SlimeRelation.new(null, null)
   private Node $box
 
   public RelationRequest(SlimeWord word, Node box) {

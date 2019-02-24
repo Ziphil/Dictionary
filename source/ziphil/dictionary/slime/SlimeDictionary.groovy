@@ -61,114 +61,89 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   // また、この修正に応じて変更が必要となる内部データの修正も同時に行います。
   private void correctNumber(SlimeWord word) {
     if (containsNumber(word.getNumber(), word)) {
-      for (SlimeRelationRequest request : $relationRequests) {
-        SlimeRelation requestRelation = request.getRelation()
-        if (requestRelation.getNumber() == word.getNumber()) {
-          requestRelation.setNumber($validMinNumber)
-        }
-      }
       word.setNumber($validMinNumber)
     }
   }
 
   // これから追加もしくは変更される単語データである word の関連語データを、追加もしくは変更の後に矛盾が生じないように修正します。
   // 具体的には、存在しない単語を参照している関連語データを word から削除します。
-  private void correctRelations(SlimeWord word) {
-    Map<IntegerClass, String> otherWordNames = HashMap.new()
-    for (SlimeWord otherWord : $words) {
-      otherWordNames[otherWord.getNumber()] = otherWord.getName()
-    }
+  private void correctRelationsByAdd(SlimeWord word) {
     List<SlimeRelation> removedRelations = ArrayList.new()
     for (SlimeRelation relation : word.getRelations()) {
-      if (otherWordNames[relation.getNumber()] != relation.getName()) {
+      SlimeWord relationWord = relation.getWord()
+      if (!$words.contains(relationWord) && relationWord != word) {
         removedRelations.add(relation)
       }
     }
     word.getRelations().removeAll(removedRelations)
   }
 
-  // oldWord を newWord に修正したことによって生じ得る関連語参照の矛盾を修正します。
-  private void correctOtherRelations(SlimeWord oldWord, SlimeWord newWord) {
-    if (oldWord.getNumber() != newWord.getNumber() || oldWord.getName() != newWord.getName()) {
-      for (SlimeWord otherWord : $words) {
-        for (SlimeRelation relation : otherWord.getRelations()) {
-          if (relation.getNumber() == oldWord.getNumber()) {
-            relation.setNumber(newWord.getNumber())
-            relation.setName(newWord.getName())
-            otherWord.change()
-          }
-        }
-      }
-    }
-  }
-
-  public void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
-    synchronized (this) {
-      correctNumber(newWord)
-      correctOtherRelations(oldWord, newWord)
-      correctRelations(newWord)
-      complyRelationRequests()
-      update()
-    }
-  }
-
-  private void addWordWithoutUpdate(SlimeWord word) {
-    correctNumber(word)
-    correctRelations(word)
-    $words.add(word)
-  }
-
-  public void addWord(SlimeWord word) {
-    synchronized (this) {
-      addWordWithoutUpdate(word)
-      complyRelationRequests()
-      update()
-    }
-  }
-
-  public void addWords(List<? extends SlimeWord> words) {
-    synchronized (this) {
-      for (SlimeWord word : words) {
-        addWordWithoutUpdate(word)
-        incrementValidMinNumber(word)
-      }
-      complyRelationRequests()
-      update()
-    }
-  }
-
-  private void removeWordWithoutUpdate(SlimeWord word) {
+  // この辞書に登録されている word が変更されることによって生じ得る関連語参照の矛盾を修正します。
+  private void correctRelationsByModify(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
-      Boolean changed = otherWord.getRelations().removeAll{it.getNumber() == word.getNumber()}
+      if (otherWord.getRelations().any{it.getWord() == word}) {
+        otherWord.update()
+      }
+    }
+  }
+
+  // この辞書から word を削除することによって生じ得る関連語参照の矛盾を修正します。
+  private void correctRelationsByRemove(SlimeWord word) {
+    for (SlimeWord otherWord : $words) {
+      Boolean changed = otherWord.getRelations().removeAll{it.getWord() == word}
       if (changed) {
         otherWord.change()
       }
     }
+  }
+
+  public synchronized void modifyWord(SlimeWord oldWord, SlimeWord newWord) {
+    correctNumber(newWord)
+    correctRelationsByAdd(newWord)
+    correctRelationsByModify(newWord)
+    complyRelationRequests()
+    update()
+  }
+
+  public synchronized void addWord(SlimeWord word) {
+    correctNumber(word)
+    correctRelationsByAdd(word)
+    $words.add(word)
+    complyRelationRequests()
+    update()
+  }
+
+  public synchronized void addWords(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      correctNumber(word)
+      correctRelationsByAdd(word)
+      incrementValidMinNumber(word)
+      $words.add(word)
+    }
+    complyRelationRequests()
+    update()
+  }
+
+  public synchronized void removeWord(SlimeWord word) {
+    correctRelationsByRemove(word)
     $words.remove(word)
+    update()
   }
 
-  public void removeWord(SlimeWord word) {
-    synchronized (this) {
-      removeWordWithoutUpdate(word)
-      update()
+  public synchronized void removeWords(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      correctRelationsByRemove(word)
+      $words.remove(word)
     }
+    update()
   }
 
-  public void removeWords(List<? extends SlimeWord> words) {
-    synchronized (this) {
-      for (SlimeWord word : words) {
-        removeWordWithoutUpdate(word)
-      }
-      update()
-    }
-  }
-
-  public void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
-    synchronized (this) {
-      correctOtherRelations(removedWord, mergedWord)
-      $words.remove(removedWord)
-      update()
-    }
+  public synchronized void mergeWord(SlimeWord mergedWord, SlimeWord removedWord) {
+    correctRelationsByRemove(removedWord)
+    correctRelationsByAdd(mergedWord)
+    correctRelationsByModify(mergedWord)
+    $words.remove(removedWord)
+    update()
   }
 
   public void requestRelation(SlimeRelationRequest request) {
@@ -228,26 +203,11 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     Map<IntegerClass, String> wordNames = HashMap.new()
     Map<IntegerClass, String> relationNames = HashMap.new()
     for (SlimeWord word : $words) {
-      Int wordNumber = word.getNumber()
-      wordNames[wordNumber] = word.getName()
       for (SlimeRelation relation : word.getRelations()) {
-        Int relationNumber = relation.getNumber()
-        String previousRelationName = relationNames[relationNumber]
-        if (previousRelationName == null) {
-          relationNames[relation.getNumber()] = relation.getName()
-        } else {
-          if (relation.getName() != previousRelationName) {
-            throw SlimeValidationException.new("Form of relation [${relation.getNumber()}: ${relation.getName()}] in [${word.getNumber()}: ${word.getName()}] is inconsistent")
-          }
+        SlimeWord relationWord = relation.getWord()
+        if (!$words.contains(relationWord)) {
+          throw SlimeValidationException.new("No [${relationWord.getNumber()}: ${relationWord.getName()}] specified as a relation in [${word.getNumber()}: ${word.getName()}]")
         }
-      }
-    }
-    for (Map.Entry<IntegerClass, String> entry : relationNames) {
-      String expectedName = wordNames[entry.getKey()]
-      if (expectedName == null) {
-        throw SlimeValidationException.new("There is no such ID ${entry.getKey()}")
-      } else if (expectedName != entry.getValue()) {
-        throw SlimeValidationException.new("Form of relation [${entry.getKey()}: ${entry.getValue()}] is inconsistent; must be ${expectedName}")
       }
     }
   }
@@ -431,12 +391,11 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
       newVariation.setName(variation.getName())
       newVariations.add(newVariation)
     }
-    List<SlimeRelation> newRelations = ArrayList.new()
+    List<SlimePlainRelation> newRelations = ArrayList.new()
     for (SlimeRelation relation : oldWord.getRelations()) {
-      SlimeRelation newRelation = SlimeRelation.new()
+      SlimePlainRelation newRelation = SlimePlainRelation.new()
       newRelation.setTitle(relation.getTitle())
-      newRelation.setNumber(relation.getNumber())
-      newRelation.setName(relation.getName())
+      newRelation.setWord(createPlainWord(relation.getWord()))
       newRelations.add(newRelation)
     }
     newWord.setNumber(newNumber)

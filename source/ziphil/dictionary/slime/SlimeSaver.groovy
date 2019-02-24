@@ -149,8 +149,8 @@ public class SlimeSaver extends Saver<SlimeDictionary> {
       generator.writeStringField("title", relation.getTitle())
       generator.writeFieldName("entry")
       generator.writeStartObject()
-      generator.writeNumberField("id", relation.getNumber())
-      generator.writeStringField("form", relation.getName())
+      generator.writeNumberField("id", relation.getWord().getNumber())
+      generator.writeStringField("form", relation.getWord().getName())
       generator.writeEndObject()
       generator.writeEndObject()
     }
