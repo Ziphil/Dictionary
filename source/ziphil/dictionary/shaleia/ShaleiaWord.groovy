@@ -14,6 +14,7 @@ import ziphilib.transform.Ziphilify
 @CompileStatic @Ziphilify
 public class ShaleiaWord extends WordBase {
 
+  private String $displayedName = ""
   private String $uniqueName = ""
   private String $description = ""
   private String $comparisonString = ""
@@ -28,7 +29,8 @@ public class ShaleiaWord extends WordBase {
   }
 
   private void updateName() {
-    $name = ($uniqueName.startsWith("\$")) ? "\$" : $uniqueName.replaceAll(/~/, "")
+    $name = ($uniqueName.startsWith("\$")) ? "\$" : $uniqueName.replaceAll(/~|\+/, "")
+    $displayedName = ($uniqueName.startsWith("\$")) ? "タスク" : $uniqueName.replaceAll(/~/, "")
   }
 
   private void updateEquivalents() {
@@ -114,6 +116,10 @@ public class ShaleiaWord extends WordBase {
 
   public void setDictionary(ShaleiaDictionary dictionary) {
     $dictionary = dictionary
+  }
+
+  public String getDisplayedName() {
+    return $displayedName
   }
 
   public String getUniqueName() {

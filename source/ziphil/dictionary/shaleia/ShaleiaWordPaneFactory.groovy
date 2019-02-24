@@ -77,7 +77,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     try {
       while (reader.readLine() != null) {
         if (mainPane.getChildren().isEmpty()) {
-          String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
+          String name = $word.getDisplayedName()
           addBadgeNodes(mainPane, badgeNodes)
           addNameNode(mainPane, name, $word.createPronunciation())
         }

@@ -36,7 +36,7 @@ public class ShaleiaSuggestionPaneFactory extends PaneFactoryBase<ShaleiaSuggest
     pane.setLineSpacing(lineSpacing)
     for (ShaleiaPossibility possibility : $word.getPossibilities()) {
       if (possibility.getWords() != null) {
-        addPossibilityNode(pane, possibility.createParameter(), possibility.getWords().collect{it.getName()}, possibility.getExplanation())
+        addPossibilityNode(pane, possibility.createParameter(), possibility.getWords().collect{it.getDisplayedName()}, possibility.getExplanation())
       } else {
         addPossibilityNode(pane, possibility.createParameter(), [possibility.getName()], possibility.getExplanation())
       }
