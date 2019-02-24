@@ -65,6 +65,15 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     }
   }
 
+  private void correctNumber(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      if (containsNumber(word.getNumber(), word)) {
+        word.setNumber($validMinNumber)
+        $validMinNumber ++
+      }
+    }
+  }
+
   // これから追加もしくは変更される単語データである word の関連語データを、追加もしくは変更の後に矛盾が生じないように修正します。
   // 具体的には、存在しない単語を参照している関連語データを word から削除します。
   private void correctRelationsByAdd(SlimeWord word) {
@@ -76,6 +85,19 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
       }
     }
     word.getRelations().removeAll(removedRelations)
+  }
+
+  private void correctRelationsByAdd(List<? extends SlimeWord> words) {
+    for (SlimeWord word : words) {
+      List<SlimeRelation> removedRelations = ArrayList.new()
+      for (SlimeRelation relation : word.getRelations()) {
+        SlimeWord relationWord = relation.getWord()
+        if (!$words.contains(relationWord) && !words.contains(relationWord)) {
+          removedRelations.add(relation)
+        }
+      }
+      word.getRelations().removeAll(removedRelations)
+    }
   }
 
   // この辞書に登録されている word が変更されることによって生じ得る関連語参照の矛盾を修正します。
@@ -114,10 +136,9 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
   }
 
   public synchronized void addWords(List<? extends SlimeWord> words) {
+    correctNumber(words)
+    correctRelationsByAdd(words)
     for (SlimeWord word : words) {
-      correctNumber(word)
-      correctRelationsByAdd(word)
-      incrementValidMinNumber(word)
       $words.add(word)
     }
     complyRelationRequests()
@@ -209,12 +230,6 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
           throw SlimeValidationException.new("No [${relationWord.getNumber()}: ${relationWord.getName()}] specified as a relation in [${word.getNumber()}: ${word.getName()}]")
         }
       }
-    }
-  }
-
-  private void incrementValidMinNumber(SlimeWord word) {
-    if (word.getNumber() >= $validMinNumber) {
-      $validMinNumber = word.getNumber() + 1
     }
   }
 
@@ -341,6 +356,32 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
 
   public SlimeWord copyWord(SlimeWord oldWord) {
     return prepareCopyWord(oldWord, true)
+  }
+
+  public List<? extends SlimeWord> copyWords(List<? extends SlimeWord> oldWords) {
+    List<SlimeWord> newWords = ArrayList.new()
+    Map<SlimeWord, SlimeWord> correspondingWords = HashMap.new()
+    for (SlimeWord oldWord : oldWords) {
+      SlimeWord newWord = prepareCopyWord(oldWord, false)
+      newWords.add(newWord)
+      correspondingWords[oldWord] = newWord
+    }
+    for (SlimeWord newWord : newWords) {
+      List<SlimeRelation> nextRelations = ArrayList.new()
+      for (SlimeRelation oldRelation : newWord.getRelations()) {
+        SlimeWord oldRelationWord = oldRelation.getWord()
+        if (correspondingWords.containsKey(oldRelationWord)) {
+          SlimeRelation nextRelation = SlimeRelation.new()
+          nextRelation.setTitle(oldRelation.getTitle())
+          nextRelation.setWord(correspondingWords[oldRelationWord])
+          nextRelations.add(nextRelation)
+        } else {
+          nextRelations.add(oldRelation)
+        }
+      }
+      newWord.setRelations(nextRelations)
+    }
+    return newWords
   }
 
   public SlimeWord inheritWord(SlimeWord oldWord) {

@@ -39,6 +39,8 @@ public interface EditableDictionary<W extends Word, V extends Word, F extends Ed
 
   public V copyWord(W oldWord)
 
+  public List<? extends V> copyWords(List<? extends W> oldWords)
+
   public V inheritWord(W oldWord)
 
   public V determineWord(String name, PseudoWord psuedoWord)
