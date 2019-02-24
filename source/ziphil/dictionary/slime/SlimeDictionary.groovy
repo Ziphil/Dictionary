@@ -74,6 +74,16 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     }
   }
 
+  // この辞書に登録されている word が変更されることによって、関連語参照などに矛盾が生じないように修正します。
+  // 具体的には、word を関連語として参照している単語データを更新します。
+  private void correctRelationsByModify(SlimeWord word) {
+    for (SlimeWord otherWord : $words) {
+      if (otherWord.getRelations().any{it.getWord() == word}) {
+        otherWord.update()
+      }
+    }
+  }
+
   // これから追加もしくは変更される単語データである word の関連語データを、追加もしくは変更の後に矛盾が生じないように修正します。
   // 具体的には、存在しない単語を参照している関連語データを word から削除します。
   private void correctRelationsByAdd(SlimeWord word) {
@@ -100,16 +110,7 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     }
   }
 
-  // この辞書に登録されている word が変更されることによって生じ得る関連語参照の矛盾を修正します。
-  private void correctRelationsByModify(SlimeWord word) {
-    for (SlimeWord otherWord : $words) {
-      if (otherWord.getRelations().any{it.getWord() == word}) {
-        otherWord.update()
-      }
-    }
-  }
-
-  // この辞書から word を削除することによって生じ得る関連語参照の矛盾を修正します。
+  // この辞書から word が削除されることによって、関連語参照などに矛盾が生じないように修正します。
   private void correctRelationsByRemove(SlimeWord word) {
     for (SlimeWord otherWord : $words) {
       Boolean changed = otherWord.getRelations().removeAll{it.getWord() == word}
