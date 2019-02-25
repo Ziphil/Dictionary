@@ -45,9 +45,6 @@ public class SlimeRenumberNumbersPlugin implements SimplePlugin {
     }
     for (SlimeWord word : dictionary.getRawWords()) {
       word.setNumber(numbers[word.getNumber()])
-      for (SlimeRelation relation : word.getRelations()) {
-        relation.setNumber(numbers[relation.getNumber()])
-      }
     }
     Collections.sort(dictionary.getRawWords()) { SlimeWord firstWord, SlimeWord secondWord ->
       return firstWord.getNumber() <=> secondWord.getNumber()

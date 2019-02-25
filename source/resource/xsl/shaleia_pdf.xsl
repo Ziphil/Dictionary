@@ -175,7 +175,7 @@
                    color="{$title-color}"
                    background-color="{$light-color}"
                    alignment-baseline="central">
-          <xsl:sequence select="zp:textify(total-part)"/>
+          <xsl:sequence select="zp:textify(sort)"/>
         </fo:inline>
       </fo:inline>
     </fo:block>
@@ -195,7 +195,7 @@
                      color="{$title-color}"
                      border="{$border-width} {$color} solid"
                      background-color="{$light-color}">
-            <xsl:sequence select="zp:textify(part)"/>
+            <xsl:sequence select="zp:textify(category)"/>
           </fo:inline>
           <fo:inline>
             <xsl:text> </xsl:text>

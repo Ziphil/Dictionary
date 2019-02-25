@@ -27,7 +27,7 @@ public class ShaleiaWordPlainPaneFactory extends PaneFactoryBase<ShaleiaWord, Sh
   protected Pane doCreate() {
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
-    addNameNode(pane, $word.getName())
+    addNameNode(pane, $word.getDisplayedName())
     addEquivalentNode(pane, $word.getEquivalents().join(", "))
     modifyBreak(pane)
     return pane

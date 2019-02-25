@@ -9,6 +9,7 @@ import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import ziphil.dictionary.Loader
 import ziphil.dictionary.WordOrderType
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -28,6 +29,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     FileInputStream stream = FileInputStream.new($path)
     JsonFactory factory = $mapper.getFactory()
     JsonParser parser = factory.createParser(stream)
+    Map<IntegerClass, SlimeWord> correspondingWords = HashMap.new()
     Long size = file.length()
     try {
       parser.nextToken()
@@ -42,6 +44,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
             SlimeWord word = SlimeWord.new()
             parseWord(parser, word)
             $words.add(word)
+            correspondingWords.put(word.getNumber(), word)
             updateProgressByParser(parser, size)
           }
         } else if (topFieldName == "zpdic") {
@@ -78,6 +81,10 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     } finally {
       parser.close()
       stream.close()
+    }
+    for (Int i = 0 ; i < $words.size() ; i ++) {
+      resolveRelations($words[i], correspondingWords)
+      updateProgressByWord(i + 1, $words.size())
     }
     return true
   }
@@ -183,7 +190,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private void parseRelations(JsonParser parser, SlimeWord word) {
     while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeRelation relation = SlimeRelation.new()
+      TemporaryRelation relation = TemporaryRelation.new()
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String relationFieldName = parser.getCurrentName()
         parser.nextToken()
@@ -278,16 +285,72 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
     }
   }
 
+  private void resolveRelations(SlimeWord word, Map<IntegerClass, SlimeWord> correspondingWords) {
+    List<SlimeRelation> relations = word.getRelations()
+    for (Int i = 0 ; i < relations.size() ; i ++) {
+      TemporaryRelation relation = (TemporaryRelation)relations[i]
+      if (correspondingWords.containsKey(relation.getNumber())) {
+        SlimeWord relationWord = correspondingWords[relation.getNumber()]
+        if (relationWord.getName() == relation.getName()) {
+          SlimeRelation genuineRelation = SlimeRelation.new()
+          genuineRelation.setTitle(relation.getTitle())
+          genuineRelation.setWord(relationWord)
+          relations[i] = genuineRelation
+        }
+      }
+    }
+  }
+
   private void updateProgressByParser(JsonParser parser, Long size) {
     if (parser != null) {
-      updateProgress(parser.getCurrentLocation().getByteOffset(), size)
+      Double progress = parser.getCurrentLocation().getByteOffset() / size
+      updateProgress(progress * 0.75D, 1)
     } else {
       updateProgress(0, 1)
     }
   }
 
+  private void updateProgressByWord(Int index, Long size) {
+    if (index > 0) {
+      Double progress = index / size
+      updateProgress(progress * 0.25D + 0.75D, 1)
+    } else {
+      updateProgress(0.75D, 1)
+    }
+  }
+
   public void setMapper(ObjectMapper mapper) {
     $mapper = mapper
+  }
+
+}
+
+
+@InnerClass(SlimeLoader)
+@CompileStatic @Ziphilify
+public static class TemporaryRelation extends SlimeRelation {
+
+  private Int $number = -1
+  private String $name = ""
+
+  public TemporaryRelation() {
+    super()
+  }
+
+  public Int getNumber() {
+    return $number
+  }
+
+  public void setNumber(Int number) {
+    $number = number
+  }
+
+  public String getName() {
+    return $name
+  }
+
+  public void setName(String name) {
+    $name = name
   }
 
 }

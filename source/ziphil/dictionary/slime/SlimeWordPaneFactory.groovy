@@ -80,8 +80,8 @@ public class SlimeWordPaneFactory extends PaneFactoryBase<SlimeWord, SlimeDictio
     for (Map.Entry<String, List<SlimeRelation>> entry : $word.groupedRelations()) {
       String title = entry.getKey()
       List<SlimeRelation> relationGroup = entry.getValue()
-      List<IntegerClass> numbers = relationGroup.collect{it.getNumber()}
-      List<String> names = relationGroup.collect{it.getName()}
+      List<IntegerClass> numbers = relationGroup.collect{it.getWord().getNumber()}
+      List<String> names = relationGroup.collect{it.getWord().getName()}
       addRelationNode(relationPane, title, numbers, names)
       hasRelation = true
     }

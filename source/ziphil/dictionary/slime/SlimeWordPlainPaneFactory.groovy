@@ -28,7 +28,11 @@ public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeD
     TextFlow pane = TextFlow.new()
     pane.getStyleClass().add(CONTENT_PANE_CLASS)
     addNameNode(pane, $word.getName(), $word.getNumber())
-    addEquivalentNode(pane, $word.getEquivalents().join(", "))
+    List<String> wholeEquivalents = ArrayList.new()
+    for (SlimeEquivalent equivalent : $word.getRawEquivalents()) {
+      wholeEquivalents.addAll(equivalent.getNames())
+    }
+    addEquivalentNode(pane, wholeEquivalents)
     modifyBreak(pane)
     return pane
   }
@@ -44,8 +48,8 @@ public class SlimeWordPlainPaneFactory extends PaneFactoryBase<SlimeWord, SlimeD
     pane.getChildren().addAll(nameText, breakText)
   }
 
-  private void addEquivalentNode(TextFlow pane, String equivalent) {
-    Text equivalentText = Text.new(equivalent)
+  private void addEquivalentNode(TextFlow pane, List<String> equivalents) {
+    Text equivalentText = Text.new(equivalents.join($dictionary.firstPunctuation()))
     Text breakText = Text.new("\n")
     equivalentText.getStyleClass().addAll(CONTENT_CLASS, SLIME_EQUIVALENT_CLASS)
     pane.getChildren().addAll(equivalentText, breakText)

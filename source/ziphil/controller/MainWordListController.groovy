@@ -495,11 +495,10 @@ public class MainWordListController extends PrimitiveController<Stage> {
         List<Word> words = ArrayList.new()
         for (Word candidate : candidates) {
           if (wordClass != null && wordClass.isInstance(candidate)) {
-            Word word = $dictionary.copyWord(candidate)
-            words.add(word)
+            words.add(candidate)
           }
         }
-        $dictionary.addWords(words)
+        $dictionary.addWords($dictionary.copyWords(words))
       } catch (UnsupportedFlavorException | IOException exception) {
       }
     }

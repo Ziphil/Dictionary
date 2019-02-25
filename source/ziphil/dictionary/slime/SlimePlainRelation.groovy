@@ -5,17 +5,17 @@ import ziphilib.transform.Ziphilify
 
 
 @CompileStatic @Ziphilify
-public class SlimeRelation {
+public class SlimePlainRelation {
 
   private String $title = ""
-  private SlimeWord $word
+  private Object $word
 
-  public SlimeRelation(String title, SlimeWord word) {
+  public SlimePlainRelation(String title, Object word) {
     $title = title
     $word = word
   }
 
-  public SlimeRelation() {
+  public SlimePlainRelation() {
   }
 
   public String getTitle() {
@@ -26,11 +26,11 @@ public class SlimeRelation {
     $title = title
   }
 
-  public SlimeWord getWord() {
+  public Object getWord() {
     return $word
   }
 
-  public void setWord(SlimeWord word) {
+  public void setWord(Object word) {
     $word = word
   }
 

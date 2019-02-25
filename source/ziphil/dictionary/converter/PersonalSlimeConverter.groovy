@@ -43,7 +43,7 @@ public class PersonalSlimeConverter extends Loader<PersonalDictionary, PersonalW
       }
       for (Map.Entry<String, List<SlimeRelation>> sourceEntry : sourceWord.groupedRelations()) {
         String sourceTitle = sourceEntry.getKey()
-        List<String> sourceNames = sourceEntry.getValue().collect{it.getName()}
+        List<String> sourceNames = sourceEntry.getValue().collect{it.getWord().getName()}
         appendRelation(usage, sourceTitle, sourceNames)
       }
       modifyBreak(translation)

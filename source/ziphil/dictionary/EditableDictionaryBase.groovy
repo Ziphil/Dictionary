@@ -49,6 +49,14 @@ public abstract class EditableDictionaryBase<W extends Word, S extends Suggestio
 
   public abstract W copyWord(W oldWord)
 
+  public List<? extends W> copyWords(List<? extends W> oldWords) {
+    List<W> newWords = ArrayList.new()
+    for (W oldWord : oldWords) {
+      newWords.add(copyWord(oldWord))
+    }
+    return newWords
+  }
+
   public abstract W inheritWord(W oldWord)
 
   public abstract W determineWord(String name, PseudoWord psuedoWord)

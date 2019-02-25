@@ -163,10 +163,10 @@ public class SlimePdfExporter extends PdfExporter<SlimeDictionary, SlimePdfExpor
       for (SlimeRelation relation : relationGroup) {
         writer.writeStartElement("entry")
         writer.writeStartElement("number")
-        writer.writeCharacters(relation.getNumber().toString())
+        writer.writeCharacters(relation.getWord().getNumber().toString())
         writer.writeEndElement()
         writer.writeStartElement("name")
-        writer.writeCharacters(relation.getName())
+        writer.writeCharacters(relation.getWord().getName())
         writer.writeEndElement()
         writer.writeEndElement()
       }

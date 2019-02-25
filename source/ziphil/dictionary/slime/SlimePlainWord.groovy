@@ -13,7 +13,7 @@ public class SlimePlainWord {
   private List<String> $tags = ArrayList.new()
   private List<SlimeInformation> $informations = ArrayList.new()
   private List<SlimeVariation> $variations = ArrayList.new()
-  private List<SlimeRelation> $relations = ArrayList.new()
+  private List<SlimePlainRelation> $relations = ArrayList.new()
 
   public Int getNumber() {
     return $number
@@ -63,11 +63,11 @@ public class SlimePlainWord {
     $variations = variations
   }
 
-  public List<SlimeRelation> getRelations() {
+  public List<SlimePlainRelation> getRelations() {
     return $relations
   }
 
-  public void setRelations(List<SlimeRelation> relations) {
+  public void setRelations(List<SlimePlainRelation> relations) {
     $relations = relations
   }
 

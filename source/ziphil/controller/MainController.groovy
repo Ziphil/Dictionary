@@ -208,6 +208,7 @@ public class MainController extends PrimitiveController<Stage> {
       Dictionary dictionary = DictionaryFactory.loadProperEmpty(factory, file)
       if (dictionary != null) {
         Setting.getInstance().setDefaultDictionaryPath(dictionary.getPath())
+        dictionary.getDictionaryFactory().save(dictionary)
         addDictionaryTab(dictionary)
       } else {
         showErrorDialog("failCreateDictionary")
@@ -244,6 +245,7 @@ public class MainController extends PrimitiveController<Stage> {
         Dictionary nextDictionary = DictionaryFactory.convertProper(factory, dictionary, file)
         if (nextDictionary != null) {
           Setting.getInstance().setDefaultDictionaryPath(nextDictionary.getPath())
+          nextDictionary.getDictionaryFactory().save(nextDictionary)
           addDictionaryTab(nextDictionary)
         } else {
           showErrorDialog("failConvertDictionary")

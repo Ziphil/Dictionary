@@ -62,13 +62,13 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     try {
       while (reader.readLine() != null) {
         if (reader.findCreationDate()) {
-          String totalPart = reader.lookupTotalPart()
-          writeTotalPart(writer, totalPart)
+          String sort = reader.lookupSort()
+          writeSort(writer, sort)
         }
         if (reader.findEquivalent()) {
-          String part = reader.lookupPart()
+          String category = reader.lookupCategory()
           String equivalent = reader.lookupEquivalent()
-          equivalents.add([part, equivalent])
+          equivalents.add([category, equivalent])
         }
         if (reader.findContent()) {
           String title = reader.title()
@@ -99,9 +99,9 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     writer.writeEndElement()
   }
 
-  private void writeTotalPart(XMLStreamWriter writer, String totalPart) {
-    writer.writeStartElement("total-part")
-    writer.writeCharacters(totalPart)
+  private void writeSort(XMLStreamWriter writer, String sort) {
+    writer.writeStartElement("sort")
+    writer.writeCharacters(sort)
     writer.writeEndElement()
   }
 
@@ -109,7 +109,7 @@ public class ShaleiaPdfExporter extends PdfExporter<ShaleiaDictionary, ShaleiaPd
     writer.writeStartElement("equivalents")
     for (List<String> equivalent : equivalents) {
       writer.writeStartElement("equivalent")
-      writer.writeStartElement("part")
+      writer.writeStartElement("category")
       writer.writeCharacters(equivalent[0])
       writer.writeEndElement()
       writer.writeStartElement("equivalent")

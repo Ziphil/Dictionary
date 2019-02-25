@@ -63,7 +63,7 @@
   -fx-close-tab-animation: none;
 }
 
-.tab-pane .scroll-pane {
+.tab-pane .scroll-pane.no-border {
   -fx-background-color: -fx-background !important;
   -fx-background-insets: 0px !important;
   -fx-padding: 0px !important;

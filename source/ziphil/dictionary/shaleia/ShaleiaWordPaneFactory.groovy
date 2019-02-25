@@ -33,8 +33,8 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
   private static final String SHALEIA_HEAD_NAME_CLASS = "shaleia-head-name"
   private static final String SHALEIA_PRONUNCIATION_CLASS = "shaleia-pronunciation"
   private static final String SHALEIA_EQUIVALENT_CLASS = "shaleia-equivalent"
-  private static final String SHALEIA_TOTAL_PART_CLASS = "shaleia-total-part"
-  private static final String SHALEIA_PART_CLASS = "shaleia-part"
+  private static final String SHALEIA_SORT_CLASS = "shaleia-sort"
+  private static final String SHALEIA_CATEGORY_CLASS = "shaleia-category"
   private static final String SHALEIA_CREATION_DATE_CLASS = "shaleia-creation-date"
   private static final String SHALEIA_CONTENT_TITLE_CLASS = "shaleia-content-title"
   private static final String SHALEIA_MARKER_CLASS = "shaleia-marker"
@@ -77,19 +77,19 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     try {
       while (reader.readLine() != null) {
         if (mainPane.getChildren().isEmpty()) {
-          String name = ($word.getUniqueName().startsWith("\$")) ? "" : $word.getName()
+          String name = $word.getDisplayedName()
           addBadgeNodes(mainPane, badgeNodes)
           addNameNode(mainPane, name, $word.createPronunciation())
         }
         if (reader.findCreationDate()) {
-          String totalPart = reader.lookupTotalPart()
+          String sort = reader.lookupSort()
           String creationDate = reader.lookupCreationDate()
-          addCreationDateNode(mainPane, totalPart, creationDate)
+          addCreationDateNode(mainPane, sort, creationDate)
         }
         if (reader.findEquivalent()) {
-          String part = reader.lookupPart()
+          String category = reader.lookupCategory()
           String equivalent = reader.lookupEquivalent()
-          addEquivalentNode(mainPane, part, equivalent)
+          addEquivalentNode(mainPane, category, equivalent)
         }
         if (reader.findContent()) {
           String title = reader.title()
@@ -138,26 +138,26 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     }
   }
  
-  private void addCreationDateNode(TextFlow pane, String totalPart, String creationDate) {
-    Label totalPartText = Label.new(totalPart)
+  private void addCreationDateNode(TextFlow pane, String sort, String creationDate) {
+    Label sortText = Label.new(sort)
     Text creationDateText = Text.new(" " + creationDate)
     Text breakText = Text.new("\n")
-    totalPartText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_TOTAL_PART_CLASS)
+    sortText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_SORT_CLASS)
     creationDateText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CREATION_DATE_CLASS)
-    pane.getChildren().addAll(totalPartText, creationDateText, breakText)
+    pane.getChildren().addAll(sortText, creationDateText, breakText)
   }
 
-  private void addEquivalentNode(TextFlow pane, String part, String equivalent) {
-    Label partText = Label.new(part)
+  private void addEquivalentNode(TextFlow pane, String category, String equivalent) {
+    Label categoryText = Label.new(category)
     Text spaceText = Text.new(" ")
     Text breakText = Text.new("\n")
     List<Node> equivalentTexts = createRichTexts(equivalent)
-    partText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
+    categoryText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CATEGORY_CLASS)
     spaceText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     for (Node equivalentText : equivalentTexts) {
       equivalentText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_EQUIVALENT_CLASS)
     }
-    pane.getChildren().addAll(partText, spaceText)
+    pane.getChildren().addAll(categoryText, spaceText)
     pane.getChildren().addAll(equivalentTexts)
     pane.getChildren().add(breakText)
   }
@@ -189,7 +189,7 @@ public class ShaleiaWordPaneFactory extends PaneFactoryBase<ShaleiaWord, Shaleia
     List<Node> synonymTexts = createRichTexts(synonym + " ", true)
     markerText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_MARKER_CLASS)
     markerText.getStyleClass().addAll(CONTENT_CLASS)
-    synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_PART_CLASS)
+    synonymTypeText.getStyleClass().addAll(CONTENT_CLASS, SHALEIA_CATEGORY_CLASS)
     spaceText.getStyleClass().add(CONTENT_CLASS)
     for (Node synonymText : synonymTexts) {
       synonymText.getStyleClass().add(CONTENT_CLASS)
