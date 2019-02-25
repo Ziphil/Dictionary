@@ -9,6 +9,7 @@ import groovy.transform.CompileStatic
 import javafx.collections.ObservableList
 import ziphil.dictionary.Loader
 import ziphil.dictionary.WordOrderType
+import ziphilib.transform.InnerClass
 import ziphilib.transform.Ziphilify
 
 
@@ -189,7 +190,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   private void parseRelations(JsonParser parser, SlimeWord word) {
     while (parser.nextToken() == JsonToken.START_OBJECT) {
-      SlimeTemporaryRelation relation = SlimeTemporaryRelation.new()
+      TemporaryRelation relation = TemporaryRelation.new()
       while (parser.nextToken() == JsonToken.FIELD_NAME) {
         String relationFieldName = parser.getCurrentName()
         parser.nextToken()
@@ -287,7 +288,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
   private void resolveRelations(SlimeWord word, Map<IntegerClass, SlimeWord> correspondingWords) {
     List<SlimeRelation> relations = word.getRelations()
     for (Int i = 0 ; i < relations.size() ; i ++) {
-      SlimeTemporaryRelation relation = (SlimeTemporaryRelation)relations[i]
+      TemporaryRelation relation = (TemporaryRelation)relations[i]
       if (correspondingWords.containsKey(relation.getNumber())) {
         SlimeWord relationWord = correspondingWords[relation.getNumber()]
         if (relationWord.getName() == relation.getName()) {
@@ -298,7 +299,7 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
         }
       }
     }
-    relations.removeAll{it instanceof SlimeTemporaryRelation}
+    relations.removeAll{it instanceof TemporaryRelation}
   }
 
   private void updateProgressByParser(JsonParser parser, Long size) {
@@ -321,6 +322,36 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
 
   public void setMapper(ObjectMapper mapper) {
     $mapper = mapper
+  }
+
+}
+
+
+@InnerClass(SlimeLoader)
+@CompileStatic @Ziphilify
+public static class TemporaryRelation extends SlimeRelation {
+
+  private Int $number = -1
+  private String $name = ""
+
+  public TemporaryRelation() {
+    super()
+  }
+
+  public Int getNumber() {
+    return $number
+  }
+
+  public void setNumber(Int number) {
+    $number = number
+  }
+
+  public String getName() {
+    return $name
+  }
+
+  public void setName(String name) {
+    $name = name
   }
 
 }
