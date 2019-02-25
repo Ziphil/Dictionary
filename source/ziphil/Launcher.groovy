@@ -11,7 +11,7 @@ import ziphilib.transform.Ziphilify
 public class Launcher {
 
   public static final String TITLE = "ZpDIC fetith"
-  public static final Version VERSION = Version.new(1, 33, 0, 2478)
+  public static final Version VERSION = Version.new(1, 34, 0, 2591)
   public static final String FILE_SEPARATOR = createFileSeparator()
   public static final String PATH_SEPARATOR = createPathSeparator()
   public static final String LINE_SEPARATOR = createLineSeparator()
@@ -57,6 +57,9 @@ public class Launcher {
 
 // ◆ Version History
 //
+//  1.34. 0 | OneToMany 形式の単語データの貼り付け時に可能な限り関連語参照を保持するよう修正。
+//          | 辞書の新規作成時や変換時にファイルを作成するよう変更。
+//          | 見出し語と訳語の両方から検索したときも活用形のサジェストをするよう変更。
 //  1.33. 0 | OneToMany 形式において訳語欄で無視するパターンを設定する機能を追加。
 //          | OneToMany 形式で見出し語フォントを変更する機能を追加。
 //          | 検索範囲として見出し語と訳語の両方を指定できるよう変更。
