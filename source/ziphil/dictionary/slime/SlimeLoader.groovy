@@ -299,7 +299,6 @@ public class SlimeLoader extends Loader<SlimeDictionary, SlimeWord> {
         }
       }
     }
-    relations.removeAll{it instanceof TemporaryRelation}
   }
 
   private void updateProgressByParser(JsonParser parser, Long size) {

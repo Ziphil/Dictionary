@@ -227,7 +227,9 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     for (SlimeWord word : $words) {
       for (SlimeRelation relation : word.getRelations()) {
         SlimeWord relationWord = relation.getWord()
-        if (!$words.contains(relationWord)) {
+        if (relationWord == null) {
+          throw SlimeValidationException.new("Unresolved relation in [${word.getNumber()}: ${word.getName()}]")
+        } else if (!$words.contains(relationWord)) {
           throw SlimeValidationException.new("No [${relationWord.getNumber()}: ${relationWord.getName()}] specified as a relation in [${word.getNumber()}: ${word.getName()}]")
         }
       }
