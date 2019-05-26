@@ -439,7 +439,8 @@ public class SlimeDictionary extends EditableDictionaryBase<SlimeWord, SlimeSugg
     for (SlimeRelation relation : oldWord.getRelations()) {
       SlimePlainRelation newRelation = SlimePlainRelation.new()
       newRelation.setTitle(relation.getTitle())
-      newRelation.setWord(createPlainWord(relation.getWord()))
+      newRelation.setNumber(relation.getWord().getNumber())
+      newRelation.setName(relation.getWord().getName())
       newRelations.add(newRelation)
     }
     newWord.setNumber(newNumber)

@@ -8,11 +8,13 @@ import ziphilib.transform.Ziphilify
 public class SlimePlainRelation {
 
   private String $title = ""
-  private Object $word
+  private Int $number = -1
+  private String $name = ""
 
-  public SlimePlainRelation(String title, Object word) {
+  public SlimePlainRelation(String title, Int number, String name) {
     $title = title
-    $word = word
+    $number = number
+    $name = name
   }
 
   public SlimePlainRelation() {
@@ -26,12 +28,20 @@ public class SlimePlainRelation {
     $title = title
   }
 
-  public Object getWord() {
-    return $word
+  public Int getNumber() {
+    return $number
   }
 
-  public void setWord(Object word) {
-    $word = word
+  public void setNumber(Int number) {
+    $number = number
+  }
+
+  public String getName() {
+    return $name
+  }
+
+  public void setName(String name) {
+    $name = name
   }
 
 }
